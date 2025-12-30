@@ -1,0 +1,13 @@
+{
+    "required": true,
+    "package": "net.vanillaoutsider.betterdogs.mixin",
+    "compatibilityLevel": "JAVA_21",
+    "mixins": [
+        "WolfMixin",
+        "WolfAIMixin",
+        "WolfGoalsMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}

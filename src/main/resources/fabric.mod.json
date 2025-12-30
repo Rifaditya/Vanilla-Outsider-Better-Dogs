@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "vanilla-outsider-better-dogs",
+	"version": "${version}",
+	"name": "Vanilla Outsider: Better Dogs",
+	"description": "Enhances wolf AI with personalities, better pathfinding, and smarter behavior for both wild and tamed wolves.",
+	"authors": [
+		"Rifaditya"
+	],
+	"contact": {
+		"homepage": "https://github.com/Rifaditya",
+		"sources": "https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs"
+	},
+	"license": "MIT",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			{
+				"value": "net.vanillaoutsider.betterdogs.BetterDogs",
+				"adapter": "kotlin"
+			}
+		],
+		"client": [
+			{
+				"value": "net.vanillaoutsider.betterdogs.BetterDogsClient",
+				"adapter": "kotlin"
+			}
+		]
+	},
+	"mixins": [
+		"vanilla-outsider-better-dogs.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.18.4",
+		"minecraft": "~1.21.11",
+		"java": ">=21",
+		"fabric-api": "*",
+		"fabric-language-kotlin": "*"
+	}
+}
