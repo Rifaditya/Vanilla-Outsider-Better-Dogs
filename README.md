@@ -102,7 +102,10 @@ This project is licensed under the **GPL-3.0 License**.
 
 Other mods in this collection:
 
+<<<<<<< HEAD
 - [Vanilla Outsider: Keep Gear](https://github.com/Rifaditya/Vanilla-Outsider-Keep-Gear) - Keep items with durability on death
+=======
+>>>>>>> 428ffcf913854819d92deb0bf6b305a25c4b5ca6
 - [Vanilla Outsider: Gold Progression](https://github.com/Rifaditya/Vanilla-Outsider-Gold-Progression) - Rebalanced gold equipment progression
 - [Vanilla Outsider: More Animal Drops](https://github.com/Rifaditya/Vanilla-Outsider-More-Animal-Drops) - Enhanced animal loot drops
 
