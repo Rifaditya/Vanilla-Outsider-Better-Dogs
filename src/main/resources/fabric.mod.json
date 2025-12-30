@@ -5,13 +5,13 @@
 	"name": "Vanilla Outsider: Better Dogs",
 	"description": "Enhances wolf AI with personalities, better pathfinding, and smarter behavior for both wild and tamed wolves.",
 	"authors": [
-		"Rifaditya"
+		"DasikIgaijin"
 	],
 	"contact": {
 		"homepage": "https://github.com/Rifaditya",
 		"sources": "https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs"
 	},
-	"license": "MIT",
+	"license": "GPL-3.0",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
