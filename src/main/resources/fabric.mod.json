@@ -25,6 +25,12 @@
 				"value": "net.vanillaoutsider.betterdogs.BetterDogsClient",
 				"adapter": "kotlin"
 			}
+		],
+		"modmenu": [
+			{
+				"value": "net.vanillaoutsider.betterdogs.config.ModMenuIntegration",
+				"adapter": "kotlin"
+			}
 		]
 	},
 	"mixins": [

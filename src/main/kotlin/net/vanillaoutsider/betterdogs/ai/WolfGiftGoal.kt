@@ -8,7 +8,9 @@ import net.minecraft.world.item.Items
 import net.minecraft.sounds.SoundEvents
 import net.vanillaoutsider.betterdogs.WolfPersonality
 import net.vanillaoutsider.betterdogs.getPersistedPersonality
+import net.vanillaoutsider.betterdogs.getPersistedPersonality
 import net.vanillaoutsider.betterdogs.hasPersistedPersonality
+import net.vanillaoutsider.betterdogs.config.BetterDogsConfig
 import java.util.EnumSet
 import kotlin.random.Random
 
@@ -17,7 +19,7 @@ import kotlin.random.Random
  */
 class WolfGiftGoal(private val wolf: Wolf) : Goal() {
 
-    private var cooldown = 12000 // Default 10 minutes (in ticks)
+    private var cooldown = BetterDogsConfig.get().giftCooldownMin
 
     init {
         this.flags = EnumSet.of(Flag.LOOK)
@@ -33,12 +35,14 @@ class WolfGiftGoal(private val wolf: Wolf) : Goal() {
         }
         
         // Random chance to trigger logic this tick once cooldown is done
-        return wolf.random.nextFloat() < 0.01
+        return wolf.random.nextFloat() < BetterDogsConfig.get().giftTriggerChance
     }
 
     override fun start() {
-        // Reset cooldown (10-15 minutes)
-        cooldown = 12000 + wolf.random.nextInt(6000)
+        // Reset cooldown from config
+        val config = BetterDogsConfig.get()
+        val range = config.giftCooldownMax - config.giftCooldownMin
+        cooldown = config.giftCooldownMin + if (range > 0) wolf.random.nextInt(range) else 0
         
         val personality = wolf.getPersistedPersonality()
         when (personality) {

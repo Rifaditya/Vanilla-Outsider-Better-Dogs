@@ -4,11 +4,12 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal
 import net.minecraft.world.entity.animal.wolf.Wolf
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.ai.targeting.TargetingConditions
+import net.vanillaoutsider.betterdogs.config.BetterDogsConfig
 import java.util.function.Predicate
 
 /**
  * Wild wolf hunting behavior.
- * Only hunts prey when health is below 50%.
+ * Only hunts prey when health is below threshold.
  */
 class WildWolfHuntGoal<T : LivingEntity>(
     private val wolf: Wolf,
@@ -21,8 +22,9 @@ class WildWolfHuntGoal<T : LivingEntity>(
         // Only applies to wild wolves
         if (wolf.isTame) return false
 
-        // Only hunt if health is below 50%
-        if (wolf.health >= wolf.maxHealth * 0.5f) return false
+        // Only hunt if health is below configurable threshold
+        val threshold = BetterDogsConfig.get().wildHuntHealthThreshold
+        if (wolf.health >= wolf.maxHealth * threshold) return false
 
         return super.canUse()
     }

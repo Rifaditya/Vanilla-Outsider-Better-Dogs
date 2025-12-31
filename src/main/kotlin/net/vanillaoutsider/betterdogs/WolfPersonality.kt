@@ -1,5 +1,6 @@
 package net.vanillaoutsider.betterdogs
 
+import net.vanillaoutsider.betterdogs.config.BetterDogsConfig
 import kotlin.random.Random
 
 /**
@@ -24,10 +25,16 @@ enum class WolfPersonality(val id: Int) {
          * - PACIFIST: 20%
          */
         fun random(): WolfPersonality {
-            val roll = Random.nextInt(100)
+            val config = BetterDogsConfig.get()
+            val normal = config.chanceNormal
+            val aggressive = config.chanceAggressive
+            val pacifist = config.chancePacifist
+            val total = normal + aggressive + pacifist
+            
+            val roll = Random.nextInt(if (total > 0) total else 100)
             return when {
-                roll < 60 -> NORMAL
-                roll < 80 -> AGGRESSIVE
+                roll < normal -> NORMAL
+                roll < (normal + aggressive) -> AGGRESSIVE
                 else -> PACIFIST
             }
         }

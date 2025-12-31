@@ -7,6 +7,7 @@ import net.minecraft.world.entity.animal.wolf.Wolf
 import net.minecraft.world.entity.monster.*
 import net.vanillaoutsider.betterdogs.WolfPersonality
 import net.vanillaoutsider.betterdogs.asExtended
+import net.vanillaoutsider.betterdogs.config.BetterDogsConfig
 
 /**
  * AI Goal for Aggressive personality wolves.
@@ -23,15 +24,15 @@ class AggressiveTargetGoal(
     { target, level -> isValidTarget(wolf, target) }
 ) {
     companion object {
-        private const val DETECTION_RANGE = 20.0
-        private const val MAX_CHASE_DISTANCE = 20.0
+        // Config-driven values
+
         
         private fun isValidTarget(wolf: Wolf, target: LivingEntity): Boolean {
             // Must have an owner
             val owner = wolf.owner ?: return false
             
             // Target must be within range of owner
-            if (target.distanceTo(owner) > DETECTION_RANGE) return false
+            if (target.distanceTo(owner) > BetterDogsConfig.get().aggressiveDetectionRange) return false
             
             // Don't attack creepers
             if (target is Creeper) return false
@@ -52,7 +53,7 @@ class AggressiveTargetGoal(
         
         // Must have an owner nearby
         val owner = wolf.owner ?: return false
-        if (wolf.distanceTo(owner) > MAX_CHASE_DISTANCE) return false
+        if (wolf.distanceTo(owner) > BetterDogsConfig.get().aggressiveChaseDistance) return false
         
         return super.canUse()
     }
@@ -60,7 +61,7 @@ class AggressiveTargetGoal(
     override fun canContinueToUse(): Boolean {
         // Stop if too far from owner
         val owner = wolf.owner ?: return false
-        if (wolf.distanceTo(owner) > MAX_CHASE_DISTANCE) return false
+        if (wolf.distanceTo(owner) > BetterDogsConfig.get().aggressiveChaseDistance) return false
         
         return super.canContinueToUse()
     }

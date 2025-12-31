@@ -22,14 +22,15 @@ config/vanilla-outsider-better-dogs.json
 
 | Category | Description |
 |----------|-------------|
-| `personality` | Spawn chances, breeding genetics |
-| `aggressive` | Detection range, patrol radius, speed/damage modifiers |
-| `pacifist` | Follow distance, speed/damage modifiers |
-| `normal` | Vanilla overrides (if any) |
-| `combat` | Friendly fire, knockback resistance |
-| `healing` | Passive heal rate, combat delay |
-| `safety` | Creeper flee, hazard avoidance |
-| `wild` | Hunting behavior, food eating |
+| `General` | Global Speed, Storm Anxiety, Cliff Safety, Friendly Fire |
+| `Aggressive AI` | **Stats** (HP/Speed/Dmg), **AI** (Follow/Teleport/Detection/Chase) |
+| `Pacifist AI` | **Stats** (HP/Speed/Dmg/KB), **AI** (Follow/Teleport) |
+| `Normal AI` | **Stats** (HP/Speed/Dmg), **AI** (Follow/Teleport) |
+| `Wild Wolves` | Hunt HP Threshold |
+| `Breeding & Spawning` | Personality Chances |
+| `Gift System` | Cooldowns, Trigger Chances |
+| `Passive Healing` | Heal rate, amount, and combat delay |
+| `wild` | Hunting behavior (Technical/Internal) |
 
 ---
 
@@ -40,7 +41,7 @@ config/vanilla-outsider-better-dogs.json
 | Feature | Default | ✏️ Your Setting |
 |---------|---------|-----------------|
 | **Hunt only when hurt?** | Yes | Yes |
-| **Health threshold to hunt** | Below 50% HP | 50% |
+| **Health threshold to hunt** | Below 50% HP | **Configurable** (Def: 0.5) |
 | **Eat dropped food?** | Yes | Yes |
 | **Food heals instantly?** | Yes | Yes |
 
@@ -71,11 +72,11 @@ config/vanilla-outsider-better-dogs.json
 
 ## 🐕 Personality Types
 
-| Personality | Chance | Particles | ✏️ Edit |
+| Personality | Chance | Particles | ✏️ Edit (Configurable) |
 |-------------|--------|-----------|---------|
-| **Normal** | 60% | Happy villager (✨) | 60% |
-| **Aggressive** | 20% | Angry villager (💢) | 20% |
-| **Pacifist** | 20% | Hearts (❤️) | 20% |
+| **Normal** | 60% | Happy villager (✨) | **Configurable** (Def: 60) |
+| **Aggressive** | 20% | Angry villager (💢) | **Configurable** (Def: 20) |
+| **Pacifist** | 20% | Hearts (❤️) | **Configurable** (Def: 20) |
 
 ---
 
@@ -98,9 +99,11 @@ config/vanilla-outsider-better-dogs.json
 
 | Personality | Max Distance from Owner | Teleport Distance | ✏️ Your Setting |
 |-------------|------------------------|-------------------|-----------------|
-| **Normal** | 10 blocks (vanilla) | >12 blocks (vanilla) | Keep Vanilla |
-| **Aggressive** | 20 blocks (wider patrol) | >24 blocks | 20 blocks / 24 teleport |
-| **Pacifist** | 8 blocks (stays close) | >10 blocks | 8 blocks / 10 teleport |
+| **Normal** | 10 blocks (vanilla) | >12 blocks (vanilla) | **Configurable** (Per-Personality) |
+| **Aggressive** | 20 blocks (wider patrol) | >24 blocks | **Configurable** (Per-Personality) |
+| **Pacifist** | 8 blocks (stays close) | >10 blocks | **Configurable** (Per-Personality) |
+
+> **Note**: As of v1.5.3, you can set specific `Follow Start Dist` and `Follow Stop Dist` for **each** personality type in their respective tabs.
 
 ### Patrol Behavior (Aggressive Only)
 
@@ -133,12 +136,14 @@ config/vanilla-outsider-better-dogs.json
 
 | Setting | Default | ✏️ Your Setting |
 |---------|---------|-----------------|
-| **Detection range** | 20 blocks from owner | 20 blocks |
+| **Detection range** | 20 blocks | **Configurable** (Def: 20) |
+| **Max chase distance** | 50 blocks | **Configurable** (Def: 50) |
 | **Attack creepers?** | No (too risky) | No |
-| **Attack phantoms?** | Yes | Yes |
-| **Max chase distance** | 20 blocks from owner | 20 blocks |
 | **Abandon target if too far?** | Yes | Yes |
 | **Attack what owner attacks?** | Yes (vanilla behavior) | Yes |
+| **Extra Health** | +20 HP (Configurable) | **Configurable** (Def: +20) |
+| **Speed Modifier** | +15% (Configurable) | **Configurable** (Def: +15%) |
+| **Damage Modifier** | -15% (Configurable) | **Configurable** (Def: -15%) |
 
 ### Target Mobs (✅ = attack, ❌ = ignore)
 
@@ -174,9 +179,9 @@ config/vanilla-outsider-better-dogs.json
 
 | Stat | Modifier | ✏️ Your Setting |
 |------|----------|-----------------|
-| **Movement Speed** | -10% slower (still faster than skeletons) | ~0.27 speed |
-| **Attack Damage** | +15% higher | +15% |
-| **Knockback** | +50% stronger | +50% |
+| **Movement Speed** | -10% slower | **Configurable** (Def: -10%) |
+| **Attack Damage** | +15% higher | **Configurable** (Def: +15%) |
+| **Knockback** | +50% stronger | **Configurable** (Def: +50%) |
 
 > Pacifist wolves are "Guardian" protectors - slower but still able to catch skeletons, hit hard and knock enemies away
 
@@ -197,10 +202,11 @@ config/vanilla-outsider-better-dogs.json
 
 | Setting | Default | ✏️ Your Setting |
 |---------|---------|-----------------|
-| **Behavior** | 100% Vanilla | Keep Vanilla |
-| **Auto-attack skeletons?** | Yes (vanilla) | Keep Vanilla |
-| **Revenge on self-damage?** | Yes (vanilla) | Keep Vanilla |
-| **Attack what owner attacks?** | Yes (vanilla) | Yes |
+| **Follow Start Dist** | 10 blocks | **Configurable** (Def: 10) |
+| **Follow Stop Dist** | 2 blocks | **Configurable** (Def: 2) |
+| **Extra Health** | +0 HP (Vanilla) | **Configurable** (Def: 0.0) |
+| **Speed Modifier** | +0% (Vanilla) | **Configurable** (Def: 0.0) |
+| **Damage Modifier** | +0% (Vanilla) | **Configurable** (Def: 0.0) |
 
 > **Note:** ALL personalities auto-target skeletons (vanilla wolf behavior, not modified)
 
@@ -243,9 +249,9 @@ config/vanilla-outsider-better-dogs.json
 
 | Setting | Default | ✏️ Your Setting |
 |---------|---------|-----------------|
-| **Trigger** | While patrolling, finds mob | Yes |
+| **Trigger** | While patrolling, finds mob | **Configurable Chance** (Def: 0.01) |
 | **Behavior** | "Kills" off-screen mob, brings loot | Yes |
-| **Cooldown** | Every 10-15 minutes | 10-15 min |
+| **Cooldown** | 10-15 minutes | **Configurable** (12k-18k ticks) |
 
 | Gift | Chance | Source |
 |------|--------|--------|
@@ -282,11 +288,10 @@ config/vanilla-outsider-better-dogs.json
 
 ### Thunderstorms
 
-| Personality | Reaction | ✏️ Setting |
-|-------------|----------|------------|
-| **Aggressive** | Restless - barks at sky, paces around | Yes |
-| **Pacifist** | Scared - stays very close to player (within 2 blocks) | Yes |
-| **Normal** | Vanilla (no special reaction) | Keep Vanilla |
+| Feature | Implementation | Configurable? |
+|---------|----------------|---------------|
+| **Anxiety Behavior** | Wolves whine and shake. If sitting, they stay put. If standing, they pace nervously. | ✅ Yes (`Enable Storm Anxiety`) |
+| **Personality Specific** | In current version, ALL dogs react with anxiety (unless toggled off). | Toggle applies to all. |
 
 ### Village Life
 
@@ -330,6 +335,7 @@ config/vanilla-outsider-better-dogs.json
 |---------|---------|-----------------|
 | **Max safe fall** | 3 blocks | 3 blocks |
 | **Avoid during chase?** | Yes | Yes |
+| **Airborne Check (V2)** | Detects if target is knocked back over void. Peeks down 4 blocks. Stops if no ground. | **Configurable** (Def: True) |
 
 ---
 
@@ -339,7 +345,7 @@ config/vanilla-outsider-better-dogs.json
 |---------|---------|-----------------|
 | **Increased knockback resistance?** | Yes | Yes |
 | **Knockback resistance amount** | 0.5 (50% reduction) | 0.5 |
-| **Prevent owner from damaging?** | Yes | Yes |
+| **Prevent owner from damaging?** | Yes | **Configurable** (Def: True) |
 | **Allow damage with sneak+attack?** | Yes (emergency kill) | Yes |
 
 ---
@@ -349,7 +355,9 @@ config/vanilla-outsider-better-dogs.json
 | Feature | Default | ✏️ Your Setting |
 |---------|---------|-----------------|
 | **Passive healing?** | Yes (very slow) | Yes |
-| **Passive heal rate** | 1 HP every 60 seconds | 1 HP / 60 sec |
+| **Passive heal rate** | 1 HP every 60 seconds | **Configurable** (Def: 1200 ticks) |
+| **Passive heal amount** | 1.0 HP | **Configurable** (Def: 1.0) |
+| **Combate heal delay** | 3 seconds | **Configurable** (Def: 60 ticks) |
 | **Only when not in combat?** | Yes | Yes |
 | **Feed healing** | Instant (vanilla) | Keep Vanilla |
 
@@ -382,4 +390,21 @@ config/vanilla-outsider-better-dogs.json
 
 ---
 
-*Last Updated: December 2025 | Minecraft 1.21.11 Java Edition | Fabric + Kotlin*
+# 🧑‍💻 ADDON API (v1.4.5)
+
+Other mods can interact with Better Dogs via `net.vanillaoutsider.betterdogs.api.BetterDogsAPI`.
+
+```kotlin
+// Check if a wolf has a personality
+boolean has = BetterDogsAPI.hasPersonality(wolf);
+
+// Get personality enum (AGGRESSIVE, PACIFIST, NORMAL)
+WolfPersonality type = BetterDogsAPI.getPersonality(wolf);
+
+// Force set personality
+BetterDogsAPI.setPersonality(wolf, WolfPersonality.PACIFIST);
+```
+
+---
+
+*Last Updated: December 2025 | Minecraft 1.21.11 Java Edition | Fabric + Kotlin | v1.6.0*

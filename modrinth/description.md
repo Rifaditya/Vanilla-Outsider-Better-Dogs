@@ -1,10 +1,8 @@
-<p align="center">
-  <img src="https://via.placeholder.com/840x200/2C2C2C/FFFFFF?text=Vanilla+Outsider:+Better+Dogs" alt="Vanilla Outsider: Better Dogs Banner" width="100%">
-</p>
-
+![banner AI generated](https://cdn.modrinth.com/data/cached_images/1909cfcc36754c4a370e00e17f1d8ebe7d190405_0.webp)
 <p align="center">
     <a href="https://modrinth.com/mod/fabric-api"><img src="https://img.shields.io/badge/Requires-Fabric_API-blue?style=for-the-badge&logo=fabric" alt="Requires Fabric API"></a>
     <a href="https://modrinth.com/mod/fabric-language-kotlin"><img src="https://img.shields.io/badge/Language-Kotlin-purple?style=for-the-badge&logo=kotlin" alt="Kotlin"></a>
+    <a href="https://modrinth.com/mod/cloth-config"><img src="https://img.shields.io/badge/Config-Cloth_Config-orange?style=for-the-badge" alt="Cloth Config"></a>
     <img src="https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge" alt="License">
 </p>
 
@@ -20,47 +18,66 @@ Every Minecraft player knows the pain: you spend hours finding a wolf, tame it, 
 
 ### 🧠 Unique Personality System
 
-When you tame a wolf, it's no longer just a copy-paste entity. It develops one of three permanent personalities, visually distinct by their particle effects:
+When you tame a wolf, it develops one of three permanent personalities, visually distinct by their particle effects. As of **v1.6.0**, you can even configure the chances of each personality appearing!
 
 <p align="center">
-  <img src="https://via.placeholder.com/150/FF0000/FFFFFF?text=Aggressive" alt="Aggressive Personality">
-  <img src="https://via.placeholder.com/150/00FF00/FFFFFF?text=Pacifist" alt="Pacifist Personality">
-  <img src="https://via.placeholder.com/150/FFFF00/000000?text=Normal" alt="Normal Personality">
+  <img src="https://cdn.modrinth.com/data/cached_images/bcda6a78fa3159bc710566a2cbedfa1e94a03930.png" alt="Aggressive dog particle" width="30%">
+  <img src="https://cdn.modrinth.com/data/cached_images/6d8c999c94d61346d925ecadd1f2655ef412bb0d.png" alt="Pacifist all love particle" width="30%">
+  <img src="https://cdn.modrinth.com/data/cached_images/8722821ac9f7e1b6ca653e77cf90cf83dff2c432.png" alt="Vanilla/Normal" width="30%">
 </p>
 
-| Icon | Personality | Chance | Behavior |
+| Icon | Personality | Default Chance | Behavior |
 | :---: | :--- | :--- | :--- |
-| 💢 | **Aggressive** | **33%** | The Guardian. Proactively attacks hostile mobs near you (Zombies, Skeletons, etc.). Great for base defense. |
-| ❤️ | **Pacifist** | **33%** | The Loyal Friend. Only attacks mobs that hurt *you* first. Won't start fights, keeping itself safe. |
-| ✨ | **Normal** | **34%** | The Classic. Behaves like a standard vanilla wolf, attacking what you attack. |
+| 💢 | **Aggressive** | **20%** | The Guardian. Proactively attacks hostile mobs near you. Now with configurable detection ranges! |
+| ❤️ | **Pacifist** | **20%** | The Loyal Friend. Only attacks mobs that hurt *you* first. Won't start fights, keeping itself safe. |
+| ✨ | **Normal** | **60%** | The Classic. Custom speeds and damage can now be applied to normal wolves via config. |
 
 > [!NOTE]
-> Personalities are permanent! You'll need to seek out and tame new wolves to find the perfect companion for your playstyle.
+> Personalities are permanent and can be inherited via breeding! Use the config to adjust how common each type is in your world.
+
+### 🎁 The Gift System (New in v1.5.0+)
+
+Like cats, your loyal dogs will now bring you treasures based on their personality!
+
+* **Aggressive**: Brings "trophies" from their hunts (Bones, Rotten Flesh, Arrows, rarely Iron).
+* **Pacifist**: Brings "foraged" items from nature (Berries, Seeds, Flowers, rarely Glow Berries).
+* *Configurable cooldowns and trigger chances in the settings.*
 
 ### 🛡️ Smart Safety AI
 
-Stop worrying about your dogs killing themselves. Better Dogs includes 200 IQ self-preservation:
+Stop worrying about your dogs killing themselves. Better Dogs includes high-level self-preservation:
 
+* **Cliff Safety V2:** Wolves detect "Airborne Targets". If an enemy is knocked back over a void/ravine, the wolf **STOPS** chasing instead of jumping after them.
 * **Lava & Fire Avoidance:** Wolves actively pathfind around dangerous blocks.
-* **Cliff Safety:** Prevents jumping off ledges higher than 3 blocks.
 * **Creeper Awareness:** Wolves will flee when they hear a Creeper hiss!
 * **Anti-Stuck:** Improved pathfinding logic to keep them following close.
 
-### ⚔️ Combat Overhaul
+### 🌩️ Environmental Awareness
 
-* **Knockback Resistance:** +50% resistance so they don't get punted into corners.
-* **Friendly Fire Protection:** You can no longer accidentally hit your own dogs with a sword sweep.
-  * *Emergency Override:* Sneak + Attack if you absolutely must hurt them.
-* **Wild Survival:** Wild wolves now hunt prey only when hungry (below 50% HP) and can eat meat off the ground.
+* **Storm Anxiety:** Wolves are scared of Thunderstorms! They will whine and shake in fear.
+* **Behavior**: If sitting, they stay put. If standing, they pace anxiously.
+* *Intensity and trigger chances are fully adjustable in the config.*
+
+---
+
+## ⚙️ Configuration (The "Control Everything" Update)
+
+**Updated in v1.6.0**: We've exposed almost every internal variable to the config menu!
+
+* **Granular Per-Personality Stats**: Set unique Health, Speed, and Damage for Aggressive, Pacifist, and Normal wolves.
+* **Custom AI Ranges**: Adjust exactly how far wolves follow you, when they teleport, and how far they chase enemies.
+* **Breeding Odds**: Control the genetic pass-through and spawn rates of personalities.
+* **Wild Hunt Logic**: Configure wild wolves to only hunt when they are hungry (HP based).
 
 ---
 
 ## 📦 Installation
 
-1. dl **[Fabric Loader](https://fabricmc.net/)** for Minecraft 1.21.11.
-2. Install **[Fabric API](https://modrinth.com/mod/fabric-api)**.
-3. Install **[Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin)** (This is required!).
-4. Download `Vanilla-Outsider-Better-Dogs.jar` and place it in your `mods` folder.
+1. Download **[Fabric Loader](https://fabricmc.net/)** for Minecraft 1.21.11.
+2. Install **[Fabric API](https://modrinth.com/mod/fabric-api)** and **[Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin)**.
+3. Install **[Cloth Config](https://modrinth.com/mod/cloth-config)** (Required).
+4. Install **[Mod Menu](https://modrinth.com/mod/modmenu)** (Recommended for in-game config).
+5. Download `Vanilla-Outsider-Better-Dogs.jar` and place it in your `mods` folder.
 
 ---
 
@@ -75,15 +92,6 @@ Stop worrying about your dogs killing themselves. Better Dogs includes 200 IQ se
 
 ---
 
-## ⚙️ Configuration & Usage
-
-The mod is designed to be "plug and play".
-
-* **No Config File Needed:** All features are balanced for vanilla-style gameplay.
-* **Usage:** simply tame a wolf with bones as usual. Particles will appear immediately to indicate the personality type.
-
----
-
 ## 📜 Legal & Credits
 
 | Role | Author |
@@ -94,6 +102,8 @@ The mod is designed to be "plug and play".
 
 > [!IMPORTANT]
 > This mod is part of the **Vanilla Outsider** collection. You are free to use it in modpacks, videos, and servers.
+
+**This Mod made using AI**
 
 ---
 
