@@ -5,6 +5,7 @@ import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.server.level.ServerLevel;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
+import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -55,37 +56,45 @@ public abstract class WolfBreedingMixin {
 
     /**
      * Calculate offspring personality based on parent personalities.
+     * Uses configurable percentages from BetterDogsConfig.
      */
     private WolfPersonality calculateOffspringPersonality(WolfPersonality p1, WolfPersonality p2) {
+        BetterDogsConfig config = BetterDogsConfig.Companion.get();
         int roll = RANDOM.nextInt(100);
 
-        // Same personality parents: 80% same, 10% each other
+        // Same personality parents: configurable same%, remaining split between others
         if (p1 == p2) {
-            if (roll < 80)
+            int sameChance = config.getBreedingSameParentChance();
+            int otherChance = config.getBreedingSameParentOtherChance();
+            if (roll < sameChance)
                 return p1;
-            if (roll < 90)
+            if (roll < (sameChance + otherChance))
                 return getOther(p1, 0);
             return getOther(p1, 1);
         }
 
-        // Aggressive + Pacifist = Diluted genes (50% Normal, 25% each parent)
+        // Aggressive + Pacifist = Diluted genes (configurable Normal%, remaining split)
         if ((p1 == WolfPersonality.AGGRESSIVE && p2 == WolfPersonality.PACIFIST) ||
                 (p1 == WolfPersonality.PACIFIST && p2 == WolfPersonality.AGGRESSIVE)) {
-            if (roll < 50)
+            int normalChance = config.getBreedingDilutedNormalChance();
+            int otherChance = config.getBreedingDilutedOtherChance();
+            if (roll < normalChance)
                 return WolfPersonality.NORMAL;
-            if (roll < 75)
+            if (roll < (normalChance + otherChance))
                 return WolfPersonality.AGGRESSIVE;
             return WolfPersonality.PACIFIST;
         }
 
-        // Normal + Other = 40% Normal, 40% Other, 20% third
+        // Normal + Other = configurable distribution
         if (p1 == WolfPersonality.NORMAL || p2 == WolfPersonality.NORMAL) {
             WolfPersonality other = (p1 == WolfPersonality.NORMAL) ? p2 : p1;
             WolfPersonality third = getThird(WolfPersonality.NORMAL, other);
+            int dominantChance = config.getBreedingMixedDominantChance();
+            int recessiveChance = config.getBreedingMixedRecessiveChance();
 
-            if (roll < 40)
+            if (roll < dominantChance)
                 return WolfPersonality.NORMAL;
-            if (roll < 80)
+            if (roll < (dominantChance * 2))
                 return other;
             return third;
         }

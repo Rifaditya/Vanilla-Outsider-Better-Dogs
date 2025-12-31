@@ -1,4 +1,37 @@
-# � Initial Release - The "Worthy Companions" Update (v1.6.0)
+# 🖼️ Icon Patch (v1.7.1)
+
+* Added custom mod icon to Mod Menu
+
+---
+
+# 🧬 Config Clarity Update (v1.7.0)
+
+## ✨ New Features
+
+### Separated Taming & Breeding Settings
+
+The config menu now clearly distinguishes between:
+
+* **Taming Personality** - Controls personality chances when taming wild wolves
+  * Normal Chance (Def: 60)
+  * Aggressive Chance (Def: 20)
+  * Pacifist Chance (Def: 20)
+
+* **Breeding Genetics** - NEW! Configure inheritance rules when breeding wolves
+  * Same Parents % (Def: 80) - Chance offspring inherits same personality
+  * Same Parents Other % (Def: 10) - Chance for each other personality
+  * Mixed Dominant % (Def: 40) - Chance for each parent's personality (Normal+Other)
+  * Mixed Recessive % (Def: 20) - Chance for third personality (Normal+Other)
+  * Diluted Normal % (Def: 50) - Chance for Normal (Aggressive+Pacifist)
+  * Diluted Other % (Def: 25) - Chance for each parent (Aggressive+Pacifist)
+
+### Fully Configurable Breeding
+
+Previously hardcoded breeding genetics are now fully adjustable! Create aggressive-only bloodlines or make rare personalities more common through selective breeding.
+
+---
+
+# 🐕 Initial Release - The "Worthy Companions" Update (v1.6.0)
 
 Welcome to the official Modrinth launch of **Vanilla Outsider: Better Dogs**! While this is the first public upload, the version is marked as **1.6.0** to reflect the intensive internal development, balancing, and feature refinement that took place before this release.
 

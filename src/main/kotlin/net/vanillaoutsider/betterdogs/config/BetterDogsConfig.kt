@@ -118,18 +118,43 @@ class BetterDogsConfig : ConfigData {
     @ConfigEntry.Gui.Tooltip
     var wildHuntHealthThreshold: Float = 0.5f
 
-    // ========== Breeding & Spawning ==========
+    // ========== Taming (Wild Wolf Personality) ==========
+    @ConfigEntry.Category("taming")
+    @ConfigEntry.Gui.Tooltip
+    var tamingChanceNormal: Int = 60
+
+    @ConfigEntry.Category("taming")
+    @ConfigEntry.Gui.Tooltip
+    var tamingChanceAggressive: Int = 20
+
+    @ConfigEntry.Category("taming")
+    @ConfigEntry.Gui.Tooltip
+    var tamingChancePacifist: Int = 20
+
+    // ========== Breeding Genetics ==========
     @ConfigEntry.Category("breeding")
     @ConfigEntry.Gui.Tooltip
-    var chanceNormal: Int = 60
+    var breedingSameParentChance: Int = 80
 
     @ConfigEntry.Category("breeding")
     @ConfigEntry.Gui.Tooltip
-    var chanceAggressive: Int = 20
+    var breedingSameParentOtherChance: Int = 10
 
     @ConfigEntry.Category("breeding")
     @ConfigEntry.Gui.Tooltip
-    var chancePacifist: Int = 20
+    var breedingMixedDominantChance: Int = 40
+
+    @ConfigEntry.Category("breeding")
+    @ConfigEntry.Gui.Tooltip
+    var breedingMixedRecessiveChance: Int = 20
+
+    @ConfigEntry.Category("breeding")
+    @ConfigEntry.Gui.Tooltip
+    var breedingDilutedNormalChance: Int = 50
+
+    @ConfigEntry.Category("breeding")
+    @ConfigEntry.Gui.Tooltip
+    var breedingDilutedOtherChance: Int = 25
 
     // ========== Gifts ==========
     @ConfigEntry.Category("gifts")

@@ -12,6 +12,7 @@
 		"sources": "https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs"
 	},
 	"license": "GPL-3.0",
+	"icon": "assets/vanilla-outsider-better-dogs/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [

@@ -26,9 +26,9 @@ enum class WolfPersonality(val id: Int) {
          */
         fun random(): WolfPersonality {
             val config = BetterDogsConfig.get()
-            val normal = config.chanceNormal
-            val aggressive = config.chanceAggressive
-            val pacifist = config.chancePacifist
+            val normal = config.tamingChanceNormal
+            val aggressive = config.tamingChanceAggressive
+            val pacifist = config.tamingChancePacifist
             val total = normal + aggressive + pacifist
             
             val roll = Random.nextInt(if (total > 0) total else 100)
