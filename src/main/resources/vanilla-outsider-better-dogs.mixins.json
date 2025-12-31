@@ -5,7 +5,9 @@
     "mixins": [
         "WolfMixin",
         "WolfAIMixin",
-        "WolfGoalsMixin"
+        "WolfGoalsMixin",
+        "OwnerHurtTargetGoalMixin",
+        "WolfBreedingMixin"
     ],
     "injectors": {
         "defaultRequire": 1

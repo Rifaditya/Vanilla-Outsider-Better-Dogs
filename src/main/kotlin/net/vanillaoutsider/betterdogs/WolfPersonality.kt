@@ -13,22 +13,22 @@ enum class WolfPersonality(val id: Int) {
     /** Auto-attacks hostile mobs near owner */
     AGGRESSIVE(1),
     
-    /** Only attacks when owner takes damage */
+    /** Won't attack when player attacks - only defends when player is hurt */
     PACIFIST(2);
     
     companion object {
         /**
          * Randomly select a personality with the following distribution:
-         * - AGGRESSIVE: 33%
-         * - PACIFIST: 33%
-         * - NORMAL: 34%
+         * - NORMAL: 60%
+         * - AGGRESSIVE: 20%
+         * - PACIFIST: 20%
          */
         fun random(): WolfPersonality {
             val roll = Random.nextInt(100)
             return when {
-                roll < 33 -> AGGRESSIVE
-                roll < 66 -> PACIFIST
-                else -> NORMAL
+                roll < 60 -> NORMAL
+                roll < 80 -> AGGRESSIVE
+                else -> PACIFIST
             }
         }
         

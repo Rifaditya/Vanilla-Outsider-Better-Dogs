@@ -10,7 +10,9 @@ object BetterDogs : ModInitializer {
     override fun onInitialize() {
         logger.info("Vanilla Outsider: Better Dogs initializing...")
         
-        // Register events and initialize mod components
+        // Initialize wolf data persistence
+        WolfDataAttachments.init()
+        
         logger.info("Better Dogs initialized! Wolves have been enhanced.")
     }
 }

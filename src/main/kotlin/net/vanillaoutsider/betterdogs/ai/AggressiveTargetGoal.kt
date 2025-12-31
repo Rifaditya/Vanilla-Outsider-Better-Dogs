@@ -23,7 +23,7 @@ class AggressiveTargetGoal(
     { target, level -> isValidTarget(wolf, target) }
 ) {
     companion object {
-        private const val DETECTION_RANGE = 16.0
+        private const val DETECTION_RANGE = 20.0
         private const val MAX_CHASE_DISTANCE = 20.0
         
         private fun isValidTarget(wolf: Wolf, target: LivingEntity): Boolean {
