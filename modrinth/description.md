@@ -1,4 +1,8 @@
+<div align="center">
+
 ![banner AI generated](https://cdn.modrinth.com/data/cached_images/1909cfcc36754c4a370e00e17f1d8ebe7d190405_0.webp)
+
+</div>
 <p align="center">
     <a href="https://modrinth.com/mod/fabric-api"><img src="https://img.shields.io/badge/Requires-Fabric_API-blue?style=for-the-badge&logo=fabric" alt="Requires Fabric API"></a>
     <a href="https://modrinth.com/mod/fabric-language-kotlin"><img src="https://img.shields.io/badge/Language-Kotlin-purple?style=for-the-badge&logo=kotlin" alt="Kotlin"></a>

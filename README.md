@@ -2,58 +2,62 @@
 
 A Fabric mod for Minecraft 1.21.11 that enhances wolf AI with personalities, smarter behaviors, and quality-of-life improvements.
 
-> **Created by DasikIgaijin** — Made with AI assistance from Claude Opus 4.5
+> **Created by DasikIgaijin** — Made with AI assistance
 
----
-
-## 📖 Overview
-
-In vanilla Minecraft, tamed wolves have limited AI and often die in combat or get stuck. **Vanilla Outsider: Better Dogs** gives wolves unique personalities, smarter pathfinding, and combat improvements.
-
-This mod is part of the **Vanilla Outsider** collection — mods that enhance vanilla Minecraft using only vanilla items, bringing an outsider's perspective to pure vanilla gameplay.
+[![Modrinth](https://img.shields.io/badge/Download-Modrinth-green?style=for-the-badge&logo=modrinth)](https://modrinth.com/mod/vanilla-outsider-better-dogs)
+[![Fabric API](https://img.shields.io/badge/Requires-Fabric_API-blue?style=for-the-badge&logo=fabric)](https://modrinth.com/mod/fabric-api)
+[![License](https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge)](LICENSE)
 
 ---
 
 ## ✨ Features
 
-### 🐕 Personality System
+### 🧠 Personality System
 
-When you tame a wolf, it randomly receives one of three personalities:
+When you tame a wolf, it receives one of three permanent personalities:
 
-| Personality | Chance | Behavior | Visual Cue |
-|-------------|--------|----------|------------|
-| **Aggressive** | 33% | Auto-attacks hostile mobs near owner | 💢 Angry particles |
-| **Pacifist** | 33% | Only attacks when owner takes damage | ❤️ Heart particles |
-| **Normal** | 34% | Vanilla behavior | ✨ Happy particles |
+| Personality | Default Chance | Behavior | Visual Cue |
+|-------------|----------------|----------|------------|
+| **Normal** | 60% | Classic vanilla behavior with stat buffs | ✨ Happy particles |
+| **Aggressive** | 20% | Auto-attacks hostile mobs near owner | 💢 Angry particles |
+| **Pacifist** | 20% | Only attacks when owner takes damage | ❤️ Heart particles |
 
-Personality is permanent and saved with the wolf.
+### 🧬 Breeding Genetics (NEW in v1.7.0)
 
-### ⚔️ Combat Improvements
+Wolves inherit personalities from their parents with configurable genetics:
 
-| Feature | Description |
-|---------|-------------|
-| **Knockback Resistance** | 50% reduction - wolves are harder to push around |
-| **Friendly Fire Protection** | You can't accidentally hurt your own wolf |
-| **Emergency Override** | Sneak + attack to damage your wolf if needed |
-| **Creeper Avoidance** | Wolves flee from hissing creepers |
+- **Same parents**: 80% same personality, 10% each other
+- **Normal + Other**: 40% each parent, 20% third
+- **Aggressive + Pacifist**: 50% Normal (diluted), 25% each parent
 
-### 🐺 Wild Wolf Enhancements
+### 🎁 Gift System
 
-| Feature | Description |
-|---------|-------------|
-| **Hunt When Hurt** | Wild wolves only hunt prey when below 50% health |
-| **Eat Ground Food** | Wild wolves pick up and eat dropped meat to heal |
-| **Prey Animals** | Sheep, Rabbit, Chicken (not foxes or baby turtles) |
+Loyal dogs bring you treasures based on their personality:
 
-### 🛡️ Safety & Pathfinding
+- **Aggressive**: Bones, Rotten Flesh, Arrows, rarely Iron
+- **Pacifist**: Berries, Seeds, Flowers, rarely Glow Berries
 
-- Avoid lava and fire
-- Avoid high falls (>3 blocks)
-- Smarter pathfinding to avoid getting stuck
+### 🛡️ Smart Safety AI
 
-### ❤️ Passive Healing
+- **Cliff Safety V2**: Wolves stop chasing enemies over voids/ravines
+- **Lava & Fire Avoidance**: Active pathfinding around hazards
+- **Creeper Awareness**: Wolves flee from hissing creepers
+- **Friendly Fire Protection**: No accidental sword sweeps
 
-Tamed wolves slowly regenerate 1 HP every 60 seconds when out of combat.
+### 🌩️ Environmental Awareness
+
+- **Storm Anxiety**: Wolves whine and shake during thunderstorms
+- **Passive Healing**: Slow HP recovery when out of combat
+
+### ⚙️ Extreme Configuration
+
+Almost every internal variable is configurable via Cloth Config:
+
+- Per-personality stats (Health, Speed, Damage)
+- Follow/Teleport distances
+- Taming personality chances
+- Breeding genetics percentages
+- Gift cooldowns and trigger chances
 
 ---
 
@@ -62,39 +66,40 @@ Tamed wolves slowly regenerate 1 HP every 60 seconds when out of combat.
 ### Requirements
 
 - **Minecraft**: 1.21.11
-- **Fabric Loader**: 0.18.4 or higher
-- **Fabric API**: Latest version
+- **Fabric Loader**: 0.18.4+
+- **Fabric API**: Latest
 - **Fabric Language Kotlin**: Required
+- **Cloth Config**: Required
+- **Mod Menu**: Recommended
 
 ### Steps
 
 1. Install [Fabric Loader](https://fabricmc.net/use/) for Minecraft 1.21.11
-2. Download and install [Fabric API](https://modrinth.com/mod/fabric-api)
-3. Download and install [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin)
-4. Download **Vanilla Outsider: Better Dogs**
-5. Place the mod `.jar` in your `mods` folder
-6. Launch Minecraft
+2. Download [Fabric API](https://modrinth.com/mod/fabric-api) & [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin)
+3. Download [Cloth Config](https://modrinth.com/mod/cloth-config) & [Mod Menu](https://modrinth.com/mod/modmenu)
+4. Download **Vanilla Outsider: Better Dogs** from [Modrinth](https://modrinth.com/mod/vanilla-outsider-better-dogs)
+5. Place all `.jar` files in your `mods` folder
 
 ---
 
 ## 🤝 Compatibility
 
-- ✅ Compatible with most other Fabric mods
 - ✅ Multiplayer compatible
 - ✅ Works with other wolf/pet mods
+- ✅ Compatible with wolf armor
 
 ---
 
 ## 📜 License
 
-This project is licensed under the **GPL-3.0 License**.
+This project is licensed under **GPL-3.0**.
 
 ---
 
 ## 👤 Credits
 
 - **DasikIgaijin** - Mod Creator & Designer
-- **Claude Opus 4.5** - AI Development Assistant
+- **AI Assistants** - Development assistance
 
 ---
 
@@ -102,17 +107,15 @@ This project is licensed under the **GPL-3.0 License**.
 
 Other mods in this collection:
 
-<<<<<<< HEAD
 - [Vanilla Outsider: Keep Gear](https://github.com/Rifaditya/Vanilla-Outsider-Keep-Gear) - Keep items with durability on death
-=======
->>>>>>> 428ffcf913854819d92deb0bf6b305a25c4b5ca6
-- [Vanilla Outsider: Gold Progression](https://github.com/Rifaditya/Vanilla-Outsider-Gold-Progression) - Rebalanced gold equipment progression
-- [Vanilla Outsider: More Animal Drops](https://github.com/Rifaditya/Vanilla-Outsider-More-Animal-Drops) - Enhanced animal loot drops
+- [Vanilla Outsider: Gold Progression](https://github.com/Rifaditya/Vanilla-Outsider-Gold-Progression) - Rebalanced gold equipment
+- [Vanilla Outsider: More Animal Drops](https://github.com/Rifaditya/Vanilla-Outsider-More-Animal-Drops) - Enhanced animal loot
 
 ---
 
 ## 🔗 Links
 
+- [Modrinth](https://modrinth.com/mod/vanilla-outsider-better-dogs)
 - [GitHub Repository](https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs)
 - [Issue Tracker](https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs/issues)
 
