@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.7.5-26.1] - 2026-01-21
+
+### 🧠 AI Improvements
+
+- **Smart Cliff Safety**: Wolves now actively retreat (walk backwards 4 blocks) when they detect a steep drop or void, rather than just stopping. This prevents them from getting stuck at the edge or sliding off.
+
 ## [1.7.4-26.1] - 2026-01-21
 
 ### 🛠 Bug Fixes

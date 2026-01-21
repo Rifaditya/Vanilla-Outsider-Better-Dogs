@@ -13,6 +13,8 @@ import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersistentData;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.ai.*;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
@@ -344,38 +346,36 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         Wolf wolf = (Wolf) (Object) this;
         if (wolf.getTarget() != null && BetterDogsConfig.get().getEnableCliffSafety()) {
             double yDiff = wolf.getY() - wolf.getTarget().getY();
+            boolean dangerDetected = false;
             if (yDiff > 3.0 && wolf.onGround()) {
-                // Target is more than 3 blocks below and we are on solid ground
-                // Stop navigation to prevent jumping off
-                wolf.getNavigation().stop();
-                wolf.setTarget(null);
-                return;
-            }
-
-            // Cliff Safety V2: Airborne Target Check
-            // If target is in the air AND there is no ground below them, don't chase!
-            // This prevents jumping off cliffs after a target that was knocked back.
-            if (!wolf.getTarget().onGround()) {
+                dangerDetected = true;
+            } else if (!wolf.getTarget().onGround()) {
                 boolean groundFound = false;
                 BlockPos targetPos = wolf.getTarget().blockPosition();
-
-                // Check 4 blocks down from target
                 for (int i = 1; i <= 4; i++) {
-                    BlockPos below = targetPos.below(i);
-                    if (!wolf.level().isEmptyBlock(below)) {
+                    if (!wolf.level().isEmptyBlock(targetPos.below(i))) {
                         groundFound = true;
                         break;
                     }
                 }
-
                 if (!groundFound) {
-                    // Target is flying over void/cliff -> STOP!
-                    wolf.getNavigation().stop();
-                    // Don't clear target entirely (we still want to kill it), just stop moving
-                    // towards it
-                    // Maybe look at it?
-                    wolf.getLookControl().setLookAt(wolf.getTarget(), 30.0f, 30.0f);
+                    dangerDetected = true;
                 }
+            }
+
+            if (dangerDetected) {
+                wolf.getNavigation().stop();
+                // Active Retreat: Move away from the cliff/danger
+                Vec3 targetPos = wolf.getTarget().position();
+                // Clear target so we stop chasing
+                wolf.setTarget(null);
+
+                // Find a spot away from the danger zone (range 4, vertical 1)
+                Vec3 retreatPos = DefaultRandomPos.getPosAway(wolf, 4, 1, targetPos);
+                if (retreatPos != null) {
+                    wolf.getNavigation().moveTo(retreatPos.x, retreatPos.y, retreatPos.z, 1.0);
+                }
+                return;
             }
         }
 
