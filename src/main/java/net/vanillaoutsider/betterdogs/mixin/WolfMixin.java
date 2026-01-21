@@ -11,12 +11,9 @@ import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.damagesource.DamageSource;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
-import net.vanillaoutsider.betterdogs.WolfPersistenceKt;
+import net.vanillaoutsider.betterdogs.WolfPersistentData;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
-import net.vanillaoutsider.betterdogs.ai.AggressiveTargetGoal;
-import net.vanillaoutsider.betterdogs.ai.WildWolfHuntGoal;
-import net.vanillaoutsider.betterdogs.ai.WolfGiftGoal;
-import net.vanillaoutsider.betterdogs.ai.WolfStormAnxietyGoal;
+import net.vanillaoutsider.betterdogs.ai.*;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
@@ -81,27 +78,27 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
 
     @Override
     public WolfPersonality betterdogs$getPersonality() {
-        return WolfPersistenceKt.getPersistedPersonality((Wolf) (Object) this);
+        return WolfPersistentData.getPersistedPersonality((Wolf) (Object) this);
     }
 
     @Override
     public void betterdogs$setPersonality(WolfPersonality personality) {
-        WolfPersistenceKt.setPersistedPersonality((Wolf) (Object) this, personality);
+        WolfPersistentData.setPersistedPersonality((Wolf) (Object) this, personality);
     }
 
     @Override
     public boolean betterdogs$hasPersonality() {
-        return WolfPersistenceKt.hasPersistedPersonality((Wolf) (Object) this);
+        return WolfPersistentData.hasPersistedPersonality((Wolf) (Object) this);
     }
 
     @Override
     public int betterdogs$getLastDamageTime() {
-        return WolfPersistenceKt.getPersistedLastDamageTime((Wolf) (Object) this);
+        return WolfPersistentData.getPersistedLastDamageTime((Wolf) (Object) this);
     }
 
     @Override
     public void betterdogs$setLastDamageTime(int time) {
-        WolfPersistenceKt.setPersistedLastDamageTime((Wolf) (Object) this, time);
+        WolfPersistentData.setPersistedLastDamageTime((Wolf) (Object) this, time);
     }
 
     // ========== Stat Modifiers ==========
@@ -130,7 +127,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         damageAttr.removeModifier(pacifistDamageId);
 
         // Apply Base Speed Boost (Configurable) to all Better Dogs
-        double speedBuff = BetterDogsConfig.Companion.get().getGlobalSpeedBuff();
+        double speedBuff = BetterDogsConfig.get().getGlobalSpeedBuff();
         speedAttr.addPermanentModifier(new AttributeModifier(baseSpeedId, speedBuff,
                 AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         if (knockbackAttr != null) {
@@ -140,8 +137,8 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         switch (personality) {
             case AGGRESSIVE -> {
                 // Configurable Modifiers
-                double speedMod = BetterDogsConfig.Companion.get().getAggressiveSpeedModifier();
-                double damageMod = BetterDogsConfig.Companion.get().getAggressiveDamageModifier();
+                double speedMod = BetterDogsConfig.get().getAggressiveSpeedModifier();
+                double damageMod = BetterDogsConfig.get().getAggressiveDamageModifier();
 
                 speedAttr.addPermanentModifier(new AttributeModifier(aggressiveSpeedId, speedMod,
                         AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
@@ -153,7 +150,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
                     Identifier aggressiveHealthId = Identifier.parse(AGGRESSIVE_HEALTH_ID);
                     healthAttr.removeModifier(aggressiveHealthId);
 
-                    double hpBonus = BetterDogsConfig.Companion.get().getAggressiveHealthBonus();
+                    double hpBonus = BetterDogsConfig.get().getAggressiveHealthBonus();
                     if (hpBonus > 0) {
                         healthAttr.addPermanentModifier(new AttributeModifier(aggressiveHealthId, hpBonus,
                                 AttributeModifier.Operation.ADD_VALUE));
@@ -166,9 +163,9 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
             }
             case PACIFIST -> {
                 // Configurable Modifiers
-                double speedMod = BetterDogsConfig.Companion.get().getPacifistSpeedModifier();
-                double damageMod = BetterDogsConfig.Companion.get().getPacifistDamageModifier();
-                double kbMod = BetterDogsConfig.Companion.get().getPacifistKnockbackModifier();
+                double speedMod = BetterDogsConfig.get().getPacifistSpeedModifier();
+                double damageMod = BetterDogsConfig.get().getPacifistDamageModifier();
+                double kbMod = BetterDogsConfig.get().getPacifistKnockbackModifier();
 
                 speedAttr.addPermanentModifier(new AttributeModifier(pacifistSpeedId, speedMod,
                         AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
@@ -181,9 +178,9 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
             }
             case NORMAL -> {
                 // Configurable Modifiers
-                double speedMod = BetterDogsConfig.Companion.get().getNormalSpeedModifier();
-                double damageMod = BetterDogsConfig.Companion.get().getNormalDamageModifier();
-                double healthMod = BetterDogsConfig.Companion.get().getNormalHealthBonus();
+                double speedMod = BetterDogsConfig.get().getNormalSpeedModifier();
+                double damageMod = BetterDogsConfig.get().getNormalDamageModifier();
+                double healthMod = BetterDogsConfig.get().getNormalHealthBonus();
 
                 Identifier normalSpeedId = Identifier.parse(NORMAL_SPEED_ID);
                 Identifier normalDamageId = Identifier.parse(NORMAL_DAMAGE_ID);
@@ -221,8 +218,20 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         // 1. Add Gift Goal (Priority 8 - low priority)
         this.goalSelector.addGoal(8, new WolfGiftGoal(wolf));
 
+        // Safety: Flee from creepers (tamed only) - priority 1
+        this.goalSelector.addGoal(1, new FleeCreeperGoal(wolf));
+
+        // Safety: Avoid hazards (all wolves) - priority 1
+        this.goalSelector.addGoal(1, new AvoidHazardsGoal(wolf));
+
+        // Wild wolf: Eat food from ground - priority 3
+        this.goalSelector.addGoal(3, new EatGroundFoodGoal(wolf));
+
         // 2. Add Aggressive Target Goal (Priority 2 - high priority)
         this.targetSelector.addGoal(2, new AggressiveTargetGoal(wolf));
+
+        // Pacifist personality: Revenge for owner - priority 2
+        this.targetSelector.addGoal(2, new PacifistRevengeGoal(wolf));
 
         // 3. Replace Vanilla Wild Hunting
         // We want to remove the vanilla NonTameRandomTargetGoal because it doesn't
@@ -267,7 +276,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
                 preySelector));
 
         // 4. Add Storm Anxiety Goal (High Priority - 6)
-        if (BetterDogsConfig.Companion.get().getEnableStormAnxiety()) {
+        if (BetterDogsConfig.get().getEnableStormAnxiety()) {
             this.goalSelector.addGoal(6, new WolfStormAnxietyGoal(wolf));
         }
     }
@@ -282,7 +291,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
             return;
 
         if (!betterdogs$hasPersonality()) {
-            WolfPersonality personality = WolfPersonality.Companion.random();
+            WolfPersonality personality = WolfPersonality.random();
             betterdogs$setPersonality(personality);
             betterdogs$applyPersonalityStats(personality);
             betterdogs$statsApplied = true;
@@ -334,7 +343,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         // Cliff Safety Protocol: Stop chasing if target is significantly below us
         // (likely fell off)
         Wolf wolf = (Wolf) (Object) this;
-        if (wolf.getTarget() != null && BetterDogsConfig.Companion.get().getEnableCliffSafety()) {
+        if (wolf.getTarget() != null && BetterDogsConfig.get().getEnableCliffSafety()) {
             double yDiff = wolf.getY() - wolf.getTarget().getY();
             if (yDiff > 3.0 && wolf.onGround()) {
                 // Target is more than 3 blocks below and we are on solid ground
@@ -374,11 +383,11 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         int currentTick = this.tickCount;
         int lastDamageTime = betterdogs$getLastDamageTime();
 
-        if (currentTick - lastDamageTime > BetterDogsConfig.Companion.get().getCombatHealDelayTicks()
+        if (currentTick - lastDamageTime > BetterDogsConfig.get().getCombatHealDelayTicks()
                 && this.getHealth() < this.getMaxHealth()) {
             betterdogs$healTimer++;
-            if (betterdogs$healTimer >= BetterDogsConfig.Companion.get().getPassiveHealIntervalTicks()) {
-                this.heal((float) BetterDogsConfig.Companion.get().getPassiveHealAmount());
+            if (betterdogs$healTimer >= BetterDogsConfig.get().getPassiveHealIntervalTicks()) {
+                this.heal((float) BetterDogsConfig.get().getPassiveHealAmount());
                 betterdogs$healTimer = 0;
             }
         } else {
@@ -388,14 +397,12 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
 
     // ========== Track Damage Time + Friendly Fire Protection ==========
 
-    // ========== Track Damage Time + Friendly Fire Protection ==========
-
     @Inject(method = "actuallyHurt", at = @At("HEAD"), cancellable = true)
     private void betterdogs$onActuallyHurt(ServerLevel level, DamageSource source, float amount, CallbackInfo ci) {
         betterdogs$setLastDamageTime(this.tickCount);
 
         if (this.isTame() && source.getEntity() instanceof Player player) {
-            if (BetterDogsConfig.Companion.get().getEnableFriendlyFireProtection() && this.isOwnedBy(player)
+            if (BetterDogsConfig.get().getEnableFriendlyFireProtection() && this.isOwnedBy(player)
                     && !player.isShiftKeyDown()) {
                 ci.cancel(); // Cancel damage logic entirely
             }

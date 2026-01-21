@@ -17,20 +17,17 @@
 	"entrypoints": {
 		"main": [
 			{
-				"value": "net.vanillaoutsider.betterdogs.BetterDogs",
-				"adapter": "kotlin"
+				"value": "net.vanillaoutsider.betterdogs.BetterDogs"
 			}
 		],
 		"client": [
 			{
-				"value": "net.vanillaoutsider.betterdogs.BetterDogsClient",
-				"adapter": "kotlin"
+				"value": "net.vanillaoutsider.betterdogs.client.BetterDogsClient"
 			}
 		],
 		"modmenu": [
 			{
-				"value": "net.vanillaoutsider.betterdogs.config.ModMenuIntegration",
-				"adapter": "kotlin"
+				"value": "net.vanillaoutsider.betterdogs.config.ModMenuIntegration"
 			}
 		]
 	},
@@ -38,10 +35,9 @@
 		"vanilla-outsider-better-dogs.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.18.4",
-		"minecraft": "~1.21.11",
-		"java": ">=21",
-		"fabric-api": "*",
-		"fabric-language-kotlin": "*"
+		"fabricloader": ">=0.16.9",
+		"minecraft": ">=26.1-snapshot-4",
+		"java": ">=25",
+		"fabric-api": "*"
 	}
 }

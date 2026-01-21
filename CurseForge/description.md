@@ -1,14 +1,6 @@
-<div align="center">
+![Banner](https://i.imgur.com/LnG7vm3.png)
 
-![banner AI generated](https://cdn.modrinth.com/data/cached_images/1909cfcc36754c4a370e00e17f1d8ebe7d190405_0.webp)
-
-</div>
-<p align="center">
-    <a href="https://modrinth.com/mod/fabric-api"><img src="https://img.shields.io/badge/Requires-Fabric_API-blue?style=for-the-badge&logo=fabric" alt="Requires Fabric API"></a>
-    <a href="https://modrinth.com/mod/fabric-language-kotlin"><img src="https://img.shields.io/badge/Language-Kotlin-purple?style=for-the-badge&logo=kotlin" alt="Kotlin"></a>
-    <a href="https://modrinth.com/mod/cloth-config"><img src="https://img.shields.io/badge/Config-Cloth_Config-orange?style=for-the-badge" alt="Cloth Config"></a>
-    <img src="https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge" alt="License">
-</p>
+[![Requires Fabric API](https://img.shields.io/badge/Requires-Fabric_API-blue?style=for-the-badge&logo=fabric)](https://www.curseforge.com/minecraft/mc-mods/fabric-api) [![Kotlin](https://img.shields.io/badge/Language-Kotlin-purple?style=for-the-badge&logo=kotlin)](https://www.curseforge.com/minecraft/mc-mods/fabric-language-kotlin) [![Cloth Config](https://img.shields.io/badge/Config-Cloth_Config-orange?style=for-the-badge)](https://www.curseforge.com/minecraft/mc-mods/cloth-config) ![License](https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge)
 
 # 🐕 Make Wolves Worthy Companions
 
@@ -16,7 +8,7 @@ Every Minecraft player knows the pain: you spend hours finding a wolf, tame it, 
 
 **Vanilla Outsider: Better Dogs** completely overhauls wolf AI to make them smarter, safer, and livelier. With the new **Personality System**, every dog feels unique—some are aggressive protectors, while others are loyal pacifists.
 
----
+***
 
 ## ✨ Key Features
 
@@ -30,11 +22,11 @@ When you tame a wolf, it develops one of three permanent personalities, visually
   <img src="https://cdn.modrinth.com/data/cached_images/8722821ac9f7e1b6ca653e77cf90cf83dff2c432.png" alt="Vanilla/Normal" width="30%">
 </p>
 
-| Icon | Personality | Default Chance | Behavior |
-| :---: | :--- | :--- | :--- |
-| 💢 | **Aggressive** | **20%** | The Guardian. Proactively attacks hostile mobs near you. Now with configurable detection ranges! |
-| ❤️ | **Pacifist** | **20%** | The Loyal Friend. Only attacks mobs that hurt *you* first. Won't start fights, keeping itself safe. |
-| ✨ | **Normal** | **60%** | The Classic. Custom speeds and damage can now be applied to normal wolves via config. |
+| Icon |Personality |Default Chance |Behavior                                                                                          |
+| ---- |----------- |-------------- |------------------------------------------------------------------------------------------------- |
+| 💢   |<strong>Aggressive</strong> |<strong>20%</strong> |The Guardian. Proactively attacks hostile mobs near you. Now with configurable detection ranges!  |
+| ❤️   |<strong>Pacifist</strong> |<strong>20%</strong> |The Loyal Friend. Only attacks mobs that hurt <em>you</em> first. Won't start fights, keeping itself safe. |
+| ✨    |<strong>Normal</strong> |<strong>60%</strong> |The Classic. Custom speeds and damage can now be applied to normal wolves via config.             |
 
 > [!NOTE]
 > Personalities are permanent and can be inherited via breeding! Use the config to adjust how common each type is in your world.
@@ -45,7 +37,7 @@ Like cats, your loyal dogs will now bring you treasures based on their personali
 
 * **Aggressive**: Brings "trophies" from their hunts (Bones, Rotten Flesh, Arrows, rarely Iron).
 * **Pacifist**: Brings "foraged" items from nature (Berries, Seeds, Flowers, rarely Glow Berries).
-* *Configurable cooldowns and trigger chances in the settings.*
+* _Configurable cooldowns and trigger chances in the settings._
 
 ### 🛡️ Smart Safety AI
 
@@ -60,9 +52,9 @@ Stop worrying about your dogs killing themselves. Better Dogs includes high-leve
 
 * **Storm Anxiety:** Wolves are scared of Thunderstorms! They will whine and shake in fear.
 * **Behavior**: If sitting, they stay put. If standing, they pace anxiously.
-* *Intensity and trigger chances are fully adjustable in the config.*
+* _Intensity and trigger chances are fully adjustable in the config._
 
----
+***
 
 ## ⚙️ Configuration (The "Control Everything" Update)
 
@@ -73,28 +65,28 @@ Stop worrying about your dogs killing themselves. Better Dogs includes high-leve
 * **Breeding Odds**: Control the genetic pass-through and spawn rates of personalities.
 * **Wild Hunt Logic**: Configure wild wolves to only hunt when they are hungry (HP based).
 
----
+***
 
 ## 📦 Installation
 
 1. Download **[Fabric Loader](https://fabricmc.net/)** for Minecraft **1.21.11** or **26.1+** (Snapshot).
-2. Install **[Fabric API](https://modrinth.com/mod/fabric-api)** and **[Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin)**.
-3. Install **[Cloth Config](https://modrinth.com/mod/cloth-config)** (Required).
-4. Install **[Mod Menu](https://modrinth.com/mod/modmenu)** (Recommended for in-game config).
+2. Install **[Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)** and **[Fabric Language Kotlin](https://www.curseforge.com/minecraft/mc-mods/fabric-language-kotlin)**.
+3. Install **[Cloth Config](https://www.curseforge.com/minecraft/mc-mods/cloth-config)** (Required).
+4. Install **[Mod Menu](https://www.curseforge.com/minecraft/mc-mods/modmenu)** (Recommended for in-game config).
 5. Download `Vanilla-Outsider-Better-Dogs.jar` and place it in your `mods` folder.
 
----
+***
 
 ## 🧩 Compatibility
 
-| Feature | Fabric (1.21.11 & 26.1+) |
-| :--- | :---: |
-| Multiplayer | ✅ |
-| Mob Mods | ✅ |
-| Wolf Visual Mods | ✅ |
-| New Trims | ✅ |
+| Feature          |Fabric (1.21.11 & 26.1+) |
+| ---------------- |------ |
+| Multiplayer      |✅      |
+| Mob Mods         |✅      |
+| Wolf Visual Mods |✅      |
+| New Trims        |✅      |
 
----
+***
 
 ## ☕ Support the Development
 
@@ -104,28 +96,28 @@ If you enjoy **Better Dogs** and the **Vanilla Outsider** philosophy, consider f
 
 ## 📜 Legal & Credits
 
-| Role | Author |
-| :--- | :--- |
-| **Creator** | DasikIgaijin |
-| **Collection** | Vanilla Outsider |
-| **License** | GNU GPLv3 |
+| Role       |Author           |
+| ---------- |---------------- |
+| <strong>Creator</strong> |DasikIgaijin     |
+| <strong>Collection</strong> |Vanilla Outsider |
+| <strong>License</strong> |GNU GPLv3        |
 
 > [!IMPORTANT]
 > This mod is part of the **Vanilla Outsider** collection. You are free to use it in modpacks, videos, and servers.
 >
 > > [!IMPORTANT]
-> > **Modpack Permissions:** You are free to include this mod in modpacks, **provided the modpack is hosted on the same platform** (e.g. Modrinth).
+> > **Modpack Permissions:** You are free to include this mod in modpacks, **provided the modpack is hosted on the same platform** (e.g. CurseForge).
 > >
-> > **Cross-platform distribution is not permitted.** If you download this mod from Modrinth, your modpack must also be published on Modrinth.
+> > **Cross-platform distribution is not permitted.** If you download this mod from CurseForge, your modpack must also be published on CurseForge.
 
 **This Mod made with the assistance of AI**
 
----
+***
 
 <div align="center">
 
 **Made with ❤️ for the Minecraft community**
 
-*Part of the Vanilla Outsider Collection*
+_Part of the Vanilla Outsider Collection_
 
 </div>

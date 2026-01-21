@@ -59,7 +59,7 @@ public abstract class WolfBreedingMixin {
      * Uses configurable percentages from BetterDogsConfig.
      */
     private WolfPersonality calculateOffspringPersonality(WolfPersonality p1, WolfPersonality p2) {
-        BetterDogsConfig config = BetterDogsConfig.Companion.get();
+        BetterDogsConfig config = BetterDogsConfig.get();
         int roll = RANDOM.nextInt(100);
 
         // Same personality parents: configurable same%, remaining split between others
