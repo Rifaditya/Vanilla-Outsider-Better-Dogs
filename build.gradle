@@ -1,7 +1,6 @@
 plugins {
-	id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
+	id 'net.fabricmc.fabric-loom' version '1.14.7'
 	id 'maven-publish'
-    id 'java'
 }
 
 version = project.mod_version
@@ -12,43 +11,27 @@ base {
 }
 
 repositories {
-	// Add repositories to retrieve artifacts from in here.
-    maven { url "https://maven.shedaniel.me/" }
+	maven { url "https://maven.shedaniel.me/" }
     maven { url "https://maven.terraformersmc.com/releases/" }
 }
 
 loom {
-	splitEnvironmentSourceSets()
-
-	mods {
-		"vanilla-outsider-better-dogs" {
-			sourceSet sourceSets.main
-			sourceSet sourceSets.client
-		}
-	}
-
-}
-
-fabricApi {
-	configureDataGeneration {
-		client = true
-	}
+    // 26.1 is unobfuscated, so inter-project dependencies might behave differently,
+    // but standard loom setup usually handles this.
+    // We remove the splitEnvironmentSourceSets() for simplicity unless strictly needed.
 }
 
 dependencies {
-	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings loom.officialMojangMappings()
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-
-	// Fabric API. This is technically optional, but you probably want it anyway.
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-
-    // Config
-    modApi("me.shedaniel.cloth:cloth-config-fabric:15.0.140") {
-        exclude(group: "net.fabricmc.fabric-api")
-    }
-    modImplementation("com.terraformersmc:modmenu:11.0.2")
+	// add("mappings", files("dummy.tiny"))
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	
+	// Fabric API
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	
+	// Config
+	// implementation files("lib/cloth-config-patched.jar")
+	implementation("com.terraformersmc:modmenu:${project.modmenu_version}")
 }
 
 processResources {
@@ -64,37 +47,23 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 java {
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	// if it is present.
-	// If you remove this line, sources will not be generated.
 	withSourcesJar()
-
 	sourceCompatibility = JavaVersion.VERSION_25
 	targetCompatibility = JavaVersion.VERSION_25
 }
 
 jar {
-	inputs.property "archivesName", project.base.archivesName
-
 	from("LICENSE") {
-		rename { "${it}_${inputs.properties.archivesName}"}
+		rename { "${it}_${project.base.archivesName.get()}"}
 	}
 }
 
-// configure the maven publication
+// Configure the maven publication
 publishing {
 	publications {
 		create("mavenJava", MavenPublication) {
 			artifactId = project.archives_base_name
 			from components.java
 		}
-	}
-
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
 	}
 }

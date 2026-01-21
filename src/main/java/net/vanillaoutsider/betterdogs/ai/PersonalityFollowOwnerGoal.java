@@ -4,7 +4,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
-import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 
 /**
@@ -19,7 +18,7 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
     private int recalcTimer;
 
     public PersonalityFollowOwnerGoal(Wolf wolf, double speedModifier, boolean leavesAllowed) {
-        super(wolf, speedModifier, 10.0f, 2.0f, leavesAllowed);
+        super(wolf, speedModifier, 10.0f, 2.0f);
         this.wolf = wolf;
         this.speedModifier = speedModifier;
         this.recalcTimer = 0;

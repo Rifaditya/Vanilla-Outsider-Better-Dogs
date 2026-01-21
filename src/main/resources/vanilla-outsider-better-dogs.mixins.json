@@ -5,7 +5,6 @@
     "mixins": [
         "WolfMixin",
         "WolfAIMixin",
-        "WolfGoalsMixin",
         "OwnerHurtTargetGoalMixin",
         "WolfBreedingMixin"
     ],

@@ -2,8 +2,8 @@ package net.vanillaoutsider.betterdogs;
 
 import net.fabricmc.api.ModInitializer;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
+// import me.shedaniel.autoconfig.AutoConfig;
+// import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +16,7 @@ public class BetterDogs implements ModInitializer {
         LOGGER.info("Vanilla Outsider: Better Dogs initializing...");
 
         // Register Config
-        AutoConfig.register(BetterDogsConfig.class, GsonConfigSerializer::new);
+        // AutoConfig.register(BetterDogsConfig.class, GsonConfigSerializer::new);
 
         // Initialize wolf data persistence
         WolfPersistentData.Attachments.init();

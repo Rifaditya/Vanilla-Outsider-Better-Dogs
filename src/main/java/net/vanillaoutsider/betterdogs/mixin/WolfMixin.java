@@ -2,7 +2,6 @@ package net.vanillaoutsider.betterdogs.mixin;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -350,7 +349,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
                 // Stop navigation to prevent jumping off
                 wolf.getNavigation().stop();
                 wolf.setTarget(null);
-                wolf.setTarget(null);
+                return;
             }
 
             // Cliff Safety V2: Airborne Target Check
