@@ -15,8 +15,8 @@ public class BetterDogs implements ModInitializer {
     public void onInitialize() {
         LOGGER.info("Vanilla Outsider: Better Dogs initializing...");
 
-        // Register Config
-        // AutoConfig.register(BetterDogsConfig.class, GsonConfigSerializer::new);
+        // Load Configuration
+        BetterDogsConfig.load();
 
         // Initialize wolf data persistence
         WolfPersistentData.Attachments.init();

@@ -10,7 +10,9 @@
     <img src="https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge" alt="License">
 </p>
 
-# 🐕 Make Wolves Worthy Companions
+# 🐕 Make Wolves Worthy Companions (Now for 26.1 Snapshots!)
+
+**No Backports:** I will **NOT** backport this mod to older versions (1.21, 1.20, etc.). Please do not ask.
 
 Every Minecraft player knows the pain: you spend hours finding a wolf, tame it, and five minutes later it jumps into lava or walks off a cliff.
 

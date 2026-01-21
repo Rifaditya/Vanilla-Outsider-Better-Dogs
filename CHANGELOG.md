@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.6-26.1] - 2026-01-21
+
+### ⚙️ Technical Changes
+
+- **Standalone Config System**: Replaced the dependency on `AutoConfig` and `Cloth Config` with a custom lightweight JSON loader.
+  - *Impact*: Configuration files (`config/betterdogs.json`) are now properly generated and respected again. Users can manually edit this file to change settings (e.g., friendly fire, speed buffs) even though the in-game GUI is currently disabled.
+
 ## [1.7.5-26.1] - 2026-01-21
 
 ### 🧠 AI Improvements

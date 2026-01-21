@@ -8,7 +8,29 @@ package net.vanillaoutsider.betterdogs.config;
 // @Config(name = "vanilla-outsider-better-dogs")
 public class BetterDogsConfig {
 
-    private static final BetterDogsConfig INSTANCE = new BetterDogsConfig();
+    private static BetterDogsConfig INSTANCE = new BetterDogsConfig(); // Not final, can be replaced by load
+    private static final com.google.gson.Gson GSON = new com.google.gson.GsonBuilder().setPrettyPrinting().create();
+    private static final java.nio.file.Path CONFIG_PATH = net.fabricmc.loader.api.FabricLoader.getInstance()
+            .getConfigDir().resolve("betterdogs.json");
+
+    public static void load() {
+        if (java.nio.file.Files.exists(CONFIG_PATH)) {
+            try (java.io.Reader reader = java.nio.file.Files.newBufferedReader(CONFIG_PATH)) {
+                INSTANCE = GSON.fromJson(reader, BetterDogsConfig.class);
+            } catch (Exception e) {
+                org.slf4j.LoggerFactory.getLogger("Better Dogs").error("Failed to load config, using defaults", e);
+            }
+        }
+        save(); // Save to ensure file exists or to update structure
+    }
+
+    public static void save() {
+        try (java.io.Writer writer = java.nio.file.Files.newBufferedWriter(CONFIG_PATH)) {
+            GSON.toJson(INSTANCE, writer);
+        } catch (Exception e) {
+            org.slf4j.LoggerFactory.getLogger("Better Dogs").error("Failed to save config", e);
+        }
+    }
 
     // @ConfigEntry.Gui.Tooltip
     public double globalSpeedBuff = 0.20;
