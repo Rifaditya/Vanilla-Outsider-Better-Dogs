@@ -120,8 +120,6 @@ If you enjoy **Better Dogs** and the **Vanilla Outsider** philosophy, consider f
 > >
 > > **Cross-platform distribution is not permitted.** If you download this mod from Modrinth, your modpack must also be published on Modrinth.
 
-**This Mod made with the assistance of AI**
-
 ---
 
 <div align="center">

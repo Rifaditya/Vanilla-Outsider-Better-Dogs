@@ -18,7 +18,7 @@ Every Minecraft player knows the pain: you spend hours finding a wolf, tame it, 
 
 > [!IMPORTANT]
 > **Beta Release for Minecraft 26.1 Snapshots**
-> This version is built on the latest standard for Minecraft 26.1. It includes significant AI rewrites. Please report any bugs on GitHub!
+> This version is built on the latest standard for Minecraft 26.1. It includes significant behavior logic rewrites. Please report any bugs on GitHub!
 >
 > **No Backports:** I will **NOT** backport this mod to older versions (1.21, 1.20, etc.). Please do not ask.
 
@@ -98,8 +98,6 @@ If you enjoy **Better Dogs** and the **Vanilla Outsider** philosophy, consider f
 
 > [!IMPORTANT]
 > **Modpack Permissions:** You are free to include this mod in modpacks, **provided the modpack is hosted on the same platform** (e.g. Modrinth). Cross-platform distribution is not permitted.
-
-**This Mod made with the assistance of AI**
 
 ---
 

@@ -91,8 +91,6 @@ If you enjoy **Better Dogs** and the **Vanilla Outsider** philosophy, consider f
 > [!IMPORTANT]
 > **Modpack Permissions:** You are free to include this mod in modpacks, **provided the modpack is hosted on the same platform** (e.g. CurseForge). Cross-platform distribution is not permitted.
 
-**This Mod made with the assistance of AI**
-
 ---
 
 <div align="center">
