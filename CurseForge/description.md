@@ -1,20 +1,26 @@
 ![Banner](https://i.imgur.com/LnG7vm3.png)
 
-[![Requires Fabric API](https://img.shields.io/badge/Requires-Fabric_API-blue?style=for-the-badge&logo=fabric)](https://www.curseforge.com/minecraft/mc-mods/fabric-api) [![Kotlin](https://img.shields.io/badge/Language-Kotlin-purple?style=for-the-badge&logo=kotlin)](https://www.curseforge.com/minecraft/mc-mods/fabric-language-kotlin) [![Cloth Config](https://img.shields.io/badge/Config-Cloth_Config-orange?style=for-the-badge)](https://www.curseforge.com/minecraft/mc-mods/cloth-config) ![License](https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge)
+[![Requires Fabric API](https://img.shields.io/badge/Requires-Fabric_API-blue?style=for-the-badge&logo=fabric)](https://www.curseforge.com/minecraft/mc-mods/fabric-api) [![Kotlin](https://img.shields.io/badge/Language-Kotlin-purple?style=for-the-badge&logo=kotlin)](https://www.curseforge.com/minecraft/mc-mods/fabric-language-kotlin) ![Standalone Config](https://img.shields.io/badge/Config-Standalone-orange?style=for-the-badge) ![License](https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge)
 
-# 🐕 Make Wolves Worthy Companions
+# 🐕 Make Wolves Worthy Companions (Now for 26.1 Snapshots!)
+
+**No Backports:** I will **NOT** backport this mod to older versions (1.21, 1.20, etc.). Please do not ask.
 
 Every Minecraft player knows the pain: you spend hours finding a wolf, tame it, and five minutes later it jumps into lava or walks off a cliff.
 
 **Vanilla Outsider: Better Dogs** completely overhauls wolf AI to make them smarter, safer, and livelier. With the new **Personality System**, every dog feels unique—some are aggressive protectors, while others are loyal pacifists.
 
-***
+> [!IMPORTANT]
+> **Beta Release for Minecraft 26.1 Snapshots**
+> This version is built on the latest standard for Minecraft 26.1. It includes significant AI rewrites. Please report any bugs on GitHub!
+
+---
 
 ## ✨ Key Features
 
 ### 🧠 Unique Personality System
 
-When you tame a wolf, it develops one of three permanent personalities, visually distinct by their particle effects. As of **v1.6.0**, you can even configure the chances of each personality appearing!
+When you tame a wolf, it develops one of three permanent personalities, visually distinct by their particle effects.
 
 <p align="center">
   <img src="https://cdn.modrinth.com/data/cached_images/bcda6a78fa3159bc710566a2cbedfa1e94a03930.png" alt="Aggressive dog particle" width="30%">
@@ -22,71 +28,51 @@ When you tame a wolf, it develops one of three permanent personalities, visually
   <img src="https://cdn.modrinth.com/data/cached_images/8722821ac9f7e1b6ca653e77cf90cf83dff2c432.png" alt="Vanilla/Normal" width="30%">
 </p>
 
-| Icon |Personality |Default Chance |Behavior                                                                                          |
-| ---- |----------- |-------------- |------------------------------------------------------------------------------------------------- |
-| 💢   |<strong>Aggressive</strong> |<strong>20%</strong> |The Guardian. Proactively attacks hostile mobs near you. Now with configurable detection ranges!  |
-| ❤️   |<strong>Pacifist</strong> |<strong>20%</strong> |The Loyal Friend. Only attacks mobs that hurt <em>you</em> first. Won't start fights, keeping itself safe. |
-| ✨    |<strong>Normal</strong> |<strong>60%</strong> |The Classic. Custom speeds and damage can now be applied to normal wolves via config.             |
+| Icon | Personality | Default Chance | Behavior |
+| :---: | :--- | :--- | :--- |
+| 💢 | **Aggressive** | **20%** | The Guardian. Proactively attacks hostile mobs near you. Now with configurable detection ranges! |
+| ❤️ | **Pacifist** | **20%** | The Loyal Friend. Only attacks mobs that hurt *you* first. Won't start fights, keeping itself safe. |
+| ✨ | **Normal** | **60%** | The Classic. Custom speeds and damage can now be applied to normal wolves via config. |
 
 > [!NOTE]
 > Personalities are permanent and can be inherited via breeding! Use the config to adjust how common each type is in your world.
 
-### 🎁 The Gift System (New in v1.5.0+)
+### 🛡️ Smart Cliff Safety (Updated v1.7.5)
+
+**Wolves are finally smart enough to NOT jump.**
+
+* **Active Retreat:** When a wolf detects a steep drop (3+ blocks) or checks a target floating over the void, it doesn't just stop—it **actively walks backwards** 4 blocks away from the edge.
+* **Airborne Checks:** If you knock a zombie off a cliff, your wolf won't dive after it.
+* **Lava & Fire Warnings:** Wolves actively pathfind away from hazardous blocks.
+
+### ⚙️ Standalone Config System (New v1.7.6)
+
+Due to changes in the 26.1 snapshot environment, we have replaced the heavy `Cloth Config` dependency with a lightweight **Standalone JSON Loader**.
+
+* **No GUI Needed:** Configuration is fully supported even in snapshot versions where Mod Menu isn't available.
+* **Manual Control:** Edit `config/betterdogs.json` to tweak everything: Friendly Fire, Speed Buffs, Breeding Chances, and more.
+
+### 🎁 The Gift System
 
 Like cats, your loyal dogs will now bring you treasures based on their personality!
 
-* **Aggressive**: Brings "trophies" from their hunts (Bones, Rotten Flesh, Arrows, rarely Iron).
-* **Pacifist**: Brings "foraged" items from nature (Berries, Seeds, Flowers, rarely Glow Berries).
-* _Configurable cooldowns and trigger chances in the settings._
-
-### 🛡️ Smart Safety AI
-
-Stop worrying about your dogs killing themselves. Better Dogs includes high-level self-preservation:
-
-* **Cliff Safety V2:** Wolves detect "Airborne Targets". If an enemy is knocked back over a void/ravine, the wolf **STOPS** chasing instead of jumping after them.
-* **Lava & Fire Avoidance:** Wolves actively pathfind around dangerous blocks.
-* **Creeper Awareness:** Wolves will flee when they hear a Creeper hiss!
-* **Anti-Stuck:** Improved pathfinding logic to keep them following close.
+* **Aggressive**: Trophy items (Bones, Rotten Flesh).
+* **Pacifist**: Foraged items (Berries, Flowers).
 
 ### 🌩️ Environmental Awareness
 
-* **Storm Anxiety:** Wolves are scared of Thunderstorms! They will whine and shake in fear.
-* **Behavior**: If sitting, they stay put. If standing, they pace anxiously.
-* _Intensity and trigger chances are fully adjustable in the config._
+* **Storm Anxiety**: Wolves are scared of Thunderstorms! They will whine and shake in fear unless they are safe indoors or sitting.
 
-***
-
-## ⚙️ Configuration (The "Control Everything" Update)
-
-**Updated in v1.6.0**: We've exposed almost every internal variable to the config menu!
-
-* **Granular Per-Personality Stats**: Set unique Health, Speed, and Damage for Aggressive, Pacifist, and Normal wolves.
-* **Custom AI Ranges**: Adjust exactly how far wolves follow you, when they teleport, and how far they chase enemies.
-* **Breeding Odds**: Control the genetic pass-through and spawn rates of personalities.
-* **Wild Hunt Logic**: Configure wild wolves to only hunt when they are hungry (HP based).
-
-***
+---
 
 ## 📦 Installation
 
-1. Download **[Fabric Loader](https://fabricmc.net/)** for Minecraft **1.21.11** or **26.1+** (Snapshot).
-2. Install **[Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)** and **[Fabric Language Kotlin](https://www.curseforge.com/minecraft/mc-mods/fabric-language-kotlin)**.
-3. Install **[Cloth Config](https://www.curseforge.com/minecraft/mc-mods/cloth-config)** (Required).
-4. Install **[Mod Menu](https://www.curseforge.com/minecraft/mc-mods/modmenu)** (Recommended for in-game config).
-5. Download `Vanilla-Outsider-Better-Dogs.jar` and place it in your `mods` folder.
+1. Download **[Fabric Loader](https://fabricmc.net/)** for the latest **Minecraft 26.1 Snapshot**.
+2. Install **[Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)**.
+3. Download `Vanilla-Outsider-Better-Dogs.jar` and place it in your `mods` folder.
+4. *(Optional)* Edit `config/betterdogs.json` after the first launch to customize your experience.
 
-***
-
-## 🧩 Compatibility
-
-| Feature          |Fabric (1.21.11 & 26.1+) |
-| ---------------- |------ |
-| Multiplayer      |✅      |
-| Mob Mods         |✅      |
-| Wolf Visual Mods |✅      |
-| New Trims        |✅      |
-
-***
+---
 
 ## ☕ Support the Development
 
@@ -96,28 +82,23 @@ If you enjoy **Better Dogs** and the **Vanilla Outsider** philosophy, consider f
 
 ## 📜 Legal & Credits
 
-| Role       |Author           |
-| ---------- |---------------- |
-| <strong>Creator</strong> |DasikIgaijin     |
-| <strong>Collection</strong> |Vanilla Outsider |
-| <strong>License</strong> |GNU GPLv3        |
+| Role | Author |
+| :--- | :--- |
+| **Creator** | DasikIgaijin |
+| **Collection** | Vanilla Outsider |
+| **License** | GNU GPLv3 |
 
 > [!IMPORTANT]
-> This mod is part of the **Vanilla Outsider** collection. You are free to use it in modpacks, videos, and servers.
->
-> > [!IMPORTANT]
-> > **Modpack Permissions:** You are free to include this mod in modpacks, **provided the modpack is hosted on the same platform** (e.g. CurseForge).
-> >
-> > **Cross-platform distribution is not permitted.** If you download this mod from CurseForge, your modpack must also be published on CurseForge.
+> **Modpack Permissions:** You are free to include this mod in modpacks, **provided the modpack is hosted on the same platform** (e.g. CurseForge). Cross-platform distribution is not permitted.
 
 **This Mod made with the assistance of AI**
 
-***
+---
 
 <div align="center">
 
 **Made with ❤️ for the Minecraft community**
 
-_Part of the Vanilla Outsider Collection_
+*Part of the Vanilla Outsider Collection*
 
 </div>
