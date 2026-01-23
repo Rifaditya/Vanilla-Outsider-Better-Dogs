@@ -80,6 +80,8 @@ If you enjoy **Better Dogs** and the **Vanilla Outsider** philosophy, consider f
 
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20Me-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/dasikigaijin/tip)
 
+---
+
 ## 📜 Legal & Credits
 
 | Role | Author |
@@ -87,6 +89,8 @@ If you enjoy **Better Dogs** and the **Vanilla Outsider** philosophy, consider f
 | **Creator** | DasikIgaijin |
 | **Collection** | Vanilla Outsider |
 | **License** | GNU GPLv3 |
+
+---
 
 > [!IMPORTANT]
 > **Modpack Permissions:** You are free to include this mod in modpacks, **provided the modpack is hosted on the same platform** (e.g. CurseForge). Cross-platform distribution is not permitted.

@@ -1,70 +1,25 @@
 plugins {
-	id 'net.fabricmc.fabric-loom' version '1.14.7'
-	id 'maven-publish'
+    id 'net.fabricmc.fabric-loom' version '1.14.7' apply false
+    id 'maven-publish'
 }
 
-version = project.mod_version
-group = project.maven_group
+subprojects {
+    // Loom applies java, so we don't strictly need to apply it here if all subs use loom.
+    // But for safety, we'll leave it to the subprojects or apply it conditionally?
+    // Let's remove it and let modules define themselves.
+    
+    apply plugin: 'maven-publish'
 
-base {
-	archivesName = project.archives_base_name
+    repositories {
+        mavenCentral()
+        maven { url = "https://maven.fabricmc.net/" }
+        maven { url = "https://maven.neoforged.net/releases" }
+        maven { url = "https://maven.parchmentmc.org" }
+        maven { url = "https://maven.terraformersmc.com/releases/" } 
+    }
 }
 
-repositories {
-	maven { url "https://maven.shedaniel.me/" }
-    maven { url "https://maven.terraformersmc.com/releases/" }
-}
-
-loom {
-    // 26.1 is unobfuscated, so inter-project dependencies might behave differently,
-    // but standard loom setup usually handles this.
-    // We remove the splitEnvironmentSourceSets() for simplicity unless strictly needed.
-}
-
-dependencies {
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	// add("mappings", files("dummy.tiny"))
-	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	
-	// Fabric API
-	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	
-	// Config
-	// implementation files("lib/cloth-config-patched.jar")
-	implementation("com.terraformersmc:modmenu:${project.modmenu_version}")
-    implementation("com.google.code.gson:gson:2.10.1")
-}
-
-processResources {
-	inputs.property "version", project.version
-
-	filesMatching("fabric.mod.json") {
-		expand "version": inputs.properties.version
-	}
-}
-
-tasks.withType(JavaCompile).configureEach {
-	it.options.release = 25
-}
-
-java {
-	withSourcesJar()
-	sourceCompatibility = JavaVersion.VERSION_25
-	targetCompatibility = JavaVersion.VERSION_25
-}
-
-jar {
-	from("LICENSE") {
-		rename { "${it}_${project.base.archivesName.get()}"}
-	}
-}
-
-// Configure the maven publication
-publishing {
-	publications {
-		create("mavenJava", MavenPublication) {
-			artifactId = project.archives_base_name
-			from components.java
-		}
-	}
+allprojects {
+    group = property("maven_group")
+    version = property("mod_version")
 }

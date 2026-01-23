@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 
 /**
@@ -24,7 +24,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime) {
      */
     public static class Attachments {
         public static final AttachmentType<WolfPersistentData> WOLF_DATA = AttachmentRegistry.createPersistent(
-                Identifier.parse("betterdogs:wolf_data"),
+                ResourceLocation.parse("betterdogs:wolf_data"),
                 CODEC);
 
         public static void init() {

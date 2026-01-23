@@ -16,7 +16,7 @@ import net.vanillaoutsider.betterdogs.ai.*;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.chicken.Chicken;
@@ -113,12 +113,12 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         if (speedAttr == null || damageAttr == null)
             return;
 
-        Identifier aggressiveSpeedId = Identifier.parse(AGGRESSIVE_SPEED_ID);
-        Identifier aggressiveDamageId = Identifier.parse(AGGRESSIVE_DAMAGE_ID);
-        Identifier pacifistSpeedId = Identifier.parse(PACIFIST_SPEED_ID);
-        Identifier pacifistDamageId = Identifier.parse(PACIFIST_DAMAGE_ID);
-        Identifier pacifistKnockbackId = Identifier.parse(PACIFIST_KNOCKBACK_ID);
-        Identifier baseSpeedId = Identifier.parse(BASE_SPEED_ID);
+        ResourceLocation aggressiveSpeedId = ResourceLocation.parse(AGGRESSIVE_SPEED_ID);
+        ResourceLocation aggressiveDamageId = ResourceLocation.parse(AGGRESSIVE_DAMAGE_ID);
+        ResourceLocation pacifistSpeedId = ResourceLocation.parse(PACIFIST_SPEED_ID);
+        ResourceLocation pacifistDamageId = ResourceLocation.parse(PACIFIST_DAMAGE_ID);
+        ResourceLocation pacifistKnockbackId = ResourceLocation.parse(PACIFIST_KNOCKBACK_ID);
+        ResourceLocation baseSpeedId = ResourceLocation.parse(BASE_SPEED_ID);
 
         // Remove existing modifiers
         speedAttr.removeModifier(aggressiveSpeedId);
@@ -148,7 +148,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
 
                 var healthAttr = this.getAttribute(Attributes.MAX_HEALTH);
                 if (healthAttr != null) {
-                    Identifier aggressiveHealthId = Identifier.parse(AGGRESSIVE_HEALTH_ID);
+                    ResourceLocation aggressiveHealthId = ResourceLocation.parse(AGGRESSIVE_HEALTH_ID);
                     healthAttr.removeModifier(aggressiveHealthId);
 
                     double hpBonus = BetterDogsConfig.get().getAggressiveHealthBonus();
@@ -183,9 +183,9 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
                 double damageMod = BetterDogsConfig.get().getNormalDamageModifier();
                 double healthMod = BetterDogsConfig.get().getNormalHealthBonus();
 
-                Identifier normalSpeedId = Identifier.parse(NORMAL_SPEED_ID);
-                Identifier normalDamageId = Identifier.parse(NORMAL_DAMAGE_ID);
-                Identifier normalHealthId = Identifier.parse(NORMAL_HEALTH_ID);
+                ResourceLocation normalSpeedId = ResourceLocation.parse(NORMAL_SPEED_ID);
+                ResourceLocation normalDamageId = ResourceLocation.parse(NORMAL_DAMAGE_ID);
+                ResourceLocation normalHealthId = ResourceLocation.parse(NORMAL_HEALTH_ID);
 
                 if (speedMod != 0.0) {
                     speedAttr.addPermanentModifier(new AttributeModifier(normalSpeedId, speedMod,

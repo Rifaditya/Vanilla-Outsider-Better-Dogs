@@ -1,0 +1,55 @@
+Initialized native services in: C:\Users\fmrif\.gradle\native
+Initialized jansi services in: C:\Users\fmrif\.gradle\native
+Found daemon DaemonInfo{pid=15212, address=[3ef16e61-3be0-4747-8ec9-397e25d10506 port:54248, addresses:[/127.0.0.1]], state=Idle, lastBusy=1769090648767, context=DefaultDaemonContext[uid=cdaf481d-5d08-4353-b796-cbc0b1164a3c,javaHome=C:\Program Files\Eclipse Adoptium\jdk-21.0.9.10-hotspot,javaVersion=21,javaVendor=Eclipse Adoptium,daemonRegistryDir=C:\Users\fmrif\.gradle\daemon,pid=15212,idleTimeout=10800000,priority=NORMAL,applyInstrumentationAgent=true,nativeServicesMode=ENABLED,daemonOpts=-Xmx2G,-Dfile.encoding=UTF-8,-Duser.country=ID,-Duser.language=en,-Duser.variant]} however its context does not match the desired criteria.
+At least one daemon option is different.
+Wanted: DaemonRequestContext{jvmCriteria=C:\Program Files\Eclipse Adoptium\jdk-21.0.9.10-hotspot (no JDK specified, using current Java home), daemonOpts=[-XX:MaxMetaspaceSize=384m, -XX:+HeapDumpOnOutOfMemoryError, -Xms256m, -Xmx512m, -Dfile.encoding=UTF-8, -Duser.country=ID, -Duser.language=en, -Duser.variant], applyInstrumentationAgent=true, nativeServicesMode=ENABLED, priority=NORMAL}
+Actual: DefaultDaemonContext[uid=cdaf481d-5d08-4353-b796-cbc0b1164a3c,javaHome=C:\Program Files\Eclipse Adoptium\jdk-21.0.9.10-hotspot,javaVersion=21,javaVendor=Eclipse Adoptium,daemonRegistryDir=C:\Users\fmrif\.gradle\daemon,pid=15212,idleTimeout=10800000,priority=NORMAL,applyInstrumentationAgent=true,nativeServicesMode=ENABLED,daemonOpts=-Xmx2G,-Dfile.encoding=UTF-8,-Duser.country=ID,-Duser.language=en,-Duser.variant]
+
+  Looking for a different daemon...
+The client will now receive all logging from the daemon (pid: 8340). The daemon log file: C:\Users\fmrif\.gradle\daemon\9.2.1\daemon-8340.out.log
+Starting 22nd build in daemon [uptime: 2 hrs 12 mins 24.268 secs, performance: 100%, GC rate: 0.00/s, heap usage: 1% of 512 MiB, non-heap usage: 22% of 384 MiB]
+Using 12 worker leases.
+Operational build model parameters: {requiresToolingModels=false, parallelProjectExecution=false, configureOnDemand=false, configurationCache=false, configurationCacheParallelStore=false, configurationCacheParallelLoad=true, isolatedProjects=false, parallelProjectConfiguration=false, intermediateModelCache=false, parallelToolingApiActions=false, invalidateCoupledProjects=false, modelAsProjectDependency=false, resilientModelBuilding=false}
+Now considering [E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs] as hierarchies to watch
+Watching the file system is configured to be enabled if available
+File system watching is active
+Starting Build
+Settings evaluated using settings file 'E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs\settings.gradle'.
+Projects loaded. Root project using build file 'E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs\build.gradle'.
+Included projects: [root project 'vanilla-outsider-better-dogs', project ':common', project ':fabric']
+
+> Configure project :
+Evaluating root project 'vanilla-outsider-better-dogs' using build file 'E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs\build.gradle'.
+Resolved plugin [id: 'net.fabricmc.fabric-loom', version: '1.14.7', apply: false]
+Resolved plugin [id: 'maven-publish']
+
+> Configure project :common
+Evaluating project ':common' using build file 'E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs\common\build.gradle'.
+Resolved plugin [id: 'net.fabricmc.fabric-loom', version: '1.14.7']
+Resolved plugin [id: 'maven-publish']
+Fabric Loom: 1.14.7
+(kotlin.metadata.jvm.KotlinClassMetadata) with version (2.2.20-release-333) was loaded from (/C:/Users/fmrif/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-metadata-jvm/2.2.20/1f04dd6a9950a57b90ab8fa536337ba76dee4f59/kotlin-metadata-jvm-2.2.20.jar)
+(org.objectweb.asm.ClassVisitor) with version (9.9) was loaded from (/C:/Users/fmrif/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm/9.9/c29635c8a7afa03d74b33c1884df8abb2b3f3dcc/asm-9.9.jar)
+(org.objectweb.asm.tree.analysis.Analyzer) with version (9.9) was loaded from (/C:/Users/fmrif/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-analysis/9.9/bf4fa6e66638851c1cd22c2caea0c3ee5d5f437/asm-analysis-9.9.jar)
+(org.objectweb.asm.commons.ClassRemapper) with version (9.9) was loaded from (/C:/Users/fmrif/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-commons/9.9/db9165a3bf908ded6b08612d583a15d1d0c7bda0/asm-commons-9.9.jar)
+(org.objectweb.asm.tree.ClassNode) with version (9.9) was loaded from (/C:/Users/fmrif/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-tree/9.9/f8de6eead6d24dd0f45bd065bbe112b2cda6ea21/asm-tree-9.9.jar)
+(org.objectweb.asm.util.ASMifier) with version (9.9) was loaded from (/C:/Users/fmrif/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-util/9.9/42fdfc0508b43807c8078d6e82ecff2ce2112ae8/asm-util-9.9.jar)
+(com.google.gson.Gson) with version (null) was loaded from (/C:/Users/fmrif/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.10.1/b3add478d4382b78ea20b1671390a858002feb6c/gson-2.10.1.jar)
+
+FAILURE: Build failed with an exception.
+
+* Where:
+Build file 'E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs\common\build.gradle' line: 6
+
+* What went wrong:
+A problem occurred evaluating project ':common'.
+> Could not set unknown property 'archivesBaseName' for project ':common' of type org.gradle.api.Project.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --debug option to get more log output.
+> Run with --scan to generate a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1s
+Watched directory hierarchies: []

@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "vanilla-outsider-better-dogs",
-	"version": "${version}",
+	"version": "1.7.6",
 	"name": "Vanilla Outsider: Better Dogs",
 	"description": "Enhances wolf AI with personalities, better pathfinding, and smarter behavior for both wild and tamed wolves.",
 	"authors": [

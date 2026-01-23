@@ -86,7 +86,7 @@ Like cats, your loyal dogs will now bring you treasures based on their personali
 
 If you enjoy **Better Dogs** and the **Vanilla Outsider** philosophy, consider fueling the next update with a coffee!
 
-[![Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20Me-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/dasikigaijin/tip)
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/D1D81SP3P7)
 
 ## 📜 Legal & Credits
 

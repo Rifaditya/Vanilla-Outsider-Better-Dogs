@@ -1,0 +1,13 @@
+plugins {
+    id 'java-library'
+}
+
+// NOTE: Real NeoForge setup requires user to install the NeoGradle plugin or similar.
+// For now, we are focusing on the requested "Decompiled Mapping" refactor.
+// This file is a placeholder to satisfy the structure.
+
+archivesBaseName = "${rootProject.archives_base_name}-neoforge-${project.version}"
+
+dependencies {
+    compileOnly project(":common")
+}

@@ -104,6 +104,8 @@ If you enjoy **Better Dogs** and the **Vanilla Outsider** philosophy, consider f
 
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20Me-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/dasikigaijin/tip)
 
+---
+
 ## 📜 Legal & Credits
 
 | Role | Author |
@@ -111,6 +113,8 @@ If you enjoy **Better Dogs** and the **Vanilla Outsider** philosophy, consider f
 | **Creator** | DasikIgaijin |
 | **Collection** | Vanilla Outsider |
 | **License** | GNU GPLv3 |
+
+---
 
 > [!IMPORTANT]
 > This mod is part of the **Vanilla Outsider** collection. You are free to use it in modpacks, videos, and servers.
