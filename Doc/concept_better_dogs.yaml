@@ -1,0 +1,32 @@
+collection: Vanilla_Outsider
+mod_name: Better Dogs
+filename: concept_better_dogs.md
+content: |
+  # Better Dogs
+  ## Philosophy Fit
+  This mod strictly adheres to the Vanilla Outsider philosophy by enhancing an existing vanilla mob (the Wolf) with deeper diegetic behaviors and reliability. It removes the "jank" of bad AI (walking into lava/void) without automating combat or exploration. The new mechanics (Personalities, Genetics) add depth to the "Tame" action loop, and the Gift System provides 1:1 reward for the investment of keeping the dog alive and loyal.
+
+  ## Mechanics
+  ### Core: Personality System
+  - Wolves obtain one of three personalities upon taming: **Normal**, **Aggressive**, or **Pacifist**.
+  - **Genetics:** Breeding passes down personalities (80% chance for same-parent types, varying mixes for cross-types).
+
+  ### "Smart" Survival AI
+  - **Cliff Safety:** Stops pathfinding over fatal drops.
+  - **Hazard Avoidance:** Actively avoids lava and fire sources.
+  - **Threat Assessment:** Flees from hissing Creepers; "Friendly Fire" protection prevents player swipe attacks from hitting pets.
+
+  ### Immersive Behaviors
+  - **Storm Anxiety:** Wolves visibly shake and whine during thunderstorms, requiring player comfort.
+  - **Passive Healing:** Slow regeneration when out of combat.
+
+  ### Gift System
+  - Periodically, loyal dogs present items "found" in the world.
+  - **Aggressive:** Combat loot (Rotten Flesh, Bones).
+  - **Pacifist:** Nature loot (Flowers, Berries).
+
+  ## Assets Needed
+  - [Sound: entity.wolf.whine] (Exists)
+  - [Sound: entity.wolf.growl] (Exists)
+  - [Visuals: Shaking Animation for Storm Anxiety] (Custom Animation)
+  - [Logic: Pathfinding Node Evaluator for Cliffs/Lava]

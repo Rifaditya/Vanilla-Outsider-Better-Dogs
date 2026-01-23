@@ -1,13 +1,76 @@
 plugins {
-    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.+'
 }
 
-// NOTE: Real NeoForge setup requires user to install the NeoGradle plugin or similar.
-// For now, we are focusing on the requested "Decompiled Mapping" refactor.
-// This file is a placeholder to satisfy the structure.
+version = project.mod_version
+group = project.maven_group
 
-archivesBaseName = "${rootProject.archives_base_name}-neoforge-${project.version}"
+base {
+    archivesName = "${rootProject.archives_base_name}-neoforge"
+}
 
-dependencies {
-    compileOnly project(":common")
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+repositories {
+    maven { url = "https://maven.neoforged.net/releases" }
+    mavenCentral()
+}
+
+neoForge {
+    version = project.neoforge_version
+    
+    runs {
+        client {
+            client()
+        }
+        server {
+            server()
+        }
+    }
+    
+    mods {
+        better_dogs {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+// Include common sources
+sourceSets {
+    main {
+        java {
+            srcDir project(":common").sourceSets.main.java.srcDirs
+        }
+        resources {
+            srcDir project(":common").sourceSets.main.resources.srcDirs
+        }
+    }
+}
+
+processResources {
+    inputs.property "version", project.version
+    filesMatching("META-INF/neoforge.mods.toml") {
+        expand "version": project.version, "neoforge_loader_version": project.neoforge_loader_version
+    }
+}
+
+jar {
+    manifest {
+        attributes([
+            "Specification-Title": project.mod_name,
+            "Specification-Vendor": "VanillaOutsider",
+            "Specification-Version": "1",
+            "Implementation-Title": project.mod_name,
+            "Implementation-Version": project.version,
+            "Implementation-Vendor": "VanillaOutsider"
+        ])
+    }
+}
+
+test {
+    enabled = false
 }

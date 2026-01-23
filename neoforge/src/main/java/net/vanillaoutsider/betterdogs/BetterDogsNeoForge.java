@@ -1,12 +1,16 @@
 package net.vanillaoutsider.betterdogs;
 
-// NeoForge basic entrypoint structure (simplified for refactor phase)
-// Note: Requires NeoForge dependencies to actually compile imports.
-// Keeping it minimal to show structure.
+import net.neoforged.fml.common.Mod;
+import net.vanillaoutsider.betterdogs.platform.NeoForgePlatformServices;
+import net.vanillaoutsider.betterdogs.platform.Services;
 
+@Mod("better_dogs")
 public class BetterDogsNeoForge {
     
     public BetterDogsNeoForge() {
+        // Register NeoForge platform services
+        Services.setPlatform(new NeoForgePlatformServices());
+        
         // Bootstrap Common Logic
         BetterDogs.init();
     }

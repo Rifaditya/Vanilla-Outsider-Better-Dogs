@@ -1,0 +1,27 @@
+modLoader="javafml"
+loaderVersion="${neoforge_loader_version}"
+license="CC0-1.0"
+issueTrackerURL="https://github.com/username/better-dogs/issues"
+
+[[mods]]
+modId="better_dogs"
+version="${version}"
+displayName="Vanilla Outsider: Better Dogs"
+authors="YourName"
+description='''
+Gives wolves personalities and stats.
+'''
+
+[[dependencies.better_dogs]]
+modId="neoforge"
+type="required"
+versionRange="[26.1,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.better_dogs]]
+modId="minecraft"
+type="required"
+versionRange="[26.1,)"
+ordering="NONE"
+side="BOTH"

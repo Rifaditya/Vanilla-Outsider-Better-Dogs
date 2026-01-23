@@ -4,17 +4,16 @@ plugins {
 }
 
 base {
-    archivesName = "${rootProject.archives_base_name}-common-${project.version}"
+    archivesName = "${rootProject.archives_base_name}-common"
 }
 
 dependencies {
-    // We use Fabric Loom in Common to get Minecraft + Mojang Mappings
+    // Minecraft + Mappings (cached from Fabric Loom)
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    // mappings loom.officialMojangMappings() 
+    // mappings loom.officialMojangMappings() // 26.1 snapshots use cached mappings
     
-    // Core dependencies (Platform Agnostic)
+    // Core dependencies
     compileOnly "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 }
 
 processResources {

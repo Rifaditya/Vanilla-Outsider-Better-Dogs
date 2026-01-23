@@ -2,13 +2,12 @@ package net.vanillaoutsider.betterdogs;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
-import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.animal.wolf.Wolf;
+import net.vanillaoutsider.betterdogs.platform.Services;
 
 /**
- * Persistent wolf data using Fabric Data Attachment API.
+ * Persistent wolf data record.
+ * Platform-specific attachment logic is in fabric/ and neoforge/ modules.
  */
 public record WolfPersistentData(int personalityId, int lastDamageTime) {
 
@@ -19,29 +18,14 @@ public record WolfPersistentData(int personalityId, int lastDamageTime) {
             Codec.INT.fieldOf("lastDamageTime").forGetter(WolfPersistentData::lastDamageTime))
             .apply(instance, WolfPersistentData::new));
 
-    /**
-     * Attachment type registration.
-     */
-    public static class Attachments {
-        public static final AttachmentType<WolfPersistentData> WOLF_DATA = AttachmentRegistry.createPersistent(
-                ResourceLocation.parse("betterdogs:wolf_data"),
-                CODEC);
-
-        public static void init() {
-            // Force class loading
-            @SuppressWarnings("unused")
-            var ignored = WOLF_DATA;
-        }
-    }
-
-    // ========== Static Helper Methods (replacing Kotlin extensions) ==========
+    // ========== Static Helper Methods (using platform abstraction) ==========
 
     public static WolfPersistentData getWolfData(Wolf wolf) {
-        return wolf.getAttachedOrCreate(Attachments.WOLF_DATA, () -> DEFAULT);
+        return Services.getPlatform().getWolfData(wolf);
     }
 
     public static void setWolfData(Wolf wolf, WolfPersistentData data) {
-        wolf.setAttached(Attachments.WOLF_DATA, data);
+        Services.getPlatform().setWolfData(wolf, data);
     }
 
     public static WolfPersonality getPersistedPersonality(Wolf wolf) {

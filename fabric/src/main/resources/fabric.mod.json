@@ -17,6 +17,9 @@
     "entrypoints": {
         "main": [
             "net.vanillaoutsider.betterdogs.BetterDogsFabric"
+        ],
+        "client": [
+            "net.vanillaoutsider.betterdogs.client.BetterDogsClientFabric"
         ]
     },
     "mixins": [

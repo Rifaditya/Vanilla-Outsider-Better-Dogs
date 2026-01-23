@@ -10,10 +10,11 @@ public class BetterDogsConfig {
 
     private static BetterDogsConfig INSTANCE = new BetterDogsConfig(); // Not final, can be replaced by load
     private static final com.google.gson.Gson GSON = new com.google.gson.GsonBuilder().setPrettyPrinting().create();
-    private static final java.nio.file.Path CONFIG_PATH = net.fabricmc.loader.api.FabricLoader.getInstance()
-            .getConfigDir().resolve("betterdogs.json");
+    private static java.nio.file.Path CONFIG_PATH;
 
-    public static void load() {
+    public static void load(java.nio.file.Path configDir) {
+        CONFIG_PATH = configDir.resolve("betterdogs.json");
+        
         if (java.nio.file.Files.exists(CONFIG_PATH)) {
             try (java.io.Reader reader = java.nio.file.Files.newBufferedReader(CONFIG_PATH)) {
                 INSTANCE = GSON.fromJson(reader, BetterDogsConfig.class);

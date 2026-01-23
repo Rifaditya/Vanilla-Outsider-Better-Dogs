@@ -4,22 +4,15 @@ plugins {
 }
 
 subprojects {
-    // Loom applies java, so we don't strictly need to apply it here if all subs use loom.
-    // But for safety, we'll leave it to the subprojects or apply it conditionally?
-    // Let's remove it and let modules define themselves.
-    
     apply plugin: 'maven-publish'
-
-    repositories {
-        mavenCentral()
-        maven { url = "https://maven.fabricmc.net/" }
-        maven { url = "https://maven.neoforged.net/releases" }
-        maven { url = "https://maven.parchmentmc.org" }
-        maven { url = "https://maven.terraformersmc.com/releases/" } 
-    }
+    
+    version = project.mod_version
+    group = project.maven_group
 }
 
 allprojects {
-    group = property("maven_group")
-    version = property("mod_version")
+    repositories {
+        maven { url = "https://maven.fabricmc.net/" }
+        mavenCentral()
+    }
 }
