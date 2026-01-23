@@ -3,9 +3,11 @@
     "package": "net.vanillaoutsider.betterdogs.mixin",
     "compatibilityLevel": "JAVA_21",
     "mixins": [
+        "MobMixin",
         "WolfMixin",
         "WolfAIMixin",
         "OwnerHurtTargetGoalMixin",
+        "OwnerHurtByTargetGoalMixin",
         "WolfBreedingMixin"
     ],
     "injectors": {

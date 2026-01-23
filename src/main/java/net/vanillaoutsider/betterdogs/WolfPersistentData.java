@@ -3,7 +3,6 @@ package net.vanillaoutsider.betterdogs;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.entity.animal.wolf.Wolf;
-import net.vanillaoutsider.betterdogs.platform.Services;
 
 /**
  * Persistent wolf data record.
