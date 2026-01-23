@@ -1,8 +1,15 @@
 # Changelog
 
+## [1.8.3-26.1] - 2026-01-23
+
+### 🐾 Features (v1.8.3)
+
+- **Configurable Baby Range**: Added `babyFollowMultiplier` and `babyTeleportMultiplier` to `betterdogs.json`.
+- **Untrained Baby Wolves**: Tamed baby wolves now have configurable multipliers (default 2x) for follow radius and teleport distance.
+
 ## [1.8.2-26.1] - 2026-01-23
 
-### 🎉 New Features
+### ⚔️ Features (v1.8.2)
 
 - **Domestic Aggression & Retaliation**:
   - Baby wolves retaliate with **2 strikes** if hit by their owner.
@@ -17,7 +24,7 @@
 
 ## [1.8.1-26.1] - 2026-01-23
 
-### 🎉 New Features
+### 🛡️ Features (v1.8.1)
 
 - **Passive Baby Wolves**: Baby wolves are now passive by default to protect them from unnecessary combat.
   - Baby wolves will NOT attack what the owner attacks.
@@ -33,7 +40,7 @@
 
 ## [1.8.0-26.1] - 2026-01-23
 
-### 🎉 New Features
+### 🚀 Features (v1.8.0)
 
 - **NeoForge Support**: Better Dogs now supports both Fabric AND NeoForge loaders!
 - **Multi-Loader Architecture**: Complete project restructure with common/fabric/neoforge modules.

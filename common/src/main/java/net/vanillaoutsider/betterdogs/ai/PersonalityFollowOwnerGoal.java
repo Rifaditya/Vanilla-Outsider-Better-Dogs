@@ -28,40 +28,45 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
         if (!wolf.isTame())
             return 10.0f; // Fallback
 
+        float dist = 10.0f;
         if (wolf instanceof WolfExtensions ext) {
             try {
                 BetterDogsConfig config = BetterDogsConfig.get();
-                return switch (ext.betterdogs$getPersonality()) {
+                dist = switch (ext.betterdogs$getPersonality()) {
                     case AGGRESSIVE -> config.aggressiveFollowStart;
                     case PACIFIST -> config.pacifistFollowStart;
                     case NORMAL -> config.normalFollowStart;
                     default -> 10.0f;
                 };
             } catch (Exception e) {
-                return 10.0f;
+                dist = 10.0f;
             }
         }
-        return 10.0f;
+        
+        // "Untrained" babies are unruly and wander further
+        return wolf.isBaby() ? dist * BetterDogsConfig.get().getBabyFollowMultiplier() : dist;
     }
 
     private float getStopDistance() {
         if (!wolf.isTame())
             return 2.0f;
 
+        float dist = 2.0f;
         if (wolf instanceof WolfExtensions ext) {
             try {
                 BetterDogsConfig config = BetterDogsConfig.get();
-                return switch (ext.betterdogs$getPersonality()) {
+                dist = switch (ext.betterdogs$getPersonality()) {
                     case AGGRESSIVE -> config.aggressiveFollowStop;
                     case PACIFIST -> config.pacifistFollowStop;
                     case NORMAL -> config.normalFollowStop;
                     default -> 2.0f;
                 };
             } catch (Exception e) {
-                return 2.0f;
+                dist = 2.0f;
             }
         }
-        return 2.0f;
+        
+        return wolf.isBaby() ? dist * BetterDogsConfig.get().getBabyFollowMultiplier() : dist;
     }
 
     @Override
@@ -136,9 +141,13 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
         if (!wolf.isLeashed() && !wolf.isPassenger()) {
             float startDist = getStartDistance();
 
-            // Teleport if very far (12 blocks usually, or 2x start distance)
-            // 144 is 12^2
-            if (wolf.distanceToSqr(owner) >= 144.0 || wolf.distanceToSqr(owner) >= (startDist * startDist * 2)) {
+            // Teleport if very far. Default is 12 blocks (144.0).
+            // For "untrained" babies, we apply the multiplier to the distance before squaring.
+            float multiplier = wolf.isBaby() ? BetterDogsConfig.get().getBabyTeleportMultiplier() : 1.0f;
+            double teleportBase = 12.0;
+            double teleportThreshold = (teleportBase * multiplier) * (teleportBase * multiplier);
+            
+            if (wolf.distanceToSqr(owner) >= teleportThreshold || wolf.distanceToSqr(owner) >= (startDist * startDist * 2)) {
                 teleportToOwner(owner);
             }
         }

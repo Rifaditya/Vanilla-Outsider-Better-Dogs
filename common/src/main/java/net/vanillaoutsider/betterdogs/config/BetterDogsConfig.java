@@ -195,6 +195,15 @@ public class BetterDogsConfig {
 
     // @ConfigEntry.Gui.Tooltip
     public float stormWhineChance = 0.02f;
+    
+    // ========== Baby Wolf Behavior ==========
+    // @ConfigEntry.Category("baby")
+    // @ConfigEntry.Gui.Tooltip
+    public float babyFollowMultiplier = 2.0f;
+
+    // @ConfigEntry.Category("baby")
+    // @ConfigEntry.Gui.Tooltip
+    public float babyTeleportMultiplier = 2.0f;
 
     public static BetterDogsConfig get() {
         return INSTANCE;
@@ -332,5 +341,13 @@ public class BetterDogsConfig {
 
     public int getBreedingDilutedOtherChance() {
         return breedingDilutedOtherChance;
+    }
+
+    public float getBabyFollowMultiplier() {
+        return babyFollowMultiplier;
+    }
+
+    public float getBabyTeleportMultiplier() {
+        return babyTeleportMultiplier;
     }
 }

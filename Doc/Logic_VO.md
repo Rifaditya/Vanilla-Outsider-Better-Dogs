@@ -11,6 +11,7 @@
 ## Domestic Aggression & Intervention
 
 - **Baby Retaliation**: If a baby wolf is hit by its owner, it will retaliate with exactly **two attacks**.
+- **Untrained Nature**: Tamed baby wolves have **2x follow radius** and **2x teleport distance** by default (configurable in `betterdogs.json`), reflecting their unruly, untrained nature. They can wander much further from their owner before snapping back compared to adults.
 - **Protection**: Tamed baby wolves cannot be targeted by other wolves (wild or tamed).
 - **Aggressive Intervention**:
   - If a baby wolf attacks its owner, any nearby **Aggressive** adult wolf belonging to that owner will intervene to protect the owner.
