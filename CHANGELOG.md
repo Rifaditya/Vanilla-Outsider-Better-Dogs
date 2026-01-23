@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.9.5-26.1] - 2026-01-23
+
+### 🏗 Architecture Reversion
+
+- **Fabric Native Reversion**: Pivot from Multi-Loader (NeoForge/Fabric) back to a **standalone Fabric architecture**.
+  - *Reasoning*: Standardizing on a single platform for the experimental 26.1 snapshot significantly reduces build overhead and resolves persistent conflicts between platform abstraction layers and unobfuscated mappings.
+- **Source Consolidation**: Merged `common` and `fabric` source sets into a clean root structure. All NeoForge-specific modules and dependencies have been removed.
+
+### 🛠 Technical Changes
+
+- **Java 25 Standardization**: Fully migrated the build system and toolchain to **Java 25**.
+  - *Impact*: Required for compatibility with Minecraft 26.1-snapshot-4 and the latest Fabric Loom releases.
+- **Fabric Attachment API**: Fully integrated Fabric's native Attachment API for persistent wolf data, replacing the platform-agnostic service abstraction.
+- **Build System**: Standardized on Fabric Loom 1.14.7. Successfully resolved evaluation errors by aligning mappings with snapshot manifest requirements.
+
+---
+
 ## [1.7.6-26.1] - 2026-01-21
 
 ### ⚙️ Technical Changes
