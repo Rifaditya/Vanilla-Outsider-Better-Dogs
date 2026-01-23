@@ -5,11 +5,11 @@
     "name": "Vanilla Outsider: Better Dogs",
     "description": "Gives wolves personalities and stats.",
     "authors": [
-        "YourName"
+        "Rifaditya"
     ],
     "contact": {
-        "homepage": "https://example.com/",
-        "sources": "https://github.com/username/project"
+        "homepage": "https://modrinth.com/mod/vanilla-outsider-better-dogs",
+        "sources": "https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs"
     },
     "license": "CC0-1.0",
     "icon": "assets/vanilla-outsider-better-dogs/icon.png",
@@ -26,12 +26,9 @@
         "vanilla-outsider-better-dogs.mixins.json"
     ],
     "depends": {
-        "fabricloader": ">=${loader_version}",
-        "minecraft": "~${minecraft_version}",
+        "fabricloader": ">=0.16.9",
+        "minecraft": "~26.1-",
         "java": ">=25",
         "fabric-api": "*"
-    },
-    "suggests": {
-        "another-mod": "*"
     }
 }
