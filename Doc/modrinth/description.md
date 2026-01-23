@@ -5,18 +5,18 @@
 </div>
 <p align="center">
     <a href="https://modrinth.com/mod/fabric-api"><img src="https://img.shields.io/badge/Requires-Fabric_API-blue?style=for-the-badge&logo=fabric" alt="Requires Fabric API"></a>
-    <a href="https://modrinth.com/mod/fabric-language-kotlin"><img src="https://img.shields.io/badge/Language-Kotlin-purple?style=for-the-badge&logo=kotlin" alt="Kotlin"></a>
-    <a href="https://modrinth.com/mod/cloth-config"><img src="https://img.shields.io/badge/Config-Cloth_Config-orange?style=for-the-badge" alt="Cloth Config"></a>
+    <img src="https://img.shields.io/badge/Loader-NeoForge-orange?style=for-the-badge" alt="NeoForge Support">
+    <img src="https://img.shields.io/badge/Config-Standalone-orange?style=for-the-badge" alt="Standalone Config">
     <img src="https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge" alt="License">
 </p>
 
-# 🐕 Make Wolves Worthy Companions (Now for 26.1 Snapshots!)
+# 🐕 Make Wolves Worthy Companions (Multi-Loader: Fabric & NeoForge)
 
 **No Backports:** I will **NOT** backport this mod to older versions (1.21, 1.20, etc.). Please do not ask.
 
 Every Minecraft player knows the pain: you spend hours finding a wolf, tame it, and five minutes later it jumps into lava or walks off a cliff.
 
-**Vanilla Outsider: Better Dogs** completely overhauls wolf AI to make them smarter, safer, and livelier. With the new **Personality System**, every dog feels unique—some are aggressive protectors, while others are loyal pacifists.
+**Vanilla Outsider: Better Dogs** completely overhauls wolf AI to make them smarter, safer, and livelier. Now natively supporting both **Fabric** and **NeoForge**, every dog feels unique with the **Personality System**.
 
 ---
 
@@ -38,8 +38,11 @@ When you tame a wolf, it develops one of three permanent personalities, visually
 | ❤️ | **Pacifist** | **20%** | The Loyal Friend. Only attacks mobs that hurt *you* first. Won't start fights, keeping itself safe. |
 | ✨ | **Normal** | **60%** | The Classic. Custom speeds and damage can now be applied to normal wolves via config. |
 
+> [!TIP]
+> **Untrained Baby Nature (v1.8.3):** Tamed baby wolves are more curious and independent. They wander further (2x) and teleport less frequently by default, giving them a more "wild" feel until they grow up. These multipliers are fully configurable!
+>
 > [!NOTE]
-> Personalities are permanent and can be inherited via breeding! Use the config to adjust how common each type is in your world.
+> **Breeding & Inheritance:** Personalities are permanent and can be inherited via breeding! Note that **collar colors** follow vanilla mechanics (inherited from parents) and **do not** indicate personality types—always look for the unique particle effects!
 
 ### 🎁 The Gift System (New in v1.5.0+)
 
@@ -49,14 +52,26 @@ Like cats, your loyal dogs will now bring you treasures based on their personali
 * **Pacifist**: Brings "foraged" items from nature (Berries, Seeds, Flowers, rarely Glow Berries).
 * *Configurable cooldowns and trigger chances in the settings.*
 
-### 🛡️ Smart Safety AI
+### 🐕 Baby Wolf Behavior System (New v1.8.x)
 
-Stop worrying about your dogs killing themselves. Better Dogs includes high-level self-preservation:
+Baby wolves now have their own unique behavior rules:
 
-* **Cliff Safety V2:** Wolves detect "Airborne Targets". If an enemy is knocked back over a void/ravine, the wolf **STOPS** chasing instead of jumping after them.
+* **Passive by Default (v1.8.1):** Baby wolves won't attack what the owner attacks or defend the owner unless they have an Aggressive personality or are directly hit.
+* **Domestic Retaliation (v1.8.2):** If you accidentally hit your puppy, it will retaliate with **2 strikes** then forgive you!
+* **Adult Intervention (v1.8.2):** Aggressive adults will discipline a baby that attacks its owner (3-strike sequence).
+* **Puppy Protection (v1.8.2):** Other wolves (wild or tamed) won't target tamed baby wolves.
+* **Untrained Nature (v1.8.3):** Babies wander further (2x) and teleport less frequently until grown up.
+
+### 🛡️ Smart Safety AI (v1.8.4+)
+
+Stop worrying about your dogs killing themselves:
+
+* **Baby Curiosity:** Passive/Normal babies investigate interesting blocks and stare at nearby entities.
+* **Reckless Aggression:** Aggressive babies engage hostiles immediately regardless of owner distance.
+* **Cliff Safety V2:** Wolves detect airborne targets and **STOP** chasing instead of jumping after them.
 * **Lava & Fire Avoidance:** Wolves actively pathfind around dangerous blocks.
-* **Creeper Awareness:** Wolves will flee when they hear a Creeper hiss!
-* **Anti-Stuck:** Improved pathfinding logic to keep them following close.
+* **Creeper Awareness:** Wolves flee when they hear a Creeper hiss!
+* **Anti-Stuck:** Improved pathfinding to keep them following close.
 
 ### 🌩️ Environmental Awareness
 
@@ -66,10 +81,11 @@ Stop worrying about your dogs killing themselves. Better Dogs includes high-leve
 
 ---
 
-## ⚙️ Configuration (The "Control Everything" Update)
+## ⚙️ Configuration (Standalone & Built-in)
 
-**Updated in v1.6.0**: We've exposed almost every internal variable to the config menu!
+**Updated for v1.7.6+**: We've removed the heavy dependencies on `Cloth Config` and `AutoConfig` in favor of a lightweight, **standalone JSON loader**.
 
+* **No Dependencies Required:** Works out of the box on snapshots where other config libraries might be broken.
 * **Granular Per-Personality Stats**: Set unique Health, Speed, and Damage for Aggressive, Pacifist, and Normal wolves.
 * **Custom AI Ranges**: Adjust exactly how far wolves follow you, when they teleport, and how far they chase enemies.
 * **Breeding Odds**: Control the genetic pass-through and spawn rates of personalities.
@@ -79,11 +95,13 @@ Stop worrying about your dogs killing themselves. Better Dogs includes high-leve
 
 ## 📦 Installation
 
-1. Download **[Fabric Loader](https://fabricmc.net/)** for Minecraft **1.21.11** or **26.1+** (Snapshot).
-2. Install **[Fabric API](https://modrinth.com/mod/fabric-api)** and **[Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin)**.
-3. Install **[Cloth Config](https://modrinth.com/mod/cloth-config)** (Required).
-4. Install **[Mod Menu](https://modrinth.com/mod/modmenu)** (Recommended for in-game config).
-5. Download `Vanilla-Outsider-Better-Dogs.jar` and place it in your `mods` folder.
+1. Download the latest **Minecraft 26.1 Snapshot**.
+2. **Fabric Users:**
+   * Install **[Fabric Loader](https://fabricmc.net/)**.
+   * Install **[Fabric API](https://modrinth.com/mod/fabric-api)**.
+3. **NeoForge Users:**
+   * Install the latest **NeoForge** for 26.1.
+4. Place the `Vanilla-Outsider-Better-Dogs.jar` in your `mods` folder.
 
 ---
 
@@ -100,9 +118,11 @@ Stop worrying about your dogs killing themselves. Better Dogs includes high-leve
 
 ## ☕ Support the Development
 
-If you enjoy **Better Dogs** and the **Vanilla Outsider** philosophy, consider fueling the next update with a coffee!
-
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20Me-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/dasikigaijin/tip)
+[![SocioBuzz](https://img.shields.io/badge/SocioBuzz-Local_Support-7BB32E?style=for-the-badge)](https://sociabuzz.com/dasikigaijin/tribe)
+
+> [!NOTE]
+> **Indonesian Users:** SocioBuzz supports local payment methods (Gopay, OVO, Dana, etc.) if you want to support me without using PayPal/Ko-fi!
 
 ---
 
