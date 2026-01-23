@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.4-26.1] - 2026-01-23
+
+### 🧠 Features (v1.8.4)
+
+- **Baby Curiosity**: Non-aggressive baby wolves now investigate blocks and stare at entities.
+- **Reckless Aggression**: Aggressive baby wolves immediately engage hostile mobs regardless of owner proximity.
+
 ## [1.8.3-26.1] - 2026-01-23
 
 ### 🐾 Features (v1.8.3)

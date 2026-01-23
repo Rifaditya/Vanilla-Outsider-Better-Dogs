@@ -18,7 +18,7 @@ This version focuses on further distinguishing baby wolves from adults by emphas
 
 ### Technical Details
 
-#### [MODIFY] [PersonalityFollowOwnerGoal.java](file:///e:/Minecraft%20Project/Vanilla%20Outsider%20Collections/Better%20Dogs/common/src/main/java/net/vanillaoutsider/betterdogs/ai/PersonalityFollowOwnerGoal.java)
+#### [MODIFY] [PersonalityFollowOwnerGoal.java](common/src/main/java/net/vanillaoutsider/betterdogs/ai/PersonalityFollowOwnerGoal.java)
 
 - Updated `getStartDistance()` and `getStopDistance()` to check `wolf.isBaby()` and apply a `2.0f` multiplier.
 - Updated `tick()` to use a dynamic `teleportThreshold` (576.0 if baby, 144.0 otherwise) and a dynamic check against `startDist`.

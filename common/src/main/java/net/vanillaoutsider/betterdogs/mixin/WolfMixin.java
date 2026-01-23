@@ -13,19 +13,18 @@ import net.minecraft.world.entity.LivingEntity;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersistentData;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
-import net.vanillaoutsider.betterdogs.ai.*;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.entity.ai.util.DefaultRandomPos;
-import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
-import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.chicken.Chicken;
 import net.minecraft.world.entity.animal.rabbit.Rabbit;
 import net.minecraft.world.entity.animal.sheep.Sheep;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
-import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
-import net.vanillaoutsider.betterdogs.ai.PersonalityFollowOwnerGoal;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.resources.Identifier;
+import net.vanillaoutsider.betterdogs.ai.*;
+import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import java.util.Set;
 import java.util.HashSet;
 import org.spongepowered.asm.mixin.Mixin;
@@ -314,6 +313,9 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         if (BetterDogsConfig.get().getEnableStormAnxiety()) {
             this.goalSelector.addGoal(6, new WolfStormAnxietyGoal(wolf));
         }
+
+        // 5. Add Baby Curiosity Goal (Priority 7 - after following/safety)
+        this.goalSelector.addGoal(7, new BabyCuriosityGoal(wolf, 0.8));
     }
 
     // ========== On Tame - Assign Personality ==========

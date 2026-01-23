@@ -28,8 +28,8 @@ public class AggressiveTargetGoal extends NearestAttackableTargetGoal<Monster> {
         if (owner == null)
             return false;
 
-        // Target must be within range of owner
-        if (target.distanceTo(owner) > BetterDogsConfig.get().aggressiveDetectionRange)
+        // Target must be within range of owner (Adults only)
+        if (!wolf.isBaby() && target.distanceTo(owner) > BetterDogsConfig.get().aggressiveDetectionRange)
             return false;
 
         // Don't attack creepers
@@ -59,7 +59,7 @@ public class AggressiveTargetGoal extends NearestAttackableTargetGoal<Monster> {
         if (owner == null)
             return false;
 
-        if (wolf.distanceTo(owner) > BetterDogsConfig.get().aggressiveChaseDistance)
+        if (!wolf.isBaby() && wolf.distanceTo(owner) > BetterDogsConfig.get().aggressiveChaseDistance)
             return false;
 
         return super.canUse();
@@ -72,7 +72,7 @@ public class AggressiveTargetGoal extends NearestAttackableTargetGoal<Monster> {
         if (owner == null)
             return false;
 
-        if (wolf.distanceTo(owner) > BetterDogsConfig.get().aggressiveChaseDistance)
+        if (!wolf.isBaby() && wolf.distanceTo(owner) > BetterDogsConfig.get().aggressiveChaseDistance)
             return false;
 
         return super.canContinueToUse();
