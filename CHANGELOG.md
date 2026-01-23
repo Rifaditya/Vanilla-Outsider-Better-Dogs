@@ -4,9 +4,10 @@
 
 ### 🏗 Architecture Reversion
 
-- **Fabric Native Reversion**: Pivot from Multi-Loader (NeoForge/Fabric) back to a **standalone Fabric architecture**.
-  - *Reasoning*: Standardizing on a single platform for the experimental 26.1 snapshot significantly reduces build overhead and resolves persistent conflicts between platform abstraction layers and unobfuscated mappings.
-- **Source Consolidation**: Merged `common` and `fabric` source sets into a clean root structure. All NeoForge-specific modules and dependencies have been removed.
+- **Fabric Native Reversion**: Pivot from Multi-Loader (NeoForge/Fabric) back to it being **Fabric only**.
+  - *Reasoning*: Maintaining two loaders is way too hard and I'm too stupid to keep fighting NeoForge's snapshot jank. We're going Fabric-only to save my sanity.
+  - *The Technicality*: Removing the platform services abstraction reduces build overhead and resolves persistent conflicts between the abstraction layer and unobfuscated mappings in the 26.1 environment.
+- **Source Consolidation**: Smashed `common` and `fabric` into one root structure. Deleted NeoForge and all the extra dependencies because one loader is much easier to manage than two.
 
 ### 🛠 Technical Changes
 
