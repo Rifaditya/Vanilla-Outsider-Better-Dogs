@@ -48,7 +48,7 @@ public class BetterDogsConfig {
     // ========== Aggressive Personality ==========
     // @ConfigEntry.Category("aggressive")
     // @ConfigEntry.Gui.Tooltip
-    public double aggressiveHealthBonus = 20.0;
+    public double aggressiveHealthBonus = -10.0;
 
     // @ConfigEntry.Category("aggressive")
     // @ConfigEntry.Gui.Tooltip
@@ -64,7 +64,7 @@ public class BetterDogsConfig {
 
     // @ConfigEntry.Category("aggressive")
     // @ConfigEntry.Gui.Tooltip
-    public double aggressiveDamageModifier = -0.15;
+    public double aggressiveDamageModifier = 0.50;
 
     // @ConfigEntry.Category("aggressive")
     // @ConfigEntry.Gui.Tooltip
@@ -77,7 +77,7 @@ public class BetterDogsConfig {
     // ========== Pacifist Personality ==========
     // @ConfigEntry.Category("pacifist")
     // @ConfigEntry.Gui.Tooltip
-    public double pacifistHealthBonus = 0.0;
+    public double pacifistHealthBonus = 20.0;
 
     // @ConfigEntry.Category("pacifist")
     // @ConfigEntry.Gui.Tooltip
@@ -85,7 +85,7 @@ public class BetterDogsConfig {
 
     // @ConfigEntry.Category("pacifist")
     // @ConfigEntry.Gui.Tooltip
-    public double pacifistDamageModifier = 0.15;
+    public double pacifistDamageModifier = -0.30;
 
     // @ConfigEntry.Category("pacifist")
     // @ConfigEntry.Gui.Tooltip

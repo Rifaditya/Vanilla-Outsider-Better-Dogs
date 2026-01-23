@@ -3,6 +3,6 @@ Specification-Title: Vanilla Outsider: Better Dogs
 Specification-Vendor: VanillaOutsider
 Specification-Version: 1
 Implementation-Title: Vanilla Outsider: Better Dogs
-Implementation-Version: 1.8.1-26.1
+Implementation-Version: 1.8.2-26.1
 Implementation-Vendor: VanillaOutsider
 

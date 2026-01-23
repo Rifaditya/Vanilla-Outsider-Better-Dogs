@@ -9,6 +9,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersistentData;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
@@ -32,6 +33,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
  * Mixin for Wolf entity to add personality system and other enhancements.
@@ -45,6 +47,9 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
 
     @Unique
     private boolean betterdogs$statsApplied = false;
+
+    @Unique
+    private int betterdogs$strikesRemaining = 0;
 
     // Dummy constructor required for extending TamableAnimal
     protected WolfMixin() {
@@ -100,6 +105,16 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     @Override
     public void betterdogs$setLastDamageTime(int time) {
         WolfPersistentData.setPersistedLastDamageTime((Wolf) (Object) this, time);
+    }
+
+    @Override
+    public int betterdogs$getStrikesRemaining() {
+        return this.betterdogs$strikesRemaining;
+    }
+
+    @Override
+    public void betterdogs$setStrikesRemaining(int count) {
+        this.betterdogs$strikesRemaining = count;
     }
 
     // ========== Stat Modifiers ==========
@@ -176,6 +191,21 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
                     knockbackAttr.addPermanentModifier(new AttributeModifier(pacifistKnockbackId, kbMod,
                             AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
                 }
+
+                var healthAttr = this.getAttribute(Attributes.MAX_HEALTH);
+                if (healthAttr != null) {
+                    Identifier pacifistHealthId = Identifier.parse("betterdogs:pacifist_health");
+                    healthAttr.removeModifier(pacifistHealthId);
+
+                    double hpBonus = BetterDogsConfig.get().getPacifistHealthBonus();
+                    if (hpBonus != 0) {
+                        healthAttr.addPermanentModifier(new AttributeModifier(pacifistHealthId, hpBonus,
+                                AttributeModifier.Operation.ADD_VALUE));
+                        if (hpBonus > 0 && this.getHealth() < this.getMaxHealth()) {
+                            this.heal((float) hpBonus);
+                        }
+                    }
+                }
             }
             case NORMAL -> {
                 // Configurable Modifiers
@@ -230,6 +260,10 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
 
         // 2. Add Aggressive Target Goal (Priority 2 - high priority)
         this.targetSelector.addGoal(2, new AggressiveTargetGoal(wolf));
+
+        // 2.5 Add Domestic Aggression/Intervention Goal
+        this.goalSelector.addGoal(1, new DomesticRetaliationGoal(wolf));
+        this.targetSelector.addGoal(1, new InterventionGoal(wolf));
 
         // Pacifist personality: Revenge for owner - priority 2
         this.targetSelector.addGoal(2, new PacifistRevengeGoal(wolf));
@@ -400,11 +434,72 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     private void betterdogs$onActuallyHurt(ServerLevel level, DamageSource source, float amount, CallbackInfo ci) {
         betterdogs$setLastDamageTime(this.tickCount);
 
-        if (this.isTame() && source.getEntity() instanceof Player player) {
-            if (BetterDogsConfig.get().getEnableFriendlyFireProtection() && this.isOwnedBy(player)
-                    && !player.isShiftKeyDown()) {
-                ci.cancel(); // Cancel damage logic entirely
+        if (((Wolf)(Object)this).isTame() && source.getEntity() instanceof LivingEntity attacker) {
+            Wolf wolf = (Wolf)(Object)this;
+            
+            // If attacked by owner
+            if (attacker instanceof Player player && wolf.isOwnedBy(player)) {
+                // Domestic Dispute: Baby wolf retaliation
+                if (wolf.isBaby() && !player.isShiftKeyDown()) {
+                    this.betterdogs$setStrikesRemaining(2);
+                    this.setTarget(player);
+                }
+
+                if (BetterDogsConfig.get().getEnableFriendlyFireProtection() && !player.isShiftKeyDown()) {
+                    ci.cancel(); // Cancel damage logic
+                }
+                return;
             }
+            
+            // If attacked by another wolf (Intervention case)
+            if (attacker instanceof Wolf attackerWolf && attackerWolf.isOwnedBy(wolf.getOwner())) {
+                boolean isAggressiveIntervention = false;
+                if (attackerWolf instanceof WolfExtensions extAttacker) {
+                    isAggressiveIntervention = extAttacker.betterdogs$getPersonality() == WolfPersonality.AGGRESSIVE 
+                        && attackerWolf.getTarget() == wolf;
+                }
+                
+                if (isAggressiveIntervention) {
+                    // Allow damage during intervention
+                    return;
+                }
+            }
+
+            // Normal friendly fire protection
+            if (attacker instanceof Player player && wolf.isOwnedBy(player) && BetterDogsConfig.get().getEnableFriendlyFireProtection() && !player.isShiftKeyDown()) {
+                ci.cancel();
+            }
+        }
+    }
+
+    @Inject(method = "doHurtTarget", at = @At("RETURN"))
+    private void betterdogs$afterHurt(LivingEntity target, CallbackInfoReturnable<Boolean> cir) {
+        if (cir.getReturnValue() && this.betterdogs$strikesRemaining > 0) {
+            this.betterdogs$strikesRemaining--;
+            if (this.betterdogs$strikesRemaining <= 0) {
+                ((Wolf)(Object)this).setTarget(null);
+            }
+        }
+    }
+
+    /**
+     * Protect student/baby wolves from being targeted by others, unless they are offenders.
+     */
+    @Inject(method = "wantsToAttack", at = @At("HEAD"), cancellable = true)
+    private void betterdogs$protectBabies(LivingEntity target, LivingEntity owner, CallbackInfoReturnable<Boolean> cir) {
+        if (target instanceof Wolf wolfTarget && wolfTarget.isBaby() && wolfTarget.isTame()) {
+            // Exceptions: Aggressive adults might intervene if the baby is attacking its owner
+            Wolf thisWolf = (Wolf)(Object)this;
+            WolfExtensions ext = (WolfExtensions) thisWolf;
+            boolean isAggressive = ext.betterdogs$hasPersonality() && ext.betterdogs$getPersonality() == WolfPersonality.AGGRESSIVE;
+            
+            if (isAggressive && wolfTarget.getTarget() != null && wolfTarget.getTarget().equals(wolfTarget.getOwner())) {
+                // Aggressive adult intervenes!
+                cir.setReturnValue(true);
+                return;
+            }
+            
+            cir.setReturnValue(false);
         }
     }
 }

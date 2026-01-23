@@ -31,4 +31,14 @@ public interface WolfExtensions {
      * Update the last damage time
      */
     void betterdogs$setLastDamageTime(int time);
+
+    /**
+     * Get remaining strikes for retaliation or enforcement
+     */
+    int betterdogs$getStrikesRemaining();
+
+    /**
+     * Set remaining strikes
+     */
+    void betterdogs$setStrikesRemaining(int count);
 }

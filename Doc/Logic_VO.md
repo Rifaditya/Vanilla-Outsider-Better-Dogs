@@ -4,16 +4,18 @@
 
 - Wolves have a hidden "Genome" determining their personality.
 - **Personalities**:
-  - **Aggressive**: High Damage, Low Health. Attacks monsters.
-  - **Pacifist**: High Knockback, runs from danger.
+  - **Aggressive**: High Damage, Low Health. Attacks monsters. Will intervene in domestic disputes (3-strike sequence).
+  - **Pacifist**: Low Damage, High Health, High Knockback. Runs from danger.
   - **Normal**: Balanced.
 
-## Baby Wolf Behavior
+## Domestic Aggression & Intervention
 
-- **Passive by Default**: Baby wolves will not participate in combat (attacking owner's targets or defending owner).
-- **Exceptions**:
-  - **Aggressive Personality**: Baby wolves with the Aggressive personality will still attack monsters.
-  - **Self Defense**: Any baby wolf will retaliate if hit by a mob.
+- **Baby Retaliation**: If a baby wolf is hit by its owner, it will retaliate with exactly **two attacks**.
+- **Protection**: Tamed baby wolves cannot be targeted by other wolves (wild or tamed).
+- **Aggressive Intervention**:
+  - If a baby wolf attacks its owner, any nearby **Aggressive** adult wolf belonging to that owner will intervene to protect the owner.
+  - Intervening wolves follow a disciplined **3-strike sequence**, after which they cease their aggressive action.
+  - This intervention can be lethal to the offending baby wolf.
 
 ## Breeding Algorithm
 

@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.8.2-26.1] - 2026-01-23
+
+### 🎉 New Features
+
+- **Domestic Aggression & Retaliation**:
+  - Baby wolves retaliate with **2 strikes** if hit by their owner.
+- **Aggressive Adult Intervention**:
+  - Aggressive adults will intervene (with a **3-strike sequence**) if a baby wolf attacks its owner.
+- **Puppy Protection**:
+  - Tamed baby wolves are no longer targeted by other wolves (wild or tamed).
+
+### 🛠 Bug Fixes
+
+- **Personality Stats Rebalance**: Corrected swapped Aggressive/Pacifist stat modifiers.
+
 ## [1.8.1-26.1] - 2026-01-23
 
 ### 🎉 New Features
