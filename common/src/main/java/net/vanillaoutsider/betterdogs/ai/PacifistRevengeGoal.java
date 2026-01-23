@@ -26,7 +26,7 @@ public class PacifistRevengeGoal extends HurtByTargetGoal {
             return false;
 
         if (wolf instanceof WolfExtensions ext) {
-            if (ext.betterdogs$getPersonality() != WolfPersonality.PACIFIST)
+            if (ext.betterdogs$getPersonality() != WolfPersonality.PACIFIST || wolf.isBaby())
                 return false;
         } else {
             return false;

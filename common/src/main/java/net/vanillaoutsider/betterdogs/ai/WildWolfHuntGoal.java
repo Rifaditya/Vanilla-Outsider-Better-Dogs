@@ -23,7 +23,7 @@ public class WildWolfHuntGoal<T extends LivingEntity> extends NearestAttackableT
     @Override
     public boolean canUse() {
         // Only applies to wild wolves
-        if (wolf.isTame())
+        if (wolf.isTame() || wolf.isBaby())
             return false;
 
         // Only hunt if health is below configurable threshold

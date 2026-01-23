@@ -20,7 +20,7 @@
 ### 📦 Build Information
 
 | Loader | File | MC Version |
-|--------|------|------------|
+| :--- | :--- | :--- |
 | Fabric | `vanilla-outsider-better-dogs-fabric-1.8.0-26.1.jar` | 26.1-snapshot-4 |
 | NeoForge | `vanilla-outsider-better-dogs-neoforge-1.8.0-26.1.jar` | 26.1-snapshot-4 |
 

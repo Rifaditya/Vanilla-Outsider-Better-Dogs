@@ -6,6 +6,7 @@
         "WolfMixin",
         "WolfAIMixin",
         "OwnerHurtTargetGoalMixin",
+        "OwnerHurtByTargetGoalMixin",
         "WolfBreedingMixin"
     ],
     "injectors": {
