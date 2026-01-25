@@ -1,5 +1,21 @@
 # Changelog
 
+## [v3.1.7] - 2026-01-25
+
+- **New Feature: Individual DNA**
+  - Every dog now has a unique "preference roll" (based on their UUID) that determines if they like specific social events.
+  - This ensures that even two dogs with the same Personality will behave differently (e.g., one loves Zoomies, the other thinks it's undignified).
+
+- **New Feature: Zoomies**
+  - Wolves now have a chance to get the "Zoomies" (hyperactive running) in the morning or after rain.
+  - **Triggers**: Morning (10% chance), Wet/Rain (20% chance).
+  - **Acceptance**: Babies (Always), Normal (50%), Pacifist (20%), Aggressive (Never).
+
+- **New Feature: Group Howl**
+  - Wolves may start a group howl at night.
+  - **Triggers**: Full Moon (100% chance), Regular Night (5% chance).
+  - **Leader/Follower**: One wolf starts, nearby pack members join in if they pass their DNA check.
+
 ## [v3.1.6] - 2026-01-25
 
 - **New Feature: Play Fighting**

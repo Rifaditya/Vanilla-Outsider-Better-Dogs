@@ -30,24 +30,22 @@ public class ZoomiesDogEvent implements WolfEvent {
             return false;
         }
 
-        if (!wolf.isTame() || !(wolf instanceof WolfExtensions)) return false;
+        if (!wolf.isTame() || !(wolf instanceof WolfExtensions))
+            return false;
 
-        // Condition 1: Morning (0 - 2000 ticks) OR Wet (After Rain/Water)
-        long time = wolf.level().getLevelData().getDayTime() % 24000;
+        // Condition 1: Morning (0 - 2000 ticks)
+        long time = wolf.level().getGameTime() % 24000;
         boolean isMorning = time >= 0 && time < 2000;
-        boolean isWet = wolf.isWet(); // Basic wet check
         
         // Random Chance trigger for the *event opportunity*
         // Morning: 10% chance
-        // Wet: 20% chance
         Random rand = new Random();
         boolean attemptTrigger = false;
         
         if (isMorning && rand.nextFloat() < 0.10f) attemptTrigger = true;
-        if (isWet && rand.nextFloat() < 0.20f) attemptTrigger = true;
 
         if (!attemptTrigger) return false;
-
+        
         // Condition 2: Individual Acceptance (The DNA Check)
         return canAccept(wolf);
     }
@@ -57,10 +55,11 @@ public class ZoomiesDogEvent implements WolfEvent {
      * Formula: Personality + Characteristic = Do/Not
      */
     private boolean canAccept(Wolf wolf) {
-        if (!(wolf instanceof WolfExtensions ext)) return false;
+        if (!(wolf instanceof WolfExtensions ext))
+            return false;
 
         WolfPersonality personality = ext.betterdogs$getPersonality();
-        
+
         // 1. Determine Threshold based on Personality
         int threshold = 0;
         if (wolf.isBaby()) {
@@ -71,7 +70,7 @@ public class ZoomiesDogEvent implements WolfEvent {
                 case PACIFIST -> threshold = 20;
                 case AGGRESSIVE -> threshold = 0; // Aggressive dogs never do zoomies
                 // Default handling for other future personalities
-                default -> threshold = 30; 
+                default -> threshold = 30;
             }
         }
 

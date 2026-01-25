@@ -58,7 +58,7 @@ public class HowlGoal extends Goal {
         // Let's do once at start + delay
         if (howlTimer == 20 || howlTimer == 100) {
             float pitch = 0.8f + (wolf.getRandom().nextFloat() * 0.4f); // Random pitch for variety
-            wolf.playSound(SoundEvents.ENTITY_WOLF_AMBIENT.value(), 1.0f, pitch);
+            wolf.playSound(SoundEvents.ENTITY_WOLF_AMBIENT, 1.0f, pitch);
         }
     }
     

@@ -36,22 +36,19 @@ public class HowlDogEvent implements WolfEvent {
         if (!wolf.isTame() || !(wolf instanceof WolfExtensions)) return false;
 
         // Condition 1: Time is NIGHT (18000 - 22000)
-        long time = wolf.level().getLevelData().getDayTime() % 24000;
+        long time = wolf.level().getGameTime() % 24000;
         if (time < 18000 || time > 22000) return false;
 
         // Condition 2: Probability Check
         // Full Moon (Day % 8 == 0) -> 100% chance to *attempt*
         // Regular Night -> 5% chance
-        boolean isFullMoon = (wolf.level().getLevelData().getDayTime() / 24000) % 8 == 0;
+        boolean isFullMoon = (wolf.level().getGameTime() / 24000) % 8 == 0;
         Random rand = new Random();
-        
         if (!isFullMoon && rand.nextFloat() > 0.05f) {
             return false;
         }
 
         // Condition 3: Individual Acceptance (The DNA Check)
-        // Note: For Howling, we are selecting the LEADER here.
-        // If the Leader accepts, they trigger the event.
         return canAccept(wolf);
     }
 
