@@ -205,6 +205,19 @@ public class BetterDogsConfig {
     // @ConfigEntry.Gui.Tooltip
     public float babyTeleportMultiplier = 2.0f;
 
+    // ========== Baby Training System ==========
+    // @ConfigEntry.Category("baby")
+    // @ConfigEntry.Gui.Tooltip
+    public float babyMischiefChance = 2.5f; // 0-100, daily unprovoked attack chance
+
+    // @ConfigEntry.Category("baby")
+    // @ConfigEntry.Gui.Tooltip
+    public int bloodFeudChance = 5; // 0-100, chance of blood feud on adult correction
+
+    // @ConfigEntry.Category("baby")
+    // @ConfigEntry.Gui.Tooltip
+    public int babyRetaliationChance = 75; // 0-100, chance of baby retaliating when hit
+
     public static BetterDogsConfig get() {
         return INSTANCE;
     }
@@ -349,5 +362,17 @@ public class BetterDogsConfig {
 
     public float getBabyTeleportMultiplier() {
         return babyTeleportMultiplier;
+    }
+
+    public float getBabyMischiefChance() {
+        return babyMischiefChance;
+    }
+
+    public int getBloodFeudChance() {
+        return bloodFeudChance;
+    }
+
+    public int getBabyRetaliationChance() {
+        return babyRetaliationChance;
     }
 }

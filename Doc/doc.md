@@ -1,6 +1,6 @@
 # Better Dogs: Project Summary
 
-**Version:** 1.9.5-26.1 (Targeting Minecraft 26.1-snapshot-4)  
+**Version:** 3.1.6 (Targeting Minecraft 26.1-snapshot-4)  
 **Creator:** DasikIgaijin  
 **Dependencies:** Java 25, Fabric Loader >=0.16.9
 
@@ -26,6 +26,7 @@ Verified against Protocol `Better_modder_agent_protocol.yaml`:
 * **Data Management**: Uses Fabric's native `AttachmentRegistry` to store `WolfPersistentData` directly on the `Wolf` entity.
 * **Mixins**:
   * `WolfMixin`: The core engine. Handles personality rolling on spawn, AI goal injection, and particle effects.
+  * **Taming Logic**: Injects into `applyTamingSideEffects` to handle personality assignment correctly in the unobfuscated environment.
   * **Particle Control**: Overrides vanilla taming particles to reduce visual noise (7 hearts down to 3).
 * **AI Enhancements**:
   * Baby protection (babies aren't targeted unless they attack first).

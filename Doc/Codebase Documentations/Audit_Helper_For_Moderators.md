@@ -2,7 +2,7 @@
 
 **Mod Name:** Vanilla Outsider: Better Dogs
 **Mod ID:** `vanilla-outsider-better-dogs` (Fabric)
-**Version:** 1.9.5 (Targeting Minecraft 26.1 Snapshot 4)
+**Version:** 1.9.6 (Targeting Minecraft 26.1 Snapshot 4)
 **Creator:** DasikIgaijin
 
 ## 🛡️ Safety & Compliance Statement
@@ -27,12 +27,12 @@ The codebase is focused on extending the Vanilla Wolf entity with a personality 
 
 Moderators looking at Mixins might flag the following patterns. Here is the justification:
 
-### 1. `spawnTamingParticles` Override
+### 1. `betterdogs$onApplyTamingSideEffects` Injection
 
-* **Location**: `WolfMixin.java` -> `spawnTamingParticles`
-* **Reason**: **Visual Polish.** I override the vanilla method to reduce the number of heart particles from 7 down to 3. This reduces visual clutter during taming, especially when multiple wolves are involved. No logic is changed other than the particle count.
+* **Location**: `WolfMixin.java` -> `betterdogs$onApplyTamingSideEffects`
+* **Reason**: **Reliable Logic Hook.** In the unobfuscated 26.1 snapshot environment, the standard `setTame` method is not explicitly overridden in `Wolf.java`, which can lead to Mixin transformation failures if targeted directly. I inject into `applyTamingSideEffects` instead, which is a native override in `Wolf.java` used to apply tame-status changes. This ensures the mod correctly assigns its custom personalities when a wolf is tamed.
 
-### 2. `betterdogs$protectBabies` Redirect
+### 2. `spawnTamingParticles` Override
 
 * **Location**: `WolfMixin.java` -> `betterdogs$protectBabies`
 * **Reason**: **Gameplay Enhancement.** This prevents other entities (or other wolves) from targeting baby wolves unless the baby is the aggressor. This is a common feature in "Better" mob mods to prevent AI-driven "baby loss" in the wild.

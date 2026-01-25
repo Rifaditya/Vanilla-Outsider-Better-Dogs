@@ -25,6 +25,14 @@ public class BetterDogs {
         // Initialize platform-specific attachments
         @SuppressWarnings("unused")
         var ignored = WOLF_DATA;
+        
+        // Register Scheduler Events (V3.0)
+        net.vanillaoutsider.betterdogs.scheduler.WolfEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.WanderlustDogEvent());
+        net.vanillaoutsider.betterdogs.scheduler.WolfEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.RetaliationDogEvent());
+        net.vanillaoutsider.betterdogs.scheduler.WolfEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.CorrectionDogEvent());
+        net.vanillaoutsider.betterdogs.scheduler.WolfEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.SmallFightDogEvent());
+        net.vanillaoutsider.betterdogs.scheduler.WolfEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.ZoomiesDogEvent());
+        net.vanillaoutsider.betterdogs.scheduler.WolfEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.HowlDogEvent());
 
         LOGGER.info("Better Dogs initialized! Wolves have been enhanced.");
     }

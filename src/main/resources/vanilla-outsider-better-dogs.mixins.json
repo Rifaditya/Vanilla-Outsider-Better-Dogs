@@ -1,11 +1,12 @@
 {
     "required": true,
     "package": "net.vanillaoutsider.betterdogs.mixin",
-    "compatibilityLevel": "JAVA_21",
+    "compatibilityLevel": "JAVA_25",
+    "refmap": "vanilla-outsider-better-dogs-refmap.json",
     "mixins": [
-        "MobMixin",
         "WolfMixin",
         "WolfAIMixin",
+        "TamableAnimalMixin",
         "OwnerHurtTargetGoalMixin",
         "OwnerHurtByTargetGoalMixin",
         "WolfBreedingMixin"

@@ -1,26 +1,23 @@
 ![Banner](https://i.imgur.com/LnG7vm3.png)
 
-[![Requires Fabric API](https://img.shields.io/badge/Requires-Fabric_API-blue?style=for-the-badge&logo=fabric)](https://www.curseforge.com/minecraft/mc-mods/fabric-api) ![NeoForge Support](https://img.shields.io/badge/Loader-NeoForge-orange?style=for-the-badge) ![Standalone Config](https://img.shields.io/badge/Config-Standalone-orange?style=for-the-badge) ![License](https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge)
+[![Requires Fabric API](https://img.shields.io/badge/Requires-Fabric_API-blue?style=for-the-badge&logo=fabric)](https://www.curseforge.com/minecraft/mc-mods/fabric-api) ![License](https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge)
 
-# 🐕 Make Wolves Worthy Companions
+# 🐕 Make Wolves Worthy Companions (Fabric Edition)
 
-**No Backports:** I will **NOT** backport this mod to older versions (1.21, 1.20, etc.). Please do not ask.
+> [!CAUTION]
+> **No Backports:** I will **NOT** backport this mod to older versions. Please do not ask.
 
 Every Minecraft player knows the pain: you spend hours finding a wolf, tame it, and five minutes later it jumps into lava or walks off a cliff.
 
-**Vanilla Outsider: Better Dogs** completely overhauls wolf AI to make them smarter, safer, and livelier. Now natively supporting both **Fabric** and **NeoForge**, every dog feels unique with the **Personality System**.
-
-> [!IMPORTANT]
-> **Beta Release for Minecraft 26.1 Snapshots**
-> This version is built on the latest standard for Minecraft 26.1. It includes significant AI rewrites. Please report any bugs on GitHub!
+**Vanilla Outsider: Better Dogs** completely overhauls wolf AI to make them smarter, safer, and livelier. Now powered by a high-performance **Event-Driven Scheduler (v3.0+)**, wolves act efficiently without lagging your world.
 
 ---
 
-## ✨ Key Features
+## ✨ Key Features (v3.1 Snitch Update)
 
 ### 🧠 Unique Personality System
 
-When you tame a wolf, it develops one of three permanent personalities, visually distinct by their particle effects.
+When you tame a wolf, it develops one of three permanent personalities, visually distinct by their unique particle effects.
 
 <p align="center">
   <img src="https://cdn.modrinth.com/data/cached_images/bcda6a78fa3159bc710566a2cbedfa1e94a03930.png" alt="Aggressive dog particle" width="30%">
@@ -28,67 +25,56 @@ When you tame a wolf, it develops one of three permanent personalities, visually
   <img src="https://cdn.modrinth.com/data/cached_images/8722821ac9f7e1b6ca653e77cf90cf83dff2c432.png" alt="Vanilla/Normal" width="30%">
 </p>
 
-| Icon | Personality | Default Chance | Behavior |
-| :---: | :--- | :--- | :--- |
-| 💢 | **Aggressive** | **20%** | The Guardian. Proactively attacks hostile mobs near you. Now with configurable detection ranges! |
-| ❤️ | **Pacifist** | **20%** | The Loyal Friend. Only attacks mobs that hurt *you* first. Won't start fights, keeping itself safe. |
-| ✨ | **Normal** | **60%** | The Classic. Custom speeds and damage can now be applied to normal wolves via config. |
+| Icon | Personality | Behavior |
+| :---: | :--- | :--- |
+| 💢 | **Aggressive** | **The Guardian**. Proactively attacks hostile mobs. Enforces pack discipline. |
+| ❤️ | **Pacifist** | **The Healer**. Avoids combat unless you are hurt. High health, low damage. |
+| ✨ | **Normal** | **The Classic**. Balanced stats and standard behavior. |
 
-> [!TIP]
-> **Untrained Baby Nature (v1.8.3):** Tamed baby wolves are more curious and independent. They wander further (2x) and teleport less frequently by default, giving them a more "wild" feel until they grow up. These multipliers are fully configurable!
->
-> [!NOTE]
-> **Breeding & Inheritance:** Personalities are permanent and can be inherited via breeding! Note that **collar colors** follow vanilla mechanics (inherited from parents) and **do not** indicate personality types—always look for the unique particle effects!
+### 🐕 Advanced Social AI (The "Snitch" System)
 
-### 🐕 Baby Wolf Behavior System (v1.8.x)
+Wolves now interact with each other in complex, organic ways using our new **Event-Driven AI**:
 
-Baby wolves now have unique behavior rules:
+* **Baby Retaliation (The One-Bite Rule):** If you hit a baby wolf, it doesn't just take it. It bites you back **EXACTLY ONCE** to teach you a lesson, then forgives you.
+* **Adult Correction (The Snitch System):** If a baby bites you, nearby Aggressive Adults will intervene. The baby "snitches" on itself via the Event System, causing one adult to walk over and discipline it with **ONE BITE**. No gang-ups, no death loops.
+* **Blood Feuds:** Sometimes, discipline goes too far. There is a small chance (5%) that a correction turns into a permanent **Blood Feud**, where the wolves will fight to the death.
+* **Play Fighting (v3.1.6):** Large packs (>10 dogs) will now engage in safe, non-lethal play fights to burn off energy. They will chase and nip at each other without taking real damage.
 
-* **Passive by Default:** Babies won't attack what owner attacks or defend unless Aggressive or directly hit.
-* **Domestic Retaliation:** Accidentally hit your puppy? It retaliates with **2 strikes** then forgives!
-* **Adult Intervention:** Aggressive adults discipline babies that attack their owner.
-* **Puppy Protection:** Other wolves won't target tamed baby wolves.
-* **Untrained Nature:** Babies wander further (2x) and teleport less frequently.
+### 🛡️ Smart Safety AI
 
-### 🛡️ Smart Safety AI (v1.8.4+)
+Stop worrying about your dogs killing themselves:
 
-**Wolves are finally smart enough to NOT jump.**
-
-* **Baby Curiosity:** Passive/Normal babies investigate blocks and stare at entities.
-* **Reckless Aggression:** Aggressive babies engage hostiles immediately.
-* **Active Retreat:** Wolves walk backwards from cliff edges instead of jumping.
-* **Lava & Fire Warnings:** Wolves pathfind away from hazardous blocks.
-
-### ⚙️ Standalone Config System (New v1.7.6)
-
-Due to changes in the 26.1 snapshot environment, we have replaced the heavy `Cloth Config` dependency with a lightweight **Standalone JSON Loader**.
-
-* **No GUI Needed:** Configuration is fully supported even in snapshot versions where Mod Menu isn't available.
-* **Manual Control:** Edit `config/betterdogs.json` to tweak everything: Friendly Fire, Speed Buffs, Breeding Chances, and more.
+* **Cliff Safety:** Wolves detect airborne targets and **STOP** chasing instead of jumping after them.
+* **Lava & Fire Avoidance:** Wolves actively pathfind around dangerous blocks.
+* **Creeper Awareness:** Wolves flee when they hear a Creeper hiss!
 
 ### 🎁 The Gift System
 
 Like cats, your loyal dogs will now bring you treasures based on their personality!
 
-* **Aggressive**: Trophy items (Bones, Rotten Flesh).
-* **Pacifist**: Foraged items (Berries, Flowers).
+* **Aggressive**: Brings "trophies" from their hunts (Bones, Rotten Flesh).
+* **Pacifist**: Brings "foraged" items from nature (Berries, Flowers).
 
-### 🌩️ Environmental Awareness
+---
 
-* **Storm Anxiety**: Wolves are scared of Thunderstorms! They will whine and shake in fear unless they are safe indoors or sitting.
+## ⚙️ Configuration
+
+We use a **Standalone JSON Configuration** system for maximum compatibility with new snapshots.
+
+* **File Location**: `config/betterdogs.json`
+* **Features**:
+  * **Granular Per-Personality Stats**: Set unique Health, Speed, and Damage.
+  * **Breeding Odds**: Control the genetic pass-through.
+  * **Friendly Fire**: Toggle whether you can hurt your own dogs.
 
 ---
 
 ## 📦 Installation
 
 1. Download the latest **Minecraft 26.1 Snapshot**.
-2. **Fabric Users:**
-   * Install **[Fabric Loader](https://fabricmc.net/)**.
-   * Install **[Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)**.
-3. **NeoForge Users:**
-   * Install the latest **NeoForge** for 26.1.
+2. Install **[Fabric Loader](https://fabricmc.net/)**.
+3. Install **[Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)**.
 4. Place the `Vanilla-Outsider-Better-Dogs.jar` in your `mods` folder.
-5. *(Optional)* Edit `config/betterdogs.json` after the first launch to customize your experience.
 
 ---
 

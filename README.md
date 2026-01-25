@@ -5,7 +5,7 @@
 </div>
 <p align="center">
     <a href="https://modrinth.com/mod/fabric-api"><img src="https://img.shields.io/badge/Requires-Fabric_API-blue?style=for-the-badge&logo=fabric" alt="Requires Fabric API"></a>
-    <a href="https://modrinth.com/mod/fabric-language-kotlin"><img src="https://img.shields.io/badge/Language-Kotlin-purple?style=for-the-badge&logo=kotlin" alt="Kotlin"></a>
+    <img src="https://img.shields.io/badge/Language-Java_25-red?style=for-the-badge&logo=java" alt="Java 25">
     <img src="https://img.shields.io/badge/Config-Standalone-orange?style=for-the-badge" alt="Standalone Config">
     <img src="https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge" alt="License">
 </p>

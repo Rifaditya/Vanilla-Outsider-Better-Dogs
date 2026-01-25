@@ -1,18 +1,22 @@
-# Project Architecture: Vanilla Outsider - Better Dogs
+# Project Architecture: Vanilla Outsider - Better Dogs (Fabric Edition)
 
 ## Philosophy
 
-**"One Click, One Action."**
-Better Dogs enhances the wolf mechanics to be more immersive and genetically complex without adding GUIs or breaking the vanilla feel.
+**"Immersion via Systems."**
+Better Dogs enhances wolf behavior through hidden complexity. We use unseen AI systems (Schedulers, Events, Personalities) to create behaviors that feel organic and unpredictable, rather than scripted.
 
 ## Structure
 
-- **Common**: Core logic, Mixins, Config, and Persistent Data.
-- **Fabric**: Fabric Loader entrypoint and dependencies.
-- **NeoForge**: NeoForge Loader entrypoint and dependencies.
+- **Core**: Single-module Fabric project (No Common/Loader split).
+- **Engine**:
+  - `scheduler/`: The heart of the new AI. Handles time-based events.
+  - `ai/`: Custom Goals (tasks) that entities execute.
+  - `mixin/`: Injections into Vanilla code (WolfMixin, TamableAnimalMixin).
 
 ## Key Components
 
-- **WolfMixin**: Injects AI and Attribute logic into `Wolf` entity.
-- **WolfPersistentData**: Handles NBT data retention for genes/personalities.
-- **BetterDogsConfig**: JSON-based configuration loader (No external libs).
+- **WolfScheduler**: The central brain. Manages "Events" (like Wandering, Retaliation, Correction) and injections.
+- **WolfExtensions**: Interface injected into `Wolf` to give it memory, social state, and personality.
+- **WolfEventRegistry**: Stores all valid behavioral events.
+- **WolfPersistentData**: Uses Fabric Attachment API to save personality traits to NBT.
+- **BetterDogsConfig**: Cloth Config integration for user settings.

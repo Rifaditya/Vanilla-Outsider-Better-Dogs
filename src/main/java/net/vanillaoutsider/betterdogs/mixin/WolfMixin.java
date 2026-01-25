@@ -27,11 +27,20 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 import net.minecraft.resources.Identifier;
 import net.vanillaoutsider.betterdogs.BetterDogs;
+import net.vanillaoutsider.betterdogs.scheduler.WolfScheduler;
+import net.vanillaoutsider.betterdogs.ai.WanderlustGoal;
 import net.vanillaoutsider.betterdogs.ai.*;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
+import net.vanillaoutsider.betterdogs.util.WolfStatManager;
+import net.vanillaoutsider.betterdogs.util.WolfCombatHooks;
+import net.vanillaoutsider.betterdogs.util.WolfParticleHandler;
 import java.util.Set;
 import java.util.HashSet;
 import org.spongepowered.asm.mixin.Mixin;
@@ -54,39 +63,13 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     @Unique
     private boolean betterdogs$statsApplied = false;
 
-    @Unique
-    private int betterdogs$strikesRemaining = 0;
 
     // Dummy constructor required for extending TamableAnimal
     protected WolfMixin() {
         super(null, null);
     }
 
-    // ========== Stat Modifier Constants ==========
-
-    @Unique
-    private static final String AGGRESSIVE_SPEED_ID = "betterdogs:aggressive_speed";
-    @Unique
-    private static final String AGGRESSIVE_DAMAGE_ID = "betterdogs:aggressive_damage";
-    @Unique
-    private static final String PACIFIST_SPEED_ID = "betterdogs:pacifist_speed";
-    @Unique
-    private static final String PACIFIST_DAMAGE_ID = "betterdogs:pacifist_damage";
-    @Unique
-    private static final String PACIFIST_KNOCKBACK_ID = "betterdogs:pacifist_knockback";
-    @Unique
-    private static final String BASE_SPEED_ID = "betterdogs:base_speed_boost";
-    @Unique
-    private static final String AGGRESSIVE_HEALTH_ID = "betterdogs:aggressive_health";
-    @Unique
-    private static final String NORMAL_SPEED_ID = "betterdogs:normal_speed";
-    @Unique
-    private static final String NORMAL_DAMAGE_ID = "betterdogs:normal_damage";
-    @Unique
-    private static final String NORMAL_HEALTH_ID = "betterdogs:normal_health";
-
-    // ========== WolfExtensions Implementation (delegates to persistence)
-    // ==========
+    // ========== WolfExtensions Implementation (delegates to persistence) ==========
 
     @Override
     public WolfPersonality betterdogs$getPersonality() {
@@ -113,137 +96,164 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         WolfPersistentData.setPersistedLastDamageTime((Wolf) (Object) this, time);
     }
 
+    // ========== Submissive (baby cannot attack pack after correction) ==========
+
     @Override
-    public int betterdogs$getStrikesRemaining() {
-        return this.betterdogs$strikesRemaining;
+    public boolean betterdogs$isSubmissive() {
+        return WolfPersistentData.isPersistedSubmissive((Wolf) (Object) this);
     }
 
     @Override
-    public void betterdogs$setStrikesRemaining(int count) {
-        this.betterdogs$strikesRemaining = count;
+    public void betterdogs$setSubmissive(boolean submissive) {
+        WolfPersistentData.setPersistedSubmissive((Wolf) (Object) this, submissive);
     }
 
-    // ========== Stat Modifiers ==========
+    // ========== Blood Feud (permanent vendetta) ==========
+
+    @Override
+    public String betterdogs$getBloodFeudTarget() {
+        return WolfPersistentData.getPersistedBloodFeudTarget((Wolf) (Object) this);
+    }
+
+    @Override
+    public void betterdogs$setBloodFeudTarget(String targetUuid) {
+        WolfPersistentData.setPersistedBloodFeudTarget((Wolf) (Object) this, targetUuid);
+    }
+
+    @Override
+    public boolean betterdogs$hasBloodFeud() {
+        return WolfPersistentData.hasBloodFeud((Wolf) (Object) this);
+    }
+
+    // ========== Last Mischief Day (daily mischief tracking) ==========
+
+    @Override
+    public long betterdogs$getLastMischiefDay() {
+        return WolfPersistentData.getPersistedLastMischiefDay((Wolf) (Object) this);
+    }
+
+    @Override
+    public void betterdogs$setLastMischiefDay(long day) {
+        WolfPersistentData.setPersistedLastMischiefDay((Wolf) (Object) this, day);
+    }
+
+    // ========== Dunce Cap (Transient Disciplinary State) ==========
+
+    @Unique
+    private boolean isBeingDisciplined = false;
+
+    @Override
+    public boolean betterdogs$isBeingDisciplined() {
+        return this.isBeingDisciplined;
+    }
+
+    @Override
+    public void betterdogs$setBeingDisciplined(boolean isBeingDisciplined) {
+        this.isBeingDisciplined = isBeingDisciplined;
+    }
+    
+    // === SOCIAL CHANNEL SYSTEM (V2) ===
+    
+    @Unique private LivingEntity betterdogs$socialTarget = null;
+    @Unique private WolfExtensions.SocialAction betterdogs$socialAction = WolfExtensions.SocialAction.NONE;
+    @Unique private int betterdogs$socialModeTimer = 0;
+
+    @Override
+    public void betterdogs$setSocialState(@Nullable LivingEntity target, WolfExtensions.SocialAction action, int maxDurationTicks) {
+        if (target != null && action != WolfExtensions.SocialAction.NONE) {
+            this.betterdogs$socialTarget = target;
+            this.betterdogs$socialAction = action;
+            this.betterdogs$socialModeTimer = maxDurationTicks;
+            // Immediate Logic: If we set a social target, we immediately engage.
+            // Gatekeeper will now allow this specific target + action pair.
+        } else {
+            // Clearing target = End Social Mode
+            this.betterdogs$socialTarget = null;
+            this.betterdogs$socialAction = WolfExtensions.SocialAction.NONE;
+            this.betterdogs$socialModeTimer = 0;
+            // WAKE UP MASTER BRAIN
+            ((Wolf)(Object)this).setTarget(null); 
+        }
+    }
+
+    @Override
+    public @Nullable LivingEntity betterdogs$getSocialTarget() {
+        return this.betterdogs$socialTarget;
+    }
+
+    @Override
+    public WolfExtensions.SocialAction betterdogs$getSocialAction() {
+        return this.betterdogs$socialAction;
+    }
+
+    @Override
+    public boolean betterdogs$isSocialModeActive() {
+        return this.betterdogs$socialTarget != null && this.betterdogs$socialTarget.isAlive() && this.betterdogs$socialModeTimer > 0;
+    }
+
+    @Override
+    public void betterdogs$tickSocialMode() {
+        if (this.betterdogs$socialModeTimer > 0) {
+            this.betterdogs$socialModeTimer--;
+            if (this.betterdogs$socialModeTimer <= 0) {
+                // FAILSAFE TRIGGERED: Force Unlock
+                betterdogs$setSocialState(null, WolfExtensions.SocialAction.NONE, 0);
+            }
+        } else if (this.betterdogs$socialTarget != null) {
+             // Consistency check: Timer died but target exists? Kill it.
+             betterdogs$setSocialState(null, WolfExtensions.SocialAction.NONE, 0);
+        }
+    }
+    
+    // === SCHEDULER SYSTEM (V3.0 - Modular) ===
+    
+    @Unique
+    private WolfScheduler betterdogs$scheduler;
+
+    @Override
+    public WolfScheduler betterdogs$getScheduler() {
+        if (betterdogs$scheduler == null) {
+            betterdogs$scheduler = new WolfScheduler((Wolf)(Object)this);
+        }
+        return betterdogs$scheduler;
+    }
+
+    @Override
+    public void betterdogs$tickScheduler() {
+        if (!this.level().isClientSide()) { // Server only
+            betterdogs$getScheduler().tickActiveEvent(); // Only tick active behaviors
+        }
+    }
+
+    // === THE GATEKEEPER (setTarget Override) ===
+    // This REPLACES the standard setTarget logic to enforce "One Brain at a Time"
+    
+    @Override
+    public void setTarget(@Nullable LivingEntity newTarget) {
+        // If this wolf is in SOCIAL MODE
+        if (betterdogs$isSocialModeActive()) {
+            
+            // RULE: Only the Social Target is allowed to pass.
+            if (newTarget == betterdogs$getSocialTarget()) {
+                // ALLOW (Transient Switch for attack mechanics)
+                // Proceed to super
+            } else {
+                // DENY (Master Brain is Dormant. Ignore "Enemies", "Attackers", "Owner Hitting something")
+                return; 
+            }
+        }
+        // If NOT in Social Mode -> Standard Vanilla Logic applies (Master Brain is Awake)
+        super.setTarget(newTarget);
+    }
+    
+    @Inject(method = "tick", at = @At("HEAD"))
+    private void betterdogs$onTick(CallbackInfo ci) {
+        betterdogs$tickSocialMode();
+    }
 
     @Unique
     private void betterdogs$applyPersonalityStats(WolfPersonality personality) {
-        var speedAttr = this.getAttribute(Attributes.MOVEMENT_SPEED);
-        var damageAttr = this.getAttribute(Attributes.ATTACK_DAMAGE);
-        var knockbackAttr = this.getAttribute(Attributes.ATTACK_KNOCKBACK);
-
-        if (speedAttr == null || damageAttr == null)
-            return;
-
-        Identifier aggressiveSpeedId = Identifier.parse(AGGRESSIVE_SPEED_ID);
-        Identifier aggressiveDamageId = Identifier.parse(AGGRESSIVE_DAMAGE_ID);
-        Identifier pacifistSpeedId = Identifier.parse(PACIFIST_SPEED_ID);
-        Identifier pacifistDamageId = Identifier.parse(PACIFIST_DAMAGE_ID);
-        Identifier pacifistKnockbackId = Identifier.parse(PACIFIST_KNOCKBACK_ID);
-        Identifier baseSpeedId = Identifier.parse(BASE_SPEED_ID);
-
-        // Remove existing modifiers
-        speedAttr.removeModifier(aggressiveSpeedId);
-        speedAttr.removeModifier(pacifistSpeedId);
-        speedAttr.removeModifier(baseSpeedId);
-        damageAttr.removeModifier(aggressiveDamageId);
-        damageAttr.removeModifier(pacifistDamageId);
-
-        // Apply Base Speed Boost (Configurable) to all Better Dogs
-        double speedBuff = BetterDogsConfig.get().getGlobalSpeedBuff();
-        speedAttr.addPermanentModifier(new AttributeModifier(baseSpeedId, speedBuff,
-                AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-        if (knockbackAttr != null) {
-            knockbackAttr.removeModifier(pacifistKnockbackId);
-        }
-
-        switch (personality) {
-            case AGGRESSIVE -> {
-                // Configurable Modifiers
-                double speedMod = BetterDogsConfig.get().getAggressiveSpeedModifier();
-                double damageMod = BetterDogsConfig.get().getAggressiveDamageModifier();
-
-                speedAttr.addPermanentModifier(new AttributeModifier(aggressiveSpeedId, speedMod,
-                        AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-                damageAttr.addPermanentModifier(new AttributeModifier(aggressiveDamageId, damageMod,
-                        AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-
-                var healthAttr = this.getAttribute(Attributes.MAX_HEALTH);
-                if (healthAttr != null) {
-                    Identifier aggressiveHealthId = Identifier.parse(AGGRESSIVE_HEALTH_ID);
-                    healthAttr.removeModifier(aggressiveHealthId);
-
-                    double hpBonus = BetterDogsConfig.get().getAggressiveHealthBonus();
-                    if (hpBonus > 0) {
-                        healthAttr.addPermanentModifier(new AttributeModifier(aggressiveHealthId, hpBonus,
-                                AttributeModifier.Operation.ADD_VALUE));
-                        // Heal to new max if needed
-                        if (this.getHealth() < this.getMaxHealth()) {
-                            this.heal((float) hpBonus);
-                        }
-                    }
-                }
-            }
-            case PACIFIST -> {
-                // Configurable Modifiers
-                double speedMod = BetterDogsConfig.get().getPacifistSpeedModifier();
-                double damageMod = BetterDogsConfig.get().getPacifistDamageModifier();
-                double kbMod = BetterDogsConfig.get().getPacifistKnockbackModifier();
-
-                speedAttr.addPermanentModifier(new AttributeModifier(pacifistSpeedId, speedMod,
-                        AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-                damageAttr.addPermanentModifier(new AttributeModifier(pacifistDamageId, damageMod,
-                        AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-                if (knockbackAttr != null) {
-                    knockbackAttr.addPermanentModifier(new AttributeModifier(pacifistKnockbackId, kbMod,
-                            AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-                }
-
-                var healthAttr = this.getAttribute(Attributes.MAX_HEALTH);
-                if (healthAttr != null) {
-                    Identifier pacifistHealthId = Identifier.parse("betterdogs:pacifist_health");
-                    healthAttr.removeModifier(pacifistHealthId);
-
-                    double hpBonus = BetterDogsConfig.get().getPacifistHealthBonus();
-                    if (hpBonus != 0) {
-                        healthAttr.addPermanentModifier(new AttributeModifier(pacifistHealthId, hpBonus,
-                                AttributeModifier.Operation.ADD_VALUE));
-                        if (hpBonus > 0 && this.getHealth() < this.getMaxHealth()) {
-                            this.heal((float) hpBonus);
-                        }
-                    }
-                }
-            }
-            case NORMAL -> {
-                // Configurable Modifiers
-                double speedMod = BetterDogsConfig.get().getNormalSpeedModifier();
-                double damageMod = BetterDogsConfig.get().getNormalDamageModifier();
-                double healthMod = BetterDogsConfig.get().getNormalHealthBonus();
-
-                Identifier normalSpeedId = Identifier.parse(NORMAL_SPEED_ID);
-                Identifier normalDamageId = Identifier.parse(NORMAL_DAMAGE_ID);
-                Identifier normalHealthId = Identifier.parse(NORMAL_HEALTH_ID);
-
-                if (speedMod != 0.0) {
-                    speedAttr.addPermanentModifier(new AttributeModifier(normalSpeedId, speedMod,
-                            AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-                }
-                if (damageMod != 0.0) {
-                    damageAttr.addPermanentModifier(new AttributeModifier(normalDamageId, damageMod,
-                            AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-                }
-
-                var healthAttr = this.getAttribute(Attributes.MAX_HEALTH);
-                if (healthAttr != null) {
-                    if (healthMod > 0) {
-                        healthAttr.addPermanentModifier(new AttributeModifier(normalHealthId, healthMod,
-                                AttributeModifier.Operation.ADD_VALUE));
-                        if (this.getHealth() < this.getMaxHealth()) {
-                            this.heal((float) healthMod);
-                        }
-                    }
-                }
-            }
-        }
+        WolfStatManager.applyPersonalityStats((Wolf)(Object)this, personality);
     }
 
     @Inject(method = "finalizeSpawn", at = @At("RETURN"))
@@ -252,7 +262,19 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
             WolfPersonality personality = WolfPersonality.random();
             betterdogs$setPersonality(personality);
             BetterDogs.LOGGER.info("Wolf spawned with personality: {}", personality.name());
+            
+            // Register to Global System Scheduler
+            net.vanillaoutsider.betterdogs.scheduler.WolfSystemScheduler.get().add((Wolf)(Object)this);
         }
+    }
+    
+    // Inject at remove to Unregister
+    @Override
+    public void remove(Entity.RemovalReason reason) {
+        if (!this.level().isClientSide()) {
+             net.vanillaoutsider.betterdogs.scheduler.WolfSystemScheduler.get().remove((Wolf)(Object)this);
+        }
+        super.remove(reason);
     }
 
     // ========== AI Goal Injection ==========
@@ -261,47 +283,32 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     private void betterdogs$registerCustomGoals(CallbackInfo ci) {
         Wolf wolf = (Wolf) (Object) this;
 
-        // 1. Add Gift Goal (Priority 8 - low priority)
         this.goalSelector.addGoal(8, new WolfGiftGoal(wolf));
-
-        // Safety: Flee from creepers (tamed only) - priority 1
         this.goalSelector.addGoal(1, new FleeCreeperGoal(wolf));
-
-        // Safety: Avoid hazards (all wolves) - priority 1
         this.goalSelector.addGoal(1, new AvoidHazardsGoal(wolf));
-
-        // Wild wolf: Eat food from ground - priority 3
         this.goalSelector.addGoal(3, new EatGroundFoodGoal(wolf));
-
-        // 2. Add Aggressive Target Goal (Priority 2 - high priority)
         this.targetSelector.addGoal(2, new AggressiveTargetGoal(wolf));
-
-        // 2.5 Add Domestic Aggression/Intervention Goal
-        this.goalSelector.addGoal(1, new DomesticRetaliationGoal(wolf));
-        this.targetSelector.addGoal(1, new InterventionGoal(wolf));
-
-        // Pacifist personality: Revenge for owner - priority 2
         this.targetSelector.addGoal(2, new PacifistRevengeGoal(wolf));
+        
+        // Baby Training System (v1.10.000)
+        this.targetSelector.addGoal(1, new BloodFeudGoal(wolf));        // Highest priority
+        this.goalSelector.addGoal(0, new BabyBiteBackGoal(wolf));       // Retaliation (PRIORITY 0: Absolute Top)
+        this.goalSelector.addGoal(4, new AdultCorrectionGoal(wolf));    // Correction
+        this.goalSelector.addGoal(4, new SmallFightGoal(wolf));         // Small Fight (Simulated Aggression)
+        this.goalSelector.addGoal(5, new BabyMischiefGoal(wolf));       // Daily mischief
+        this.goalSelector.addGoal(6, new ZoomiesGoal(wolf));            // Zoomies (Hyperactive running)
+        this.goalSelector.addGoal(6, new HowlGoal(wolf));               // Group Howl (Sits and Howls)
 
-        // 3. Replace Vanilla Wild Hunting
-        // We want to remove the vanilla NonTameRandomTargetGoal because it doesn't
-        // check for health
         Set<WrappedGoal> goalsToRemove = new HashSet<>();
         for (WrappedGoal goal : this.targetSelector.getAvailableGoals()) {
-            // Check string representation as fallback if class is not accessible
             if (goal.getGoal().toString().contains("NonTameRandomTargetGoal")) {
                 goalsToRemove.add(goal);
             }
         }
-
         for (WrappedGoal goal : goalsToRemove) {
             this.targetSelector.removeGoal(goal.getGoal());
         }
 
-        // 4. Replace Vanilla Follow Owner Goal (to apply config ranges)
-        // Vanilla usually adds this at priority 6. We'll remove it and add our own.
-        // Similar search logic in case we can't target the class directly easily
-        // (though we can w/ import)
         Set<WrappedGoal> followGoalsToRemove = new HashSet<>();
         for (WrappedGoal goal : this.goalSelector.getAvailableGoals()) {
             if (goal.getGoal() instanceof FollowOwnerGoal) {
@@ -312,10 +319,8 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
             this.goalSelector.removeGoal(goal.getGoal());
         }
 
-        // Params: wolf, speed, leavesAllowed (dist logic inside goal)
         this.goalSelector.addGoal(6, new PersonalityFollowOwnerGoal(wolf, 1.0, false));
 
-        // Add our custom hunting goal
         TargetingConditions.Selector preySelector = (entity, level) -> entity instanceof Sheep
                 || entity instanceof Rabbit || entity instanceof Chicken;
 
@@ -325,41 +330,36 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
                 false,
                 preySelector));
 
-        // 4. Add Storm Anxiety Goal (High Priority - 6)
         if (BetterDogsConfig.get().getEnableStormAnxiety()) {
             this.goalSelector.addGoal(6, new WolfStormAnxietyGoal(wolf));
         }
 
-        // 5. Add Baby Curiosity Goal (Priority 7 - after following/safety)
         this.goalSelector.addGoal(7, new BabyCuriosityGoal(wolf, 0.8));
+        this.goalSelector.addGoal(7, new BabyCuriosityGoal(wolf, 0.8));
+        
+        // Scheduler Goals (V3.0)
+        this.goalSelector.addGoal(8, new WanderlustGoal(wolf, 1.0));
     }
-
+    
     // ========== On Tame - Assign Personality ==========
-
-    @Inject(method = "setTame", at = @At("HEAD"))
-    private void betterdogs$onSetTame(boolean tamed, boolean applyBoost, CallbackInfo ci) {
-        if (!tamed || this.level().isClientSide())
+    @Inject(method = "applyTamingSideEffects", at = @At("HEAD"))
+    private void betterdogs$onApplyTamingSideEffects(CallbackInfo ci) {
+        if (!this.isTame() || this.level().isClientSide())
             return;
 
-        // If personality is not set (e.g. spawned before the system existed), assign it
         if (!betterdogs$hasPersonality()) {
             WolfPersonality personality = WolfPersonality.random();
             betterdogs$setPersonality(personality);
             BetterDogs.LOGGER.info("Wolf [{}] tamed - assigning initial personality: {}", this.getUUID(), personality.name());
         }
 
-        // Apply stats and show celebration particles
         WolfPersonality personality = betterdogs$getPersonality();
         betterdogs$applyPersonalityStats(personality);
         betterdogs$statsApplied = true;
-        
+
         betterdogs$playTameParticles(personality);
     }
 
-    /**
-     * Override vanilla taming particles to reduce heart count for wolves.
-     * Original spawns 7, we spawn 3.
-     */
     @Override
     public void spawnTamingParticles(boolean success) {
         if (success) {
@@ -381,41 +381,28 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
 
     @Unique
     private void betterdogs$playTameParticles(WolfPersonality personality) {
-        if (this.level() instanceof ServerLevel serverLevel) {
-            switch (personality) {
-                case AGGRESSIVE -> {
-                    for (int i = 0; i < 4; i++) {
-                        serverLevel.sendParticles(ParticleTypes.ANGRY_VILLAGER,
-                                this.getX() + this.getRandom().nextGaussian() * 0.5,
-                                this.getY() + 0.5 + this.getRandom().nextDouble() * 0.5,
-                                this.getZ() + this.getRandom().nextGaussian() * 0.5, 1, 0, 0, 0, 0);
-                    }
-                }
-                case PACIFIST -> {
-                    for (int i = 0; i < 4; i++) {
-                        serverLevel.sendParticles(ParticleTypes.HEART,
-                                this.getX() + this.getRandom().nextGaussian() * 0.5,
-                                this.getY() + 0.5 + this.getRandom().nextDouble() * 0.5,
-                                this.getZ() + this.getRandom().nextGaussian() * 0.5, 1, 0, 0, 0, 0);
-                    }
-                }
-                case NORMAL -> {
-                    for (int i = 0; i < 4; i++) {
-                        serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER,
-                                this.getX() + this.getRandom().nextGaussian() * 0.5,
-                                this.getY() + 0.5 + this.getRandom().nextDouble() * 0.5,
-                                this.getZ() + this.getRandom().nextGaussian() * 0.5, 1, 0, 0, 0, 0);
-                    }
-                }
-            }
-        }
+        WolfParticleHandler.playTameParticles((Wolf)(Object)this, personality);
     }
 
+    @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
+    private void betterdogs$addAdditionalSaveData(ValueOutput output, CallbackInfo ci) {
+        betterdogs$getScheduler().save(output);
+    }
+
+    @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
+    private void betterdogs$readAdditionalSaveData(ValueInput input, CallbackInfo ci) {
+        betterdogs$getScheduler().load(input);
+        
+        // Register to Global Scheduler on Load
+        if (!this.level().isClientSide()) {
+            net.vanillaoutsider.betterdogs.scheduler.WolfSystemScheduler.get().add((Wolf)(Object)this);
+        }
+    }
+    
     // ========== Passive Healing + Stats Reapply ==========
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void betterdogs$tickHandler(CallbackInfo ci) {
-        // Reapply stats on first tick after world load
         if (!betterdogs$statsApplied && this.isTame() && betterdogs$hasPersonality()) {
             betterdogs$applyPersonalityStats(betterdogs$getPersonality());
             betterdogs$statsApplied = true;
@@ -423,9 +410,10 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
 
         if (!this.isTame())
             return;
-
-        // Cliff Safety Protocol: Stop chasing if target is significantly below us
-        // (likely fell off)
+            
+        // Tick Scheduler (V3.0)
+        this.betterdogs$tickScheduler();
+            
         Wolf wolf = (Wolf) (Object) this;
         if (wolf.getTarget() != null && BetterDogsConfig.get().getEnableCliffSafety()) {
             double yDiff = wolf.getY() - wolf.getTarget().getY();
@@ -448,12 +436,8 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
 
             if (dangerDetected) {
                 wolf.getNavigation().stop();
-                // Active Retreat: Move away from the cliff/danger
                 Vec3 targetPos = wolf.getTarget().position();
-                // Clear target so we stop chasing
                 wolf.setTarget(null);
-
-                // Find a spot away from the danger zone (range 4, vertical 1)
                 Vec3 retreatPos = DefaultRandomPos.getPosAway(wolf, 4, 1, targetPos);
                 if (retreatPos != null) {
                     wolf.getNavigation().moveTo(retreatPos.x, retreatPos.y, retreatPos.z, 1.0);
@@ -462,10 +446,9 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
             }
         }
 
-        int currentTick = this.tickCount;
+        // Passive healing
         int lastDamageTime = betterdogs$getLastDamageTime();
-
-        if (currentTick - lastDamageTime > BetterDogsConfig.get().getCombatHealDelayTicks()
+        if (this.tickCount - lastDamageTime > BetterDogsConfig.get().getCombatHealDelayTicks()
                 && this.getHealth() < this.getMaxHealth()) {
             betterdogs$healTimer++;
             if (betterdogs$healTimer >= BetterDogsConfig.get().getPassiveHealIntervalTicks()) {
@@ -483,62 +466,22 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     private void betterdogs$onActuallyHurt(ServerLevel level, DamageSource source, float amount, CallbackInfo ci) {
         betterdogs$setLastDamageTime(this.tickCount);
 
-        if (((Wolf)(Object)this).isTame() && source.getEntity() instanceof LivingEntity attacker) {
-            Wolf wolf = (Wolf)(Object)this;
-            
-            // If attacked by owner
-            if (attacker instanceof Player player && wolf.isOwnedBy(player)) {
-                // Domestic Dispute: Baby wolf retaliation
-                if (wolf.isBaby() && !player.isShiftKeyDown()) {
-                    this.betterdogs$setStrikesRemaining(2);
-                    this.setTarget(player);
-                }
-
-                if (BetterDogsConfig.get().getEnableFriendlyFireProtection() && !player.isShiftKeyDown()) {
-                    ci.cancel(); // Cancel damage logic
-                }
-                return;
-            }
-            
-            // If attacked by another wolf (Intervention case)
-            if (attacker instanceof Wolf attackerWolf && attackerWolf.isOwnedBy(wolf.getOwner())) {
-                boolean isAggressiveIntervention = false;
-                if (attackerWolf instanceof WolfExtensions extAttacker) {
-                    isAggressiveIntervention = extAttacker.betterdogs$getPersonality() == WolfPersonality.AGGRESSIVE 
-                        && attackerWolf.getTarget() == wolf;
-                }
-                
-                if (isAggressiveIntervention) {
-                    // Allow damage during intervention
-                    return;
-                }
-            }
-
-            // Normal friendly fire protection
-            if (attacker instanceof Player player && wolf.isOwnedBy(player) && BetterDogsConfig.get().getEnableFriendlyFireProtection() && !player.isShiftKeyDown()) {
-                ci.cancel();
-            }
+        if (WolfCombatHooks.onActuallyHurt((Wolf)(Object)this, source, amount)) {
+            ci.cancel();
         }
     }
 
     /**
-     * Protect student/baby wolves from being targeted by others, unless they are offenders.
+     * Target control for baby training system.
+     * - Submissive wolves cannot attack pack members
+     * - Blood feud wolves CAN attack their nemesis (bypass protection)
      */
     @Inject(method = "wantsToAttack", at = @At("HEAD"), cancellable = true)
-    private void betterdogs$protectBabies(LivingEntity target, LivingEntity owner, CallbackInfoReturnable<Boolean> cir) {
-        if (target instanceof Wolf wolfTarget && wolfTarget.isBaby() && wolfTarget.isTame()) {
-            // Exceptions: Aggressive adults might intervene if the baby is attacking its owner
-            Wolf thisWolf = (Wolf)(Object)this;
-            WolfExtensions ext = (WolfExtensions) thisWolf;
-            boolean isAggressive = ext.betterdogs$hasPersonality() && ext.betterdogs$getPersonality() == WolfPersonality.AGGRESSIVE;
-            
-            if (isAggressive && wolfTarget.getTarget() != null && wolfTarget.getTarget().equals(wolfTarget.getOwner())) {
-                // Aggressive adult intervenes!
-                cir.setReturnValue(true);
-                return;
-            }
-            
-            cir.setReturnValue(false);
+    private void betterdogs$onWantsToAttack(LivingEntity target, LivingEntity owner, CallbackInfoReturnable<Boolean> cir) {
+        Boolean result = WolfCombatHooks.wantsToAttack((Wolf)(Object)this, target, owner);
+        if (result != null) {
+            cir.setReturnValue(result);
         }
     }
+
 }
