@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.1.19
+
+- **Localization Fix:** Prepended `minecraft.` namespace to all Game Rule translation keys (e.g., `gamerule.minecraft.bd_storm_anxiety`) to match vanilla Game Rule registry behavior. This ensures Game Rules are properly named in the "Edit Game Rules" screen.
+
 ## v3.1.18
 
 - **Fix:** Resolved startup crash caused by `IdentifierException`.
