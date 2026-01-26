@@ -13,13 +13,21 @@ import net.minecraft.resources.Identifier
  */
 data class WolfPersistentData(
     val personalityId: Int = -1,
-    val lastDamageTime: Int = 0
+    val lastDamageTime: Int = 0,
+    val lastMischiefDay: Long = 0,
+    val bloodFeudTarget: String = "",
+    val submissive: Boolean = false,
+    val beingDisciplined: Boolean = false
 ) {
     companion object {
         val CODEC: Codec<WolfPersistentData> = RecordCodecBuilder.create { instance ->
             instance.group(
-                Codec.INT.fieldOf("personality").forGetter { it.personalityId },
-                Codec.INT.fieldOf("lastDamageTime").forGetter { it.lastDamageTime }
+                Codec.INT.fieldOf("personality").orElse(-1).forGetter { it.personalityId },
+                Codec.INT.fieldOf("lastDamageTime").orElse(0).forGetter { it.lastDamageTime },
+                Codec.LONG.optionalFieldOf("lastMischiefDay", 0L).forGetter { it.lastMischiefDay },
+                Codec.STRING.optionalFieldOf("bloodFeudTarget", "").forGetter { it.bloodFeudTarget },
+                Codec.BOOL.optionalFieldOf("submissive", false).forGetter { it.submissive },
+                Codec.BOOL.optionalFieldOf("beingDisciplined", false).forGetter { it.beingDisciplined }
             ).apply(instance, ::WolfPersistentData)
         }
         
@@ -73,4 +81,44 @@ fun Wolf.getPersistedLastDamageTime(): Int {
 fun Wolf.setPersistedLastDamageTime(time: Int) {
     val current = getWolfData()
     setWolfData(current.copy(lastDamageTime = time))
+}
+
+fun Wolf.getPersistedLastMischiefDay(): Long {
+    return getWolfData().lastMischiefDay
+}
+
+fun Wolf.setPersistedLastMischiefDay(day: Long) {
+    val current = getWolfData()
+    setWolfData(current.copy(lastMischiefDay = day))
+}
+
+fun Wolf.getPersistedBloodFeudTarget(): String {
+    return getWolfData().bloodFeudTarget
+}
+
+fun Wolf.setPersistedBloodFeudTarget(uuid: String) {
+    val current = getWolfData()
+    setWolfData(current.copy(bloodFeudTarget = uuid))
+}
+
+fun Wolf.hasPersistedBloodFeud(): Boolean {
+    return getWolfData().bloodFeudTarget.isNotEmpty()
+}
+
+fun Wolf.getPersistedSubmissive(): Boolean {
+    return getWolfData().submissive
+}
+
+fun Wolf.setPersistedSubmissive(submissive: Boolean) {
+    val current = getWolfData()
+    setWolfData(current.copy(submissive = submissive))
+}
+
+fun Wolf.getPersistedBeingDisciplined(): Boolean {
+    return getWolfData().beingDisciplined
+}
+
+fun Wolf.setPersistedBeingDisciplined(beingDisciplined: Boolean) {
+    val current = getWolfData()
+    setWolfData(current.copy(beingDisciplined = beingDisciplined))
 }

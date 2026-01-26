@@ -18,7 +18,12 @@ import net.vanillaoutsider.betterdogs.ai.WildWolfHuntGoal;
 import net.vanillaoutsider.betterdogs.ai.WolfGiftGoal;
 import net.vanillaoutsider.betterdogs.ai.WolfStormAnxietyGoal;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
+import net.vanillaoutsider.betterdogs.ai.*;
+import net.vanillaoutsider.betterdogs.scheduler.WolfScheduler;
+import net.vanillaoutsider.betterdogs.WolfExtensions.SocialAction;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.resources.Identifier;
+import org.jspecify.annotations.Nullable;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.chicken.Chicken;
@@ -47,6 +52,18 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
 
     @Unique
     private boolean betterdogs$statsApplied = false;
+
+    @Unique
+    private WolfScheduler betterdogs$scheduler;
+
+    @Unique
+    private LivingEntity betterdogs$socialTarget;
+
+    @Unique
+    private SocialAction betterdogs$socialAction = SocialAction.NONE;
+
+    @Unique
+    private int betterdogs$socialTimer = 0;
 
     // Dummy constructor required for extending TamableAnimal
     protected WolfMixin() {
@@ -102,6 +119,103 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     @Override
     public void betterdogs$setLastDamageTime(int time) {
         WolfPersistenceKt.setPersistedLastDamageTime((Wolf) (Object) this, time);
+    }
+
+    // ========== 1.21.11 Parity Implementations ==========
+
+    @Override
+    public boolean betterdogs$isSubmissive() {
+        return WolfPersistenceKt.getPersistedSubmissive((Wolf) (Object) this);
+    }
+
+    @Override
+    public void betterdogs$setSubmissive(boolean submissive) {
+        WolfPersistenceKt.setPersistedSubmissive((Wolf) (Object) this, submissive);
+    }
+
+    @Override
+    public String betterdogs$getBloodFeudTarget() {
+        return WolfPersistenceKt.getPersistedBloodFeudTarget((Wolf) (Object) this);
+    }
+
+    @Override
+    public void betterdogs$setBloodFeudTarget(String targetUuid) {
+        WolfPersistenceKt.setPersistedBloodFeudTarget((Wolf) (Object) this, targetUuid);
+    }
+
+    @Override
+    public boolean betterdogs$hasBloodFeud() {
+        return WolfPersistenceKt.hasPersistedBloodFeud((Wolf) (Object) this);
+    }
+
+    @Override
+    public long betterdogs$getLastMischiefDay() {
+        return WolfPersistenceKt.getPersistedLastMischiefDay((Wolf) (Object) this);
+    }
+
+    @Override
+    public void betterdogs$setLastMischiefDay(long day) {
+        WolfPersistenceKt.setPersistedLastMischiefDay((Wolf) (Object) this, day);
+    }
+
+    @Override
+    public boolean betterdogs$isBeingDisciplined() {
+        return WolfPersistenceKt.getPersistedBeingDisciplined((Wolf) (Object) this);
+    }
+
+    @Override
+    public void betterdogs$setBeingDisciplined(boolean isBeingDisciplined) {
+        WolfPersistenceKt.setPersistedBeingDisciplined((Wolf) (Object) this, isBeingDisciplined);
+    }
+
+    // === SCHEDULER SYSTEM ===
+
+    @Override
+    public WolfScheduler betterdogs$getScheduler() {
+        if (betterdogs$scheduler == null) {
+            betterdogs$scheduler = new WolfScheduler((Wolf) (Object) this);
+        }
+        return betterdogs$scheduler;
+    }
+
+    @Override
+    public void betterdogs$tickScheduler() {
+        betterdogs$getScheduler().tickActiveEvent();
+        betterdogs$getScheduler().tryStartEvent();
+    }
+
+    // === SOCIAL CHANNEL SYSTEM ===
+
+    @Override
+    public void betterdogs$setSocialState(@Nullable LivingEntity target, SocialAction action, int maxDurationTicks) {
+        this.betterdogs$socialTarget = target;
+        this.betterdogs$socialAction = action;
+        this.betterdogs$socialTimer = maxDurationTicks;
+    }
+
+    @Override
+    public @Nullable LivingEntity betterdogs$getSocialTarget() {
+        return this.betterdogs$socialTarget;
+    }
+
+    @Override
+    public SocialAction betterdogs$getSocialAction() {
+        return this.betterdogs$socialAction;
+    }
+
+    @Override
+    public boolean betterdogs$isSocialModeActive() {
+        return this.betterdogs$socialAction != SocialAction.NONE;
+    }
+
+    @Override
+    public void betterdogs$tickSocialMode() {
+        if (this.betterdogs$socialTimer > 0) {
+            this.betterdogs$socialTimer--;
+            if (this.betterdogs$socialTimer <= 0) {
+                this.betterdogs$setSocialState(null, SocialAction.NONE, 0);
+            }
+        }
     }
 
     // ========== Stat Modifiers ==========
@@ -270,6 +384,14 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         if (BetterDogsConfig.Companion.get().getEnableStormAnxiety()) {
             this.goalSelector.addGoal(6, new WolfStormAnxietyGoal(wolf));
         }
+
+        // 5. Parity Update: Add new goals
+        this.goalSelector.addGoal(5, new BabyMischiefGoal(wolf));
+        this.goalSelector.addGoal(1, new BloodFeudGoal(wolf)); // Very high priority
+        this.goalSelector.addGoal(3, new AdultCorrectionGoal(wolf));
+        this.goalSelector.addGoal(3, new BabyBiteBackGoal(wolf));
+        this.goalSelector.addGoal(5, new ZoomiesGoal(wolf));
+        this.goalSelector.addGoal(7, new HowlGoal(wolf));
     }
 
     // ========== On Tame - Assign Personality ==========
@@ -328,6 +450,12 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
             betterdogs$statsApplied = true;
         }
 
+        // Tick Scheduler & Social Mode
+        if (this.isTame()) {
+            betterdogs$tickScheduler();
+            betterdogs$tickSocialMode();
+        }
+
         if (!this.isTame())
             return;
 
@@ -347,7 +475,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
             // Cliff Safety V2: Airborne Target Check
             // If target is in the air AND there is no ground below them, don't chase!
             // This prevents jumping off cliffs after a target that was knocked back.
-            if (!wolf.getTarget().onGround()) {
+            if (wolf.getTarget() != null && !wolf.getTarget().onGround()) {
                 boolean groundFound = false;
                 BlockPos targetPos = wolf.getTarget().blockPosition();
 

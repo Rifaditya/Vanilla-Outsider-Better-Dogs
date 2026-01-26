@@ -3,7 +3,7 @@
 	"id": "vanilla-outsider-better-dogs",
 	"version": "${version}",
 	"name": "Vanilla Outsider: Better Dogs",
-	"description": "Enhances wolf AI with personalities, better pathfinding, and smarter behavior for both wild and tamed wolves.",
+	"description": "Enhances wolf AI with personalities and smarter behavior. (Config: Cloth Config for 1.21.11, Game Rules for 26.1+).",
 	"authors": [
 		"DasikIgaijin"
 	],

@@ -176,6 +176,90 @@ class BetterDogsConfig : ConfigData {
     @ConfigEntry.Gui.Tooltip
     var stormWhineChance: Float = 0.02f
 
+    // ========== Baby Mischief (New in 1.21.11 Parity) ==========
+    @ConfigEntry.Category("mischief")
+    @ConfigEntry.Gui.Tooltip
+    var babyMischiefChance: Double = 0.025 // 2.5%
+
+    // ========== Training & Discipline (New in 1.21.11 Parity) ==========
+    @ConfigEntry.Category("training")
+    @ConfigEntry.Gui.Tooltip
+    var bloodFeudChance: Int = 5 // 5%
+
+    @ConfigEntry.Category("training")
+    @ConfigEntry.Gui.Tooltip
+    var babyRetaliationChance: Int = 50 // 50%
+
+    @ConfigEntry.Category("training")
+    @ConfigEntry.Gui.Tooltip
+    var correctionDamage: Float = 1.0f
+
+    @ConfigEntry.Category("training")
+    @ConfigEntry.Gui.Tooltip
+    var correctionSpeedModifier: Double = 1.2
+
+    @ConfigEntry.Category("training")
+    @ConfigEntry.Gui.Tooltip
+    var correctionLookSpeed: Float = 10.0f
+
+    @ConfigEntry.Category("training")
+    @ConfigEntry.Gui.Tooltip
+    var correctionReachBuffer: Double = 2.0
+
+    @ConfigEntry.Category("training")
+    @ConfigEntry.Gui.Tooltip
+    var correctionSearchRange: Double = 15.0
+
+    @ConfigEntry.Category("training")
+    @ConfigEntry.Gui.Tooltip
+    var correctionDuration: Int = 100 // 5 seconds (20 ticks * 5)
+
+    @ConfigEntry.Category("training")
+    @ConfigEntry.Gui.Tooltip
+    var biteBackSpeedModifier: Double = 1.2
+
+    @ConfigEntry.Category("training")
+    @ConfigEntry.Gui.Tooltip
+    var biteBackLookSpeed: Float = 20.0f
+
+    @ConfigEntry.Category("training")
+    @ConfigEntry.Gui.Tooltip
+    var biteBackAttackDelay: Int = 10
+
+    @ConfigEntry.Category("training")
+    @ConfigEntry.Gui.Tooltip
+    var biteBackReachBuffer: Double = 2.0
+
+
+    // ========== Events (Zoomies / Howl) (New in 1.21.11 Parity) ==========
+    @ConfigEntry.Category("events")
+    @ConfigEntry.Gui.Tooltip
+    var zoomiesChance: Double = 0.005 // 0.5% chance per tick check (not every tick, check logic)
+
+    @ConfigEntry.Category("events")
+    @ConfigEntry.Gui.Tooltip
+    var zoomiesSpeedModifier: Double = 1.5
+
+    @ConfigEntry.Category("events")
+    @ConfigEntry.Gui.Tooltip
+    var zoomiesRange: Int = 10
+
+    @ConfigEntry.Category("events")
+    @ConfigEntry.Gui.Tooltip
+    var zoomiesVerticalRange: Int = 4
+
+    @ConfigEntry.Category("events")
+    @ConfigEntry.Gui.Tooltip
+    var zoomiesNewSpotChance: Int = 10 
+
+    @ConfigEntry.Category("events")
+    @ConfigEntry.Gui.Tooltip
+    var zoomiesLookAroundChance: Float = 0.05f
+
+    @ConfigEntry.Category("events")
+    @ConfigEntry.Gui.Tooltip
+    var howlChance: Double = 0.01 // 1% check
+
     companion object {
         fun get(): BetterDogsConfig {
             return AutoConfig.getConfigHolder(BetterDogsConfig::class.java).config

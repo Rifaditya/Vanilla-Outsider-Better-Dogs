@@ -19,6 +19,11 @@ object BetterDogs : ModInitializer {
         
         // Initialize wolf data persistence
         WolfDataAttachments.init()
+
+        // Register Wolf Events (Parity Update)
+        net.vanillaoutsider.betterdogs.scheduler.WolfEventRegistry.register(
+            net.vanillaoutsider.betterdogs.scheduler.events.CorrectionDogEvent()
+        )
         
         logger.info("Better Dogs initialized! Wolves have been enhanced.")
     }
