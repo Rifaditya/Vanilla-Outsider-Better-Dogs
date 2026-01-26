@@ -1,58 +1,70 @@
-# Brainstorming: New Dog Personalities
+# Brainstorming: Character Events (Moods)
 
-This document explores potential new personalities for the **Better Dogs** mod. The goal is to create unique, "Vanilla+" behaviors that distinguish wolves from each other beyond just damage or HP stats.
+Character Events are temporary behavioral states that give wolves individual personality and agency without breaking the "Vanilla Rule" (no forced state changes).
 
----
+## 🧬 The DNA System (Individual Acceptance)
 
-## 💡 Concept 1: The Guardian (The Bodyguard)
+Every wolf has a unique, persistent **DNA** value derived from its UUID. This ensures that behavioral traits are deterministic and "born-in," rather than purely random.
 
-*Focus: Defensive Utility & Loyalty*
+* **Acceptance Probability**: When an event (like Fetch) triggers, the `WolfScheduler` calculates an **Acceptance Score** based on the wolf's DNA and the Event ID.
+* **Thresholds**: Each event has a participation threshold (adjustable via Game Rules). A dog whose score is above the threshold will "reject" the mood.
+* **Individual Consistency**: A dog that is "lazy" will consistently reject high-energy moods like Zoomies or Wanderlust.
 
-* **Behavior**: Stays within a much tighter radius of the player (3-5 blocks).
-* **Trait**: Has high Knockback Resistance.
-* **Unique Goal**: **Physical Buffer.** If the player is being targeted by a projectile (arrow/fireball), the Guardian tries to move into the path to "intercept" it.
-* **Stats**: High HP, Slow Speed.
+## ⚖️ The "Vanilla Rule"
 
-## 💡 Concept 2: The Forager (The Treasure Hunter)
+To maintain player control and immersion, these events **MUST NOT**:
 
-*Focus: Instant Gratification & Exploration*
-
-* **Behavior**: Occasionally wanders away from the player (within 15 blocks) to sniff the ground.
-* **Unique Goal**: **Sniff Out Treasure.** Every few minutes, it can "dig up" a small item depending on the biome (Bones in Deserts, Berries in Taiga, Sticks/Apples in Forests).
-* **Trait**: Occasionally brings an item to the player and drops it at their feet (like a gift).
-* **Stats**: Normal stats.
-
-## 💡 Concept 3: The Sentry (The Alarm System)
-
-*Focus: Awareness & Scouting*
-
-* **Behavior**: Lowers its head and growls when a hostile mob is within 24 blocks (even through walls).
-* **Unique Goal**: **Early Warning.** Barks once loudly when it first detects a monster that the player hasn't seen yet.
-* **Trait**: Increased detection range for AI goals.
-* **Stats**: High Speed, Low HP.
-
-## 💡 Concept 4: The Coward (The Distractor)
-
-*Focus: Chaos & Unique Combat*
-
-* **Behavior**: Runs *away* from combat, often hiding behind the player.
-* **Unique Goal**: **Accidental Lure.** While fleeing, it leaves a "scent trail" (particles) that actually draws mob aggro for a few seconds, acting as a temporary decoy.
-* **Trait**: Insane movement speed when "Scared".
-* **Stats**: Very Low Damage, Maximum Speed.
-
-## 💡 Concept 5: The Hyper (The Energizer)
-
-*Focus: Animation & Personality*
-
-* **Behavior**: Constantly moving, jumping over blocks, and spinning in circles when idle.
-* **Unique Goal**: **Playful Pounce.** Occasionally pounces on passive mobs (Rabbits/Chickens) just to scare them, without actually doing damage (unless untamed).
-* **Trait**: Does not take fall damage.
-* **Stats**: High Speed, High Jump Strength.
+* Force a sitting dog to stand.
+* Force a standing dog to sit.
+* Interrupt critical behaviors (like being hurt or commanded).
 
 ---
 
-## 🛠 Tech Considerations
+## 🎭 Proposed Character Events (Moods)
 
-* **Mixin Hooks**: Most of these can be implemented via new `Goal` classes injected in `WolfMixin`.
-* **Persistence**: Added to the `WolfPersonality` enum and saved via Attachment API.
-* **Config**: Each personality needs its own section in `betterdogs.json` for tweaking weights and chance values.
+### 1. Wanderlust (Refined)
+
+* **Mood**: The dog wants to explore.
+* **Behavior**: Increases wander range and speed. The dog sniffs more frequently.
+* **Constraint**: If sitting, the dog stays put but "sniffs" the air/ground more often (visual only).
+
+### 2. Begging
+
+* **Mood**: The dog wants treats.
+* **Trigger**: Owner is holding food or eating nearby.
+* **Behavior**:
+  * **If Standing**: Follows owner very closely, performs "Head Tilts" and whines.
+  * **If Sitting**: Remains sitting but looks up at owner with puppy eyes and head tilts.
+* **Benefit**: Purely immersion and flavor.
+
+### 3. Idle Curiosity (Sniffing)
+
+* **Mood**: The dog is interested in its surroundings.
+* **Behavior**: The dog looks at nearby blocks (flowers, grass, trees) and performs a sniffing animation/particles.
+* **Constraint**: Works in both sitting and standing states.
+
+### 4. Fetch
+
+* **Mood**: Playful energy.
+* **Trigger**: A "fetchable" item (Stick, Bone) is dropped near the dog.
+* **Behavior**:
+  * **If Standing**: Runs to pick up the item and brings it to the owner's feet.
+  * **If Sitting**: Does NOT fetch (respects the "Stay" command), but may look at the item longingly.
+
+---
+
+## 📏 Concept 7: Size Variation (DNA-driven)
+
+Using the new 26.1 data-driven scale system, wolves now have subtle natural size differences.
+
+* **Deterministic Scale**: The wolf's `Attributes.SCALE` is modified by its DNA.
+* **Range**: Subtle variation (e.g., 0.9x to 1.1x) to ensure they still look like wolves but feel individual.
+* **Persistence**: The scale is derived from the DNA on first spawn/tame and remains constant.
+
+---
+
+## 🛠 Technical Notes
+
+* **Animation**: Head Tilts can be implemented via a Mixin on `WolfModel` or by manipulating `headRotation`.
+
+* **Scaling**: All chances and thresholds should be exposed via `BetterDogsGameRules`.

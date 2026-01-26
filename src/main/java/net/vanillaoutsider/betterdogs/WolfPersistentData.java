@@ -8,16 +8,18 @@ import net.minecraft.world.entity.animal.wolf.Wolf;
  * Persistent wolf data record.
  * v1.10.000: Simplified for baby training system.
  */
-public record WolfPersistentData(int personalityId, int lastDamageTime, boolean submissive, String bloodFeudTarget, long lastMischiefDay) {
+public record WolfPersistentData(int personalityId, int lastDamageTime, boolean submissive, String bloodFeudTarget, long lastMischiefDay, long dna, float scale) {
 
-    public static final WolfPersistentData DEFAULT = new WolfPersistentData(-1, 0, false, "", 0L);
+    public static final WolfPersistentData DEFAULT = new WolfPersistentData(-1, 0, false, "", 0L, 0L, 1.0f);
 
     public static final Codec<WolfPersistentData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.INT.fieldOf("personality").forGetter(WolfPersistentData::personalityId),
             Codec.INT.fieldOf("lastDamageTime").forGetter(WolfPersistentData::lastDamageTime),
             Codec.BOOL.optionalFieldOf("submissive", false).forGetter(WolfPersistentData::submissive),
             Codec.STRING.optionalFieldOf("bloodFeudTarget", "").forGetter(WolfPersistentData::bloodFeudTarget),
-            Codec.LONG.optionalFieldOf("lastMischiefDay", 0L).forGetter(WolfPersistentData::lastMischiefDay))
+            Codec.LONG.optionalFieldOf("lastMischiefDay", 0L).forGetter(WolfPersistentData::lastMischiefDay),
+            Codec.LONG.optionalFieldOf("dna", 0L).forGetter(WolfPersistentData::dna),
+            Codec.FLOAT.optionalFieldOf("scale", 1.0f).forGetter(WolfPersistentData::scale))
             .apply(instance, WolfPersistentData::new));
 
     // ========== Static Helper Methods (using Fabric Attachment API) ==========
@@ -38,7 +40,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
 
     public static void setPersistedPersonality(Wolf wolf, WolfPersonality personality) {
         WolfPersistentData current = getWolfData(wolf);
-        setWolfData(wolf, new WolfPersistentData(personality.getId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay()));
+        setWolfData(wolf, new WolfPersistentData(personality.getId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale()));
     }
 
     public static boolean hasPersistedPersonality(Wolf wolf) {
@@ -53,7 +55,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
 
     public static void setPersistedLastDamageTime(Wolf wolf, int time) {
         WolfPersistentData current = getWolfData(wolf);
-        setWolfData(wolf, new WolfPersistentData(current.personalityId(), time, current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay()));
+        setWolfData(wolf, new WolfPersistentData(current.personalityId(), time, current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale()));
     }
 
     // ========== Submissive (baby cannot attack pack after correction) ==========
@@ -64,7 +66,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
 
     public static void setPersistedSubmissive(Wolf wolf, boolean submissive) {
         WolfPersistentData current = getWolfData(wolf);
-        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), submissive, current.bloodFeudTarget(), current.lastMischiefDay()));
+        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), submissive, current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale()));
     }
 
     // ========== Blood Feud (permanent vendetta) ==========
@@ -75,7 +77,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
 
     public static void setPersistedBloodFeudTarget(Wolf wolf, String targetUuid) {
         WolfPersistentData current = getWolfData(wolf);
-        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), targetUuid, current.lastMischiefDay()));
+        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), targetUuid, current.lastMischiefDay(), current.dna(), current.scale()));
     }
 
     public static boolean hasBloodFeud(Wolf wolf) {
@@ -90,6 +92,25 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
 
     public static void setPersistedLastMischiefDay(Wolf wolf, long day) {
         WolfPersistentData current = getWolfData(wolf);
-        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), day));
+        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), day, current.dna(), current.scale()));
+    }
+
+    // ========== DNA & Scale (Social Core) ==========
+
+    public static long getDNA(Wolf wolf) {
+        return getWolfData(wolf).dna();
+    }
+
+    public static void setDNA(Wolf wolf, long dna) {
+        WolfPersistentData current = getWolfData(wolf);
+        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), dna, current.scale()));
+    }
+
+    public static float getScale(Wolf wolf) {
+        return getWolfData(wolf).scale();
+    }
+
+    public static void setScale(int personalityId, int lastDamageTime, boolean submissive, @org.jspecify.annotations.Nullable String bloodFeudTarget, long lastMischiefDay, long dna, Wolf wolf, float scale) {
+        setWolfData(wolf, new WolfPersistentData(personalityId, lastDamageTime, submissive, bloodFeudTarget, lastMischiefDay, dna, scale));
     }
 }

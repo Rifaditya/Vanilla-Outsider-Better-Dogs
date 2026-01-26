@@ -23,7 +23,8 @@ public class ZoomiesGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        return wolfExt.betterdogs$getSocialAction() == WolfExtensions.SocialAction.ZOOMIES;
+        if (wolf.isOrderedToSit()) return false;
+        return wolfExt.betterdogs$getScheduler().isEventActive("zoomies");
     }
 
     @Override
@@ -34,7 +35,7 @@ public class ZoomiesGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        return wolfExt.betterdogs$getSocialAction() == WolfExtensions.SocialAction.ZOOMIES;
+        return wolfExt.betterdogs$getScheduler().isEventActive("zoomies");
     }
 
     @Override

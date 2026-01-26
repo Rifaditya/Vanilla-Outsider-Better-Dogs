@@ -1,6 +1,7 @@
 # Dog & Panda AI Research - Minecraft 1.21.11
 
 ## Overview
+
 Research compiled for **Vanilla Outsider: Better Dogs** mod development, covering vanilla AI behaviors, known issues, and improvement opportunities.
 
 ---
@@ -10,6 +11,7 @@ Research compiled for **Vanilla Outsider: Better Dogs** mod development, coverin
 ### Current Behavior
 
 #### Untamed Wolves
+
 | Behavior | Description |
 |----------|-------------|
 | **Hostility** | Neutral to players; hostile to sheep, rabbits, foxes, baby turtles, skeletons |
@@ -17,12 +19,14 @@ Research compiled for **Vanilla Outsider: Better Dogs** mod development, coverin
 | **Pack Spawning** | Spawn in packs of 2-8 depending on biome |
 
 #### Tamed Wolves
+
 | Mode | Behavior |
 |------|----------|
 | **Follow Mode** | Follow owner, teleport if >12 blocks away, attack owner's targets |
 | **Sitting Mode** | Stay in place, do not move or attack |
 
 #### Wolf Variants (1.21)
+
 | Variant | Biome | Pack Size |
 |---------|-------|-----------|
 | Pale Wolf | Taiga | 4 |
@@ -36,6 +40,7 @@ Research compiled for **Vanilla Outsider: Better Dogs** mod development, coverin
 | Snowy Wolf | Grove | 1+ |
 
 #### Wolf Armor (1.21+)
+
 - Crafted from **Armadillo Scutes**
 - Absorbs all damage until armor breaks
 - Repairable with scutes while wolf is sitting
@@ -59,26 +64,31 @@ Research compiled for **Vanilla Outsider: Better Dogs** mod development, coverin
 ### 💡 Community-Suggested Improvements
 
 #### Pathfinding & Safety
+
 - [ ] Recognize and avoid lava, fire, high falls
 - [ ] Flee from exploding creepers (like Hoglins avoid warped fungi)
 - [ ] Smarter pathfinding to avoid getting stuck
 
 #### Combat Enhancements
+
 - [ ] More efficient targeting and faster response times
 - [ ] Increased knockback resistance
 - [ ] Prioritize threats to player over ambient hostiles
 - [ ] Prevent player from damaging own tamed wolves
 
 #### Survival Instincts
+
 - [ ] Run away or "play dead" when critically injured
 - [ ] Life-stealing on kills (heal from damage dealt)
 
 #### Commands & Control
+
 - [ ] Dog whistle item for commanding attacks/retreats
 - [ ] Ability to set specific mob targets to attack or ignore
 - [ ] Multiple behavior modes (guard, patrol, hunt)
 
 #### Companion Features
+
 - [ ] Danger alert: growl at nearby enemies
 - [ ] Enemy memory: more aggressive to repeat attackers
 - [ ] Saturation system: eat food to heal over time
@@ -86,6 +96,7 @@ Research compiled for **Vanilla Outsider: Better Dogs** mod development, coverin
 - [ ] Retrieve loot from killed mobs
 
 #### Pack Behavior (Wild Wolves)
+
 - [ ] Pack leader system for wild wolves
 - [ ] Only hunt when hungry
 - [ ] Wolves howl at night
@@ -130,6 +141,7 @@ Research compiled for **Vanilla Outsider: Better Dogs** mod development, coverin
 | **Brown** | Brown color | Rarest variant, behaves like Normal |
 
 ### Genetics System
+
 - Each panda has a **main gene** and **hidden gene**
 - **Dominant traits**: Normal, Aggressive, Lazy, Worried, Playful
 - **Recessive traits**: Weak, Brown (require both genes to match)
@@ -145,6 +157,7 @@ Research compiled for **Vanilla Outsider: Better Dogs** mod development, coverin
 | **Cooldown** | 5 minutes | 5 minutes |
 
 #### Offspring Inheritance
+
 - Each parent passes **one gene** (main or hidden) to offspring
 - **1/32 chance** for each gene to mutate into a different gene
 - Mutations favor: Normal, Weak, Brown
@@ -165,20 +178,23 @@ Research compiled for **Vanilla Outsider: Better Dogs** mod development, coverin
 ## 📋 Summary: Mod Development Opportunities
 
 ### High Priority (Dog AI Focus)
+
 1. **Better pathfinding** - Avoid hazards like lava, fire, cliffs
 2. **Smarter combat** - Better targeting, don't attack from too far
 3. **Companion commands** - Whistles, attack modes, guard behavior
 4. **Survival instincts** - Retreat when low health
 
 ### Medium Priority
+
 5. **Pack behavior** - Leader system, hunting mechanics
-6. **Healing system** - Saturation from eating, easier mass healing
-7. **Bonding mechanics** - Affection, loyalty progression
+2. **Healing system** - Saturation from eating, easier mass healing
+3. **Bonding mechanics** - Affection, loyalty progression
 
 ### Optional/Future
+
 8. **Panda improvements** - If expanding scope beyond dogs
-9. **Visual indicators** - Health bars, mood indicators
-10. **Wolf variants with unique abilities** - Snowy = freeze resist, etc.
+2. **Visual indicators** - Health bars, mood indicators
+3. **Wolf variants with unique abilities** - Snowy = freeze resist, etc.
 
 ---
 

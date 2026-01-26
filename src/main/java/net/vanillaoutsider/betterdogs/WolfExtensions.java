@@ -2,7 +2,7 @@ package net.vanillaoutsider.betterdogs;
 
 import net.minecraft.world.entity.LivingEntity;
 import org.jspecify.annotations.Nullable;
-import net.vanillaoutsider.betterdogs.scheduler.WolfScheduler;
+import net.vanillaoutsider.social.core.EntitySocialScheduler;
 
 /**
  * Extension interface for Wolf entity to access personality and training data.
@@ -135,12 +135,34 @@ public interface WolfExtensions {
      */
      void betterdogs$tickSocialMode();
      
-    // === SCHEDULER SYSTEM (V3.0 - Modular) ===
+    // === SOCIAL CORE TRAITS (V3.1) ===
 
     /**
-     * Gets the WolfScheduler instance for this wolf.
+     * @return The unique DNA seed for this entity.
      */
-    WolfScheduler betterdogs$getScheduler();
+    long betterdogs$getDNA();
+
+    /**
+     * Set the wolf's DNA.
+     */
+    void betterdogs$setDNA(long dna);
+
+    /**
+     * @return The persistent scale modifier.
+     */
+    float betterdogs$getSocialScale();
+
+    /**
+     * Set the scale modifier.
+     */
+    void betterdogs$setSocialScale(float scale);
+
+    // === SCHEDULER SYSTEM (V3.1 - Universal Hive Mind) ===
+
+    /**
+     * Gets the EntitySocialScheduler instance for this mob.
+     */
+    net.vanillaoutsider.social.core.EntitySocialScheduler betterdogs$getScheduler();
 
     /**
      * Ticks the Long-Term Scheduler. Called every tick by WolfMixin.

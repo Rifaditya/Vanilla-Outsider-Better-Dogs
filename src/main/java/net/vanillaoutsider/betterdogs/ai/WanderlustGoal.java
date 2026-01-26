@@ -21,8 +21,8 @@ public class WanderlustGoal extends WaterAvoidingRandomStrollGoal {
     @Override
     public boolean canUse() {
         if (this.wolf instanceof WolfExtensions ext) {
-            if (ext.betterdogs$getScheduler().isEventActive(WanderlustDogEvent.ID)) {
-                 return true;
+            if (ext.betterdogs$getScheduler().isEventActive("wanderlust")) {
+                 return !this.wolf.isOrderedToSit();
             }
         }
         return false;

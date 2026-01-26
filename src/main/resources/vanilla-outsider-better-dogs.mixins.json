@@ -11,7 +11,10 @@
         "OwnerHurtByTargetGoalMixin",
         "WolfBreedingMixin",
         "WolfAccessor",
-        "WolfMobMixin"
+        "WolfMobMixin",
+        "WolfRendererMixin",
+        "WolfRenderStateMixin",
+        "ServerLevelMixin"
     ],
     "injectors": {
         "defaultRequire": 1

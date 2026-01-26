@@ -6,8 +6,11 @@ import net.vanillaoutsider.social.core.SocialEntity;
 import net.vanillaoutsider.social.core.SocialEvent;
 import org.jspecify.annotations.Nullable;
 
-public class ZoomiesDogEvent implements SocialEvent {
-    public static final String ID = "zoomies";
+/**
+ * DNA-driven event where dogs beg for food or attention from their owner.
+ */
+public class BeggingDogEvent implements SocialEvent {
+    public static final String ID = "begging";
 
     @Override
     public String getId() {
@@ -16,7 +19,7 @@ public class ZoomiesDogEvent implements SocialEvent {
 
     @Override
     public Priority getPriority() {
-        return Priority.NORMAL;
+        return Priority.LOW; // Ambient track: Doesn't block other moods
     }
 
     @Override
@@ -34,7 +37,6 @@ public class ZoomiesDogEvent implements SocialEvent {
 
     @Override
     public void tick(SocialEntity entity) {
-        // Logic handled by ZoomiesGoal
     }
 
     @Override
@@ -43,11 +45,11 @@ public class ZoomiesDogEvent implements SocialEvent {
 
     @Override
     public int getMaxDurationTicks() {
-        return 240; // 12 seconds
+        return 400; // 20 seconds
     }
 
     @Override
     public int getCooldownTicks() {
-        return 8000; // 6-7 minutes cooldown
+        return 6000; // 5 minutes cooldown
     }
 }

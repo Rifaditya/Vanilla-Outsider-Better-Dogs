@@ -1,9 +1,39 @@
 # Changelog
 
+## v3.1.25
+
+- **Vanilla Spirit Purge**: Removed the `Howl` behavior entirely as it forced dogs to sit/stand, violating player control.
+- **Posture Respect**: Updated all social behaviors (Zoomies, Begging, Fetch, Wanderlust) to strictly respect the dog's sitting state. Dogs will no longer perform social actions if they are ordered to sit.
+- **Global Cooldown System**: Implemented a per-dog global cooldown in the scheduler. Dogs now have significant downtime (5+ minutes) between social behaviors.
+- **Dynamic Durations**: Behaviors now have specific, shorter durations (10-30 seconds instead of 20 minutes) defined in the Social Event core.
+- **Reaction Priority**: Critical reactive behaviors (Retaliation, Correction) now bypass global cooldowns for survival but still maintain proper lifecycle durations.
+
+## v3.1.24
+
+- **FIXED**: Critical startup crash caused by missing package declaration in `ServerLevelMixin`.
+
+## v3.1.23 (Self-Healing Update)
+
+- **FIXED**: `AbstractMethodError` crash when loading old worlds with aggressive puppies.
+- **ADDED**: "Self-Healing" logic for old worlds (existing wolves automatically join the Hive Mind and receive DNA).
+- **HARDENED**: Hive Mind core now includes Level Verification to prevent cross-level pulsing crashes.
+- **OPTIMIZED**: Global Pulse moved to `ServerLevel` tick (Highlander Standard) for better server performance.
+
+## v3.1.22 (Hive Mind v6.1 - Character Update)
+
+- **Hive Mind Integration**: Fully integrated the v6.1 social core. Better Dogs now operates within a global social network that automatically merges with other Hive Mind-compatible mods.
+- **Digital DNA**: Wolves now possess a 64-bit DNA seed generated at spawn. This seed dictates personality traits, social event acceptance, and physical appearance.
+- **Size Variation**: Implemented DNA-driven scaling. Wolves now vary naturally in size (0.9x to 1.1x), rendered natively on the client.
+- **Character Events**:
+  - **Begging**: DNA-driven "greedy" trait causes wolves to beg for food from their owners.
+  - **Fetch**: Wolves in a playful mood will now seek out and retrieve dropped items.
+  - **Idle Curiosity**: Ambient social interaction driven by a wolf's curiosity trait.
+- **Highlander Pulse Guard**: Drastically optimized AI performance using a version-negotiating master pulse.
+
 ## v3.1.21
 
 - **Feature:** Added native Game Rules for Breeding Genetics. This allows per-world configuration of personality inheritance and mixed-breed chances.
-- **Maintainance**: Ensured both Taming and Breeding rules are present in the "Better Dogs" category.
+- **Maintenance**: Ensured both Taming and Breeding rules are present in the "Better Dogs" category.
 
 ## v3.1.20
 
@@ -126,7 +156,6 @@
 
 - **Configurable Retaliation**: Added `babyRetaliationChance` to `config/betterdogs.json`. (Default: 75%).
 
-##  Archives
+## Archives
 
 Looking for older versions? Check the [Historical Changelogs](Doc/Changelogs/History.md).
-

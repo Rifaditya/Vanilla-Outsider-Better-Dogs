@@ -1,0 +1,15 @@
+
+> Configure project :
+Fabric Loom: 1.14.7
+
+> Task :clean
+
+> Task :compileJava
+Note: E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\src\main\java\net\vanillaoutsider\betterdogs\mixin\WolfRendererMixin.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+[Incubating] Problems report is available at: file:///E:/Minecraft%20Project/Vanilla%20Outsider%20Collections/Better%20Dogs%20all%20version/Better%20Dogs%2026.1/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 3s
+2 actionable tasks: 2 executed
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.3.0/userguide/configuration_cache_enabling.html

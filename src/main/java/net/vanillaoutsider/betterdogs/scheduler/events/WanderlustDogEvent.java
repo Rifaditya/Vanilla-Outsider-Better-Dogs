@@ -1,11 +1,12 @@
 package net.vanillaoutsider.betterdogs.scheduler.events;
 
-import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.Entity;
-import net.vanillaoutsider.betterdogs.scheduler.WolfEvent;
-import net.vanillaoutsider.betterdogs.WolfExtensions;
+import net.minecraft.world.entity.animal.wolf.Wolf;
+import net.vanillaoutsider.social.core.SocialEntity;
+import net.vanillaoutsider.social.core.SocialEvent;
+import org.jspecify.annotations.Nullable;
 
-public class WanderlustDogEvent implements WolfEvent {
+public class WanderlustDogEvent implements SocialEvent {
 
     public static final String ID = "wanderlust";
 
@@ -15,29 +16,40 @@ public class WanderlustDogEvent implements WolfEvent {
     }
 
     @Override
-    public boolean canTrigger(Wolf wolf) {
-        // Condition:
-        // 1. Must be Tame (Wild wolves already wander heavily, this is for pets)
-        // 2. Must not be sitting (Sitting wolves shouldn't theoretically get wanderlust, or maybe they do but can't act on it)
-        // 3. Must rely on Scheduler logic (1% chance per day check) which calls this.
-        // The Scheduler decides *when* to check, this function decides *if* it's valid.
-        
-        return wolf.isTame() && !wolf.isOrderedToSit();
+    public Priority getPriority() {
+        return Priority.NORMAL;
     }
 
     @Override
-    public void onStart(Wolf wolf, @org.jspecify.annotations.Nullable Entity contextEntity) {
-        // No specific setup needed, the goal will check the scheduler availability.
-        // We could maybe play a sound or particle?
+    public boolean canTrigger(SocialEntity entity) {
+        if (entity.betterdogs$asEntity() instanceof Wolf wolf) {
+            // Respect Sitting Pose (Vanilla Spirit)
+            if (wolf.isOrderedToSit()) return false;
+            return wolf.isTame() && wolf.onGround();
+        }
+        return false;
     }
 
     @Override
-    public void tick(Wolf wolf) {
-        // Logic handled by Goal
+    public void onStart(SocialEntity entity, @Nullable Entity contextEntity) {
     }
 
     @Override
-    public void onEnd(Wolf wolf) {
-        // Cleanup?
+    public void tick(SocialEntity entity) {
+    }
+
+    @Override
+    public int getMaxDurationTicks() {
+        return 600; // 30 seconds
+    }
+
+    @Override
+    public int getCooldownTicks() {
+        return 6000; // 5 minutes recovery
+    }
+
+    @Override
+    public void onEnd(SocialEntity entity) {
+        // Cleanup
     }
 }

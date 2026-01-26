@@ -29,12 +29,9 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 import net.minecraft.resources.Identifier;
 import net.vanillaoutsider.betterdogs.BetterDogs;
-import net.vanillaoutsider.betterdogs.scheduler.WolfScheduler;
 import net.vanillaoutsider.betterdogs.ai.WanderlustGoal;
 import net.vanillaoutsider.betterdogs.ai.*;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
@@ -42,9 +39,10 @@ import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.vanillaoutsider.betterdogs.util.WolfStatManager;
 import net.vanillaoutsider.betterdogs.util.WolfCombatHooks;
 import net.vanillaoutsider.betterdogs.util.WolfParticleHandler;
-import net.vanillaoutsider.betterdogs.scheduler.WolfSystemScheduler;
+import net.vanillaoutsider.social.core.*;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Optional;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -57,7 +55,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * Uses Fabric Data Attachment API for persistence.
  */
 @Mixin(Wolf.class)
-public abstract class WolfMixin extends TamableAnimal implements WolfExtensions {
+public abstract class WolfMixin extends TamableAnimal implements WolfExtensions, SocialEntity {
 
     @Unique
     private int betterdogs$healTimer = 0;
@@ -139,6 +137,40 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         WolfPersistentData.setPersistedLastMischiefDay((Wolf) (Object) this, day);
     }
 
+    // ========== SocialEntity Implementation & DNA ==========
+
+    @Override
+    public long betterdogs$getDNA() {
+        return WolfPersistentData.getDNA((Wolf) (Object) this);
+    }
+
+    @Override
+    public void betterdogs$setDNA(long dna) {
+        WolfPersistentData.setDNA((Wolf) (Object) this, dna);
+    }
+
+    @Override
+    public float betterdogs$getSocialScale() {
+        return WolfPersistentData.getScale((Wolf) (Object) this);
+    }
+
+    @Override
+    public void betterdogs$setSocialScale(float scale) {
+        WolfPersistentData current = WolfPersistentData.getWolfData((Wolf)(Object)this);
+        WolfPersistentData.setScale(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), (Wolf)(Object)this, scale);
+    }
+
+    @Override
+    public String betterdogs$getSpeciesId() {
+        return "wolf";
+    }
+
+    @Override
+    public LivingEntity betterdogs$asEntity() {
+        return (LivingEntity) (Object) this;
+    }
+
+
     // ========== Dunce Cap (Transient Disciplinary State) ==========
 
     @Unique
@@ -207,23 +239,26 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         }
     }
     
-    // === SCHEDULER SYSTEM (V3.0 - Modular) ===
+    // === SCHEDULER SYSTEM (V3.1 - Hive Mind) ===
     
     @Unique
-    private WolfScheduler betterdogs$scheduler;
+    private EntitySocialScheduler betterdogs$socialScheduler;
 
     @Override
-    public WolfScheduler betterdogs$getScheduler() {
-        if (betterdogs$scheduler == null) {
-            betterdogs$scheduler = new WolfScheduler((Wolf)(Object)this);
+    public EntitySocialScheduler betterdogs$getScheduler() {
+        if (betterdogs$socialScheduler == null) {
+            betterdogs$socialScheduler = new EntitySocialScheduler(this);
         }
-        return betterdogs$scheduler;
+        return betterdogs$socialScheduler;
     }
 
     @Override
     public void betterdogs$tickScheduler() {
-        if (!this.level().isClientSide()) { // Server only
-            betterdogs$getScheduler().tickActiveEvent(); // Only tick active behaviors
+        if (!this.level().isClientSide()) {
+            EntitySocialScheduler scheduler = betterdogs$getScheduler();
+            if (scheduler != null) {
+                scheduler.tick();
+            }
         }
     }
 
@@ -245,8 +280,14 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
             betterdogs$setPersonality(personality);
             BetterDogs.LOGGER.info("Wolf spawned with personality: {}", personality.name());
             
-            // Register to Global System Scheduler
-            WolfSystemScheduler.get().add((Wolf)(Object)this);
+            // Generate DNA and Scale
+            long dna = this.getRandom().nextLong();
+            betterdogs$setDNA(dna);
+            float scale = 0.9f + (this.getRandom().nextFloat() * 0.2f); // 0.9x to 1.1x
+            betterdogs$setSocialScale(scale);
+            
+            // Register to Global System Registry
+            SocialRegistry.registerEntity(this);
         }
     }
     
@@ -254,7 +295,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     @Override
     public void remove(Entity.RemovalReason reason) {
         if (!this.level().isClientSide()) {
-             WolfSystemScheduler.get().remove((Wolf)(Object)this);
+             SocialRegistry.unregisterEntity(this.betterdogs$asEntity());
         }
         super.remove(reason);
     }
@@ -280,7 +321,8 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         this.goalSelector.addGoal(4, new SmallFightGoal(wolf));         // Small Fight (Simulated Aggression)
         this.goalSelector.addGoal(5, new BabyMischiefGoal(wolf));       // Daily mischief
         this.goalSelector.addGoal(6, new ZoomiesGoal(wolf));            // Zoomies (Hyperactive running)
-        this.goalSelector.addGoal(6, new HowlGoal(wolf));               // Group Howl (Sits and Howls)
+        this.goalSelector.addGoal(7, new BeggingGoal(wolf));            // Begging
+        this.goalSelector.addGoal(7, new WolfFetchGoal(wolf));          // Fetch
 
         Set<WrappedGoal> goalsToRemove = new HashSet<>();
         for (WrappedGoal goal : this.targetSelector.getAvailableGoals()) {
@@ -366,25 +408,33 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         WolfParticleHandler.playTameParticles((Wolf)(Object)this, personality);
     }
 
-    @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
-    private void betterdogs$addAdditionalSaveData(ValueOutput output, CallbackInfo ci) {
-        betterdogs$getScheduler().save(output);
-    }
-
-    @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
-    private void betterdogs$readAdditionalSaveData(ValueInput input, CallbackInfo ci) {
-        betterdogs$getScheduler().load(input);
-        
-        // Register to Global Scheduler on Load
-        if (!this.level().isClientSide()) {
-            WolfSystemScheduler.get().add((Wolf)(Object)this);
-        }
-    }
     
     // ========== Passive Healing + Stats Reapply ==========
 
+    @Unique
+    private boolean betterdogs$initialized = false;
+
     @Inject(method = "tick", at = @At("TAIL"))
     private void betterdogs$tickHandler(CallbackInfo ci) {
+        if (!this.level().isClientSide()) {
+            // Self-Healing: Register to Hive Mind if not tracked (e.g., world load/Nether transition)
+            if (!betterdogs$initialized || this.tickCount % 100 == 0) {
+                if (!SocialRegistry.containsEntity((LivingEntity)(Object)this)) {
+                    SocialRegistry.registerEntity(this);
+                }
+                
+                // Legacy DNA Migration: If 0, generate from UUID
+                if (betterdogs$getDNA() == 0L) {
+                    betterdogs$setDNA(this.getUUID().getMostSignificantBits());
+                    // Re-calculate scale as well
+                    float scale = 0.9f + (this.getRandom().nextFloat() * 0.2f);
+                    betterdogs$setSocialScale(scale);
+                }
+                
+                betterdogs$initialized = true;
+            }
+        }
+
         if (!betterdogs$statsApplied && this.isTame() && betterdogs$hasPersonality()) {
             betterdogs$applyPersonalityStats(betterdogs$getPersonality());
             betterdogs$statsApplied = true;

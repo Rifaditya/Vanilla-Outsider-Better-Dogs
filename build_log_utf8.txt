@@ -1,0 +1,116 @@
+﻿
+> Configure project :
+Fabric Loom: 1.14.7
+
+> Task :clean
+
+> Task :compileJava FAILED
+E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\src\main\java\net\vanillaoutsider\betterdogs\WolfExtensions.java:5: error: cannot find symbol
+import net.vanillaoutsider.betterdogs.scheduler.WolfScheduler;
+                                               ^
+  symbol:   class WolfScheduler
+  location: package net.vanillaoutsider.betterdogs.scheduler
+E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\src\main\java\net\vanillaoutsider\social\core\SocialEvent.java:25: error: method onEnd(SocialEntity) is already defined in interface SocialEvent
+    void onEnd(SocialEntity entity);
+         ^
+E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\src\main\java\net\vanillaoutsider\betterdogs\mixin\ServerLevelMixin.java:4: error: cannot find symbol
+import net.vanillaoutsider.betterdogs.scheduler.WolfSystemScheduler;
+                                               ^
+  symbol:   class WolfSystemScheduler
+  location: package net.vanillaoutsider.betterdogs.scheduler
+E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\src\main\java\net\vanillaoutsider\betterdogs\mixin\WolfMixin.java:249: error: method betterdogs$getScheduler() is already defined in class WolfMixin
+    public EntitySocialScheduler betterdogs$getScheduler() {
+                                 ^
+E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\src\main\java\net\vanillaoutsider\betterdogs\WolfPersistentData.java:113: error: package javax.annotation does not exist
+    public static void setScale(int personalityId, int lastDamageTime, boolean submissive, @javax.annotation.Nullable String bloodFeudTarget, long lastMischiefDay, long dna, Wolf wolf, float scale) {
+                                                                                                            ^
+E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\src\main\java\net\vanillaoutsider\betterdogs\ai\BabyBiteBackGoal.java:93: error: cannot find symbol
+                                     adultExt.betterdogs$getScheduler().injectBehavior(CorrectionDogEvent.ID, config.getCorrectionDuration(), this.wolf);
+                                                                       ^
+  symbol:   method injectBehavior(String,int,Wolf)
+  location: class EntitySocialScheduler
+E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\src\main\java\net\vanillaoutsider\betterdogs\mixin\WolfMixin.java:417: error: cannot find symbol
+        betterdogs$getScheduler().save(output);
+                                 ^
+  symbol:   method save(ValueOutput)
+  location: class EntitySocialScheduler
+E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\src\main\java\net\vanillaoutsider\betterdogs\mixin\WolfMixin.java:422: error: cannot find symbol
+        betterdogs$getScheduler().load(input);
+                                 ^
+  symbol:   method load(ValueInput)
+  location: class EntitySocialScheduler
+E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\src\main\java\net\vanillaoutsider\betterdogs\mixin\WolfMixin.java:426: error: cannot find symbol
+            WolfSystemScheduler.get().add((Wolf)(Object)this);
+            ^
+  symbol:   variable WolfSystemScheduler
+  location: class WolfMixin
+E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\src\main\java\net\vanillaoutsider\betterdogs\util\WolfCombatHooks.java:71: error: cannot find symbol
+                         ext.betterdogs$getScheduler().injectBehavior(
+                                                      ^
+  symbol:   method injectBehavior(String,int,LivingEntity)
+  location: class EntitySocialScheduler
+Note: E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\src\main\java\net\vanillaoutsider\betterdogs\mixin\WolfRendererMixin.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+10 errors
+
+[Incubating] Problems report is available at: file:///E:/Minecraft%20Project/Vanilla%20Outsider%20Collections/Better%20Dogs%20all%20version/Better%20Dogs%2026.1/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileJava'.
+> Compilation failed; see the compiler output below.
+  Note: E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\src\main\java\net\vanillaoutsider\betterdogs\mixin\WolfRendererMixin.java uses or overrides a deprecated API.
+  Note: Recompile with -Xlint:deprecation for details.
+  E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\src\main\java\net\vanillaoutsider\betterdogs\WolfExtensions.java:5: error: cannot find symbol
+  import net.vanillaoutsider.betterdogs.scheduler.WolfScheduler;
+                                                 ^
+    symbol:   class WolfScheduler
+    location: package net.vanillaoutsider.betterdogs.scheduler
+  E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\src\main\java\net\vanillaoutsider\betterdogs\mixin\ServerLevelMixin.java:4: error: cannot find symbol
+  import net.vanillaoutsider.betterdogs.scheduler.WolfSystemScheduler;
+                                                 ^
+    symbol:   class WolfSystemScheduler
+    location: package net.vanillaoutsider.betterdogs.scheduler
+  E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\src\main\java\net\vanillaoutsider\betterdogs\mixin\WolfMixin.java:426: error: cannot find symbol
+              WolfSystemScheduler.get().add((Wolf)(Object)this);
+              ^
+    symbol:   variable WolfSystemScheduler
+    location: class WolfMixin
+  E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\src\main\java\net\vanillaoutsider\betterdogs\ai\BabyBiteBackGoal.java:93: error: cannot find symbol
+                                       adultExt.betterdogs$getScheduler().injectBehavior(CorrectionDogEvent.ID, config.getCorrectionDuration(), this.wolf);
+                                                                         ^
+    symbol:   method injectBehavior(String,int,Wolf)
+    location: class EntitySocialScheduler
+  E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\src\main\java\net\vanillaoutsider\betterdogs\mixin\WolfMixin.java:417: error: cannot find symbol
+          betterdogs$getScheduler().save(output);
+                                   ^
+    symbol:   method save(ValueOutput)
+    location: class EntitySocialScheduler
+  E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\src\main\java\net\vanillaoutsider\betterdogs\mixin\WolfMixin.java:422: error: cannot find symbol
+          betterdogs$getScheduler().load(input);
+                                   ^
+    symbol:   method load(ValueInput)
+    location: class EntitySocialScheduler
+  E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\src\main\java\net\vanillaoutsider\betterdogs\util\WolfCombatHooks.java:71: error: cannot find symbol
+                           ext.betterdogs$getScheduler().injectBehavior(
+                                                        ^
+    symbol:   method injectBehavior(String,int,LivingEntity)
+    location: class EntitySocialScheduler
+  E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\src\main\java\net\vanillaoutsider\betterdogs\WolfPersistentData.java:113: error: package javax.annotation does not exist
+      public static void setScale(int personalityId, int lastDamageTime, boolean submissive, @javax.annotation.Nullable String bloodFeudTarget, long lastMischiefDay, long dna, Wolf wolf, float scale) {
+                                                                                                              ^
+  E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\src\main\java\net\vanillaoutsider\social\core\SocialEvent.java:25: error: method onEnd(SocialEntity) is already defined in interface SocialEvent
+      void onEnd(SocialEntity entity);
+           ^
+  E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\src\main\java\net\vanillaoutsider\betterdogs\mixin\WolfMixin.java:249: error: method betterdogs$getScheduler() is already defined in class WolfMixin
+      public EntitySocialScheduler betterdogs$getScheduler() {
+                                   ^
+  10 errors
+
+* Try:
+> Check your code and dependencies to fix the compilation error(s)
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 1s
+2 actionable tasks: 2 executed
