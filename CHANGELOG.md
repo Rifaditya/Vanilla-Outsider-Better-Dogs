@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.1.20
+
+- **Feature:** Added a custom "Better Dogs" category to the Game Rules screen. All mod-specific rules are now grouped under this new tab instead of the generic "Mobs" category.
+
 ## v3.1.19
 
 - **Localization Fix:** Prepended `minecraft.` namespace to all Game Rule translation keys (e.g., `gamerule.minecraft.bd_storm_anxiety`) to match vanilla Game Rule registry behavior. This ensures Game Rules are properly named in the "Edit Game Rules" screen.

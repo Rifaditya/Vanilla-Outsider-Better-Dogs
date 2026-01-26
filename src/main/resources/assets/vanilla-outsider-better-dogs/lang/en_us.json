@@ -1,4 +1,5 @@
 {
+    "gamerule.category.vanilla-outsider-better-dogs.better_dogs": "Better Dogs",
     "gamerule.minecraft.bd_storm_anxiety": "Enable Storm Anxiety",
     "gamerule.minecraft.bd_storm_anxiety.description": "If true, wolves will whine and shake in fear during thunderstorms.",
     "gamerule.minecraft.bd_cliff_safety": "Enable Cliff Safety",
