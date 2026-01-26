@@ -4,26 +4,35 @@ filename: concept_better_dogs.md
 content: |
   # Better Dogs
   ## Philosophy Fit
-  This mod strictly adheres to the Vanilla Outsider philosophy by enhancing an existing vanilla mob (the Wolf) with deeper diegetic behaviors and reliability. It removes the "jank" of bad AI (walking into lava/void) without automating combat or exploration. The new mechanics (Personalities, Genetics) add depth to the "Tame" action loop, and the Gift System provides 1:1 reward for the investment of keeping the dog alive and loyal.
+  This mod strictly adheres to the Vanilla Outsider philosophy by enhancing the vanilla Wolf with deeper systems and reliability. It removes AI "jank" (lava/cliff deaths) without automated combat. The new mechanics (Personalities, Genetics, Social AI) add depth to the taming loop, while the Gift System rewards player investment.
 
   ## Mechanics
-  ### Core: Personality System
-  - Wolves obtain one of three personalities upon taming: **Normal**, **Aggressive**, or **Pacifist**.
-  - **Genetics:** Breeding passes down personalities (80% chance for same-parent types, varying mixes for cross-types).
+  ### Core: personality System
+  - **Types:** Normal, Aggressive, Pacifist.
+  - **Individual DNA:** Every dog has a unique "preference roll" (UUID-based) determining participation in social events.
+  - **Genetics:** Advanced breeding passes down traits with configurable probability matrices.
+
+  ### Social AI (The Snitch System)
+  - **Mischief:** Aggressive puppies may randomly provoke conflict.
+  - **Bite-Back:** Puppies retaliate if struck by owners.
+  - **Correction:** Aggressive adults discipline misbehaving puppies.
+  - **Blood Feud:** Rare escalation turnings logic into permanent vendettas.
+
+  ### Immersive Behaviors & Events
+  - **Zoomies:** High-energy morning/rain activity.
+  - **Group Howl:** Full moon pack vocalization.
+  - **Play Fighting:** Safe spars to burn energy (Large Packs).
+  - **Storm Anxiety:** Reactive fear behavior during thunder.
 
   ### "Smart" Survival AI
-  - **Cliff Safety:** Stops pathfinding over fatal drops.
-  - **Hazard Avoidance:** Actively avoids lava and fire sources.
-  - **Threat Assessment:** Flees from hissing Creepers; "Friendly Fire" protection prevents player swipe attacks from hitting pets.
+  - **Cliff Safety:** Detection logic prevents fatal drops.
+  - **Hazard Avoidance:** Actively navigates around lava/fire.
+  - **Teleport 2.0:** Prioritizes running/catch-up speed over vibrating teleports.
+  - **Friendly Fire:** Protection from sweep attacks.
 
-  ### Immersive Behaviors
-  - **Storm Anxiety:** Wolves visibly shake and whine during thunderstorms, requiring player comfort.
-  - **Passive Healing:** Slow regeneration when out of combat.
-
-  ### Gift System
-  - Periodically, loyal dogs present items "found" in the world.
-  - **Aggressive:** Combat loot (Rotten Flesh, Bones).
-  - **Pacifist:** Nature loot (Flowers, Berries).
+  ### Config Mastery 2.0 (Native Game Rules)
+  - **Registry Integration:** All 40+ AI magic numbers are exposed via native Minecraft Game Rules.
+  - **Custom Category:** Integrated into a dedicated "Better Dogs" tab in the Game Rules UI.
 
   ## Assets Needed
   - [Sound: entity.wolf.whine] (Exists)

@@ -93,6 +93,14 @@ public class BetterDogsGameRules {
         public static GameRule<Integer> BD_BLOOD_FEUD_PERCENT;
         public static GameRule<Integer> BD_BABY_RETALIATE_PERCENT;
 
+        // --- Breeding Genetics ---
+        public static GameRule<Integer> BD_BREED_SAME_CHANCE;
+        public static GameRule<Integer> BD_BREED_SAME_OTHER_CHANCE;
+        public static GameRule<Integer> BD_BREED_MIXED_DOMINANT_CHANCE;
+        public static GameRule<Integer> BD_BREED_MIXED_RECESSIVE_CHANCE;
+        public static GameRule<Integer> BD_BREED_DILUTED_NORMAL_CHANCE;
+        public static GameRule<Integer> BD_BREED_DILUTED_OTHER_CHANCE;
+
         // --- Taming Chances ---
         public static GameRule<Integer> BD_TAME_NORMAL_PERCENT;
         public static GameRule<Integer> BD_TAME_AGGRO_PERCENT;
@@ -160,6 +168,20 @@ public class BetterDogsGameRules {
                                 config.tamingChanceAggressive);
                 BD_TAME_PACI_PERCENT = registerInteger("bd_tame_paci_percent", BETTER_DOGS,
                                 config.tamingChancePacifist);
+
+                // Breeding
+                BD_BREED_SAME_CHANCE = registerInteger("bd_breed_same_chance", BETTER_DOGS,
+                                config.getBreedingSameParentChance());
+                BD_BREED_SAME_OTHER_CHANCE = registerInteger("bd_breed_same_other_chance", BETTER_DOGS,
+                                config.getBreedingSameParentOtherChance());
+                BD_BREED_MIXED_DOMINANT_CHANCE = registerInteger("bd_breed_mixed_dominant_chance", BETTER_DOGS,
+                                config.getBreedingMixedDominantChance());
+                BD_BREED_MIXED_RECESSIVE_CHANCE = registerInteger("bd_breed_mixed_recessive_chance", BETTER_DOGS,
+                                config.getBreedingMixedRecessiveChance());
+                BD_BREED_DILUTED_NORMAL_CHANCE = registerInteger("bd_breed_diluted_normal_chance", BETTER_DOGS,
+                                config.getBreedingDilutedNormalChance());
+                BD_BREED_DILUTED_OTHER_CHANCE = registerInteger("bd_breed_diluted_other_chance", BETTER_DOGS,
+                                config.getBreedingDilutedOtherChance());
         }
 
         // Internal Registration Helpers

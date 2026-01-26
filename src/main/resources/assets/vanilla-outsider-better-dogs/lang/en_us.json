@@ -47,5 +47,17 @@
     "gamerule.minecraft.bd_tame_aggro_percent": "Tame Chance: Aggro (%)",
     "gamerule.minecraft.bd_tame_aggro_percent.description": "Weighted chance for Aggressive personality when taming wild wolf (Def: 20).",
     "gamerule.minecraft.bd_tame_paci_percent": "Tame Chance: Pacifist (%)",
-    "gamerule.minecraft.bd_tame_paci_percent.description": "Weighted chance for Pacifist personality when taming wild wolf (Def: 20)."
+    "gamerule.minecraft.bd_tame_paci_percent.description": "Weighted chance for Pacifist personality when taming wild wolf (Def: 20).",
+    "gamerule.minecraft.bd_breed_same_chance": "Breed: Same (Inherit) %",
+    "gamerule.minecraft.bd_breed_same_chance.description": "Chance for offspring to inherit the same personality if both parents match (Def: 80).",
+    "gamerule.minecraft.bd_breed_same_other_chance": "Breed: Same (Variant) %",
+    "gamerule.minecraft.bd_breed_same_other_chance.description": "Chance for offspring to become a random other personality if parents match (Def: 10).",
+    "gamerule.minecraft.bd_breed_mixed_dominant_chance": "Breed: Mixed (Dominant) %",
+    "gamerule.minecraft.bd_breed_mixed_dominant_chance.description": "Chance for offspring to become Normal when breeding Normal + Other (Def: 40).",
+    "gamerule.minecraft.bd_breed_mixed_recessive_chance": "Breed: Mixed (Recessive) %",
+    "gamerule.minecraft.bd_breed_mixed_recessive_chance.description": "Chance for offspring to become the other parent's trait when breeding Normal + Other (Def: 40).",
+    "gamerule.minecraft.bd_breed_diluted_normal_chance": "Breed: Diluted (Normal) %",
+    "gamerule.minecraft.bd_breed_diluted_normal_chance.description": "Chance for offspring to revert to Normal when breeding Aggressive + Pacifist (Def: 50).",
+    "gamerule.minecraft.bd_breed_diluted_other_chance": "Breed: Diluted (Variant) %",
+    "gamerule.minecraft.bd_breed_diluted_other_chance.description": "Chance for offspring to pick one parent trait when breeding Aggressive + Pacifist (Def: 25)."
 }

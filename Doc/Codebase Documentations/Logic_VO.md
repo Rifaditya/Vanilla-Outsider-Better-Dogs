@@ -1,67 +1,53 @@
-# Core Logic: Better Dogs (v3.1.13)
+# Core Logic: Better Dogs (v3.1.21)
 
 This document explains the internal logic governing wolf personalities, their impact on gameplay, and the advanced social interaction architecture.
 
 ## 1. Personality Selection Logic
 
-Personalities are assigned once per wolf life cycle, typically during the `finalizeSpawn` event (natural spawning) or when a wolf is tamed.
+Personalities are assigned once per wolf life cycle, typically during taming or spawning.
 
 ### Roll Mechanism
 
-- **Natural Spawn**: A random personality is chosen from the `WolfPersonality` enum based on configurable chances (`BetterDogsConfig`).
-- **Taming**: If a wolf hasn't had one assigned, it is rolled upon successful taming.
-- **Breeding**: Offspring inherit personalities based on dominant/recessive genetic rules defined in the config.
+- **Individual DNA**: A unique seed derived from the wolf's UUID is used to roll for event participation thresholds.
+- **Taming**: Assigned upon successful taming.
+- **Breeding**: `WolfBreedingMixin` calculates the offspring personality based on parent genetic data and configurable Game Rule chances.
 
 ## 2. Stat Influence & Initial Behaviors
 
-Personalities apply attribute modifiers and determine basic AI priorities.
+Personalities apply attribute modifiers and determine AI priorities.
 
-| Personality | Health Mod | Speed Mod | Attack Mod | Special Behavior |
+| Personality | Health Mod | Speed Mod | Damage Mod | Behavior |
 | :--- | :--- | :--- | :--- | :--- |
-| **Aggressive** | -10.0 (Def) | +0.15 | +0.50 | **The Guardian**. Proactively attacks hostiles. |
-| **Pacifist** | +20.0 (Def) | -0.10 | -0.30 | **The Healer**. Defensive/Pacifist until provoked. |
-| **Normal** | +0.0 | +0.0 | +0.0 | **The Classic**. Balanced vanilla-plus behavior. |
+| **Aggressive** | -10.0 | +0.15 | +0.50 | **The Guardian**. Proactive. |
+| **Pacifist** | +20.0 | -0.10 | -0.30 | **The Loyal**. Reactive. |
+| **Normal** | +0.0 | +0.0 | +0.0 | **The Classic**. Balanced. |
 
 ## 3. Persistent Data (Fabric Attachment API)
 
-To ensure that a wolf keeps its personality after a server restart or chunk unload, the mod uses the **Fabric Data Attachment API**.
+To ensure consistency, the mod uses the **Fabric Data Attachment API**.
 
-### Data Record: `WolfPersistentData`
+- `personalityId`: The permanent trait.
+- `grudgeTarget`: UUID of entities for Blood Feuds.
+- `lastMischiefDay`: Rate-limiting for puppy play.
 
-- `personalityId`: The String ID of the enum (e.g., "AGGRESSIVE").
-- `lastDamageTime`: Tracks healing-over-time cooldowns.
-- `socialMode`: Tracks current active events (Scheduler).
+## 4. Social Interaction Architecture
 
-## 4. Social Interaction Architecture (v3.0+)
+The mod uses a centralized **WolfScheduler** to manage event-driven behaviors.
 
-The mod uses a centralized **WolfScheduler** to manage complex, event-driven behaviors.
+### A. The "Snitch" System
 
-### A. Baby Retaliation (The Provocation)
+If a puppy hits its owner (`BabyBiteBackGoal`), it triggers a `CorrectionDogEvent`. One nearby Aggressive Adult with the correct DNA threshold will intervene via `AdultCorrectionGoal`.
 
-- **Concept**: If an owner hurts an Aggressive baby wolf, it enters `RETALIATION` mode.
-- **Action**: The baby bites the owner **EXACTLY ONCE** via the `BabyBiteBackGoal`.
-- **Optimization**: Uses `RetaliationEvent` to override standard AI for 5 seconds.
+### B. Genetic Inheritance
 
-### B. Adult Correction (The "Snitch" System)
+Breeding roles are now governed by native Game Rules (e.g., `bd_breed_same_chance`). The matrix allows for dominance, recession, and mutation.
 
-- **Concept**: Hierarchy enforcement.
-- **Logic**: If a baby bites the owner, it broadcasts a `CorrectionEvent` to one nearby Aggressive Adult.
-- **Action**: The Adult intervenes with **ONE BITE**.
-- **Result**: The baby receives a "Dunce Cap" (Social Stigma/Flag) to prevent ganging up.
+### C. Large-Scale Events
 
-### C. Blood Feud (Vendetta)
+- **Zoomies**: Morning/Rain energy bursts.
+- **Group Howl**: Night-time atmospheric pack behavior.
+- **Play Fight**: Non-lethal training for large packs.
 
-- **Chance**: 5% (Configurable) when Discipline occurs.
-- **Effect**: The Adult and Baby declare a permanent Vendetta (UUID match) and fight to the death.
+## 5. UI Integration
 
-### D. Play Fighting (Social Enrichment)
-
-- **Trigger**: Occurs in large packs (>10 dogs) with high aggression density.
-- **Action**: Two wolves pair up for 10s of safe, non-lethal sparring (capped at 1 HP damage).
-
-## 5. Environment & Utility Logic
-
-- **Zoomies**: Morning/Post-rain hyper-activity (Aggressive wolves are too "stoic" for this).
-- **Group Howl**: Night-time pack vocalization led by one leader.
-
-- **Personality-Scaled Teleportation**: Aggressive dogs wander further; Pacifists stick closer to the owner.
+All logic variables are now exposed through a custom Game Rule category. This allows per-world tuning without restarting the server or manual JSON edits.
