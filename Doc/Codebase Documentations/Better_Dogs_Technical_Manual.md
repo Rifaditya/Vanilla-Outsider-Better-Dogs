@@ -1,76 +1,77 @@
-# Better Dogs: Technical Manual (Vanilla Outsider)
+# Better Dogs: Technical Manual (v3.1.25)
 
-**Version**: 3.1.13
-**Philosophy**: "Vanilla Outsider" - Mechanics should be invisible, intuitive, and seamlessly integrated into the base game. **Config Mastery** ensures players can tune every "magic number" to their liking.
-
----
-
-## 1. Personality System
-
-Every Wolf in the world is assigned a unique **Personality** upon spawning (natural), taming, or breeding. This is persistent data stored via the Fabric Attachment API.
-
-### Personality Types
-
-| Type | ID | Behavior |
-| :--- | :--- | :--- |
-| **Normal** | 0 | Standard Vanilla-plus behavior. Balanced stats. |
-| **Aggressive** | 1 | **Guardian**. Proactively attacks hostile mobs near the owner. High Damage. |
-| **Pacifist** | 2 | **Healer**. defensive until provoked. High Health/Knockback. |
+**Philosophy**: "Vanilla Outsider" - Mechanics should be invisible, intuitive, and seamlessly integrated into the base game. **Native Game Rules** and **Social DNA** provide deep immersion without the need for external configuration menus.
 
 ---
 
-## 2. The Scheduler System (Event-Driven AI)
+## 1. Personality & Genetic DNA System
 
-As of v3.0, the mod uses a centralized **WolfScheduler** to manage complex behaviors.
+Every wolf possesses permanent **Social DNA** (64-bit seed) and a calculated **Social Scale** (Size variation) stored via the **Fabric Data Attachment API**.
 
-### Core Concept: "Social Mode"
+### A. Individual DNA
 
-Instead of "Secondary Targets", wolves now enter **Social Mode**.
+- Derived from the wolf's UUID.
+- Determines participation odds for all social events (Zoomies, Begging, etc.).
+- Result: Each dog feels like a unique individual with its own likes/dislikes.
 
-- **Social Target**: The entity the wolf is interacting with (e.g., Owner, another Wolf).
-- **Social Action**: The *type* of interaction (RETALIATION, DISCIPLINE, PLAY, ZOOMIES, HOWL).
-- **Timer**: How long the mode lasts (Oversight by Scheduler).
+### B. Genetic Scaling
 
-### The Gatekeeper
-
-The `WolfMixin.setTarget()` method acts as a Gatekeeper.
-
-- If **Social Mode** is Active: It BLOCKS all attempts to change the target (e.g., trying to attack a skeleton) UNLESS the new target matches the **Social Target**.
-- This ensures that when a wolf is "busy" (e.g. correcting a baby or howling), it cannot be distracted.
+- Visual size varies between **0.9x and 1.1x**.
+- Hitboxes remain vanilla-sized for 100% pathfinding compatibility.
 
 ---
 
-## 3. Advanced Behaviors (Events)
+## 2. Hive Mind Social Engine (v6.1)
 
-### A. Baby Retaliation (The "One-Bite" Rule)
+A centralized, world-pulsed scheduler handles all social behaviors through a **Highlander Unified Pulse**.
 
-*Requires Aggressive Personality*
+### A. Posture Integrity (Vanilla Spirit)
 
-- **Trigger**: Owner punches a baby wolf.
-- **Logic**: Event injects **Social Mode: RETALIATION**. Baby bites Owner **ONCE**, then event ends.
+Social AI strictly respects the dog's sitting state. If a dog is ordered to sit via the "Stay" command, all voluntary social goals are suppressed to prevent posture-flickering and protect player agency.
 
-### B. Adult Correction (The "Snitch" System)
+### B. Global Cooldowns
 
-*Requires Aggressive Personality*
-
-- **Trigger**: A baby wolf successfully bites the owner (Retaliation).
-- **Logic**: Baby broadcast a `CorrectionEvent` to one nearby Aggressive Adult. Adult enters **Social Mode: DISCIPLINE** and bites baby **ONCE**. Baby gets "Dunce Cap" flag to prevent ganging up.
-
-### C. Social Events (v3.1.x)
-
-- **Play Fighting**: Large packs (>10) engage in safe, non-lethal sparing. Capped at 1 HP damage.
-- **Zoomies**: Morning/Post-rain hyper-activity.
-- **Group Howl**: Night-time pack vocalization led by one leader.
+To ensure natural pacing, each dog has a **2-10 minute Global Cooldown** after finishing a social event. Interactions are designed to be "special encounters" rather than constant spam.
 
 ---
 
-## 4. Safety & Persistence
+## 3. Social Events (Behaviors)
 
-- **Cliff Awareness**: Detects airborne targets and stops chasing if ground is missing within 4 blocks below.
-- **Creeper Flee**: Actively flees hissing creepers.
-- **Ultraguard Sync**: Config persistence using atomic writes and auto-backups (`.json.bak`).
-- **Passive Healing**: Slow health recovery when out of combat.
+- **Begging**: Passive interest when players hold food.
+- **Fetch**: Interactive play when items are tossed nearby.
+- **Zoomies**: Morning hyper-activity (random high-speed running).
+- **Wanderlust**: Occasional curious exploration of nearby surroundings.
+- **Idle Curiosity**: Soft interest in nearby entities or blocks.
 
 ---
 
-*Documentation Updated for v3.1.13*
+## 4. Performance & Threading Model
+
+### A. The Single-Thread Rule
+
+Better Dogs operates strictly on the **Minecraft Server Thread**.
+
+- **Reasoning**: Minecraft's entity components (Goal Selectors, Attributes, Data) are not thread-safe. Modifying them from a parallel thread would cause immediate crashes (`ConcurrentModificationException`).
+- **Safety**: Main-thread execution guarantees 100% stability.
+
+### B. O(1) Highlander Efficiency
+
+Despite running on one thread, the cost is practically zero:
+
+- **Constant Load**: The engine does NOT iterate over all dogs. It picks **one random dog** from the registry per tick.
+- **Scaling**: Performance is identical whether you have 10 dogs or 10,000 in the world.
+
+### C. Swarm Optimization
+
+Large packs elect a "Leader" to perform environmental scanning. "Followers" mirror the leader's navigation, saving 70% CPU time in massive wolf populations.
+
+---
+
+## 5. Safety & Persistence
+
+- **Fabric Attachments**: State-safe data preservation across version jumps.
+- **DNA Migration**: Deterministic seed generation for old-world entities.
+- **Native Game Rules**: All chances and ranges are configurable in the "Edit Game Rules" screen.
+
+---
+*Documentation for v3.1.25 | Highlander Pulse Engine v6.1*
