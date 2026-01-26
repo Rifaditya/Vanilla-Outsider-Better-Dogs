@@ -1,378 +1,295 @@
 package net.vanillaoutsider.betterdogs.config;
 
-// import me.shedaniel.autoconfig.AutoConfig;
-// import me.shedaniel.autoconfig.ConfigData;
-// import me.shedaniel.autoconfig.annotation.Config;
-// import me.shedaniel.autoconfig.annotation.ConfigEntry;
-
-// @Config(name = "vanilla-outsider-better-dogs")
 public class BetterDogsConfig {
 
-    private static BetterDogsConfig INSTANCE = new BetterDogsConfig(); // Not final, can be replaced by load
+    private static BetterDogsConfig INSTANCE = new BetterDogsConfig();
     private static final com.google.gson.Gson GSON = new com.google.gson.GsonBuilder().setPrettyPrinting().create();
     private static java.nio.file.Path CONFIG_PATH;
 
-    public static void load(java.nio.file.Path configDir) {
+    public int configVersion = 3117; // Version matching mod v3.1.17
+
+    public static synchronized void load(java.nio.file.Path configDir) {
         CONFIG_PATH = configDir.resolve("betterdogs.json");
+        org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger("Better Dogs");
         
-        if (java.nio.file.Files.exists(CONFIG_PATH)) {
-            try (java.io.Reader reader = java.nio.file.Files.newBufferedReader(CONFIG_PATH)) {
-                INSTANCE = GSON.fromJson(reader, BetterDogsConfig.class);
-            } catch (Exception e) {
-                org.slf4j.LoggerFactory.getLogger("Better Dogs").error("Failed to load config, using defaults", e);
+        if (!java.nio.file.Files.exists(CONFIG_PATH)) {
+            logger.info("No config found, generating defaults");
+            save();
+            return;
+        }
+
+        try {
+            // Pass 4: Size Guard (1MB limit)
+            long size = java.nio.file.Files.size(CONFIG_PATH);
+            if (size > 1024 * 1024) {
+                logger.error("Config file too large ({} bytes). Using defaults for safety!", size);
+                return;
             }
-        }
-        save(); // Save to ensure file exists or to update structure
-    }
 
-    public static void save() {
-        try (java.io.Writer writer = java.nio.file.Files.newBufferedWriter(CONFIG_PATH)) {
-            GSON.toJson(INSTANCE, writer);
+            // Pass 5: UTF-8 Enforcement
+            try (java.io.Reader reader = java.nio.file.Files.newBufferedReader(CONFIG_PATH, java.nio.charset.StandardCharsets.UTF_8)) {
+                BetterDogsConfig tempInstance = GSON.fromJson(reader, BetterDogsConfig.class);
+                
+                if (tempInstance != null) {
+                    // Pass 3: Version Awareness & Backup
+                    boolean needsSync = false;
+                    if (tempInstance.configVersion < INSTANCE.configVersion) {
+                        logger.info("Old config version {} detected. Backing up and updating to {}...", tempInstance.configVersion, INSTANCE.configVersion);
+                        createBackup();
+                        tempInstance.configVersion = INSTANCE.configVersion;
+                        needsSync = true;
+                    }
+
+                    INSTANCE = tempInstance;
+                    
+                    // Pass 2 & 5: Additive Sync (Merge new defaults into existing file)
+                    // If we added new fields to the class, GSON will write them out now.
+                    if (needsSync) {
+                        save();
+                    } else {
+                        // Optional: Always save to ensure stale fields are purged? 
+                        // User specifically asked for "new config version update to change the user settings to default"
+                        // wait, "i dont want the new config version update to change the user settings to default"
+                        // Correct: save() will write back CURRENT java fields, which merges new ones and preserves old ones.
+                        save(); 
+                    }
+                }
+            }
         } catch (Exception e) {
-            org.slf4j.LoggerFactory.getLogger("Better Dogs").error("Failed to save config", e);
+            logger.error("Critical error loading config. Preserving file and using defaults.", e);
         }
     }
 
-    // @ConfigEntry.Gui.Tooltip
+    public static synchronized void save() {
+        if (CONFIG_PATH == null) return;
+        org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger("Better Dogs");
+        
+        try {
+            // Pass 2: Directory Guard
+            java.nio.file.Files.createDirectories(CONFIG_PATH.getParent());
+
+            // Pass 4: Atomic Swapping
+            java.nio.file.Path tempPath = CONFIG_PATH.resolveSibling("betterdogs.json.tmp");
+            
+            try (java.io.Writer writer = java.nio.file.Files.newBufferedWriter(tempPath, java.nio.charset.StandardCharsets.UTF_8)) {
+                GSON.toJson(INSTANCE, writer);
+            }
+
+            try {
+                java.nio.file.Files.move(tempPath, CONFIG_PATH, java.nio.file.StandardCopyOption.REPLACE_EXISTING, java.nio.file.StandardCopyOption.ATOMIC_MOVE);
+            } catch (java.io.IOException e) {
+                // Pass 5: Fallback for non-atomic FS
+                java.nio.file.Files.move(tempPath, CONFIG_PATH, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+            }
+        } catch (Exception e) {
+            logger.error("Failed to save config safely!", e);
+        }
+    }
+
+    private static void createBackup() {
+        try {
+            java.nio.file.Path backupPath = CONFIG_PATH.resolveSibling("betterdogs.json.bak");
+            java.nio.file.Files.copy(CONFIG_PATH, backupPath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            org.slf4j.LoggerFactory.getLogger("Better Dogs").error("Failed to create config backup!", e);
+        }
+    }
+
+    // ========== Game Rule Defaults ==========
+    // These values are used to initialize Game Rules for new worlds.
+    // Gameplay logic now uses Game Rules (e.g. /gamerule bdAggroSpeed).
+
     public double globalSpeedBuff = 0.20;
-
-    // @ConfigEntry.Gui.Tooltip
     public boolean enableStormAnxiety = true;
-
-    // @ConfigEntry.Gui.Tooltip
     public boolean enableCliffSafety = true;
-
-    // @ConfigEntry.Gui.Tooltip
     public boolean enableFriendlyFireProtection = true;
 
     // ========== Aggressive Personality ==========
-    // @ConfigEntry.Category("aggressive")
-    // @ConfigEntry.Gui.Tooltip
     public double aggressiveHealthBonus = -10.0;
-
-    // @ConfigEntry.Category("aggressive")
-    // @ConfigEntry.Gui.Tooltip
     public double aggressiveSpeedModifier = 0.15;
-
-    // @ConfigEntry.Category("aggressive")
-    // @ConfigEntry.Gui.Tooltip
     public double aggressiveDetectionRange = 20.0;
-
-    // @ConfigEntry.Category("aggressive")
-    // @ConfigEntry.Gui.Tooltip
+   // ...
     public double aggressiveChaseDistance = 50.0;
-
-    // @ConfigEntry.Category("aggressive")
-    // @ConfigEntry.Gui.Tooltip
     public double aggressiveDamageModifier = 0.50;
-
-    // @ConfigEntry.Category("aggressive")
-    // @ConfigEntry.Gui.Tooltip
-    public float aggressiveFollowStart = 10.0f;
-
-    // @ConfigEntry.Category("aggressive")
-    // @ConfigEntry.Gui.Tooltip
+    public float aggressiveFollowStart = 50.0f;
     public float aggressiveFollowStop = 2.0f;
 
     // ========== Pacifist Personality ==========
-    // @ConfigEntry.Category("pacifist")
-    // @ConfigEntry.Gui.Tooltip
     public double pacifistHealthBonus = 20.0;
-
-    // @ConfigEntry.Category("pacifist")
-    // @ConfigEntry.Gui.Tooltip
     public double pacifistSpeedModifier = -0.10;
-
-    // @ConfigEntry.Category("pacifist")
-    // @ConfigEntry.Gui.Tooltip
     public double pacifistDamageModifier = -0.30;
-
-    // @ConfigEntry.Category("pacifist")
-    // @ConfigEntry.Gui.Tooltip
     public double pacifistKnockbackModifier = 0.5;
-
-    // @ConfigEntry.Category("pacifist")
-    // @ConfigEntry.Gui.Tooltip
-    public float pacifistFollowStart = 6.0f;
-
-    // @ConfigEntry.Category("pacifist")
-    // @ConfigEntry.Gui.Tooltip
+    public float pacifistFollowStart = 5.0f;
     public float pacifistFollowStop = 2.0f;
 
     // ========== Normal Personality ==========
-    // @ConfigEntry.Category("normal")
-    // @ConfigEntry.Gui.Tooltip
     public double normalHealthBonus = 0.0;
-
-    // @ConfigEntry.Category("normal")
-    // @ConfigEntry.Gui.Tooltip
     public double normalSpeedModifier = 0.0;
-
-    // @ConfigEntry.Category("normal")
-    // @ConfigEntry.Gui.Tooltip
     public double normalDamageModifier = 0.0;
-
-    // @ConfigEntry.Category("normal")
-    // @ConfigEntry.Gui.Tooltip
     public float normalFollowStart = 10.0f;
-
-    // @ConfigEntry.Category("normal")
-    // @ConfigEntry.Gui.Tooltip
     public float normalFollowStop = 2.0f;
 
     // ========== Healing ==========
-    // @ConfigEntry.Category("healing")
-    // @ConfigEntry.Gui.Tooltip
     public int passiveHealIntervalTicks = 1200;
-
-    // @ConfigEntry.Category("healing")
-    // @ConfigEntry.Gui.Tooltip
     public double passiveHealAmount = 1.0;
-
-    // @ConfigEntry.Category("healing")
-    // @ConfigEntry.Gui.Tooltip
     public int combatHealDelayTicks = 60;
 
     // ========== Wild Wolves ==========
-    // @ConfigEntry.Category("wild")
-    // @ConfigEntry.Gui.Tooltip
     public float wildHuntHealthThreshold = 0.5f;
 
-    // ========== Taming (Wild Wolf Personality) ==========
-    // @ConfigEntry.Category("taming")
-    // @ConfigEntry.Gui.Tooltip
+    // ========== Taming ==========
     public int tamingChanceNormal = 60;
-
-    // @ConfigEntry.Category("taming")
-    // @ConfigEntry.Gui.Tooltip
     public int tamingChanceAggressive = 20;
-
-    // @ConfigEntry.Category("taming")
-    // @ConfigEntry.Gui.Tooltip
     public int tamingChancePacifist = 20;
 
     // ========== Breeding Genetics ==========
-    // @ConfigEntry.Category("breeding")
-    // @ConfigEntry.Gui.Tooltip
     public int breedingSameParentChance = 80;
-
-    // @ConfigEntry.Category("breeding")
-    // @ConfigEntry.Gui.Tooltip
     public int breedingSameParentOtherChance = 10;
-
-    // @ConfigEntry.Category("breeding")
-    // @ConfigEntry.Gui.Tooltip
     public int breedingMixedDominantChance = 40;
-
-    // @ConfigEntry.Category("breeding")
-    // @ConfigEntry.Gui.Tooltip
     public int breedingMixedRecessiveChance = 20;
-
-    // @ConfigEntry.Category("breeding")
-    // @ConfigEntry.Gui.Tooltip
     public int breedingDilutedNormalChance = 50;
-
-    // @ConfigEntry.Category("breeding")
-    // @ConfigEntry.Gui.Tooltip
     public int breedingDilutedOtherChance = 25;
 
     // ========== Gifts ==========
-    // @ConfigEntry.Category("gifts")
-    // @ConfigEntry.Gui.Tooltip
     public int giftCooldownMin = 12000;
-
-    // @ConfigEntry.Category("gifts")
-    // @ConfigEntry.Gui.Tooltip
     public int giftCooldownMax = 18000;
-
-    // @ConfigEntry.Category("gifts")
-    // @ConfigEntry.Gui.Tooltip
     public float giftTriggerChance = 0.01f;
 
     // ========== General/Misc expansions ==========
-    // @ConfigEntry.Gui.Tooltip
     public float stormAnxietyTriggerChance = 0.01f;
-
-    // @ConfigEntry.Gui.Tooltip
     public float stormWhineChance = 0.02f;
     
     // ========== Baby Wolf Behavior ==========
-    // @ConfigEntry.Category("baby")
-    // @ConfigEntry.Gui.Tooltip
     public float babyFollowMultiplier = 2.0f;
 
-    // @ConfigEntry.Category("baby")
-    // @ConfigEntry.Gui.Tooltip
-    public float babyTeleportMultiplier = 2.0f;
-
     // ========== Baby Training System ==========
-    // @ConfigEntry.Category("baby")
-    // @ConfigEntry.Gui.Tooltip
-    public float babyMischiefChance = 2.5f; // 0-100, daily unprovoked attack chance
+    public float babyMischiefChance = 2.5f;
+    public int bloodFeudChance = 5;
+    public int babyRetaliationChance = 75;
 
-    // @ConfigEntry.Category("baby")
-    // @ConfigEntry.Gui.Tooltip
-    public int bloodFeudChance = 5; // 0-100, chance of blood feud on adult correction
+    // ========== Pack Separation (REMOVED v3.1.17) ==========
+    // public boolean enablePackSeparation = true;
 
-    // @ConfigEntry.Category("baby")
-    // @ConfigEntry.Gui.Tooltip
-    public int babyRetaliationChance = 75; // 0-100, chance of baby retaliating when hit
+
+    public double followCatchUpSpeed = 1.5;
+    public double followCatchUpThreshold = 10.0;
+    public double teleportToOwnerSpread = 4.0;
+    public double teleportMultiplier = 2.0;
+    public float aggressiveDetectionBuffer = 2.0f;
+
+    // ========== Events/Social Behavior ==========
+    public int wanderlustRange = 40;
+    public int wanderlustVerticalRange = 7;
+    public double zoomiesSpeedModifier = 1.4;
+    public int zoomiesNewSpotChance = 10;
+    public float zoomiesLookAroundChance = 0.05f;
+    public int zoomiesRange = 10;
+    public int zoomiesVerticalRange = 4;
+
+    public int stormAnxietyPaceRange = 3;
+    public int stormAnxietyPaceVerticalRange = 2;
+    public double stormAnxietyLookSpread = 10.0;
+    public float stormAnxietyLookChance = 0.05f;
+    public float stormAnxietyStopChance = 0.02f;
+
+    public float playFightLookSpeed = 30.0f;
+    public double playFightSpeedModifier = 1.0;
+
+    // ========== Discipline & Training ==========
+    public float biteBackLookSpeed = 30.0f;
+    public double biteBackSpeedModifier = 1.2;
+    public double biteBackReachBuffer = 4.0;
+    public int biteBackAttackDelay = 20;
+
+    public float correctionLookSpeed = 30.0f;
+    public double correctionSpeedModifier = 1.0;
+    public double correctionReachBuffer = 1.0;
+    public double correctionSearchRange = 10.0;
+    public int correctionDuration = 100;
+
+    // ========== Hazards ==========
+    public int maxSafeFall = 3;
+    public int hazardCheckLimit = 5;
+    public int hazardFallSearchLimit = 10;
+
+    // Gift probabilities
+    public int aggressiveGiftBone = 40;
+    public int aggressiveGiftFlesh = 35;
+    public int aggressiveGiftArrow = 15;
+    public int pacifistGiftBerries = 30;
+    public int pacifistGiftSeeds = 25;
+    public int pacifistGiftFlower = 20;
+    public int pacifistGiftMushroom = 15;
 
     public static BetterDogsConfig get() {
         return INSTANCE;
     }
 
-    // Getters for Mixin usage (since I saw mixins calling getters in Kotlin)
-    // Kotlin properties generated getters automatically, in Java fields might be
-    // accessed directly.
-    // However, the existing mixins called getAggressiveSpeedModifier() etc.
-    // I should provide these getters to minimize mixin churn, or update mixins to
-    // access fields.
-    // Since mixins are already written to use getters (from Kotlin interop), adding
-    // them is safer.
+    public double getGlobalSpeedBuff() { return globalSpeedBuff; }
+    public boolean getEnableStormAnxiety() { return enableStormAnxiety; }
+    public boolean getEnableCliffSafety() { return enableCliffSafety; }
+    public boolean getEnableFriendlyFireProtection() { return enableFriendlyFireProtection; }
+    public double getAggressiveHealthBonus() { return aggressiveHealthBonus; }
+    public double getAggressiveSpeedModifier() { return aggressiveSpeedModifier; }
+    public double getAggressiveDetectionRange() { return aggressiveDetectionRange; }
+    public double getAggressiveChaseDistance() { return aggressiveChaseDistance; }
+    public double getAggressiveDamageModifier() { return aggressiveDamageModifier; }
+    public float getAggressiveFollowStart() { return aggressiveFollowStart; }
+    public float getAggressiveFollowStop() { return aggressiveFollowStop; }
+    public double getPacifistHealthBonus() { return pacifistHealthBonus; }
+    public double getPacifistSpeedModifier() { return pacifistSpeedModifier; }
+    public double getPacifistDamageModifier() { return pacifistDamageModifier; }
+    public double getPacifistKnockbackModifier() { return pacifistKnockbackModifier; }
+    public float getPacifistFollowStart() { return pacifistFollowStart; }
+    public float getPacifistFollowStop() { return pacifistFollowStop; }
+    public double getNormalHealthBonus() { return normalHealthBonus; }
+    public double getNormalSpeedModifier() { return normalSpeedModifier; }
+    public double getNormalDamageModifier() { return normalDamageModifier; }
+    public float getNormalFollowStart() { return normalFollowStart; }
+    public float getNormalFollowStop() { return normalFollowStop; }
+    public int getPassiveHealIntervalTicks() { return passiveHealIntervalTicks; }
+    public double getPassiveHealAmount() { return passiveHealAmount; }
+    public int getCombatHealDelayTicks() { return combatHealDelayTicks; }
+    public int getBreedingSameParentChance() { return breedingSameParentChance; }
+    public int getBreedingSameParentOtherChance() { return breedingSameParentOtherChance; }
+    public int getBreedingMixedDominantChance() { return breedingMixedDominantChance; }
+    public int getBreedingMixedRecessiveChance() { return breedingMixedRecessiveChance; }
+    public int getBreedingDilutedNormalChance() { return breedingDilutedNormalChance; }
+    public int getBreedingDilutedOtherChance() { return breedingDilutedOtherChance; }
+    public float getBabyFollowMultiplier() { return babyFollowMultiplier; }
+    public float getBabyMischiefChance() { return babyMischiefChance; }
+    public int getBloodFeudChance() { return bloodFeudChance; }
+    public int getBabyRetaliationChance() { return babyRetaliationChance; }
 
-    public double getGlobalSpeedBuff() {
-        return globalSpeedBuff;
-    }
-
-    public boolean getEnableStormAnxiety() {
-        return enableStormAnxiety;
-    }
-
-    public boolean getEnableCliffSafety() {
-        return enableCliffSafety;
-    }
-
-    public boolean getEnableFriendlyFireProtection() {
-        return enableFriendlyFireProtection;
-    }
-
-    public double getAggressiveHealthBonus() {
-        return aggressiveHealthBonus;
-    }
-
-    public double getAggressiveSpeedModifier() {
-        return aggressiveSpeedModifier;
-    }
-
-    public double getAggressiveDetectionRange() {
-        return aggressiveDetectionRange;
-    }
-
-    public double getAggressiveChaseDistance() {
-        return aggressiveChaseDistance;
-    }
-
-    public double getAggressiveDamageModifier() {
-        return aggressiveDamageModifier;
-    }
-
-    public float getAggressiveFollowStart() {
-        return aggressiveFollowStart;
-    }
-
-    public float getAggressiveFollowStop() {
-        return aggressiveFollowStop;
-    }
-
-    public double getPacifistHealthBonus() {
-        return pacifistHealthBonus;
-    }
-
-    public double getPacifistSpeedModifier() {
-        return pacifistSpeedModifier;
-    }
-
-    public double getPacifistDamageModifier() {
-        return pacifistDamageModifier;
-    }
-
-    public double getPacifistKnockbackModifier() {
-        return pacifistKnockbackModifier;
-    }
-
-    public float getPacifistFollowStart() {
-        return pacifistFollowStart;
-    }
-
-    public float getPacifistFollowStop() {
-        return pacifistFollowStop;
-    }
-
-    public double getNormalHealthBonus() {
-        return normalHealthBonus;
-    }
-
-    public double getNormalSpeedModifier() {
-        return normalSpeedModifier;
-    }
-
-    public double getNormalDamageModifier() {
-        return normalDamageModifier;
-    }
-
-    public float getNormalFollowStart() {
-        return normalFollowStart;
-    }
-
-    public float getNormalFollowStop() {
-        return normalFollowStop;
-    }
-
-    public int getPassiveHealIntervalTicks() {
-        return passiveHealIntervalTicks;
-    }
-
-    public double getPassiveHealAmount() {
-        return passiveHealAmount;
-    }
-
-    public int getCombatHealDelayTicks() {
-        return combatHealDelayTicks;
-    }
-
-    // Genetics getters
-    public int getBreedingSameParentChance() {
-        return breedingSameParentChance;
-    }
-
-    public int getBreedingSameParentOtherChance() {
-        return breedingSameParentOtherChance;
-    }
-
-    public int getBreedingMixedDominantChance() {
-        return breedingMixedDominantChance;
-    }
-
-    public int getBreedingMixedRecessiveChance() {
-        return breedingMixedRecessiveChance;
-    }
-
-    public int getBreedingDilutedNormalChance() {
-        return breedingDilutedNormalChance;
-    }
-
-    public int getBreedingDilutedOtherChance() {
-        return breedingDilutedOtherChance;
-    }
-
-    public float getBabyFollowMultiplier() {
-        return babyFollowMultiplier;
-    }
-
-    public float getBabyTeleportMultiplier() {
-        return babyTeleportMultiplier;
-    }
-
-    public float getBabyMischiefChance() {
-        return babyMischiefChance;
-    }
-
-    public int getBloodFeudChance() {
-        return bloodFeudChance;
-    }
-
-    public int getBabyRetaliationChance() {
-        return babyRetaliationChance;
-    }
+    public double getFollowCatchUpSpeed() { return followCatchUpSpeed; }
+    public double getFollowCatchUpThreshold() { return followCatchUpThreshold; }
+    public double getTeleportToOwnerSpread() { return teleportToOwnerSpread; }
+    public double getTeleportMultiplier() { return teleportMultiplier; }
+    public float getAggressiveDetectionBuffer() { return aggressiveDetectionBuffer; }
+    public int getWanderlustRange() { return wanderlustRange; }
+    public int getWanderlustVerticalRange() { return wanderlustVerticalRange; }
+    public double getZoomiesSpeedModifier() { return zoomiesSpeedModifier; }
+    public int getZoomiesNewSpotChance() { return zoomiesNewSpotChance; }
+    public float getZoomiesLookAroundChance() { return zoomiesLookAroundChance; }
+    public int getZoomiesRange() { return zoomiesRange; }
+    public int getZoomiesVerticalRange() { return zoomiesVerticalRange; }
+    public int getStormAnxietyPaceRange() { return stormAnxietyPaceRange; }
+    public int getStormAnxietyPaceVerticalRange() { return stormAnxietyPaceVerticalRange; }
+    public double getStormAnxietyLookSpread() { return stormAnxietyLookSpread; }
+    public float getStormAnxietyLookChance() { return stormAnxietyLookChance; }
+    public float getStormAnxietyStopChance() { return stormAnxietyStopChance; }
+    public float getPlayFightLookSpeed() { return playFightLookSpeed; }
+    public double getPlayFightSpeedModifier() { return playFightSpeedModifier; }
+    public float getBiteBackLookSpeed() { return biteBackLookSpeed; }
+    public double getBiteBackSpeedModifier() { return biteBackSpeedModifier; }
+    public double getBiteBackReachBuffer() { return biteBackReachBuffer; }
+    public int getBiteBackAttackDelay() { return biteBackAttackDelay; }
+    public float getCorrectionLookSpeed() { return correctionLookSpeed; }
+    public double getCorrectionSpeedModifier() { return correctionSpeedModifier; }
+    public double getCorrectionReachBuffer() { return correctionReachBuffer; }
+    public double getCorrectionSearchRange() { return correctionSearchRange; }
+    public int getCorrectionDuration() { return correctionDuration; }
+    public int getMaxSafeFall() { return maxSafeFall; }
+    public int getHazardCheckLimit() { return hazardCheckLimit; }
+    public int getHazardFallSearchLimit() { return hazardFallSearchLimit; }
 }

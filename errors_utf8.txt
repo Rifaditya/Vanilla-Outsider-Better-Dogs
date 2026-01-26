@@ -1,0 +1,55 @@
+﻿
+> Configure project :
+Fabric Loom: 1.14.7
+./gradlew : 
+At line:1 char:1
++ ./gradlew 
+compileJava 
+--console-plain 
+--error-count 10 > 
+errors.txt 2 ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (:String) [   
+ ], RemoteExceptio    
+n
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+FAILURE: Build failed 
+with an exception.
+
+* What went wrong:
+Problem configuring 
+task :compileJava 
+from command line.
+> Unknown 
+command-line option 
+'--console-plain'.
+
+* Try:
+> Run gradlew help 
+--task :compileJava 
+to get task usage 
+details.
+> Run with 
+--stacktrace option 
+to get the stack 
+trace.
+> Run with --info or 
+--debug option to get 
+more log output.
+> Run with --scan to 
+get full insights 
+from a Build Scan 
+(powered by 
+Develocity).
+> Get more help at htt
+ps://help.gradle.org.
+
+BUILD FAILED in 1s

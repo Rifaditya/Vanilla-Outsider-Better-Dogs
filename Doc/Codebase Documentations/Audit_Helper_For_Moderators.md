@@ -1,48 +1,25 @@
-# Moderator Audit Helper: Better Dogs
+# Audit Helper for Moderators
 
-**Mod Name:** Vanilla Outsider: Better Dogs
-**Mod ID:** `vanilla-outsider-better-dogs` (Fabric)
-**Version:** 1.9.6 (Targeting Minecraft 26.1 Snapshot 4)
-**Creator:** DasikIgaijin
+This document provides technical justification for patterns in the "Better Dogs" mod that might appear suspicious or unconventional during platform review.
 
-## 🛡️ Safety & Compliance Statement
+## v3.1.14: Dynamic Simulation Capping
 
-To assist Platform Moderators (Modrinth/CurseForge) in auditing this project, I certify the following:
+This version introduces dynamic adjustment of AI ranges based on the server's simulation distance to prevent dogs from becoming stranded in unloaded chunks.
 
-1. **No External Network Connections**: This mod does **NOT** make any HTTP/Web requests. It runs entirely offline within the Minecraft game loop.
-2. **No Data Collection**: This mod does **NOT** collect, store, or transmit any user data, telemetry, or analytics.
-3. **No Binary Execution**: This mod does **NOT** execute any external binaries or OS-level commands.
+### [AI] Periodic Simulation Distance Queries
 
-## 📂 Codebase Overview for Reviewers
+**Files**: [PersonalityFollowOwnerGoal.java](file:///e:/Minecraft%20Project/Vanilla%20Outsider%20Collections/Better%20Dogs/src/main/java/net/vanillaoutsider/betterdogs/ai/PersonalityFollowOwnerGoal.java), [AggressiveTargetGoal.java](file:///e:/Minecraft%20Project/Vanilla%20Outsider%20Collections/Better%20Dogs/src/main/java/net/vanillaoutsider/betterdogs/ai/AggressiveTargetGoal.java)
 
-The codebase is focused on extending the Vanilla Wolf entity with a personality and stat system.
+**Logic**: The AI goals now periodically query `owner.level().getServer().getPlayerList().getSimulationDistance()`.
+**Justification**:
 
-| Feature | Source File | Description |
-| :--- | :--- | :--- |
-| **Data Persistence** | `net.vanillaoutsider.betterdogs.WolfPersistentData` | Records the personality ID and last damage time. Integrated via Fabric Attachment API. |
-| **Core Logic** | `net.vanillaoutsider.betterdogs.mixin.WolfMixin` | Handles the randomization of personalities and the application of stat buffs/AI changes. |
-| **Entrypoint** | `net.vanillaoutsider.betterdogs.BetterDogs` | Initializes the `AttachmentType` and mod constants. |
+- **Safety**: This prevents dogs (especially aggressive ones with high detection ranges) from attempting to pathfind into or target mobs within unloaded chunks, which can lead to AI hang-ups or dogs getting lost.
+- **Performance**: To avoid per-tick overhead, the value is cached and only refreshed every 100 ticks (5 seconds). Null-safety guards are implemented for server/owner state transitions.
+- **Dynamic Adaptability**: This ensures the mod remains stable even if server administrators change simulation distance settings during runtime.
 
-## 🔍 Specific "Suspicious" Patterns Explained
+### [AI] Increased Pathfinding Preference
 
-Moderators looking at Mixins might flag the following patterns. Here is the justification:
+**Files**: [PersonalityFollowOwnerGoal.java](file:///e:/Minecraft%20Project/Vanilla%20Outsider%20Collections/Better%20Dogs/src/main/java/net/vanillaoutsider/betterdogs/ai/PersonalityFollowOwnerGoal.java)
 
-### 1. `betterdogs$onApplyTamingSideEffects` Injection
-
-* **Location**: `WolfMixin.java` -> `betterdogs$onApplyTamingSideEffects`
-* **Reason**: **Reliable Logic Hook.** In the unobfuscated 26.1 snapshot environment, the standard `setTame` method is not explicitly overridden in `Wolf.java`, which can lead to Mixin transformation failures if targeted directly. I inject into `applyTamingSideEffects` instead, which is a native override in `Wolf.java` used to apply tame-status changes. This ensures the mod correctly assigns its custom personalities when a wolf is tamed.
-
-### 2. `spawnTamingParticles` Override
-
-* **Location**: `WolfMixin.java` -> `betterdogs$protectBabies`
-* **Reason**: **Gameplay Enhancement.** This prevents other entities (or other wolves) from targeting baby wolves unless the baby is the aggressor. This is a common feature in "Better" mob mods to prevent AI-driven "baby loss" in the wild.
-
-### 3. Usage of `AttachmentRegistry` (Fabric API)
-
-* **Reason**: This is the standard, modern way to store data on entities in Fabric 1.20+. It replaces the old requirement for custom NBT manual handling in `read/writeAdditionalSaveData`. The data is still stored in the world's NBT, but handled by the Fabric API for better mod compatibility.
-
-## 🛠️ Build & Dependencies
-
-* **Loader**: Fabric Loader
-* **Mappings**: Official Minecraft Mappings (Mojang/Unobfuscated)
-* **External Libs**: None (Uses Fabric API).
+**Logic**: Dogs now wait until they are `2x` their follow-start distance before teleporting.
+**Justification**: This encourages natural movement and "running back" behavior, reducing "vibrating" teleportation artifacts while maintaining a safety net for long-distance owners.

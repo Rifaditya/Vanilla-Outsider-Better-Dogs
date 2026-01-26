@@ -38,9 +38,11 @@ import net.vanillaoutsider.betterdogs.scheduler.WolfScheduler;
 import net.vanillaoutsider.betterdogs.ai.WanderlustGoal;
 import net.vanillaoutsider.betterdogs.ai.*;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
+import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.vanillaoutsider.betterdogs.util.WolfStatManager;
 import net.vanillaoutsider.betterdogs.util.WolfCombatHooks;
 import net.vanillaoutsider.betterdogs.util.WolfParticleHandler;
+import net.vanillaoutsider.betterdogs.scheduler.WolfSystemScheduler;
 import java.util.Set;
 import java.util.HashSet;
 import org.spongepowered.asm.mixin.Mixin;
@@ -225,26 +227,6 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         }
     }
 
-    // === THE GATEKEEPER (setTarget Override) ===
-    // This REPLACES the standard setTarget logic to enforce "One Brain at a Time"
-    
-    @Override
-    public void setTarget(@Nullable LivingEntity newTarget) {
-        // If this wolf is in SOCIAL MODE
-        if (betterdogs$isSocialModeActive()) {
-            
-            // RULE: Only the Social Target is allowed to pass.
-            if (newTarget == betterdogs$getSocialTarget()) {
-                // ALLOW (Transient Switch for attack mechanics)
-                // Proceed to super
-            } else {
-                // DENY (Master Brain is Dormant. Ignore "Enemies", "Attackers", "Owner Hitting something")
-                return; 
-            }
-        }
-        // If NOT in Social Mode -> Standard Vanilla Logic applies (Master Brain is Awake)
-        super.setTarget(newTarget);
-    }
     
     @Inject(method = "tick", at = @At("HEAD"))
     private void betterdogs$onTick(CallbackInfo ci) {
@@ -259,12 +241,12 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     @Inject(method = "finalizeSpawn", at = @At("RETURN"))
     private void betterdogs$onFinalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData groupData, CallbackInfoReturnable<SpawnGroupData> cir) {
         if (!level.getLevel().isClientSide()) {
-            WolfPersonality personality = WolfPersonality.random();
+            WolfPersonality personality = WolfPersonality.random(level.getLevel());
             betterdogs$setPersonality(personality);
             BetterDogs.LOGGER.info("Wolf spawned with personality: {}", personality.name());
             
             // Register to Global System Scheduler
-            net.vanillaoutsider.betterdogs.scheduler.WolfSystemScheduler.get().add((Wolf)(Object)this);
+            WolfSystemScheduler.get().add((Wolf)(Object)this);
         }
     }
     
@@ -272,7 +254,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     @Override
     public void remove(Entity.RemovalReason reason) {
         if (!this.level().isClientSide()) {
-             net.vanillaoutsider.betterdogs.scheduler.WolfSystemScheduler.get().remove((Wolf)(Object)this);
+             WolfSystemScheduler.get().remove((Wolf)(Object)this);
         }
         super.remove(reason);
     }
@@ -287,6 +269,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         this.goalSelector.addGoal(1, new FleeCreeperGoal(wolf));
         this.goalSelector.addGoal(1, new AvoidHazardsGoal(wolf));
         this.goalSelector.addGoal(3, new EatGroundFoodGoal(wolf));
+
         this.targetSelector.addGoal(2, new AggressiveTargetGoal(wolf));
         this.targetSelector.addGoal(2, new PacifistRevengeGoal(wolf));
         
@@ -330,11 +313,10 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
                 false,
                 preySelector));
 
-        if (BetterDogsConfig.get().getEnableStormAnxiety()) {
+        if (BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_STORM_ANXIETY)) {
             this.goalSelector.addGoal(6, new WolfStormAnxietyGoal(wolf));
         }
 
-        this.goalSelector.addGoal(7, new BabyCuriosityGoal(wolf, 0.8));
         this.goalSelector.addGoal(7, new BabyCuriosityGoal(wolf, 0.8));
         
         // Scheduler Goals (V3.0)
@@ -348,7 +330,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
             return;
 
         if (!betterdogs$hasPersonality()) {
-            WolfPersonality personality = WolfPersonality.random();
+            WolfPersonality personality = WolfPersonality.random(this.level());
             betterdogs$setPersonality(personality);
             BetterDogs.LOGGER.info("Wolf [{}] tamed - assigning initial personality: {}", this.getUUID(), personality.name());
         }
@@ -395,7 +377,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         
         // Register to Global Scheduler on Load
         if (!this.level().isClientSide()) {
-            net.vanillaoutsider.betterdogs.scheduler.WolfSystemScheduler.get().add((Wolf)(Object)this);
+            WolfSystemScheduler.get().add((Wolf)(Object)this);
         }
     }
     
@@ -415,7 +397,9 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         this.betterdogs$tickScheduler();
             
         Wolf wolf = (Wolf) (Object) this;
-        if (wolf.getTarget() != null && BetterDogsConfig.get().getEnableCliffSafety()) {
+        // Cliff Safety Game Rule
+        boolean cliffSafety = BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_CLIFF_SAFETY);
+        if (wolf.getTarget() != null && cliffSafety) {
             double yDiff = wolf.getY() - wolf.getTarget().getY();
             boolean dangerDetected = false;
             if (yDiff > 3.0 && wolf.onGround()) {

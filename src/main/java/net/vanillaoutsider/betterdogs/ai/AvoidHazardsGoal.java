@@ -2,6 +2,7 @@ package net.vanillaoutsider.betterdogs.ai;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -18,7 +19,6 @@ import java.util.EnumSet;
 public class AvoidHazardsGoal extends Goal {
 
     private final Wolf wolf;
-    private static final int MAX_SAFE_FALL = 3;
 
     public AvoidHazardsGoal(Wolf wolf) {
         this.wolf = wolf;
@@ -35,7 +35,7 @@ public class AvoidHazardsGoal extends Goal {
         if (path == null)
             return false;
 
-        int checkLimit = Math.min(path.getNodeCount(), 5);
+        int checkLimit = Math.min(path.getNodeCount(), BetterDogsConfig.get().getHazardCheckLimit());
         for (int i = 0; i < checkLimit; i++) {
             Node node = path.getNode(i);
             BlockPos pos = new BlockPos(node.x, node.y, node.z);
@@ -60,12 +60,13 @@ public class AvoidHazardsGoal extends Goal {
         // Check for high fall
         int fallDistance = 0;
         BlockPos checkPos = pos.below();
-        while (fallDistance < 10 && level.getBlockState(checkPos).isAir()) {
+        int searchLimit = BetterDogsConfig.get().getHazardFallSearchLimit();
+        while (fallDistance < searchLimit && level.getBlockState(checkPos).isAir()) {
             fallDistance++;
             checkPos = checkPos.below();
         }
 
-        return fallDistance > MAX_SAFE_FALL;
+        return fallDistance > BetterDogsConfig.get().getMaxSafeFall();
     }
 
     @Override

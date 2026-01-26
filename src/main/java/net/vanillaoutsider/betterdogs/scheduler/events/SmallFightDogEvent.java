@@ -72,7 +72,8 @@ public class SmallFightDogEvent implements WolfEvent {
         List<Wolf> candidates = wolf.level().getEntitiesOfClass(Wolf.class, searchBox, w -> 
             w != wolf && w.isTame() && w instanceof WolfExtensions wExt 
             && wExt.betterdogs$getPersonality() == WolfPersonality.AGGRESSIVE
-            && net.minecraft.world.entity.ai.targeting.TargetingConditions.forCombat().range(20.0).test(wolf, w)
+            && wExt.betterdogs$getPersonality() == WolfPersonality.AGGRESSIVE
+            && wolf.hasLineOfSight(w)
         );
 
         if (candidates.isEmpty()) return;

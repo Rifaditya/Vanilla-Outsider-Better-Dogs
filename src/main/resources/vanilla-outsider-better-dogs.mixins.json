@@ -9,7 +9,9 @@
         "TamableAnimalMixin",
         "OwnerHurtTargetGoalMixin",
         "OwnerHurtByTargetGoalMixin",
-        "WolfBreedingMixin"
+        "WolfBreedingMixin",
+        "WolfAccessor",
+        "WolfMobMixin"
     ],
     "injectors": {
         "defaultRequire": 1

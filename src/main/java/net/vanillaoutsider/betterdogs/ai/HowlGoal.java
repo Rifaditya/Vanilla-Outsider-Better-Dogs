@@ -2,8 +2,9 @@ package net.vanillaoutsider.betterdogs.ai;
 
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
-import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundEvent;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
+import net.vanillaoutsider.betterdogs.mixin.WolfAccessor;
 import java.util.EnumSet;
 
 /**
@@ -14,6 +15,7 @@ public class HowlGoal extends Goal {
     private final Wolf wolf;
     private final WolfExtensions wolfExt;
     private int howlTimer = 0;
+    private boolean wasAlreadySitting = false;
 
     public HowlGoal(Wolf wolf) {
         this.wolf = wolf;
@@ -29,16 +31,10 @@ public class HowlGoal extends Goal {
     @Override
     public void start() {
         wolf.getNavigation().stop();
-        wolf.setOrderedToSit(true); // Visually sit (or just sneak?)
-        // Actually, setOrderedToSit(true) persists! We must reverse it on stop if it wasn't already sitting.
-        // But for "ambient" sitting, maybe we just use the Sitting animation state if available?
-        // Vanilla wolf sitting is controlled by `isOrderedToSit`.
-        // If we toggle it, we risk confusing the player's manual command.
-        // Alternative: Use `setInSittingPose(true)` if it exists, or just look up.
-        // Fabric/Vanilla mapping check: `setOrderedToSit` updates the NBT/DataTracker.
-        // We probably shouldn't mess with `setOrderedToSit` for a temporary event.
-        // Let's just stop moving and look UP.
-        
+        this.wasAlreadySitting = wolf.isOrderedToSit();
+        if (!wasAlreadySitting) {
+            wolf.setOrderedToSit(true);
+        }
         howlTimer = 0;
     }
 
@@ -58,13 +54,19 @@ public class HowlGoal extends Goal {
         // Let's do once at start + delay
         if (howlTimer == 20 || howlTimer == 100) {
             float pitch = 0.8f + (wolf.getRandom().nextFloat() * 0.4f); // Random pitch for variety
-            wolf.playSound(SoundEvents.ENTITY_WOLF_AMBIENT, 1.0f, pitch);
+            // Use Accessor to get correct variant sound
+            SoundEvent ambient = ((WolfAccessor)this.wolf).betterdogs$invokeGetAmbientSound();
+            if (ambient != null) {
+                wolf.playSound(ambient, 1.0f, pitch);
+            }
         }
     }
     
     @Override
     public void stop() {
-        // Don't undo sitting here if we didn't force it.
-        // Since we avoided setOrderedToSit, we are good.
+        if (!wasAlreadySitting) {
+            wolf.setOrderedToSit(false);
+        }
+        wolf.getNavigation().stop();
     }
 }

@@ -13,9 +13,6 @@ import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import java.util.EnumSet;
 import java.util.Random;
 
-/**
- * Handles gift bring behavior for Aggressive and Pacifist wolves.
- */
 public class WolfGiftGoal extends Goal {
 
     private final Wolf wolf;
@@ -30,68 +27,47 @@ public class WolfGiftGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (!wolf.isTame() || !WolfPersistentData.hasPersistedPersonality(wolf))
-            return false;
-
-        // Decrement cooldown
+        if (!wolf.isTame() || !WolfPersistentData.hasPersistedPersonality(wolf)) return false;
         if (cooldown > 0) {
             cooldown--;
             return false;
         }
-
-        // Random chance to trigger logic this tick once cooldown is done
         return wolf.getRandom().nextFloat() < BetterDogsConfig.get().giftTriggerChance;
     }
 
     @Override
     public void start() {
-        // Reset cooldown from config
         BetterDogsConfig config = BetterDogsConfig.get();
         int range = config.giftCooldownMax - config.giftCooldownMin;
         cooldown = config.giftCooldownMin + (range > 0 ? wolf.getRandom().nextInt(range) : 0);
-
         WolfPersonality personality = WolfPersistentData.getPersistedPersonality(wolf);
         switch (personality) {
             case AGGRESSIVE -> attemptAggressiveGift();
             case PACIFIST -> attemptPacifistGift();
-            default -> {
-            }
+            default -> {}
         }
     }
 
     private void attemptAggressiveGift() {
-        // "Kills off-screen mob" - spawn loot near wolf
         int roll = RANDOM.nextInt(100);
         ItemStack loot;
-
-        if (roll < 40)
-            loot = new ItemStack(Items.BONE);
-        else if (roll < 75)
-            loot = new ItemStack(Items.ROTTEN_FLESH);
-        else if (roll < 90)
-            loot = new ItemStack(Items.ARROW);
-        else
-            loot = new ItemStack(Items.IRON_NUGGET);
-
+        BetterDogsConfig config = BetterDogsConfig.get();
+        if (roll < config.aggressiveGiftBone) loot = new ItemStack(Items.BONE);
+        else if (roll < config.aggressiveGiftBone + config.aggressiveGiftFlesh) loot = new ItemStack(Items.ROTTEN_FLESH);
+        else if (roll < config.aggressiveGiftBone + config.aggressiveGiftFlesh + config.aggressiveGiftArrow) loot = new ItemStack(Items.ARROW);
+        else loot = new ItemStack(Items.IRON_NUGGET);
         spawnGift(loot);
     }
 
     private void attemptPacifistGift() {
-        // "Forager" - spawns nature items
         int roll = RANDOM.nextInt(100);
         ItemStack loot;
-
-        if (roll < 30)
-            loot = new ItemStack(Items.SWEET_BERRIES);
-        else if (roll < 55)
-            loot = new ItemStack(Items.WHEAT_SEEDS);
-        else if (roll < 75)
-            loot = new ItemStack(Items.DANDELION); // Placeholder for flowers
-        else if (roll < 90)
-            loot = new ItemStack(Items.RED_MUSHROOM);
-        else
-            loot = new ItemStack(Items.GLOW_BERRIES);
-
+        BetterDogsConfig config = BetterDogsConfig.get();
+        if (roll < config.pacifistGiftBerries) loot = new ItemStack(Items.SWEET_BERRIES);
+        else if (roll < config.pacifistGiftBerries + config.pacifistGiftSeeds) loot = new ItemStack(Items.WHEAT_SEEDS);
+        else if (roll < config.pacifistGiftBerries + config.pacifistGiftSeeds + config.pacifistGiftFlower) loot = new ItemStack(Items.DANDELION);
+        else if (roll < config.pacifistGiftBerries + config.pacifistGiftSeeds + config.pacifistGiftFlower + config.pacifistGiftMushroom) loot = new ItemStack(Items.RED_MUSHROOM);
+        else loot = new ItemStack(Items.GLOW_BERRIES);
         spawnGift(loot);
     }
 
@@ -100,8 +76,5 @@ public class WolfGiftGoal extends Goal {
         ItemEntity itemEntity = new ItemEntity(level, wolf.getX(), wolf.getY() + 0.5, wolf.getZ(), stack);
         itemEntity.setDefaultPickUpDelay();
         level.addFreshEntity(itemEntity);
-
-        // Wolf barks to alert owner (Optional)
-        // wolf.playSound(SoundEvents.WOLF_AMBIENT, 1.0f, 1.0f);
     }
 }

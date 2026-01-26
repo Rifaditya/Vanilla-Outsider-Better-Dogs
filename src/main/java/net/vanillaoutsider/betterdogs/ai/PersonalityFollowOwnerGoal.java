@@ -1,21 +1,21 @@
 package net.vanillaoutsider.betterdogs.ai;
 
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.players.PlayerList;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
+import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 
-/**
- * A custom FollowOwnerGoal that adjusts its start/stop distance based on the
- * Wolf's personality.
- * This allows "Granular" control via the config.
- */
 public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
 
     private final Wolf wolf;
     private final double speedModifier;
     private int recalcTimer;
+    private int simDistRefreshTimer = 0;
+    private int cachedSimDist = 10;
 
     public PersonalityFollowOwnerGoal(Wolf wolf, double speedModifier, boolean leavesAllowed) {
         super(wolf, speedModifier, 10.0f, 2.0f);
@@ -25,84 +25,58 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
     }
 
     private float getStartDistance() {
-        if (!wolf.isTame())
-            return 10.0f; // Fallback
-
+        if (!wolf.isTame()) return 10.0f;
         float dist = 10.0f;
         if (wolf instanceof WolfExtensions ext) {
-            try {
-                BetterDogsConfig config = BetterDogsConfig.get();
-                dist = switch (ext.betterdogs$getPersonality()) {
-                    case AGGRESSIVE -> config.aggressiveFollowStart;
-                    case PACIFIST -> config.pacifistFollowStart;
-                    case NORMAL -> config.normalFollowStart;
-                    default -> 10.0f;
-                };
-            } catch (Exception e) {
-                dist = 10.0f;
+            BetterDogsConfig config = BetterDogsConfig.get();
+            dist = (float) switch (ext.betterdogs$getPersonality()) {
+                case AGGRESSIVE -> BetterDogsGameRules.getInt(wolf.level(), BetterDogsGameRules.BD_AGGRO_FOLLOW_START);
+                case PACIFIST -> BetterDogsGameRules.getInt(wolf.level(), BetterDogsGameRules.BD_PACI_FOLLOW_START);
+                case NORMAL -> BetterDogsGameRules.getInt(wolf.level(), BetterDogsGameRules.BD_NORMAL_FOLLOW_START);
+            };
+
+            // Dynamic Simulation Cap for Aggressive dogs (or any dog with large range)
+            if (dist > 16.0f) {
+                float maxSafeDist = (cachedSimDist * 16.0f) - config.getAggressiveDetectionBuffer();
+                if (dist > maxSafeDist) {
+                    dist = maxSafeDist;
+                }
             }
         }
-        
-        // "Untrained" babies are unruly and wander further
         return wolf.isBaby() ? dist * BetterDogsConfig.get().getBabyFollowMultiplier() : dist;
     }
 
     private float getStopDistance() {
-        if (!wolf.isTame())
-            return 2.0f;
-
+        if (!wolf.isTame()) return 2.0f;
         float dist = 2.0f;
         if (wolf instanceof WolfExtensions ext) {
-            try {
-                BetterDogsConfig config = BetterDogsConfig.get();
-                dist = switch (ext.betterdogs$getPersonality()) {
-                    case AGGRESSIVE -> config.aggressiveFollowStop;
-                    case PACIFIST -> config.pacifistFollowStop;
-                    case NORMAL -> config.normalFollowStop;
-                    default -> 2.0f;
-                };
-            } catch (Exception e) {
-                dist = 2.0f;
-            }
+            BetterDogsConfig config = BetterDogsConfig.get();
+            dist = switch (ext.betterdogs$getPersonality()) {
+                case AGGRESSIVE -> config.aggressiveFollowStop;
+                case PACIFIST -> config.pacifistFollowStop;
+                case NORMAL -> config.normalFollowStop;
+                default -> 2.0f;
+            };
         }
-        
         return wolf.isBaby() ? dist * BetterDogsConfig.get().getBabyFollowMultiplier() : dist;
     }
 
     @Override
     public boolean canUse() {
         LivingEntity owner = wolf.getOwner();
-        if (owner == null)
-            return false;
-        if (owner.isSpectator())
-            return false;
-
-        // Use OUR dynamic start distance
-        // Logic: if distance < startDistance, we don't need to move (return false)
-        // So we need distance to be >= startDistance squared
+        if (owner == null || owner.isSpectator()) return false;
         float startDist = getStartDistance();
-        if (wolf.distanceToSqr(owner) < (startDist * startDist)) {
-            return false;
-        }
-
-        // Respect sitting/leashed
-        if (wolf.isOrderedToSit() || wolf.isLeashed())
-            return false;
-
+        if (wolf.distanceToSqr(owner) < (startDist * startDist)) return false;
+        if (wolf.isOrderedToSit() || wolf.isLeashed()) return false;
         return true;
     }
 
     @Override
     public boolean canContinueToUse() {
-        if (wolf.getNavigation().isDone())
-            return false;
-        if (wolf.isOrderedToSit() || wolf.isLeashed())
-            return false;
-
+        if (wolf.getNavigation().isDone()) return false;
+        if (wolf.isOrderedToSit() || wolf.isLeashed()) return false;
         LivingEntity owner = wolf.getOwner();
-        if (owner == null)
-            return false;
-
+        if (owner == null) return false;
         float stopDist = getStopDistance();
         return wolf.distanceToSqr(owner) > (stopDist * stopDist);
     }
@@ -115,49 +89,52 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
 
     @Override
     public void tick() {
-        // We override tick to implement our custom logic using dynamic distances
         LivingEntity owner = wolf.getOwner();
-        if (owner == null)
-            return;
+        if (owner == null) return;
+
+        // Refresh Simulation Distance Cache (every 5 seconds)
+        if (--this.simDistRefreshTimer <= 0) {
+            this.simDistRefreshTimer = 100;
+            if (owner.level().getServer() != null) {
+                this.cachedSimDist = owner.level().getServer().getPlayerList().getSimulationDistance();
+            }
+        }
 
         wolf.getLookControl().setLookAt(owner, 10.0f, (float) wolf.getMaxHeadXRot());
-
         if (--this.recalcTimer <= 0) {
             this.recalcTimer = 10;
-
             if (!wolf.isLeashed() && !wolf.isPassenger()) {
                 float startDist = getStartDistance();
-                if (wolf.distanceToSqr(owner) >= (startDist * startDist)) {
-                    wolf.getNavigation().moveTo(owner, speedModifier);
+                double distSqr = wolf.distanceToSqr(owner);
+                if (distSqr >= (startDist * startDist)) {
+                    double dynamicSpeed = speedModifier;
+                    double catchUpThreshold = BetterDogsConfig.get().getFollowCatchUpThreshold();
+                    if (distSqr > (catchUpThreshold * catchUpThreshold)) {
+                        dynamicSpeed *= BetterDogsConfig.get().getFollowCatchUpSpeed();
+                    }
+                    wolf.getNavigation().moveTo(owner, dynamicSpeed);
                 } else {
                     wolf.getNavigation().stop();
                 }
             }
         }
-
-        // Manual Teleport Logic since we can't call super.teleportToOwner() directly if
-        // private
-        // Or if we want custom thresholds.
         if (!wolf.isLeashed() && !wolf.isPassenger()) {
             float startDist = getStartDistance();
-
-            // Teleport if very far. Default is 12 blocks (144.0).
-            // For "untrained" babies, we apply the multiplier to the distance before squaring.
-            float multiplier = wolf.isBaby() ? BetterDogsConfig.get().getBabyTeleportMultiplier() : 1.0f;
-            double teleportBase = 12.0;
-            double teleportThreshold = (teleportBase * multiplier) * (teleportBase * multiplier);
+            double teleportMultiplier = BetterDogsConfig.get().getTeleportMultiplier();
+            double teleportThreshold = (startDist * teleportMultiplier) * (startDist * teleportMultiplier);
             
-            if (wolf.distanceToSqr(owner) >= teleportThreshold || wolf.distanceToSqr(owner) >= (startDist * startDist * 2)) {
+            if (wolf.distanceToSqr(owner) >= teleportThreshold) {
                 teleportToOwner(owner);
             }
         }
     }
 
     private void teleportToOwner(LivingEntity owner) {
+        double spread = BetterDogsConfig.get().getTeleportToOwnerSpread();
         for (int i = 0; i < 10; ++i) {
-            double dx = (wolf.getRandom().nextFloat() - 0.5) * 4.0;
-            double dy = (wolf.getRandom().nextFloat() - 0.5) * 4.0;
-            double dz = (wolf.getRandom().nextFloat() - 0.5) * 4.0;
+            double dx = (wolf.getRandom().nextFloat() - 0.5) * spread;
+            double dy = (wolf.getRandom().nextFloat() - 0.5) * spread;
+            double dz = (wolf.getRandom().nextFloat() - 0.5) * spread;
             if (wolf.randomTeleport(owner.getX() + dx, owner.getY() + dy, owner.getZ() + dz, false))
                 break;
         }

@@ -9,12 +9,6 @@ import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 
 import java.util.EnumSet;
 
-/**
- * AI Goal for Wolf anxiety during thunderstorms.
- * - Whines occasionally.
- * - Shakes (uses wet dog shake animation as fear response).
- * - Paces around nervously (if not sitting).
- */
 public class WolfStormAnxietyGoal extends Goal {
 
     private final Wolf wolf;
@@ -26,30 +20,22 @@ public class WolfStormAnxietyGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        // Only trigger if tamed
-        if (!wolf.isTame())
-            return false;
-
-        // Only during thunderstorms
-        if (!wolf.level().isThundering())
-            return false;
-
-        // Random chance to start being anxious (1% per tick)
+        if (!wolf.isTame()) return false;
+        if (!wolf.level().isThundering()) return false;
         return wolf.getRandom().nextFloat() < BetterDogsConfig.get().stormAnxietyTriggerChance;
     }
 
     @Override
     public boolean canContinueToUse() {
-        // Continue as long as it thundering and we haven't finished our "anxiety
-        // episode"
-        return wolf.level().isThundering() && wolf.getRandom().nextFloat() < 0.98; // Small chance to stop
+        BetterDogsConfig config = BetterDogsConfig.get();
+        return wolf.level().isThundering() && wolf.getRandom().nextFloat() < (1.0f - config.getStormAnxietyStopChance());
     }
 
     @Override
     public void start() {
-        // If not sitting, maybe pick a random spot to pace to
+        BetterDogsConfig config = BetterDogsConfig.get();
         if (!wolf.isOrderedToSit()) {
-            Vec3 target = DefaultRandomPos.getPos(wolf, 3, 2);
+            Vec3 target = DefaultRandomPos.getPos(wolf, config.getStormAnxietyPaceRange(), config.getStormAnxietyPaceVerticalRange());
             if (target != null) {
                 wolf.getNavigation().moveTo(target.x, target.y, target.z, 1.0);
             }
@@ -59,18 +45,15 @@ public class WolfStormAnxietyGoal extends Goal {
     @Override
     public void tick() {
         BetterDogsConfig config = BetterDogsConfig.get();
-        // 1. Whining Sound (Low chance)
-        if (wolf.getRandom().nextFloat() < config.stormWhineChance) { // 2% chance per tick
-            // Try standard GENERIC_HURT if available
+        if (wolf.getRandom().nextFloat() < config.stormWhineChance) {
             wolf.playSound(SoundEvents.GENERIC_HURT, 1.0f, 2.0f);
         }
-
-        // 2. Shaking (Visual fear) - move head around nervously
-        if (wolf.getRandom().nextFloat() < 0.05) {
+        if (wolf.getRandom().nextFloat() < config.getStormAnxietyLookChance()) {
+            double spread = config.getStormAnxietyLookSpread();
             wolf.getLookControl().setLookAt(
-                    wolf.getX() + (wolf.getRandom().nextDouble() - 0.5) * 10,
+                    wolf.getX() + (wolf.getRandom().nextDouble() - 0.5) * spread,
                     wolf.getEyeY(),
-                    wolf.getZ() + (wolf.getRandom().nextDouble() - 0.5) * 10,
+                    wolf.getZ() + (wolf.getRandom().nextDouble() - 0.5) * spread,
                     10.0f,
                     wolf.getMaxHeadXRot());
         }

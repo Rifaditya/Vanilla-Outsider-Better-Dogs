@@ -1,9 +1,9 @@
-# Project Architecture: Vanilla Outsider - Better Dogs (Fabric Edition)
+# Project Architecture: Vanilla Outsider - Better Dogs (v3.1.13)
 
 ## Philosophy
 
-**"Immersion via Systems."**
-Better Dogs enhances wolf behavior through hidden complexity. We use unseen AI systems (Schedulers, Events, Personalities) to create behaviors that feel organic and unpredictable, rather than scripted.
+**"Immersion via Systems (Config Mastery)."**
+Better Dogs enhances wolf behavior through hidden complexity. We use the **WolfScheduler** and **Data Components** to create behaviors that feel organic and unpredictable.
 
 ## Structure
 

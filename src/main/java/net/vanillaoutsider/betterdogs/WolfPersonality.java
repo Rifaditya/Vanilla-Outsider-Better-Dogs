@@ -1,6 +1,8 @@
 package net.vanillaoutsider.betterdogs;
 
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
+import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
+import net.minecraft.world.level.Level;
 import java.util.Random;
 
 /**
@@ -29,13 +31,26 @@ public enum WolfPersonality {
     }
 
     /**
-     * Randomly select a personality based on config distribution.
+     * Randomly select a personality based on Game Rules.
+     * Uses Game Rules (Integers representing Percentages) for per-world storage.
+     * Defaults are pulled from Global Config if Game Rules are unset or new world.
      */
-    public static WolfPersonality random() {
-        BetterDogsConfig config = BetterDogsConfig.get();
-        int normal = config.tamingChanceNormal;
-        int aggressive = config.tamingChanceAggressive;
-        int pacifist = config.tamingChancePacifist;
+    public static WolfPersonality random(Level level) {
+        // Fetch raw integers (e.g. 60, 20, 20)
+        // We can just use the integer values as weights.
+        int normal = 0;
+        int aggressive = 0;
+        int pacifist = 0;
+
+        if (level.isClientSide()) {
+             // Client side fallback (shouldn't happen for spawning logic, but safe)
+             return NORMAL;
+        } else {
+             normal = BetterDogsGameRules.getInt(level, BetterDogsGameRules.BD_TAME_NORMAL_PERCENT);
+             aggressive = BetterDogsGameRules.getInt(level, BetterDogsGameRules.BD_TAME_AGGRO_PERCENT);
+             pacifist = BetterDogsGameRules.getInt(level, BetterDogsGameRules.BD_TAME_PACI_PERCENT);
+        }
+
         int total = normal + aggressive + pacifist;
 
         int roll = RANDOM.nextInt(total > 0 ? total : 100);

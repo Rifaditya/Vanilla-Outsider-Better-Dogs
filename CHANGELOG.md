@@ -1,5 +1,87 @@
 # Changelog
 
+## v3.1.17 (Anti-Crowding Removal)
+
+- **Removed**: The "Anti-Crowding System" (`PackSeparationGoal`) has been removed entirely. Wolves will no longer artificially push each other away, reverting to standard vanilla grouping behavior.
+- **Config**: Removed `packSeparationRadius`, `packSeparationInflation`, `packSeparationSpeed`, and `enablePackSeparation` from `betterdogs.json`.
+
+## v3.1.16 (Stable Hotfix: Crash Fix)
+
+- **Fix**: Replaced `WolfMixin` targeting logic with `WolfMobMixin` to robustly intercept `setTarget` without causing transformation errors on startup. This resolves the `MixinApplyError` seen in v3.1.15.
+
+## v3.1.15 (Broken Build - Startup Crash)
+
+- **Hotfix Attempt**: Attempted to fix startup crash but introduced a new Mixin transformation error due to target class mismatch. **DO NOT USE**.
+
+## v3.1.14 (Better Teleportation & Dynamic Ranges)d
+
+### Added
+
+- **Dynamic Simulation Capping**: Aggressive dog follow and detection ranges now automatically scale to stay within the server's simulation distance, preventing them from being left behind in unloaded chunks.
+- **Improved Teleportation (The "2x" Rule)**: Optimized follow logic so dogs prefer running back to the owner. They will only teleport if they fall behind by more than twice their follow start distance.
+
+### Changed
+
+- **Simplified Config**: Consolidated various personality-specific teleport settings into a single `teleportMultiplier` (default 2.0x).
+
+## [3.1.13] - 2026-01-26
+
+### Added
+
+- **Ultraguard Sync**: Implemented a hardened persistence system with atomic writes, automatic merging, and legacy field purging.
+- **Auto-Backups**: Config now clones to `betterdogs.json.bak` before any version-jump migrations.
+- **Completed AI Migration**: Finalized the movement of all 30+ AI magic numbers to `BetterDogsConfig`.
+
+### Changed
+
+- Updated platform descriptions (Modrinth/CurseForge) with the new Config Mastery feature suite.
+
+## [3.1.12] - 2026-01-25
+
+### Added
+
+- **Personality-Scaled Teleportation**: Aggressive dogs wander deeper (5x), Pacifists stay close (0.5x).
+- **Config Persistence Protocol**: Fixed the reset-on-load bug and established new modder standards (`12_Config_AI_Standards.yaml`).
+- **Emergency Restoration**: Recovered all AI implementation files and project properties after a critical data loss event.
+
+## [3.1.11] - 2026-01-25
+
+### Changed
+
+- **Optimized Follow Behavior**: Dogs now try to run to the player when falling behind instead of immediately teleporting.
+- **Improved Teleportation**: Increased the teleport distance by 1.5x (from 12 to 18 blocks) to give dogs more time to catch up naturally.
+- **New Config**: Added `followCatchUpSpeed` (default: 1.5) to control how fast dogs run when they are far from the owner.
+
+## [3.1.10] - 2026-01-25
+
+### Added
+
+- **New Feature: Pack Separation**
+  - Dogs now respect each other's "personal space".
+  - If too many dogs are crowded together, they will gently spread out to form a more natural pack layout.
+  - Configurable radius (`packSeparationRadius`) and speed (`packSeparationSpeed`) in `betterdogs.json`.
+- **Developer Protocol Update**: Enforced "Zero Technical Debt" policy for mod development.
+
+## [3.1.9] - 2026-01-25
+
+### Fixed
+
+- **Critical Fix: Howl State Leak**: Fixed a major bug where wolves would stay in the sitting pose permanently after a Group Howl event. They now correctly restore their previous state (sitting or standing) when the event ends.
+- **Maintenance**: Cleaned up code debt, removed redundant AI goals, and optimized imports across the entire AI package.
+
+## [3.1.8] - 2026-01-25
+
+### Fixed
+
+- Fixed crash/build failure caused by incorrect `SoundEvents` usage for Howl event.
+- Fixed `SmallFightGoal` incorrectly passing `Level` instead of `ServerLevel`.
+- Implemented `WolfAccessor` to correctly access native wolf ambient sounds.
+- Native API compliance for all 26.1 Snapshot methods.
+
+- **New Feature: Individual DNA**
+  - Every dog now has a unique "preference roll" (based on their UUID) that determines if they like specific social events.
+  - This ensures that even two dogs with the same Personality will behave differently (e.g., one loves Zoomies, the other thinks it's undignified).
+
 ## [v3.1.7] - 2026-01-25
 
 - **New Feature: Individual DNA**

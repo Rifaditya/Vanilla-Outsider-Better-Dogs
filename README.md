@@ -10,17 +10,14 @@
     <img src="https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge" alt="License">
 </p>
 
-# 🐕 Make Wolves Worthy Companions (Now for 26.1 Snapshots!)
+# 🐕 Make Wolves Worthy Companions (Fabric Edition)
 
 Every Minecraft player knows the pain: you spend hours finding a wolf, tame it, and five minutes later it jumps into lava or walks off a cliff.
 
-**Vanilla Outsider: Better Dogs** completely overhauls wolf AI to make them smarter, safer, and livelier. With the new **Personality System**, every dog feels unique—some are aggressive protectors, while others are loyal pacifists.
+**Vanilla Outsider: Better Dogs** completely overhauls wolf AI to make them smarter, safer, and livelier. Now powered by a high-performance **Event-Driven Scheduler (v3.0+)**, wolves act efficiently without lagging your world.
 
-> [!IMPORTANT]
-> **Beta Release for Minecraft 26.1 Snapshots**
-> This version is built on the latest standard for Minecraft 26.1. It includes significant behavior logic rewrites. Please report any bugs on GitHub!
->
-> **No Backports:** I will **NOT** backport this mod to older versions (1.21, 1.20, etc.). Please do not ask.
+> [!CAUTION]
+> **No Backports:** I will **NOT** backport this mod to older versions. Please do not ask.
 
 ---
 
@@ -45,20 +42,24 @@ When you tame a wolf, it develops one of three permanent personalities, visually
 > [!NOTE]
 > Personalities are permanent and can be inherited via breeding! Use the config to adjust how common each type is in your world.
 
-### 🛡️ Smart Cliff Safety (Updated v1.7.5)
+### 🐕 Advanced Social AI (The "Snitch" System)
 
-**Wolves are finally smart enough to NOT jump.**
+Wolves now interact with each other in complex, organic ways using our new **Event-Driven AI**:
 
-* **Active Retreat:** When a wolf detects a steep drop (3+ blocks) or checks a target floating over the void, it doesn't just stop—it **actively walks backwards** 4 blocks away from the edge.
-* **Airborne Checks:** If you knock a zombie off a cliff, your wolf won't dive after it.
-* **Lava & Fire Warnings:** Wolves actively pathfind away from hazardous blocks.
+* **Baby Retaliation (The One-Bite Rule):** If you hit a baby wolf, it bites you back **EXACTLY ONCE** to teach you a lesson, then forgives you.
+* **Adult Correction (The Snitch System):** If a baby bites you, nearby Aggressive Adults will intervene. The baby "snitches" on itself, causing one adult to walk over and discipline it with **ONE BITE**.
+* **Blood Feuds:** Sometimes, discipline goes too far. There is a small chance (5%) that a correction turns into a permanent **Blood Feud**.
+* **Play Fighting:** Large packs engage in safe, non-lethal play fights to burn off energy.
+* **Pack Separation (v3.1.10):** Wolves respect "personal space" and spread out if crowded.
+* **Natural Follow (v3.1.11):** Dogs try to **catch up by running faster** before teleporting. Teleport distance increased to 18 blocks.
+* **Personality-Scaled Teleportation (v3.1.13):** Teleport thresholds scale with personality (0.5x to 5.0x range).
+* **Ultraguard Sync (v3.1.13):** Config files automatically merge new settings and protect against corruption with atomic writes.
 
-### ⚙️ Standalone Config System (New v1.7.6)
+### 🛡️ Smart Safety AI
 
-Due to changes in the 26.1 snapshot environment, we have replaced the heavy `Cloth Config` dependency with a lightweight **Standalone JSON Loader**.
-
-* **No GUI Needed:** Configuration is fully supported even in snapshot versions where Mod Menu isn't available.
-* **Manual Control:** Edit `config/betterdogs.json` to tweak everything: Friendly Fire, Speed Buffs, Breeding Chances, and more.
+* **Cliff Safety:** Wolves detect airborne targets and **STOP** chasing instead of jumping.
+* **Lava & Fire Avoidance:** Improved pathfinding around hazards.
+* **Creeper Awareness:** Wolves flee when they hear a Creeper hiss!
 
 ### 🎁 The Gift System
 

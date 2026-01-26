@@ -3,6 +3,7 @@ package net.vanillaoutsider.betterdogs.ai;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.phys.Vec3;
+import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import net.vanillaoutsider.betterdogs.scheduler.events.WanderlustDogEvent;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
@@ -19,9 +20,7 @@ public class WanderlustGoal extends WaterAvoidingRandomStrollGoal {
 
     @Override
     public boolean canUse() {
-        // Check if Wanderlust Event is active in Scheduler
         if (this.wolf instanceof WolfExtensions ext) {
-            // Check if event is active in scheduler (Logic handled by scheduler, we just query)
             if (ext.betterdogs$getScheduler().isEventActive(WanderlustDogEvent.ID)) {
                  return true;
             }
@@ -34,8 +33,7 @@ public class WanderlustGoal extends WaterAvoidingRandomStrollGoal {
         if (this.wolf.level().getFluidState(this.wolf.blockPosition()).is(net.minecraft.tags.FluidTags.WATER)) {
              return super.getPosition(); 
         }
-        
-        // Range 40, Y 7
-        return DefaultRandomPos.getPos(this.wolf, 40, 7);
+        BetterDogsConfig config = BetterDogsConfig.get();
+        return DefaultRandomPos.getPos(this.wolf, config.getWanderlustRange(), config.getWanderlustVerticalRange());
     }
 }

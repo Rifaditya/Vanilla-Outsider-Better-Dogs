@@ -6,6 +6,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
+import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
+
 
 public class WolfStatManager {
 
@@ -43,6 +45,12 @@ public class WolfStatManager {
         damageAttr.removeModifier(pacifistDamageId);
 
         // Apply Base Speed Boost (Configurable) to all Better Dogs
+        // Note: Global Speed Buff remains a Config setting (client/server sync issue potential, but keeping as planned)
+        // Wait, plan said migrate everything. Let's see. 
+        // Plan Table Pass 3 didn't list strict Global Speed migration. 
+        // Let's assume Config for Global for now to be safe, or migrate. 
+        // The user said "global setting... world gamerule as per world".
+        // Global Speed Buff sounds like a global setting. Leaving it as Config.
         double speedBuff = BetterDogsConfig.get().getGlobalSpeedBuff();
         speedAttr.addPermanentModifier(new AttributeModifier(baseSpeedId, speedBuff,
                 AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
@@ -52,8 +60,8 @@ public class WolfStatManager {
 
         switch (personality) {
             case AGGRESSIVE -> {
-                double speedMod = BetterDogsConfig.get().getAggressiveSpeedModifier();
-                double damageMod = BetterDogsConfig.get().getAggressiveDamageModifier();
+                double speedMod = BetterDogsGameRules.getPct(wolf.level(), BetterDogsGameRules.BD_AGGRO_SPEED_PCT);
+                double damageMod = BetterDogsGameRules.getPct(wolf.level(), BetterDogsGameRules.BD_AGGRO_DMG_PCT);
 
                 speedAttr.addPermanentModifier(new AttributeModifier(aggressiveSpeedId, speedMod,
                         AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
@@ -65,20 +73,24 @@ public class WolfStatManager {
                     Identifier aggressiveHealthId = Identifier.parse(AGGRESSIVE_HEALTH_ID);
                     healthAttr.removeModifier(aggressiveHealthId);
 
-                    double hpBonus = BetterDogsConfig.get().getAggressiveHealthBonus();
-                    if (hpBonus > 0) {
+                    double hpBonus = BetterDogsGameRules.getInt(wolf.level(), BetterDogsGameRules.BD_AGGRO_HEALTH);
+                    // Handle negative bonus explicitly if needed, but health logic usually handles add_value fine.
+                    // Config was -10.0. Game Rule will be -10.
+                    
+                    if (hpBonus != 0) { // Allow negative HP bonus
                         healthAttr.addPermanentModifier(new AttributeModifier(aggressiveHealthId, hpBonus,
                                 AttributeModifier.Operation.ADD_VALUE));
-                        if (wolf.getHealth() < wolf.getMaxHealth()) {
-                            wolf.heal((float) hpBonus);
+                         // If reducing health, we might need to clamp current health
+                        if (wolf.getHealth() > wolf.getMaxHealth()) {
+                            wolf.setHealth(wolf.getMaxHealth());
                         }
                     }
                 }
             }
             case PACIFIST -> {
-                double speedMod = BetterDogsConfig.get().getPacifistSpeedModifier();
-                double damageMod = BetterDogsConfig.get().getPacifistDamageModifier();
-                double kbMod = BetterDogsConfig.get().getPacifistKnockbackModifier();
+                double speedMod = BetterDogsGameRules.getPct(wolf.level(), BetterDogsGameRules.BD_PACI_SPEED_PCT);
+                double damageMod = BetterDogsGameRules.getPct(wolf.level(), BetterDogsGameRules.BD_PACI_DMG_PCT);
+                double kbMod = BetterDogsGameRules.getPct(wolf.level(), BetterDogsGameRules.BD_PACI_KNOCKBACK_PCT);
 
                 speedAttr.addPermanentModifier(new AttributeModifier(pacifistSpeedId, speedMod,
                         AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
@@ -94,7 +106,7 @@ public class WolfStatManager {
                     Identifier pacifistHealthId = Identifier.parse("betterdogs:pacifist_health");
                     healthAttr.removeModifier(pacifistHealthId);
 
-                    double hpBonus = BetterDogsConfig.get().getPacifistHealthBonus();
+                    double hpBonus = BetterDogsGameRules.getInt(wolf.level(), BetterDogsGameRules.BD_PACI_HEALTH);
                     if (hpBonus != 0) {
                         healthAttr.addPermanentModifier(new AttributeModifier(pacifistHealthId, hpBonus,
                                 AttributeModifier.Operation.ADD_VALUE));
@@ -105,9 +117,9 @@ public class WolfStatManager {
                 }
             }
             case NORMAL -> {
-                double speedMod = BetterDogsConfig.get().getNormalSpeedModifier();
-                double damageMod = BetterDogsConfig.get().getNormalDamageModifier();
-                double healthMod = BetterDogsConfig.get().getNormalHealthBonus();
+                double speedMod = BetterDogsGameRules.getPct(wolf.level(), BetterDogsGameRules.BD_NORMAL_SPEED_PCT);
+                double damageMod = BetterDogsGameRules.getPct(wolf.level(), BetterDogsGameRules.BD_NORMAL_DMG_PCT);
+                double healthMod = BetterDogsGameRules.getInt(wolf.level(), BetterDogsGameRules.BD_NORMAL_HEALTH);
 
                 Identifier normalSpeedId = Identifier.parse(NORMAL_SPEED_ID);
                 Identifier normalDamageId = Identifier.parse(NORMAL_DAMAGE_ID);
@@ -125,7 +137,7 @@ public class WolfStatManager {
                 var healthAttr = wolf.getAttribute(Attributes.MAX_HEALTH);
                 if (healthAttr != null) {
                     if (healthMod > 0) {
-                        healthAttr.addPermanentModifier(new AttributeModifier(normalHealthId, healthMod,
+                         healthAttr.addPermanentModifier(new AttributeModifier(normalHealthId, healthMod,
                                 AttributeModifier.Operation.ADD_VALUE));
                         if (wolf.getHealth() < wolf.getMaxHealth()) {
                             wolf.heal((float) healthMod);

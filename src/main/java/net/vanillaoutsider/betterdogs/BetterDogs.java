@@ -21,6 +21,9 @@ public class BetterDogs {
 
         // Load Configuration
         BetterDogsConfig.load(FabricLoader.getInstance().getConfigDir());
+        
+        // Register Game Rules (Hybrid Config)
+        net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.register();
 
         // Initialize platform-specific attachments
         @SuppressWarnings("unused")

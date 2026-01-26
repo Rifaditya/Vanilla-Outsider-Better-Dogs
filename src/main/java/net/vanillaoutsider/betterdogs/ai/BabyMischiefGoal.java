@@ -8,7 +8,9 @@ import net.minecraft.world.phys.AABB;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.WolfPersistentData;
+import net.vanillaoutsider.betterdogs.WolfPersistentData;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
+import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 
 /**
  * AI Goal: Aggressive baby randomly attacks a nearby entity (unprovoked mischief).
@@ -45,8 +47,9 @@ public class BabyMischiefGoal extends Goal {
             return false;
 
         // Roll for mischief chance
-        float chance = BetterDogsConfig.get().getBabyMischiefChance();
-        if (chance <= 0 || wolf.getRandom().nextFloat() * 100 >= chance)
+        // Use Permille rule: 25 -> 2.5%
+        float chance = BetterDogsGameRules.getProb(wolf.level(), BetterDogsGameRules.BD_BABY_MISCHIEF_PERMILLE);
+        if (chance <= 0 || wolf.getRandom().nextFloat() >= chance)
             return false;
 
         // Find a random target within 10 blocks

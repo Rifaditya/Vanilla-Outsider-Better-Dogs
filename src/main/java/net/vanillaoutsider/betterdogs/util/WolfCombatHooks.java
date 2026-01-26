@@ -7,7 +7,9 @@ import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.player.Player;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
+import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
+import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.vanillaoutsider.betterdogs.scheduler.events.RetaliationDogEvent;
 
 public class WolfCombatHooks {
@@ -63,7 +65,9 @@ public class WolfCombatHooks {
                 // FIX: Don't Spam duplicate events if already active!
                 // CONFIG: Check configurable retaliation chance (percentage)
                 if (!ext.betterdogs$getScheduler().isEventActive(RetaliationDogEvent.ID)) {
-                     if (wolf.getRandom().nextFloat() < (BetterDogsConfig.get().getBabyRetaliationChance() / 100.0f)) {
+                     // Get chance from Game Rules (Stored as integer Percent e.g. 75)
+                     float chance = BetterDogsGameRules.getChance(wolf.level(), BetterDogsGameRules.BD_BABY_RETALIATE_PERCENT);
+                     if (wolf.getRandom().nextFloat() < chance) {
                          ext.betterdogs$getScheduler().injectBehavior(
                             RetaliationDogEvent.ID, 
                             100,
@@ -75,7 +79,10 @@ public class WolfCombatHooks {
         }
 
         // 4. Owner friendly fire protection cancellation
-        if (isOwner && BetterDogsConfig.get().getEnableFriendlyFireProtection() && !isSneaking) {
+        // Use GameRule BD_FRIENDLY_FIRE
+        if (isOwner && !isSneaking) {
+            boolean friendlyFireProto = BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_FRIENDLY_FIRE);
+            if (friendlyFireProto) {
             // EXCEPTION: Allows "Provocation" taps on Aggressive Babies to trigger retaliation
             if (wolf.isBaby() && wolf instanceof WolfExtensions ext && ext.betterdogs$getPersonality() == WolfPersonality.AGGRESSIVE) {
                 // Allow non-lethal damage (capped at 2.0f to prevent accidental one-shots with swords)
@@ -86,6 +93,7 @@ public class WolfCombatHooks {
                 return false; 
             } else {
                 return true; // Cancel damage
+            }
             }
         }
         
