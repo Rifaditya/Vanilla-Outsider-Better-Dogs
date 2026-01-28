@@ -239,13 +239,21 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
         }
     }
     
-    // === SCHEDULER SYSTEM (V3.1 - Hive Mind) ===
+    // === SCHEDULER SYSTEM (V3.1 - Ghost Brain Mode) ===
     
     @Unique
-    private EntitySocialScheduler betterdogs$socialScheduler;
+    private transient EntitySocialScheduler betterdogs$socialScheduler;
 
     @Override
-    public EntitySocialScheduler betterdogs$getScheduler() {
+    public @Nullable EntitySocialScheduler betterdogs$getScheduler() {
+        return betterdogs$socialScheduler;
+    }
+
+    /**
+     * Lazy initialization: Only creates a brain when social AI needs to "think".
+     */
+    @Override
+    public EntitySocialScheduler betterdogs$getOrInitializeScheduler() {
         if (betterdogs$socialScheduler == null) {
             betterdogs$socialScheduler = new EntitySocialScheduler(this);
         }
@@ -254,10 +262,12 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
 
     @Override
     public void betterdogs$tickScheduler() {
-        if (!this.level().isClientSide()) {
-            EntitySocialScheduler scheduler = betterdogs$getScheduler();
-            if (scheduler != null) {
-                scheduler.tick();
+        if (!this.level().isClientSide() && betterdogs$socialScheduler != null) {
+            betterdogs$socialScheduler.tick();
+            
+            // SELF-PURGE: If the brain is idle, erase it from RAM.
+            if (betterdogs$socialScheduler.isIdle()) {
+                betterdogs$socialScheduler = null;
             }
         }
     }
@@ -447,37 +457,10 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
         this.betterdogs$tickScheduler();
             
         Wolf wolf = (Wolf) (Object) this;
-        // Cliff Safety Game Rule
-        boolean cliffSafety = BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_CLIFF_SAFETY);
-        if (wolf.getTarget() != null && cliffSafety) {
-            double yDiff = wolf.getY() - wolf.getTarget().getY();
-            boolean dangerDetected = false;
-            if (yDiff > 3.0 && wolf.onGround()) {
-                dangerDetected = true;
-            } else if (!wolf.getTarget().onGround()) {
-                boolean groundFound = false;
-                BlockPos targetPos = wolf.getTarget().blockPosition();
-                for (int i = 1; i <= 4; i++) {
-                    if (!wolf.level().isEmptyBlock(targetPos.below(i))) {
-                        groundFound = true;
-                        break;
-                    }
-                }
-                if (!groundFound) {
-                    dangerDetected = true;
-                }
-            }
-
-            if (dangerDetected) {
-                wolf.getNavigation().stop();
-                Vec3 targetPos = wolf.getTarget().position();
-                wolf.setTarget(null);
-                Vec3 retreatPos = DefaultRandomPos.getPosAway(wolf, 4, 1, targetPos);
-                if (retreatPos != null) {
-                    wolf.getNavigation().moveTo(retreatPos.x, retreatPos.y, retreatPos.z, 1.0);
-                }
-                return;
-            }
+        // Cliff Safety Game Rule (Server Side Only to avoid ClassCastException and desync)
+        if (!this.level().isClientSide()) {
+            betterdogs$checkTargetCliffSafety();
+            betterdogs$checkMovementCliffSafety();
         }
 
         // Passive healing
@@ -518,4 +501,91 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
         }
     }
 
+    /**
+     * PASSIVE CLIFF SAFETY (Smart Brakes)
+     * Prevents falling due to Zoomies or Pushing check ahead based on velocity.
+     */
+    // ========== Cliff Safety (Hardened) ==========
+
+    @Unique
+    private void betterdogs$checkMovementCliffSafety() {
+        Wolf wolf = (Wolf) (Object) this;
+        // 1. Config Check
+        if (!BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_CLIFF_SAFETY)) return;
+
+        // 2. Optimization: Only check if moving horizontally
+        if (wolf.getDeltaMovement().horizontalDistanceSqr() < 0.0001) return;
+
+        // REMOVED: isJumping() and onGround() checks to catch "pushed" dogs.
+
+        // 4. Velocity Lookahead Logic
+        Vec3 velocity = wolf.getDeltaMovement();
+        // Look 5 blocks ahead (hardened buffer)
+        Vec3 lookaheadPos = wolf.position().add(velocity.scale(5.0));
+        BlockPos hazardPos = BlockPos.containing(lookaheadPos);
+        
+        // Use generic Level to avoid casting issues, though we are guarded by server check now.
+        net.minecraft.world.level.Level level = wolf.level();
+
+        // 5. Cliff Definition: AIR at feet, and AIR deep below.
+        boolean solidGround = false;
+        // Check 3 blocks down for ground. Safe drop is <= 3.
+        for (int i = 0; i <= 3; i++) {
+             if (!level.isEmptyBlock(hazardPos.below(i))) {
+                 solidGround = true;
+                 break;
+             }
+        }
+
+        if (!solidGround) {
+            // DANGER: No ground found.
+            // ACTION: Smart Brake - Kill horizontal momentum.
+            wolf.getNavigation().stop();
+            wolf.setDeltaMovement(Vec3.ZERO);
+            wolf.setShiftKeyDown(true); // Visual "Oh snap!"
+            
+            // BetterDogs.LOGGER.info("CliffSafety: Stopped Wolf {} at {}", wolf.getId(), hazardPos);
+        }
+    }
+
+    /**
+     * TARGET CLIFF SAFETY (Existing Logic)
+     * Prevents jumping down after a target that is too low.
+     */
+    @Unique
+    private void betterdogs$checkTargetCliffSafety() {
+        Wolf wolf = (Wolf) (Object) this;
+        if (wolf.getTarget() == null) return;
+        
+        if (!BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_CLIFF_SAFETY)) return;
+
+        double yDiff = wolf.getY() - wolf.getTarget().getY();
+        boolean dangerDetected = false;
+        
+        if (yDiff > 3.0 && wolf.onGround()) {
+            dangerDetected = true;
+        } else if (!wolf.getTarget().onGround()) {
+            boolean groundFound = false;
+            BlockPos targetPos = wolf.getTarget().blockPosition();
+            for (int i = 1; i <= 4; i++) {
+                if (!wolf.level().isEmptyBlock(targetPos.below(i))) {
+                    groundFound = true;
+                    break;
+                }
+            }
+            if (!groundFound) {
+                dangerDetected = true;
+            }
+        }
+
+        if (dangerDetected) {
+            wolf.getNavigation().stop();
+            Vec3 targetPos = wolf.getTarget().position();
+            wolf.setTarget(null);
+            Vec3 retreatPos = DefaultRandomPos.getPosAway(wolf, 4, 1, targetPos);
+            if (retreatPos != null) {
+                wolf.getNavigation().moveTo(retreatPos.x, retreatPos.y, retreatPos.z, 1.0);
+            }
+        }
+    }
 }

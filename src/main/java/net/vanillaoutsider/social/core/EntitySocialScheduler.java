@@ -139,4 +139,11 @@ public class EntitySocialScheduler {
     public boolean isEventActive(String id) {
         return activeMoodId.equals(id) || activeAmbientId.equals(id);
     }
+
+    /**
+     * @return True if the scheduler has no active tracks and no pending cooldowns.
+     */
+    public boolean isIdle() {
+        return activeMoodId.isEmpty() && activeAmbientId.isEmpty() && globalCooldownTimer <= 0;
+    }
 }

@@ -90,7 +90,7 @@ public class BabyBiteBackGoal extends Goal {
                          for (Wolf adult : nearbyWolves) {
                              if (adult instanceof WolfExtensions adultExt) {
                                  if (adultExt.betterdogs$getPersonality() == WolfPersonality.AGGRESSIVE && !adultExt.betterdogs$isSocialModeActive()) {
-                                     adultExt.betterdogs$getScheduler().injectBehavior(CorrectionDogEvent.ID, config.getCorrectionDuration(), this.wolf);
+                                     adultExt.betterdogs$getOrInitializeScheduler().injectBehavior(CorrectionDogEvent.ID, config.getCorrectionDuration(), this.wolf);
                                      break;
                                  }
                              }

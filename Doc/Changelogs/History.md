@@ -2,6 +2,14 @@
 
 This file contains the archived changelogs for historical versions of Better Dogs for the 26.1 Snapshot series.
 
+## [v3.1.26] - 2026-01-26
+
+### [v3.1.26] Optimization
+
+- **Performance**: Implemented "Zero-Overhead" Social AI using Ghost Brain architecture and Allocation-Free Registry pools.
+- **Memory**: Schedulers are now lazy and transient, freeing RAM when entities are idle.
+- **IO**: Implemented "Data Silence" to eliminate unnecessary disk saves and network sync for social behaviors.
+
 ## [v3.1.21] - 2026-01-26
 
 ### [v3.1.21] Features

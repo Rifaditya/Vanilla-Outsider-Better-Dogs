@@ -23,7 +23,8 @@ public class BeggingGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (wolfExt.betterdogs$getScheduler().isEventActive("begging")) {
+        net.vanillaoutsider.social.core.EntitySocialScheduler scheduler = wolfExt.betterdogs$getScheduler();
+        if (scheduler != null && scheduler.isEventActive("begging")) {
             if (this.wolf.isOrderedToSit()) return false;
             this.owner = wolf.getOwner();
             return this.owner != null && this.owner.isAlive();
@@ -33,7 +34,8 @@ public class BeggingGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        return wolfExt.betterdogs$getScheduler().isEventActive("begging") && this.owner != null && this.owner.isAlive();
+        net.vanillaoutsider.social.core.EntitySocialScheduler scheduler = wolfExt.betterdogs$getScheduler();
+        return scheduler != null && scheduler.isEventActive("begging") && this.owner != null && this.owner.isAlive();
     }
 
     @Override

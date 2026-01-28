@@ -30,8 +30,13 @@ public interface SocialEntity {
     float betterdogs$getSocialScale();
 
     /**
-     * @return The scheduler instance, or null if this mob opts out of scheduling.
+     * @return The scheduler instance, or null if this mob opts out of scheduling or is idle.
      */
     @Nullable
     EntitySocialScheduler betterdogs$getScheduler();
+
+    /**
+     * @return The scheduler instance, creating it if it doesn't already exist.
+     */
+    EntitySocialScheduler betterdogs$getOrInitializeScheduler();
 }

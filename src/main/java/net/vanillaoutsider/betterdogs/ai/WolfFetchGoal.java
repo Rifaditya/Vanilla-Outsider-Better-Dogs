@@ -27,7 +27,8 @@ public class WolfFetchGoal extends Goal {
     @Override
     public boolean canUse() {
         if (wolf.isOrderedToSit()) return false;
-        if (wolfExt.betterdogs$getScheduler().isEventActive("fetch") && wolf.getMainHandItem().isEmpty()) {
+        net.vanillaoutsider.social.core.EntitySocialScheduler scheduler = wolfExt.betterdogs$getScheduler();
+        if (scheduler != null && scheduler.isEventActive("fetch") && wolf.getMainHandItem().isEmpty()) {
             List<ItemEntity> items = wolf.level().getEntitiesOfClass(ItemEntity.class, wolf.getBoundingBox().inflate(8.0D));
             if (!items.isEmpty()) {
                 this.targetItem = items.get(0); // Take the first one for simplicity
@@ -39,7 +40,8 @@ public class WolfFetchGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        return wolfExt.betterdogs$getScheduler().isEventActive("fetch") && this.targetItem != null && this.targetItem.isAlive() && wolf.getMainHandItem().isEmpty();
+        net.vanillaoutsider.social.core.EntitySocialScheduler scheduler = wolfExt.betterdogs$getScheduler();
+        return scheduler != null && scheduler.isEventActive("fetch") && this.targetItem != null && this.targetItem.isAlive() && wolf.getMainHandItem().isEmpty();
     }
 
     @Override

@@ -64,11 +64,12 @@ public class WolfCombatHooks {
                 
                 // FIX: Don't Spam duplicate events if already active!
                 // CONFIG: Check configurable retaliation chance (percentage)
-                if (!ext.betterdogs$getScheduler().isEventActive(RetaliationDogEvent.ID)) {
+                net.vanillaoutsider.social.core.EntitySocialScheduler scheduler = ext.betterdogs$getScheduler();
+                if (scheduler == null || !scheduler.isEventActive(RetaliationDogEvent.ID)) {
                      // Get chance from Game Rules (Stored as integer Percent e.g. 75)
                      float chance = BetterDogsGameRules.getChance(wolf.level(), BetterDogsGameRules.BD_BABY_RETALIATE_PERCENT);
                      if (wolf.getRandom().nextFloat() < chance) {
-                         ext.betterdogs$getScheduler().injectBehavior(
+                         ext.betterdogs$getOrInitializeScheduler().injectBehavior(
                             RetaliationDogEvent.ID, 
                             100,
                             attacker

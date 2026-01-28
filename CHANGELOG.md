@@ -1,6 +1,33 @@
 # Changelog
 
-## v3.1.25
+## [3.1.30] - 2026-01-27
+
+- **Tuning**: Reduced the probability of "Pacifist" dogs triggering the "Wanderlust" event by 75%. They are now much more likely to stay close to their owner rather than exploring, reinforcing their "clingy" personality.
+
+## [3.1.29] - 2026-01-27
+
+- **Fix**: Adjusted Pacifist follow distance logic. If a dog is in "Wanderlust" mode (randomly exploring), it is now allowed to wander beyond its strict "Pacifist" leash distance without being immediately pulled back (Yo-Yo effect). Default "clingy" behavior (5.0 blocks) remains active when not wandering.
+
+## [3.1.28] - 2026-01-27
+
+- **Safety Hardening**: Backported "Smart Brakes" improvements from 1.21.11. Removed loose checks for jumping/airborne states to strictly prevent pushing-related falls.
+- **Improved Lookahead**: Increased cliff detection range to 5.0 blocks.
+- **Crash Fix**: Wrapped safety logic to ensure it strictly runs on the Server thread (preventing potential client-side cast errors).
+
+## [v3.1.27]
+
+- **Cliff Safety (Smart Brakes)**: Wolves now passively detect cliffs 3 blocks ahead while moving. If a dangerous drop is detected, they will brake, crouch, and stop navigation to prevent falling.
+- **Safer Zoomies**: The Zoomies behavior now specifically avoids selecting targets over cliffs or void.
+- **Configuration**: Added `enableCliffSafety` gamerule/config to toggle this behavior.
+
+## [v3.1.26]
+
+- **Zero-Overhead Social AI**: Implemented extreme performance optimizations for 2010-era hardware.
+- **Ghost Brain Architecture**: Schedulers are now strictly transient and lazy; they are created on-demand and purged from RAM when idle.
+- **Allocation-Free Registry**: Replaced per-tick list allocations with a managed O(1) selection pool using `WeakReferences`.
+- **Data Silence**: AI timers and states are now transient, preventing unnecessary disk IO and network synchronization (FerriteCore-inspired philosophy).
+
+## [v3.1.25]
 
 - **Vanilla Spirit Purge**: Removed the `Howl` behavior entirely as it forced dogs to sit/stand, violating player control.
 - **Posture Respect**: Updated all social behaviors (Zoomies, Begging, Fetch, Wanderlust) to strictly respect the dog's sitting state. Dogs will no longer perform social actions if they are ordered to sit.
@@ -8,18 +35,18 @@
 - **Dynamic Durations**: Behaviors now have specific, shorter durations (10-30 seconds instead of 20 minutes) defined in the Social Event core.
 - **Reaction Priority**: Critical reactive behaviors (Retaliation, Correction) now bypass global cooldowns for survival but still maintain proper lifecycle durations.
 
-## v3.1.24
+## [v3.1.24]
 
 - **FIXED**: Critical startup crash caused by missing package declaration in `ServerLevelMixin`.
 
-## v3.1.23 (Self-Healing Update)
+## [v3.1.23] (Self-Healing Update)
 
 - **FIXED**: `AbstractMethodError` crash when loading old worlds with aggressive puppies.
 - **ADDED**: "Self-Healing" logic for old worlds (existing wolves automatically join the Hive Mind and receive DNA).
 - **HARDENED**: Hive Mind core now includes Level Verification to prevent cross-level pulsing crashes.
 - **OPTIMIZED**: Global Pulse moved to `ServerLevel` tick (Highlander Standard) for better server performance.
 
-## v3.1.22 (Hive Mind v6.1 - Character Update)
+## [v3.1.22] (Hive Mind v6.1 - Character Update)
 
 - **Hive Mind Integration**: Fully integrated the v6.1 social core. Better Dogs now operates within a global social network that automatically merges with other Hive Mind-compatible mods.
 - **Digital DNA**: Wolves now possess a 64-bit DNA seed generated at spawn. This seed dictates personality traits, social event acceptance, and physical appearance.
@@ -30,39 +57,39 @@
   - **Idle Curiosity**: Ambient social interaction driven by a wolf's curiosity trait.
 - **Highlander Pulse Guard**: Drastically optimized AI performance using a version-negotiating master pulse.
 
-## v3.1.21
+## [v3.1.21]
 
 - **Feature:** Added native Game Rules for Breeding Genetics. This allows per-world configuration of personality inheritance and mixed-breed chances.
 - **Maintenance**: Ensured both Taming and Breeding rules are present in the "Better Dogs" category.
 
-## v3.1.20
+## [v3.1.20]
 
 - **Feature:** Added a custom "Better Dogs" category to the Game Rules screen. All mod-specific rules are now grouped under this new tab instead of the generic "Mobs" category.
 
-## v3.1.19
+## [v3.1.19]
 
 - **Localization Fix:** Prepended `minecraft.` namespace to all Game Rule translation keys (e.g., `gamerule.minecraft.bd_storm_anxiety`) to match vanilla Game Rule registry behavior. This ensures Game Rules are properly named in the "Edit Game Rules" screen.
 
-## v3.1.18
+## [v3.1.18]
 
 - **Fix:** Resolved startup crash caused by `IdentifierException`.
 - **Technical:** Renamed all Game Rule IDs to lower_snake_case (e.g., `bdStormAnxiety` -> `bd_storm_anxiety`) to comply with Minecraft 1.21+ registry standards.
 - **Localization:** Updated `en_us.json` to match new Game Rule keys.
 
-## v3.1.17 (Anti-Crowding Removal)
+## [v3.1.17] (Anti-Crowding Removal)
 
 - **Removed**: The "Anti-Crowding System" (`PackSeparationGoal`) has been removed entirely. Wolves will no longer artificially push each other away, reverting to standard vanilla grouping behavior.
 - **Config**: Removed `packSeparationRadius`, `packSeparationInflation`, `packSeparationSpeed`, and `enablePackSeparation` from `betterdogs.json`.
 
-## v3.1.16 (Stable Hotfix: Crash Fix)
+## [v3.1.16] (Stable Hotfix: Crash Fix)
 
 - **Fix**: Replaced `WolfMixin` targeting logic with `WolfMobMixin` to robustly intercept `setTarget` without causing transformation errors on startup. This resolves the `MixinApplyError` seen in v3.1.15.
 
-## v3.1.15 (Broken Build - Startup Crash)
+## [v3.1.15] (Broken Build - Startup Crash)
 
 - **Hotfix Attempt**: Attempted to fix startup crash but introduced a new Mixin transformation error due to target class mismatch. **DO NOT USE**.
 
-## v3.1.14 (Better Teleportation & Dynamic Ranges)
+## [v3.1.14] (Better Teleportation & Dynamic Ranges)
 
 ### Added
 

@@ -42,6 +42,16 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
                     dist = maxSafeDist;
                 }
             }
+            
+            // Yo-Yo Fix: If Wanderlust is active, we must allow the dog to wander further than the follow start distance.
+            // Otherwise, they walk 5 blocks, get pulled back, and repeat.
+            net.vanillaoutsider.social.core.EntitySocialScheduler scheduler = ext.betterdogs$getScheduler();
+            if (scheduler != null && scheduler.isEventActive("wanderlust")) {
+                float wanderTolerance = config.getWanderlustRange() + 5.0f;
+                if (dist < wanderTolerance) {
+                    dist = wanderTolerance;
+                }
+            }
         }
         return wolf.isBaby() ? dist * BetterDogsConfig.get().getBabyFollowMultiplier() : dist;
     }

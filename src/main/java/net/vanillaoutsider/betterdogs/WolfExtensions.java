@@ -160,9 +160,15 @@ public interface WolfExtensions {
     // === SCHEDULER SYSTEM (V3.1 - Universal Hive Mind) ===
 
     /**
-     * Gets the EntitySocialScheduler instance for this mob.
+     * Gets the EntitySocialScheduler instance for this mob, or null if idle.
      */
-    net.vanillaoutsider.social.core.EntitySocialScheduler betterdogs$getScheduler();
+    @Nullable
+    EntitySocialScheduler betterdogs$getScheduler();
+
+    /**
+     * @return The scheduler instance, creating it if it doesn't already exist.
+     */
+    EntitySocialScheduler betterdogs$getOrInitializeScheduler();
 
     /**
      * Ticks the Long-Term Scheduler. Called every tick by WolfMixin.

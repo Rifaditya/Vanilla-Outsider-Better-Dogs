@@ -6,7 +6,7 @@ Better Dogs is a comprehensive Minecraft wolf AI overhaul, focused on adding dep
 
 The core of the mod is split into two primary environments:
 
-### 1. Better Dogs 26.1 (Modern Java)
+### 1. ![Better Dogs Banner](Doc/Assets/banner.png) (Modern Java)
 
 - **Target**: Minecraft 26.1 Snapshot 4+
 - **Language**: Java 25

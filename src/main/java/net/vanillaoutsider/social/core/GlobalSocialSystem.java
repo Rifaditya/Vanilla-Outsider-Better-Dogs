@@ -22,6 +22,7 @@ public class GlobalSocialSystem {
     // The Pulse Guard: Idempotent execution
     private static final AtomicLong LAST_TICK = new AtomicLong(-1);
     private static final Random RANDOM = new Random();
+    private static int scrubTimer = 0;
 
     /**
      * The Master Pulse: Finds one random entity in the Hive Mind and ticks its brain.
@@ -29,7 +30,7 @@ public class GlobalSocialSystem {
     public static void pulse(ServerLevel level) {
         long time = level.getGameTime();
         
-        // Highlander logic: Only the highest version wins (simplified for now)
+        // Highlander logic: Only the highest version wins
         if (activeEngineVersion < ENGINE_VERSION) {
             activeEngineVersion = ENGINE_VERSION;
         }
@@ -37,19 +38,23 @@ public class GlobalSocialSystem {
         // Pulse logic: Only one execution per tick
         if (LAST_TICK.getAndSet(time) == time) return;
 
-        // O(1) Global Selection: Pick one random entity across ALL mods
-        List<LivingEntity> entities = SocialRegistry.getTrackedEntities();
-        if (entities.isEmpty()) return;
+        // Periodic Scrubbing: Remove dead WeakReferences to keep the registry compact
+        scrubTimer++;
+        if (scrubTimer >= 100) {
+            SocialRegistry.scrub();
+            scrubTimer = 0;
+        }
 
-        LivingEntity selection = entities.get(RANDOM.nextInt(entities.size()));
+        // O(1) Global Selection: Zero-allocation pick
+        LivingEntity selection = SocialRegistry.getRandomEntity();
+        if (selection == null) return;
+
         // Cross-World Safety: Only pulse if in the current ticking level
         if (selection.level() != level) return;
 
         if (selection instanceof SocialEntity social) {
-            EntitySocialScheduler scheduler = social.betterdogs$getScheduler();
-            if (scheduler != null) {
-                scheduler.tryStartEvent();
-            }
+            EntitySocialScheduler scheduler = social.betterdogs$getOrInitializeScheduler();
+            scheduler.tryStartEvent();
         }
     }
 

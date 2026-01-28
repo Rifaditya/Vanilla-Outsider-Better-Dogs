@@ -25,6 +25,16 @@ public class WanderlustDogEvent implements SocialEvent {
         if (entity.betterdogs$asEntity() instanceof Wolf wolf) {
             // Respect Sitting Pose (Vanilla Spirit)
             if (wolf.isOrderedToSit()) return false;
+            
+            // Pacifist Tuning: Much less likely to wander (~25% chance of passing this gate compared to others)
+            // This prevents them from constantly trying to leave the owner's side.
+            if (wolf instanceof net.vanillaoutsider.betterdogs.WolfExtensions ext 
+                    && ext.betterdogs$getPersonality() == net.vanillaoutsider.betterdogs.WolfPersonality.PACIFIST) {
+                if (wolf.getRandom().nextFloat() > 0.25f) {
+                    return false;
+                }
+            }
+
             return wolf.isTame() && wolf.onGround();
         }
         return false;
