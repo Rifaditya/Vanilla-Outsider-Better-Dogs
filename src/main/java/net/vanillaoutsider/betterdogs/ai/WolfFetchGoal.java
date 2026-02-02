@@ -6,6 +6,7 @@ import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.phys.Vec3;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
+import net.dasik.social.core.EntitySocialScheduler;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -26,10 +27,12 @@ public class WolfFetchGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (wolf.isOrderedToSit()) return false;
-        net.vanillaoutsider.social.core.EntitySocialScheduler scheduler = wolfExt.betterdogs$getScheduler();
+        if (wolf.isOrderedToSit())
+            return false;
+        EntitySocialScheduler scheduler = wolfExt.betterdogs$getScheduler();
         if (scheduler != null && scheduler.isEventActive("fetch") && wolf.getMainHandItem().isEmpty()) {
-            List<ItemEntity> items = wolf.level().getEntitiesOfClass(ItemEntity.class, wolf.getBoundingBox().inflate(8.0D));
+            List<ItemEntity> items = wolf.level().getEntitiesOfClass(ItemEntity.class,
+                    wolf.getBoundingBox().inflate(8.0D));
             if (!items.isEmpty()) {
                 this.targetItem = items.get(0); // Take the first one for simplicity
                 return true;
@@ -40,16 +43,17 @@ public class WolfFetchGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        net.vanillaoutsider.social.core.EntitySocialScheduler scheduler = wolfExt.betterdogs$getScheduler();
-        return scheduler != null && scheduler.isEventActive("fetch") && this.targetItem != null && this.targetItem.isAlive() && wolf.getMainHandItem().isEmpty();
+        EntitySocialScheduler scheduler = wolfExt.betterdogs$getScheduler();
+        return scheduler != null && scheduler.isEventActive("fetch") && this.targetItem != null
+                && this.targetItem.isAlive() && wolf.getMainHandItem().isEmpty();
     }
 
     @Override
     public void tick() {
         if (this.targetItem != null) {
-            this.wolf.getLookControl().setLookAt(this.targetItem, 10.0F, (float)this.wolf.getMaxHeadXRot());
+            this.wolf.getLookControl().setLookAt(this.targetItem, 10.0F, (float) this.wolf.getMaxHeadXRot());
             this.wolf.getNavigation().moveTo(this.targetItem, 1.2D);
-            
+
             if (this.wolf.distanceToSqr(this.targetItem) < 1.0D) {
                 this.wolf.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, this.targetItem.getItem());
                 this.targetItem.discard();

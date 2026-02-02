@@ -13,8 +13,8 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
     public static final WolfPersistentData DEFAULT = new WolfPersistentData(-1, 0, false, "", 0L, 0L, 1.0f);
 
     public static final Codec<WolfPersistentData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codec.INT.fieldOf("personality").forGetter(WolfPersistentData::personalityId),
-            Codec.INT.fieldOf("lastDamageTime").forGetter(WolfPersistentData::lastDamageTime),
+            Codec.INT.optionalFieldOf("personality", -1).forGetter(WolfPersistentData::personalityId),
+            Codec.INT.optionalFieldOf("lastDamageTime", 0).forGetter(WolfPersistentData::lastDamageTime),
             Codec.BOOL.optionalFieldOf("submissive", false).forGetter(WolfPersistentData::submissive),
             Codec.STRING.optionalFieldOf("bloodFeudTarget", "").forGetter(WolfPersistentData::bloodFeudTarget),
             Codec.LONG.optionalFieldOf("lastMischiefDay", 0L).forGetter(WolfPersistentData::lastMischiefDay),

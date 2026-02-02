@@ -88,6 +88,7 @@ public class BetterDogsGameRules {
 
         // --- Misc ---
         public static GameRule<Integer> BD_BABY_MISCHIEF_PERMILLE;
+        public static GameRule<Integer> BD_HOWL_CHANCE;
 
         // --- Correction/Retaliation ---
         public static GameRule<Integer> BD_BLOOD_FEUD_PERCENT;
@@ -154,6 +155,7 @@ public class BetterDogsGameRules {
                 // Misc
                 BD_BABY_MISCHIEF_PERMILLE = registerInteger("bd_baby_mischief_permille", BETTER_DOGS,
                                 (int) (config.getBabyMischiefChance() * 10));
+                BD_HOWL_CHANCE = registerInteger("bd_howl_chance", BETTER_DOGS, 10); // 10 permille = 1%
 
                 // Discipline
                 BD_BLOOD_FEUD_PERCENT = registerInteger("bd_blood_feud_percent", BETTER_DOGS,

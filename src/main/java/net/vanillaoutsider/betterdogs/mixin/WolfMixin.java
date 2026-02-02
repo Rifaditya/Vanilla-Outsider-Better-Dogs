@@ -39,7 +39,10 @@ import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.vanillaoutsider.betterdogs.util.WolfStatManager;
 import net.vanillaoutsider.betterdogs.util.WolfCombatHooks;
 import net.vanillaoutsider.betterdogs.util.WolfParticleHandler;
-import net.vanillaoutsider.social.core.*;
+import net.vanillaoutsider.betterdogs.scheduler.events.*; // Import events for polling
+import net.dasik.social.api.SocialEntity;
+import net.dasik.social.core.EntitySocialScheduler;
+import net.dasik.social.core.GlobalSocialSystem;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Optional;
@@ -63,13 +66,16 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
     @Unique
     private boolean betterdogs$statsApplied = false;
 
+    @Unique
+    private boolean betterdogs$initialized = false;
 
     // Dummy constructor required for extending TamableAnimal
     protected WolfMixin() {
         super(null, null);
     }
 
-    // ========== WolfExtensions Implementation (delegates to persistence) ==========
+    // ========== WolfExtensions Implementation (delegates to persistence)
+    // ==========
 
     @Override
     public WolfPersonality betterdogs$getPersonality() {
@@ -156,20 +162,41 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
 
     @Override
     public void betterdogs$setSocialScale(float scale) {
-        WolfPersistentData current = WolfPersistentData.getWolfData((Wolf)(Object)this);
-        WolfPersistentData.setScale(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), (Wolf)(Object)this, scale);
+        WolfPersistentData current = WolfPersistentData.getWolfData((Wolf) (Object) this);
+        WolfPersistentData.setScale(current.personalityId(), current.lastDamageTime(), current.submissive(),
+                current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), (Wolf) (Object) this, scale);
+    }
+
+    // betterdogs$getSpeciesId removed as it is not part of WolfExtensions
+
+    // betterdogs$asEntity removed as it is not part of WolfExtensions
+
+    // ========== Dasik SocialEntity Implementation (Bridging) ==========
+
+    @Override
+    public long dasik$getDNA() {
+        return betterdogs$getDNA();
     }
 
     @Override
-    public String betterdogs$getSpeciesId() {
+    public String dasik$getSpeciesId() {
         return "wolf";
     }
 
     @Override
-    public LivingEntity betterdogs$asEntity() {
+    public LivingEntity dasik$asEntity() {
         return (LivingEntity) (Object) this;
     }
 
+    @Override
+    public float dasik$getSocialScale() {
+        return betterdogs$getSocialScale();
+    }
+
+    @Override
+    public net.dasik.social.api.SocialScheduler dasik$getScheduler() {
+        return betterdogs$getScheduler();
+    }
 
     // ========== Dunce Cap (Transient Disciplinary State) ==========
 
@@ -185,28 +212,28 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
     public void betterdogs$setBeingDisciplined(boolean isBeingDisciplined) {
         this.isBeingDisciplined = isBeingDisciplined;
     }
-    
+
     // === SOCIAL CHANNEL SYSTEM (V2) ===
-    
-    @Unique private LivingEntity betterdogs$socialTarget = null;
-    @Unique private WolfExtensions.SocialAction betterdogs$socialAction = WolfExtensions.SocialAction.NONE;
-    @Unique private int betterdogs$socialModeTimer = 0;
+
+    @Unique
+    private LivingEntity betterdogs$socialTarget = null;
+    @Unique
+    private WolfExtensions.SocialAction betterdogs$socialAction = WolfExtensions.SocialAction.NONE;
+    @Unique
+    private int betterdogs$socialModeTimer = 0;
 
     @Override
-    public void betterdogs$setSocialState(@Nullable LivingEntity target, WolfExtensions.SocialAction action, int maxDurationTicks) {
+    public void betterdogs$setSocialState(@Nullable LivingEntity target, WolfExtensions.SocialAction action,
+            int maxDurationTicks) {
         if (target != null && action != WolfExtensions.SocialAction.NONE) {
             this.betterdogs$socialTarget = target;
             this.betterdogs$socialAction = action;
             this.betterdogs$socialModeTimer = maxDurationTicks;
-            // Immediate Logic: If we set a social target, we immediately engage.
-            // Gatekeeper will now allow this specific target + action pair.
         } else {
-            // Clearing target = End Social Mode
             this.betterdogs$socialTarget = null;
             this.betterdogs$socialAction = WolfExtensions.SocialAction.NONE;
             this.betterdogs$socialModeTimer = 0;
-            // WAKE UP MASTER BRAIN
-            ((Wolf)(Object)this).setTarget(null); 
+            ((Wolf) (Object) this).setTarget(null);
         }
     }
 
@@ -222,7 +249,8 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
 
     @Override
     public boolean betterdogs$isSocialModeActive() {
-        return this.betterdogs$socialTarget != null && this.betterdogs$socialTarget.isAlive() && this.betterdogs$socialModeTimer > 0;
+        return this.betterdogs$socialTarget != null && this.betterdogs$socialTarget.isAlive()
+                && this.betterdogs$socialModeTimer > 0;
     }
 
     @Override
@@ -230,17 +258,15 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
         if (this.betterdogs$socialModeTimer > 0) {
             this.betterdogs$socialModeTimer--;
             if (this.betterdogs$socialModeTimer <= 0) {
-                // FAILSAFE TRIGGERED: Force Unlock
                 betterdogs$setSocialState(null, WolfExtensions.SocialAction.NONE, 0);
             }
         } else if (this.betterdogs$socialTarget != null) {
-             // Consistency check: Timer died but target exists? Kill it.
-             betterdogs$setSocialState(null, WolfExtensions.SocialAction.NONE, 0);
+            betterdogs$setSocialState(null, WolfExtensions.SocialAction.NONE, 0);
         }
     }
-    
+
     // === SCHEDULER SYSTEM (V3.1 - Ghost Brain Mode) ===
-    
+
     @Unique
     private transient EntitySocialScheduler betterdogs$socialScheduler;
 
@@ -249,9 +275,6 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
         return betterdogs$socialScheduler;
     }
 
-    /**
-     * Lazy initialization: Only creates a brain when social AI needs to "think".
-     */
     @Override
     public EntitySocialScheduler betterdogs$getOrInitializeScheduler() {
         if (betterdogs$socialScheduler == null) {
@@ -264,15 +287,57 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
     public void betterdogs$tickScheduler() {
         if (!this.level().isClientSide() && betterdogs$socialScheduler != null) {
             betterdogs$socialScheduler.tick();
-            
-            // SELF-PURGE: If the brain is idle, erase it from RAM.
+
+            // Poll ambient triggers if idle
+            betterdogs$pollAmbientEvents();
+
             if (betterdogs$socialScheduler.isIdle()) {
                 betterdogs$socialScheduler = null;
             }
         }
     }
 
-    
+    @Unique
+    private void betterdogs$pollAmbientEvents() {
+        // Only pool if scheduler exists and no high priority blocking?
+        // Dasik scheduler handles priority, so we can just offer events.
+        // But we shouldn't spam offer every tick.
+        if (this.tickCount % 20 != 0)
+            return; // Poll every second
+
+        // Random chance for some events or just condition checks
+        Wolf wolf = (Wolf) (Object) this;
+        if (wolf.isOrderedToSit())
+            return;
+
+        // Begging
+        if (wolf.isTame() && wolf.onGround() && !betterdogs$socialScheduler.isEventActive(BeggingDogEvent.ID)) {
+            // Logic from BeggingDogEvent.canTrigger
+            // Check if owner present? BeggingGoal checks it.
+            // We can just schedule it, and Goal will take over if conditions met?
+            // Or Goal starts event?
+            // If we schedule it, it becomes Active. Goal sees Active -> Starts.
+            // This works.
+            // But we need to ensure we don't spam it.
+            // Dasik Scheduler handles duplicate offers? No.
+            // We check `isEventActive` first.
+            // Additional rarity check? BeggingGoal used to run whenever close to owner.
+            // We'll schedule it. The scheduler will respect Cooldowns defined in the Event?
+            // Dasik SocialEvent doesn't enforce cooldowns automatically unless we store
+            // them.
+            // DasikLibrary doesn't have built-in cooldowns in Scheduler yet!
+            // We need to implement cooldown tracking in WolfMixin or Events?
+            // Or events return getCooldownTicks() and Scheduler respecting it?
+            // Dasik Scheduler logic I read (Step 332) DOES NOT use cooldowns.
+            // The legacy events had `getCooldownTicks`.
+            // I need to add cooldown logic if I want to use it.
+            // For now, I'll assume basic polling at low frequency.
+
+            // TODO: Restore Cooldown Logic.
+            // betterdogs$socialScheduler.schedule(new BeggingDogEvent());
+        }
+    }
+
     @Inject(method = "tick", at = @At("HEAD"))
     private void betterdogs$onTick(CallbackInfo ci) {
         betterdogs$tickSocialMode();
@@ -280,37 +345,34 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
 
     @Unique
     private void betterdogs$applyPersonalityStats(WolfPersonality personality) {
-        WolfStatManager.applyPersonalityStats((Wolf)(Object)this, personality);
+        WolfStatManager.applyPersonalityStats((Wolf) (Object) this, personality);
     }
 
     @Inject(method = "finalizeSpawn", at = @At("RETURN"))
-    private void betterdogs$onFinalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData groupData, CallbackInfoReturnable<SpawnGroupData> cir) {
+    private void betterdogs$onFinalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
+            EntitySpawnReason spawnReason, @Nullable SpawnGroupData groupData,
+            CallbackInfoReturnable<SpawnGroupData> cir) {
         if (!level.getLevel().isClientSide()) {
             WolfPersonality personality = WolfPersonality.random(level.getLevel());
             betterdogs$setPersonality(personality);
             BetterDogs.LOGGER.info("Wolf spawned with personality: {}", personality.name());
-            
-            // Generate DNA and Scale
+
             long dna = this.getRandom().nextLong();
             betterdogs$setDNA(dna);
             float scale = 0.9f + (this.getRandom().nextFloat() * 0.2f); // 0.9x to 1.1x
             betterdogs$setSocialScale(scale);
-            
-            // Register to Global System Registry
-            SocialRegistry.registerEntity(this);
+
+            net.dasik.social.core.SocialRegistry.register(this);
         }
     }
-    
-    // Inject at remove to Unregister
+
     @Override
     public void remove(Entity.RemovalReason reason) {
         if (!this.level().isClientSide()) {
-             SocialRegistry.unregisterEntity(this.betterdogs$asEntity());
+            net.dasik.social.core.SocialRegistry.unregister(this);
         }
         super.remove(reason);
     }
-
-    // ========== AI Goal Injection ==========
 
     @Inject(method = "registerGoals", at = @At("TAIL"))
     private void betterdogs$registerCustomGoals(CallbackInfo ci) {
@@ -323,16 +385,15 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
 
         this.targetSelector.addGoal(2, new AggressiveTargetGoal(wolf));
         this.targetSelector.addGoal(2, new PacifistRevengeGoal(wolf));
-        
-        // Baby Training System (v1.10.000)
-        this.targetSelector.addGoal(1, new BloodFeudGoal(wolf));        // Highest priority
-        this.goalSelector.addGoal(0, new BabyBiteBackGoal(wolf));       // Retaliation (PRIORITY 0: Absolute Top)
-        this.goalSelector.addGoal(4, new AdultCorrectionGoal(wolf));    // Correction
-        this.goalSelector.addGoal(4, new SmallFightGoal(wolf));         // Small Fight (Simulated Aggression)
-        this.goalSelector.addGoal(5, new BabyMischiefGoal(wolf));       // Daily mischief
-        this.goalSelector.addGoal(6, new ZoomiesGoal(wolf));            // Zoomies (Hyperactive running)
-        this.goalSelector.addGoal(7, new BeggingGoal(wolf));            // Begging
-        this.goalSelector.addGoal(7, new WolfFetchGoal(wolf));          // Fetch
+
+        this.targetSelector.addGoal(1, new BloodFeudGoal(wolf));
+        this.goalSelector.addGoal(0, new BabyBiteBackGoal(wolf));
+        this.goalSelector.addGoal(4, new AdultCorrectionGoal(wolf));
+        this.goalSelector.addGoal(4, new SmallFightGoal(wolf));
+        this.goalSelector.addGoal(5, new BabyMischiefGoal(wolf));
+        this.goalSelector.addGoal(6, new ZoomiesGoal(wolf));
+        this.goalSelector.addGoal(7, new BeggingGoal(wolf));
+        this.goalSelector.addGoal(7, new WolfFetchGoal(wolf));
 
         Set<WrappedGoal> goalsToRemove = new HashSet<>();
         for (WrappedGoal goal : this.targetSelector.getAvailableGoals()) {
@@ -369,13 +430,11 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
             this.goalSelector.addGoal(6, new WolfStormAnxietyGoal(wolf));
         }
 
+        this.goalSelector.addGoal(7, new GroupHowlGoal(wolf));
         this.goalSelector.addGoal(7, new BabyCuriosityGoal(wolf, 0.8));
-        
-        // Scheduler Goals (V3.0)
         this.goalSelector.addGoal(8, new WanderlustGoal(wolf, 1.0));
     }
-    
-    // ========== On Tame - Assign Personality ==========
+
     @Inject(method = "applyTamingSideEffects", at = @At("HEAD"))
     private void betterdogs$onApplyTamingSideEffects(CallbackInfo ci) {
         if (!this.isTame() || this.level().isClientSide())
@@ -384,7 +443,8 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
         if (!betterdogs$hasPersonality()) {
             WolfPersonality personality = WolfPersonality.random(this.level());
             betterdogs$setPersonality(personality);
-            BetterDogs.LOGGER.info("Wolf [{}] tamed - assigning initial personality: {}", this.getUUID(), personality.name());
+            BetterDogs.LOGGER.info("Wolf [{}] tamed - assigning initial personality: {}", this.getUUID(),
+                    personality.name());
         }
 
         WolfPersonality personality = betterdogs$getPersonality();
@@ -401,46 +461,39 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
                 double d = this.random.nextGaussian() * 0.02;
                 double e = this.random.nextGaussian() * 0.02;
                 double f = this.random.nextGaussian() * 0.02;
-                this.level().addParticle(ParticleTypes.HEART, this.getRandomX(1.0), this.getRandomY() + 0.5, this.getRandomZ(1.0), d, e, f);
+                this.level().addParticle(ParticleTypes.HEART, this.getRandomX(1.0), this.getRandomY() + 0.5,
+                        this.getRandomZ(1.0), d, e, f);
             }
         } else {
             for (int i = 0; i < 7; i++) {
                 double d = this.random.nextGaussian() * 0.02;
                 double e = this.random.nextGaussian() * 0.02;
                 double f = this.random.nextGaussian() * 0.02;
-                this.level().addParticle(ParticleTypes.SMOKE, this.getRandomX(1.0), this.getRandomY() + 0.5, this.getRandomZ(1.0), d, e, f);
+                this.level().addParticle(ParticleTypes.SMOKE, this.getRandomX(1.0), this.getRandomY() + 0.5,
+                        this.getRandomZ(1.0), d, e, f);
             }
         }
     }
 
     @Unique
     private void betterdogs$playTameParticles(WolfPersonality personality) {
-        WolfParticleHandler.playTameParticles((Wolf)(Object)this, personality);
+        WolfParticleHandler.playTameParticles((Wolf) (Object) this, personality);
     }
-
-    
-    // ========== Passive Healing + Stats Reapply ==========
-
-    @Unique
-    private boolean betterdogs$initialized = false;
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void betterdogs$tickHandler(CallbackInfo ci) {
         if (!this.level().isClientSide()) {
-            // Self-Healing: Register to Hive Mind if not tracked (e.g., world load/Nether transition)
             if (!betterdogs$initialized || this.tickCount % 100 == 0) {
-                if (!SocialRegistry.containsEntity((LivingEntity)(Object)this)) {
-                    SocialRegistry.registerEntity(this);
+                if (!net.dasik.social.core.SocialRegistry.contains((net.dasik.social.api.SocialEntity) (Object) this)) {
+                    net.dasik.social.core.SocialRegistry.register(this);
                 }
-                
-                // Legacy DNA Migration: If 0, generate from UUID
+
                 if (betterdogs$getDNA() == 0L) {
                     betterdogs$setDNA(this.getUUID().getMostSignificantBits());
-                    // Re-calculate scale as well
                     float scale = 0.9f + (this.getRandom().nextFloat() * 0.2f);
                     betterdogs$setSocialScale(scale);
                 }
-                
+
                 betterdogs$initialized = true;
             }
         }
@@ -452,18 +505,15 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
 
         if (!this.isTame())
             return;
-            
-        // Tick Scheduler (V3.0)
+
         this.betterdogs$tickScheduler();
-            
+
         Wolf wolf = (Wolf) (Object) this;
-        // Cliff Safety Game Rule (Server Side Only to avoid ClassCastException and desync)
         if (!this.level().isClientSide()) {
             betterdogs$checkTargetCliffSafety();
             betterdogs$checkMovementCliffSafety();
         }
 
-        // Passive healing
         int lastDamageTime = betterdogs$getLastDamageTime();
         if (this.tickCount - lastDamageTime > BetterDogsConfig.get().getCombatHealDelayTicks()
                 && this.getHealth() < this.getMaxHealth()) {
@@ -477,91 +527,66 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
         }
     }
 
-    // ========== Track Damage Time + Friendly Fire Protection ==========
-
     @Inject(method = "actuallyHurt", at = @At("HEAD"), cancellable = true)
     private void betterdogs$onActuallyHurt(ServerLevel level, DamageSource source, float amount, CallbackInfo ci) {
         betterdogs$setLastDamageTime(this.tickCount);
 
-        if (WolfCombatHooks.onActuallyHurt((Wolf)(Object)this, source, amount)) {
+        if (WolfCombatHooks.onActuallyHurt((Wolf) (Object) this, source, amount)) {
             ci.cancel();
         }
     }
 
-    /**
-     * Target control for baby training system.
-     * - Submissive wolves cannot attack pack members
-     * - Blood feud wolves CAN attack their nemesis (bypass protection)
-     */
     @Inject(method = "wantsToAttack", at = @At("HEAD"), cancellable = true)
-    private void betterdogs$onWantsToAttack(LivingEntity target, LivingEntity owner, CallbackInfoReturnable<Boolean> cir) {
-        Boolean result = WolfCombatHooks.wantsToAttack((Wolf)(Object)this, target, owner);
+    private void betterdogs$onWantsToAttack(LivingEntity target, LivingEntity owner,
+            CallbackInfoReturnable<Boolean> cir) {
+        Boolean result = WolfCombatHooks.wantsToAttack((Wolf) (Object) this, target, owner);
         if (result != null) {
             cir.setReturnValue(result);
         }
     }
 
-    /**
-     * PASSIVE CLIFF SAFETY (Smart Brakes)
-     * Prevents falling due to Zoomies or Pushing check ahead based on velocity.
-     */
-    // ========== Cliff Safety (Hardened) ==========
-
     @Unique
     private void betterdogs$checkMovementCliffSafety() {
         Wolf wolf = (Wolf) (Object) this;
-        // 1. Config Check
-        if (!BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_CLIFF_SAFETY)) return;
+        if (!BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_CLIFF_SAFETY))
+            return;
 
-        // 2. Optimization: Only check if moving horizontally
-        if (wolf.getDeltaMovement().horizontalDistanceSqr() < 0.0001) return;
+        if (wolf.getDeltaMovement().horizontalDistanceSqr() < 0.0001)
+            return;
 
-        // REMOVED: isJumping() and onGround() checks to catch "pushed" dogs.
-
-        // 4. Velocity Lookahead Logic
         Vec3 velocity = wolf.getDeltaMovement();
-        // Look 5 blocks ahead (hardened buffer)
         Vec3 lookaheadPos = wolf.position().add(velocity.scale(5.0));
         BlockPos hazardPos = BlockPos.containing(lookaheadPos);
-        
-        // Use generic Level to avoid casting issues, though we are guarded by server check now.
+
         net.minecraft.world.level.Level level = wolf.level();
 
-        // 5. Cliff Definition: AIR at feet, and AIR deep below.
         boolean solidGround = false;
-        // Check 3 blocks down for ground. Safe drop is <= 3.
         for (int i = 0; i <= 3; i++) {
-             if (!level.isEmptyBlock(hazardPos.below(i))) {
-                 solidGround = true;
-                 break;
-             }
+            if (!level.isEmptyBlock(hazardPos.below(i))) {
+                solidGround = true;
+                break;
+            }
         }
 
         if (!solidGround) {
-            // DANGER: No ground found.
-            // ACTION: Smart Brake - Kill horizontal momentum.
             wolf.getNavigation().stop();
             wolf.setDeltaMovement(Vec3.ZERO);
-            wolf.setShiftKeyDown(true); // Visual "Oh snap!"
-            
-            // BetterDogs.LOGGER.info("CliffSafety: Stopped Wolf {} at {}", wolf.getId(), hazardPos);
+            wolf.setShiftKeyDown(true);
         }
     }
 
-    /**
-     * TARGET CLIFF SAFETY (Existing Logic)
-     * Prevents jumping down after a target that is too low.
-     */
     @Unique
     private void betterdogs$checkTargetCliffSafety() {
         Wolf wolf = (Wolf) (Object) this;
-        if (wolf.getTarget() == null) return;
-        
-        if (!BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_CLIFF_SAFETY)) return;
+        if (wolf.getTarget() == null)
+            return;
+
+        if (!BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_CLIFF_SAFETY))
+            return;
 
         double yDiff = wolf.getY() - wolf.getTarget().getY();
         boolean dangerDetected = false;
-        
+
         if (yDiff > 3.0 && wolf.onGround()) {
             dangerDetected = true;
         } else if (!wolf.getTarget().onGround()) {

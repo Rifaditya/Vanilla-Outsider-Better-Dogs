@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.1.32] - 2026-01-31
+
+- **New Feature: Group Howl**: Wolves howl together at night. When one tamed wolf starts howling, nearby pack members join in with varied pitches for a natural pack howl effect.
+- **New GameRule**: `bd_howl_chance` controls how often wolves howl at night (permille, default 10 = 1% per tick).
+- **New Config**: `howlSpreadRange` controls how far the howl spreads to other wolves (default 20 blocks).
+- **Bugfix**: Fixed duplicate import in `BabyMischiefGoal`.
+
+## [3.1.31] - 2026-01-31
+
+- **Hardening**: Resolved "Old World" loading crashes. The Wolf data codec now uses optional fields for all parameters, allowing the mod to safely load wolves from older versions or vanilla worlds without attributes.
+- **Refmap**: Fixed the "Reference map could not be read" warning in logs by explicitly defining the refmap name in the build configuration.
+
 ## [3.1.30] - 2026-01-27
 
 - **Tuning**: Reduced the probability of "Pacifist" dogs triggering the "Wanderlust" event by 75%. They are now much more likely to stay close to their owner rather than exploring, reinforcing their "clingy" personality.

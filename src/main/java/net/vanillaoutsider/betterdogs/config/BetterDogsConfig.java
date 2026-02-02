@@ -192,6 +192,9 @@ public class BetterDogsConfig {
     public float stormAnxietyLookChance = 0.05f;
     public float stormAnxietyStopChance = 0.02f;
 
+    // ========== Group Howl ==========
+    public double howlSpreadRange = 20.0;
+
     public float playFightLookSpeed = 30.0f;
     public double playFightSpeedModifier = 1.0;
 
@@ -292,4 +295,5 @@ public class BetterDogsConfig {
     public int getMaxSafeFall() { return maxSafeFall; }
     public int getHazardCheckLimit() { return hazardCheckLimit; }
     public int getHazardFallSearchLimit() { return hazardFallSearchLimit; }
+    public double getHowlSpreadRange() { return howlSpreadRange; }
 }

@@ -6,6 +6,7 @@ import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
+import net.dasik.social.core.EntitySocialScheduler;
 
 import java.util.EnumSet;
 
@@ -23,8 +24,9 @@ public class ZoomiesGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (wolf.isOrderedToSit()) return false;
-        net.vanillaoutsider.social.core.EntitySocialScheduler scheduler = wolfExt.betterdogs$getScheduler();
+        if (wolf.isOrderedToSit())
+            return false;
+        EntitySocialScheduler scheduler = wolfExt.betterdogs$getScheduler();
         return scheduler != null && scheduler.isEventActive("zoomies");
     }
 
@@ -36,7 +38,8 @@ public class ZoomiesGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        return wolfExt.betterdogs$getScheduler().isEventActive("zoomies");
+        EntitySocialScheduler scheduler = wolfExt.betterdogs$getScheduler();
+        return scheduler != null && scheduler.isEventActive("zoomies");
     }
 
     @Override
@@ -46,21 +49,24 @@ public class ZoomiesGoal extends Goal {
             runRandomly();
         }
         if (wolf.getRandom().nextFloat() < config.getZoomiesLookAroundChance()) {
-            wolf.getLookControl().setLookAt(wolf.getX() + wolf.getRandom().nextGaussian(), wolf.getEyeY(), wolf.getZ() + wolf.getRandom().nextGaussian());
+            wolf.getLookControl().setLookAt(wolf.getX() + wolf.getRandom().nextGaussian(), wolf.getEyeY(),
+                    wolf.getZ() + wolf.getRandom().nextGaussian());
         }
     }
 
     private void runRandomly() {
         BetterDogsConfig config = BetterDogsConfig.get();
         // Use LandRandomPos to prefer land and avoid water
-        Vec3 target = net.minecraft.world.entity.ai.util.LandRandomPos.getPos(wolf, config.getZoomiesRange(), config.getZoomiesVerticalRange());
-        
+        Vec3 target = net.minecraft.world.entity.ai.util.LandRandomPos.getPos(wolf, config.getZoomiesRange(),
+                config.getZoomiesVerticalRange());
+
         if (target != null) {
             // Safety Check: Verify target is actually on solid ground
             net.minecraft.core.BlockPos targetBlock = net.minecraft.core.BlockPos.containing(target);
             // Check 2 blocks down to be safe (sometimes pos is eye level or slightly above)
-            boolean safeInfo = !wolf.level().isEmptyBlock(targetBlock.below()) || !wolf.level().isEmptyBlock(targetBlock.below(2));
-            
+            boolean safeInfo = !wolf.level().isEmptyBlock(targetBlock.below())
+                    || !wolf.level().isEmptyBlock(targetBlock.below(2));
+
             if (safeInfo) {
                 wolf.getNavigation().moveTo(target.x, target.y, target.z, speedModifier);
             }

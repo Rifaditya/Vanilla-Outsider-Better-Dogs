@@ -2,7 +2,7 @@ package net.vanillaoutsider.betterdogs;
 
 import net.minecraft.world.entity.LivingEntity;
 import org.jspecify.annotations.Nullable;
-import net.vanillaoutsider.social.core.EntitySocialScheduler;
+import net.dasik.social.core.EntitySocialScheduler;
 
 /**
  * Extension interface for Wolf entity to access personality and training data.
@@ -10,9 +10,9 @@ import net.vanillaoutsider.social.core.EntitySocialScheduler;
  * v1.10.000: Simplified for baby training system.
  */
 public interface WolfExtensions {
-    
+
     // ========== Personality ==========
-    
+
     /**
      * Get the wolf's personality (only meaningful for tamed wolves)
      */
@@ -93,24 +93,26 @@ public interface WolfExtensions {
      * Set disciplinary state (transient).
      */
     void betterdogs$setBeingDisciplined(boolean isBeingDisciplined);
-    
+
     // === SOCIAL CHANNEL SYSTEM (V2.1 - Modular) ===
 
     enum SocialAction {
         NONE,
         RETALIATION, // Baby biting owner (Provocation)
-        DISCIPLINE,  // Adult correcting baby
-        PLAY_FIGHT,  // Small fight event (10s)
-        ZOOMIES,     // Hyperactive running (5-8s)
-        HOWL,        // Social howling (10s)
-        PLAY,        // Future expansion
-        WARNING      // Future expansion
+        DISCIPLINE, // Adult correcting baby
+        PLAY_FIGHT, // Small fight event (10s)
+        ZOOMIES, // Hyperactive running (5-8s)
+        HOWL, // Social howling (10s)
+        PLAY, // Future expansion
+        WARNING // Future expansion
     }
-    
+
     /**
      * Sets the state for the "Social Brain".
-     * @param target The entity to interact with.
-     * @param action The context of the interaction (RETALIATION, DISCIPLINE, etc).
+     * 
+     * @param target           The entity to interact with.
+     * @param action           The context of the interaction (RETALIATION,
+     *                         DISCIPLINE, etc).
      * @param maxDurationTicks Safety timer.
      */
     void betterdogs$setSocialState(@Nullable LivingEntity target, SocialAction action, int maxDurationTicks);
@@ -118,7 +120,8 @@ public interface WolfExtensions {
     /**
      * Gets the current Social Target.
      */
-    @Nullable LivingEntity betterdogs$getSocialTarget();
+    @Nullable
+    LivingEntity betterdogs$getSocialTarget();
 
     /**
      * Gets the current Social Action (Context).
@@ -133,8 +136,8 @@ public interface WolfExtensions {
     /**
      * Ticks the Social Mode timer. Called every tick by WolfMixin.
      */
-     void betterdogs$tickSocialMode();
-     
+    void betterdogs$tickSocialMode();
+
     // === SOCIAL CORE TRAITS (V3.1) ===
 
     /**

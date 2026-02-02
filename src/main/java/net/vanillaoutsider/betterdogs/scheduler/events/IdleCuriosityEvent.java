@@ -2,8 +2,9 @@ package net.vanillaoutsider.betterdogs.scheduler.events;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.wolf.Wolf;
-import net.vanillaoutsider.social.core.SocialEntity;
-import net.vanillaoutsider.social.core.SocialEvent;
+import net.dasik.social.api.SocialEntity;
+import net.dasik.social.api.SocialEvent;
+import net.dasik.social.api.TickContext;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -11,6 +12,7 @@ import org.jspecify.annotations.Nullable;
  */
 public class IdleCuriosityEvent implements SocialEvent {
     public static final String ID = "idle_curiosity";
+    private int tickCount = 0;
 
     @Override
     public String getId() {
@@ -18,38 +20,32 @@ public class IdleCuriosityEvent implements SocialEvent {
     }
 
     @Override
-    public Priority getPriority() {
-        return Priority.LOW;
+    public int getPriorityValue() {
+        return 5; // Low priority
     }
 
     @Override
-    public boolean canTrigger(SocialEntity entity) {
-        if (entity.betterdogs$asEntity() instanceof Wolf wolf) {
-            if (wolf.isOrderedToSit()) return false;
-            return wolf.isBaby() && wolf.onGround();
-        }
-        return false;
+    public String getTrackId() {
+        return "main";
     }
 
     @Override
-    public void onStart(SocialEntity entity, @Nullable Entity contextEntity) {
+    public boolean canPreempt(SocialEvent other) {
+        return other.getPriorityValue() < 5;
     }
 
     @Override
-    public void tick(SocialEntity entity) {
+    public void onStart(TickContext context) {
+        this.tickCount = 0;
     }
 
     @Override
-    public void onEnd(SocialEntity entity) {
+    public boolean tick(TickContext context) {
+        this.tickCount++;
+        return this.tickCount >= 300; // 15 seconds
     }
 
     @Override
-    public int getMaxDurationTicks() {
-        return 300; // 15 seconds of curiosity
-    }
-
-    @Override
-    public int getCooldownTicks() {
-        return 2400; // 2 minutes cooldown
+    public void onEnd(SocialEntity entity, EndReason reason) {
     }
 }

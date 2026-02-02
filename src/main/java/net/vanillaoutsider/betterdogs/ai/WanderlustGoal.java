@@ -7,6 +7,7 @@ import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import net.vanillaoutsider.betterdogs.scheduler.events.WanderlustDogEvent;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.dasik.social.core.EntitySocialScheduler;
 import org.jspecify.annotations.Nullable;
 
 public class WanderlustGoal extends WaterAvoidingRandomStrollGoal {
@@ -21,9 +22,9 @@ public class WanderlustGoal extends WaterAvoidingRandomStrollGoal {
     @Override
     public boolean canUse() {
         if (this.wolf instanceof WolfExtensions ext) {
-            net.vanillaoutsider.social.core.EntitySocialScheduler scheduler = ext.betterdogs$getScheduler();
+            EntitySocialScheduler scheduler = ext.betterdogs$getScheduler();
             if (scheduler != null && scheduler.isEventActive("wanderlust")) {
-                 return !this.wolf.isOrderedToSit();
+                return !this.wolf.isOrderedToSit();
             }
         }
         return false;
@@ -32,7 +33,7 @@ public class WanderlustGoal extends WaterAvoidingRandomStrollGoal {
     @Override
     protected @Nullable Vec3 getPosition() {
         if (this.wolf.level().getFluidState(this.wolf.blockPosition()).is(net.minecraft.tags.FluidTags.WATER)) {
-             return super.getPosition(); 
+            return super.getPosition();
         }
         BetterDogsConfig config = BetterDogsConfig.get();
         return DefaultRandomPos.getPos(this.wolf, config.getWanderlustRange(), config.getWanderlustVerticalRange());

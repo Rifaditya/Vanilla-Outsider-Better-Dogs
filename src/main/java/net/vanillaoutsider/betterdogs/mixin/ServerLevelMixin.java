@@ -1,7 +1,7 @@
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.minecraft.server.level.ServerLevel;
-import net.vanillaoutsider.social.core.GlobalSocialSystem;
+import net.dasik.social.core.GlobalSocialSystem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

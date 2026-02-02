@@ -8,7 +8,8 @@ import java.util.EnumSet;
 
 /**
  * Begging Goal.
- * Behavior: Looks at the owner with a "begging" pose (tilted head, following closely).
+ * Behavior: Looks at the owner with a "begging" pose (tilted head, following
+ * closely).
  */
 public class BeggingGoal extends Goal {
     private final Wolf wolf;
@@ -23,9 +24,10 @@ public class BeggingGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        net.vanillaoutsider.social.core.EntitySocialScheduler scheduler = wolfExt.betterdogs$getScheduler();
+        net.dasik.social.api.SocialScheduler scheduler = wolfExt.betterdogs$getScheduler();
         if (scheduler != null && scheduler.isEventActive("begging")) {
-            if (this.wolf.isOrderedToSit()) return false;
+            if (this.wolf.isOrderedToSit())
+                return false;
             this.owner = wolf.getOwner();
             return this.owner != null && this.owner.isAlive();
         }
@@ -34,7 +36,7 @@ public class BeggingGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        net.vanillaoutsider.social.core.EntitySocialScheduler scheduler = wolfExt.betterdogs$getScheduler();
+        net.dasik.social.api.SocialScheduler scheduler = wolfExt.betterdogs$getScheduler();
         return scheduler != null && scheduler.isEventActive("begging") && this.owner != null && this.owner.isAlive();
     }
 
@@ -45,7 +47,7 @@ public class BeggingGoal extends Goal {
 
     @Override
     public void tick() {
-        this.wolf.getLookControl().setLookAt(this.owner, 10.0F, (float)this.wolf.getMaxHeadXRot());
+        this.wolf.getLookControl().setLookAt(this.owner, 10.0F, (float) this.wolf.getMaxHeadXRot());
         if (this.wolf.distanceToSqr(this.owner) > 4.0D) {
             this.wolf.getNavigation().moveTo(this.owner, 1.0D);
         } else {

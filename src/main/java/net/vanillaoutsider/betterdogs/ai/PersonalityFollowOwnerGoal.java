@@ -8,6 +8,7 @@ import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
+import net.dasik.social.core.EntitySocialScheduler;
 
 public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
 
@@ -25,7 +26,8 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
     }
 
     private float getStartDistance() {
-        if (!wolf.isTame()) return 10.0f;
+        if (!wolf.isTame())
+            return 10.0f;
         float dist = 10.0f;
         if (wolf instanceof WolfExtensions ext) {
             BetterDogsConfig config = BetterDogsConfig.get();
@@ -42,10 +44,11 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
                     dist = maxSafeDist;
                 }
             }
-            
-            // Yo-Yo Fix: If Wanderlust is active, we must allow the dog to wander further than the follow start distance.
+
+            // Yo-Yo Fix: If Wanderlust is active, we must allow the dog to wander further
+            // than the follow start distance.
             // Otherwise, they walk 5 blocks, get pulled back, and repeat.
-            net.vanillaoutsider.social.core.EntitySocialScheduler scheduler = ext.betterdogs$getScheduler();
+            EntitySocialScheduler scheduler = ext.betterdogs$getScheduler();
             if (scheduler != null && scheduler.isEventActive("wanderlust")) {
                 float wanderTolerance = config.getWanderlustRange() + 5.0f;
                 if (dist < wanderTolerance) {
@@ -57,7 +60,8 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
     }
 
     private float getStopDistance() {
-        if (!wolf.isTame()) return 2.0f;
+        if (!wolf.isTame())
+            return 2.0f;
         float dist = 2.0f;
         if (wolf instanceof WolfExtensions ext) {
             BetterDogsConfig config = BetterDogsConfig.get();
@@ -74,19 +78,25 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
     @Override
     public boolean canUse() {
         LivingEntity owner = wolf.getOwner();
-        if (owner == null || owner.isSpectator()) return false;
+        if (owner == null || owner.isSpectator())
+            return false;
         float startDist = getStartDistance();
-        if (wolf.distanceToSqr(owner) < (startDist * startDist)) return false;
-        if (wolf.isOrderedToSit() || wolf.isLeashed()) return false;
+        if (wolf.distanceToSqr(owner) < (startDist * startDist))
+            return false;
+        if (wolf.isOrderedToSit() || wolf.isLeashed())
+            return false;
         return true;
     }
 
     @Override
     public boolean canContinueToUse() {
-        if (wolf.getNavigation().isDone()) return false;
-        if (wolf.isOrderedToSit() || wolf.isLeashed()) return false;
+        if (wolf.getNavigation().isDone())
+            return false;
+        if (wolf.isOrderedToSit() || wolf.isLeashed())
+            return false;
         LivingEntity owner = wolf.getOwner();
-        if (owner == null) return false;
+        if (owner == null)
+            return false;
         float stopDist = getStopDistance();
         return wolf.distanceToSqr(owner) > (stopDist * stopDist);
     }
@@ -100,7 +110,8 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
     @Override
     public void tick() {
         LivingEntity owner = wolf.getOwner();
-        if (owner == null) return;
+        if (owner == null)
+            return;
 
         // Refresh Simulation Distance Cache (every 5 seconds)
         if (--this.simDistRefreshTimer <= 0) {
@@ -132,7 +143,7 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
             float startDist = getStartDistance();
             double teleportMultiplier = BetterDogsConfig.get().getTeleportMultiplier();
             double teleportThreshold = (startDist * teleportMultiplier) * (startDist * teleportMultiplier);
-            
+
             if (wolf.distanceToSqr(owner) >= teleportThreshold) {
                 teleportToOwner(owner);
             }

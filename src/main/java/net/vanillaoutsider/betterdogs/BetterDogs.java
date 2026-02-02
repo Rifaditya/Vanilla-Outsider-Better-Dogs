@@ -7,6 +7,7 @@ import net.minecraft.resources.Identifier;
 import net.fabricmc.loader.api.FabricLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import net.dasik.social.api.SocialEventRegistry;
 
 public class BetterDogs {
     public static final String MOD_ID = "vanilla-outsider-better-dogs";
@@ -21,24 +22,25 @@ public class BetterDogs {
 
         // Load Configuration
         BetterDogsConfig.load(FabricLoader.getInstance().getConfigDir());
-        
+
         // Register Game Rules (Hybrid Config)
         net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.register();
 
         // Initialize platform-specific attachments
         @SuppressWarnings("unused")
         var ignored = WOLF_DATA;
-        
-        // Register Hive Mind Social Events (V3.1)
-        net.vanillaoutsider.social.core.SocialEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.WanderlustDogEvent());
-        net.vanillaoutsider.social.core.SocialEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.RetaliationDogEvent());
-        net.vanillaoutsider.social.core.SocialEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.CorrectionDogEvent());
-        net.vanillaoutsider.social.core.SocialEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.SmallFightDogEvent());
-        net.vanillaoutsider.social.core.SocialEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.ZoomiesDogEvent());
-        net.vanillaoutsider.social.core.SocialEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.BeggingDogEvent());
-        net.vanillaoutsider.social.core.SocialEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.FetchDogEvent());
-        net.vanillaoutsider.social.core.SocialEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.IdleCuriosityEvent());
 
-        LOGGER.info("Better Dogs initialized! Social Hive Mind active.");
+        // Register Hive Mind Social Events (V3.1) - Migrated to DasikLibrary
+        SocialEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.WanderlustDogEvent());
+        SocialEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.RetaliationDogEvent());
+        SocialEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.CorrectionDogEvent());
+        SocialEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.SmallFightDogEvent());
+        SocialEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.ZoomiesDogEvent());
+        SocialEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.BeggingDogEvent());
+        SocialEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.FetchDogEvent());
+        SocialEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.IdleCuriosityEvent());
+        SocialEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.HowlDogEvent());
+
+        LOGGER.info("Better Dogs initialized! Social Hive Mind active (DasikLibrary).");
     }
 }
