@@ -2,7 +2,11 @@
 
 This file contains the archived changelogs for historical versions of Better Dogs for the 26.1 Snapshot series.
 
-## [v3.1.26] - 2026-01-26
+## [v3.1.35] - 2026-02-03
+
+### [v3.1.35] Added
+
+- **Localization**: Added descriptions for all Game Rules (including `bd_howl_chance`) to `en_us.json`.
 
 ### [v3.1.26] Optimization
 

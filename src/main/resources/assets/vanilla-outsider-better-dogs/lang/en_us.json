@@ -59,5 +59,7 @@
     "gamerule.minecraft.bd_breed_diluted_normal_chance": "Breed: Diluted (Normal) %",
     "gamerule.minecraft.bd_breed_diluted_normal_chance.description": "Chance for offspring to revert to Normal when breeding Aggressive + Pacifist (Def: 50).",
     "gamerule.minecraft.bd_breed_diluted_other_chance": "Breed: Diluted (Variant) %",
-    "gamerule.minecraft.bd_breed_diluted_other_chance.description": "Chance for offspring to pick one parent trait when breeding Aggressive + Pacifist (Def: 25)."
+    "gamerule.minecraft.bd_breed_diluted_other_chance.description": "Chance for offspring to pick one parent trait when breeding Aggressive + Pacifist (Def: 25).",
+    "gamerule.minecraft.bd_howl_chance": "Howl Chance (Permille)",
+    "gamerule.minecraft.bd_howl_chance.description": "Chance per 1000 ticks for a wolf to initiate a group howl (Def: 10 = 1%)."
 }
