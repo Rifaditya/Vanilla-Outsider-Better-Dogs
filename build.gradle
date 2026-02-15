@@ -21,7 +21,7 @@ dependencies {
     
     implementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-    implementation files("e:/Minecraft Project/DasikLibrary/build/libs/dasik-library-1.0.2.jar")
+    implementation files("e:/Minecraft Project/DasikLibrary/build/libs/dasik-library-1.6.9.jar")
 }
 
 processResources {

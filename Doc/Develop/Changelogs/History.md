@@ -2,6 +2,12 @@
 
 This file contains the archived changelogs for historical versions of Better Dogs for the 26.1 Snapshot series.
 
+## [v3.1.36] - 2026-02-16
+
+### [v3.1.36] Fixes
+
+- **Dependency Conflict**: Relaxed `DasikLibrary` dependency constraint. Now accepts versions `>=1.0.1` (removed `<2.0.0` cap), resolving launch crashes when `DasikLibrary` 2.0.0 is installed.
+
 ## [v3.1.35] - 2026-02-03
 
 ### [v3.1.35] Added

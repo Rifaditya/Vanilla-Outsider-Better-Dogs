@@ -1,0 +1,118 @@
+Initialized native services in: C:\Users\fmrif\.gradle\native
+Initialized jansi services in: C:\Users\fmrif\.gradle\native
+The client will now receive all logging from the daemon (pid: 30100). The daemon log file: C:\Users\fmrif\.gradle\daemon\9.3.0\daemon-30100.out.log
+Starting 7th build in daemon [uptime: 2 hrs 11 mins 18.258 secs, performance: 99%, GC rate: 0.00/s, heap usage: 2% of 512 MiB, non-heap usage: 23% of 384 MiB]
+Using 12 worker leases.
+Operational build model parameters: {requiresToolingModels=false, parallelProjectExecution=false, configureOnDemand=false, configurationCache=false, configurationCacheParallelStore=false, configurationCacheParallelLoad=true, isolatedProjects=false, parallelProjectConfiguration=false, intermediateModelCache=false, parallelToolingApiActions=false, invalidateCoupledProjects=false, modelAsProjectDependency=false, resilientModelBuilding=false}
+Now considering [E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1, E:\Minecraft Project\Instant Gratification Collection\durability-multiplier] as hierarchies to watch
+Watching the file system is configured to be enabled if available
+File system watching is active
+Starting Build
+Settings evaluated using settings file 'E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\settings.gradle'.
+Projects loaded. Root project using build file 'E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\build.gradle'.
+Included projects: [root project 'vanilla-outsider-better-dogs']
+Found installer in mod fabricloader version 0.16.10
+
+> Configure project :
+Evaluating root project 'vanilla-outsider-better-dogs' using build file 'E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1\build.gradle'.
+Resolved plugin [id: 'net.fabricmc.fabric-loom', version: '1.14.7']
+Resolved plugin [id: 'maven-publish']
+Fabric Loom: 1.14.7
+(kotlin.metadata.jvm.KotlinClassMetadata) with version (2.2.20-release-333) was loaded from (/C:/Users/fmrif/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-metadata-jvm/2.2.20/1f04dd6a9950a57b90ab8fa536337ba76dee4f59/kotlin-metadata-jvm-2.2.20.jar)
+(org.objectweb.asm.ClassVisitor) with version (9.9) was loaded from (/C:/Users/fmrif/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm/9.9/c29635c8a7afa03d74b33c1884df8abb2b3f3dcc/asm-9.9.jar)
+(org.objectweb.asm.tree.analysis.Analyzer) with version (9.9) was loaded from (/C:/Users/fmrif/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-analysis/9.9/bf4fa6e66638851c1cd22c2caea0c3ee5d5f437/asm-analysis-9.9.jar)
+(org.objectweb.asm.commons.ClassRemapper) with version (9.9) was loaded from (/C:/Users/fmrif/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-commons/9.9/db9165a3bf908ded6b08612d583a15d1d0c7bda0/asm-commons-9.9.jar)
+(org.objectweb.asm.tree.ClassNode) with version (9.9) was loaded from (/C:/Users/fmrif/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-tree/9.9/f8de6eead6d24dd0f45bd065bbe112b2cda6ea21/asm-tree-9.9.jar)
+(org.objectweb.asm.util.ASMifier) with version (9.9) was loaded from (/C:/Users/fmrif/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-util/9.9/42fdfc0508b43807c8078d6e82ecff2ce2112ae8/asm-util-9.9.jar)
+(com.google.gson.Gson) with version (null) was loaded from (/C:/Users/fmrif/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.10.1/b3add478d4382b78ea20b1671390a858002feb6c/gson-2.10.1.jar)
+The mixin annotation is no longer enabled by default, you should remove any loom.mixin configuration. If you wish to continue to use the mixin AP you can set useLegacyMixinAp = true.
+Using cached Minecraft jars
+:Extracting server jar from bootstrap
+Applying installer data from configuration 'mainCompileDependencyResolve'
+All projects evaluated.
+Task name matched 'build'
+Selected primary task 'build' from project :
+Tasks to be executed: [task ':compileJava', task ':processResources', task ':classes', task ':processIncludeJars', task ':jar', task ':assemble', task ':compileTestJava', task ':processTestResources', task ':testClasses', task ':test', task ':validateAccessWidener', task ':check', task ':build']
+Tasks that were excluded: []
+Resolve mutations for :compileJava (Thread[#1099,Execution worker,5,main]) started.
+:compileJava (Thread[#1099,Execution worker,5,main]) started.
+
+> Task :compileJava UP-TO-DATE
+Caching disabled for task ':compileJava' because:
+  Build cache is disabled
+Skipping task ':compileJava' as it is up-to-date.
+Resolve mutations for :processResources (Thread[#1106,Execution worker Thread 8,5,main]) started.
+:processResources (Thread[#1106,Execution worker Thread 8,5,main]) started.
+
+> Task :processResources UP-TO-DATE
+Caching disabled for task ':processResources' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':processResources' as it is up-to-date.
+Resolve mutations for :classes (Thread[#1106,Execution worker Thread 8,5,main]) started.
+:classes (Thread[#1106,Execution worker Thread 8,5,main]) started.
+
+> Task :classes UP-TO-DATE
+Skipping task ':classes' as it has no actions.
+Resolve mutations for :processIncludeJars (Thread[#1106,Execution worker Thread 8,5,main]) started.
+:processIncludeJars (Thread[#1106,Execution worker Thread 8,5,main]) started.
+
+> Task :processIncludeJars UP-TO-DATE
+Caching disabled for task ':processIncludeJars' because:
+  Build cache is disabled
+  Caching has not been enabled for the task
+Skipping task ':processIncludeJars' as it is up-to-date.
+Resolve mutations for :jar (Thread[#1106,Execution worker Thread 8,5,main]) started.
+:jar (Thread[#1106,Execution worker Thread 8,5,main]) started.
+
+> Task :jar UP-TO-DATE
+Custom actions are attached to task ':jar'.
+Caching disabled for task ':jar' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':jar' as it is up-to-date.
+Resolve mutations for :assemble (Thread[#1106,Execution worker Thread 8,5,main]) started.
+:assemble (Thread[#1106,Execution worker Thread 8,5,main]) started.
+
+> Task :assemble UP-TO-DATE
+Skipping task ':assemble' as it has no actions.
+Resolve mutations for :compileTestJava (Thread[#1106,Execution worker Thread 8,5,main]) started.
+:compileTestJava (Thread[#1106,Execution worker Thread 8,5,main]) started.
+
+> Task :compileTestJava NO-SOURCE
+Skipping task ':compileTestJava' as it has no source files and no previous output files.
+Resolve mutations for :processTestResources (Thread[#1106,Execution worker Thread 8,5,main]) started.
+:processTestResources (Thread[#1106,Execution worker Thread 8,5,main]) started.
+
+> Task :processTestResources NO-SOURCE
+Skipping task ':processTestResources' as it has no source files and no previous output files.
+Resolve mutations for :testClasses (Thread[#1106,Execution worker Thread 8,5,main]) started.
+:testClasses (Thread[#1106,Execution worker Thread 8,5,main]) started.
+
+> Task :testClasses UP-TO-DATE
+Skipping task ':testClasses' as it has no actions.
+Resolve mutations for :test (Thread[#1106,Execution worker Thread 8,5,main]) started.
+:test (Thread[#1106,Execution worker Thread 8,5,main]) started.
+
+> Task :test NO-SOURCE
+Skipping task ':test' as it has no source files and no previous output files.
+Resolve mutations for :validateAccessWidener (Thread[#1108,Execution worker Thread 10,5,main]) started.
+:validateAccessWidener (Thread[#1108,Execution worker Thread 10,5,main]) started.
+
+> Task :validateAccessWidener NO-SOURCE
+Skipping task ':validateAccessWidener' as it has no source files and no previous output files.
+Resolve mutations for :check (Thread[#1108,Execution worker Thread 10,5,main]) started.
+:check (Thread[#1108,Execution worker Thread 10,5,main]) started.
+
+> Task :check UP-TO-DATE
+Skipping task ':check' as it has no actions.
+Resolve mutations for :build (Thread[#1108,Execution worker Thread 10,5,main]) started.
+:build (Thread[#1108,Execution worker Thread 10,5,main]) started.
+
+> Task :build UP-TO-DATE
+Skipping task ':build' as it has no actions.
+
+BUILD SUCCESSFUL in 1s
+4 actionable tasks: 4 up-to-date
+Watched directory hierarchies: [E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Better Dogs 26.1, E:\Minecraft Project\Instant Gratification Collection\durability-multiplier]
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.3.0/userguide/configuration_cache_enabling.html
