@@ -43,6 +43,9 @@ import net.vanillaoutsider.betterdogs.scheduler.events.*; // Import events for p
 import net.dasik.social.api.SocialEntity;
 import net.dasik.social.core.EntitySocialScheduler;
 import net.dasik.social.core.GlobalSocialSystem;
+import net.dasik.social.api.group.GroupMember;
+import net.dasik.social.api.group.FlockType;
+import net.vanillaoutsider.betterdogs.ai.group.WildWolfFollowLeaderGoal;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Optional;
@@ -58,7 +61,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  * Uses Fabric Data Attachment API for persistence.
  */
 @Mixin(Wolf.class)
-public abstract class WolfMixin extends TamableAnimal implements WolfExtensions, SocialEntity {
+public abstract class WolfMixin extends TamableAnimal implements WolfExtensions, SocialEntity, GroupMember<Wolf> {
 
     @Unique
     private int betterdogs$healTimer = 0;
@@ -198,6 +201,55 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
         return betterdogs$getScheduler();
     }
 
+    // ========== Dasik GroupMember Implementation (Leader-Follower) ==========
+
+    @Unique
+    private Wolf betterdogs$leader = null;
+
+    @Unique
+    private int betterdogs$groupSize = 1;
+
+    @Unique
+    private int betterdogs$groupSizeCheckTicks = 0;
+
+    @Override
+    public Wolf getLeader() {
+        return betterdogs$leader;
+    }
+
+    @Override
+    public boolean hasLeader() {
+        return betterdogs$leader != null && betterdogs$leader.isAlive();
+    }
+
+    @Override
+    public void setLeader(@Nullable Wolf leader) {
+        this.betterdogs$leader = leader;
+    }
+
+    @Override
+    public int getGroupSize() {
+        Wolf wolf = (Wolf) (Object) this;
+        // Optimization: only recalculate size every 40 ticks, or if requested by leader
+        if (betterdogs$groupSizeCheckTicks++ > 40) {
+            betterdogs$groupSizeCheckTicks = 0;
+            // Simple bounding box count to see how many wolves consider ME their leader
+            int size = 1; // Self
+            for (Wolf w : wolf.level().getEntitiesOfClass(Wolf.class, wolf.getBoundingBox().inflate(32.0))) {
+                if (w != wolf && ((GroupMember<Wolf>)w).getLeader() == wolf) {
+                    size++;
+                }
+            }
+            this.betterdogs$groupSize = size;
+        }
+        return this.betterdogs$groupSize;
+    }
+
+    @Override
+    public FlockType getFlockType() {
+        return FlockType.TERRESTRIAL;
+    }
+
     // ========== Dunce Cap (Transient Disciplinary State) ==========
 
     @Unique
@@ -298,6 +350,9 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
     }
 
     @Unique
+    private long betterdogs$lastBeggingTime = 0;
+
+    @Unique
     private void betterdogs$pollAmbientEvents() {
         // Only pool if scheduler exists and no high priority blocking?
         // Dasik scheduler handles priority, so we can just offer events.
@@ -312,29 +367,11 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
 
         // Begging
         if (wolf.isTame() && wolf.onGround() && !betterdogs$socialScheduler.isEventActive(BeggingDogEvent.ID)) {
-            // Logic from BeggingDogEvent.canTrigger
-            // Check if owner present? BeggingGoal checks it.
-            // We can just schedule it, and Goal will take over if conditions met?
-            // Or Goal starts event?
-            // If we schedule it, it becomes Active. Goal sees Active -> Starts.
-            // This works.
-            // But we need to ensure we don't spam it.
-            // Dasik Scheduler handles duplicate offers? No.
-            // We check `isEventActive` first.
-            // Additional rarity check? BeggingGoal used to run whenever close to owner.
-            // We'll schedule it. The scheduler will respect Cooldowns defined in the Event?
-            // Dasik SocialEvent doesn't enforce cooldowns automatically unless we store
-            // them.
-            // DasikLibrary doesn't have built-in cooldowns in Scheduler yet!
-            // We need to implement cooldown tracking in WolfMixin or Events?
-            // Or events return getCooldownTicks() and Scheduler respecting it?
-            // Dasik Scheduler logic I read (Step 332) DOES NOT use cooldowns.
-            // The legacy events had `getCooldownTicks`.
-            // I need to add cooldown logic if I want to use it.
-            // For now, I'll assume basic polling at low frequency.
-
-            // TODO: Restore Cooldown Logic.
-            // betterdogs$socialScheduler.schedule(new BeggingDogEvent());
+            long currentTime = wolf.level().getGameTime();
+            if (currentTime - betterdogs$lastBeggingTime >= 1200) { // 60 seconds cooldown
+                betterdogs$lastBeggingTime = currentTime;
+                betterdogs$socialScheduler.schedule(new BeggingDogEvent());
+            }
         }
     }
 
@@ -433,6 +470,9 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
         this.goalSelector.addGoal(7, new GroupHowlGoal(wolf));
         this.goalSelector.addGoal(7, new BabyCuriosityGoal(wolf, 0.8));
         this.goalSelector.addGoal(8, new WanderlustGoal(wolf, 1.0));
+        
+        // DasikLibrary Wild Pack Group Logic (Disabled automatically if Tamed)
+        this.goalSelector.addGoal(5, new WildWolfFollowLeaderGoal(wolf));
     }
 
     @Inject(method = "applyTamingSideEffects", at = @At("HEAD"))

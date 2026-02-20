@@ -2,9 +2,15 @@
 
 This file contains the archived changelogs for historical versions of Better Dogs for the 26.1 Snapshot series.
 
-## [v3.1.36] - 2026-02-16
+## [v3.1.36+build.2] - 2026-02-20
 
-### [v3.1.36] Fixes
+### [v3.1.36+build.2] Features & Fixes
+
+- **Feature**: Integrated the `DasikLibrary` Leader-Follower API for Wild Wolves. Packs of up to 8 wild wolves will now naturally group together and follow a leader using terrestrial pathfinding.
+- **Fix**: Restored the Cooldown Logic for ambient/social dog events (like begging) to prevent performance drops or log spam.
+- **Dependency**: Bumped `DasikLibrary` dependency to `1.6.9+build.4`.
+
+## [v3.1.36] - 2026-02-16
 
 - **Dependency Conflict**: Relaxed `DasikLibrary` dependency constraint. Now accepts versions `>=1.0.1` (removed `<2.0.0` cap), resolving launch crashes when `DasikLibrary` 2.0.0 is installed.
 

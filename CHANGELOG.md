@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.36+build.1] - 2026-02-19
+
+### Changed
+
+- **DasikLibrary Integration**: Switched to standalone dependency (JiJ removed).
+- **Versioning**: Adopted strict Build Number policy.
+
 ## [3.1.36] - 2026-02-16
 
 ### Fixed
