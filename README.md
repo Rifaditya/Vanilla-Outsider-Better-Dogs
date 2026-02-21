@@ -8,7 +8,7 @@ The core of the mod is split into two primary environments:
 
 ### 1. ![Better Dogs Banner](Doc/Assets/banner.png) (Modern Java)
 
-- **Target**: Minecraft 26.1 Snapshot 4+
+- **Target**: Minecraft 26.1 Snapshot 8+
 - **Language**: Java 25
 - **Configuration**: Native Minecraft Game Rules (`BetterDogsGameRules.java`)
 - **Key Systems**:
