@@ -2,6 +2,12 @@
 
 This file contains the archived changelogs for historical versions of Better Dogs for the 26.1 Snapshot series.
 
+## [3.1.36+build.3] - 2026-02-21
+
+### Fixed
+
+- **Compatibility**: Reverted Mixin compatibility level from `JAVA_25` to `JAVA_22` to resolve warning.
+
 ## [v3.1.36+build.2] - 2026-02-20
 
 ### [v3.1.36+build.2] Features & Fixes
