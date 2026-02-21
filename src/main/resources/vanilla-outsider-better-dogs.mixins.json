@@ -1,8 +1,7 @@
 {
     "required": true,
     "package": "net.vanillaoutsider.betterdogs.mixin",
-    "compatibilityLevel": "JAVA_25",
-    "refmap": "vanilla-outsider-better-dogs-refmap.json",
+    "compatibilityLevel": "JAVA_22",
     "mixins": [
         "WolfMixin",
         "WolfAIMixin",

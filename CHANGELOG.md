@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.1.36+build.2] - 2026-02-19
+
+### Added
+
+- **Leader-Follower Integration**: Wild wolves now naturally form packs using DasikLibrary's Leader-Follower API, with a deterministic max pack size of 8.
+
+### Fixed
+
+- **Ambient Event Spam**: Restored proper cooldown logic for ambient behaviors (like begging), preventing them from executing every tick.
+
 ## [3.1.36+build.1] - 2026-02-19
 
 ### Changed
