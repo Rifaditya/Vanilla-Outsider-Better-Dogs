@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.1.36+build.3] - 2026-02-21
+
+### Fixed
+
+- **Compatibility**: Reverted Mixin compatibility level from `JAVA_25` to `JAVA_22` to resolve warning.
+
 ## [3.1.36+build.2] - 2026-02-19
 
 ### Added
