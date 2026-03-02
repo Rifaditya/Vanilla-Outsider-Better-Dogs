@@ -74,6 +74,11 @@ class PersonalityFollowOwnerGoal(
         // Respect sitting/leashed
         if (wolf.isOrderedToSit || wolf.isLeashed) return false
         
+        // IndyPets Compatibility: Respect independence
+        if (net.vanillaoutsider.betterdogs.util.IndyPetsCompatibility.isIndependent(wolf)) {
+            return false
+        }
+        
         return true
     }
 
@@ -81,6 +86,11 @@ class PersonalityFollowOwnerGoal(
     override fun canContinueToUse(): Boolean {
         if (wolf.navigation.isDone) return false
         if (wolf.isOrderedToSit || wolf.isLeashed) return false
+        
+        // IndyPets Compatibility: Respect independence
+        if (net.vanillaoutsider.betterdogs.util.IndyPetsCompatibility.isIndependent(wolf)) {
+            return false
+        }
         
         val owner = wolf.owner ?: return false
         return wolf.distanceToSqr(owner) > (getStopDistance() * getStopDistance())

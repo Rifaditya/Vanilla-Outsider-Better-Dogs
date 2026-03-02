@@ -5,6 +5,10 @@ import net.minecraft.world.entity.item.ItemEntity
 import net.minecraft.world.entity.animal.wolf.Wolf
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
+import net.minecraft.world.item.Item
+import net.minecraft.resources.Identifier
+import net.minecraft.resources.ResourceKey
+import net.minecraft.core.component.DataComponents
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig
 import net.vanillaoutsider.betterdogs.registry.BetterDogsTags
 import java.util.*
@@ -67,7 +71,7 @@ class EatGroundFoodGoal(private val wolf: Wolf) : Goal() {
         }
 
         // Fallback heuristic for modded food
-        val path = stack.itemHolder.unwrapKey().map { it.location().path }.orElse("").lowercase()
+        val path = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.item).path.lowercase()
         val isCooked = path.contains("cooked") || path.contains("roasted") || path.contains("grilled")
 
         return if (isCooked) {
@@ -106,7 +110,7 @@ class EatGroundFoodGoal(private val wolf: Wolf) : Goal() {
         if (stack.`is`(Items.ROTTEN_FLESH)) {
             healAmount = 1.0f
         } else {
-            val foodComp = stack.item.components.get(net.minecraft.core.component.DataComponents.FOOD)
+            val foodComp = stack.get(DataComponents.FOOD)
             if (foodComp != null) {
                 healAmount = foodComp.nutrition.toFloat() / 2.0f
             }
