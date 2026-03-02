@@ -103,6 +103,8 @@ public class BetterDogsConfig {
     public boolean enableStormAnxiety = true;
     public boolean enableCliffSafety = true;
     public boolean enableFriendlyFireProtection = true;
+    public boolean enableDogsEatRawGroundFood = true;
+    public boolean enableDogsEatCookedGroundFood = true;
 
     // ========== Aggressive Personality ==========
     public double aggressiveHealthBonus = -10.0;
@@ -232,6 +234,8 @@ public class BetterDogsConfig {
     public boolean getEnableStormAnxiety() { return enableStormAnxiety; }
     public boolean getEnableCliffSafety() { return enableCliffSafety; }
     public boolean getEnableFriendlyFireProtection() { return enableFriendlyFireProtection; }
+    public boolean getEnableDogsEatRawGroundFood() { return enableDogsEatRawGroundFood; }
+    public boolean getEnableDogsEatCookedGroundFood() { return enableDogsEatCookedGroundFood; }
     public double getAggressiveHealthBonus() { return aggressiveHealthBonus; }
     public double getAggressiveSpeedModifier() { return aggressiveSpeedModifier; }
     public double getAggressiveDetectionRange() { return aggressiveDetectionRange; }

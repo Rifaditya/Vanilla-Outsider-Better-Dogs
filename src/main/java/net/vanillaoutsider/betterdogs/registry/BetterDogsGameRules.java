@@ -61,6 +61,8 @@ public class BetterDogsGameRules {
         // --- Mobs ---
         public static GameRule<Boolean> BD_STORM_ANXIETY;
         public static GameRule<Boolean> BD_CLIFF_SAFETY;
+        public static GameRule<Boolean> BD_DOGS_EAT_RAW_FOOD;
+        public static GameRule<Boolean> BD_DOGS_EAT_COOKED_FOOD;
 
         // --- Player ---
         public static GameRule<Boolean> BD_FRIENDLY_FIRE;
@@ -112,6 +114,11 @@ public class BetterDogsGameRules {
 
                 BD_STORM_ANXIETY = registerBoolean("bd_storm_anxiety", BETTER_DOGS, config.getEnableStormAnxiety());
                 BD_CLIFF_SAFETY = registerBoolean("bd_cliff_safety", BETTER_DOGS, config.getEnableCliffSafety());
+
+                BD_DOGS_EAT_RAW_FOOD = registerBoolean("bd_dogs_eat_raw_food", BETTER_DOGS,
+                                config.getEnableDogsEatRawGroundFood());
+                BD_DOGS_EAT_COOKED_FOOD = registerBoolean("bd_dogs_eat_cooked_food", BETTER_DOGS,
+                                config.getEnableDogsEatCookedGroundFood());
 
                 BD_FRIENDLY_FIRE = registerBoolean("bd_friendly_fire_protection", BETTER_DOGS,
                                 config.getEnableFriendlyFireProtection());

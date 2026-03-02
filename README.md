@@ -41,9 +41,8 @@ Implemented in `WolfBreedingMixin`, the genetics engine calculates offspring's p
 
 A complex interaction between `BabyBiteBackGoal` and `AdultCorrectionGoal`. Highlights the mod's ability to coordinate multiple entities through shared persistent states.
 
-### Wild Wolf Packs (Leader-Follower)
-
-Powered by **DasikLibrary**, wild wolves naturally form cohesive packs (up to 8 members) with deterministic leader election. They follow their leader using terrestrial pathfinding algorithms, automatically splintering into new groups if the pack becomes too large.
+- **Wild Wolf Packs (Leader-Follower)**: Powered by **DasikLibrary**, wild wolves naturally form cohesive packs (up to 8 members) with deterministic leader election. They follow their leader using terrestrial pathfinding algorithms, automatically splintering into new groups if the pack becomes too large.
+- **Dog Feeding (Dropped Items)**: Tamed dogs can scavenge dropped raw or cooked food from the ground to heal, with granular GameRule toggles for modded items.
 
 ---
 

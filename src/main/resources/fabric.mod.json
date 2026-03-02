@@ -3,7 +3,7 @@
     "id": "vanilla-outsider-better-dogs",
     "version": "${version}",
     "name": "Vanilla Outsider: Better Dogs",
-    "description": "Gives wolves personalities and stats.",
+    "description": "Gives wolves personalities and stats. Includes a dog feeding system from dropped items.",
     "authors": [
         "DasikIgaijin"
     ],

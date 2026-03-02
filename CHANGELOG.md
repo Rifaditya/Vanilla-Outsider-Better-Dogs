@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.1.36+build.4] - 2026-03-02
+
+### Added
+
+- **Feeding**: Tamed dogs can now eat dropped raw and cooked food from the ground to restore health.
+- **Toggles**: Added `bd_dogs_eat_raw_food` and `bd_dogs_eat_cooked_food` gamerules for granular control.
+- **Mod Compatibility**: Features full support for modded foods via tags and name-based heuristics.
+
 ## [3.1.36+build.3] - 2026-02-21
 
 ### Fixed
