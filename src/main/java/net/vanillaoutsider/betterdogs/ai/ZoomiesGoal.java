@@ -53,9 +53,20 @@ public class ZoomiesGoal extends Goal {
 
     private void runRandomly() {
         BetterDogsConfig config = BetterDogsConfig.Companion.get();
-        Vec3 target = DefaultRandomPos.getPos(wolf, config.getZoomiesRange(), config.getZoomiesVerticalRange());
+        // Use LandRandomPos to prefer land and avoid water
+        Vec3 target = net.minecraft.world.entity.ai.util.LandRandomPos.getPos(wolf, config.getZoomiesRange(),
+                config.getZoomiesVerticalRange());
+
         if (target != null) {
-            wolf.getNavigation().moveTo(target.x, target.y, target.z, speedModifier);
+            // Safety Check: Verify target is actually on solid ground
+            net.minecraft.core.BlockPos targetBlock = net.minecraft.core.BlockPos.containing(target);
+            // Check 2 blocks down to be safe (sometimes pos is eye level or slightly above)
+            boolean safeInfo = !wolf.level().isEmptyBlock(targetBlock.below())
+                    || !wolf.level().isEmptyBlock(targetBlock.below(2));
+
+            if (safeInfo) {
+                wolf.getNavigation().moveTo(target.x, target.y, target.z, speedModifier);
+            }
         }
     }
 }

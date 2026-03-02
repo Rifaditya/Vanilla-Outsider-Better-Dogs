@@ -20,6 +20,14 @@ class BetterDogsConfig : ConfigData {
     @ConfigEntry.Gui.Tooltip
     var enableFriendlyFireProtection: Boolean = true
 
+    @ConfigEntry.Category("feeding")
+    @ConfigEntry.Gui.Tooltip
+    var enableDogsEatRawGroundFood: Boolean = true
+
+    @ConfigEntry.Category("feeding")
+    @ConfigEntry.Gui.Tooltip
+    var enableDogsEatCookedGroundFood: Boolean = true
+
     // ========== Movement & Follow (Global Defaults / Deprecated or Base) ==========
     // We will use specific ones, but might keep these as fallbacks or remove them.
     // For "Granular", we should move them to categories.

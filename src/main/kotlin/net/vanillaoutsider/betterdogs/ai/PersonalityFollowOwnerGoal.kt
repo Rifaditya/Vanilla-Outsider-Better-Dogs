@@ -26,7 +26,7 @@ class PersonalityFollowOwnerGoal(
         return try {
              when (ext.`betterdogs$getPersonality`()) {
                 WolfPersonality.AGGRESSIVE -> BetterDogsConfig.get().aggressiveFollowStart
-                WolfPersonality.PACIFIST -> BetterDogsConfig.get().pacifistFollowStart
+                WolfPersonality.PACIFIST -> kotlin.math.max(BetterDogsConfig.get().pacifistFollowStart, 10.0f)
                 WolfPersonality.NORMAL -> BetterDogsConfig.get().normalFollowStart
                 else -> 10.0f
             }

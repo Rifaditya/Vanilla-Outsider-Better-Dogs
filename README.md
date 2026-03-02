@@ -18,6 +18,7 @@ This version maintains feature parity with the 26.1 development branch while ada
 - Genetic Inheritance Matrices
 - Event-Driven Social Behaviors (Mischief & Correction)
 - Environmental Response (Storm Anxiety, Cliff Safety)
+- Dog Feeding (Ground Scavenging) with Cloth Config toggles.
 
 ## 🔗 Documentation
 

@@ -131,5 +131,10 @@
     "text.autoconfig.vanilla-outsider-better-dogs.option.zoomiesLookAroundChance": "Look Around Chance",
     "text.autoconfig.vanilla-outsider-better-dogs.option.zoomiesLookAroundChance.@Tooltip": "Chance to pause and look around during zoomies (Def: 0.05).",
     "text.autoconfig.vanilla-outsider-better-dogs.option.howlChance": "Howl Chance",
-    "text.autoconfig.vanilla-outsider-better-dogs.option.howlChance.@Tooltip": "Chance for wolves to howl at dawn (Def: 0.01)."
+    "text.autoconfig.vanilla-outsider-better-dogs.option.howlChance.@Tooltip": "Chance for wolves to howl at dawn (Def: 0.01).",
+    "text.autoconfig.vanilla-outsider-better-dogs.category.feeding": "Dog Feeding",
+    "text.autoconfig.vanilla-outsider-better-dogs.option.enableDogsEatRawGroundFood": "Eat Raw Food",
+    "text.autoconfig.vanilla-outsider-better-dogs.option.enableDogsEatRawGroundFood.@Tooltip": "If true, tamed dogs will eat dropped raw meat and rotten flesh from the ground to heal.",
+    "text.autoconfig.vanilla-outsider-better-dogs.option.enableDogsEatCookedGroundFood": "Eat Cooked Food",
+    "text.autoconfig.vanilla-outsider-better-dogs.option.enableDogsEatCookedGroundFood.@Tooltip": "If true, tamed dogs will eat dropped cooked meat from the ground to heal."
 }

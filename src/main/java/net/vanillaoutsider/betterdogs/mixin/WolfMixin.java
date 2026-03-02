@@ -22,6 +22,7 @@ import net.vanillaoutsider.betterdogs.ai.*;
 import net.vanillaoutsider.betterdogs.scheduler.WolfScheduler;
 import net.vanillaoutsider.betterdogs.WolfExtensions.SocialAction;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.Nullable;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
@@ -38,6 +39,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal; // Add import
+import net.vanillaoutsider.betterdogs.ai.PersonalityWanderGoal; // Add import
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
@@ -392,6 +395,21 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         this.goalSelector.addGoal(3, new BabyBiteBackGoal(wolf));
         this.goalSelector.addGoal(5, new ZoomiesGoal(wolf));
         this.goalSelector.addGoal(7, new HowlGoal(wolf));
+
+        // 6. Replace Vanilla Wander Goal (WaterAvoidingRandomStrollGoal)
+        // We want to reduce the frequency of wandering for Pacifist dogs.
+        Set<WrappedGoal> wanderGoalsToRemove = new HashSet<>();
+        for (WrappedGoal goal : this.goalSelector.getAvailableGoals()) {
+            if (goal.getGoal() instanceof WaterAvoidingRandomStrollGoal) {
+                wanderGoalsToRemove.add(goal);
+            }
+        }
+        for (WrappedGoal goal : wanderGoalsToRemove) {
+            this.goalSelector.removeGoal(goal.getGoal());
+        }
+
+        // Add our custom wander goal (Priority 8, same as vanilla usually)
+        this.goalSelector.addGoal(8, new PersonalityWanderGoal(wolf, 1.0));
     }
 
     // ========== On Tame - Assign Personality ==========
@@ -462,41 +480,13 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         // Cliff Safety Protocol: Stop chasing if target is significantly below us
         // (likely fell off)
         Wolf wolf = (Wolf) (Object) this;
-        if (wolf.getTarget() != null && BetterDogsConfig.Companion.get().getEnableCliffSafety()) {
-            double yDiff = wolf.getY() - wolf.getTarget().getY();
-            if (yDiff > 3.0 && wolf.onGround()) {
-                // Target is more than 3 blocks below and we are on solid ground
-                // Stop navigation to prevent jumping off
-                wolf.getNavigation().stop();
-                wolf.setTarget(null);
-                wolf.setTarget(null);
+        // Cliff Safety Game Rule (Server Side Only to avoid ClassCastException and
+        // desync)
+        if (!this.level().isClientSide()) {
+            if (wolf.getTarget() != null && BetterDogsConfig.Companion.get().getEnableCliffSafety()) {
+                betterdogs$checkTargetCliffSafety();
             }
-
-            // Cliff Safety V2: Airborne Target Check
-            // If target is in the air AND there is no ground below them, don't chase!
-            // This prevents jumping off cliffs after a target that was knocked back.
-            if (wolf.getTarget() != null && !wolf.getTarget().onGround()) {
-                boolean groundFound = false;
-                BlockPos targetPos = wolf.getTarget().blockPosition();
-
-                // Check 4 blocks down from target
-                for (int i = 1; i <= 4; i++) {
-                    BlockPos below = targetPos.below(i);
-                    if (!wolf.level().isEmptyBlock(below)) {
-                        groundFound = true;
-                        break;
-                    }
-                }
-
-                if (!groundFound) {
-                    // Target is flying over void/cliff -> STOP!
-                    wolf.getNavigation().stop();
-                    // Don't clear target entirely (we still want to kill it), just stop moving
-                    // towards it
-                    // Maybe look at it?
-                    wolf.getLookControl().setLookAt(wolf.getTarget(), 30.0f, 30.0f);
-                }
-            }
+            betterdogs$checkMovementCliffSafety();
         }
 
         int currentTick = this.tickCount;
@@ -526,6 +516,95 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
             if (BetterDogsConfig.Companion.get().getEnableFriendlyFireProtection() && this.isOwnedBy(player)
                     && !player.isShiftKeyDown()) {
                 ci.cancel(); // Cancel damage logic entirely
+            }
+        }
+    }
+
+    /**
+     * PASSIVE CLIFF SAFETY (Smart Brakes)
+     * Prevents falling due to Zoomies or Pushing check ahead based on velocity.
+     */
+    @Unique
+    private void betterdogs$checkMovementCliffSafety() {
+        Wolf wolf = (Wolf) (Object) this;
+        // 1. Config Check
+        if (!BetterDogsConfig.Companion.get().getEnableCliffSafety())
+            return;
+
+        // 2. Optimization: Only check if moving horizontally
+        if (wolf.getDeltaMovement().horizontalDistanceSqr() < 0.0001)
+            return;
+
+        // REMOVED: isJumping() and onGround() checks.
+        // We now check safety regardless of state to catch mid-air pushes or jumps.
+
+        // 4. Velocity Lookahead Logic
+        Vec3 velocity = wolf.getDeltaMovement();
+
+        // Look 5 ticks ahead (stronger buffer than 3)
+        // This covers jumping arcs better.
+        Vec3 lookaheadPos = wolf.position().add(velocity.scale(5.0));
+        BlockPos hazardPos = BlockPos.containing(lookaheadPos);
+
+        // Level is sufficient, no need to cast to ServerLevel (checked in caller)
+        net.minecraft.world.level.Level level = wolf.level();
+
+        // 5. Cliff Definition: AIR at feet, and AIR deep below.
+        boolean solidGround = false;
+        // Check 3 blocks down for ground. Safe drop is <= 3.
+        for (int i = 0; i <= 3; i++) {
+            if (!level.isEmptyBlock(hazardPos.below(i))) {
+                solidGround = true;
+                break;
+            }
+        }
+
+        if (!solidGround) {
+            // DANGER: No ground found in 3 blocks drop at lookahead position.
+            // ACTION: Smart Brake
+            wolf.getNavigation().stop();
+            // Kill ONLY horizontal momentum, preserve vertical (gravity) so we don't float
+            // Actually, killing all momentum is safer to prevent arc completion.
+            wolf.setDeltaMovement(Vec3.ZERO);
+            wolf.setShiftKeyDown(true); // Visual "Oh snap!" crouch + physics braking
+
+            // Debug Log (To help diagnose "Why did I stop?" or confirm it's working)
+            // BetterDogs.LOGGER.info("CliffSafety PROTECTION: Stopping Wolf {} at {}",
+            // wolf.getId(), hazardPos);
+        }
+    }
+
+    /**
+     * TARGET CLIFF SAFETY (Existing Logic)
+     * Refactored to helper method.
+     */
+    @Unique
+    private void betterdogs$checkTargetCliffSafety() {
+        Wolf wolf = (Wolf) (Object) this;
+        if (wolf.getTarget() == null)
+            return;
+
+        // Logic from previous implementation
+        double yDiff = wolf.getY() - wolf.getTarget().getY();
+        if (yDiff > 3.0 && wolf.onGround()) {
+            wolf.getNavigation().stop();
+            wolf.setTarget(null); // Clear target to stop aggro
+            return;
+        }
+
+        if (!wolf.getTarget().onGround()) {
+            boolean groundFound = false;
+            BlockPos targetPos = wolf.getTarget().blockPosition();
+            for (int i = 1; i <= 4; i++) {
+                if (!wolf.level().isEmptyBlock(targetPos.below(i))) {
+                    groundFound = true;
+                    break;
+                }
+            }
+
+            if (!groundFound) {
+                wolf.getNavigation().stop();
+                wolf.getLookControl().setLookAt(wolf.getTarget(), 30.0f, 30.0f);
             }
         }
     }
