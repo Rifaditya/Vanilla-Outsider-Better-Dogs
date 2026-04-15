@@ -5,7 +5,9 @@ Welcome to the **Better Dogs** player guide.
 ## Features
 
 - **Personalities**: Every dog has a unique personality (Normal, Aggressive, Pacifist).
+- **Behavioral Specialization**: Aggressive dogs **Scout** ahead; Pacifist dogs act as a **Silent Alarm**.
 - **Social Interaction**: Dogs perform "Zoomies", play fetch, and have rivalries.
-- **Pack Mechanics**: Dogs form packs and howl at the moon.
+- **Social Bonding**: Build affinity through pack activities (Howling/Play) to prevent feuds.
+- **Play Bows**: Watch for the new "Play Bow" animation during social initiations.
 
 See the [Features](Features/index.md) directory for more details.

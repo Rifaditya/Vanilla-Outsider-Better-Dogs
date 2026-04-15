@@ -1,4 +1,4 @@
-# Core Logic: Better Dogs (v3.1.21)
+# Core Logic: Better Dogs (v3.1.36+build.5)
 
 This document explains the internal logic governing wolf personalities, their impact on gameplay, and the advanced social interaction architecture.
 
@@ -29,6 +29,7 @@ To ensure consistency, the mod uses the **Fabric Data Attachment API**.
 - `personalityId`: The permanent trait.
 - `grudgeTarget`: UUID of entities for Blood Feuds.
 - `lastMischiefDay`: Rate-limiting for puppy play.
+- `affinityMap`: Map of UUIDs to bonding scores (-100 to 100).
 
 ## 4. Social Interaction Architecture
 

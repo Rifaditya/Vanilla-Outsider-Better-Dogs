@@ -62,6 +62,10 @@ public class AdultCorrectionGoal extends Goal {
                 boolean success = this.wolf.doHurtTarget(serverLevel, offendingBaby);
                 if (success) {
                     hasHit = true;
+                    // Visual indicators
+                    serverLevel.sendParticles(net.minecraft.core.particles.ParticleTypes.ANGRY_VILLAGER, 
+                        offendingBaby.getX(), offendingBaby.getY() + 1.0, offendingBaby.getZ(), 
+                        5, 0.2, 0.2, 0.2, 0.0);
                     onHitBaby();
                 }
             }
@@ -69,7 +73,21 @@ public class AdultCorrectionGoal extends Goal {
     }
 
     private void onHitBaby() {
-        float chance = BetterDogsGameRules.getChance(wolf.level(), BetterDogsGameRules.BD_BLOOD_FEUD_PERCENT);
+        float baseChance = BetterDogsGameRules.getChance(wolf.level(), BetterDogsGameRules.BD_BLOOD_FEUD_PERCENT);
+        
+        // INTEGRATION: Bonding reduces feud chance
+        float chance = baseChance;
+        if (wolf instanceof WolfExtensions ext) {
+            int affinity = ext.betterdogs$getAffinity(offendingBaby.getStringUUID());
+            if (affinity > 0) {
+                // Reduce chance linearly up to 50% at max affinity (100)
+                chance *= (1.0f - (affinity / 200.0f));
+            } else if (affinity < 0) {
+                // Increase chance if they already dislike each other
+                chance *= (1.0f + (Math.abs(affinity) / 100.0f));
+            }
+        }
+
         if (this.wolf.getRandom().nextFloat() < chance) {
             if (this.offendingBaby instanceof WolfExtensions babyExt) {
                 babyExt.betterdogs$setBloodFeudTarget(this.wolf.getStringUUID());
@@ -77,7 +95,7 @@ public class AdultCorrectionGoal extends Goal {
             if (this.wolf instanceof WolfExtensions myExt) {
                 myExt.betterdogs$setBloodFeudTarget(this.offendingBaby.getStringUUID());
             }
-            BetterDogs.LOGGER.info("BLOOD FEUD DECLARE: Adult " + this.wolf.getUUID() + " vs Baby " + this.offendingBaby.getUUID());
+            BetterDogs.LOGGER.info("BLOOD FEUD DECLARE: Adult " + this.wolf.getUUID() + " vs Baby " + this.offendingBaby.getUUID() + " (Chance: " + chance + ")");
         }
     }
 

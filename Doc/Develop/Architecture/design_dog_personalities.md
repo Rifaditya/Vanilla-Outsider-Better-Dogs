@@ -11,8 +11,8 @@ Tamed wolves get a **random permanent personality** that affects combat behavior
 
 | Personality | Chance | Behavior |
 |-------------|--------|----------|
-| 🔴 **Aggressive** | 33% | Auto-attacks hostile mobs near player |
-| 🟢 **Pacifist** | 33% | Only attacks when player takes damage |
+| 🔴 **Aggressive** | 33% | Auto-attacks hostile mobs; **Scouts ahead** |
+| 🟢 **Pacifist** | 33% | Only fights when you're hurt; **Silent Alarm** |
 | 🟡 **Normal** | 34% | Attacks when player attacks (vanilla) |
 
 ---
@@ -23,6 +23,7 @@ Tamed wolves get a **random permanent personality** that affects combat behavior
 
 - **Trigger:** Hostile mob within ~16 blocks of player
 - **Targets:** Zombies, Skeletons, Spiders, Creepers, Endermen, etc.
+- **Scouting Agent:** Occasionally wanders 3-5 blocks ahead or to the side of the owner to "scout" the area.
 - **Best for:** Cave exploration, night travel, base defense
 
 ---
@@ -33,6 +34,7 @@ Tamed wolves get a **random permanent personality** that affects combat behavior
 
 - **Trigger:** Player takes damage from a mob
 - **Targets:** Only the mob that hurt the player
+- **Silent Alarm:** Emits a "Whine" sound if a Monster is within 12 blocks but not yet in combat.
 - **Best for:** Building, farming, keeping dog safe
 
 ---

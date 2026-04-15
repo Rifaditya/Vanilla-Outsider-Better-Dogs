@@ -6,6 +6,7 @@ import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.phys.AABB;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -36,6 +37,9 @@ public class GroupHowlGoal extends Goal {
         
         // Must be night (use sky darken for detection)
         if (!isNightTime()) return false;
+
+        // NEW: Full Moon check to match documentation
+        if (wolf.level().environmentAttributes().getDimensionValue(EnvironmentAttributes.MOON_PHASE).index() != 0) return false;
         
         // Cooldown check
         if (howlCooldown > 0) {
@@ -73,8 +77,8 @@ public class GroupHowlGoal extends Goal {
     }
     
     private void playHowlSound(Wolf target, float volume, float pitch) {
-        // Use wolf shake sound at low pitch for howl-like effect
-        target.playSound(SoundEvents.WOLF_SHAKE, volume, pitch);
+        // Use lowered-pitch baby whine for howl-like effect
+        target.playSound(SoundEvents.WOLF_WHINE_BABY.value(), volume, pitch);
     }
 
     private void spreadHowl() {
@@ -88,11 +92,10 @@ public class GroupHowlGoal extends Goal {
             return true;
         });
         
-        // Trigger howl sounds in nearby wolves with varied timing
+        // Trigger howl sounds in nearby wolves synchronously
         for (Wolf nearbyWolf : nearbyWolves) {
-            // Play howl sounds with varied pitch for natural pack howl effect
-            float pitch = 0.45f + wolf.getRandom().nextFloat() * 0.3f;
-            playHowlSound(nearbyWolf, 1.3f, pitch);
+            // Play howl sounds simultaneously with harmonized pitch
+            playHowlSound(nearbyWolf, 1.3f, 0.6f);
         }
     }
 
@@ -104,20 +107,6 @@ public class GroupHowlGoal extends Goal {
     @Override
     public void tick() {
         howlTimer--;
-        
-        // Look up at the moon
-        wolf.getLookControl().setLookAt(
-            wolf.getX(),
-            wolf.getY() + 10.0,
-            wolf.getZ(),
-            10.0f,
-            wolf.getMaxHeadXRot()
-        );
-        
-        // Additional howl sounds during the duration
-        if (howlTimer == 30 || howlTimer == 15) {
-            playHowlSound(wolf, 1.2f, 0.55f + wolf.getRandom().nextFloat() * 0.2f);
-        }
     }
 
     @Override

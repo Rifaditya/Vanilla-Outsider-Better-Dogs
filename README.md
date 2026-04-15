@@ -1,76 +1,60 @@
-# 🐕 Better Dogs: Technical Overview
+# 🐕 Better Dogs: A Social & Behavioral Overhaul (v3.1.37+build.5)
 
-Better Dogs is a comprehensive Minecraft wolf AI overhaul, focused on adding depth, personality, and smarter behaviors through a high-performance event-driven architecture.
+**Better Dogs** is a comprehensive overhaul of the Minecraft Wolf, replacing robotic behaviors with a dynamic, personality-driven social system. Built for the modern "Post-Obfuscation" era of Minecraft, it enhances the taming loop with genetics, social bonding, and smart survival logic.
+
+---
+
+## 🔥 New in v3.1.37: Social Depth & Visuals
+
+The latest update introduces the **Social Bonding System** and significant visual polish:
+
+- **🤝 Social Bonding (Affinity)**: Wolves now track persistent relationships (`affinityMap`) with pack members. Group activities like howling build trust, which dynamically decreases the threshold for accidental "Blood Feuds."
+- **🐺 Synchronized Howling**: A realistic, non-monstrous howl sound using variant-specific whine tones at lowered pitches.
+- **✨ Visual Feedback**: 
+    - **Hearts/Happy Bubbles**: Indicate bonding increases during social overlap.
+    - **Angry Bubbles**: Signal disciplinary actions during "Adult Correction."
+- **📡 Behavioral Specialization**: 
+    - **Aggressive Scouting**: Guard dogs proactively wander 3-5 blocks ahead to scout the path.
+    - **Pacifist's Silent Alarm**: Gentlest dogs emit a high-pitched whine sound to alert you of nearby monsters.
+
+---
+
+## ✨ Key Features
+
+### 🧠 Unique Personality System
+Every dog is assigned one of three personalities with unique traits:
+- **Aggressive**: Fierce protectors that attack hostiles on sight. Proactively **Scouts** ahead.
+- **Pacifist**: Gentle companions that avoid combat. Acts as a **Silent Alarm** for monsters.
+- **Normal**: Balanced companions with standard vanilla-plus behavior.
+
+### 🐕 Advanced Social AI
+- **The Snitch System (Adult Correction)**: Adults intervene to discipline misbehaving puppies using the `AdultCorrectionGoal`.
+- **Wild Wolf Packs**: Powered by **DasikLibrary**, wild wolves form cohesive packs (up to 8) with leaders and follower logic.
+- **Social Events**: Morning zoomies, full-moon howling, and non-lethal social interactions.
+- **Genetics**: Puppies inherit personality traits and stats from their parents via the `WolfBreedingMixin`.
+
+### 🛡️ Smart Survival & Quality of Life
+- **Cliff Safety**: Wolves detect fatal falls and stop chasing targets over voids or high drops.
+- **Hazard Avoidance**: Improved pathfinding around lava, fire, and drowning hazards.
+- **Dog Feeding**: Tamed dogs can scavenge dropped raw or cooked food from the ground to restore health via `EatGroundFoodGoal`.
+
+---
+
+## ⚙️ Native Configuration
+Better Dogs uses the **Native Minecraft Game Rules** system. All 40+ parameters are grouped into a dedicated category for zero-dependency tuning.
+
+![Native gamerule UI](Doc/Media/Gallery/native_game_rules_ui.png)
+
+---
 
 ## 🏗️ Project Architecture
-
-The core of the mod is split into two primary environments:
-
-### 1. ![Better Dogs Banner](Doc/Assets/banner.png) (Modern Java)
-
-- **Target**: Minecraft 26.1 Snapshot 8+
+- **Target**: Minecraft 26.1-snapshot-11+
 - **Language**: Java 25
-- **Configuration**: Native Minecraft Game Rules (`BetterDogsGameRules.java`)
-- **Key Systems**:
-  - **Registry Integration**: Uses native `GameRuleRegistry` to group settings under a "Better Dogs" category.
-  - **Mixin Hooks**: Extensive use of Sponge Powered Mixins to inject behaviors into vanilla classes (`Wolf`, `AgeableMob`, etc.).
-  - **Data Components/Attachments**: Modern persistence using Minecraft's newest data APIs.
-
-### 2. Better Dogs 1.21.11 (Kotlin Parity)
-
-- **Target**: Minecraft 1.21.11
-- **Language**: Kotlin 2.3.0
-- **Configuration**: Cloth Config + Mod Menu (`BetterDogsConfig.kt`)
-- **Key Systems**:
-  - **Fabric Data Attachments**: Cross-session persistence for wolf states (Grudges, Submissiveness).
-  - **Kotlin Extensions**: Idiomatic Kotlin property extensions for vanilla entities.
-
----
-
-## 🧠 Core Systems
-
-### Event-Driven Personality AI
-
-Wolves are assigned one of three `WolfPersonality` types (Normal, Aggressive, Pacifist). Behaviors are managed by a modular event system that allows long-running social interactions without polling every tick.
-
-### Genetics Engine
-
-Implemented in `WolfBreedingMixin`, the genetics engine calculates offspring's personality traits based on parent profiles using configurable probability matrices.
-
-### The "Snitch" System (Social AI)
-
-A complex interaction between `BabyBiteBackGoal` and `AdultCorrectionGoal`. Highlights the mod's ability to coordinate multiple entities through shared persistent states.
-
-- **Wild Wolf Packs (Leader-Follower)**: Powered by **DasikLibrary**, wild wolves naturally form cohesive packs (up to 8 members) with deterministic leader election. They follow their leader using terrestrial pathfinding algorithms, automatically splintering into new groups if the pack becomes too large.
-- **Dog Feeding (Dropped Items)**: Tamed dogs can scavenge dropped raw or cooked food from the ground to heal, with granular GameRule toggles for modded items.
-
----
-
-## 🛠️ Development & Tooling
-
-- **Build System**: Gradle 9.3.0
-- **Loom**: 1.15 (Native Mojang Mappings)
-- **CI/CD**: Semantic versioning and automated release JAR preservation.
-
-## 🔗 Internal Documentation
-
-Complete technical deep-dives can be found in the `Doc/` directory:
-
-- [Logic Overview](Doc/Codebase%20Documentations/Logic_VO.md)
-- [Audit Helper for Moderators](Doc/Codebase%20Documentations/Audit_Helper_For_Moderators.md)
-- [Project Summary](Doc/doc.md)
+- **Logic**: Event-Driven AI Scheduler (Dasik Social AI).
 
 ---
 
 ## 👤 Credits & Support
-
-- **Creator**: DasikIgaijin (Part of the Vanilla Outsider Collection)
+- **Creator**: DasikIgaijin (Vanilla Outsider Collection)
 - **License**: GNU GPLv3
-- **Platform Links**: [Modrinth](https://modrinth.com/mod/vanilla-outsider-better-dogs) | [Issue Tracker](https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs/issues)
-
-### ☕ Support the Development
-
-[![Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20Me-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/dasikigaijin/tip)
-[![SocioBuzz](https://img.shields.io/badge/SocioBuzz-Local_Support-7BB32E?style=for-the-badge)](https://sociabuzz.com/dasikigaijin/tribe)
-
-*Made with ❤️ for the Minecraft community.*
+- **Dev**: [GitHub Repository](https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs)

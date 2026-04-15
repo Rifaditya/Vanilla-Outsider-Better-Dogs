@@ -85,6 +85,12 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
             return false;
         if (wolf.isOrderedToSit() || wolf.isLeashed())
             return false;
+        
+        // IndyPets Compatibility: Respect independence
+        if (net.vanillaoutsider.betterdogs.util.IndyPetsCompatibility.isIndependent(wolf)) {
+            return false;
+        }
+
         return true;
     }
 
@@ -94,6 +100,12 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
             return false;
         if (wolf.isOrderedToSit() || wolf.isLeashed())
             return false;
+        
+        // IndyPets Compatibility: Respect independence
+        if (net.vanillaoutsider.betterdogs.util.IndyPetsCompatibility.isIndependent(wolf)) {
+            return false;
+        }
+
         LivingEntity owner = wolf.getOwner();
         if (owner == null)
             return false;
@@ -127,6 +139,35 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
             if (!wolf.isLeashed() && !wolf.isPassenger()) {
                 float startDist = getStartDistance();
                 double distSqr = wolf.distanceToSqr(owner);
+                
+                if (wolf instanceof WolfExtensions ext) {
+                    // BEHAVIORAL ENHANCEMENT: Aggressive Scouting
+                    if (ext.betterdogs$getPersonality() == net.vanillaoutsider.betterdogs.WolfPersonality.AGGRESSIVE 
+                        && distSqr < (startDist * startDist) && distSqr > 4.0) {
+                        
+                        if (wolf.getRandom().nextFloat() < 0.1f) { // 10% chance to scout per recalc
+                            recalcTimer = 40; // Scout for longer
+                            double scoutX = owner.getX() + owner.getLookAngle().x * 5.0 + (wolf.getRandom().nextDouble() - 0.5) * 3.0;
+                            double scoutZ = owner.getZ() + owner.getLookAngle().z * 5.0 + (wolf.getRandom().nextDouble() - 0.5) * 3.0;
+                            wolf.getNavigation().moveTo(scoutX, owner.getY(), scoutZ, speedModifier);
+                            return; // Skip normal follow
+                        }
+                    }
+
+                    // BEHAVIORAL ENHANCEMENT: Pacifist Alarm
+                    if (ext.betterdogs$getPersonality() == net.vanillaoutsider.betterdogs.WolfPersonality.PACIFIST 
+                        && wolf.level().getGameTime() % 40 == 0) {
+                        
+                        java.util.List<net.minecraft.world.entity.Mob> hostiles = wolf.level().getEntitiesOfClass(net.minecraft.world.entity.Mob.class, 
+                            wolf.getBoundingBox().inflate(12.0), 
+                            m -> m instanceof net.minecraft.world.entity.monster.Monster);
+                        
+                        if (!hostiles.isEmpty()) {
+                            wolf.playSound(net.minecraft.sounds.SoundEvents.GENERIC_HURT, 1.0f, 2.0f);
+                        }
+                    }
+                }
+
                 if (distSqr >= (startDist * startDist)) {
                     double dynamicSpeed = speedModifier;
                     double catchUpThreshold = BetterDogsConfig.get().getFollowCatchUpThreshold();

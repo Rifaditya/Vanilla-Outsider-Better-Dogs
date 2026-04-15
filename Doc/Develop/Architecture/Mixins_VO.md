@@ -1,4 +1,4 @@
-# Mixin Documentation: Better Dogs (v3.1.21)
+# Mixin Documentation: Better Dogs (v3.1.37+build.5)
 
 ## Target: `net.minecraft.world.entity.animal.wolf.Wolf`
 
@@ -9,7 +9,7 @@
    - Injected into `applyTamingSideEffects` to guarantee stat randomization upon ownership.
 
 2. **AI Goal Management**:
-   - **The Gatekeeper Pattern**: Injects into `targetSelector` and `goalSelector` to prioritize Social Mode tasks (Correction/Play) over generic combat.
+   - **The Gatekeeper Pattern**: Injects into `targetSelector` and `goalSelector` to prioritize Social Mode tasks (Correction/Howl) over generic combat.
    - **Environment Awareness**: Injects pathfinding logic to avoid Hazard blocks (Lava/Fire) and manage cliff safety.
 
 3. **Breeding Genetics**:

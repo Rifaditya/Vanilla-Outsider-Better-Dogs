@@ -1,4 +1,4 @@
-# Vanilla Outsider: Better Dogs - AI Reference Guide (v3.1.21)
+# Vanilla Outsider: Better Dogs - AI Reference Guide (v3.1.37+build.5)
 
 ---
 
@@ -56,6 +56,19 @@
 | **Start Distance** | 50.0 | 5.0 | 10.0 |
 | **Stop Distance** | 2.0 | 2.0 | 2.0 |
 | **Teleport Threshold**| 90.0 (5x) | 9.0 (0.5x) | 18.0 (1x) |
+| **Special Behavior** | **Scouting** (wanders ahead) | **Alarm Whine** (hostile alert) | Standard follow |
+
+---
+
+# 🤝 SOCIAL BONDING (v3.1.37)
+
+The bonding system tracks "Affinity" between pack members (from -100 to 100).
+
+- **How it's gained**: Howling together (+2), Play fighting (+1 per hit).
+- **How it's lost**: Retaliating after being hit (-15).
+- **Effects**:
+  - High affinity (>50%) **suppresses** existing Blood Feuds.
+  - Bonding reduces the chance that an adult correction triggers a new Blood Feud.
 
 > **Note**: These are governed by the `bd_teleport_multiplier` rule.
 
@@ -92,4 +105,4 @@
 - **Passive Healing**: Slow HP recovery (`bd_enable_passive_healing`).
 
 ---
-*Last Updated: January 2026 | v3.1.21*
+*Last Updated: March 2026 | v3.1.37+build.5*

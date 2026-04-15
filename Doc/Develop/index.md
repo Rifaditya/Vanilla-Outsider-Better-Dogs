@@ -1,6 +1,6 @@
 # Better Dogs: Project Summary
 
-**Version:** 3.1.21 (Targeting Minecraft 26.1-snapshot-4)  
+**Version:** 3.1.37+build.5 (Targeting Minecraft 26.1-snapshot-11)  
 **Creator:** DasikIgaijin  
 **Dependencies:** Java 25, Fabric Loader >=0.16.10
 
@@ -16,7 +16,7 @@ Adheres to the "One Click, One Action" rule. Better Dogs enhances the vanilla wo
 
 Verified against Protocol `Better_modder_agent_protocol.yaml`:
 
-* `minecraft`: `~26.1-` (Verified: `26.1-snapshot-4`)
+* `minecraft`: `~26.1-` (Verified: `26.1-snapshot-11`)
 * `java`: `>=25`
 * `fabric-api`: `*`
 * **Note**: No longer requires Cloth Config.
@@ -25,7 +25,7 @@ Verified against Protocol `Better_modder_agent_protocol.yaml`:
 
 * **Data Management**: Uses Fabric's native `AttachmentRegistry` to store `WolfPersistentData` (States: Grudges, Mischief Day, Social Mode).
 * **AI Logic**:
-  * **WolfScheduler**: Centralized event brain manages Zoomies, Howling, and play fights.
+  * **WolfScheduler**: Centralized event brain manages Zoomies, Howling, and social interactions.
   * **Social Engine**: Handles hierarchy (Correction) and vendettas (Blood Feud).
 * **Mixins**:
   * `WolfMobMixin`: Intercepts target-setting for social overrides.

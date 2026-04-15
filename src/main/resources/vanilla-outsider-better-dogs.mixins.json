@@ -1,7 +1,8 @@
 {
     "required": true,
-    "package": "net.vanillaoutsider.betterdogs.mixin",
-    "compatibilityLevel": "JAVA_22",
+  "minVersion": "0.8",
+  "package": "net.vanillaoutsider.betterdogs.mixin",
+  "compatibilityLevel": "JAVA_25",
     "mixins": [
         "WolfMixin",
         "WolfAIMixin",

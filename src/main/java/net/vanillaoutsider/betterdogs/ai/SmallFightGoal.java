@@ -38,7 +38,8 @@ public class SmallFightGoal extends Goal {
     }
 
     @Override
-    public void start() {}
+    public void start() {
+    }
 
     @Override
     public void stop() {
@@ -56,7 +57,21 @@ public class SmallFightGoal extends Goal {
         double reachSqr = (double)(this.wolf.getBbWidth() * 2.0F * this.wolf.getBbWidth() * 2.0F + this.target.getBbWidth());
         if (distSqr <= reachSqr) {
             if (this.wolf.level() instanceof ServerLevel serverLevel) {
-                this.wolf.doHurtTarget(serverLevel, this.target);
+                boolean success = this.wolf.doHurtTarget(serverLevel, this.target);
+                if (success && this.wolf instanceof WolfExtensions ext) {
+                    // Visual indicators
+                    serverLevel.sendParticles(net.minecraft.core.particles.ParticleTypes.HAPPY_VILLAGER, 
+                        this.target.getX(), this.target.getY() + 1.0, this.target.getZ(), 
+                        3, 0.2, 0.2, 0.2, 0.0);
+                    
+                    // INTEGRATION: Play fighting increases affinity
+                    if (this.target instanceof Wolf targetWolf) {
+                        ext.betterdogs$adjustAffinity(targetWolf.getStringUUID(), 1);
+                        if (targetWolf instanceof WolfExtensions targetExt) {
+                            targetExt.betterdogs$adjustAffinity(this.wolf.getStringUUID(), 1);
+                        }
+                    }
+                }
             }
         }
     }

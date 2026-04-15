@@ -8,14 +8,25 @@ import net.fabricmc.loader.api.FabricLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.dasik.social.api.SocialEventRegistry;
+import net.fabricmc.api.ModInitializer;
 
-public class BetterDogs {
+/**
+ * Better Dogs Main Entrypoint.
+ * Updated for Snapshot 11.
+ * Verified against: Wolf.java (Snapshot 11)
+ */
+public class BetterDogs implements ModInitializer {
     public static final String MOD_ID = "vanilla-outsider-better-dogs";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public static final AttachmentType<WolfPersistentData> WOLF_DATA = AttachmentRegistry.createPersistent(
             Identifier.parse("betterdogs:wolf_data"),
             WolfPersistentData.CODEC);
+
+    @Override
+    public void onInitialize() {
+        init();
+    }
 
     public static void init() {
         LOGGER.info("Vanilla Outsider: Better Dogs initializing [Fabric Only]...");
@@ -29,6 +40,9 @@ public class BetterDogs {
         // Initialize platform-specific attachments
         @SuppressWarnings("unused")
         var ignored = WOLF_DATA;
+
+        // Register Commands
+        net.vanillaoutsider.betterdogs.command.BetterDogsCommand.register();
 
         // Register Hive Mind Social Events (V3.1) - Migrated to DasikLibrary
         SocialEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.WanderlustDogEvent());

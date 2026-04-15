@@ -73,7 +73,7 @@ public class EatGroundFoodGoal extends Goal {
         }
 
         // Fallback heuristic for modded food
-        String path = stack.getItemHolder().unwrapKey().map(key -> key.location().getPath()).orElse("").toLowerCase();
+        String path = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath().toLowerCase();
         boolean isCooked = path.contains("cooked") || path.contains("roasted") || path.contains("grilled");
 
         if (isCooked) {
@@ -114,9 +114,9 @@ public class EatGroundFoodGoal extends Goal {
         float healAmount = 2.0f;
         if (stack.is(Items.ROTTEN_FLESH)) {
             healAmount = 1.0f;
-        } else if (stack.getItem().getComponents().has(net.minecraft.core.component.DataComponents.FOOD)) {
+        } else if (stack.getComponents().has(net.minecraft.core.component.DataComponents.FOOD)) {
             // Try to use nutrition for better scaling
-            var foodComp = stack.getItem().getComponents().get(net.minecraft.core.component.DataComponents.FOOD);
+            var foodComp = stack.getComponents().get(net.minecraft.core.component.DataComponents.FOOD);
             if (foodComp != null) {
                 healAmount = (float) foodComp.nutrition() / 2.0f;
             }

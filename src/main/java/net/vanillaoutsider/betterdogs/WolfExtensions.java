@@ -177,4 +177,16 @@ public interface WolfExtensions {
      * Ticks the Long-Term Scheduler. Called every tick by WolfMixin.
      */
     void betterdogs$tickScheduler();
+
+    // === SOCIAL BONDING & VISUALS (V3.1.37) ===
+
+    /**
+     * Get social affinity with another wolf.
+     */
+    int betterdogs$getAffinity(String targetUuid);
+
+    /**
+     * Adjust social affinity with another wolf.
+     */
+    void betterdogs$adjustAffinity(String targetUuid, int delta);
 }

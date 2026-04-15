@@ -6,6 +6,7 @@ import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.dasik.social.api.SocialEntity;
 import net.dasik.social.api.SocialEvent;
 import net.dasik.social.api.TickContext;
+import net.vanillaoutsider.betterdogs.WolfExtensions;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -40,29 +41,22 @@ public class HowlDogEvent implements SocialEvent {
     @Override
     public void onStart(TickContext context) {
         if (context.entity().dasik$asEntity() instanceof Wolf wolf) {
-            // Play initial howl sound using wolf shake at low pitch
-            wolf.playSound(SoundEvents.WOLF_SHAKE, 1.3f, 0.5f + wolf.getRandom().nextFloat() * 0.2f);
+            // Play initial howl sound using lowered-pitch baby whine
+            wolf.playSound(SoundEvents.WOLF_WHINE_BABY.value(), 1.3f, 0.5f + wolf.getRandom().nextFloat() * 0.2f);
+
+            // INTEGRATION: Howling together increases affinity
+            if (context.entity() instanceof WolfExtensions ext) {
+                wolf.level().getEntitiesOfClass(Wolf.class, wolf.getBoundingBox().inflate(8.0))
+                        .stream()
+                        .filter(w -> w != wolf && w.isTame() && w.isOwnedBy(wolf.getOwner()))
+                        .forEach(w -> ext.betterdogs$adjustAffinity(w.getStringUUID(), 2));
+            }
         }
     }
 
     @Override
     public boolean tick(TickContext context) {
         timer++;
-
-        if (context.entity().dasik$asEntity() instanceof Wolf wolf) {
-            // Look up at the moon
-            wolf.getLookControl().setLookAt(
-                    wolf.getX(),
-                    wolf.getY() + 10.0,
-                    wolf.getZ(),
-                    10.0f,
-                    wolf.getMaxHeadXRot());
-
-            // Additional howl at midpoint
-            if (timer == 30) {
-                wolf.playSound(SoundEvents.WOLF_SHAKE, 1.1f, 0.55f + wolf.getRandom().nextFloat() * 0.2f);
-            }
-        }
         return timer >= 60;
     }
 

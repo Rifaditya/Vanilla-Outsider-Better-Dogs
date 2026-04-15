@@ -59,9 +59,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 /**
  * Mixin for Wolf entity to add personality system and other enhancements.
  * Uses Fabric Data Attachment API for persistence.
+ * Verified against: Wolf.java (Snapshot 10/11)
  */
 @Mixin(Wolf.class)
-public abstract class WolfMixin extends TamableAnimal implements WolfExtensions, SocialEntity, GroupMember<Wolf> {
+public abstract class WolfMixin extends TamableAnimal implements WolfExtensions, SocialEntity, GroupMember {
 
     @Unique
     private int betterdogs$healTimer = 0;
@@ -165,9 +166,21 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
 
     @Override
     public void betterdogs$setSocialScale(float scale) {
-        WolfPersistentData current = WolfPersistentData.getWolfData((Wolf) (Object) this);
+         WolfPersistentData current = WolfPersistentData.getWolfData((Wolf) (Object) this);
         WolfPersistentData.setScale(current.personalityId(), current.lastDamageTime(), current.submissive(),
-                current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), (Wolf) (Object) this, scale);
+                current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), (Wolf) (Object) this, scale, current.affinityMap());
+    }
+
+    // === SOCIAL BONDING & VISUALS (V3.1.37) ===
+
+    @Override
+    public int betterdogs$getAffinity(String targetUuid) {
+        return WolfPersistentData.getPersistedAffinity((Wolf) (Object) this, targetUuid);
+    }
+
+    @Override
+    public void betterdogs$adjustAffinity(String targetUuid, int delta) {
+        WolfPersistentData.adjustPersistedAffinity((Wolf) (Object) this, targetUuid, delta);
     }
 
     // betterdogs$getSpeciesId removed as it is not part of WolfExtensions
@@ -204,7 +217,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
     // ========== Dasik GroupMember Implementation (Leader-Follower) ==========
 
     @Unique
-    private Wolf betterdogs$leader = null;
+    private LivingEntity betterdogs$leader = null;
 
     @Unique
     private int betterdogs$groupSize = 1;
@@ -212,8 +225,11 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
     @Unique
     private int betterdogs$groupSizeCheckTicks = 0;
 
+    @Unique
+    private net.dasik.social.core.group.FlockState betterdogs$flockState = null;
+
     @Override
-    public Wolf getLeader() {
+    public LivingEntity getLeader() {
         return betterdogs$leader;
     }
 
@@ -223,7 +239,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
     }
 
     @Override
-    public void setLeader(@Nullable Wolf leader) {
+    public void setLeader(@Nullable LivingEntity leader) {
         this.betterdogs$leader = leader;
     }
 
@@ -236,7 +252,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
             // Simple bounding box count to see how many wolves consider ME their leader
             int size = 1; // Self
             for (Wolf w : wolf.level().getEntitiesOfClass(Wolf.class, wolf.getBoundingBox().inflate(32.0))) {
-                if (w != wolf && ((GroupMember<Wolf>)w).getLeader() == wolf) {
+                if (w != wolf && ((GroupMember)w).getLeader() == wolf) {
                     size++;
                 }
             }
@@ -248,6 +264,16 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
     @Override
     public FlockType getFlockType() {
         return FlockType.TERRESTRIAL;
+    }
+
+    @Override
+    public net.dasik.social.core.group.FlockState getFlockState() {
+        return betterdogs$flockState;
+    }
+
+    @Override
+    public void setFlockState(net.dasik.social.core.group.FlockState state) {
+        this.betterdogs$flockState = state;
     }
 
     // ========== Dunce Cap (Transient Disciplinary State) ==========
@@ -371,6 +397,19 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
             if (currentTime - betterdogs$lastBeggingTime >= 1200) { // 60 seconds cooldown
                 betterdogs$lastBeggingTime = currentTime;
                 betterdogs$socialScheduler.schedule(new BeggingDogEvent());
+            }
+        }
+
+        // NEW: Morning Zoomies (v3.1.37)
+        // Minecraft morning is roughly 0 - 3000 ticks (6:00 - 9:00 AM)
+        long timeOfDay = wolf.level().getDefaultClockTime() % 24000;
+        if (wolf.isTame() && wolf.onGround() && timeOfDay < 3000) {
+            if (!betterdogs$socialScheduler.isEventActive(ZoomiesDogEvent.ID)) {
+                // 1% chance every second during morning
+                if (wolf.getRandom().nextFloat() < 0.01f) {
+                    betterdogs$socialScheduler.schedule(new ZoomiesDogEvent());
+                    BetterDogs.LOGGER.info("Wolf [{}] triggered morning zoomies!", wolf.getUUID());
+                }
             }
         }
     }

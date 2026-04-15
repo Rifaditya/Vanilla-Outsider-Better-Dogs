@@ -23,8 +23,7 @@ public class WolfCombatHooks {
         if (!wolf.isTame())
             return false;
 
-        Entity entityAttacker = source.getEntity();
-        if (!(entityAttacker instanceof LivingEntity attacker))
+        if (!(source.getEntity() instanceof LivingEntity attacker))
             return false;
 
         boolean isOwner = attacker instanceof Player player && wolf.isOwnedBy(player);
@@ -133,6 +132,12 @@ public class WolfCombatHooks {
         // Blood Feud: ALLOW attacking nemesis (bypass all protection)
         if (target instanceof Wolf targetWolf && ext.betterdogs$hasBloodFeud()) {
             if (ext.betterdogs$getBloodFeudTarget().equals(targetWolf.getStringUUID())) {
+                // INTEGRATION: Bonding can suppress feuds
+                int affinity = ext.betterdogs$getAffinity(targetWolf.getStringUUID());
+                if (affinity > 50) {
+                     // High affinity suppresses the feud for this attack
+                    return false;
+                }
                 return true;
             }
         }

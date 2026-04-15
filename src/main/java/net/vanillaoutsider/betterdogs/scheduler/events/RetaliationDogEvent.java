@@ -48,6 +48,14 @@ public class RetaliationDogEvent implements SocialEvent {
         this.tickCount = 0;
         if (this.target != null && context.entity() instanceof WolfExtensions ext) {
             ext.betterdogs$setSocialState(this.target, WolfExtensions.SocialAction.RETALIATION, 100);
+            
+            // INTEGRATION: Retaliation decreases affinity
+            if (this.target instanceof Wolf targetWolf) {
+                ext.betterdogs$adjustAffinity(targetWolf.getStringUUID(), -15);
+                if (targetWolf instanceof WolfExtensions targetExt) {
+                    targetExt.betterdogs$adjustAffinity(context.entity().dasik$asEntity().getStringUUID(), -10);
+                }
+            }
         }
     }
 
