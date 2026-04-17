@@ -65,5 +65,7 @@
     "gamerule.minecraft.bd_breed_diluted_other_chance": "Breed: Diluted (Variant) %",
     "gamerule.minecraft.bd_breed_diluted_other_chance.description": "Chance for offspring to pick one parent trait when breeding Aggressive + Pacifist (Def: 25).",
     "gamerule.minecraft.bd_howl_chance": "Howl Chance (Permille)",
-    "gamerule.minecraft.bd_howl_chance.description": "Chance per 1000 ticks for a wolf to initiate a group howl (Def: 10 = 1%)."
+    "gamerule.minecraft.bd_howl_chance.description": "Chance per 1000 ticks for a wolf to initiate a group howl (Def: 10 = 1%).",
+    "gamerule.minecraft.bd_pack_spread": "Pack Spread Distance",
+    "gamerule.minecraft.bd_pack_spread.description": "Minimum separation distance between wolves in a wild pack. Each unit = 0.1 blocks. Default 20 = 2.0 blocks. Higher values space packs out further."
 }

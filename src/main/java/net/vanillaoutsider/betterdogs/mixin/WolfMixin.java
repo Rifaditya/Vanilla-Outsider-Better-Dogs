@@ -220,12 +220,6 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
     private LivingEntity betterdogs$leader = null;
 
     @Unique
-    private int betterdogs$groupSize = 1;
-
-    @Unique
-    private int betterdogs$groupSizeCheckTicks = 0;
-
-    @Unique
     private net.dasik.social.core.group.FlockState betterdogs$flockState = null;
 
     @Override
@@ -245,20 +239,23 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
 
     @Override
     public int getGroupSize() {
-        Wolf wolf = (Wolf) (Object) this;
-        // Optimization: only recalculate size every 40 ticks, or if requested by leader
-        if (betterdogs$groupSizeCheckTicks++ > 40) {
-            betterdogs$groupSizeCheckTicks = 0;
-            // Simple bounding box count to see how many wolves consider ME their leader
-            int size = 1; // Self
-            for (Wolf w : wolf.level().getEntitiesOfClass(Wolf.class, wolf.getBoundingBox().inflate(32.0))) {
-                if (w != wolf && ((GroupMember)w).getLeader() == wolf) {
-                    size++;
-                }
-            }
-            this.betterdogs$groupSize = size;
+        // Sovereign Refactor (Build 7): Delegate to DasikLibrary FlockState.
+        // The GroupManager computes flock size for the leader on a staggered schedule.
+        // This avoids an O(N) bounding-box scan on every wolf tick.
+        net.dasik.social.core.group.FlockState state = this.betterdogs$flockState;
+        if (state != null) {
+            // FlockState is computed on the leader; if we ARE the leader, use it.
+            return state.getMemberCount();
         }
-        return this.betterdogs$groupSize;
+        // Follower: ask our leader for their FlockState.
+        if (this.betterdogs$leader instanceof net.dasik.social.api.group.GroupMember leaderGM) {
+            net.dasik.social.core.group.FlockState leaderState = leaderGM.getFlockState();
+            if (leaderState != null) {
+                return leaderState.getMemberCount();
+            }
+        }
+        // No flock data available yet; return 1 (self).
+        return 1;
     }
 
     @Override

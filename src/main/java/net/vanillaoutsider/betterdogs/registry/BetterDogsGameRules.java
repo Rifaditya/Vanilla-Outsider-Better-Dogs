@@ -48,6 +48,13 @@ public class BetterDogsGameRules {
                 return ((ServerLevel) level).getGameRules().get(rule);
         }
 
+        // Helper to get Decile float (0-N -> 0.0-N/10.0 blocks)
+        public static float getDecileFloat(Level level, GameRule<Integer> rule) {
+                if (level.isClientSide())
+                        return 0.0f;
+                return ((ServerLevel) level).getGameRules().get(rule) / 10.0f;
+        }
+
         public static boolean getBoolean(Level level, GameRule<Boolean> rule) {
                 if (level.isClientSide())
                         return false;
@@ -91,6 +98,7 @@ public class BetterDogsGameRules {
         // --- Misc ---
         public static GameRule<Integer> BD_BABY_MISCHIEF_PERMILLE;
         public static GameRule<Integer> BD_HOWL_CHANCE;
+        public static GameRule<Integer> BD_PACK_SPREAD; // Decile blocks (10 = 1.0 block)
 
         // --- Correction/Retaliation ---
         public static GameRule<Integer> BD_BLOOD_FEUD_PERCENT;
@@ -163,6 +171,7 @@ public class BetterDogsGameRules {
                 BD_BABY_MISCHIEF_PERMILLE = registerInteger("bd_baby_mischief_permille", BETTER_DOGS,
                                 (int) (config.getBabyMischiefChance() * 10));
                 BD_HOWL_CHANCE = registerInteger("bd_howl_chance", BETTER_DOGS, 10); // 10 permille = 1%
+                BD_PACK_SPREAD = registerInteger("bd_pack_spread", BETTER_DOGS, 20); // 20 deciles = 2.0 blocks
 
                 // Discipline
                 BD_BLOOD_FEUD_PERCENT = registerInteger("bd_blood_feud_percent", BETTER_DOGS,

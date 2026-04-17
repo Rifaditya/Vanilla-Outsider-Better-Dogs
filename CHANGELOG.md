@@ -1,5 +1,32 @@
 # Changelog
 
+## [3.1.37+build.8] - 2026-04-16
+
+### Added
+- **Pack Spread Control**: New GameRule `bd_pack_spread` (default: 20 = 2.0 blocks) sets the minimum separation distance between wild wolves in a pack.
+  - Each integer unit = 0.1 blocks. Example: `/gamerule bd_pack_spread 50` = 5.0 block spacing.
+  - Updates are dynamic — wolves respond to GameRule changes within 40 ticks, staggered per entity to prevent TPS spikes.
+  - Default separation raised from 1.5 to 2.0 to reduce visual overcrowding.
+
+### Dependency: DasikLibrary Build 22
+- Requires `FollowLeaderGoal.setParameters()` to apply runtime AI parameter changes.
+
+## [3.1.37+build.7] - 2026-04-16
+
+### Refactored
+- **Pack AI: Sovereign Migration** — Migrated group size tracking from an O(N) hand-rolled bounding-box scan (`WolfMixin.getGroupSize()`) to the DasikLibrary `FlockState` cache. Pack size is now computed once by the leader and shared across all followers.
+- **Removed** dead fields `betterdogs$groupSize` and `betterdogs$groupSizeCheckTicks`.
+
+### Dependency: DasikLibrary Build 21
+- Added `FlockState.getMemberCount()` API to DasikLibrary, enabling mods to query cached pack size without iterating entities.
+- Added `GroupManager.computeFlockState()` now sets `memberCount` alongside existing center-of-mass and velocity aggregates.
+
+### Infrastructure
+- **Upgraded**: Fabric Loader to `0.19.1` — native Java 25 Mixin subsystem support (no Knot warning).
+- **Minecraft Support**: Shifted to `~26.x` compatible range (`>=26.1`) for **Minecraft 26.2** readiness.
+- **Upgraded**: Fabric API to `0.145.4+26.1.2`.
+- **Dependency**: Synchronized with `DasikLibrary` Build 21.
+
 ## [3.1.37+build.6] - 2026-04-15
 
 ### Added
