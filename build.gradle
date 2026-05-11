@@ -1,6 +1,7 @@
 plugins {
     id 'net.fabricmc.fabric-loom' version '1.15-SNAPSHOT'
     id 'maven-publish'
+    id "me.modmuss50.mod-publish-plugin" version "0.5.1"
 }
 
 version = project.mod_version
@@ -57,5 +58,45 @@ tasks.withType(JavaCompile).configureEach {
 jar {
     from("LICENSE") {
         rename { "${it}_${project.archives_base_name}" }
+    }
+}
+
+afterEvaluate {
+    publishMods {
+        file = file("build/libs/${project.archives_base_name}-${project.mod_version}.jar")
+        changelog = file("Doc/Develop/Changelogs/History.md").text.split("## \\[")[1].split("(?m)^## \\[")[0].trim()
+        type = STABLE
+        modLoaders.add("fabric")
+
+        modrinth {
+            accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+            projectId = "e7H8SUmG"
+            minecraftVersions.add("26.1.2")
+            requires {
+                slug = "fabric-api"
+            }
+            requires {
+                slug = "dasik-library"
+            }
+        }
+
+        curseforge {
+            accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+            projectId = "vanilla-outsider-better-dogs"
+            minecraftVersions.add("26.1.2")
+            requires {
+                slug = "fabric-api"
+            }
+            requires {
+                slug = "dasik-library"
+            }
+        }
+
+        github {
+            accessToken = providers.environmentVariable("GITHUB_TOKEN")
+            repository = "Rifaditya/Vanilla-Outsider-Better-Dogs"
+            commitish = "master"
+            tagName = project.version
+        }
     }
 }

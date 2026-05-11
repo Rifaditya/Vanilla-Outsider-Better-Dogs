@@ -1,5 +1,64 @@
 # Changelog
 
+## [3.3.1] - 2026-05-11
+### Added
+- **🤝 Social Politeness**: New GameRule `bd_territorial_exclusive_disputes` (Default: true) ensures territorial disputes are strictly 1v1.
+- **Queuing Logic**: Leaders will now wait for a rival to be "free" before initiating a challenge, preventing chaotic crowd disputes in dense areas.
+
+## [3.3.0] - 2026-05-11
+### Added
+- **🌍 Territorial Scaling**: New GameRule `bd_territorial_search_radius` to control the distance at which pack leaders engage in disputes.
+- **🐺 Pack Dynamics**:
+    - **Configurable Cluster Size**: New GameRule `bd_wolf_pack_cluster_size` to control the maximum size of naturally spawning packs.
+    - **Density Boosting**: New GameRule `bd_wolf_spawn_density_boost` (% chance) to trigger a "Reinforcement Spawn" nearby when a pack spawns, increasing regional territorial friction.
+- **Localization**: Full descriptive strings for all new balancing parameters in `en_us.json`.
+
+### Refactored
+- **Versioning**: Incremented to `3.3.0` to reflect significant configuration and world-gen logic shifts.
+- **AI Hardening**: `WildWolfTerritorialGoal` now fully respects dynamic search radius updates without requiring a world reload.
+
+
+## [3.2.0] - 2026-05-11
+### Added
+- **🏰 Territorial Handshake**: New negotiation logic for wild pack leaders.
+    - If both leaders want war -> Cinematic 1v1 Duel.
+    - If only one wants war -> Negotiated Yield (B yields/merges) or Retreat based on `bd_territorial_yield_on_one_sided_chance`.
+    - If neither wants war -> Peaceful Retreat (96 blocks).
+- **Wild Personality AI**: Wild members (not leaders) exhibit unique behaviors (e.g., Aggressive wolves hunting monsters) while anchored to their pack leader.
+- **Debug Tooling**:
+    - Added `/betterdogs debug territory` for immediate pack interaction testing.
+    - **Territorial Debug Logging**: New detailed console logs for pack interactions (Wars, Merges, Retreats) enabled via `betterdogdebugging` GameRule.
+
+### Hardening
+- **Logic Hardening**: Moved all custom entity logging (Spawn, Tame, Social, Ambient) to the `betterdogdebugging` GameRule gate.
+- **Default Alignment**: Wild Personality Behavior is now enabled by default for new worlds.
+- **Architectural Cleanup**: Removed duplicate debug log entries in Mixin layers.
+
+### Refactored
+- **Architectural Alignment**: Refactored `WildWolfFollowLeaderGoal` to use the modernized **DasikLibrary 1.7.0** base goal.
+    - Optimized pack following with distance-based "Movement Triggers" (start/stop thresholds).
+    - Reduced mod code footprint by leveraging library-side stable physics.
+- **Mapping Compliance**: Fully refactored for **Minecraft 26.1.2** ("Tiny Takeover") mapping signatures.
+- **Deterministic AI**: Territorial decisions are now synchronized between entities using a shared seeded random.
+
+## [3.1.37+build.10] - 2026-05-12
+
+### Added
+- **AI Refactor: Stable Wild Pack Leadership**:
+  - **Refactored `WildWolfFollowLeaderGoal`**: Wild wolves now follow their pack leader with logic mirroring vanilla `FollowOwnerGoal` (teleportation and consistent movement).
+  - **Stable Leadership**: Pack members now lock onto their leader persistently. Leadership is saved to NBT and survives world reloads.
+  - **Tame Interaction**: Taming a leader now allows the wild pack to follow the player by proxy. Taming a member correctly transitions them to standard owner-following behavior.
+  - **Improved Performance**: Reduced frequency of expensive social pathfinding calculations.
+
+## [3.1.37+build.9] - 2026-05-11
+
+### Added
+- **Debugging Mode**: Introduced the `betterdogdebugging` GameRule.
+  - Enables detailed AI logging in the server console.
+  - Adds visual particles (Flame/Note/Happy Villager) above wolves to indicate personality.
+  - **Debug Stick Integration**: Allows cycling through personalities and social scales using the vanilla Debug Stick.
+- **Maintenance**: Fixed compilation errors related to `DasikLibrary` API changes in `WildWolfFollowLeaderGoal`.
+
 ## [3.1.37+build.8] - 2026-04-16
 
 ### Added

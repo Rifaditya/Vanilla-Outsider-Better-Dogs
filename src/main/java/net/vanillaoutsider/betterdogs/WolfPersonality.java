@@ -55,14 +55,23 @@ public enum WolfPersonality {
 
         int roll = RANDOM.nextInt(total > 0 ? total : 100);
         
-        BetterDogs.LOGGER.info("Personality Roll: {}/{} (Chances: N:{}, A:{}, P:{})", 
-            roll, total, normal, aggressive, pacifist);
+        if (BetterDogsGameRules.getBoolean(level, BetterDogsGameRules.BD_DEBUGGING)) {
+            BetterDogs.LOGGER.info("Personality Roll: {}/{} (Chances: N:{}, A:{}, P:{})", 
+                roll, total, normal, aggressive, pacifist);
+        }
 
         if (roll < normal)
             return NORMAL;
         if (roll < (normal + aggressive))
             return AGGRESSIVE;
         return PACIFIST;
+    }
+
+    /**
+     * Cycles to the next personality in the enum.
+     */
+    public WolfPersonality next() {
+        return values()[(this.ordinal() + 1) % values().length];
     }
 
     /**

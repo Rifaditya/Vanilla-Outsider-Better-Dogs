@@ -4,77 +4,61 @@ import net.dasik.social.ai.goal.FollowLeaderGoal;
 import net.dasik.social.api.group.strategy.GroupParameters;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.dasik.social.api.group.GroupMember;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
+import net.vanillaoutsider.betterdogs.WolfExtensions;
 
-/*
- * Verified against: WildWolfFollowLeaderGoal.java (26.*), FollowLeaderGoal.java (26.*)
+import java.util.EnumSet;
+
+/**
+ * Optimized Wild Wolf Group AI.
+ * Wild wolves follow a designated leader with logic mirroring FollowOwnerGoal.
+ * Leadership is stable (never changes) and persists across world reloads.
+ * If the leader is tamed, wild followers continue to follow them (following the player by proxy).
+ * If a follower is tamed, they leave the wild pack and follow their owner.
  */
-@SuppressWarnings({"unchecked", "rawtypes"})
-public class WildWolfFollowLeaderGoal extends FollowLeaderGoal {
-
-    private final Wolf wolf;
+public class WildWolfFollowLeaderGoal extends FollowLeaderGoal<Wolf> {
+    private static final float SEARCH_RADIUS = 32.0f;
     private static final int MAX_PACK_SIZE = 8;
-    private static final int SPREAD_SYNC_INTERVAL = 40;
+    
+    private static final GroupParameters WOLF_PARAMS = new GroupParameters(
+        5.0f, 2.5f, 1.2f, true, 144.0f, 6.0f, 2.0f, 0.0f, 0.0f, 0.0f
+    );
 
-    // Stagger per-wolf so all pack members don't re-read the GameRule on the same tick
-    private int spreadSyncTick;
-
-    public WildWolfFollowLeaderGoal(Wolf mob) {
-        // Cohesion radius = 5.0, Default separation = 2.0 (GameRule default 20), Speed = 1.2
-        // Default separation raised from 1.5 to 2.0 to match new bd_pack_spread default.
-        super(mob, new GroupParameters(5.0f, 2.0f, 1.2f), 32.0);
-        this.wolf = mob;
-        this.spreadSyncTick = mob.getId() % SPREAD_SYNC_INTERVAL;
+    public WildWolfFollowLeaderGoal(Wolf wolf) {
+        super(wolf, WOLF_PARAMS, SEARCH_RADIUS);
     }
 
     @Override
     public boolean canUse() {
-        GroupMember groupWolf = (GroupMember) this.wolf;
-
-        // Tamed wolves do not form wild packs. They follow the owner or their own AI.
-        if (this.wolf.isTame()) {
-            groupWolf.setLeader(null);
+        // Tamed wolves follow owners, not wild leaders.
+        if (this.mob.isTame()) {
             return false;
         }
 
-        // Call super to run the standard GroupManager discovery and leader election
-        boolean result = super.canUse();
-
-        // If a leader was found and elected...
-        if (result) {
-            LivingEntity leader = groupWolf.getLeader();
-            if (leader != null && leader != this.wolf) {
-                // Check if the pack is full. If it is, and we aren't already part of it, reject the leader.
-                // We use the leader's perceived group size to decide.
-                GroupMember groupLeader = (GroupMember) leader;
-                if (groupLeader.getGroupSize() >= MAX_PACK_SIZE) {
-                    groupWolf.setLeader(null);
-                    return false;
-                }
-            }
+        // Parent handles leader election and distance check
+        if (!super.canUse()) {
+            return false;
         }
 
-        return result && !this.wolf.isTame();
+        LivingEntity leader = ((GroupMember)this.mob).getLeader();
+        
+        // Pack Size Limit check (only for NEW members joining - stable members stay)
+        if (this.mob.tickCount % 100 == 0) {
+             GroupMember groupLeader = (GroupMember) leader;
+             if (groupLeader.getGroupSize() > MAX_PACK_SIZE && !this.isAlreadyInGroup(leader)) {
+                 ((GroupMember)this.mob).setLeader(null);
+                 return false;
+             }
+        }
+
+        return true;
     }
 
-    @Override
-    public void tick() {
-        // Periodically sync GroupParameters with the current bd_pack_spread GameRule value.
-        if (--this.spreadSyncTick <= 0) {
-            this.spreadSyncTick = SPREAD_SYNC_INTERVAL;
-            float newSeparation = BetterDogsGameRules.getDecileFloat(this.wolf.level(), BetterDogsGameRules.BD_PACK_SPREAD);
-            if (newSeparation > 0.0f) {
-                float currentSeparation = this.parameters.separationRadius();
-                if (Math.abs(currentSeparation - newSeparation) > 0.05f) {
-                    this.setParameters(new GroupParameters(
-                        this.parameters.cohesionRadius(),
-                        newSeparation,
-                        this.parameters.maxSpeed()
-                    ));
-                }
-            }
-        }
-        super.tick();
+    private boolean isAlreadyInGroup(LivingEntity leader) {
+        return this.mob.distanceToSqr(leader) < 400.0;
     }
 }

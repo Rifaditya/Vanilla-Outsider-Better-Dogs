@@ -1,6 +1,64 @@
-# Better Dogs - Historical Changelogs
+# Better Dogs - Historical Changelog
+
+## [3.3.1] - 2026-05-11
+### Summary
+The **"Social Politeness"** update. Implemented 1v1 dispute locking via the `bd_territorial_exclusive_disputes` GameRule to prevent chaotic interactions in high-density pack scenarios.
+- Leaders now check if a rival is "Busy" before challenging.
+- Added `TERRITORIAL_DISPUTE` social state.
+
+
+## [3.3.0] - 2026-05-11
+### Summary
+The **"Territorial Balancing"** update. Introduced granular controls for pack spawn rates and territorial interaction distances to allow server owners to fine-tune the frequency of pack wars and social friction.
+
+### Changes
+- Added `bd_territorial_search_radius` GameRule.
+- Added `bd_wolf_pack_cluster_size` GameRule.
+- Added `bd_wolf_spawn_density_boost` GameRule.
+- Implemented `Reinforcement Spawn` logic in `WolfMixin`.
+- Updated `WildWolfTerritorialGoal` to support dynamic search radii.
+- Incremented version to `3.3.0`.
 
 This file contains the archived changelogs for historical versions of Better Dogs for the 26.1 Snapshot series.
+
+## [3.2.0] - 2026-05-11
+
+### Added
+- **Feature: Wild Wolf Territorial Rivalry (Final Release)**:
+  - **1v1 Leader Duels**: Enforced isolation between rival leaders during wars via `WolfCombatHooks`.
+  - **Pack Member Brawls**: Integrated `WildWolfPackWarGoal` allowing followers to engage in secondary combat.
+  - **Personality Logic**: Pacifist members now avoid wars unless attacked, while Aggressive members join immediately.
+  - **Fatal Outcomes**: Integrated `bd_territorial_fatal_chance` (0-100) for lethal dispute resolution.
+- **Feature: Wild Personality AI (New Default)**:
+  - New GameRule: `bd_wild_personality_behavior` (Boolean).
+  - Wild wolves now naturally hunt, socialise, and defend territory out of the box in new worlds.
+- **Hardening & Optimization**:
+  - **Logic Hardening**: Moved all custom entity logging (Spawn, Tame, Social, Ambient) to the `betterdogdebugging` GameRule gate.
+  - **Architectural Cleanup**: Removed duplicate debug log entries in Mixin layers.
+  - **Performance Optimization**: Powered by **DasikLibrary 1.7.0** for high-efficiency AI anchoring.
+- **Debug Tools**:
+  - Added `/betterdogs debug territory` command to spawn dual-pack test scenarios.
+- **API Alignment**:
+  - Refactored all entity movement calls from `moveTo` to `snapTo` to comply with **26.1.2 Mojang Mappings**.
+  - Updated `setTame` signatures for 26.x environment.
+
+## [3.1.37+build.10] - 2026-05-12
+
+### Added
+- **AI Refactor: Stable Wild Pack Leadership**:
+  - **Refactored `WildWolfFollowLeaderGoal`**: Wild wolves now follow their pack leader with logic mirroring vanilla `FollowOwnerGoal` (teleportation and consistent movement).
+  - **Stable Leadership**: Pack members now lock onto their leader persistently. Leadership is saved to NBT and survives world reloads.
+  - **Tame Interaction**: Taming a leader now allows the wild pack to follow the player by proxy. Taming a member correctly transitions them to standard owner-following behavior.
+  - **Improved Performance**: Reduced frequency of expensive social pathfinding calculations.
+
+## [3.1.37+build.9] - 2026-05-11
+
+### Added
+- **Debugging Mode**: Introduced the `betterdogdebugging` GameRule.
+  - Enables detailed AI logging in the server console.
+  - Adds visual particles (Flame/Note/Happy Villager) above wolves to indicate personality.
+  - **Debug Stick Integration**: Allows cycling through personalities and social scales using the vanilla Debug Stick.
+- **Maintenance**: Fixed compilation errors related to `DasikLibrary` API changes in `WildWolfFollowLeaderGoal`.
 
 ## [3.1.37+build.5] - 2026-03-04
 
@@ -36,8 +94,9 @@ This file contains the archived changelogs for historical versions of Better Dog
 - **Social Bonding**: New system where wolves track affinity with each other. High affinity suppresses "Blood Feuds".
 - **Visual Polish**: Added "Play Bow" animation for wolves during social play fights.
 - **Personality Traits**:
-  - **Aggressive**: Wolves now scouting ahead of their owner.
-  - **Pacifist**: Wolves now whine to alert hostiles within range.
+    - **Territorial War**: If both leaders want war, they engage in a 1v1 duel for dominance.
+    - **Negotiated Yield (Handshake)**: If only one leader wants war, there is a configurable chance (`bd_territorial_yield_on_one_sided_chance`) for the other to yield and merge immediately.
+    - **Avoidance/Retreat**: If both leaders are peaceful or the handshake fails, they retreat in opposite directions.
 
 ### Fixed
 - **Pattern Matching**: Refactored combat logic to focus on Java 25 performance standards.

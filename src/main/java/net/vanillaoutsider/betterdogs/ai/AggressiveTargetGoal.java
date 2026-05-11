@@ -1,4 +1,5 @@
 package net.vanillaoutsider.betterdogs.ai;
+// Verified against: Wolf.java (26.1.2 Release)
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.players.PlayerList;
@@ -10,6 +11,7 @@ import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
+import net.dasik.social.api.group.GroupMember;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
@@ -32,9 +34,9 @@ public class AggressiveTargetGoal extends NearestAttackableTargetGoal<Monster> {
     }
 
     private boolean isValidTarget(LivingEntity target) {
-        // Must have an owner
-        LivingEntity owner = wolf.getOwner();
-        if (owner == null)
+        // Must have an anchor (Owner or Leader)
+        LivingEntity anchor = getAnchor();
+        if (anchor == null)
             return false;
 
         // Dynamic Simulation Cap for detection range
@@ -48,8 +50,8 @@ public class AggressiveTargetGoal extends NearestAttackableTargetGoal<Monster> {
             }
         }
 
-        // Target must be within range of owner (Adults only)
-        if (!wolf.isBaby() && target.distanceTo(owner) > maxRange)
+        // Target must be within range of anchor (Adults only)
+        if (!wolf.isBaby() && target.distanceTo(anchor) > maxRange)
             return false;
 
         // Don't attack creepers
@@ -62,9 +64,15 @@ public class AggressiveTargetGoal extends NearestAttackableTargetGoal<Monster> {
 
     @Override
     public boolean canUse() {
-        // Only for tamed wolves with Aggressive personality
-        if (!wolf.isTame())
+        // Must have an anchor nearby
+        LivingEntity anchor = getAnchor();
+        if (anchor == null)
             return false;
+
+        boolean isWildEnabled = BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_WILD_PERSONALITY_BEHAVIOR);
+        if (!wolf.isTame() && (!isWildEnabled || ((GroupMember)wolf).getLeader() == null)) {
+            return false;
+        }
 
         if (wolf instanceof WolfExtensions ext) {
             if (ext.betterdogs$getPersonality() != WolfPersonality.AGGRESSIVE)
@@ -73,16 +81,11 @@ public class AggressiveTargetGoal extends NearestAttackableTargetGoal<Monster> {
             return false;
         }
 
-        // Must have an owner nearby
-        LivingEntity owner = wolf.getOwner();
-        if (owner == null)
-            return false;
-
         // Refresh Simulation Distance Cache (every 5 seconds)
         if (--this.simDistRefreshTimer <= 0) {
             this.simDistRefreshTimer = 100;
-            if (owner.level().getServer() != null) {
-                this.cachedSimDist = owner.level().getServer().getPlayerList().getSimulationDistance();
+            if (anchor.level().getServer() != null) {
+                this.cachedSimDist = anchor.level().getServer().getPlayerList().getSimulationDistance();
             }
         }
 
@@ -94,17 +97,26 @@ public class AggressiveTargetGoal extends NearestAttackableTargetGoal<Monster> {
             }
         }
 
-        if (!wolf.isBaby() && wolf.distanceTo(owner) > chaseDist)
+        if (!wolf.isBaby() && wolf.distanceTo(anchor) > chaseDist)
             return false;
 
         return super.canUse();
     }
 
+    private LivingEntity getAnchor() {
+        if (wolf.isTame()) {
+            return wolf.getOwner();
+        } else if (wolf instanceof GroupMember member) {
+            return member.getLeader();
+        }
+        return null;
+    }
+
     @Override
     public boolean canContinueToUse() {
-        // Stop if too far from owner
-        LivingEntity owner = wolf.getOwner();
-        if (owner == null)
+        // Stop if too far from anchor
+        LivingEntity anchor = getAnchor();
+        if (anchor == null)
             return false;
 
         double chaseDist = BetterDogsGameRules.getInt(wolf.level(), BetterDogsGameRules.BD_AGGRO_CHASE_DIST);
@@ -115,7 +127,7 @@ public class AggressiveTargetGoal extends NearestAttackableTargetGoal<Monster> {
             }
         }
 
-        if (!wolf.isBaby() && wolf.distanceTo(owner) > chaseDist)
+        if (!wolf.isBaby() && wolf.distanceTo(anchor) > chaseDist)
             return false;
 
         return super.canContinueToUse();

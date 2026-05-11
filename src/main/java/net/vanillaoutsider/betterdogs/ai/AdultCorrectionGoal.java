@@ -8,6 +8,7 @@ import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import net.minecraft.server.level.ServerLevel;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.vanillaoutsider.betterdogs.BetterDogs;
+import net.vanillaoutsider.betterdogs.util.WolfDebugLogger;
 
 public class AdultCorrectionGoal extends Goal {
 
@@ -95,7 +96,7 @@ public class AdultCorrectionGoal extends Goal {
             if (this.wolf instanceof WolfExtensions myExt) {
                 myExt.betterdogs$setBloodFeudTarget(this.offendingBaby.getStringUUID());
             }
-            BetterDogs.LOGGER.info("BLOOD FEUD DECLARE: Adult " + this.wolf.getUUID() + " vs Baby " + this.offendingBaby.getUUID() + " (Chance: " + chance + ")");
+            WolfDebugLogger.log(this.wolf, "Social", "BLOOD FEUD DECLARE: Adult " + this.wolf.getUUID() + " vs Baby " + this.offendingBaby.getUUID() + " (Chance: " + chance + ")");
         }
     }
 

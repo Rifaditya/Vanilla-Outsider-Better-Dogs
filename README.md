@@ -1,21 +1,15 @@
-# 🐕 Better Dogs: A Social & Behavioral Overhaul (v3.1.37+build.5)
+# 🐕 Better Dogs: A Social & Behavioral Overhaul (v3.2.0)
 
 **Better Dogs** is a comprehensive overhaul of the Minecraft Wolf, replacing robotic behaviors with a dynamic, personality-driven social system. Built for the modern "Post-Obfuscation" era of Minecraft, it enhances the taming loop with genetics, social bonding, and smart survival logic.
 
----
+## 🔥 New in v3.2.0: The Territorial Handshake
 
-## 🔥 New in v3.1.37: Social Depth & Visuals
+The latest update introduces the **Wild Wolf Territorial Handshake** and **Deterministic AI**:
 
-The latest update introduces the **Social Bonding System** and significant visual polish:
-
-- **🤝 Social Bonding (Affinity)**: Wolves now track persistent relationships (`affinityMap`) with pack members. Group activities like howling build trust, which dynamically decreases the threshold for accidental "Blood Feuds."
-- **🐺 Synchronized Howling**: A realistic, non-monstrous howl sound using variant-specific whine tones at lowered pitches.
-- **✨ Visual Feedback**: 
-    - **Hearts/Happy Bubbles**: Indicate bonding increases during social overlap.
-    - **Angry Bubbles**: Signal disciplinary actions during "Adult Correction."
-- **📡 Behavioral Specialization**: 
-    - **Aggressive Scouting**: Guard dogs proactively wander 3-5 blocks ahead to scout the path.
-    - **Pacifist's Silent Alarm**: Gentlest dogs emit a high-pitched whine sound to alert you of nearby monsters.
+- **🏰 Territorial Handshake**: Rival leaders now negotiate. If only one wants war, the other may surrender and merge immediately based on chance.
+- **🗡️ Cinematic Duels**: 1v1 combat between leaders settles dominance while packs engage in brawls.
+- **🧠 Wild Personality AI**: Wild wolves exhibit unique traits (Aggressive hunting, etc.) anchored to their leader.
+- **📡 Deterministic Decisions**: AI decisions are now synchronized between entities using seeded randomization.
 
 ---
 

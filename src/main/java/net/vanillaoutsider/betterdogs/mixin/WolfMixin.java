@@ -48,7 +48,14 @@ import net.dasik.social.api.group.FlockType;
 import net.vanillaoutsider.betterdogs.ai.group.WildWolfFollowLeaderGoal;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.UUID;
 import java.util.Optional;
+import java.util.Optional;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.DebugStickItem;
+import net.minecraft.network.chat.Component;
+import net.vanillaoutsider.betterdogs.util.WolfDebugLogger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -168,7 +175,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
     public void betterdogs$setSocialScale(float scale) {
          WolfPersistentData current = WolfPersistentData.getWolfData((Wolf) (Object) this);
         WolfPersistentData.setScale(current.personalityId(), current.lastDamageTime(), current.submissive(),
-                current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), (Wolf) (Object) this, scale, current.affinityMap());
+                current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), (Wolf) (Object) this, scale, current.affinityMap(), current.leaderUuid());
     }
 
     // === SOCIAL BONDING & VISUALS (V3.1.37) ===
@@ -181,6 +188,16 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
     @Override
     public void betterdogs$adjustAffinity(String targetUuid, int delta) {
         WolfPersistentData.adjustPersistedAffinity((Wolf) (Object) this, targetUuid, delta);
+    }
+
+    @Override
+    public UUID betterdogs$getLeaderUuid() {
+        return WolfPersistentData.getPersistedLeaderUuid((Wolf) (Object) this).orElse(null);
+    }
+
+    @Override
+    public void betterdogs$setLeaderUuid(@Nullable UUID uuid) {
+        WolfPersistentData.setPersistedLeaderUuid((Wolf) (Object) this, uuid);
     }
 
     // betterdogs$getSpeciesId removed as it is not part of WolfExtensions
@@ -224,17 +241,27 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
 
     @Override
     public LivingEntity getLeader() {
+        if (this.betterdogs$leader == null || !this.betterdogs$leader.isAlive()) {
+            UUID uuid = betterdogs$getLeaderUuid();
+            if (uuid != null && this.level() instanceof ServerLevel serverLevel) {
+                Entity entity = serverLevel.getEntity(uuid);
+                if (entity instanceof LivingEntity living) {
+                    this.betterdogs$leader = living;
+                }
+            }
+        }
         return betterdogs$leader;
     }
 
     @Override
     public boolean hasLeader() {
-        return betterdogs$leader != null && betterdogs$leader.isAlive();
+        return betterdogs$getLeaderUuid() != null;
     }
 
     @Override
     public void setLeader(@Nullable LivingEntity leader) {
         this.betterdogs$leader = leader;
+        betterdogs$setLeaderUuid(leader != null ? leader.getUUID() : null);
     }
 
     @Override
@@ -405,7 +432,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
                 // 1% chance every second during morning
                 if (wolf.getRandom().nextFloat() < 0.01f) {
                     betterdogs$socialScheduler.schedule(new ZoomiesDogEvent());
-                    BetterDogs.LOGGER.info("Wolf [{}] triggered morning zoomies!", wolf.getUUID());
+                    WolfDebugLogger.log(wolf, "Ambient", "Morning zoomies triggered!");
                 }
             }
         }
@@ -428,7 +455,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
         if (!level.getLevel().isClientSide()) {
             WolfPersonality personality = WolfPersonality.random(level.getLevel());
             betterdogs$setPersonality(personality);
-            BetterDogs.LOGGER.info("Wolf spawned with personality: {}", personality.name());
+            WolfDebugLogger.log((Wolf)(Object)this, "Spawn", "Personality assigned: " + personality.name());
 
             long dna = this.getRandom().nextLong();
             betterdogs$setDNA(dna);
@@ -436,7 +463,50 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
             betterdogs$setSocialScale(scale);
 
             net.dasik.social.core.SocialRegistry.register(this);
+            WolfDebugLogger.log((Wolf)(Object)this, "Spawn", "Initialized with personality: " + personality.name());
+
+            // Density Boost Logic (v3.3.0)
+            if (spawnReason == EntitySpawnReason.NATURAL && groupData == null) {
+                int boostChance = BetterDogsGameRules.getInt(level.getLevel(), BetterDogsGameRules.BD_WOLF_SPAWN_DENSITY_BOOST);
+                int roll = this.getRandom().nextInt(100);
+                WolfDebugLogger.log((Wolf)(Object)this, "Spawn", "Density Boost Evaluation - Roll: " + roll + " / Target: " + boostChance);
+                if (roll < boostChance) {
+                    this.betterdogs$triggerReinforcementSpawn(level);
+                }
+            }
         }
+    }
+
+    @Unique
+    private void betterdogs$triggerReinforcementSpawn(ServerLevelAccessor level) {
+        Wolf wolf = (Wolf) (Object) this;
+        ServerLevel serverLevel = level.getLevel();
+        BlockPos pos = wolf.blockPosition();
+
+        // Find a spot nearby
+        BlockPos spawnPos = pos.offset(
+            this.getRandom().nextInt(16) - 8,
+            0,
+            this.getRandom().nextInt(16) - 8
+        );
+
+        // Spawn a reinforcement cluster
+        int clusterSize = BetterDogsGameRules.getInt(serverLevel, BetterDogsGameRules.BD_WOLF_PACK_CLUSTER_SIZE);
+        int count = clusterSize / 2 + 1;
+        for (int i = 0; i < count; i++) {
+             Wolf reinforcement = net.minecraft.world.entity.EntityType.WOLF.create(serverLevel, EntitySpawnReason.REINFORCEMENT);
+             if (reinforcement != null) {
+                 reinforcement.moveTo(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, this.getRandom().nextFloat() * 360.0F, 0.0F);
+                 reinforcement.finalizeSpawn(level, serverLevel.getCurrentDifficultyAt(spawnPos), EntitySpawnReason.REINFORCEMENT, null);
+                 serverLevel.addFreshEntityWithPassengers(reinforcement);
+             }
+        }
+        WolfDebugLogger.log(wolf, "Spawn", "Density Boost: Reinforcement pack (" + count + ") spawned at " + spawnPos);
+    }
+
+    @Override
+    public int getMaxSpawnClusterSize() {
+        return BetterDogsGameRules.getInt(this.level(), BetterDogsGameRules.BD_WOLF_PACK_CLUSTER_SIZE);
     }
 
     @Override
@@ -455,6 +525,8 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
         this.goalSelector.addGoal(1, new FleeCreeperGoal(wolf));
         this.goalSelector.addGoal(1, new AvoidHazardsGoal(wolf));
         this.goalSelector.addGoal(3, new EatGroundFoodGoal(wolf));
+        this.goalSelector.addGoal(4, new WildWolfTerritorialGoal(wolf));
+        this.goalSelector.addGoal(4, new WildWolfPackWarGoal(wolf));
 
         this.targetSelector.addGoal(2, new AggressiveTargetGoal(wolf));
         this.targetSelector.addGoal(2, new PacifistRevengeGoal(wolf));
@@ -511,6 +583,38 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
         this.goalSelector.addGoal(5, new WildWolfFollowLeaderGoal(wolf));
     }
 
+    @Inject(method = "mobInteract", at = @At("HEAD"), cancellable = true)
+    private void betterdogs$onMobInteract(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
+        Wolf wolf = (Wolf) (Object) this;
+        if (player.getItemInHand(hand).getItem() instanceof DebugStickItem) {
+            if (BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_DEBUGGING)) {
+                if (!wolf.level().isClientSide()) {
+                    if (player.isSecondaryUseActive()) {
+                        // Shift + Click: Cycle Scale
+                        float currentScale = betterdogs$getSocialScale();
+                        float nextScale = currentScale + 0.1f;
+                        if (nextScale > 1.5f) nextScale = 0.5f;
+                        betterdogs$setSocialScale(nextScale);
+                        player.sendOverlayMessage(Component.literal("§b[Debug] §fScale: " + String.format("%.1f", nextScale)));
+                        WolfDebugLogger.log(wolf, "DebugStick", "Scale changed to " + nextScale);
+                    } else {
+                        // Normal Click: Cycle Personality
+                        WolfPersonality current = betterdogs$getPersonality();
+                        WolfPersonality next = current.next();
+                        betterdogs$setPersonality(next);
+                        // Force re-apply stats if tamed
+                        if (wolf.isTame()) {
+                            betterdogs$applyPersonalityStats(next);
+                        }
+                        player.sendOverlayMessage(Component.literal("§b[Debug] §fPersonality: " + next.name()));
+                        WolfDebugLogger.log(wolf, "DebugStick", "Personality changed to " + next.name());
+                    }
+                }
+                cir.setReturnValue(InteractionResult.SUCCESS);
+            }
+        }
+    }
+
     @Inject(method = "applyTamingSideEffects", at = @At("HEAD"))
     private void betterdogs$onApplyTamingSideEffects(CallbackInfo ci) {
         if (!this.isTame() || this.level().isClientSide())
@@ -519,8 +623,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
         if (!betterdogs$hasPersonality()) {
             WolfPersonality personality = WolfPersonality.random(this.level());
             betterdogs$setPersonality(personality);
-            BetterDogs.LOGGER.info("Wolf [{}] tamed - assigning initial personality: {}", this.getUUID(),
-                    personality.name());
+            WolfDebugLogger.log((Wolf)(Object)this, "Tame", "Assigned initial personality: " + personality.name());
         }
 
         WolfPersonality personality = betterdogs$getPersonality();
@@ -585,6 +688,18 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
         this.betterdogs$tickScheduler();
 
         Wolf wolf = (Wolf) (Object) this;
+
+        if (BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_DEBUGGING) && this.tickCount % 20 == 0) {
+            WolfPersonality personality = betterdogs$getPersonality();
+            if (personality == WolfPersonality.AGGRESSIVE) {
+                wolf.level().addParticle(ParticleTypes.FLAME, wolf.getRandomX(0.5), wolf.getRandomY() + 0.5, wolf.getRandomZ(0.5), 0, 0.05, 0);
+            } else if (personality == WolfPersonality.PACIFIST) {
+                wolf.level().addParticle(ParticleTypes.NOTE, wolf.getRandomX(0.5), wolf.getRandomY() + 0.5, wolf.getRandomZ(0.5), 0, 0.05, 0);
+            } else {
+                wolf.level().addParticle(ParticleTypes.HAPPY_VILLAGER, wolf.getRandomX(0.5), wolf.getRandomY() + 0.5, wolf.getRandomZ(0.5), 0, 0.05, 0);
+            }
+        }
+
         if (!this.level().isClientSide()) {
             betterdogs$checkTargetCliffSafety();
             betterdogs$checkMovementCliffSafety();
@@ -606,6 +721,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
     @Inject(method = "actuallyHurt", at = @At("HEAD"), cancellable = true)
     private void betterdogs$onActuallyHurt(ServerLevel level, DamageSource source, float amount, CallbackInfo ci) {
         betterdogs$setLastDamageTime(this.tickCount);
+        WolfDebugLogger.log((Wolf)(Object)this, "Hurt", "Source: " + source.getMsgId() + ", Amount: " + amount);
 
         if (WolfCombatHooks.onActuallyHurt((Wolf) (Object) this, source, amount)) {
             ci.cancel();

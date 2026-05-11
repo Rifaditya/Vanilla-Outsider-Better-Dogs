@@ -3,6 +3,8 @@ package net.vanillaoutsider.betterdogs;
 import net.minecraft.world.entity.LivingEntity;
 import org.jspecify.annotations.Nullable;
 import net.dasik.social.core.EntitySocialScheduler;
+import java.util.UUID;
+import java.util.Optional;
 
 /**
  * Extension interface for Wolf entity to access personality and training data.
@@ -104,7 +106,9 @@ public interface WolfExtensions {
         ZOOMIES, // Hyperactive running (5-8s)
         HOWL, // Social howling (10s)
         PLAY, // Future expansion
-        WARNING // Future expansion
+        WARNING, // Future expansion
+        TERRITORIAL_DISPUTE, // V3.3.1 - Pack rivalry (stare down)
+        TERRITORIAL_WAR // V3.1.37 - Pack rivalry (combat)
     }
 
     /**
@@ -189,4 +193,17 @@ public interface WolfExtensions {
      * Adjust social affinity with another wolf.
      */
     void betterdogs$adjustAffinity(String targetUuid, int delta);
+
+    // === GROUP PERSISTENCE (V3.1.37) ===
+
+    /**
+     * @return The UUID of the group leader, or null if no leader is set.
+     */
+    @Nullable
+    UUID betterdogs$getLeaderUuid();
+
+    /**
+     * Set the persistent leader UUID.
+     */
+    void betterdogs$setLeaderUuid(@Nullable UUID uuid);
 }

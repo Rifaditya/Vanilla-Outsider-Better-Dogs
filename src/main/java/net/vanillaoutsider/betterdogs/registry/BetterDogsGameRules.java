@@ -70,6 +70,7 @@ public class BetterDogsGameRules {
         public static GameRule<Boolean> BD_CLIFF_SAFETY;
         public static GameRule<Boolean> BD_DOGS_EAT_RAW_FOOD;
         public static GameRule<Boolean> BD_DOGS_EAT_COOKED_FOOD;
+        public static GameRule<Boolean> BD_DEBUGGING;
 
         // --- Player ---
         public static GameRule<Boolean> BD_FRIENDLY_FIRE;
@@ -104,6 +105,21 @@ public class BetterDogsGameRules {
         public static GameRule<Integer> BD_BLOOD_FEUD_PERCENT;
         public static GameRule<Integer> BD_BABY_RETALIATE_PERCENT;
 
+        // --- Territorial ---
+        public static GameRule<Boolean> BD_TERRITORIAL_RIVALRY;
+        public static GameRule<Integer> BD_TERRITORIAL_WAR_CHANCE_AGGRO;
+        public static GameRule<Integer> BD_TERRITORIAL_WAR_CHANCE_NORMAL;
+        public static GameRule<Integer> BD_TERRITORIAL_WAR_CHANCE_PACI;
+        public static GameRule<Integer> BD_TERRITORIAL_FATAL_CHANCE;
+        public static GameRule<Integer> BD_TERRITORIAL_YIELD_ON_ONE_SIDED_CHANCE;
+        public static GameRule<Boolean> BD_TERRITORIAL_EXCLUSIVE_DISPUTES;
+        public static GameRule<Boolean> BD_WILD_PERSONALITY_BEHAVIOR;
+        public static GameRule<Integer> BD_TERRITORIAL_SEARCH_RADIUS;
+
+        // --- Spawning ---
+        public static GameRule<Integer> BD_WOLF_PACK_CLUSTER_SIZE;
+        public static GameRule<Integer> BD_WOLF_SPAWN_DENSITY_BOOST; // % chance for reinforcement pack
+
         // --- Breeding Genetics ---
         public static GameRule<Integer> BD_BREED_SAME_CHANCE;
         public static GameRule<Integer> BD_BREED_SAME_OTHER_CHANCE;
@@ -130,6 +146,8 @@ public class BetterDogsGameRules {
 
                 BD_FRIENDLY_FIRE = registerBoolean("bd_friendly_fire_protection", BETTER_DOGS,
                                 config.getEnableFriendlyFireProtection());
+
+                BD_DEBUGGING = registerBoolean("betterdogdebugging", BETTER_DOGS, false);
 
                 // Aggressive
                 BD_AGGRO_HEALTH = registerInteger("bd_aggro_health", BETTER_DOGS,
@@ -200,6 +218,19 @@ public class BetterDogsGameRules {
                                 config.getBreedingDilutedNormalChance());
                 BD_BREED_DILUTED_OTHER_CHANCE = registerInteger("bd_breed_diluted_other_chance", BETTER_DOGS,
                                 config.getBreedingDilutedOtherChance());
+
+                // Territorial
+                BD_TERRITORIAL_RIVALRY = registerBoolean("bd_territorial_rivalry", BETTER_DOGS, true);
+                BD_TERRITORIAL_WAR_CHANCE_AGGRO = registerInteger("bd_territorial_war_chance_aggressive", BETTER_DOGS, 100);
+                BD_TERRITORIAL_WAR_CHANCE_NORMAL = registerInteger("bd_territorial_war_chance_normal", BETTER_DOGS, 10);
+                BD_TERRITORIAL_WAR_CHANCE_PACI = registerInteger("bd_territorial_war_chance_pacifist", BETTER_DOGS, 0);
+                BD_TERRITORIAL_FATAL_CHANCE = registerInteger("bd_territorial_fatal_chance", BETTER_DOGS, 5);
+                BD_TERRITORIAL_YIELD_ON_ONE_SIDED_CHANCE = registerInteger("bd_territorial_yield_on_one_sided_chance", BETTER_DOGS, 50);
+                BD_TERRITORIAL_EXCLUSIVE_DISPUTES = registerBoolean("bd_territorial_exclusive_disputes", BETTER_DOGS, true);
+                BD_WILD_PERSONALITY_BEHAVIOR = registerBoolean("bd_wild_personality_behavior", BETTER_DOGS, true);
+                BD_TERRITORIAL_SEARCH_RADIUS = registerInteger("bd_territorial_search_radius", BETTER_DOGS, 96);
+                BD_WOLF_PACK_CLUSTER_SIZE = registerInteger("bd_wolf_pack_cluster_size", BETTER_DOGS, 8);
+                BD_WOLF_SPAWN_DENSITY_BOOST = registerInteger("bd_wolf_spawn_density_boost", BETTER_DOGS, 0);
         }
 
         // Internal Registration Helpers

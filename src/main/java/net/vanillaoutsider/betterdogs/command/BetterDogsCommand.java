@@ -49,6 +49,9 @@ public class BetterDogsCommand {
                                         )
                                 )
                         )
+                        .then(Commands.literal("territory")
+                                .executes(context -> WolfCommandHelper.spawnTerritoryScenario(context.getSource()))
+                        )
                 )
         );
     }

@@ -1,4 +1,5 @@
 package net.vanillaoutsider.betterdogs.util;
+// Verified against: Wolf.java (26.1.2 Release)
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -119,13 +120,26 @@ public class WolfCombatHooks {
         // target, ALLOW IT.
         // This overrides TamableAnimal.wantsToAttack() which normally blocks attacking
         // the owner.
-        if (ext.betterdogs$isSocialModeActive()
-                && ext.betterdogs$getSocialTarget() == target) {
-
-            // Allow Retaliation OR Play Fight
+            // Allow Retaliation OR Play Fight OR Territorial War (Leaders 1v1)
             if (ext.betterdogs$getSocialAction() == WolfExtensions.SocialAction.RETALIATION ||
-                    ext.betterdogs$getSocialAction() == WolfExtensions.SocialAction.PLAY_FIGHT) {
+                    ext.betterdogs$getSocialAction() == WolfExtensions.SocialAction.PLAY_FIGHT ||
+                    ext.betterdogs$getSocialAction() == WolfExtensions.SocialAction.TERRITORIAL_WAR) {
+                // If it's a war, ONLY attack the rival leader
+                if (ext.betterdogs$getSocialAction() == WolfExtensions.SocialAction.TERRITORIAL_WAR) {
+                    return target == ext.betterdogs$getSocialTarget();
+                }
                 return true;
+            }
+
+        // Territorial War: Member constraints (1v1 Leader protection)
+        if (wolf instanceof net.dasik.social.api.group.GroupMember member) {
+            LivingEntity leader = member.getLeader();
+            if (leader instanceof WolfExtensions leaderExt && leaderExt.betterdogs$getSocialAction() == WolfExtensions.SocialAction.TERRITORIAL_WAR) {
+                LivingEntity rivalLeader = leaderExt.betterdogs$getSocialTarget();
+                // 1. Members cannot target rival leader
+                if (target == rivalLeader) return false;
+                // 2. Rival members cannot target our leader
+                if (target == leader) return false;
             }
         }
 

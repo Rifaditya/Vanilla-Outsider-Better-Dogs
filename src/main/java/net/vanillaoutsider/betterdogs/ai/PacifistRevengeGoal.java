@@ -1,10 +1,13 @@
 package net.vanillaoutsider.betterdogs.ai;
+// Verified against: Wolf.java (26.1.2 Release)
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
+import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
+import net.dasik.social.api.group.GroupMember;
 
 /**
  * AI Goal for Pacifist personality wolves.
@@ -21,9 +24,12 @@ public class PacifistRevengeGoal extends HurtByTargetGoal {
 
     @Override
     public boolean canUse() {
-        // Only for tamed wolves with Pacifist personality
-        if (!wolf.isTame())
+        // Only for wolves with Pacifist personality (Adults)
+        boolean isWildEnabled = BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_WILD_PERSONALITY_BEHAVIOR);
+
+        if (!wolf.isTame() && (!isWildEnabled || ((GroupMember)wolf).getLeader() == null)) {
             return false;
+        }
 
         if (wolf instanceof WolfExtensions ext) {
             if (ext.betterdogs$getPersonality() != WolfPersonality.PACIFIST || wolf.isBaby())
@@ -32,18 +38,27 @@ public class PacifistRevengeGoal extends HurtByTargetGoal {
             return false;
         }
 
-        // Check if owner was recently hurt
-        LivingEntity owner = wolf.getOwner();
-        if (owner == null)
+        // Check if anchor was recently hurt
+        LivingEntity anchor = getAnchor();
+        if (anchor == null)
             return false;
 
-        LivingEntity lastHurtByMob = owner.getLastHurtByMob();
+        LivingEntity lastHurtByMob = anchor.getLastHurtByMob();
         if (lastHurtByMob == null)
             return false;
 
-        // Target the mob that hurt our owner
+        // Target the mob that hurt our anchor
         wolf.setTarget(lastHurtByMob);
         return true;
+    }
+
+    private LivingEntity getAnchor() {
+        if (wolf.isTame()) {
+            return wolf.getOwner();
+        } else if (wolf instanceof GroupMember member) {
+            return member.getLeader();
+        }
+        return null;
     }
 
     @Override

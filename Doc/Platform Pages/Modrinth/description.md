@@ -52,6 +52,15 @@ When tamed, wolves develop one of three permanent personalities, visible via cus
 - **Scouting**: Aggressive dogs proactively range ahead to clear your path.
 - **Silent Alarm**: Pacifist dogs emit a high-pitched whine when they detect nearby monsters.
 - **Gift System**: Loyal dogs bring you treasures based on their personality.
+- **Debug Tools**: Use `/betterdogs debug territory` to test pack interactions.
+
+### 🏰 Wild Wolf Territoriality
+Wild wolf packs are now dynamic, territorial entities led by a dominant leader:
+- **Territorial Disputes (The Handshake)**: When rival packs meet, leaders negotiate. If both want war, they engage in a **Territorial War**. If only one wants war, the other may **Yield & Merge** immediately or retreat based on a configurable chance.
+- **1v1 Leader Duels**: During a war, rival leaders engage in a cinematic 1v1 duel to settle dominance, while pack members participate in a secondary brawl.
+- **Yield & Merge**: Defeated packs are not lost; they yield and **merge** with the winning pack, allowing for the natural formation of massive wolf colonies.
+- **Wild Personality AI (New Default)**: Out of the box, wild pack members exhibit unique behaviors (like Aggressive hunting or Pack Retreats) while anchored to their leader.
+- **Performance Hardened**: All AI logic is performance-optimized using **DasikLibrary 1.7.0**, ensuring zero console spam and smooth server TPS even with massive packs.
 
 ---
 
@@ -71,9 +80,10 @@ If you enjoy the **Vanilla Outsider** collection, consider fueling the next upda
 
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20Me-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/dasikigaijin/tip)
 [![SocioBuzz](https://img.shields.io/badge/SocioBuzz-Local_Support-7BB32E?style=for-the-badge)](https://sociabuzz.com/dasikigaijin/tribe)
+[![Saweria](https://img.shields.io/badge/Saweria-Local_Support-FFA500?style=for-the-badge)](https://saweria.co/DasikIgaijinn)
 
 > [!NOTE]
-> **Indonesian Users:** SocioBuzz supports local payment methods (Gopay, OVO, Dana, etc.) if you want to support me without using PayPal/Ko-fi!
+> **Indonesian Users:** SocioBuzz and Saweria support local payment methods (Gopay, OVO, Dana, etc.) if you want to support me without using PayPal/Ko-fi!
 
 ---
 
