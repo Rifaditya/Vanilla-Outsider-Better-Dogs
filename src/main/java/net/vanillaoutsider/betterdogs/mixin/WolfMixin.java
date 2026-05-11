@@ -496,7 +496,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions,
         for (int i = 0; i < count; i++) {
              Wolf reinforcement = net.minecraft.world.entity.EntityType.WOLF.create(serverLevel, EntitySpawnReason.REINFORCEMENT);
              if (reinforcement != null) {
-                 reinforcement.moveTo(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, this.getRandom().nextFloat() * 360.0F, 0.0F);
+                 reinforcement.snapTo(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, this.getRandom().nextFloat() * 360.0F, 0.0F);
                  reinforcement.finalizeSpawn(level, serverLevel.getCurrentDifficultyAt(spawnPos), EntitySpawnReason.REINFORCEMENT, null);
                  serverLevel.addFreshEntityWithPassengers(reinforcement);
              }
