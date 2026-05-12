@@ -131,7 +131,7 @@ The **"Wolf Litters"** update. Tamed wolves can now have multiple puppies in one
 
 ## [3.1.37+build.1] - 2026-03-03
 - **Social Bonding**: New system where wolves track affinity with each other. High affinity suppresses "Blood Feuds".
-- **Visual Polish**: Added "Play Bow" animation for wolves during social play fights.
+
 - **Personality Traits**:
   - **Aggressive**: Wolves now scouting ahead of their owner.
   - **Pacifist**: Wolves now whine to alert hostiles within range.

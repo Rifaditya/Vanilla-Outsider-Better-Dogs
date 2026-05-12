@@ -98,7 +98,6 @@ This file contains the archived changelogs for historical versions of Better Dog
 
 ### Added
 - **Social Bonding**: New system where wolves track affinity with each other. High affinity suppresses "Blood Feuds".
-- **Visual Polish**: Added "Play Bow" animation for wolves during social play fights.
 - **Personality Traits**:
     - **Territorial War**: If both leaders want war, they engage in a 1v1 duel for dominance.
     - **Negotiated Yield (Handshake)**: If only one leader wants war, there is a configurable chance (`bd_territorial_yield_on_one_sided_chance`) for the other to yield and merge immediately.

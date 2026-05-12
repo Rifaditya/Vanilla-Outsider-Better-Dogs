@@ -39,7 +39,6 @@ When tamed, wolves develop one of three permanent personalities, visible via cus
 
 ### 🤝 Advanced Social AI
 - **Social Bonding (Affinity)**: Dogs form relationships within their pack. Socializing builds trust and reduces accidental infighting.
-- **🙇 The Play Bow**: Brand-new custom animation for social invitations.
 - **Adult Correction**: Aggressive adults discipline misbehaving puppies, preventing death loops.
 - **Pack Genetics**: Puppies inherit personality traits and stats from their parents.
 

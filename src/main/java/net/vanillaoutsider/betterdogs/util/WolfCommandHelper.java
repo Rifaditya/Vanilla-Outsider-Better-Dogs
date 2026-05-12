@@ -17,6 +17,8 @@ import net.minecraft.world.entity.EntityType;
 import net.dasik.social.api.group.GroupMember;
 import net.minecraft.world.entity.EntitySpawnReason;
 
+import net.minecraft.world.level.levelgen.Heightmap;
+
 /**
  * Command execution logic for Better Dogs debugging.
  * Strictly adheres to Modularity Mandate and Zenith Execution Guardrails.
@@ -94,7 +96,7 @@ public class WolfCommandHelper {
             final int finalCount = count;
             source.sendSuccess(() -> Component.literal("Successfully triggered action '" + actionStr + "' on " + finalCount + " wolves."), true);
         } else {
-            source.sendFailure(Component.literal("No valid wolves selected or invalid action (playbow, stopplaybow, howl, zoomies, mischief, disciplined)."));
+            source.sendFailure(Component.literal("No valid wolves selected or invalid action (howl, zoomies, mischief, disciplined)."));
         }
         return count;
     }
@@ -116,7 +118,10 @@ public class WolfCommandHelper {
         // Leader
         Wolf leader = EntityType.WOLF.create(level, EntitySpawnReason.COMMAND);
         if (leader == null) return;
-        leader.snapTo(pos.x, pos.y, pos.z, 0.0f, 0.0f);
+        
+        // Find surface level
+        int surfaceY = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (int)pos.x, (int)pos.z);
+        leader.snapTo(pos.x, surfaceY, pos.z, 0.0f, 0.0f);
         ((WolfExtensions) leader).betterdogs$setPersonality(name.contains("Aggressive") ? WolfPersonality.AGGRESSIVE : WolfPersonality.NORMAL);
         
         // Ensure they are truly wild
@@ -129,7 +134,12 @@ public class WolfCommandHelper {
             if (follower == null) continue;
             double offsetX = (level.getRandom().nextDouble() - 0.5) * 4;
             double offsetZ = (level.getRandom().nextDouble() - 0.5) * 4;
-            follower.snapTo(pos.x + offsetX, pos.y, pos.z + offsetZ, 0.0f, 0.0f);
+            
+            double targetX = pos.x + offsetX;
+            double targetZ = pos.z + offsetZ;
+            int followerY = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (int)targetX, (int)targetZ);
+            
+            follower.snapTo(targetX, followerY, targetZ, 0.0f, 0.0f);
             
             // Link to leader
             if (follower instanceof GroupMember member) {

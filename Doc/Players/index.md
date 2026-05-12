@@ -8,6 +8,5 @@ Welcome to the **Better Dogs** player guide.
 - **Behavioral Specialization**: Aggressive dogs **Scout** ahead; Pacifist dogs act as a **Silent Alarm**.
 - **Social Interaction**: Dogs perform "Zoomies", play fetch, and have rivalries.
 - **Social Bonding**: Build affinity through pack activities (Howling/Play) to prevent feuds.
-- **Play Bows**: Watch for the new "Play Bow" animation during social initiations.
 
 See the [Features](Features/index.md) directory for more details.
