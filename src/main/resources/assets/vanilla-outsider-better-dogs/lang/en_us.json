@@ -91,5 +91,9 @@
     "gamerule.minecraft.bd_wolf_pack_cluster_size": "Wolf Pack Cluster Size",
     "gamerule.minecraft.bd_wolf_pack_cluster_size.description": "The maximum number of wolves that can spawn together in a single pack cluster. Default: 8.",
     "gamerule.minecraft.bd_wolf_spawn_density_boost": "Wolf Spawn Density Boost",
-    "gamerule.minecraft.bd_wolf_spawn_density_boost.description": "The % chance for a newly spawned wolf pack to trigger an additional 'Reinforcement' spawn nearby, increasing local pack density. Default: 0."
+    "gamerule.minecraft.bd_wolf_spawn_density_boost.description": "The % chance for a newly spawned wolf pack to trigger an additional 'Reinforcement' spawn nearby, increasing local pack density. Default: 0.",
+    "gamerule.minecraft.bd_wolf_litter_max_size": "Wolf: Litter Max Size",
+    "gamerule.minecraft.bd_wolf_litter_max_size.description": "Maximum number of offspring a tamed wolf pair can produce in one litter. Default: 4.",
+    "gamerule.minecraft.bd_wolf_litter_extra_chance": "Wolf: Litter Extra Chance (%)",
+    "gamerule.minecraft.bd_wolf_litter_extra_chance.description": "Chance (0-100) for each additional puppy to be born after the first. Default: 20."
 }

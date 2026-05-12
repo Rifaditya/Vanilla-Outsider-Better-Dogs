@@ -127,6 +127,8 @@ public class BetterDogsGameRules {
         public static GameRule<Integer> BD_BREED_MIXED_RECESSIVE_CHANCE;
         public static GameRule<Integer> BD_BREED_DILUTED_NORMAL_CHANCE;
         public static GameRule<Integer> BD_BREED_DILUTED_OTHER_CHANCE;
+        public static GameRule<Integer> BD_WOLF_LITTER_MAX_SIZE;
+        public static GameRule<Integer> BD_WOLF_LITTER_EXTRA_CHANCE;
 
         // --- Taming Chances ---
         public static GameRule<Integer> BD_TAME_NORMAL_PERCENT;
@@ -218,6 +220,10 @@ public class BetterDogsGameRules {
                                 config.getBreedingDilutedNormalChance());
                 BD_BREED_DILUTED_OTHER_CHANCE = registerInteger("bd_breed_diluted_other_chance", BETTER_DOGS,
                                 config.getBreedingDilutedOtherChance());
+
+                // Litter Size (v3.4.0)
+                BD_WOLF_LITTER_MAX_SIZE = registerInteger("bd_wolf_litter_max_size", BETTER_DOGS, 4);
+                BD_WOLF_LITTER_EXTRA_CHANCE = registerInteger("bd_wolf_litter_extra_chance", BETTER_DOGS, 20);
 
                 // Territorial
                 BD_TERRITORIAL_RIVALRY = registerBoolean("bd_territorial_rivalry", BETTER_DOGS, true);

@@ -1,5 +1,11 @@
 # Better Dogs - Historical Changelog
 
+## [3.4.0] - 2026-05-12
+### Summary
+The **"Wolf Litters"** update. Tamed wolves can now have multiple puppies in one breed, mirroring real-world dog litters.
+- Added `bd_wolf_litter_max_size` and `bd_wolf_litter_extra_chance` GameRules.
+- Puppies in a litter inherit parent traits independently.
+
 ## [3.3.1] - 2026-05-11
 ### Summary
 The **"Social Politeness"** update. Implemented 1v1 dispute locking via the `bd_territorial_exclusive_disputes` GameRule to prevent chaotic interactions in high-density pack scenarios.

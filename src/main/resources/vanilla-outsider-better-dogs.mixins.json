@@ -14,7 +14,8 @@
         "WolfMobMixin",
         "WolfRendererMixin",
         "WolfRenderStateMixin",
-        "ServerLevelMixin"
+        "ServerLevelMixin",
+        "AnimalMixin"
     ],
     "injectors": {
         "defaultRequire": 1
