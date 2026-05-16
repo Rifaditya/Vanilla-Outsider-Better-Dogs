@@ -1,16 +1,22 @@
 package net.vanillaoutsider.betterdogs.util;
 // Verified against: Wolf.java (26.1.2 Release)
+import org.jspecify.annotations.Nullable;
 
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.scheduler.events.HowlDogEvent;
 import net.vanillaoutsider.betterdogs.scheduler.events.ZoomiesDogEvent;
+import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Entity;
 import net.dasik.social.core.EntitySocialScheduler;
 import net.minecraft.network.chat.Component;
 import net.minecraft.commands.CommandSourceStack;
 
 import java.util.Collection;
+import java.util.List;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.entity.EntityType;
@@ -58,13 +64,15 @@ public class WolfCommandHelper {
         return count;
     }
 
-    public static int executeAction(CommandSourceStack source, Collection<? extends net.minecraft.world.entity.Entity> targets, String actionStr) {
+    public static int executeAction(CommandSourceStack source, Collection<? extends Entity> targets, String actionStr, @Nullable Entity secondaryTarget) {
         int count = 0;
+        BetterDogsConfig config = BetterDogsConfig.get();
 
         for (net.minecraft.world.entity.Entity entity : targets) {
             if (entity instanceof Wolf wolf && !wolf.level().isClientSide()) {
                 WolfExtensions ext = (WolfExtensions) wolf;
                 boolean actionApplied = true;
+                LivingEntity socialTarget = (secondaryTarget instanceof LivingEntity le) ? le : null;
 
                 switch (actionStr.toLowerCase()) {
                     case "howl" -> {
@@ -76,14 +84,91 @@ public class WolfCommandHelper {
                         if (scheduler != null) scheduler.schedule(new ZoomiesDogEvent());
                     }
                     case "mischief" -> {
-                        // For mischievous target selection (requires BabyMischiefGoal active)
-                        // Setting dummy target to trigger action logic if possible
-                        // Note: For true mischief, rely on the scheduler or goal.
-                        ext.betterdogs$setSocialState(null, WolfExtensions.SocialAction.PLAY_FIGHT, 100);
-                        source.sendSuccess(() -> Component.literal("Triggering mischief generic SocialState..."), false);
+                        // Triggers a random attack target search for baby wolves
+                        if (wolf.isBaby()) {
+                            AABB searchBox = wolf.getBoundingBox().inflate(10.0);
+                            List<LivingEntity> nearby = wolf.level().getEntitiesOfClass(
+                                    LivingEntity.class,
+                                    searchBox,
+                                    e -> e != wolf && e.isAlive() && wolf.hasLineOfSight(e)
+                            );
+                            if (!nearby.isEmpty()) {
+                                LivingEntity target = nearby.get(wolf.getRandom().nextInt(nearby.size()));
+                                wolf.setTarget(target);
+                                source.sendSuccess(() -> Component.literal("Triggered mischief: " + wolf.getName().getString() + " is attacking " + target.getName().getString()), true);
+                            } else {
+                                source.sendFailure(Component.literal("No mischief targets found for " + wolf.getName().getString()));
+                                actionApplied = false;
+                            }
+                        } else {
+                            source.sendFailure(Component.literal("Only baby wolves can perform mischief."));
+                            actionApplied = false;
+                        }
                     }
                     case "disciplined" -> ext.betterdogs$setBeingDisciplined(true);
-                    default -> actionApplied = false;
+                    case "play_fight" -> {
+                        if (socialTarget == null) {
+                            if (wolf.level() instanceof ServerLevel serverLevel) {
+                                socialTarget = serverLevel.getNearestEntity(Wolf.class, net.minecraft.world.entity.ai.targeting.TargetingConditions.forNonCombat().range(8.0), wolf, wolf.getX(), wolf.getY(), wolf.getZ(), wolf.getBoundingBox().inflate(8.0));
+                            }
+                        }
+                        if (socialTarget != null) {
+                            ext.betterdogs$setSocialState(socialTarget, WolfExtensions.SocialAction.PLAY_FIGHT, 200);
+                        } else {
+                            source.sendFailure(Component.literal("No suitable play-fight target found for " + wolf.getName().getString()));
+                            actionApplied = false;
+                        }
+                    }
+                    case "retaliation" -> {
+                        if (socialTarget == null) socialTarget = wolf.getOwner();
+                        if (socialTarget != null) {
+                            ext.betterdogs$setSocialState(socialTarget, WolfExtensions.SocialAction.RETALIATION, 100);
+                        } else {
+                            source.sendFailure(Component.literal("No retaliation target found (requires owner or secondary target)."));
+                            actionApplied = false;
+                        }
+                    }
+                    case "discipline" -> {
+                        if (socialTarget == null) {
+                            if (wolf.level() instanceof ServerLevel serverLevel) {
+                                socialTarget = serverLevel.getNearestEntity(Wolf.class, net.minecraft.world.entity.ai.targeting.TargetingConditions.forNonCombat().range(8.0), wolf, wolf.getX(), wolf.getY(), wolf.getZ(), wolf.getBoundingBox().inflate(8.0));
+                            }
+                        }
+                        if (socialTarget != null && socialTarget instanceof Wolf targetWolf && targetWolf.isBaby()) {
+                            ext.betterdogs$setSocialState(socialTarget, WolfExtensions.SocialAction.DISCIPLINE, config.getCorrectionDuration());
+                        } else {
+                            source.sendFailure(Component.literal("Discipline requires a baby wolf target."));
+                            actionApplied = false;
+                        }
+                    }
+                    case "territorial_dispute" -> {
+                        if (socialTarget == null) {
+                            if (wolf.level() instanceof ServerLevel serverLevel) {
+                                socialTarget = serverLevel.getNearestEntity(Wolf.class, net.minecraft.world.entity.ai.targeting.TargetingConditions.forNonCombat().range(16.0), wolf, wolf.getX(), wolf.getY(), wolf.getZ(), wolf.getBoundingBox().inflate(16.0));
+                            }
+                        }
+                        if (socialTarget != null) {
+                            ext.betterdogs$setSocialState(socialTarget, WolfExtensions.SocialAction.TERRITORIAL_DISPUTE, 200);
+                        } else {
+                            actionApplied = false;
+                        }
+                    }
+                    case "territorial_war" -> {
+                        if (socialTarget == null) {
+                            if (wolf.level() instanceof ServerLevel serverLevel) {
+                                socialTarget = serverLevel.getNearestEntity(Wolf.class, net.minecraft.world.entity.ai.targeting.TargetingConditions.forCombat().range(16.0), wolf, wolf.getX(), wolf.getY(), wolf.getZ(), wolf.getBoundingBox().inflate(16.0));
+                            }
+                        }
+                        if (socialTarget != null) {
+                            ext.betterdogs$setSocialState(socialTarget, WolfExtensions.SocialAction.TERRITORIAL_WAR, 600);
+                        } else {
+                            actionApplied = false;
+                        }
+                    }
+                    default -> {
+                        source.sendFailure(Component.literal("Invalid action. Supported: howl, zoomies, mischief, disciplined, play_fight, retaliation, discipline, territorial_dispute, territorial_war"));
+                        return 0;
+                    }
                 }
 
                 if (actionApplied) {
@@ -95,8 +180,6 @@ public class WolfCommandHelper {
         if (count > 0) {
             final int finalCount = count;
             source.sendSuccess(() -> Component.literal("Successfully triggered action '" + actionStr + "' on " + finalCount + " wolves."), true);
-        } else {
-            source.sendFailure(Component.literal("No valid wolves selected or invalid action (howl, zoomies, mischief, disciplined)."));
         }
         return count;
     }

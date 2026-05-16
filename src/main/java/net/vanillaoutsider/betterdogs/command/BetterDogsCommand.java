@@ -25,7 +25,7 @@ public class BetterDogsCommand {
 
     private static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("betterdogs")
-                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .requires(source -> Commands.LEVEL_GAMEMASTERS.check(source.permissions()) && net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.getBoolean(source.getLevel(), net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_DEBUGGING))
                 .then(Commands.literal("debug")
                         .then(Commands.literal("personality")
                                 .then(Commands.argument("targets", EntityArgument.entities())
@@ -44,8 +44,16 @@ public class BetterDogsCommand {
                                                 .executes(context -> {
                                                     Collection<? extends Entity> targets = EntityArgument.getEntities(context, "targets");
                                                     String actionType = StringArgumentType.getString(context, "actionType");
-                                                    return WolfCommandHelper.executeAction(context.getSource(), targets, actionType);
+                                                    return WolfCommandHelper.executeAction(context.getSource(), targets, actionType, null);
                                                 })
+                                                .then(Commands.argument("secondaryTarget", EntityArgument.entity())
+                                                        .executes(context -> {
+                                                            Collection<? extends Entity> targets = EntityArgument.getEntities(context, "targets");
+                                                            String actionType = StringArgumentType.getString(context, "actionType");
+                                                            Entity secondaryTarget = EntityArgument.getEntity(context, "secondaryTarget");
+                                                            return WolfCommandHelper.executeAction(context.getSource(), targets, actionType, secondaryTarget);
+                                                        })
+                                                )
                                         )
                                 )
                         )

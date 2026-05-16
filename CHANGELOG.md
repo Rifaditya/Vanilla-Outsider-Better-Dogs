@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.4.2+build.1] - 2026-05-16
+### Summary
+The **"Debug Expansion"** update. Significantly enhanced the wolf interaction testing suite and improved production stability.
+- **Debug Action Expansion**: Expanded `/betterdogs debug action` with secondary target support and automatic neighbor detection.
+- **New Actions**: Added support for `play_fight`, `retaliation`, `discipline`, `territorial_dispute`, and `territorial_war`.
+- **GameRule Protection**: Gated the `/betterdogs` command tree behind the `betterdogdebugging` GameRule for safer production use.
+- **Stability Fix**: Added missing `refmap` to Mixin configuration to ensure compatibility in remapped/production environments.
+
+## [3.4.1] - 2026-05-16
+### Summary
+The **"Technical Patching"** update. Focused on asset cleanup and debug command stability for territorial testing.
+- **Asset Purge**: Removed unimplemented "Play Bow" animation references from the codebase to maintain architectural integrity.
+- **Debug Stability**: Refactored the `/betterdogs debug territory` command to anchor wolf spawning to the surface level using the Heightmap API, ensuring reliable test scenarios in varying terrain.
+
 ## [3.4.0] - 2026-05-12
 ### Summary
 The **"Wolf Litters"** update. Tamed wolves can now have multiple puppies in one breed, mirroring real-world dog litters.
