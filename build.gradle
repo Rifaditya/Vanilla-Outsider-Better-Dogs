@@ -82,7 +82,7 @@ afterEvaluate {
 
         curseforge {
             accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
-            projectId = "vanilla-outsider-better-dogs"
+            projectId = "1439098"
             minecraftVersions.add("26.1.2")
             requires {
                 slug = "fabric-api"
@@ -95,7 +95,7 @@ afterEvaluate {
         github {
             accessToken = providers.environmentVariable("GITHUB_TOKEN")
             repository = "Rifaditya/Vanilla-Outsider-Better-Dogs"
-            commitish = "master"
+            commitish = "26.1-core-migration"
             tagName = project.version
         }
     }

@@ -1,8 +1,8 @@
 # Better Dogs: Project Summary
 
-**Version:** 3.1.37+build.5 (Targeting Minecraft 26.1-snapshot-11)  
-**Creator:** DasikIgaijin  
-**Dependencies:** Java 25, Fabric Loader >=0.16.10
+**Version:** 3.4.6 (Targeting Minecraft 26.1.2)  
+**Creator:** Dasik (Rifaditya)  
+**Dependencies:** Java 25, Fabric Loader >=0.16.10, DasikLibrary >=1.7.1
 
 ## 1. Project Philosophy (Vanilla Outsider)
 

@@ -154,47 +154,63 @@ public class WildWolfTerritorialGoal extends Goal {
         WolfExtensions ext = (WolfExtensions) this.wolf;
         WolfExtensions rivalExt = (WolfExtensions) this.rival;
 
+        WolfPersonality p1 = ext.betterdogs$getPersonality();
+        WolfPersonality p2 = rivalExt.betterdogs$getPersonality();
+
         // Use deterministic seed for both wolves to ensure synchronized decisions
         long seed = (long) Math.min(this.wolf.getId(), this.rival.getId()) << 32 | (long) Math.max(this.wolf.getId(), this.rival.getId());
         java.util.Random seededRandom = new java.util.Random(seed);
 
-        // Deterministic order: roll for the lower ID wolf first, then higher ID
-        Wolf lowerIdWolf = this.wolf.getId() < this.rival.getId() ? this.wolf : (Wolf) this.rival;
-        Wolf higherIdWolf = this.wolf.getId() < this.rival.getId() ? (Wolf) this.rival : this.wolf;
+        // Probability Matrix (Fetched from GameRules)
+        int warChance, mergeChance; // Remaining is Retreat
+        
+        // Normalize pair (p1, p2) for matrix lookup
+        if (p1 == WolfPersonality.AGGRESSIVE && p2 == WolfPersonality.AGGRESSIVE) {
+            warChance = BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_AA_WAR);
+            mergeChance = BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_AA_MERGE);
+        } else if ((p1 == WolfPersonality.AGGRESSIVE && p2 == WolfPersonality.NORMAL) || (p1 == WolfPersonality.NORMAL && p2 == WolfPersonality.AGGRESSIVE)) {
+            warChance = BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_AN_WAR);
+            mergeChance = BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_AN_MERGE);
+        } else if ((p1 == WolfPersonality.AGGRESSIVE && p2 == WolfPersonality.PACIFIST) || (p1 == WolfPersonality.PACIFIST && p2 == WolfPersonality.AGGRESSIVE)) {
+            warChance = BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_AP_WAR);
+            mergeChance = BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_AP_MERGE);
+        } else if (p1 == WolfPersonality.NORMAL && p2 == WolfPersonality.NORMAL) {
+            warChance = BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_NN_WAR);
+            mergeChance = BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_NN_MERGE);
+        } else if ((p1 == WolfPersonality.NORMAL && p2 == WolfPersonality.PACIFIST) || (p1 == WolfPersonality.PACIFIST && p2 == WolfPersonality.NORMAL)) {
+            warChance = BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_NP_WAR);
+            mergeChance = BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_NP_MERGE);
+        } else { // Pacifist vs Pacifist
+            warChance = BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_PP_WAR);
+            mergeChance = BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_PP_MERGE);
+        }
 
-        boolean lowerWantsWar = wantsWar(lowerIdWolf, (WolfExtensions) lowerIdWolf, seededRandom);
-        boolean higherWantsWar = wantsWar(higherIdWolf, (WolfExtensions) higherIdWolf, seededRandom);
+        int roll = seededRandom.nextInt(100);
+        this.debugLog("Decision Matrix: " + p1 + " vs " + p2 + " | Roll: " + roll + " (War < " + warChance + ", Merge < " + (warChance + mergeChance) + ")");
 
-        this.debugLog("Decision Phase: " + lowerIdWolf.getName().getString() + " (Wants War: " + lowerWantsWar + ") vs " + higherIdWolf.getName().getString() + " (Wants War: " + higherWantsWar + ")");
-
-        boolean iAmLower = this.wolf == lowerIdWolf;
-        boolean iWantWar = iAmLower ? lowerWantsWar : higherWantsWar;
-        boolean rivalWantsWar = iAmLower ? higherWantsWar : lowerWantsWar;
-
-        if (lowerWantsWar && higherWantsWar) {
-            // Both want war -> Cinematic Duel
-            this.debugLog("Pack War Started between " + this.wolf.getName().getString() + " and " + this.rival.getName().getString());
+        if (roll < warChance) {
+            // WAR Outcome
             this.startWar(seededRandom);
-        } else if (lowerWantsWar || higherWantsWar) {
-            // One wants war, the other doesn't -> Handshake logic (Yield or Retreat)
-            int yieldChance = BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERRITORIAL_YIELD_ON_ONE_SIDED_CHANCE);
-            if (seededRandom.nextInt(100) < yieldChance) {
-                // Yield & Merge: The one who wants war wins immediately
-                if (iWantWar) {
-                    this.debugLog("Pack Merge (Handshake): " + this.rival.getName().getString() + " surrendered to " + this.wolf.getName().getString());
-                    this.winConflict();
-                } else {
-                    // I yield to the aggressor
-                    this.behaviorTicks = 2000; 
-                }
+        } else if (roll < warChance + mergeChance) {
+            // MERGE Outcome: Determine winner by hierarchy
+            boolean iWin;
+            if (p1 != p2) {
+                iWin = p1.ordinal() < p2.ordinal(); // Lower ordinal = Higher rank (AGGRESSIVE=0, NORMAL=1, PACIFIST=2)
             } else {
-                // Negotiated Retreat: The aggressive leader couldn't force a surrender
-                this.debugLog("Negotiated Retreat: " + this.wolf.getName().getString() + " and " + this.rival.getName().getString());
-                this.behavior = Behavior.RETREAT;
+                // Same rank: Lower ID wins for deterministic consistency
+                iWin = this.wolf.getId() < this.rival.getId();
+            }
+
+            if (iWin) {
+                this.debugLog("Merge Win: " + this.wolf.getName().getString() + " (" + p1 + ") absorbs " + this.rival.getName().getString() + " (" + p2 + ")");
+                this.winConflict();
+            } else {
+                this.debugLog("Merge Yield: " + this.wolf.getName().getString() + " (" + p1 + ") submits to " + this.rival.getName().getString() + " (" + p2 + ")");
+                this.behaviorTicks = 2000; // Trigger completion (I yield)
             }
         } else {
-            // Neither wants war -> Peaceful Retreat
-            this.debugLog("Peaceful Retreat: " + this.wolf.getName().getString() + " and " + this.rival.getName().getString());
+            // RETREAT Outcome
+            this.debugLog("Retreat: " + this.wolf.getName().getString() + " and " + this.rival.getName().getString() + " separate peacefully.");
             this.behavior = Behavior.RETREAT;
         }
     }
@@ -205,19 +221,6 @@ public class WildWolfTerritorialGoal extends Goal {
         }
     }
 
-    private boolean wantsWar(Wolf wolf, WolfExtensions ext, java.util.Random random) {
-        int chance;
-        switch (ext.betterdogs$getPersonality()) {
-            case AGGRESSIVE -> chance = BetterDogsGameRules.getInt(wolf.level(), BetterDogsGameRules.BD_TERRITORIAL_WAR_CHANCE_AGGRO);
-            case NORMAL -> chance = BetterDogsGameRules.getInt(wolf.level(), BetterDogsGameRules.BD_TERRITORIAL_WAR_CHANCE_NORMAL);
-            case PACIFIST -> chance = BetterDogsGameRules.getInt(wolf.level(), BetterDogsGameRules.BD_TERRITORIAL_WAR_CHANCE_PACI);
-            default -> chance = 0;
-        }
-        int roll = random.nextInt(100);
-        boolean result = roll < chance;
-        this.debugLog(wolf.getName().getString() + " (" + ext.betterdogs$getPersonality() + ") rolled " + roll + " / target " + chance + " -> Wants War: " + result);
-        return result;
-    }
 
     private void startWar(java.util.Random seededRandom) {
         WolfExtensions ext = (WolfExtensions) this.wolf;

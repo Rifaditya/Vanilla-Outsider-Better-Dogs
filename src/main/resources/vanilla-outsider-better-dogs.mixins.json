@@ -1,6 +1,6 @@
 {
     "required": true,
-    "refmap": "vanilla-outsider-better-dogs.refmap.json",
+    "refmap": "vanilla-outsider-better-dogs-refmap.json",
   "minVersion": "0.8",
   "package": "net.vanillaoutsider.betterdogs.mixin",
   "compatibilityLevel": "JAVA_25",

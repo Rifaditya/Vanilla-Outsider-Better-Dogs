@@ -107,9 +107,18 @@ public class BetterDogsGameRules {
 
         // --- Territorial ---
         public static GameRule<Boolean> BD_TERRITORIAL_RIVALRY;
-        public static GameRule<Integer> BD_TERRITORIAL_WAR_CHANCE_AGGRO;
-        public static GameRule<Integer> BD_TERRITORIAL_WAR_CHANCE_NORMAL;
-        public static GameRule<Integer> BD_TERRITORIAL_WAR_CHANCE_PACI;
+        public static GameRule<Integer> BD_TERR_AA_WAR;
+        public static GameRule<Integer> BD_TERR_AA_MERGE;
+        public static GameRule<Integer> BD_TERR_AN_WAR;
+        public static GameRule<Integer> BD_TERR_AN_MERGE;
+        public static GameRule<Integer> BD_TERR_AP_WAR;
+        public static GameRule<Integer> BD_TERR_AP_MERGE;
+        public static GameRule<Integer> BD_TERR_NN_WAR;
+        public static GameRule<Integer> BD_TERR_NN_MERGE;
+        public static GameRule<Integer> BD_TERR_NP_WAR;
+        public static GameRule<Integer> BD_TERR_NP_MERGE;
+        public static GameRule<Integer> BD_TERR_PP_WAR;
+        public static GameRule<Integer> BD_TERR_PP_MERGE;
         public static GameRule<Integer> BD_TERRITORIAL_FATAL_CHANCE;
         public static GameRule<Integer> BD_TERRITORIAL_YIELD_ON_ONE_SIDED_CHANCE;
         public static GameRule<Boolean> BD_TERRITORIAL_EXCLUSIVE_DISPUTES;
@@ -138,105 +147,115 @@ public class BetterDogsGameRules {
         public static void register() {
                 BetterDogsConfig config = BetterDogsConfig.get();
 
-                BD_STORM_ANXIETY = registerBoolean("bd_storm_anxiety", BETTER_DOGS, config.getEnableStormAnxiety());
-                BD_CLIFF_SAFETY = registerBoolean("bd_cliff_safety", BETTER_DOGS, config.getEnableCliffSafety());
+                BD_STORM_ANXIETY = registerBoolean("bd.general.storm_anxiety", BETTER_DOGS, config.getEnableStormAnxiety());
+                BD_CLIFF_SAFETY = registerBoolean("bd.general.cliff_safety", BETTER_DOGS, config.getEnableCliffSafety());
 
-                BD_DOGS_EAT_RAW_FOOD = registerBoolean("bd_dogs_eat_raw_food", BETTER_DOGS,
+                BD_DOGS_EAT_RAW_FOOD = registerBoolean("bd.general.eat_raw", BETTER_DOGS,
                                 config.getEnableDogsEatRawGroundFood());
-                BD_DOGS_EAT_COOKED_FOOD = registerBoolean("bd_dogs_eat_cooked_food", BETTER_DOGS,
+                BD_DOGS_EAT_COOKED_FOOD = registerBoolean("bd.general.eat_cooked", BETTER_DOGS,
                                 config.getEnableDogsEatCookedGroundFood());
 
-                BD_FRIENDLY_FIRE = registerBoolean("bd_friendly_fire_protection", BETTER_DOGS,
+                BD_FRIENDLY_FIRE = registerBoolean("bd.general.friendly_fire", BETTER_DOGS,
                                 config.getEnableFriendlyFireProtection());
 
-                BD_DEBUGGING = registerBoolean("betterdogdebugging", BETTER_DOGS, false);
+                BD_DEBUGGING = registerBoolean("bd.debug.enabled", BETTER_DOGS, false);
 
                 // Aggressive
-                BD_AGGRO_HEALTH = registerInteger("bd_aggro_health", BETTER_DOGS,
+                BD_AGGRO_HEALTH = registerInteger("bd.personality.aggro.hp", BETTER_DOGS,
                                 (int) config.getAggressiveHealthBonus());
-                BD_AGGRO_SPEED_PCT = registerInteger("bd_aggro_speed_percent", BETTER_DOGS,
+                BD_AGGRO_SPEED_PCT = registerInteger("bd.personality.aggro.speed", BETTER_DOGS,
                                 (int) (config.getAggressiveSpeedModifier() * 100));
-                BD_AGGRO_DMG_PCT = registerInteger("bd_aggro_dmg_percent", BETTER_DOGS,
+                BD_AGGRO_DMG_PCT = registerInteger("bd.personality.aggro.dmg", BETTER_DOGS,
                                 (int) (config.getAggressiveDamageModifier() * 100));
-                BD_AGGRO_FOLLOW_START = registerInteger("bd_aggro_follow_start", BETTER_DOGS,
+                BD_AGGRO_FOLLOW_START = registerInteger("bd.personality.aggro.follow", BETTER_DOGS,
                                 (int) config.getAggressiveFollowStart());
-                BD_AGGRO_CHASE_DIST = registerInteger("bd_aggro_chase_dist", BETTER_DOGS,
+                BD_AGGRO_CHASE_DIST = registerInteger("bd.personality.aggro.chase", BETTER_DOGS,
                                 (int) config.getAggressiveChaseDistance());
-                BD_AGGRO_DETECT_RANGE = registerInteger("bd_aggro_detect_range", BETTER_DOGS,
+                BD_AGGRO_DETECT_RANGE = registerInteger("bd.personality.aggro.detect", BETTER_DOGS,
                                 (int) config.getAggressiveDetectionRange());
 
                 // Pacifist
-                BD_PACI_HEALTH = registerInteger("bd_paci_health", BETTER_DOGS,
+                BD_PACI_HEALTH = registerInteger("bd.personality.paci.hp", BETTER_DOGS,
                                 (int) config.getPacifistHealthBonus());
-                BD_PACI_SPEED_PCT = registerInteger("bd_paci_speed_percent", BETTER_DOGS,
+                BD_PACI_SPEED_PCT = registerInteger("bd.personality.paci.speed", BETTER_DOGS,
                                 (int) (config.getPacifistSpeedModifier() * 100));
-                BD_PACI_DMG_PCT = registerInteger("bd_paci_dmg_percent", BETTER_DOGS,
+                BD_PACI_DMG_PCT = registerInteger("bd.personality.paci.dmg", BETTER_DOGS,
                                 (int) (config.getPacifistDamageModifier() * 100));
-                BD_PACI_KNOCKBACK_PCT = registerInteger("bd_paci_knockback_percent", BETTER_DOGS,
+                BD_PACI_KNOCKBACK_PCT = registerInteger("bd.personality.paci.knockback", BETTER_DOGS,
                                 (int) (config.getPacifistKnockbackModifier() * 100));
-                BD_PACI_FOLLOW_START = registerInteger("bd_paci_follow_start", BETTER_DOGS,
+                BD_PACI_FOLLOW_START = registerInteger("bd.personality.paci.follow", BETTER_DOGS,
                                 (int) config.getPacifistFollowStart());
 
                 // Normal
-                BD_NORMAL_FOLLOW_START = registerInteger("bd_normal_follow_start", BETTER_DOGS,
+                BD_NORMAL_FOLLOW_START = registerInteger("bd.personality.normal.follow", BETTER_DOGS,
                                 (int) config.getNormalFollowStart());
-                BD_NORMAL_SPEED_PCT = registerInteger("bd_normal_speed_percent", BETTER_DOGS,
+                BD_NORMAL_SPEED_PCT = registerInteger("bd.personality.normal.speed", BETTER_DOGS,
                                 (int) (config.getNormalSpeedModifier() * 100));
-                BD_NORMAL_DMG_PCT = registerInteger("bd_normal_dmg_percent", BETTER_DOGS,
+                BD_NORMAL_DMG_PCT = registerInteger("bd.personality.normal.dmg", BETTER_DOGS,
                                 (int) (config.getNormalDamageModifier() * 100));
-                BD_NORMAL_HEALTH = registerInteger("bd_normal_health", BETTER_DOGS,
+                BD_NORMAL_HEALTH = registerInteger("bd.personality.normal.hp", BETTER_DOGS,
                                 (int) config.getNormalHealthBonus());
 
                 // Misc
-                BD_BABY_MISCHIEF_PERMILLE = registerInteger("bd_baby_mischief_permille", BETTER_DOGS,
+                BD_BABY_MISCHIEF_PERMILLE = registerInteger("bd.mischief.baby_chance", BETTER_DOGS,
                                 (int) (config.getBabyMischiefChance() * 10));
-                BD_HOWL_CHANCE = registerInteger("bd_howl_chance", BETTER_DOGS, 10); // 10 permille = 1%
-                BD_PACK_SPREAD = registerInteger("bd_pack_spread", BETTER_DOGS, 20); // 20 deciles = 2.0 blocks
+                BD_HOWL_CHANCE = registerInteger("bd.social.howl", BETTER_DOGS, 10); // 10 permille = 1%
+                BD_PACK_SPREAD = registerInteger("bd.social.pack_spread", BETTER_DOGS, 20); // 20 deciles = 2.0 blocks
 
                 // Discipline
-                BD_BLOOD_FEUD_PERCENT = registerInteger("bd_blood_feud_percent", BETTER_DOGS,
+                BD_BLOOD_FEUD_PERCENT = registerInteger("bd.social.blood_feud", BETTER_DOGS,
                                 config.getBloodFeudChance());
-                BD_BABY_RETALIATE_PERCENT = registerInteger("bd_baby_retaliate_percent", BETTER_DOGS,
+                BD_BABY_RETALIATE_PERCENT = registerInteger("bd.mischief.retaliate", BETTER_DOGS,
                                 config.getBabyRetaliationChance());
 
                 // Taming
-                BD_TAME_NORMAL_PERCENT = registerInteger("bd_tame_normal_percent", BETTER_DOGS,
+                BD_TAME_NORMAL_PERCENT = registerInteger("bd.taming.normal", BETTER_DOGS,
                                 config.tamingChanceNormal);
-                BD_TAME_AGGRO_PERCENT = registerInteger("bd_tame_aggro_percent", BETTER_DOGS,
+                BD_TAME_AGGRO_PERCENT = registerInteger("bd.taming.aggro", BETTER_DOGS,
                                 config.tamingChanceAggressive);
-                BD_TAME_PACI_PERCENT = registerInteger("bd_tame_paci_percent", BETTER_DOGS,
+                BD_TAME_PACI_PERCENT = registerInteger("bd.taming.paci", BETTER_DOGS,
                                 config.tamingChancePacifist);
 
                 // Breeding
-                BD_BREED_SAME_CHANCE = registerInteger("bd_breed_same_chance", BETTER_DOGS,
+                BD_BREED_SAME_CHANCE = registerInteger("bd.breeding.inherit", BETTER_DOGS,
                                 config.getBreedingSameParentChance());
-                BD_BREED_SAME_OTHER_CHANCE = registerInteger("bd_breed_same_other_chance", BETTER_DOGS,
+                BD_BREED_SAME_OTHER_CHANCE = registerInteger("bd.breeding.variant", BETTER_DOGS,
                                 config.getBreedingSameParentOtherChance());
-                BD_BREED_MIXED_DOMINANT_CHANCE = registerInteger("bd_breed_mixed_dominant_chance", BETTER_DOGS,
+                BD_BREED_MIXED_DOMINANT_CHANCE = registerInteger("bd.breeding.dominant", BETTER_DOGS,
                                 config.getBreedingMixedDominantChance());
-                BD_BREED_MIXED_RECESSIVE_CHANCE = registerInteger("bd_breed_mixed_recessive_chance", BETTER_DOGS,
+                BD_BREED_MIXED_RECESSIVE_CHANCE = registerInteger("bd.breeding.recessive", BETTER_DOGS,
                                 config.getBreedingMixedRecessiveChance());
-                BD_BREED_DILUTED_NORMAL_CHANCE = registerInteger("bd_breed_diluted_normal_chance", BETTER_DOGS,
+                BD_BREED_DILUTED_NORMAL_CHANCE = registerInteger("bd.breeding.diluted_normal", BETTER_DOGS,
                                 config.getBreedingDilutedNormalChance());
-                BD_BREED_DILUTED_OTHER_CHANCE = registerInteger("bd_breed_diluted_other_chance", BETTER_DOGS,
+                BD_BREED_DILUTED_OTHER_CHANCE = registerInteger("bd.breeding.diluted_variant", BETTER_DOGS,
                                 config.getBreedingDilutedOtherChance());
 
                 // Litter Size (v3.4.0)
-                BD_WOLF_LITTER_MAX_SIZE = registerInteger("bd_wolf_litter_max_size", BETTER_DOGS, 4);
-                BD_WOLF_LITTER_EXTRA_CHANCE = registerInteger("bd_wolf_litter_extra_chance", BETTER_DOGS, 20);
+                BD_WOLF_LITTER_MAX_SIZE = registerInteger("bd.breeding.litter_max", BETTER_DOGS, 4);
+                BD_WOLF_LITTER_EXTRA_CHANCE = registerInteger("bd.breeding.litter_extra", BETTER_DOGS, 20);
 
                 // Territorial
-                BD_TERRITORIAL_RIVALRY = registerBoolean("bd_territorial_rivalry", BETTER_DOGS, true);
-                BD_TERRITORIAL_WAR_CHANCE_AGGRO = registerInteger("bd_territorial_war_chance_aggressive", BETTER_DOGS, 100);
-                BD_TERRITORIAL_WAR_CHANCE_NORMAL = registerInteger("bd_territorial_war_chance_normal", BETTER_DOGS, 10);
-                BD_TERRITORIAL_WAR_CHANCE_PACI = registerInteger("bd_territorial_war_chance_pacifist", BETTER_DOGS, 0);
-                BD_TERRITORIAL_FATAL_CHANCE = registerInteger("bd_territorial_fatal_chance", BETTER_DOGS, 5);
-                BD_TERRITORIAL_YIELD_ON_ONE_SIDED_CHANCE = registerInteger("bd_territorial_yield_on_one_sided_chance", BETTER_DOGS, 50);
-                BD_TERRITORIAL_EXCLUSIVE_DISPUTES = registerBoolean("bd_territorial_exclusive_disputes", BETTER_DOGS, true);
-                BD_WILD_PERSONALITY_BEHAVIOR = registerBoolean("bd_wild_personality_behavior", BETTER_DOGS, true);
-                BD_TERRITORIAL_SEARCH_RADIUS = registerInteger("bd_territorial_search_radius", BETTER_DOGS, 96);
-                BD_WOLF_PACK_CLUSTER_SIZE = registerInteger("bd_wolf_pack_cluster_size", BETTER_DOGS, 8);
-                BD_WOLF_SPAWN_DENSITY_BOOST = registerInteger("bd_wolf_spawn_density_boost", BETTER_DOGS, 0);
+                BD_TERRITORIAL_RIVALRY = registerBoolean("bd.territory.main.rivalry", BETTER_DOGS, true);
+                // Territorial Matrix (v3.4.6)
+                BD_TERR_AA_WAR = registerInteger("bd.territory.matrix.aa_war", BETTER_DOGS, 80);
+                BD_TERR_AA_MERGE = registerInteger("bd.territory.matrix.aa_merge", BETTER_DOGS, 10);
+                BD_TERR_AN_WAR = registerInteger("bd.territory.matrix.an_war", BETTER_DOGS, 50);
+                BD_TERR_AN_MERGE = registerInteger("bd.territory.matrix.an_merge", BETTER_DOGS, 40);
+                BD_TERR_AP_WAR = registerInteger("bd.territory.matrix.ap_war", BETTER_DOGS, 10);
+                BD_TERR_AP_MERGE = registerInteger("bd.territory.matrix.ap_merge", BETTER_DOGS, 50);
+                BD_TERR_NN_WAR = registerInteger("bd.territory.matrix.nn_war", BETTER_DOGS, 20);
+                BD_TERR_NN_MERGE = registerInteger("bd.territory.matrix.nn_merge", BETTER_DOGS, 50);
+                BD_TERR_NP_WAR = registerInteger("bd.territory.matrix.np_war", BETTER_DOGS, 5);
+                BD_TERR_NP_MERGE = registerInteger("bd.territory.matrix.np_merge", BETTER_DOGS, 45);
+                BD_TERR_PP_WAR = registerInteger("bd.territory.matrix.pp_war", BETTER_DOGS, 0);
+                BD_TERR_PP_MERGE = registerInteger("bd.territory.matrix.pp_merge", BETTER_DOGS, 50);
+                BD_TERRITORIAL_FATAL_CHANCE = registerInteger("bd.territory.main.fatal", BETTER_DOGS, 5);
+                BD_TERRITORIAL_YIELD_ON_ONE_SIDED_CHANCE = registerInteger("bd.territory.main.yield_chance", BETTER_DOGS, 50);
+                BD_TERRITORIAL_EXCLUSIVE_DISPUTES = registerBoolean("bd.territory.main.exclusive", BETTER_DOGS, true);
+                BD_WILD_PERSONALITY_BEHAVIOR = registerBoolean("bd.territory.main.wild_ai", BETTER_DOGS, true);
+                BD_TERRITORIAL_SEARCH_RADIUS = registerInteger("bd.territory.main.search_radius", BETTER_DOGS, 96);
+                BD_WOLF_PACK_CLUSTER_SIZE = registerInteger("bd.spawning.cluster_size", BETTER_DOGS, 8);
+                BD_WOLF_SPAWN_DENSITY_BOOST = registerInteger("bd.spawning.density_boost", BETTER_DOGS, 0);
         }
 
         // Internal Registration Helpers

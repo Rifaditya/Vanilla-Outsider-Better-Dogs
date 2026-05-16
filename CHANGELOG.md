@@ -1,5 +1,43 @@
 # Changelog
 
+## [3.4.6] - 2026-05-16
+### Summary
+The **"Probability Matrix"** update. Overhauled territorial outcomes with a dynamic, personality-driven chance system.
+- **Dynamic Outcomes**: Pack disputes now use a weighted probability matrix (War/Merge/Retreat):
+    - **Aggro vs Aggro**: 80% War, 10% Merge, 10% Run
+    - **Aggro vs Normal**: 50% War, 40% Merge, 10% Run
+    - **Aggro vs Pacifist**: 10% War, 50% Merge, 40% Run
+    - **Normal vs Normal**: 20% War, 50% Merge, 30% Run
+    - **Normal vs Pacifist**: 5% War, 45% Merge, 50% Run
+    - **Pacifist vs Pacifist**: 0% War, 50% Merge, 50% Run
+- **Hierarchy Polish**: During a merge, leadership is granted based on personality rank (Aggressive > Normal > Pacifist).
+
+
+## [3.4.5] - 2026-05-16
+### Summary
+The **"Nuanced Leadership"** update. Refined pack interactions to respect personality instincts and autonomy.
+- **Pacifist Autonomy**: Pacifist leaders now prioritize their pack's independence, choosing to **Retreat** rather than merge into rival packs.
+- **Hierarchy Polish**: Aggressive leaders only force automatic merges against Normal leaders who don't want to fight.
+- **Combat Logic**: If a leader (regardless of rank) chooses to fight, they will engage in a standard duel.
+
+## [3.4.4] - 2026-05-16
+### Summary
+The **"Dominance Hierarchy"** update. Implemented a strict personality-based ranking for pack disputes.
+- **Leadership Hierarchy**: Aggressive > Normal > Pacifist. Higher-ranked leaders now automatically win disputes against lower-ranked rivals unless a duel is triggered.
+
+## [3.4.3] - 2026-05-16
+### Summary
+The **"Command UX"** update. Fixed visibility issues with the debug command suite.
+- **UX Fix**: Resolved "Red Text" (Unknown command) issues for OPs. Commands are now always visible and logically gated behind the debugging GameRule.
+
+## [3.4.2] - 2026-05-16
+### Summary
+The **"C2ME Compatibility"** update. Resolved critical multi-threading crashes and production stability issues.
+- **Performance**: Fully compatible with multi-threaded chunk generation (C2ME).
+- **Dependency Hardening**: Enforced `dasik-library >= 1.7.0` to prevent binary mismatch crashes.
+- **Refmap Fix**: Resolved production Mixin errors by standardizing internal refmap naming.
+
+
 ## [3.4.2+build.1] - 2026-05-16
 ### Summary
 The **"Debug Expansion"** update. Significantly enhanced the wolf interaction testing suite and improved production stability.

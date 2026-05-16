@@ -25,12 +25,13 @@ public class BetterDogsCommand {
 
     private static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("betterdogs")
-                .requires(source -> Commands.LEVEL_GAMEMASTERS.check(source.permissions()) && net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.getBoolean(source.getLevel(), net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_DEBUGGING))
+                .requires(source -> Commands.LEVEL_GAMEMASTERS.check(source.permissions()))
                 .then(Commands.literal("debug")
                         .then(Commands.literal("personality")
                                 .then(Commands.argument("targets", EntityArgument.entities())
                                         .then(Commands.argument("type", StringArgumentType.word())
                                                 .executes(context -> {
+                                                    if (!isDebugEnabled(context.getSource())) return 0;
                                                     Collection<? extends Entity> targets = EntityArgument.getEntities(context, "targets");
                                                     String type = StringArgumentType.getString(context, "type");
                                                     return WolfCommandHelper.setPersonality(context.getSource(), targets, type);
@@ -42,12 +43,14 @@ public class BetterDogsCommand {
                                 .then(Commands.argument("targets", EntityArgument.entities())
                                         .then(Commands.argument("actionType", StringArgumentType.word())
                                                 .executes(context -> {
+                                                    if (!isDebugEnabled(context.getSource())) return 0;
                                                     Collection<? extends Entity> targets = EntityArgument.getEntities(context, "targets");
                                                     String actionType = StringArgumentType.getString(context, "actionType");
                                                     return WolfCommandHelper.executeAction(context.getSource(), targets, actionType, null);
                                                 })
                                                 .then(Commands.argument("secondaryTarget", EntityArgument.entity())
                                                         .executes(context -> {
+                                                            if (!isDebugEnabled(context.getSource())) return 0;
                                                             Collection<? extends Entity> targets = EntityArgument.getEntities(context, "targets");
                                                             String actionType = StringArgumentType.getString(context, "actionType");
                                                             Entity secondaryTarget = EntityArgument.getEntity(context, "secondaryTarget");
@@ -58,9 +61,20 @@ public class BetterDogsCommand {
                                 )
                         )
                         .then(Commands.literal("territory")
-                                .executes(context -> WolfCommandHelper.spawnTerritoryScenario(context.getSource()))
+                                .executes(context -> {
+                                    if (!isDebugEnabled(context.getSource())) return 0;
+                                    return WolfCommandHelper.spawnTerritoryScenario(context.getSource());
+                                })
                         )
                 )
         );
+    }
+
+    private static boolean isDebugEnabled(CommandSourceStack source) {
+        if (!net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.getBoolean(source.getLevel(), net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_DEBUGGING)) {
+            source.sendFailure(net.minecraft.network.chat.Component.literal("Better Dogs debugging is currently disabled. Enable it via GameRules: /gamerule betterdogdebugging true"));
+            return false;
+        }
+        return true;
     }
 }

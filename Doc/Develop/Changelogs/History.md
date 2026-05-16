@@ -1,5 +1,47 @@
 # Better Dogs - Historical Changelog
 
+## [3.4.6] - 2026-05-16
+### Summary
+The **"Probability Matrix"** update. Overhauled territorial outcomes with a dynamic, personality-driven chance system.
+- **Dynamic Outcomes**: Pack disputes now use a weighted probability matrix (War/Merge/Retreat) based on the personality pairing of the leaders:
+    - **Aggro vs Aggro**: 80% War, 10% Merge, 10% Run
+    - **Aggro vs Normal**: 50% War, 40% Merge, 10% Run
+    - **Aggro vs Pacifist**: 10% War, 50% Merge, 40% Run
+    - **Normal vs Normal**: 20% War, 50% Merge, 30% Run
+    - **Normal vs Pacifist**: 5% War, 45% Merge, 50% Run
+    - **Pacifist vs Pacifist**: 0% War, 50% Merge, 50% Run
+- **Merge Hierarchy**: During a merge, leadership is automatically granted to the higher-ranked personality (Aggressive > Normal > Pacifist).
+
+
+## [3.4.5] - 2026-05-16
+### Summary
+The **"Nuanced Leadership"** update. Further refined territorial outcomes to respect Pacifist instincts and combat priority.
+- **Merge Logic Refinement**: Pacifist leaders now always choose to retreat rather than merge into another pack, prioritizing their own pack's autonomy.
+- **Combat Priority**: If both leaders choose to fight (Aggressive vs Normal), they will now engage in a duel regardless of rank, rather than an automatic merge.
+- **Aggressive Dominance**: Aggressive leaders still win automatic merges against Normal leaders who choose not to fight.
+
+
+## [3.4.4] - 2026-05-16
+### Summary
+The **"Dominance Hierarchy"** update. Refined the territorial dispute logic to enforce personality-based leadership outcomes.
+- **Merge Logic**: Implemented a strict personality hierarchy (Aggressive > Normal > Pacifist). Higher-ranked leaders now automatically win dominance disputes against lower-ranked rivals, merging their packs.
+- **Consistency**: Disputes between leaders of the same rank still use the existing chance-based duel/retreat logic.
+
+
+## [3.4.3] - 2026-05-16
+### Summary
+The **"Command UX"** update. Fixed command synchronization issues that caused debug commands to appear red (Unknown) in the chat bar.
+- **UX Improvement**: Moved GameRule logic to execution phase. Commands are now always visible to OPs, preventing "Red Text" confusion when toggling debug mode.
+- **Production Alignment**: Incremented version for final release parity.
+
+
+## [3.4.2] - 2026-05-16
+### Summary
+The **"C2ME Compatibility"** update. Resolved a critical binary mismatch with DasikLibrary that caused crashes during multi-threaded chunk generation.
+- **Dependency Hardening**: Updated `fabric.mod.json` to strictly require `dasik-library >= 1.7.0`.
+- **C2ME Conflict Fix**: Successfully resolved `NoSuchMethodError` for `GroupParameters` during worker-thread mob spawning.
+- **Production Stability**: Fixed refmap naming mismatch to ensure stable Mixin transformation in non-development environments.
+
 ## [3.4.2+build.1] - 2026-05-16
 ### Summary
 The **"Debug Expansion"** update. Significantly enhanced the wolf interaction testing suite and improved production stability.

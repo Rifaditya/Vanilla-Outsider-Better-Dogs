@@ -51,21 +51,26 @@ When tamed, wolves develop one of three permanent personalities, visible via cus
 - **Scouting**: Aggressive dogs proactively range ahead to clear your path.
 - **Silent Alarm**: Pacifist dogs emit a high-pitched whine when they detect nearby monsters.
 - **Gift System**: Loyal dogs bring you treasures based on their personality.
-- **Debug Tools**: Use `/betterdogs debug territory` to test pack interactions.
+- **Debug Tools**: Use `/betterdogs debug` to test pack interactions and behaviors (Locked behind OP permissions and a safety GameRule).
 
 ### 🏰 Wild Wolf Territoriality
-Wild wolf packs are now dynamic, territorial entities led by a dominant leader:
-- **Territorial Disputes (The Handshake)**: When rival packs meet, leaders negotiate. If both want war, they engage in a **Territorial War**. If only one wants war, the other may **Yield & Merge** immediately or retreat based on a configurable chance.
-- **1v1 Leader Duels**: During a war, rival leaders engage in a cinematic 1v1 duel to settle dominance, while pack members participate in a secondary brawl.
-- **Yield & Merge**: Defeated packs are not lost; they yield and **merge** with the winning pack, allowing for the natural formation of massive wolf colonies.
+Wild wolf packs are now dynamic, territorial entities governed by a personality-driven probability matrix:
+- **Dynamic Outcome Matrix**: Pack interactions are no longer predictable. Every encounter between leaders rolls for **War**, **Merge**, or **Retreat** based on their specific personality pairing (Aggressive, Normal, or Pacifist).
+- **Leadership Hierarchy**: While outcomes are chance-based, the **Aggressive > Normal > Pacifist** hierarchy still rules the results. If a merge occurs, the higher-ranked personality automatically takes command of the combined pack.
+- **Cinematic 1v1 Duels**: When the matrix rolls for **War**, leaders engage in a 1v1 duel. If one yields or dies, the winner absorbs the remaining followers.
+- **Yield & Merge (The Handshake)**: Defeated or yielding packs are not lost; they merge into the winning colony, allowing for natural, massive pack growth.
 - **Wild Personality AI (New Default)**: Out of the box, wild pack members exhibit unique behaviors (like Aggressive hunting or Pack Retreats) while anchored to their leader.
-- **Performance Hardened**: All AI logic is performance-optimized using **DasikLibrary 1.7.0**, ensuring zero console spam and smooth server TPS even with massive packs.
+- **Production Stable**: Fully compatible with high-performance engines like **C2ME**, ensuring safe multi-threaded AI execution.
+- **Performance Hardened**: All AI logic is performance-optimized using **DasikLibrary 1.7.1**, ensuring zero console spam and smooth server TPS even with massive packs.
 
 ---
 
 ## ⚙️ Configuration (Native Game Rules)
 
-No messy config files. Better Dogs uses the **Native Minecraft Game Rules** system. All 40+ mod parameters are grouped into a dedicated **"Better Dogs"** category in the official UI.
+No messy config files. Better Dogs uses the **Native Minecraft Game Rules** system. All 50+ mod parameters are grouped into a dedicated **"Better Dogs"** category in the official UI.
+
+> [!TIP]
+> **Too many rules?** If the game rule screen feels cluttered, we highly recommend installing **[Collapsible Game Rules](https://www.curseforge.com/minecraft/mc-mods/collapsible-gamerules)**. It will automatically group the new Personality Matrix settings into clean, expandable folders!
 
 <p align="center">
 <img src="https://cdn.modrinth.com/data/e7H8SUmG/images/0a47c04889b8829f5b5bbead3a7847cb63d69a3b.png" alt="Native gamerule UI">
