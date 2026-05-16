@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.4.7] - 2026-05-16
+### Summary
+The **"Zenith Organization"** update. Finalized production standards with nested GameRule categories and probability matrix refinement.
+- **Nested GameRules**: Refactored all 50+ mod settings to use a nested dot-notation (`bd.category.subcategory`).
+- **Collapsible Support**: Integrated full support for the **Collapsible Game Rules** mod, automatically grouping settings into 9 intuitive folders.
+- **Handshake Integration**: Fully merged the "Territorial Handshake" logic into the dynamic probability matrix.
+- **UI Polish**: Updated all localization strings to reflect the new categorized structure.
+
 ## [3.4.6] - 2026-05-16
 ### Summary
 The **"Probability Matrix"** update. Overhauled territorial outcomes with a dynamic, personality-driven chance system.
