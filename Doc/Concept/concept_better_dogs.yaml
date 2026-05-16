@@ -1,0 +1,55 @@
+collection: Vanilla_Outsider
+mod_name: Better Dogs
+version: 3.4.8
+filename: concept_better_dogs.md
+content: |
+  # Better Dogs
+  ## Philosophy Fit
+  This mod strictly adheres to the Vanilla Outsider philosophy by enhancing the vanilla Wolf with deeper systems and reliability. It removes AI "jank" (lava/cliff deaths) while introducing a sophisticated social and territorial ecosystem. The mechanics (Personalities, Genetics, Territorial Matrix) add depth to both tamed and wild encounters, rewarding player investment with a living, breathing world.
+
+  ## Mechanics
+  ### Core: Personality & DNA
+  - **Types:** Aggressive (Scouts), Pacifist (Silent Alarms), Normal (Balanced).
+  - **Individual DNA:** Every dog has a unique "preference roll" (UUID-based) determining participation in social events.
+  - **Genetics:** Advanced breeding passes down traits.
+  - **Litter System:** Wolves can now produce multiple puppies (Litters) in a single breed, each with independent traits.
+
+  ### Wild Pack Dynamics (Dasik Social AI)
+  - **Pack Structure:** Wild wolves form persistent packs (up to 8) anchored to a leader.
+  - **Dynamic Spawning:** Pack clusters can trigger "Reinforcement Spawns" nearby, creating high-density territorial zones.
+  - **Stable Physics:** O(N) boids-inspired pack movement for high performance.
+
+  ### Territorial Probability Matrix (v3.4.6)
+  - **Negotiation Matrix:** Rival leaders meeting in the wild use a weighted chance system for outcomes:
+    - **War:** Packs engage in combat (Duels for leaders, Brawls for members).
+    - **Merge:** One pack absorbs the other.
+    - **Retreat:** Peaceful separation.
+  - **Leadership Hierarchy:** Aggressive > Normal > Pacifist. Dominance is resolved by personality rank during mergers.
+  - **Deterministic Sync:** Decision synchronization between entities using shared seeded randomization.
+
+  ### Social AI (Domestic)
+  - **Correction System:** Aggressive adults discipline misbehaving puppies.
+  - **Retaliation:** Puppies bit back if struck by owners.
+  - **Affinity:** Social activities build bonding levels to suppress blood feuds.
+
+  ### Immersive Events
+  - **Zoomies:** Morning/Rain hyperactivity.
+  - **Group Howl:** Full moon pack vocalization.
+  - **Storm Anxiety:** Reactive fear behavior (trembling/whining).
+
+  ### Config Mastery (Native Game Rules)
+  - **Registry Integration:** 50+ AI parameters exposed via native Game Rules.
+  - **Thematic Categorization (v3.4.8):** Reorganized settings into 6 distinct categories for better UX:
+    - **General**: Utility, feeding, and debug toggles.
+    - **War**: Territorial matrix and rivalry probabilities.
+    - **Litter**: Breeding genetics and litter size rules.
+    - **Health**: HP, speed, and damage modifiers by personality.
+    - **Social**: AI behaviors (Howling, Mischief, Follow Distances).
+    - **Spawning**: Cluster sizes and taming chances.
+  - **Collapsible UI:** Optimized for the "Collapsible Game Rules" mod to group settings into tidy folders.
+  - **Sync:** GameRules are linked to an atomic JSON config for persistence across new worlds.
+
+  ## Technical Requirements
+  - **Core**: Minecraft 26.1.2+, Java 25.
+  - **Library**: DasikLibrary 1.7.0+.
+  - **Mappings**: Official Mojang (Post-Obfuscation Era).

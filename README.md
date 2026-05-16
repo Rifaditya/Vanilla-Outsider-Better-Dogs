@@ -1,15 +1,15 @@
-# 🐕 Better Dogs: A Social & Behavioral Overhaul (v3.2.0)
+# 🐕 Better Dogs: A Social & Behavioral Overhaul (v3.4.8)
 
 **Better Dogs** is a comprehensive overhaul of the Minecraft Wolf, replacing robotic behaviors with a dynamic, personality-driven social system. Built for the modern "Post-Obfuscation" era of Minecraft, it enhances the taming loop with genetics, social bonding, and smart survival logic.
 
-## 🔥 New in v3.2.0: The Territorial Handshake
+## 🔥 New in v3.4.8: Categorical Mastery
 
-The latest update introduces the **Wild Wolf Territorial Handshake** and **Deterministic AI**:
+The latest update reorganizes the configuration UI for better clarity and organization:
 
-- **🏰 Territorial Handshake**: Rival leaders now negotiate. If only one wants war, the other may surrender and merge immediately based on chance.
-- **🗡️ Cinematic Duels**: 1v1 combat between leaders settles dominance while packs engage in brawls.
-- **🧠 Wild Personality AI**: Wild wolves exhibit unique traits (Aggressive hunting, etc.) anchored to their leader.
-- **📡 Deterministic Decisions**: AI decisions are now synchronized between entities using seeded randomization.
+- **📂 Themed Categorization**: GameRules are now split into 6 distinct categories: **War, Litter, Health, Social, Spawning, and General**.
+- **⚠️ Reset Warning**: Existing GameRule values may be reset to defaults due to this structural categorization.
+- **🛡️ Registry Namespacing**: Full alignment with Zenith Protocol standards for unique identifiers.
+- **🌍 Enhanced Localization**: Updated English and Indonesian labels for all new categories.
 
 ---
 

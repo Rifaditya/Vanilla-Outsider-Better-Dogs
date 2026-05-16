@@ -6,7 +6,8 @@ public class BetterDogsConfig {
     private static final com.google.gson.Gson GSON = new com.google.gson.GsonBuilder().setPrettyPrinting().create();
     private static java.nio.file.Path CONFIG_PATH;
 
-    public int configVersion = 3117; // Version matching mod v3.1.17
+    public static final int VERSION = 3470;
+    public int configVersion = VERSION;
 
     public static synchronized void load(java.nio.file.Path configDir) {
         CONFIG_PATH = configDir.resolve("betterdogs.json");
@@ -168,6 +169,20 @@ public class BetterDogsConfig {
     public float babyMischiefChance = 2.5f;
     public int bloodFeudChance = 5;
     public int babyRetaliationChance = 75;
+    
+    // ========== Territorial Matrix (v3.4.6) ==========
+    public int terrMatrixAAWar = 80;
+    public int terrMatrixAAMerge = 10;
+    public int terrMatrixANWar = 50;
+    public int terrMatrixANMerge = 40;
+    public int terrMatrixAPWar = 10;
+    public int terrMatrixAPMerge = 50;
+    public int terrMatrixNNWar = 20;
+    public int terrMatrixNNMerge = 50;
+    public int terrMatrixNPWar = 5;
+    public int terrMatrixNPMerge = 45;
+    public int terrMatrixPPWar = 0;
+    public int terrMatrixPPMerge = 50;
 
     // ========== Pack Separation (REMOVED v3.1.17) ==========
     // public boolean enablePackSeparation = true;
@@ -300,4 +315,17 @@ public class BetterDogsConfig {
     public int getHazardCheckLimit() { return hazardCheckLimit; }
     public int getHazardFallSearchLimit() { return hazardFallSearchLimit; }
     public double getHowlSpreadRange() { return howlSpreadRange; }
+    
+    public int getTerrMatrixAAWar() { return terrMatrixAAWar; }
+    public int getTerrMatrixAAMerge() { return terrMatrixAAMerge; }
+    public int getTerrMatrixANWar() { return terrMatrixANWar; }
+    public int getTerrMatrixANMerge() { return terrMatrixANMerge; }
+    public int getTerrMatrixAPWar() { return terrMatrixAPWar; }
+    public int getTerrMatrixAPMerge() { return terrMatrixAPMerge; }
+    public int getTerrMatrixNNWar() { return terrMatrixNNWar; }
+    public int getTerrMatrixNNMerge() { return terrMatrixNNMerge; }
+    public int getTerrMatrixNPWar() { return terrMatrixNPWar; }
+    public int getTerrMatrixNPMerge() { return terrMatrixNPMerge; }
+    public int getTerrMatrixPPWar() { return terrMatrixPPWar; }
+    public int getTerrMatrixPPMerge() { return terrMatrixPPMerge; }
 }

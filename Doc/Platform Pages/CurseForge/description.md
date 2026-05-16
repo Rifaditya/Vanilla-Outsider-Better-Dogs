@@ -54,11 +54,12 @@ When tamed, wolves develop one of three permanent personalities, visible via cus
 - **Debug Tools**: Use `/betterdogs debug` to test pack interactions and behaviors (Locked behind OP permissions and a safety GameRule).
 
 ### 🏰 Wild Wolf Territoriality
-Wild wolf packs are now dynamic, territorial entities governed by a personality-driven probability matrix:
-- **Dynamic Outcome Matrix**: Pack interactions are no longer predictable. Every encounter between leaders rolls for **War**, **Merge**, or **Retreat** based on their specific personality pairing (Aggressive, Normal, or Pacifist).
-- **Leadership Hierarchy**: While outcomes are chance-based, the **Aggressive > Normal > Pacifist** hierarchy still rules the results. If a merge occurs, the higher-ranked personality automatically takes command of the combined pack.
-- **Cinematic 1v1 Duels**: When the matrix rolls for **War**, leaders engage in a 1v1 duel. If one yields or dies, the winner absorbs the remaining followers.
-- **Yield & Merge (The Handshake)**: Defeated or yielding packs are not lost; they merge into the winning colony, allowing for natural, massive pack growth.
+Wild wolf packs are now dynamic, territorial entities led by a dominant leader:
+- **Territorial Probability Matrix**: Pack interactions now utilize a complex, personality-driven matrix. No two disputes are the same!
+- **Dynamic Outcomes**: Depending on leader personalities, packs may **Merge** (Dominance based), engage in **War** (1v1 Duels or Pack Combat), or peacefully **Retreat** to maintain their own borders.
+- **Configurable Instincts**: Use GameRules to fine-tune exactly how Aggressive, Normal, and Pacifist leaders react to each other.
+- **1v1 Leader Duels**: If a dispute escalates to War, leaders engage in a cinematic 1v1 duel to settle dominance.
+- **Yield & Merge**: Defeated packs are not lost; they yield and **merge** with the winning pack, allowing for the natural formation of massive wolf colonies.
 - **Wild Personality AI (New Default)**: Out of the box, wild pack members exhibit unique behaviors (like Aggressive hunting or Pack Retreats) while anchored to their leader.
 - **Production Stable**: Fully compatible with high-performance engines like **C2ME**, ensuring safe multi-threaded AI execution.
 - **Performance Hardened**: All AI logic is performance-optimized using **DasikLibrary 1.7.1**, ensuring zero console spam and smooth server TPS even with massive packs.

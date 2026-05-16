@@ -12,8 +12,8 @@ import net.fabricmc.api.ModInitializer;
 
 /**
  * Better Dogs Main Entrypoint.
- * Updated for Snapshot 11.
- * Verified against: Wolf.java (Snapshot 11)
+ * Protocol: Zenith Protocol 2.1
+ * Verified against: Wolf.java (26.1.2 Release)
  */
 public class BetterDogs implements ModInitializer {
     public static final String MOD_ID = "vanilla-outsider-better-dogs";
@@ -29,7 +29,7 @@ public class BetterDogs implements ModInitializer {
     }
 
     public static void init() {
-        LOGGER.info("Vanilla Outsider: Better Dogs initializing [Fabric Only]...");
+        LOGGER.info("Vanilla Outsider: Better Dogs v3.4.8 initializing [Zenith Aligned]...");
 
         // Load Configuration
         BetterDogsConfig.load(FabricLoader.getInstance().getConfigDir());

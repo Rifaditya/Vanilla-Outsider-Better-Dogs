@@ -66,7 +66,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 /**
  * Mixin for Wolf entity to add personality system and other enhancements.
  * Uses Fabric Data Attachment API for persistence.
- * Verified against: Wolf.java (Snapshot 10/11)
+ * Verified against: Wolf.java (26.1.2 Release)
  */
 @Mixin(Wolf.class)
 public abstract class WolfMixin extends TamableAnimal implements WolfExtensions, SocialEntity, GroupMember {

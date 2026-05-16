@@ -1,12 +1,28 @@
 # Better Dogs - Historical Changelog
 
+## [3.4.8] - 2026-05-16
+### Summary
+The **"Categorical Mastery"** update. Reorganized the GameRule configuration UI into themed categories for improved usability and organization.
+- **Themed Categorization**: Reorganized all 50+ GameRules into 6 distinct categories:
+    - **VO: Better Dogs - War**: Territorial matrix and rivalry settings.
+    - **VO: Better Dogs - Litter**: Breeding genetics and litter size rules.
+    - **VO: Better Dogs - Health**: HP, speed, and damage modifiers.
+    - **VO: Better Dogs - Social**: AI behaviors, howling, and follow distances.
+    - **VO: Better Dogs - Spawning**: Cluster sizes and taming chances.
+    - **VO: Better Dogs - General**: Utility toggles and environmental reactive rules.
+- **Localization**: Added full support for the new category labels in both English (`en_us`) and Indonesian (`id_id`).
+- **⚠️ Mandatory Warning**: Your gamerule might be reseted as I split it into many category and i changed stuff.
+
+
 ## [3.4.7] - 2026-05-16
 ### Summary
-The **"Zenith Organization"** update. Finalized production standards with nested GameRule categories and probability matrix refinement.
-- **Nested GameRules**: Refactored all 50+ mod settings to use a nested dot-notation (`bd.category.subcategory`). This allows for clean organizational folding in modern UI mods.
-- **Collapsible Support**: Integrated full support for the **Collapsible Game Rules** mod, automatically grouping settings into 9 intuitive folders (General, Personality, Social, Territory, etc.).
-- **Handshake Integration**: Fully merged the "Territorial Handshake" logic into the dynamic probability matrix, ensuring deterministic outcomes for all leader encounters.
-- **UI Polish**: Updated all localization strings to reflect the new categorized structure, providing clear helper text for every setting.
+The **"Zenith Alignment"** update. Finalized the architectural transition to strict Zenith Protocol standards, resolving configuration data loss and logic hoarding.
+- **Registry Namespacing**: Refactored all custom GameRules to use the `vanilla-outsider-better-dogs` namespace (e.g., `vanilla-outsider-better-dogs:bd_storm_anxiety`). This prevents silent data loss caused by vanilla registry shadowing.
+- **Localization Sync**: Synchronized `en_us.json` and `id_id.json` with the new namespaced GameRule keys for perfect UI parity.
+- **Territorial Probability Matrix**: Fully integrated the dynamic outcome matrix into the `WildWolfTerritorialGoal` AI. Pack disputes now follow synchronized, personality-driven probabilities for War, Merge, or Retreat.
+- **Config versioning**: Incremented internal config version to `3470` to trigger necessary data migration and backup procedures.
+- **Cleanup**: Purged legacy "Snapshot 11" comments and documentation debt from the entrypoint classes.
+
 
 ## [3.4.6] - 2026-05-16
 ### Summary

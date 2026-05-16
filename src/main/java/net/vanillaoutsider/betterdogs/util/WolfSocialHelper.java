@@ -8,7 +8,7 @@ import net.dasik.social.api.group.GroupMember;
 /**
  * Helper class for Wolf social logic.
  * Decoupled from WolfMixin for modularity.
- * Verified against: Wolf.java (Snapshot 10/11)
+ * Verified against: Wolf.java (26.1.2 Release)
  */
 public class WolfSocialHelper {
 
