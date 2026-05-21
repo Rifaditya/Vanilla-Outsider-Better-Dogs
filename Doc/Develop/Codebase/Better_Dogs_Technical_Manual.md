@@ -1,4 +1,4 @@
-# Better Dogs: Technical Manual (v3.1.25)
+# Better Dogs: Technical Manual (v3.4.16)
 
 **Philosophy**: "Vanilla Outsider" - Mechanics should be invisible, intuitive, and seamlessly integrated into the base game. **Native Game Rules** and **Social DNA** provide deep immersion without the need for external configuration menus.
 
@@ -74,4 +74,4 @@ Large packs elect a "Leader" to perform environmental scanning. "Followers" mirr
 - **Native Game Rules**: All chances and ranges are configurable in the "Edit Game Rules" screen.
 
 ---
-*Documentation for v3.1.25 | Highlander Pulse Engine v6.1*
+*Documentation for v3.4.16 | Highlander Pulse Engine v6.1*

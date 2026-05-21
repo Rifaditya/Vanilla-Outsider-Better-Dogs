@@ -10,13 +10,25 @@ public class BetterDogsConfig {
     public int configVersion = VERSION;
 
     public static synchronized void load(java.nio.file.Path configDir) {
-        CONFIG_PATH = configDir.resolve("betterdogs.json");
+        CONFIG_PATH = configDir.resolve("vanilla-outsider-better-dogs.json");
         org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger("Better Dogs");
         
         if (!java.nio.file.Files.exists(CONFIG_PATH)) {
-            logger.info("No config found, generating defaults");
-            save();
-            return;
+            logger.info("No config found, copying default config from resources");
+            try (java.io.InputStream in = BetterDogsConfig.class.getResourceAsStream("/vanilla-outsider-better-dogs.json")) {
+                if (in != null) {
+                    java.nio.file.Files.createDirectories(CONFIG_PATH.getParent());
+                    java.nio.file.Files.copy(in, CONFIG_PATH);
+                } else {
+                    logger.warn("Default config resource not found in JAR! Generating from code defaults.");
+                    save();
+                    return;
+                }
+            } catch (Exception e) {
+                logger.error("Failed to copy default config from resources, generating defaults from code.", e);
+                save();
+                return;
+            }
         }
 
         try {
@@ -70,7 +82,7 @@ public class BetterDogsConfig {
             java.nio.file.Files.createDirectories(CONFIG_PATH.getParent());
 
             // Pass 4: Atomic Swapping
-            java.nio.file.Path tempPath = CONFIG_PATH.resolveSibling("betterdogs.json.tmp");
+            java.nio.file.Path tempPath = CONFIG_PATH.resolveSibling(CONFIG_PATH.getFileName().toString() + ".tmp");
             
             try (java.io.Writer writer = java.nio.file.Files.newBufferedWriter(tempPath, java.nio.charset.StandardCharsets.UTF_8)) {
                 GSON.toJson(INSTANCE, writer);
@@ -89,7 +101,7 @@ public class BetterDogsConfig {
 
     private static void createBackup() {
         try {
-            java.nio.file.Path backupPath = CONFIG_PATH.resolveSibling("betterdogs.json.bak");
+            java.nio.file.Path backupPath = CONFIG_PATH.resolveSibling(CONFIG_PATH.getFileName().toString() + ".bak");
             java.nio.file.Files.copy(CONFIG_PATH, backupPath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             org.slf4j.LoggerFactory.getLogger("Better Dogs").error("Failed to create config backup!", e);

@@ -7,6 +7,7 @@ import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -25,7 +26,8 @@ import java.util.Random;
 @Mixin(Wolf.class)
 public abstract class WolfBreedingMixin {
 
-    private static final Random RANDOM = new Random();
+    @Unique
+    private static final Random betterdogs$RANDOM = new Random();
 
     @Inject(method = "getBreedOffspring", at = @At("RETURN"))
     private void betterdogs$inheritPersonality(ServerLevel level, AgeableMob partner,
@@ -50,7 +52,7 @@ public abstract class WolfBreedingMixin {
                 : WolfPersonality.NORMAL;
 
         // Calculate baby personality based on genetics
-        WolfPersonality babyPersonality = calculateOffspringPersonality(level, p1, p2);
+        WolfPersonality babyPersonality = betterdogs$calculateOffspringPersonality(level, p1, p2);
         babyExt.betterdogs$setPersonality(babyPersonality);
     }
 
@@ -58,8 +60,9 @@ public abstract class WolfBreedingMixin {
      * Calculate offspring personality based on parent personalities.
      * Uses configurable percentages from Game Rules.
      */
-    private WolfPersonality calculateOffspringPersonality(ServerLevel level, WolfPersonality p1, WolfPersonality p2) {
-        int roll = RANDOM.nextInt(100);
+    @Unique
+    private WolfPersonality betterdogs$calculateOffspringPersonality(ServerLevel level, WolfPersonality p1, WolfPersonality p2) {
+        int roll = betterdogs$RANDOM.nextInt(100);
 
         // Same personality parents: configurable same%, remaining split between others
         if (p1 == p2) {
@@ -68,8 +71,8 @@ public abstract class WolfBreedingMixin {
             if (roll < sameChance)
                 return p1;
             if (roll < (sameChance + otherChance))
-                return getOther(p1, 0);
-            return getOther(p1, 1);
+                return betterdogs$getOther(p1, 0);
+            return betterdogs$getOther(p1, 1);
         }
 
         // Aggressive + Pacifist = Diluted genes (configurable Normal%, remaining split)
@@ -87,7 +90,7 @@ public abstract class WolfBreedingMixin {
         // Normal + Other = configurable distribution
         if (p1 == WolfPersonality.NORMAL || p2 == WolfPersonality.NORMAL) {
             WolfPersonality other = (p1 == WolfPersonality.NORMAL) ? p2 : p1;
-            WolfPersonality third = getThird(WolfPersonality.NORMAL, other);
+            WolfPersonality third = betterdogs$getThird(WolfPersonality.NORMAL, other);
             int dominantChance = BetterDogsGameRules.getInt(level, BetterDogsGameRules.BD_BREED_MIXED_DOMINANT_CHANCE);
             int recessiveChance = BetterDogsGameRules.getInt(level,
                     BetterDogsGameRules.BD_BREED_MIXED_RECESSIVE_CHANCE);
@@ -110,7 +113,8 @@ public abstract class WolfBreedingMixin {
     /**
      * Get one of the other two personalities.
      */
-    private WolfPersonality getOther(WolfPersonality exclude, int index) {
+    @Unique
+    private WolfPersonality betterdogs$getOther(WolfPersonality exclude, int index) {
         WolfPersonality[] others = new WolfPersonality[2];
         int i = 0;
         for (WolfPersonality p : WolfPersonality.values()) {
@@ -124,7 +128,8 @@ public abstract class WolfBreedingMixin {
     /**
      * Get the third personality that isn't either of the two given.
      */
-    private WolfPersonality getThird(WolfPersonality a, WolfPersonality b) {
+    @Unique
+    private WolfPersonality betterdogs$getThird(WolfPersonality a, WolfPersonality b) {
         for (WolfPersonality p : WolfPersonality.values()) {
             if (p != a && p != b)
                 return p;

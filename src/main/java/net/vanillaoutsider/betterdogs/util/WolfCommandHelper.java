@@ -27,7 +27,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 
 /**
  * Command execution logic for Better Dogs debugging.
- * Strictly adheres to Modularity Mandate and Zenith Execution Guardrails.
+ * Strictly adheres to modularity and execution safety standards.
  * Target validation and execution environment checks enforced.
  */
 public class WolfCommandHelper {

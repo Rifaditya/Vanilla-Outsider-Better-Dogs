@@ -12,7 +12,7 @@ import net.fabricmc.api.ModInitializer;
 
 /**
  * Better Dogs Main Entrypoint.
- * Protocol: Zenith Protocol 2.1
+ * Protocol: Architectural Protocol 2.1
  * Verified against: Wolf.java (26.1.2 Release)
  */
 public class BetterDogs implements ModInitializer {
@@ -29,7 +29,7 @@ public class BetterDogs implements ModInitializer {
     }
 
     public static void init() {
-        LOGGER.info("Vanilla Outsider: Better Dogs v3.4.8 initializing [Zenith Aligned]...");
+        LOGGER.info("Vanilla Outsider: Better Dogs v3.4.16+R-26.1.2 initializing [Aligned]...");
 
         // Load Configuration
         BetterDogsConfig.load(FabricLoader.getInstance().getConfigDir());

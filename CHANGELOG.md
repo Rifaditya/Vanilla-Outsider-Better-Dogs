@@ -1,8 +1,77 @@
 # Changelog
 
+## [3.4.16+R-26.1.2] - 2026-05-21
+### Summary
+The production **Release** version of the **"Clean Gamerules"** and **"Optional GUI Integration"** features.
+- **Divider Removal**: Completely deleted all dummy visual divider gamerules (`div_general`, `div_health`, etc.) from the registry, removing interactive ON/OFF buttons on dividers. All Better Dogs settings are now listed under a single, unified category.
+- **Optional GUI Support**: Fully integrated with **Cloth Config API** and **ModMenu** to allow GUI-based customization of the mod's 50+ settings.
+- **Dedicated Server Compatibility**: GUI construction and Cloth Config calls are lazily loaded inside client-only entrypoints, ensuring safety on dedicated servers.
+- **Config Relocation**: Moved global configuration path directly to the config root folder as `config/vanilla-outsider-better-dogs.json` to prevent namespace collisions.
+- **Dependency Cleanliness**: Cleaned up the `fabric.mod.json` dependencies, setting `dasik-library` to wildcard dependency `*` for better installation compatibility.
+
+## [3.4.15+A-26.1.2] - 2026-05-21
+### Summary
+The **"Clean Gamerules"** update. Removed visual divider gamerules to avoid showing dummy toggles in the game rules selection screen.
+- **Divider Removal**: Completely deleted all dummy visual divider gamerules (`div_general`, `div_health`, etc.) from the registry, removing interactive ON/OFF buttons on dividers. All Better Dogs settings are now listed under a single, unified category clean and simple.
+
+## [3.4.14+A-26.1.2] - 2026-05-21
+### Summary
+The **"Optional GUI Integration"** update. Implemented optional configuration GUI via Cloth Config and ModMenu.
+- **Optional Dependencies**: Mod Menu configuration gear button in the Mods list redirects players to a highly detailed, categorised Cloth Config screen. Added repositories and dependencies in `build.gradle` and suggestions in `fabric.mod.json`.
+- **Dedicated Server Compatibility**: GUI construction and Cloth Config calls are lazily-loaded inside client-only entrypoints, ensuring safety on dedicated servers.
+- **Config Relocation**: Moved global configuration path from `config/betterdogs/config.json` directly to the config root folder as `config/vanilla-outsider-better-dogs.json` to prevent namespace collisions.
+
+## [3.4.13+A-26.1.2] - 2026-05-21
+### Summary
+The **"Mixin Refmap"** update. Resolved Mixin refmap warnings in production environments.
+- **Refmap Inclusion**: Added an empty `vanilla-outsider-better-dogs-refmap.json` file to the JAR resources. This satisfies the Mixin configuration while avoiding compile-time dependency on nonexistent mappings in the non-obfuscated environment.
+- **Warnings Suppressed**: Suppressed Knot/Fabric console warnings regarding missing reference maps during startup.
+
+## [3.4.12+A-26.1.2] - 2026-05-21
+### Summary
+The **"Config Subdirectory"** update. Relocated the global configuration file and renamed it to `config.json` inside a dedicated `betterdogs` subfolder.
+- **Improved Compatibility**: Prevents name collision issues with other mods by organizing configuration within a `betterdogs/` directory (resolving Cloth Config Custom Name auto-detection).
+- **Subfolder Layout**: Global configuration path is now `config/betterdogs/config.json`, alongside its respective `.tmp` and `.bak` swap files.
+
+## [3.4.11+A-26.1.2] - 2026-05-21
+### Summary
+The **"Bundled Config"** update. Bundled a default `betterdogs.json` configuration file inside the mod JAR resources.
+- **Modpack Convenience**: Enables modpack creators to easily pre-configure default settings in their packs without launching the game first.
+- **Resource Copying**: On first launch, the mod extracts the bundled default configuration directly into the game's `config/` directory instead of programmatically generating empty values.
+- **Robust Fallback**: If the bundled resource is missing or copying fails, the mod gracefully falls back to generating code defaults.
+
+## [3.4.10+A-26.1.2] - 2026-05-21
+### Summary
+The **"Unified Panel"** update. Consolidated the 6 separate GameRule categories into a single unified category with visual divider rules separating each sub-section.
+- **Single Category**: All Better Dogs GameRules now appear under one **"Vanilla Outsider: Better Dogs"** category instead of 6 separate ones.
+- **Section Dividers**: Added 6 empty boolean GameRules (`div_general`, `div_health`, `div_social`, `div_war`, `div_litter`, `div_spawning`) that act as visual section headers with `────` decorations.
+- **Rule Reordering**: Reorganized registration order so that all Health rules, all Social rules, etc. are grouped together contiguously under their respective dividers.
+- **Localization**: Full English and Indonesian translations for the unified category and all divider labels.
+- **⚠️ Reset Warning**: Existing GameRule values may be reset to defaults due to this structural change.
+
+## [3.4.9+B-26.1.2] - 2026-05-21
+### Summary
+The **"Sanitary Alignment"** update. Conducted a thorough code audit and resolved technical debt, naming compliance issues, and internal codename references.
+- **Mixin Naming Compliance**: Renamed and added `@Unique` to all custom fields and helper methods in `WolfBreedingMixin.java` to prevent naming collisions.
+- **Banned Code Cleanup**: Removed `System.out.println` from `AnimalMixin.java` and redirected debug info to the modular `WolfDebugLogger` using the official `Logger` API.
+- **Anonymization Compliance**: Fully sanitized entrypoint classes (`BetterDogs.java`) and utility classes (`WolfCommandHelper.java`) to remove any references to internal development codenames.
+
+## [3.4.8+R-26.1.2] - 2026-05-16
+### Summary
+The **"Categorical Mastery"** update. Reorganized the GameRule configuration UI into themed categories for improved usability and organization.
+- **Themed Categorization**: Reorganized all 50+ GameRules into 6 distinct categories:
+    - **VO: Better Dogs - War**: Territorial matrix and rivalry settings.
+    - **VO: Better Dogs - Litter**: Breeding genetics and litter size rules.
+    - **VO: Better Dogs - Health**: HP, speed, and damage modifiers.
+    - **VO: Better Dogs - Social**: AI behaviors, howling, and follow distances.
+    - **VO: Better Dogs - Spawning**: Cluster sizes and taming chances.
+    - **VO: Better Dogs - General**: Utility toggles and environmental reactive rules.
+- **Localization**: Added full support for the new category labels in both English (`en_us`) and Indonesian (`id_id`).
+- **⚠️ Mandatory Warning**: Your gamerule might be reseted as I split it into many category and i changed stuff.
+
 ## [3.4.7] - 2026-05-16
 ### Summary
-The **"Alignment"** update. Finalized the architectural transition to strict Zenith Protocol standards, resolving configuration data loss and logic hoarding.
+The **"Alignment"** update. Finalized the architectural transition to strict namespacing guidelines, resolving configuration data loss and logic hoarding.
 - **Registry Namespacing**: Refactored all custom GameRules to use the `vanilla-outsider-better-dogs` namespace (e.g., `vanilla-outsider-better-dogs:bd_storm_anxiety`). This prevents silent data loss caused by vanilla registry shadowing.
 - **Localization Sync**: Synchronized `en_us.json` and `id_id.json` with the new namespaced GameRule keys for perfect UI parity.
 - **Territorial Probability Matrix**: Fully integrated the dynamic outcome matrix into the `WildWolfTerritorialGoal` AI. Pack disputes now follow synchronized, personality-driven probabilities for War, Merge, or Retreat.
@@ -175,11 +244,11 @@ The **"Wolf Litters"** update. Tamed wolves can now have multiple puppies in one
   - *Example (Personality)*: `/betterdogs debug personality @e[type=wolf,distance=..5] aggressive`
   - *Example (Action)*: `/betterdogs debug action @e[type=wolf,distance=..5] howl`
   - *Actions available*: `howl`, `zoomies`, `mischief`, `disciplined`.
-- **Snapshot Support**: Fully migrated API calls to match Minecraft 26.x Snapshot 11 (e.g. `getWorldClockTime()`, `LivingEntity` leadership).
+- **Version Support**: Fully migrated API calls to match Minecraft 26.x development builds (e.g. `getWorldClockTime()`, `LivingEntity` leadership).
 - **Workspace Consolidation**: Refactored the environment to maintain a single source of truth for mod development in a cleaner folder structure.
 
 ### Changed
-- **Modularity**: Split command execution logic into a dedicated Zenith-compliant `WolfCommandHelper.java`.
+- **Modularity**: Split command execution logic into a dedicated standard-compliant `WolfCommandHelper.java`.
 
 ## [3.1.37+build.3] - 2026-03-04
 

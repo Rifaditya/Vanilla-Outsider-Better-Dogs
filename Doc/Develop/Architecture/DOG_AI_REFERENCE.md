@@ -1,4 +1,4 @@
-# Vanilla Outsider: Better Dogs - AI Reference Guide (v3.1.37+build.5)
+# Vanilla Outsider: Better Dogs - AI Reference Guide (v3.4.16)
 
 ---
 
@@ -60,7 +60,7 @@
 
 ---
 
-# 🤝 SOCIAL BONDING (v3.1.37)
+# 🤝 SOCIAL BONDING (v3.4.16)
 
 The bonding system tracks "Affinity" between pack members (from -100 to 100).
 
@@ -105,4 +105,4 @@ The bonding system tracks "Affinity" between pack members (from -100 to 100).
 - **Passive Healing**: Slow HP recovery (`bd_enable_passive_healing`).
 
 ---
-*Last Updated: March 2026 | v3.1.37+build.5*
+*Last Updated: May 2026 | v3.4.16*

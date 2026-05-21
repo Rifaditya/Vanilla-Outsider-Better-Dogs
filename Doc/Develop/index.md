@@ -1,8 +1,8 @@
 # Better Dogs: Project Summary
 
-**Version:** 3.4.6 (Targeting Minecraft 26.1.2)  
+**Version:** 3.4.16 (Targeting Minecraft 26.1.2)  
 **Creator:** Dasik (Rifaditya)  
-**Dependencies:** Java 25, Fabric Loader >=0.16.10, DasikLibrary >=1.7.1
+**Dependencies:** Java 25, Fabric Loader >=0.16.10, DasikLibrary >=1.7.0
 
 ## 1. Project Philosophy (Vanilla Outsider)
 
@@ -10,7 +10,7 @@ Adheres to the "One Click, One Action" rule. Better Dogs enhances the vanilla wo
 
 * **Unique Personalities**: Rolling (Normal, Aggressive, Pacifist) upon taming or spawn.
 * **Individual DNA**: UUID-based preference rolls for social events.
-* **Game Rule Mastery**: Moved from Cloth Config to native Minecraft Game Rules for snapshot compatibility.
+* **Game Rule Mastery**: Native Minecraft Game Rules registry for all settings.
 
 ## 2. Dependencies & Environment
 
@@ -19,7 +19,7 @@ Verified against Protocol `Better_modder_agent_protocol.yaml`:
 * `minecraft`: `~26.1-` (Verified: `26.1-snapshot-11`)
 * `java`: `>=25`
 * `fabric-api`: `*`
-* **Note**: No longer requires Cloth Config.
+* **Note**: Optionally supports Cloth Config and ModMenu for client configuration GUI.
 
 ## 3. Technical Implementation
 
@@ -42,7 +42,7 @@ Verified against Protocol `Better_modder_agent_protocol.yaml`:
 ## 5. Documentation Map
 
 * [History of Changes](Changelogs/History.md)
-* [Moderator Audit Helper](Codebase%20Documentations/Audit_Helper_For_Moderators.md)
-* [Technical Logic Guide](Codebase%20Documentations/Logic_VO.md)
-* [AI Magic Number Reference](DOG_AI_REFERENCE.md)
+* [Moderator Audit Helper](Codebase/Audit_Helper_For_Moderators.md)
+* [Technical Logic Guide](Codebase/Logic_VO.md)
+* [AI Magic Number Reference](Architecture/DOG_AI_REFERENCE.md)
 * [Current Changelog](../CHANGELOG.md)

@@ -1,15 +1,15 @@
-# 🐕 Better Dogs: A Social & Behavioral Overhaul (v3.4.8)
+# 🐕 Better Dogs: A Social & Behavioral Overhaul (v3.4.16)
 
 **Better Dogs** is a comprehensive overhaul of the Minecraft Wolf, replacing robotic behaviors with a dynamic, personality-driven social system. Built for the modern "Post-Obfuscation" era of Minecraft, it enhances the taming loop with genetics, social bonding, and smart survival logic.
 
-## 🔥 New in v3.4.8: Categorical Mastery
+## 🔥 New in v3.4.16: Clean Gamerules Layout
 
-The latest update reorganizes the configuration UI for better clarity and organization:
+This update polishes the gamerules interface:
 
-- **📂 Themed Categorization**: GameRules are now split into 6 distinct categories: **War, Litter, Health, Social, Spawning, and General**.
-- **⚠️ Reset Warning**: Existing GameRule values may be reset to defaults due to this structural categorization.
-- **🛡️ Registry Namespacing**: Full alignment with Zenith Protocol standards for unique identifiers.
-- **🌍 Enhanced Localization**: Updated English and Indonesian labels for all new categories.
+- **🧹 Clean Gamerules Screen**: Removed dummy visual divider rules (ON/OFF buttons acting as separators) to avoid interface clutter. All Better Dogs config variables are now cleanly listed in a single category.
+- **⚙️ Optional GUI Support**: Fully integrated with **Cloth Config API** and **ModMenu** to allow GUI-based customization of the mod's 50+ settings.
+- **🛡️ Dedicated Server Safe**: Client-only lazy classloading design ensures dedicated servers do not crash if ModMenu or Cloth Config are absent.
+- **📁 Simplified Pathing**: Relocated configuration directly to the instance's config folder under `config/vanilla-outsider-better-dogs.json` to prevent conflicts.
 
 ---
 
@@ -35,7 +35,7 @@ Every dog is assigned one of three personalities with unique traits:
 ---
 
 ## ⚙️ Native Configuration
-Better Dogs uses the **Native Minecraft Game Rules** system. All 40+ parameters are grouped into a dedicated category for zero-dependency tuning.
+Better Dogs uses the **Native Minecraft Game Rules** system. All 50+ parameters are grouped into a dedicated category for zero-dependency tuning.
 
 ![Native gamerule UI](Doc/Media/Gallery/native_game_rules_ui.png)
 

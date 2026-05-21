@@ -5,7 +5,7 @@
 </div>
 <p align="center">
     <a href="https://www.curseforge.com/minecraft/mc-mods/fabric-api"><img src="https://img.shields.io/badge/Requires-Fabric_API-blue?style=for-the-badge&logo=fabric" alt="Requires Fabric API"></a>
-    <img src="https://img.shields.io/badge/Language-Java-orange?style=for-the-badge&logo=java" alt="Java">
+    <img src="https://img.shields.io/badge/Language-Java_25-orange?style=for-the-badge&logo=java" alt="Java 25">
     <img src="https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge" alt="License">
     <img src="https://img.shields.io/badge/Minecraft-26.1+-brightgreen?style=for-the-badge" alt="Minecraft 26.1+">
 </p>
@@ -41,17 +41,24 @@ When tamed, wolves develop one of three permanent personalities, visible via cus
 - **Social Bonding (Affinity)**: Dogs form relationships within their pack. Socializing builds trust and reduces accidental infighting.
 - **Adult Correction**: Aggressive adults discipline misbehaving puppies, preventing death loops.
 - **Pack Genetics**: Puppies inherit personality traits and stats from their parents.
+- **Litter System**: Wolves can produce multiple puppies in a single breed — each with independent personality rolls and stats.
 
 ### 🛡️ Smart Survival AI
 - **Cliff Safety**: Wolves detect fatal drops and airborne targets, stopping dangerous chases.
 - **Hazard Awareness**: Improved pathfinding around lava, fire, and drowning hazards.
 - **Creeper Awareness**: Wolves flee from hissing Creepers!
+- **Dog Feeding**: Tamed dogs scavenge dropped raw or cooked food from the ground to restore health — no manual feeding required.
 
 ### 📡 Behavioral Specialization
 - **Scouting**: Aggressive dogs proactively range ahead to clear your path.
 - **Silent Alarm**: Pacifist dogs emit a high-pitched whine when they detect nearby monsters.
 - **Gift System**: Loyal dogs bring you treasures based on their personality.
 - **Debug Tools**: Use `/betterdogs debug` to test pack interactions and behaviors (Locked behind OP permissions and a safety GameRule).
+
+### 🌤️ Immersive Events
+- **Zoomies**: Dogs burst into hyperactive sprints in the morning or when it starts raining — pure joy!
+- **Group Howl**: Under a full moon, wolves trigger pack-wide howling sessions that spread to nearby pack members.
+- **Storm Anxiety**: Thunderstorms make dogs anxious — they whine, tremble, and pace nervously until the storm passes.
 
 ### 🏰 Wild Wolf Territoriality
 Wild wolf packs are now dynamic, territorial entities led by a dominant leader:
@@ -62,7 +69,7 @@ Wild wolf packs are now dynamic, territorial entities led by a dominant leader:
 - **Yield & Merge**: Defeated packs are not lost; they yield and **merge** with the winning pack, allowing for the natural formation of massive wolf colonies.
 - **Wild Personality AI (New Default)**: Out of the box, wild pack members exhibit unique behaviors (like Aggressive hunting or Pack Retreats) while anchored to their leader.
 - **Production Stable**: Fully compatible with high-performance engines like **C2ME**, ensuring safe multi-threaded AI execution.
-- **Performance Hardened**: All AI logic is performance-optimized using **DasikLibrary 1.7.1**, ensuring zero console spam and smooth server TPS even with massive packs.
+- **Performance Hardened**: All AI logic is performance-optimized using **DasikLibrary 1.7.0**, ensuring zero console spam and smooth server TPS even with massive packs.
 
 ---
 
@@ -83,9 +90,13 @@ No messy config files. Better Dogs uses the **Native Minecraft Game Rules** syst
 
 If you enjoy the **Vanilla Outsider** collection, consider fueling the next update!
 
+<p align="center">
+
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20Me-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/dasikigaijin/tip)
 [![SocioBuzz](https://img.shields.io/badge/SocioBuzz-Local_Support-7BB32E?style=for-the-badge)](https://sociabuzz.com/dasikigaijin/tribe)
 [![Saweria](https://img.shields.io/badge/Saweria-Local_Support-FFA500?style=for-the-badge)](https://saweria.co/DasikIgaijinn)
+
+</p>
 
 > [!NOTE]
 > **Indonesian Users:** SocioBuzz and Saweria support local payment methods (Gopay, OVO, Dana, etc.) if you want to support me without using PayPal/Ko-fi!
@@ -96,7 +107,7 @@ If you enjoy the **Vanilla Outsider** collection, consider fueling the next upda
 
 | Role | Author |
 | :--- | :--- |
-| **Creator** | **Rifaditya** (Dasik) |
+| **Creator** | **Dasik** (Rifaditya) |
 | **Collection** | Vanilla Outsider |
 | **License** | GPLv3 |
 

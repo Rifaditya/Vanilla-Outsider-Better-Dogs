@@ -2,7 +2,7 @@
 
 **Mod Name:** Vanilla Outsider: Better Dogs
 **Mod ID:** `vanilla-outsider-better-dogs` (Fabric)
-**Version:** 3.1.13
+**Version:** 3.4.16
 **Creator:** DasikIgaijin
 
 ## 🛡️ Safety & Compliance Statement
@@ -12,7 +12,7 @@ To assist Platform Moderators (Modrinth/CurseForge) in auditing this project, I 
 1. **No External Network Connections**: This mod runs entirely offline within the Minecraft game loop. It does **NOT** make any HTTP/Web requests.
 2. **No Data Collection**: No telemetry, analytics, or user-data tracking.
 3. **No Binary Execution**: No OS-level commands or external binary execution.
-4. **Filesystem Hygiene**: Only writes to `config/betterdogs.json` (via **Ultraguard Sync**) and uses native Fabric Attachments for world data.
+4. **Filesystem Hygiene**: Only writes to `config/vanilla-outsider-better-dogs.json` (via **Ultraguard Sync**) and uses native Fabric Attachments for world data.
 
 ## 📂 Codebase Overview for Reviewers
 
@@ -40,4 +40,4 @@ Reviewers auditing the Mixins may notice entities "injecting" states into other 
 
 - **Loader**: Fabric Loader (>=0.16.10)
 - **Mappings**: Official Minecraft Mappings (Mojang/Unobfuscated)
-- **External Libs**: None (Uses Fabric API natively).
+- **External Libs**: `dasik-library` (Required). Optionally supports `cloth-config` and `modmenu` for configuration GUI.

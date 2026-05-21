@@ -1,4 +1,4 @@
-# Mixin Documentation: Better Dogs (v3.1.37+build.5)
+# Mixin Documentation: Better Dogs (v3.4.16)
 
 ## Target: `net.minecraft.world.entity.animal.wolf.Wolf`
 

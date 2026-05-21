@@ -7,6 +7,7 @@ import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
+import net.vanillaoutsider.betterdogs.util.WolfDebugLogger;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -44,9 +45,7 @@ public abstract class AnimalMixin {
                             level.addFreshEntity(new ExperienceOrb(level, parent1.getX(), parent1.getY(), parent1.getZ(), level.getRandom().nextInt(7) + 1));
                         }
                         
-                        if (BetterDogsGameRules.getBoolean(level, BetterDogsGameRules.BD_DEBUGGING)) {
-                            System.out.println("[BetterDogs] Extra puppy born! Litter size incremented for tamed wolf pair.");
-                        }
+                        WolfDebugLogger.log(wolf, "Breeding", "Extra puppy born! Litter size incremented for tamed wolf pair.");
                     }
                 } else {
                     // Probability chain: If one fails, stop (prevents large litters being too common)
