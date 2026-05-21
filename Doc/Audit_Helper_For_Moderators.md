@@ -2,7 +2,7 @@
 
 **Mod Name:** Vanilla Outsider: Better Dogs
 **Mod ID:** `vanilla-outsider-better-dogs` (Fabric)
-**Version:** 3.4.16
+**Version:** 3.4.17
 **Creator:** DasikIgaijin
 
 ## 🛡️ Safety & Compliance Statement

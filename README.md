@@ -1,15 +1,14 @@
-# 🐕 Better Dogs: A Social & Behavioral Overhaul (v3.4.16)
+# 🐕 Better Dogs: A Social & Behavioral Overhaul (v3.4.17)
 
 **Better Dogs** is a comprehensive overhaul of the Minecraft Wolf, replacing robotic behaviors with a dynamic, personality-driven social system. Built for the modern "Post-Obfuscation" era of Minecraft, it enhances the taming loop with genetics, social bonding, and smart survival logic.
 
-## 🔥 New in v3.4.16: Clean Gamerules Layout
+## 🔥 New in v3.4.17: Continuous Territorial Cascades
 
-This update polishes the gamerules interface:
+This update polishes the wild wolf pack territorial system:
 
-- **🧹 Clean Gamerules Screen**: Removed dummy visual divider rules (ON/OFF buttons acting as separators) to avoid interface clutter. All Better Dogs config variables are now cleanly listed in a single category.
-- **⚙️ Optional GUI Support**: Fully integrated with **Cloth Config API** and **ModMenu** to allow GUI-based customization of the mod's 50+ settings.
-- **🛡️ Dedicated Server Safe**: Client-only lazy classloading design ensures dedicated servers do not crash if ModMenu or Cloth Config are absent.
-- **📁 Simplified Pathing**: Relocated configuration directly to the instance's config folder under `config/vanilla-outsider-better-dogs.json` to prevent conflicts.
+- **🔄 Continuous Merges**: Fixed issues where wild wolf pack leaders ignored each other after their first dispute. Fights and dominance decisions now correctly resolve in full merges until only one leader remains in the area.
+- **🛡️ Bi-directional State Checking**: Synchronizes social and combat states between disputing pack leaders, preventing multi-targeting and target corruption.
+- **⚡ Rapid Debug Cooldown**: Speeds up territorial cooldown to 1 second (20 ticks) when debugging mode is active for swift in-game testing.
 
 ---
 

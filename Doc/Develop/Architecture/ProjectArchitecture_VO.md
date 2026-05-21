@@ -1,4 +1,4 @@
-# Project Architecture: Better Dogs (v3.4.16)
+# Project Architecture: Better Dogs (v3.4.17)
 
 ## Philosophy
 

@@ -1,4 +1,4 @@
-# Core Logic: Better Dogs (v3.4.16)
+# Core Logic: Better Dogs (v3.4.17)
 
 This document explains the internal logic governing wolf personalities, their impact on gameplay, and the advanced social interaction architecture.
 

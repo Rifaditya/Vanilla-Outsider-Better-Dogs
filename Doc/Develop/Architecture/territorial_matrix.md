@@ -2,7 +2,7 @@
 
 Technical overview of the weighted outcome system for wild wolf territorial disputes.
 
-## Matrix Values (v3.4.16)
+## Matrix Values (v3.4.17)
 
 Each encounter between two pack leaders results in a roll (0-99) against the following matrix:
 

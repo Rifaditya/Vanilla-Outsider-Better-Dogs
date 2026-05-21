@@ -67,6 +67,9 @@ public class WildWolfTerritorialGoal extends Goal {
         if (this.wolf.isTame() || ((GroupMember)this.wolf).getLeader() != null) {
             return false;
         }
+        if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$getSocialAction() != WolfExtensions.SocialAction.NONE) {
+            return false;
+        }
         if (this.cooldown > 0) {
             this.cooldown--;
             return false;
@@ -101,15 +104,22 @@ public class WildWolfTerritorialGoal extends Goal {
         if (this.wolf instanceof WolfExtensions ext) {
             ext.betterdogs$setSocialState(this.rival, WolfExtensions.SocialAction.TERRITORIAL_DISPUTE, 1200);
         }
+        if (this.rival instanceof WolfExtensions rivalExt) {
+            rivalExt.betterdogs$setSocialState(this.wolf, WolfExtensions.SocialAction.TERRITORIAL_DISPUTE, 1200);
+        }
     }
 
     @Override
     public void stop() {
-        this.rival = null;
-        this.cooldown = 400; // Long cooldown between territory disputes
         if (this.wolf instanceof WolfExtensions ext) {
             ext.betterdogs$setSocialState(null, WolfExtensions.SocialAction.NONE, 0);
         }
+        if (this.rival instanceof WolfExtensions rivalExt && rivalExt.betterdogs$getSocialTarget() == this.wolf) {
+            rivalExt.betterdogs$setSocialState(null, WolfExtensions.SocialAction.NONE, 0);
+        }
+        this.rival = null;
+        int maxCooldown = BetterDogsGameRules.getBoolean(this.wolf.level(), BetterDogsGameRules.BD_DEBUGGING) ? 20 : 400;
+        this.cooldown = maxCooldown;
     }
 
     @Override
@@ -133,10 +143,18 @@ public class WildWolfTerritorialGoal extends Goal {
                     }
                 }
                 // Check if someone yields (or dies if fatal)
-                if (!this.isFatal && this.rival.getHealth() < this.rival.getMaxHealth() * 0.4) {
-                    this.winConflict();
-                } else if (this.isFatal && (this.rival.isRemoved() || !this.rival.isAlive())) {
-                    this.winConflict();
+                if (!this.isFatal) {
+                    if (this.rival.getHealth() < this.rival.getMaxHealth() * 0.4) {
+                        this.winConflict();
+                    } else if (this.wolf.getHealth() < this.wolf.getMaxHealth() * 0.4) {
+                        this.loseConflict();
+                    }
+                } else {
+                    if (this.rival.isRemoved() || !this.rival.isAlive()) {
+                        this.winConflict();
+                    } else if (this.wolf.isRemoved() || !this.wolf.isAlive()) {
+                        this.loseConflict();
+                    }
                 }
             }
             case RETREAT -> {
@@ -210,7 +228,7 @@ public class WildWolfTerritorialGoal extends Goal {
                 this.winConflict();
             } else {
                 this.debugLog("Merge Defeat: " + this.wolf.getName().getString() + " absorbed by " + rivalWolf.getName().getString());
-                this.behaviorTicks = 2000; // I am the one yielding
+                this.loseConflict();
             }
         } else {
             // RETREAT
@@ -237,6 +255,9 @@ public class WildWolfTerritorialGoal extends Goal {
         // Deterministic fatality decision
         this.isFatal = seededRandom.nextInt(100) < BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERRITORIAL_FATAL_CHANCE);
         ext.betterdogs$setSocialState(this.rival, WolfExtensions.SocialAction.TERRITORIAL_WAR, 1200);
+        if (this.rival instanceof WolfExtensions rivalExt) {
+            rivalExt.betterdogs$setSocialState(this.wolf, WolfExtensions.SocialAction.TERRITORIAL_WAR, 1200);
+        }
     }
 
     private void winConflict() {
@@ -257,6 +278,30 @@ public class WildWolfTerritorialGoal extends Goal {
             if (this.wolf.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
                 serverLevel.sendParticles(net.minecraft.core.particles.ParticleTypes.HAPPY_VILLAGER, 
                     this.wolf.getX(), this.wolf.getY() + 1.0, this.wolf.getZ(), 5, 0.5, 0.5, 0.5, 0.0);
+            }
+        }
+        this.behaviorTicks = 2000; // Trigger completion
+    }
+
+    private void loseConflict() {
+        this.debugLog("Pack Conflict Resolved: " + this.wolf.getName().getString() + " (" + this.wolf.getId() + ") loses against " + this.rival.getName().getString() + " (" + this.rival.getId() + "). Packs merged.");
+        // I join rival's pack
+        if (this.rival instanceof Wolf rivalWolf) {
+            // Merge packs: All of my followers should now follow rival
+            if (this.wolf.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+                 for (Wolf other : serverLevel.getEntitiesOfClass(Wolf.class, this.wolf.getBoundingBox().inflate(this.searchRadius))) {
+                     if (((GroupMember)other).getLeader() == this.wolf) {
+                         ((GroupMember)other).setLeader(rivalWolf);
+                     }
+                 }
+            }
+            if (this.wolf instanceof GroupMember gm) {
+                gm.setLeader(rivalWolf);
+            }
+            // Visual success feedback for winner
+            if (rivalWolf.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+                serverLevel.sendParticles(net.minecraft.core.particles.ParticleTypes.HAPPY_VILLAGER, 
+                    rivalWolf.getX(), rivalWolf.getY() + 1.0, rivalWolf.getZ(), 5, 0.5, 0.5, 0.5, 0.0);
             }
         }
         this.behaviorTicks = 2000; // Trigger completion

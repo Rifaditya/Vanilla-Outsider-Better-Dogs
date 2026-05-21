@@ -1,6 +1,6 @@
 # Better Dogs: Project Summary
 
-**Version:** 3.4.16 (Targeting Minecraft 26.1.2)  
+**Version:** 3.4.17 (Targeting Minecraft 26.1.2)  
 **Creator:** Dasik (Rifaditya)  
 **Dependencies:** Java 25, Fabric Loader >=0.16.10, DasikLibrary >=1.7.0
 

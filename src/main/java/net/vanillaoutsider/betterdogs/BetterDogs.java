@@ -29,7 +29,7 @@ public class BetterDogs implements ModInitializer {
     }
 
     public static void init() {
-        LOGGER.info("Vanilla Outsider: Better Dogs v3.4.16+R-26.1.2 initializing [Aligned]...");
+        LOGGER.info("Vanilla Outsider: Better Dogs v3.4.17+A-26.1.2 initializing [Aligned]...");
 
         // Load Configuration
         BetterDogsConfig.load(FabricLoader.getInstance().getConfigDir());
