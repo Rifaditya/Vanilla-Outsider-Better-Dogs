@@ -1,8 +1,10 @@
+// Verified against: WolfBreedingMixin.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.mixin;
 
+import java.util.Random;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.animal.wolf.Wolf;
-import net.minecraft.server.level.ServerLevel;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
@@ -11,8 +13,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.Random;
 
 /**
  * Mixin for Wolf breeding to implement personality genetics.

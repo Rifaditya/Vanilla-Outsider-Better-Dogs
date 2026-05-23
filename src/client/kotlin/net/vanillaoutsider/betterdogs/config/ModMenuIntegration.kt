@@ -1,3 +1,4 @@
+// Verified against: ModMenuIntegration.kt (26.1.2+)
 package net.vanillaoutsider.betterdogs.config
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory

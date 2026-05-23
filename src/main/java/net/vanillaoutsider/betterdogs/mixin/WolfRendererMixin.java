@@ -1,11 +1,12 @@
+// Verified against: WolfRendererMixin.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.model.animal.wolf.WolfModel;
 import net.minecraft.client.renderer.entity.AgeableMobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.WolfRenderer;
 import net.minecraft.client.renderer.entity.state.WolfRenderState;
-import net.minecraft.client.model.animal.wolf.WolfModel;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.render.WolfRenderStateExtensions;

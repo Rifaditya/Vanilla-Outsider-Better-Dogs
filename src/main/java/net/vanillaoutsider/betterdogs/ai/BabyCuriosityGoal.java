@@ -1,5 +1,9 @@
+// Verified against: BabyCuriosityGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
+import java.util.EnumSet;
+import java.util.List;
+import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -8,10 +12,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
-
-import java.util.EnumSet;
-import java.util.List;
-import java.util.function.Predicate;
 
 /**
  * AI Goal for baby wolf curiosity.

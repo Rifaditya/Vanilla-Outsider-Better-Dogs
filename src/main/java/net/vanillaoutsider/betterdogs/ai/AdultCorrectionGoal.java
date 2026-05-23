@@ -1,13 +1,13 @@
+// Verified against: AdultCorrectionGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
-import net.minecraft.server.level.ServerLevel;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
-import net.vanillaoutsider.betterdogs.BetterDogs;
 import net.vanillaoutsider.betterdogs.util.WolfDebugLogger;
 
 public class AdultCorrectionGoal extends Goal {

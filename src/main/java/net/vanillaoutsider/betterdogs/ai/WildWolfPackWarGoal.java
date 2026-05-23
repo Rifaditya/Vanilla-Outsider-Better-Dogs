@@ -1,15 +1,14 @@
+// Verified against: WildWolfPackWarGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
-// Verified against: Wolf.java (26.1.2 Release)
 
+import java.util.EnumSet;
+import java.util.List;
+import net.dasik.social.api.group.GroupMember;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
-import java.util.EnumSet;
-import java.util.List;
-import net.dasik.social.api.group.GroupMember;
 
 /**
  * AI Goal for wild wolf pack members during a Territorial War.

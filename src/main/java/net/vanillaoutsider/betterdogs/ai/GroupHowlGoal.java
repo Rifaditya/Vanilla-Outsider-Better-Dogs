@@ -1,15 +1,15 @@
+// Verified against: GroupHowlGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
+import java.util.EnumSet;
+import java.util.List;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.phys.AABB;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
-import net.minecraft.world.attribute.EnvironmentAttributes;
-
-import java.util.EnumSet;
-import java.util.List;
 
 /**
  * AI Goal: Group Howl - Pack vocalization during night.

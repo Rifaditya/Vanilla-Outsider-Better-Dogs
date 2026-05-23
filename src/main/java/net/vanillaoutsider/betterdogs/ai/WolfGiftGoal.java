@@ -1,17 +1,17 @@
+// Verified against: WolfGiftGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
+import java.util.EnumSet;
+import java.util.Random;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.WolfPersistentData;
+import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
-
-import java.util.EnumSet;
-import java.util.Random;
 
 public class WolfGiftGoal extends Goal {
 

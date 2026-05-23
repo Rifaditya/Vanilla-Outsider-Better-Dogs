@@ -1,8 +1,9 @@
+// Verified against: IndyPetsCompatibility.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.util;
 
-import net.minecraft.world.entity.Entity;
-import net.fabricmc.loader.api.FabricLoader;
 import java.lang.reflect.Method;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.world.entity.Entity;
 
 /**
  * Handles soft compatibility with IndyPets mod.

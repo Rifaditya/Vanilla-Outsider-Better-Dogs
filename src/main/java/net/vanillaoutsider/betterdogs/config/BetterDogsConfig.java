@@ -1,3 +1,4 @@
+// Verified against: BetterDogsConfig.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.config;
 
 public class BetterDogsConfig {

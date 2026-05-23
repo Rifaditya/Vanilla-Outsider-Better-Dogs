@@ -1,3 +1,4 @@
+// Verified against: BetterDogsFabric.java (26.1.2+)
 package net.vanillaoutsider.betterdogs;
 
 import net.fabricmc.api.ModInitializer;

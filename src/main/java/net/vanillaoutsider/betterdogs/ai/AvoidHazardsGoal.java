@@ -1,16 +1,16 @@
+// Verified against: AvoidHazardsGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
+import java.util.EnumSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.level.pathfinder.Node;
-import java.util.EnumSet;
+import net.minecraft.world.level.pathfinder.Path;
+import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 
 /**
  * AI Goal for wolves to avoid hazardous blocks.

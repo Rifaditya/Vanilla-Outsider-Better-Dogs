@@ -1,18 +1,13 @@
+// Verified against: AggressiveTargetGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
-// Verified against: Wolf.java (26.1.2 Release)
 
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.players.PlayerList;
-import net.minecraft.server.level.ServerLevel;
+import net.dasik.social.api.group.GroupMember;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
-import net.dasik.social.api.group.GroupMember;
-import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;

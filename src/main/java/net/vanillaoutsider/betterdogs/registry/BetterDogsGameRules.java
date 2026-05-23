@@ -1,19 +1,19 @@
+// Verified against: BetterDogsGameRules.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.registry;
 
-import net.minecraft.world.level.gamerules.GameRules;
+import com.mojang.brigadier.arguments.BoolArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.serialization.Codec;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gamerules.GameRule;
 import net.minecraft.world.level.gamerules.GameRuleCategory;
 import net.minecraft.world.level.gamerules.GameRuleType;
 import net.minecraft.world.level.gamerules.GameRuleTypeVisitor;
-import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.Registry;
-import net.minecraft.world.flag.FeatureFlagSet;
-import com.mojang.brigadier.arguments.BoolArgumentType;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.serialization.Codec;
-import net.minecraft.resources.Identifier;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 
 public class BetterDogsGameRules {

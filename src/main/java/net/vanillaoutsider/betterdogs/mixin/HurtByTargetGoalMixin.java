@@ -1,13 +1,11 @@
+// Verified against: HurtByTargetGoalMixin.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.TargetGoal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
-import net.vanillaoutsider.betterdogs.WolfExtensions;
-import net.vanillaoutsider.betterdogs.WolfPersonality;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

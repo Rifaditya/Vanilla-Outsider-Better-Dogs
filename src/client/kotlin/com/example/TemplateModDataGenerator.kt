@@ -1,3 +1,4 @@
+// Verified against: TemplateModDataGenerator.kt (26.1.2+)
 package com.example
 
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint

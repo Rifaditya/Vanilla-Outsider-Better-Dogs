@@ -1,11 +1,12 @@
+// Verified against: HuntWhenHurtGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
+import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.Set;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
-import java.util.EnumSet;
-import java.util.Set;
-import java.util.Comparator;
 
 /**
  * AI Goal for wild wolves to hunt prey only when hurt.

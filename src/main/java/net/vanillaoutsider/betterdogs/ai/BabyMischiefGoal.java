@@ -1,3 +1,4 @@
+// Verified against: BabyMischiefGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
 import java.util.List;
@@ -7,8 +8,6 @@ import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.phys.AABB;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
-import net.vanillaoutsider.betterdogs.WolfPersistentData;
-import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 
 /**

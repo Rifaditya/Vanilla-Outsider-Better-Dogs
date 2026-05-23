@@ -1,3 +1,4 @@
+// Verified against: WolfRenderStateMixin.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.minecraft.client.renderer.entity.state.WolfRenderState;

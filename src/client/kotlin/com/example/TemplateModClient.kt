@@ -1,3 +1,4 @@
+// Verified against: TemplateModClient.kt (26.1.2+)
 package com.example
 
 import net.fabricmc.api.ClientModInitializer

@@ -1,13 +1,13 @@
+// Verified against: WolfStormAnxietyGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
+import java.util.EnumSet;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.phys.Vec3;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
-
-import java.util.EnumSet;
 
 public class WolfStormAnxietyGoal extends Goal {
 

@@ -67,3 +67,6 @@ Archive/
 *.txt
 *.log
 *.jar
+
+# Marketing/Hype
+Doc/Marketing/

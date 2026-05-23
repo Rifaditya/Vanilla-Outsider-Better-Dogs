@@ -1,17 +1,15 @@
+// Verified against: WolfCombatHooks.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.util;
-// Verified against: Wolf.java (26.1.2 Release)
 
+import net.dasik.social.core.EntitySocialScheduler;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.player.Player;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
-import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.vanillaoutsider.betterdogs.scheduler.events.RetaliationDogEvent;
-import net.dasik.social.core.EntitySocialScheduler;
 
 public class WolfCombatHooks {
 

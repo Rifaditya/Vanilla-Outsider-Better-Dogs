@@ -1,29 +1,27 @@
+// Verified against: WolfCommandHelper.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.util;
-// Verified against: Wolf.java (26.1.2 Release)
-import org.jspecify.annotations.Nullable;
-
-import net.minecraft.world.entity.animal.wolf.Wolf;
-import net.vanillaoutsider.betterdogs.WolfPersonality;
-import net.vanillaoutsider.betterdogs.WolfExtensions;
-import net.vanillaoutsider.betterdogs.scheduler.events.HowlDogEvent;
-import net.vanillaoutsider.betterdogs.scheduler.events.ZoomiesDogEvent;
-import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Entity;
-import net.dasik.social.core.EntitySocialScheduler;
-import net.minecraft.network.chat.Component;
-import net.minecraft.commands.CommandSourceStack;
 
 import java.util.Collection;
 import java.util.List;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.entity.EntityType;
 import net.dasik.social.api.group.GroupMember;
+import net.dasik.social.core.EntitySocialScheduler;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
-
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import net.vanillaoutsider.betterdogs.WolfExtensions;
+import net.vanillaoutsider.betterdogs.WolfPersonality;
+import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
+import net.vanillaoutsider.betterdogs.scheduler.events.HowlDogEvent;
+import net.vanillaoutsider.betterdogs.scheduler.events.ZoomiesDogEvent;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Command execution logic for Better Dogs debugging.
@@ -48,7 +46,7 @@ public class WolfCommandHelper {
 
         for (net.minecraft.world.entity.Entity entity : targets) {
             if (entity instanceof Wolf wolf) {
-                // Modularity mandate: Use extensions
+                // Modularity requirement: Use extensions
                 ((WolfExtensions) wolf).betterdogs$setPersonality(selectedPersonality);
                 WolfStatManager.applyPersonalityStats(wolf, selectedPersonality);
                 count++;

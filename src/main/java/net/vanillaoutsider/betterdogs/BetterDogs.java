@@ -1,19 +1,19 @@
+// Verified against: BetterDogs.java (26.1.2+)
 package net.vanillaoutsider.betterdogs;
 
-import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
-import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
-import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
-import net.minecraft.resources.Identifier;
-import net.fabricmc.loader.api.FabricLoader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import net.dasik.social.api.SocialEventRegistry;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.resources.Identifier;
+import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Better Dogs Main Entrypoint.
  * Protocol: Architectural Protocol 2.1
- * Verified against: Wolf.java (26.1.2 Release)
  */
 public class BetterDogs implements ModInitializer {
     public static final String MOD_ID = "vanilla-outsider-better-dogs";
@@ -29,7 +29,7 @@ public class BetterDogs implements ModInitializer {
     }
 
     public static void init() {
-        LOGGER.info("Vanilla Outsider: Better Dogs v3.4.17+A-26.1.2 initializing [Aligned]...");
+        LOGGER.info("Vanilla Outsider: Better Dogs v3.4.18+A-26.1.2 initializing [Aligned]...");
 
         // Load Configuration
         BetterDogsConfig.load(FabricLoader.getInstance().getConfigDir());

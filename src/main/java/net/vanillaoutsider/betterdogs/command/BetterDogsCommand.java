@@ -1,15 +1,15 @@
+// Verified against: BetterDogsCommand.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import java.util.Collection;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.world.entity.Entity;
 import net.vanillaoutsider.betterdogs.util.WolfCommandHelper;
-
-import java.util.Collection;
 
 /**
  * Brigadier command tree for /betterdogs debug logic.

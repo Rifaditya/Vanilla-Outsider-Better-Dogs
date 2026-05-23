@@ -1,7 +1,7 @@
 <div align="center">
-
-<img src="https://cdn.modrinth.com/data/cached_images/1909cfcc36754c4a370e00e17f1d8ebe7d190405_0.webp" alt="Better Dogs Banner">
-
+ 
+<img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.1-core-migration/Doc/Assets/banner.png" alt="Better Dogs Banner">
+ 
 </div>
 <p align="center">
     <a href="https://www.curseforge.com/minecraft/mc-mods/fabric-api"><img src="https://img.shields.io/badge/Requires-Fabric_API-blue?style=for-the-badge&logo=fabric" alt="Requires Fabric API"></a>
@@ -68,6 +68,7 @@ Wild wolf packs are now dynamic, territorial entities led by a dominant leader:
 - **1v1 Leader Duels**: If a dispute escalates to War, leaders engage in a cinematic 1v1 duel to settle dominance.
 - **Yield & Merge**: Defeated packs are not lost; they yield and **merge** with the winning pack, allowing for the natural formation of massive wolf colonies.
 - **Wild Personality AI (New Default)**: Out of the box, wild pack members exhibit unique behaviors (like Aggressive hunting or Pack Retreats) while anchored to their leader.
+- **Dynamic Spawning & Reinforcements**: When a pack goes to war or is challenged, nearby wild wolves can spawn or join as reinforcements to defend their pack's territory.
 - **Production Stable**: Fully compatible with high-performance engines like **C2ME**, ensuring safe multi-threaded AI execution.
 - **Performance Hardened**: All AI logic is performance-optimized using **DasikLibrary 1.7.0**, ensuring zero console spam and smooth server TPS even with massive packs.
 
@@ -81,7 +82,7 @@ No messy config files. Better Dogs uses the **Native Minecraft Game Rules** syst
 > **Too many rules?** If the game rule screen feels cluttered, we highly recommend installing **[Collapsible Game Rules](https://www.curseforge.com/minecraft/mc-mods/collapsible-gamerules)**. It will automatically group the new Personality Matrix settings into clean, expandable folders!
 
 <p align="center">
-<img src="https://cdn.modrinth.com/data/e7H8SUmG/images/0a47c04889b8829f5b5bbead3a7847cb63d69a3b.png" alt="Native gamerule UI">
+<img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.1-core-migration/Doc/Media/Gallery/native_game_rules_ui.png" alt="Native gamerule UI">
 </p>
 
 ---

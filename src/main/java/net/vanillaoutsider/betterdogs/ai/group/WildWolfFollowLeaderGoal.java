@@ -1,17 +1,11 @@
+// Verified against: WildWolfFollowLeaderGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai.group;
 
 import net.dasik.social.ai.goal.FollowLeaderGoal;
-import net.dasik.social.api.group.strategy.GroupParameters;
-import net.minecraft.world.entity.animal.wolf.Wolf;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.level.pathfinder.PathType;
 import net.dasik.social.api.group.GroupMember;
-import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
-import net.vanillaoutsider.betterdogs.WolfExtensions;
-
-import java.util.EnumSet;
+import net.dasik.social.api.group.strategy.GroupParameters;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.wolf.Wolf;
 
 /**
  * Optimized Wild Wolf Group AI.

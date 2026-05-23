@@ -1,9 +1,9 @@
+// Verified against: WolfPersonality.java (26.1.2+)
 package net.vanillaoutsider.betterdogs;
 
-import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
-import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
-import net.minecraft.world.level.Level;
 import java.util.Random;
+import net.minecraft.world.level.Level;
+import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 
 /**
  * Wolf personality types that affect combat behavior.

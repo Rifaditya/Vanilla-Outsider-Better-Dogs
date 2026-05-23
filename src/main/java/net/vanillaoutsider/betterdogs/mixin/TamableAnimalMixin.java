@@ -1,3 +1,4 @@
+// Verified against: TamableAnimalMixin.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.minecraft.world.entity.LivingEntity;

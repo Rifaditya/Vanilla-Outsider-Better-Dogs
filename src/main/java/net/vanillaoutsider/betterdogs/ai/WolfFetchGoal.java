@@ -1,14 +1,13 @@
+// Verified against: WolfFetchGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
-import net.minecraft.world.entity.Entity;
+import java.util.EnumSet;
+import java.util.List;
+import net.dasik.social.core.EntitySocialScheduler;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.phys.Vec3;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
-import net.dasik.social.core.EntitySocialScheduler;
-import java.util.EnumSet;
-import java.util.List;
 
 /**
  * Fetch Goal.

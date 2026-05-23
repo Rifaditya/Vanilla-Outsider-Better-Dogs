@@ -1,13 +1,12 @@
+// Verified against: RetaliationDogEvent.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.scheduler.events;
 
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.dasik.social.api.SocialEntity;
 import net.dasik.social.api.SocialEvent;
 import net.dasik.social.api.TickContext;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
-import org.jspecify.annotations.Nullable;
 
 public class RetaliationDogEvent implements SocialEvent {
     public static final String ID = "retaliation";

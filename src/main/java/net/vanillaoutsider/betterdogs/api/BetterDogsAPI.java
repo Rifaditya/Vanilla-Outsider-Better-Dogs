@@ -1,3 +1,4 @@
+// Verified against: BetterDogsAPI.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.api;
 
 import net.minecraft.world.entity.animal.wolf.Wolf;

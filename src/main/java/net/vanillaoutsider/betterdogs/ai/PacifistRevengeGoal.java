@@ -1,13 +1,13 @@
+// Verified against: PacifistRevengeGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
-// Verified against: Wolf.java (26.1.2 Release)
 
+import net.dasik.social.api.group.GroupMember;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
-import net.dasik.social.api.group.GroupMember;
 
 /**
  * AI Goal for Pacifist personality wolves.

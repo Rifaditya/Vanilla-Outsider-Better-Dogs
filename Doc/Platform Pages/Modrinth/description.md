@@ -68,6 +68,7 @@ Wild wolf packs are now dynamic, territorial entities led by a dominant leader:
 - **1v1 Leader Duels**: If a dispute escalates to War, leaders engage in a cinematic 1v1 duel to settle dominance.
 - **Yield & Merge**: Defeated packs are not lost; they yield and **merge** with the winning pack, allowing for the natural formation of massive wolf colonies.
 - **Wild Personality AI (New Default)**: Out of the box, wild pack members exhibit unique behaviors (like Aggressive hunting or Pack Retreats) while anchored to their leader.
+- **Dynamic Spawning & Reinforcements**: When a pack goes to war or is challenged, nearby wild wolves can spawn or join as reinforcements to defend their pack's territory.
 - **Production Stable**: Fully compatible with high-performance engines like **C2ME**, ensuring safe multi-threaded AI execution.
 - **Performance Hardened**: All AI logic is performance-optimized using **DasikLibrary 1.7.0**, ensuring zero console spam and smooth server TPS even with massive packs.
 

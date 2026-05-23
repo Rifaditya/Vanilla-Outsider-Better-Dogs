@@ -1,3 +1,4 @@
+// Verified against: WolfParticleHandler.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.util;
 
 import net.minecraft.core.particles.ParticleTypes;

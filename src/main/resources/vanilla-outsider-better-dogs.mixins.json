@@ -6,7 +6,12 @@
   "compatibilityLevel": "JAVA_25",
     "mixins": [
         "WolfMixin",
+        "WolfSocialMixin",
         "WolfAIMixin",
+        "WolfInteractMixin",
+        "WolfSafetyMixin",
+        "WolfSpawnMixin",
+        "WolfGroupMixin",
         "TamableAnimalMixin",
         "OwnerHurtTargetGoalMixin",
         "OwnerHurtByTargetGoalMixin",

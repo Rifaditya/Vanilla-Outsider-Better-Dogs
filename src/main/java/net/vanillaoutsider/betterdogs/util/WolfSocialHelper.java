@@ -1,14 +1,13 @@
+// Verified against: WolfSocialHelper.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.util;
 
+import net.dasik.social.api.group.GroupMember;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.phys.AABB;
-import net.vanillaoutsider.betterdogs.WolfExtensions;
-import net.dasik.social.api.group.GroupMember;
 
 /**
  * Helper class for Wolf social logic.
  * Decoupled from WolfMixin for modularity.
- * Verified against: Wolf.java (26.1.2 Release)
  */
 public class WolfSocialHelper {
 

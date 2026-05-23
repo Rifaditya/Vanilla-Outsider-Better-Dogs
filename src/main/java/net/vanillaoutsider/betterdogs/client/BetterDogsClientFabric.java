@@ -1,3 +1,4 @@
+// Verified against: BetterDogsClientFabric.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.client;
 
 import net.fabricmc.api.ClientModInitializer;

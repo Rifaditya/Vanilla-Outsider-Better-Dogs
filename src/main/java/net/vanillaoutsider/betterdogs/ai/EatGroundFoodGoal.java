@@ -1,16 +1,15 @@
+// Verified against: EatGroundFoodGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
+import java.util.Comparator;
+import java.util.EnumSet;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.animal.wolf.Wolf;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsTags;
-
-import java.util.EnumSet;
-import java.util.Comparator;
 
 /**
  * AI Goal for wolves to pick up and eat food items from the ground.

@@ -1,3 +1,4 @@
+// Verified against: BetterDogsTags.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.registry;
 
 import net.minecraft.core.registries.Registries;

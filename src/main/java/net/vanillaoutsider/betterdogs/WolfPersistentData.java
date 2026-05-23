@@ -1,12 +1,13 @@
+// Verified against: WolfPersistentData.java (26.1.2+)
 package net.vanillaoutsider.betterdogs;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.world.entity.animal.wolf.Wolf;
-import java.util.UUID;
-import java.util.Optional;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import net.minecraft.world.entity.animal.wolf.Wolf;
 import org.jspecify.annotations.Nullable;
 
 /**

@@ -1,14 +1,13 @@
+// Verified against: ZoomiesGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
+import java.util.EnumSet;
+import net.dasik.social.core.EntitySocialScheduler;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
-import net.dasik.social.core.EntitySocialScheduler;
-
-import java.util.EnumSet;
+import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 
 public class ZoomiesGoal extends Goal {
     private final Wolf wolf;

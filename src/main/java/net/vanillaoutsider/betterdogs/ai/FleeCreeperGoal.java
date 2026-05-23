@@ -1,3 +1,4 @@
+// Verified against: FleeCreeperGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;

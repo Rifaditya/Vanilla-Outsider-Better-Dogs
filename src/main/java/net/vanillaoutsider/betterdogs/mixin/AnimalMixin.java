@@ -1,11 +1,12 @@
+// Verified against: AnimalMixin.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.level.gamerules.GameRules;
-import net.minecraft.world.entity.ExperienceOrb;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.vanillaoutsider.betterdogs.util.WolfDebugLogger;
 import org.spongepowered.asm.mixin.Mixin;

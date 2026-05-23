@@ -1,14 +1,13 @@
+// Verified against: PersonalityFollowOwnerGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.players.PlayerList;
+import net.dasik.social.core.EntitySocialScheduler;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
-import net.dasik.social.core.EntitySocialScheduler;
 
 public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
 

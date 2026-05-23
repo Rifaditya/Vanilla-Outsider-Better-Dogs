@@ -1,3 +1,4 @@
+// Verified against: WolfStatManager.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.util;
 
 import net.minecraft.resources.Identifier;
@@ -7,7 +8,6 @@ import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
-
 
 public class WolfStatManager {
 

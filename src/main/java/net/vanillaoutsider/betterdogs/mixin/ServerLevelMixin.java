@@ -1,7 +1,8 @@
+// Verified against: ServerLevelMixin.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.mixin;
 
-import net.minecraft.server.level.ServerLevel;
 import net.dasik.social.core.GlobalSocialSystem;
+import net.minecraft.server.level.ServerLevel;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

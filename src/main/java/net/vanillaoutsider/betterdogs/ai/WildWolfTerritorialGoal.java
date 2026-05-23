@@ -1,17 +1,17 @@
+// Verified against: WildWolfTerritorialGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
-import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.animal.wolf.Wolf;
+import java.util.EnumSet;
+import net.dasik.social.api.group.GroupMember;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.phys.Vec3;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
-import net.dasik.social.api.group.GroupMember;
-
-import java.util.EnumSet;
+import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 
 /**
  * Wild Wolf Territorial Rivalry.

@@ -1,10 +1,10 @@
+// Verified against: WolfExtensions.java (26.1.2+)
 package net.vanillaoutsider.betterdogs;
 
+import java.util.UUID;
+import net.dasik.social.core.EntitySocialScheduler;
 import net.minecraft.world.entity.LivingEntity;
 import org.jspecify.annotations.Nullable;
-import net.dasik.social.core.EntitySocialScheduler;
-import java.util.UUID;
-import java.util.Optional;
 
 /**
  * Extension interface for Wolf entity to access personality and training data.
