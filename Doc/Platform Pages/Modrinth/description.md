@@ -7,12 +7,12 @@
     <a href="https://modrinth.com/mod/fabric-api"><img src="https://img.shields.io/badge/Requires-Fabric_API-blue?style=for-the-badge&logo=fabric" alt="Requires Fabric API"></a>
     <img src="https://img.shields.io/badge/Language-Java_25-orange?style=for-the-badge&logo=java" alt="Java 25">
     <img src="https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge" alt="License">
-    <img src="https://img.shields.io/badge/Minecraft-26.1+-brightgreen?style=for-the-badge" alt="Minecraft 26.1+">
+    <img src="https://img.shields.io/badge/Minecraft-26.2+-brightgreen?style=for-the-badge" alt="Minecraft 26.2+">
 </p>
 
 # 🐕 Better Dogs
 
-**No Backports:** This mod targets **Minecraft 26.1+**. Older versions are unsupported.
+**No Backports:** This mod targets **Minecraft 26.2+**. Older versions are unsupported.
 
 > **Make Wolves Worthy Companions. Smarter, Safer, Livelier.**
 
@@ -87,6 +87,7 @@ Wild wolf packs are now dynamic, territorial entities led by a dominant leader:
 
 ### 💻 Server-Side Optional & Client Gating
 - **Server-Side Optional**: Better Dogs is fully compatible with vanilla clients! Vanilla clients can connect to servers running the mod without installing it.
+- **P2P Multiplayer Compatibility (Minecraft 26.2+)**: In theory, singleplayer hosts opening their world to online multiplayer using the new Minecraft 26.2 P2P friends system will work seamlessly with vanilla clients (your friends do not need to install the mod). *Note: As this is a newly released pre-release feature, P2P compatibility has not been extensively tested. If you find any issues, please report them to our GitHub repository!*
 - **Dedicated Server Support**: Client-only rendering logic is isolated to prevent classloading crashes on headless dedicated servers.
 - **GUI Config Integration**: Fully supports configuration GUI integrations via **ModMenu** + **Cloth Config** in singleplayer mode.
 - **Production Stable**: Fully compatible with high-performance engines like **C2ME**, ensuring safe multi-threaded AI execution.

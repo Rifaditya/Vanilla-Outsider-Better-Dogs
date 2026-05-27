@@ -1,12 +1,12 @@
-# 🐕 Better Dogs: A Social & Behavioral Overhaul (v3.7.1+A-26.1.2)
+# 🐕 Better Dogs: A Social & Behavioral Overhaul (v4.0.0+A-26.2)
 
 **Better Dogs** is a comprehensive overhaul of the Minecraft Wolf, replacing robotic behaviors with a dynamic, personality-driven social system. Built for the modern "Post-Obfuscation" era of Minecraft, it enhances the taming loop with genetics, social bonding, and smart survival logic.
 
-## 🔥 New in v3.7.1+A-26.1.2: Guarding Sit Lock Fix (Alpha)
+## 🔥 New in v4.0.0+A-26.2: Minecraft 26.2 Port & P2P Multiplayer Support (Alpha)
 
-This patch resolves manual sitting issues for guarding wolves of all personalities:
-- **Normal Guarding Sit Fix**: Fixed a bug where Normal personality sentinel wolves immediately stood back up when manually ordered to sit.
-- **Guarding Sit Lock**: Manual sitting now correctly pauses the active `WolfGuardGoal` and gates custom target selectors (e.g. `AggressiveTargetGoal`), ensuring guarding wolves remain sitting and locked from movement/attack, matching vanilla behavior.
+- **Minecraft 26.2 Port**: Ported the codebase to Minecraft 26.2-pre-1 and aligned with Fabric API 0.149.2. Entity references were refactored to use `EntityTypes` instead of legacy `EntityType`.
+- **P2P Multiplayer Compatibility**: In theory, singleplayer hosts opening their world to multiplayer using the new Minecraft 26.2 P2P friends system will work seamlessly with unmodded vanilla clients (joining players do not need to install the mod). *Note: As this is a newly released pre-release feature, P2P compatibility has not been extensively tested. If you encounter any bugs, please report them to the GitHub issues page!*
+- **Guarding Sit Lock Fix (v3.7.1)**: Resolves manual sitting issues for guarding wolves of all personalities. Normal sentinel wolves remain sitting and locked from movement/attack, pausing the active `WolfGuardGoal`.
 - **Dynamic Follower Spread Scaling (v3.7.0)**: Tamed and wild wolves now space themselves out wider as the pack size $N$ increases. Spacing is calculated mathematically using the square root formula: $f(N) = \text{multiplier} \times \sqrt{N - 1}$.
 
 This update scales the follow/spread spacing of wild and tamed wolf packs dynamically based on the number of active followers:
@@ -67,7 +67,7 @@ Better Dogs uses the **Native Minecraft Game Rules** system. All 50+ parameters 
 ---
 
 ## 🏗️ Project Architecture
-- **Target**: Minecraft 26.1-snapshot-11+
+- **Target**: Minecraft 26.2+
 - **Language**: Java 25
 - **Logic**: Event-Driven AI Scheduler (Dasik Social AI).
 
