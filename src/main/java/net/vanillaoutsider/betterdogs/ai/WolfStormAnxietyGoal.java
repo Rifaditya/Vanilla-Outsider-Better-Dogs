@@ -1,4 +1,4 @@
-// Verified against: WolfStormAnxietyGoal.java (26.1.2+)
+// Verified against: WolfStormAnxietyGoal.java (26.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
 import java.util.EnumSet;
@@ -7,6 +7,8 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.phys.Vec3;
+import net.vanillaoutsider.betterdogs.WolfExtensions;
+import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 
 public class WolfStormAnxietyGoal extends Goal {
@@ -22,7 +24,20 @@ public class WolfStormAnxietyGoal extends Goal {
     public boolean canUse() {
         if (!wolf.isTame()) return false;
         if (!wolf.level().isThundering()) return false;
-        return wolf.getRandom().nextFloat() < BetterDogsConfig.get().stormAnxietyTriggerChance;
+
+        WolfExtensions ext = (WolfExtensions) wolf;
+        WolfPersonality personality = ext.betterdogs$hasPersonality() 
+                ? ext.betterdogs$getPersonality() 
+                : WolfPersonality.NORMAL;
+
+        float multiplier = switch (personality) {
+            case PACIFIST -> 3.0f;
+            case NORMAL -> 1.0f;
+            case AGGRESSIVE -> 0.0f;
+        };
+
+        if (multiplier <= 0.0f) return false;
+        return wolf.getRandom().nextFloat() < (BetterDogsConfig.get().stormAnxietyTriggerChance * multiplier);
     }
 
     @Override

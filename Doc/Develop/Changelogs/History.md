@@ -1,5 +1,14 @@
 # Better Dogs - Historical Changelog
 
+## [4.0.1+A-26.2] - 2026-05-27
+### Summary
+The **"Storm Anxiety Personality Gating"** patch. Gates the Storm Anxiety behavior based on the wolf's personality.
+- **Storm Anxiety Personality Gating**: Wolf reaction to thunderstorms is now personality-dependent.
+  - 💢 **Aggressive**: Unaffected by thunderstorms (fully immune to storm anxiety).
+  - 🟢 **Pacifist**: Highly anxious, with a 3x higher trigger chance than normal.
+  - ✨ **Normal**: Standard chance (1% per tick / configured value).
+- **Versioning Alignment**: Bumped the patch version to `4.0.1+A-26.2` following the Strict Versioning Mandate, and archived previous `4.0.0` jars to `/Archive/builds/`.
+
 ## [4.0.0+A-26.2] - 2026-05-27
 ### Summary
 The Minecraft **26.2 Pre-Release 1 Port** and **Compatibility Upgrade**.

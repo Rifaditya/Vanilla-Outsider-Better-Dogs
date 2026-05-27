@@ -73,7 +73,7 @@ Follow/spread spacing of wild and tamed wolf packs scales dynamically based on t
 ### 🌤️ Immersive Events
 - **Zoomies**: Dogs burst into hyperactive sprints in the morning or when it starts raining — pure joy!
 - **Group Howl**: Under a full moon, wolves trigger pack-wide howling sessions that spread to nearby pack members.
-- **Storm Anxiety**: Thunderstorms make dogs anxious — they whine, tremble, and pace nervously until the storm passes.
+- **Storm Anxiety**: Thunderstorms make dogs anxious — they whine, tremble, and pace nervously until the storm passes. This is highly dependent on their personality: Pacifist dogs are extremely prone to anxiety, Normal dogs have standard chances, and Aggressive dogs are completely immune.
 
 ### 🏰 Wild Wolf Territoriality
 Wild wolf packs are now dynamic, territorial entities led by a dominant leader:

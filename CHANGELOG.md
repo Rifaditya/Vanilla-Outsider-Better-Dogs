@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.0.1+A-26.2] - 2026-05-27
+### Summary
+The **"Storm Anxiety Personality Gating"** patch. Gates the Storm Anxiety behavior based on the wolf's personality.
+- **Storm Anxiety Personality Gating**: Wolf reaction to thunderstorms is now personality-dependent.
+  - 💢 **Aggressive**: Unaffected by thunderstorms (fully immune to storm anxiety).
+  - 🟢 **Pacifist**: Highly anxious, with a 3x higher trigger chance than normal.
+  - ✨ **Normal**: Standard chance (1% per tick / configured value).
+
+
 ## [4.0.0+A-26.2] - 2026-05-27
 ### Summary
 The Minecraft **26.2 Pre-Release 1 Port** and **Compatibility Upgrade**.
@@ -8,7 +17,7 @@ The Minecraft **26.2 Pre-Release 1 Port** and **Compatibility Upgrade**.
 - **Pre-Release & Future Compatibility**: Updated `fabric.mod.json` dependency constraints to `"minecraft": ">=26.2-"` (wildcard range) to allow the mod to load on both `26.2` pre-releases and the final/future `26.2` releases.
 - **Gradle & Toolchain Updates**: Configured the build toolchain to compile using JDK 25 and added automatic local Maven repository lookup for locally compiled dependencies.
 
-## [3.7.1+A-26.1.2] - 2026-05-26
+## [3.7.1+A-26.1.2] - 2026-05-26 (Skip) immidiet to 4.0.0 with the 1.7.4
 ### Summary
 The **"Guarding Sit Lock Fix"** patch. Resolves sit command issues for guarding wolves of all personalities.
 - **Normal Guarding Sit Fix**: Fixed a bug where Normal personality sentinel wolves immediately stood back up when manually ordered to sit.
