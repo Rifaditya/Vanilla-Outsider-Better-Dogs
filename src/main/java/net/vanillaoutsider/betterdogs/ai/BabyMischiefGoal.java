@@ -1,6 +1,7 @@
 // Verified against: BabyMischiefGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import java.util.List;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -46,7 +47,7 @@ public class BabyMischiefGoal extends Goal {
 
         // Roll for mischief chance
         // Use Permille rule: 25 -> 2.5%
-        float chance = BetterDogsGameRules.getProb(wolf.level(), BetterDogsGameRules.BD_BABY_MISCHIEF_PERMILLE);
+        float chance = DynamicGameRuleManager.getProb(wolf.level(), BetterDogsGameRules.BD_BABY_MISCHIEF_PERMILLE);
         if (chance <= 0 || wolf.getRandom().nextFloat() >= chance)
             return false;
 

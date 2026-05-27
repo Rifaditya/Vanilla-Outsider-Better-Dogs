@@ -29,6 +29,14 @@ public class BetterDogs implements ModInitializer {
     }
 
     public static void init() {
+        // Verify Library Version compatibility
+        try {
+            Class.forName("net.dasik.social.api.config.ConfigHelper");
+        } catch (ClassNotFoundException e) {
+            net.minecraft.CrashReport report = net.minecraft.CrashReport.forThrowable(e, "Better Dogs: DasikLibrary version mismatch! Requires version 1.7.4 or higher. Please update your mods.");
+            throw new net.minecraft.ReportedException(report);
+        }
+
         LOGGER.info("Vanilla Outsider: Better Dogs v3.4.18+A-26.1.2 initializing [Aligned]...");
 
         // Load Configuration

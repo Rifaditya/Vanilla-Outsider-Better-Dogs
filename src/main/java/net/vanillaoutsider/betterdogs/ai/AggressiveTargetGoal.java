@@ -1,6 +1,7 @@
-// Verified against: AggressiveTargetGoal.java (26.1.2+)
+// Verified against: NearestAttackableTargetGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.dasik.social.api.group.GroupMember;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -29,6 +30,21 @@ public class AggressiveTargetGoal extends NearestAttackableTargetGoal<Monster> {
     }
 
     private boolean isValidTarget(LivingEntity target) {
+        if (wolf instanceof WolfExtensions ext && ext.betterdogs$isGuardMode()) {
+            net.minecraft.core.BlockPos guardPos = ext.betterdogs$getGuardPos();
+            if (guardPos == null)
+                return false;
+
+            double maxRange = ext.betterdogs$getPersonality() == WolfPersonality.AGGRESSIVE ? 24.0 : 16.0;
+            if (target.distanceToSqr(guardPos.getX() + 0.5, guardPos.getY() + 0.5, guardPos.getZ() + 0.5) > maxRange * maxRange)
+                return false;
+
+            if (target instanceof Creeper)
+                return false;
+
+            return !target.getType().getDescriptionId().contains("warden");
+        }
+
         // Must have an anchor (Owner or Leader)
         LivingEntity anchor = getAnchor();
         if (anchor == null)
@@ -37,7 +53,7 @@ public class AggressiveTargetGoal extends NearestAttackableTargetGoal<Monster> {
         // Dynamic Simulation Cap for detection range
         BetterDogsConfig config = BetterDogsConfig.get();
         // Use Game Rule default
-        double maxRange = BetterDogsGameRules.getInt(wolf.level(), BetterDogsGameRules.BD_AGGRO_DETECT_RANGE);
+        double maxRange = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_AGGRO_DETECT_RANGE);
         if (maxRange > 16.0) {
             double safeLimit = (cachedSimDist * 16.0) - config.getAggressiveDetectionBuffer();
             if (maxRange > safeLimit) {
@@ -59,12 +75,26 @@ public class AggressiveTargetGoal extends NearestAttackableTargetGoal<Monster> {
 
     @Override
     public boolean canUse() {
+        if (wolf instanceof WolfExtensions ext && ext.betterdogs$isGuardMode()) {
+            if (ext.betterdogs$isSittingManually())
+                return false;
+
+            WolfPersonality personality = ext.betterdogs$getPersonality();
+            if (personality != WolfPersonality.AGGRESSIVE && personality != WolfPersonality.NORMAL)
+                return false;
+
+            if (wolf.isBaby())
+                return false;
+
+            return super.canUse();
+        }
+
         // Must have an anchor nearby
         LivingEntity anchor = getAnchor();
         if (anchor == null)
             return false;
 
-        boolean isWildEnabled = BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_WILD_PERSONALITY_BEHAVIOR);
+        boolean isWildEnabled = DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_WILD_PERSONALITY_BEHAVIOR);
         if (!wolf.isTame() && (!isWildEnabled || ((GroupMember)wolf).getLeader() == null)) {
             return false;
         }
@@ -84,7 +114,7 @@ public class AggressiveTargetGoal extends NearestAttackableTargetGoal<Monster> {
             }
         }
 
-        double chaseDist = BetterDogsGameRules.getInt(wolf.level(), BetterDogsGameRules.BD_AGGRO_CHASE_DIST);
+        double chaseDist = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_AGGRO_CHASE_DIST);
         if (chaseDist > 16.0) {
             double safeLimit = (cachedSimDist * 16.0) - BetterDogsConfig.get().getAggressiveDetectionBuffer();
             if (chaseDist > safeLimit) {
@@ -109,12 +139,32 @@ public class AggressiveTargetGoal extends NearestAttackableTargetGoal<Monster> {
 
     @Override
     public boolean canContinueToUse() {
+        if (wolf instanceof WolfExtensions ext && ext.betterdogs$isGuardMode()) {
+            if (ext.betterdogs$isSittingManually())
+                return false;
+
+            net.minecraft.core.BlockPos guardPos = ext.betterdogs$getGuardPos();
+            if (guardPos == null)
+                return false;
+
+            LivingEntity target = wolf.getTarget();
+            if (target == null || !target.isAlive())
+                return false;
+
+            double targetDistFromPostSqr = target.distanceToSqr(guardPos.getX() + 0.5, guardPos.getY() + 0.5, guardPos.getZ() + 0.5);
+            double maxChase = ext.betterdogs$getPersonality() == WolfPersonality.AGGRESSIVE ? 1024.0 : 400.0; // 32 blocks vs 20 blocks
+            if (targetDistFromPostSqr > maxChase)
+                return false;
+
+            return super.canContinueToUse();
+        }
+
         // Stop if too far from anchor
         LivingEntity anchor = getAnchor();
         if (anchor == null)
             return false;
 
-        double chaseDist = BetterDogsGameRules.getInt(wolf.level(), BetterDogsGameRules.BD_AGGRO_CHASE_DIST);
+        double chaseDist = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_AGGRO_CHASE_DIST);
         if (chaseDist > 16.0) {
             double safeLimit = (cachedSimDist * 16.0) - BetterDogsConfig.get().getAggressiveDetectionBuffer();
             if (chaseDist > safeLimit) {

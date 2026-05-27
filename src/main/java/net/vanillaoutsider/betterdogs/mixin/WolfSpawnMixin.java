@@ -1,6 +1,7 @@
-// Verified against: WolfSpawnMixin.java (26.1.2+)
+// Verified against: WolfSpawnMixin.java (26.2-pre-1)
 package net.vanillaoutsider.betterdogs.mixin;
 
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
@@ -52,7 +53,7 @@ public abstract class WolfSpawnMixin extends TamableAnimal {
 
                 // Density Boost Logic (v3.3.0)
                 if (spawnReason == EntitySpawnReason.NATURAL && groupData == null) {
-                    int boostChance = BetterDogsGameRules.getInt(level.getLevel(), BetterDogsGameRules.BD_WOLF_SPAWN_DENSITY_BOOST);
+                    int boostChance = DynamicGameRuleManager.getInt(level.getLevel(), BetterDogsGameRules.BD_WOLF_SPAWN_DENSITY_BOOST);
                     int roll = this.getRandom().nextInt(100);
                     WolfDebugLogger.log(wolf, "Spawn", "Density Boost Evaluation - Roll: " + roll + " / Target: " + boostChance);
                     if (roll < boostChance) {
@@ -77,10 +78,10 @@ public abstract class WolfSpawnMixin extends TamableAnimal {
         );
 
         // Spawn a reinforcement cluster
-        int clusterSize = BetterDogsGameRules.getInt(serverLevel, BetterDogsGameRules.BD_WOLF_PACK_CLUSTER_SIZE);
+        int clusterSize = DynamicGameRuleManager.getInt(serverLevel, BetterDogsGameRules.BD_WOLF_PACK_CLUSTER_SIZE);
         int count = clusterSize / 2 + 1;
         for (int i = 0; i < count; i++) {
-             Wolf reinforcement = net.minecraft.world.entity.EntityType.WOLF.create(serverLevel, EntitySpawnReason.REINFORCEMENT);
+             Wolf reinforcement = net.minecraft.world.entity.EntityTypes.WOLF.create(serverLevel, EntitySpawnReason.REINFORCEMENT);
              if (reinforcement != null) {
                  reinforcement.snapTo(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, this.getRandom().nextFloat() * 360.0F, 0.0F);
                  reinforcement.finalizeSpawn(level, serverLevel.getCurrentDifficultyAt(spawnPos), EntitySpawnReason.REINFORCEMENT, null);
@@ -92,7 +93,7 @@ public abstract class WolfSpawnMixin extends TamableAnimal {
 
     @Override
     public int getMaxSpawnClusterSize() {
-        return BetterDogsGameRules.getInt(this.level(), BetterDogsGameRules.BD_WOLF_PACK_CLUSTER_SIZE);
+        return DynamicGameRuleManager.getInt(this.level(), BetterDogsGameRules.BD_WOLF_PACK_CLUSTER_SIZE);
     }
 
     @Override

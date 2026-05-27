@@ -1,7 +1,6 @@
 // Verified against: Wolf.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.mixin;
 
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -133,14 +132,19 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
 
         Wolf wolf = (Wolf) (Object) this;
 
-        if (BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_DEBUGGING) && this.tickCount % 20 == 0) {
+        if (!wolf.level().isClientSide() && this.tickCount % 20 == 0 && betterdogs$isGuardMode()) {
             WolfPersonality personality = betterdogs$getPersonality();
-            if (personality == WolfPersonality.AGGRESSIVE) {
-                wolf.level().addParticle(ParticleTypes.FLAME, wolf.getRandomX(0.5), wolf.getRandomY() + 0.5, wolf.getRandomZ(0.5), 0, 0.05, 0);
-            } else if (personality == WolfPersonality.PACIFIST) {
-                wolf.level().addParticle(ParticleTypes.NOTE, wolf.getRandomX(0.5), wolf.getRandomY() + 0.5, wolf.getRandomZ(0.5), 0, 0.05, 0);
-            } else {
-                wolf.level().addParticle(ParticleTypes.HAPPY_VILLAGER, wolf.getRandomX(0.5), wolf.getRandomY() + 0.5, wolf.getRandomZ(0.5), 0, 0.05, 0);
+            if (wolf.level() instanceof ServerLevel serverLevel) {
+                double px = wolf.getRandomX(0.5);
+                double py = wolf.getRandomY() + 0.5;
+                double pz = wolf.getRandomZ(0.5);
+                if (personality == WolfPersonality.AGGRESSIVE) {
+                    serverLevel.sendParticles(new net.minecraft.core.particles.DustParticleOptions(0xFF3333, 0.6f), px, py, pz, 1, 0, 0.05, 0, 0.0);
+                } else if (personality == WolfPersonality.PACIFIST) {
+                    serverLevel.sendParticles(new net.minecraft.core.particles.DustParticleOptions(0x00FF88, 0.6f), px, py, pz, 1, 0, 0.05, 0, 0.0);
+                } else {
+                    serverLevel.sendParticles(new net.minecraft.core.particles.DustParticleOptions(0xFFD700, 0.6f), px, py, pz, 1, 0, 0.05, 0, 0.0);
+                }
             }
         }
 

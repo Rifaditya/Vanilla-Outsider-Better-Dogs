@@ -1,6 +1,7 @@
 // Verified against: WolfSafetyMixin.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.mixin;
 
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
@@ -35,7 +36,7 @@ public abstract class WolfSafetyMixin {
     @Unique
     private void betterdogs$checkMovementCliffSafety() {
         Wolf wolf = (Wolf) (Object) this;
-        if (!BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_CLIFF_SAFETY))
+        if (!DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_CLIFF_SAFETY))
             return;
 
         if (wolf.getDeltaMovement().horizontalDistanceSqr() < 0.0001)
@@ -72,7 +73,7 @@ public abstract class WolfSafetyMixin {
         if (wolf.getTarget() == null)
             return;
 
-        if (!BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_CLIFF_SAFETY))
+        if (!DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_CLIFF_SAFETY))
             return;
 
         double yDiff = wolf.getY() - wolf.getTarget().getY();

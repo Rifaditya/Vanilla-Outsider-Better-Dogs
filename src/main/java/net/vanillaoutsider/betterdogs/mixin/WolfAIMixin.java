@@ -1,6 +1,7 @@
-// Verified against: WolfAIMixin.java (26.1.2+)
+// Verified against: Wolf.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.mixin;
 
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import java.util.HashSet;
 import java.util.Set;
 import net.minecraft.world.entity.TamableAnimal;
@@ -14,7 +15,29 @@ import net.minecraft.world.entity.animal.chicken.Chicken;
 import net.minecraft.world.entity.animal.rabbit.Rabbit;
 import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.animal.wolf.Wolf;
-import net.vanillaoutsider.betterdogs.ai.*;
+import net.vanillaoutsider.betterdogs.ai.AdultCorrectionGoal;
+import net.vanillaoutsider.betterdogs.ai.AggressiveTargetGoal;
+import net.vanillaoutsider.betterdogs.ai.AvoidHazardsGoal;
+import net.vanillaoutsider.betterdogs.ai.BabyBiteBackGoal;
+import net.vanillaoutsider.betterdogs.ai.BabyCuriosityGoal;
+import net.vanillaoutsider.betterdogs.ai.BabyMischiefGoal;
+import net.vanillaoutsider.betterdogs.ai.BeggingGoal;
+import net.vanillaoutsider.betterdogs.ai.BloodFeudGoal;
+import net.vanillaoutsider.betterdogs.ai.EatGroundFoodGoal;
+import net.vanillaoutsider.betterdogs.ai.FleeCreeperGoal;
+import net.vanillaoutsider.betterdogs.ai.GroupHowlGoal;
+import net.vanillaoutsider.betterdogs.ai.PacifistRevengeGoal;
+import net.vanillaoutsider.betterdogs.ai.PersonalityFollowOwnerGoal;
+import net.vanillaoutsider.betterdogs.ai.SmallFightGoal;
+import net.vanillaoutsider.betterdogs.ai.WanderlustGoal;
+import net.vanillaoutsider.betterdogs.ai.WildWolfHuntGoal;
+import net.vanillaoutsider.betterdogs.ai.WildWolfPackWarGoal;
+import net.vanillaoutsider.betterdogs.ai.WildWolfTerritorialGoal;
+import net.vanillaoutsider.betterdogs.ai.WolfFetchGoal;
+import net.vanillaoutsider.betterdogs.ai.WolfGiftGoal;
+import net.vanillaoutsider.betterdogs.ai.WolfGuardGoal;
+import net.vanillaoutsider.betterdogs.ai.WolfStormAnxietyGoal;
+import net.vanillaoutsider.betterdogs.ai.ZoomiesGoal;
 import net.vanillaoutsider.betterdogs.ai.group.WildWolfFollowLeaderGoal;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import org.spongepowered.asm.mixin.Mixin;
@@ -45,6 +68,7 @@ public abstract class WolfAIMixin extends TamableAnimal {
     private void betterdogs$registerCustomGoals(CallbackInfo ci) {
         Wolf wolf = (Wolf) (Object) this;
 
+        this.goalSelector.addGoal(2, new WolfGuardGoal(wolf));
         this.goalSelector.addGoal(8, new WolfGiftGoal(wolf));
         this.goalSelector.addGoal(1, new FleeCreeperGoal(wolf));
         this.goalSelector.addGoal(1, new AvoidHazardsGoal(wolf));
@@ -95,7 +119,7 @@ public abstract class WolfAIMixin extends TamableAnimal {
                 false,
                 preySelector));
 
-        if (BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_STORM_ANXIETY)) {
+        if (DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_STORM_ANXIETY)) {
             this.goalSelector.addGoal(6, new WolfStormAnxietyGoal(wolf));
         }
 

@@ -1,6 +1,7 @@
 // Verified against: EatGroundFoodGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import java.util.Comparator;
 import java.util.EnumSet;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -64,11 +65,11 @@ public class EatGroundFoodGoal extends Goal {
 
         // Tamed dogs check gamerules
         if (stack.is(BetterDogsTags.RAW_FOOD)) {
-            return BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_DOGS_EAT_RAW_FOOD);
+            return DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_DOGS_EAT_RAW_FOOD);
         }
 
         if (stack.is(BetterDogsTags.COOKED_FOOD)) {
-            return BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_DOGS_EAT_COOKED_FOOD);
+            return DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_DOGS_EAT_COOKED_FOOD);
         }
 
         // Fallback heuristic for modded food
@@ -76,9 +77,9 @@ public class EatGroundFoodGoal extends Goal {
         boolean isCooked = path.contains("cooked") || path.contains("roasted") || path.contains("grilled");
 
         if (isCooked) {
-            return BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_DOGS_EAT_COOKED_FOOD);
+            return DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_DOGS_EAT_COOKED_FOOD);
         } else {
-            return BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_DOGS_EAT_RAW_FOOD);
+            return DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_DOGS_EAT_RAW_FOOD);
         }
     }
 

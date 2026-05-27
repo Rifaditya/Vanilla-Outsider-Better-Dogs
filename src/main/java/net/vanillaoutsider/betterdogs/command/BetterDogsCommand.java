@@ -1,6 +1,7 @@
 // Verified against: BetterDogsCommand.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.command;
 
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import java.util.Collection;
@@ -71,7 +72,7 @@ public class BetterDogsCommand {
     }
 
     private static boolean isDebugEnabled(CommandSourceStack source) {
-        if (!net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.getBoolean(source.getLevel(), net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_DEBUGGING)) {
+        if (!DynamicGameRuleManager.getBoolean(source.getLevel(), net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_DEBUGGING)) {
             source.sendFailure(net.minecraft.network.chat.Component.literal("Better Dogs debugging is currently disabled. Enable it via GameRules: /gamerule betterdogdebugging true"));
             return false;
         }

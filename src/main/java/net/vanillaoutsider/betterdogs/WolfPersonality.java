@@ -1,6 +1,7 @@
 // Verified against: WolfPersonality.java (26.1.2+)
 package net.vanillaoutsider.betterdogs;
 
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import java.util.Random;
 import net.minecraft.world.level.Level;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
@@ -46,16 +47,16 @@ public enum WolfPersonality {
              // Client side fallback (shouldn't happen for spawning logic, but safe)
              return NORMAL;
         } else {
-             normal = BetterDogsGameRules.getInt(level, BetterDogsGameRules.BD_TAME_NORMAL_PERCENT);
-             aggressive = BetterDogsGameRules.getInt(level, BetterDogsGameRules.BD_TAME_AGGRO_PERCENT);
-             pacifist = BetterDogsGameRules.getInt(level, BetterDogsGameRules.BD_TAME_PACI_PERCENT);
+             normal = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_TAME_NORMAL_PERCENT);
+             aggressive = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_TAME_AGGRO_PERCENT);
+             pacifist = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_TAME_PACI_PERCENT);
         }
 
         int total = normal + aggressive + pacifist;
 
         int roll = RANDOM.nextInt(total > 0 ? total : 100);
         
-        if (BetterDogsGameRules.getBoolean(level, BetterDogsGameRules.BD_DEBUGGING)) {
+        if (DynamicGameRuleManager.getBoolean(level, BetterDogsGameRules.BD_DEBUGGING)) {
             BetterDogs.LOGGER.info("Personality Roll: {}/{} (Chances: N:{}, A:{}, P:{})", 
                 roll, total, normal, aggressive, pacifist);
         }

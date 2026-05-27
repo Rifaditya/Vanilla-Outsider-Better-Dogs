@@ -1,6 +1,7 @@
 // Verified against: PersonalityFollowOwnerGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.dasik.social.core.EntitySocialScheduler;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
@@ -16,12 +17,32 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
     private int recalcTimer;
     private int simDistRefreshTimer = 0;
     private int cachedSimDist = 10;
+    private float betterdogs$followerSpacingOffset = 0.0f;
 
     public PersonalityFollowOwnerGoal(Wolf wolf, double speedModifier, boolean leavesAllowed) {
         super(wolf, speedModifier, 10.0f, 2.0f);
         this.wolf = wolf;
         this.speedModifier = speedModifier;
         this.recalcTimer = 0;
+    }
+
+    private void betterdogs$updateFollowerSpacingOffset() {
+        LivingEntity owner = wolf.getOwner();
+        if (owner == null || wolf.level() == null) {
+            betterdogs$followerSpacingOffset = 0.0f;
+            return;
+        }
+        java.util.List<Wolf> activeFollowers = wolf.level().getEntitiesOfClass(Wolf.class, owner.getBoundingBox().inflate(32.0),
+            w -> w.isTame() && w.getOwner() == owner && !w.isOrderedToSit() && !w.isLeashed()
+        );
+        int N = activeFollowers.size();
+        if (N <= 1) {
+            betterdogs$followerSpacingOffset = 0.0f;
+            return;
+        }
+        float multiplier = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_TAMED_PACK_SPREAD_MULTIPLIER) / 100.0f;
+        float maxExtra = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_TAMED_PACK_SPREAD_MAX) / 10.0f;
+        betterdogs$followerSpacingOffset = Math.min((float) Math.sqrt(N - 1) * multiplier, maxExtra);
     }
 
     private float getStartDistance() {
@@ -31,9 +52,9 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
         if (wolf instanceof WolfExtensions ext) {
             BetterDogsConfig config = BetterDogsConfig.get();
             dist = (float) switch (ext.betterdogs$getPersonality()) {
-                case AGGRESSIVE -> BetterDogsGameRules.getInt(wolf.level(), BetterDogsGameRules.BD_AGGRO_FOLLOW_START);
-                case PACIFIST -> BetterDogsGameRules.getInt(wolf.level(), BetterDogsGameRules.BD_PACI_FOLLOW_START);
-                case NORMAL -> BetterDogsGameRules.getInt(wolf.level(), BetterDogsGameRules.BD_NORMAL_FOLLOW_START);
+                case AGGRESSIVE -> DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_AGGRO_FOLLOW_START);
+                case PACIFIST -> DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_PACI_FOLLOW_START);
+                case NORMAL -> DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_NORMAL_FOLLOW_START);
             };
 
             // Dynamic Simulation Cap for Aggressive dogs (or any dog with large range)
@@ -55,7 +76,8 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
                 }
             }
         }
-        return wolf.isBaby() ? dist * BetterDogsConfig.get().getBabyFollowMultiplier() : dist;
+        float finalBase = wolf.isBaby() ? dist * BetterDogsConfig.get().getBabyFollowMultiplier() : dist;
+        return finalBase + betterdogs$followerSpacingOffset;
     }
 
     private float getStopDistance() {
@@ -71,14 +93,19 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
                 default -> 2.0f;
             };
         }
-        return wolf.isBaby() ? dist * BetterDogsConfig.get().getBabyFollowMultiplier() : dist;
+        float finalBase = wolf.isBaby() ? dist * BetterDogsConfig.get().getBabyFollowMultiplier() : dist;
+        return finalBase + betterdogs$followerSpacingOffset;
     }
 
     @Override
     public boolean canUse() {
+        if (wolf instanceof WolfExtensions ext && ext.betterdogs$isGuardMode()) {
+            return false;
+        }
         LivingEntity owner = wolf.getOwner();
         if (owner == null || owner.isSpectator())
             return false;
+        betterdogs$updateFollowerSpacingOffset();
         float startDist = getStartDistance();
         if (wolf.distanceToSqr(owner) < (startDist * startDist))
             return false;
@@ -95,6 +122,9 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
 
     @Override
     public boolean canContinueToUse() {
+        if (wolf instanceof WolfExtensions ext && ext.betterdogs$isGuardMode()) {
+            return false;
+        }
         if (wolf.getNavigation().isDone())
             return false;
         if (wolf.isOrderedToSit() || wolf.isLeashed())
@@ -133,6 +163,9 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
         }
 
         wolf.getLookControl().setLookAt(owner, 10.0f, (float) wolf.getMaxHeadXRot());
+        if (this.recalcTimer <= 1) {
+            betterdogs$updateFollowerSpacingOffset();
+        }
         if (--this.recalcTimer <= 0) {
             this.recalcTimer = 10;
             if (!wolf.isLeashed() && !wolf.isPassenger()) {

@@ -1,4 +1,4 @@
-// Verified against: WolfCommandHelper.java (26.1.2+)
+// Verified against: WolfCommandHelper.java (26.2-pre-1)
 package net.vanillaoutsider.betterdogs.util;
 
 import java.util.Collection;
@@ -10,7 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -197,7 +197,7 @@ public class WolfCommandHelper {
 
     private static void spawnPack(ServerLevel level, Vec3 pos, String name) {
         // Leader
-        Wolf leader = EntityType.WOLF.create(level, EntitySpawnReason.COMMAND);
+        Wolf leader = EntityTypes.WOLF.create(level, EntitySpawnReason.COMMAND);
         if (leader == null) return;
         
         // Find surface level
@@ -211,7 +211,7 @@ public class WolfCommandHelper {
 
         // Followers
         for (int i = 0; i < 4; i++) {
-            Wolf follower = EntityType.WOLF.create(level, EntitySpawnReason.COMMAND);
+            Wolf follower = EntityTypes.WOLF.create(level, EntitySpawnReason.COMMAND);
             if (follower == null) continue;
             double offsetX = (level.getRandom().nextDouble() - 0.5) * 4;
             double offsetZ = (level.getRandom().nextDouble() - 0.5) * 4;

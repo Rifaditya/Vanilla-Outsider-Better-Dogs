@@ -1,4 +1,4 @@
-// Verified against: WolfAccessor.java (26.1.2+)
+// Verified against: Wolf.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.minecraft.sounds.SoundEvent;
@@ -10,4 +10,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface WolfAccessor {
     @Invoker("getAmbientSound")
     SoundEvent betterdogs$invokeGetAmbientSound();
+
+    @Invoker("getSoundSet")
+    net.minecraft.world.entity.animal.wolf.WolfSoundVariant.WolfSoundSet betterdogs$invokeGetSoundSet();
 }

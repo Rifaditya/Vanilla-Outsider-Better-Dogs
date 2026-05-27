@@ -1,6 +1,7 @@
 // Verified against: WolfBreedingMixin.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.mixin;
 
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import java.util.Random;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
@@ -66,8 +67,8 @@ public abstract class WolfBreedingMixin {
 
         // Same personality parents: configurable same%, remaining split between others
         if (p1 == p2) {
-            int sameChance = BetterDogsGameRules.getInt(level, BetterDogsGameRules.BD_BREED_SAME_CHANCE);
-            int otherChance = BetterDogsGameRules.getInt(level, BetterDogsGameRules.BD_BREED_SAME_OTHER_CHANCE);
+            int sameChance = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_BREED_SAME_CHANCE);
+            int otherChance = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_BREED_SAME_OTHER_CHANCE);
             if (roll < sameChance)
                 return p1;
             if (roll < (sameChance + otherChance))
@@ -78,8 +79,8 @@ public abstract class WolfBreedingMixin {
         // Aggressive + Pacifist = Diluted genes (configurable Normal%, remaining split)
         if ((p1 == WolfPersonality.AGGRESSIVE && p2 == WolfPersonality.PACIFIST) ||
                 (p1 == WolfPersonality.PACIFIST && p2 == WolfPersonality.AGGRESSIVE)) {
-            int normalChance = BetterDogsGameRules.getInt(level, BetterDogsGameRules.BD_BREED_DILUTED_NORMAL_CHANCE);
-            int otherChance = BetterDogsGameRules.getInt(level, BetterDogsGameRules.BD_BREED_DILUTED_OTHER_CHANCE);
+            int normalChance = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_BREED_DILUTED_NORMAL_CHANCE);
+            int otherChance = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_BREED_DILUTED_OTHER_CHANCE);
             if (roll < normalChance)
                 return WolfPersonality.NORMAL;
             if (roll < (normalChance + otherChance))
@@ -91,8 +92,8 @@ public abstract class WolfBreedingMixin {
         if (p1 == WolfPersonality.NORMAL || p2 == WolfPersonality.NORMAL) {
             WolfPersonality other = (p1 == WolfPersonality.NORMAL) ? p2 : p1;
             WolfPersonality third = betterdogs$getThird(WolfPersonality.NORMAL, other);
-            int dominantChance = BetterDogsGameRules.getInt(level, BetterDogsGameRules.BD_BREED_MIXED_DOMINANT_CHANCE);
-            int recessiveChance = BetterDogsGameRules.getInt(level,
+            int dominantChance = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_BREED_MIXED_DOMINANT_CHANCE);
+            int recessiveChance = DynamicGameRuleManager.getInt(level,
                     BetterDogsGameRules.BD_BREED_MIXED_RECESSIVE_CHANCE);
 
             if (roll < dominantChance)

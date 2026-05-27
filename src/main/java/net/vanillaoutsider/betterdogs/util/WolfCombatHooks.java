@@ -1,6 +1,7 @@
 // Verified against: WolfCombatHooks.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.util;
 
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.dasik.social.core.EntitySocialScheduler;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -67,7 +68,7 @@ public class WolfCombatHooks {
                 // Check Dasik Scheduler for active event
                 if (scheduler == null || !scheduler.isEventActive(RetaliationDogEvent.ID)) {
                     // Get chance from Game Rules
-                    float chance = BetterDogsGameRules.getChance(wolf.level(),
+                    float chance = DynamicGameRuleManager.getChance(wolf.level(),
                             BetterDogsGameRules.BD_BABY_RETALIATE_PERCENT);
                     if (wolf.getRandom().nextFloat() < chance) {
                         // Use Dasik offer() instead of injectBehavior
@@ -81,7 +82,7 @@ public class WolfCombatHooks {
         // 4. Owner friendly fire protection cancellation
         // Use GameRule BD_FRIENDLY_FIRE
         if (isOwner && !isSneaking) {
-            boolean friendlyFireProto = BetterDogsGameRules.getBoolean(wolf.level(),
+            boolean friendlyFireProto = DynamicGameRuleManager.getBoolean(wolf.level(),
                     BetterDogsGameRules.BD_FRIENDLY_FIRE);
             if (friendlyFireProto) {
                 // EXCEPTION: Allows "Provocation" taps on Aggressive Babies to trigger

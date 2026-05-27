@@ -1,8 +1,9 @@
-// Verified against: WolfExtensions.java (26.1.2+)
+// Verified against: Wolf.java (26.1.2+)
 package net.vanillaoutsider.betterdogs;
 
 import java.util.UUID;
 import net.dasik.social.core.EntitySocialScheduler;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import org.jspecify.annotations.Nullable;
 
@@ -206,4 +207,12 @@ public interface WolfExtensions {
      * Set the persistent leader UUID.
      */
     void betterdogs$setLeaderUuid(@Nullable UUID uuid);
+
+    // === GUARD MODE (V3.5.0) ===
+    boolean betterdogs$isGuardMode();
+    void betterdogs$setGuardMode(boolean guardMode);
+    @Nullable BlockPos betterdogs$getGuardPos();
+    void betterdogs$setGuardPos(@Nullable BlockPos pos);
+    boolean betterdogs$isSittingManually();
+    void betterdogs$setSittingManually(boolean sitting);
 }
