@@ -25,7 +25,7 @@ Part of the **Vanilla Outsider Collection** — mods that refine the vanilla exp
 ## ✨ Features
 
 ### 🧠 Personality Intelligence
-When tamed, wolves develop one of three permanent personalities, visible via custom particles:
+When tamed, wolves develop one of three permanent personalities. When in active **Guard Mode**, they emit tiny, custom-colored dust particles indicating their personality:
 
 <p align="center">
   <img src="https://cdn.modrinth.com/data/cached_images/bcda6a78fa3159bc710566a2cbedfa1e94a03930.png" alt="Aggressive dog particle" width="30%">
@@ -33,9 +33,24 @@ When tamed, wolves develop one of three permanent personalities, visible via cus
   <img src="https://cdn.modrinth.com/data/cached_images/8722821ac9f7e1b6ca653e77cf90cf83dff2c432.png" alt="Vanilla/Normal" width="30%">
 </p>
 
-- 💢 **Aggressive**: The Guardian. Proactively attacks hostile mobs and scouts ahead.
-- ❤️ **Pacifist**: The Healer. Avoids combat unless you are hurt. High health, low damage.
-- ✨ **Normal**: The Classic. Balanced stats and standard vanilla-plus behavior.
+- 💢 **Aggressive**: The Guardian. Proactively attacks hostile mobs and scouts ahead. Emits red dust particles (`0xFF3333`) on patrol.
+- ❤️ **Pacifist**: The Healer. Avoids combat unless you are hurt. High health, low damage. Emits green/teal dust particles (`0x00FF88`) on patrol.
+- ✨ **Normal**: The Classic. Balanced stats and standard vanilla-plus behavior. Emits gold/yellow dust particles (`0xFFD700`) on patrol.
+
+### 🛡️ Tamed Wolf Guard Mode
+Right-click a tamed wolf with a bone to toggle **Guard Mode** (consuming exactly 1 bone) and anchor the wolf to its current spot:
+- **Patrol Patterns**:
+  - **Aggressive**: Paces in a circular/polygon shape along its outer perimeter sweep (80% range), pausing to scan outward for threats.
+  - **Normal**: Sentry posture at the guard post (range = 0), or radial patrols outward and back (range > 0).
+  - **Pacifist**: Close protective orbital circular pacing around the post.
+- **Auto-Targeting & Chase Caps**: Normal and Aggressive guards automatically attack hostiles within their range but are capped from chasing targets too far to prevent them from being lured away.
+- **Watchdog Alarms & Grace Buffs**: Pacifist sentinels whine and emit warning note particles when hostiles approach, applying Regeneration and Resistance to owners/allies if the gamerule is enabled.
+- **Safety Gating**: Toggling Guard Mode requires **Shift + Right Click** while holding a bone to prevent accidental activation during taming. Guard Mode is also gated strictly to the wolf's owner.
+
+### 📏 Dynamic Follower Spread Scaling
+Follow/spread spacing of wild and tamed wolf packs scales dynamically based on the number of active followers:
+- Spacing increases mathematically based on the square root formula: $f(N) = \text{multiplier} \times \sqrt{N - 1}$ to prevent visual overcrowding.
+- Fully configurable via 4 native GameRules: `bd_tamed_pack_spread_multiplier`, `bd_tamed_pack_spread_max`, `bd_wild_pack_spread_multiplier`, `bd_wild_pack_spread_max`.
 
 ### 🤝 Advanced Social AI
 - **Social Bonding (Affinity)**: Dogs form relationships within their pack. Socializing builds trust and reduces accidental infighting.
@@ -66,11 +81,16 @@ Wild wolf packs are now dynamic, territorial entities led by a dominant leader:
 - **Dynamic Outcomes**: Depending on leader personalities, packs may **Merge** (Dominance based), engage in **War** (1v1 Duels or Pack Combat), or peacefully **Retreat** to maintain their own borders.
 - **Configurable Instincts**: Use GameRules to fine-tune exactly how Aggressive, Normal, and Pacifist leaders react to each other.
 - **1v1 Leader Duels**: If a dispute escalates to War, leaders engage in a cinematic 1v1 duel to settle dominance.
-- **Yield & Merge**: Defeated packs are not lost; they yield and **merge** with the winning pack, allowing for the natural formation of massive wolf colonies.
+- **Yield & Merge**: Defeated packs yield and **merge** with the winning pack, allowing for the natural formation of massive wolf colonies.
 - **Wild Personality AI (New Default)**: Out of the box, wild pack members exhibit unique behaviors (like Aggressive hunting or Pack Retreats) while anchored to their leader.
 - **Dynamic Spawning & Reinforcements**: When a pack goes to war or is challenged, nearby wild wolves can spawn or join as reinforcements to defend their pack's territory.
+
+### 💻 Server-Side Optional & Client Gating
+- **Server-Side Optional**: Better Dogs is fully compatible with vanilla clients! Vanilla clients can connect to servers running the mod without installing it.
+- **Dedicated Server Support**: Client-only rendering logic is isolated to prevent classloading crashes on headless dedicated servers.
+- **GUI Config Integration**: Fully supports configuration GUI integrations via **ModMenu** + **Cloth Config** in singleplayer mode.
 - **Production Stable**: Fully compatible with high-performance engines like **C2ME**, ensuring safe multi-threaded AI execution.
-- **Performance Hardened**: All AI logic is performance-optimized using **DasikLibrary 1.7.0**, ensuring zero console spam and smooth server TPS even with massive packs.
+- **Performance Hardened**: All AI logic is performance-optimized using **DasikLibrary 1.7.4**, ensuring zero console spam and smooth server TPS even with massive packs.
 
 ---
 
