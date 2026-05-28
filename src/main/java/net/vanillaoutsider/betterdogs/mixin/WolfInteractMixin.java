@@ -1,4 +1,4 @@
-// Verified against: Wolf.java (26.1.2+)
+// Verified against: Wolf.java (26.2+)
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
@@ -39,6 +39,36 @@ public abstract class WolfInteractMixin extends TamableAnimal {
     private void betterdogs$onMobInteract(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
         Wolf wolf = (Wolf) (Object) this;
         ItemStack itemStack = player.getItemInHand(hand);
+
+        // Shift + Right click empty hand: calm down interaction
+        if (wolf.isTame() && wolf.isOwnedBy(player) && player.isSecondaryUseActive() && itemStack.isEmpty() && hand == InteractionHand.MAIN_HAND) {
+            if (!wolf.level().isClientSide()) {
+                wolf.setOrderedToSit(true);
+                wolf.getNavigation().stop();
+                wolf.setTarget(null);
+                
+                // Clear persistent anger (calm down)
+                wolf.stopBeingAngry();
+                
+                if (wolf instanceof WolfExtensions ext) {
+                    if (ext.betterdogs$isGuardMode()) {
+                        ext.betterdogs$setSittingManually(true);
+                    }
+                }
+                
+                net.minecraft.sounds.SoundEvent sound = ((WolfAccessor) this).betterdogs$invokeGetSoundSet().whineSound().value();
+                wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), sound, wolf.getSoundSource(), 1.0f, 1.2f);
+                
+                player.sendOverlayMessage(Component.translatable("text.betterdogs.calmed_down", wolf.getName()));
+                
+                if (wolf.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+                    serverLevel.sendParticles(ParticleTypes.SMOKE, wolf.getX(), wolf.getY() + 0.5, wolf.getZ(), 5, 0.2, 0.2, 0.2, 0.02);
+                }
+            }
+            cir.setReturnValue(InteractionResult.SUCCESS);
+            return;
+        }
+
         if (wolf.isTame() && wolf.isOwnedBy(player) && itemStack.is(Items.BONE) && player.isSecondaryUseActive()) {
             if (wolf instanceof WolfExtensions ext) {
                 boolean currentGuard = ext.betterdogs$isGuardMode();

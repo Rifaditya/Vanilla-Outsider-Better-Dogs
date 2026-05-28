@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.2.0+A-26.2] - 2026-05-28
+### Summary
+The **"Calm Down Interaction"** minor release.
+- **Calm Down Interaction**: Added shift+right-click empty hand interaction for owners to calm down their tamed wolves.
+  - Commands the wolf to sit, stops navigation, and completely clears its attack target and anger state (`stopBeingAngry()`).
+  - Plays a whine sound and spawns smoke particles to indicate calming down.
+  - Displays an action bar/overlay message: `"Calmed down [Wolf Name]"`.
+- **Strict Versioning**: Bumped the minor version to `4.2.0+A-26.2` and archived previous `4.1.2` release jars.
+
 ## [4.1.2+R-26.2] - 2026-05-28
 ### Summary
 The production **Release** version of the **"Personality-Based Flee Probability & Low Health Fleeing"** features.
