@@ -51,7 +51,7 @@ Right-click a tamed wolf with a bone to toggle **Guard Mode** (consuming exactly
 Easily transfer ownership of your tamed wolves to other players using standard, vanilla-only **Paper**:
 - **Pending Adoption State**: Shift + Right-Click your tamed wolf with a sheet of Paper to put them up for adoption. The wolf will sit down, halt pathfinding, clear all aggression, and emit a beautiful, sparkling trail of **Rose Pink** particles.
 - **Claiming the Wolf**: Any non-owner player can right-click the adoptable wolf with an empty main hand to claim them as their new companion, instantly triggering heart particles and mutual overlay notifications.
-- **Safety Checks**: The adoption state is automatically cancelled if the wolf takes any damage or if the owner interacts normally with them, preventing accidental claims.
+- **Safety Checks**: The adoption state is automatically cancelled if the wolf takes any damage, or if the owner simply right-clicks the dog again normally to cancel, preventing accidental claims.
 
 ### 📏 Dynamic Follower Spread Scaling
 Follow/spread spacing of wild and tamed wolf packs scales dynamically based on the number of active followers:

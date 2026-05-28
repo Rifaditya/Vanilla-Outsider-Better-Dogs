@@ -28,7 +28,7 @@ You can now pass ownership of your beloved companions to friends! This system us
 
 ### 3. Safety & Cancellation Checks
 To prevent accidental transfers or griefing, the adoption state is cancelled automatically under the following conditions:
-* **Manual Cancel**: If the owner interacts normally (without paper) with their adoptable wolf, the state is cancelled, and the wolf returns to normal behavior.
+* **Manual Cancel**: If the owner right-clicks the adoptable wolf again normally (without paper), the state is cancelled, and the wolf returns to normal behavior.
 * **Damage Interrupt**: If the adoptable wolf takes any damage, the adoption is cancelled immediately to protect the dog, and the owner is warned via an overlay message.
 
 ---
