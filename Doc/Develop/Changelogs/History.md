@@ -1,5 +1,11 @@
 # Better Dogs - Historical Changelog
 
+## [4.1.2+R-26.2] - 2026-05-28
+### Summary
+The production **Release** version of the **"Personality-Based Flee Probability & Low Health Fleeing"** features.
+- **Stable Release**: Promoted the low health fleeing behavior and personality-based fleeing probabilities to a stable production Release.
+- **Strict Versioning**: Bumped version to `4.1.2+R-26.2` and archived previous `4.1.1` alpha jars.
+
 ## [4.1.1+A-26.2] - 2026-05-28
 ### Summary
 The **"Personality-Based Flee Probability"** patch.
