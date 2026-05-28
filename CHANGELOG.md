@@ -1,13 +1,13 @@
 # Changelog
 
-## [4.3.0+A-26.2] - 2026-05-28
+## [4.3.0+R-26.2] - 2026-05-28
 ### Summary
-The **"Paper Ownership Transfer (Adoption)"** minor release.
+The production **Release** version of the **"Paper Ownership Transfer (Adoption)"** features.
 - **Paper Adoption Mechanics**: Owners can shift+right-click their tamed wolves with a sheet of Paper (`Items.PAPER`) to toggle them into a pending adoption state.
   - Commands the wolf to sit, stops navigation, clears target/anger, and spawns beautiful custom Rose Pink `trail` particles (`0xFF99BB`) floating towards a target offset.
   - Another player can right-click the adoptable wolf with an empty hand to adopt it, immediately shifting ownership.
   - The adoption is cancelled if the owner interacts normally with the wolf or if the wolf takes damage.
-- **Strict Versioning**: Bumped the minor version to `4.3.0+A-26.2` and archived previous `4.2.2` jars.
+- **Stable Release**: Promoted the Paper Adoption ownership transfer mechanics and custom Rose Pink particle trails to a stable production Release. Archived previous `4.3.0+A-26.2` jars.
 
 ## [4.2.2+R-26.2] - 2026-05-28
 ### Summary
