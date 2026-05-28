@@ -1,9 +1,9 @@
 # Better Dogs - Historical Changelog
 
-## [4.2.1+A-26.2] - 2026-05-28
+## [4.2.2+R-26.2] - 2026-05-28
 ### Summary
-The **"Named Guard Mode Overlay"** patch.
-- **Named Guard Mode overlay**: Modified the Guard Mode activation and deactivation messages to include the name of the wolf (e.g., "Guard Mode Activated for Buddy at X, Y, Z").
+The production **Release** version of the **"Calm Down Interaction & Named Guard Mode Overlay"** features.
+- **Stable Release**: Promoted the Calm Down empty-hand Shift-Right Click interaction and the Named Guard Mode activation/deactivation overlays to a stable production Release.
 
 ## [4.2.0+A-26.2] - 2026-05-28
 ### Summary
