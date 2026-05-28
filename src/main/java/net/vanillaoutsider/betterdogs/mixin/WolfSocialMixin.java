@@ -45,7 +45,7 @@ public abstract class WolfSocialMixin implements SocialEntity, WolfExtensions {
     public void betterdogs$setSocialScale(float scale) {
         WolfPersistentData current = WolfPersistentData.getWolfData((Wolf) (Object) this);
         WolfPersistentData.setScale(current.personalityId(), current.lastDamageTime(), current.submissive(),
-                current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), (Wolf) (Object) this, scale, current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos());
+                current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), (Wolf) (Object) this, scale, current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable());
     }
 
     @Override

@@ -7,6 +7,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.player.Player;
@@ -15,6 +16,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.EntityReference;
+import java.util.UUID;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.vanillaoutsider.betterdogs.util.WolfDebugLogger;
 import net.vanillaoutsider.betterdogs.util.WolfParticleHandler;
@@ -39,6 +43,82 @@ public abstract class WolfInteractMixin extends TamableAnimal {
     private void betterdogs$onMobInteract(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
         Wolf wolf = (Wolf) (Object) this;
         ItemStack itemStack = player.getItemInHand(hand);
+
+        if (wolf.isTame() && wolf instanceof WolfExtensions ext) {
+            // 1. Triggering / Toggling Pending Adoption
+            if (wolf.isOwnedBy(player) && player.isSecondaryUseActive() && itemStack.is(Items.PAPER) && hand == InteractionHand.MAIN_HAND) {
+                if (!wolf.level().isClientSide()) {
+                    boolean currentAdoptable = ext.betterdogs$isAdoptable();
+                    boolean newAdoptable = !currentAdoptable;
+                    ext.betterdogs$setAdoptable(newAdoptable);
+
+                    if (newAdoptable) {
+                        wolf.setOrderedToSit(true);
+                        wolf.getNavigation().stop();
+                        wolf.setTarget(null);
+                        wolf.stopBeingAngry();
+                        if (ext.betterdogs$isGuardMode()) {
+                            ext.betterdogs$setSittingManually(true);
+                        }
+                        itemStack.consume(1, player);
+                        wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), SoundEvents.BOOK_PAGE_TURN, wolf.getSoundSource(), 1.0f, 1.0f);
+                        player.sendOverlayMessage(Component.translatable("text.betterdogs.adoption_pending", wolf.getName()));
+                    } else {
+                        wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), SoundEvents.BOOK_PAGE_TURN, wolf.getSoundSource(), 1.0f, 1.0f);
+                        player.sendOverlayMessage(Component.translatable("text.betterdogs.adoption_cancelled", wolf.getName()));
+                    }
+                }
+                cir.setReturnValue(InteractionResult.SUCCESS);
+                return;
+            }
+
+            // 2. Claiming / Adopting by another player
+            if (!wolf.isOwnedBy(player) && ext.betterdogs$isAdoptable() && itemStack.isEmpty() && hand == InteractionHand.MAIN_HAND) {
+                if (!wolf.level().isClientSide()) {
+                    EntityReference<LivingEntity> oldOwnerRef = wolf.getOwnerReference();
+                    UUID oldOwnerUuid = oldOwnerRef != null ? oldOwnerRef.getUUID() : null;
+
+                    // Tame/Adopt the wolf
+                    wolf.tame(player);
+                    wolf.setOrderedToSit(false);
+                    ext.betterdogs$setAdoptable(false);
+
+                    // Re-apply personality stats for the new owner relationship
+                    WolfPersonality personality = ext.betterdogs$getPersonality();
+                    WolfStatManager.applyPersonalityStats(wolf, personality);
+
+                    // Play effects
+                    wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), ((WolfAccessor) this).betterdogs$invokeGetSoundSet().ambientSound().value(), wolf.getSoundSource(), 1.0f, 1.0f);
+                    if (wolf.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+                        serverLevel.sendParticles(ParticleTypes.HEART, wolf.getRandomX(1.0), wolf.getRandomY() + 0.5, wolf.getRandomZ(1.0), 5, 0.2, 0.2, 0.2, 0.02);
+                    }
+
+                    // Notify players
+                    player.sendOverlayMessage(Component.translatable("text.betterdogs.adopted_new_owner", wolf.getName()));
+                    if (oldOwnerUuid != null) {
+                        Player oldOwner = wolf.level().getPlayerByUUID(oldOwnerUuid);
+                        if (oldOwner != null) {
+                            oldOwner.sendOverlayMessage(Component.translatable("text.betterdogs.adopted_old_owner", wolf.getName(), player.getName()));
+                        }
+                    }
+                }
+                cir.setReturnValue(InteractionResult.SUCCESS);
+                return;
+            }
+
+            // 3. Cancelling adoption by normal owner interaction (not shifting with paper)
+            if (wolf.isOwnedBy(player) && ext.betterdogs$isAdoptable()) {
+                if (!player.isSecondaryUseActive() || !itemStack.is(Items.PAPER)) {
+                    if (!wolf.level().isClientSide()) {
+                        ext.betterdogs$setAdoptable(false);
+                        wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), SoundEvents.BOOK_PAGE_TURN, wolf.getSoundSource(), 1.0f, 1.0f);
+                        player.sendOverlayMessage(Component.translatable("text.betterdogs.adoption_cancelled", wolf.getName()));
+                    }
+                    cir.setReturnValue(InteractionResult.SUCCESS);
+                    return;
+                }
+            }
+        }
 
         // Shift + Right click empty hand: calm down interaction
         if (wolf.isTame() && wolf.isOwnedBy(player) && player.isSecondaryUseActive() && itemStack.isEmpty() && hand == InteractionHand.MAIN_HAND) {

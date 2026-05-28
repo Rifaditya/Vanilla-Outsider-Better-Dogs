@@ -215,4 +215,8 @@ public interface WolfExtensions {
     void betterdogs$setGuardPos(@Nullable BlockPos pos);
     boolean betterdogs$isSittingManually();
     void betterdogs$setSittingManually(boolean sitting);
+
+    // === ADOPTION SYSTEM (V4.3.0) ===
+    boolean betterdogs$isAdoptable();
+    void betterdogs$setAdoptable(boolean adoptable);
 }

@@ -2,6 +2,7 @@
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
@@ -14,6 +15,9 @@ import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.vanillaoutsider.betterdogs.util.WolfCombatHooks;
 import net.vanillaoutsider.betterdogs.util.WolfDebugLogger;
 import net.vanillaoutsider.betterdogs.util.WolfStatManager;
+import net.minecraft.core.particles.TrailParticleOption;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.util.RandomSource;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -100,6 +104,16 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         WolfPersistentData.setPersistedLastMischiefDay((Wolf) (Object) this, day);
     }
 
+    @Override
+    public boolean betterdogs$isAdoptable() {
+        return WolfPersistentData.isPersistedAdoptable((Wolf) (Object) this);
+    }
+
+    @Override
+    public void betterdogs$setAdoptable(boolean adoptable) {
+        WolfPersistentData.setPersistedAdoptable((Wolf) (Object) this, adoptable);
+    }
+
     // ========== Dunce Cap (Transient Disciplinary State) ==========
 
     @Unique
@@ -148,6 +162,18 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
             }
         }
 
+        if (!wolf.level().isClientSide() && this.tickCount % 40 == 0 && betterdogs$isAdoptable()) {
+            if (wolf.level() instanceof ServerLevel serverLevel) {
+                RandomSource random = serverLevel.getRandom();
+                for (int i = 0; i < 4; ++i) {
+                    Vec3 source = wolf.position().add(random.nextDouble() * 0.6 - 0.3, random.nextDouble() * 0.5, random.nextDouble() * 0.6 - 0.3);
+                    Vec3 destination = wolf.position().add(random.nextDouble() * 0.8 - 0.4, wolf.getEyeHeight() + 0.5 + random.nextDouble() * 0.5, random.nextDouble() * 0.8 - 0.4);
+                    TrailParticleOption trail = new TrailParticleOption(destination, 0xFF99BB, random.nextInt(20) + 15);
+                    serverLevel.sendParticles(trail, true, true, source.x, source.y, source.z, 1, 0.0, 0.0, 0.0, 0.0);
+                }
+            }
+        }
+
         int lastDamageTime = betterdogs$getLastDamageTime();
         if (this.tickCount - lastDamageTime > BetterDogsConfig.get().getCombatHealDelayTicks()
                 && this.getHealth() < this.getMaxHealth()) {
@@ -165,6 +191,14 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     private void betterdogs$onActuallyHurt(ServerLevel level, DamageSource source, float amount, CallbackInfo ci) {
         betterdogs$setLastDamageTime(this.tickCount);
         WolfDebugLogger.log((Wolf)(Object)this, "Hurt", "Source: " + source.getMsgId() + ", Amount: " + amount);
+
+        if (betterdogs$isAdoptable()) {
+            betterdogs$setAdoptable(false);
+            LivingEntity owner = this.getOwner();
+            if (owner instanceof net.minecraft.world.entity.player.Player player) {
+                player.sendOverlayMessage(Component.translatable("text.betterdogs.adoption_cancelled_damage", this.getName()));
+            }
+        }
 
         if (WolfCombatHooks.onActuallyHurt((Wolf) (Object) this, source, amount)) {
             ci.cancel();

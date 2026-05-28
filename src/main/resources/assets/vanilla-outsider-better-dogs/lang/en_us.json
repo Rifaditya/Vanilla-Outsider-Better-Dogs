@@ -225,5 +225,10 @@
     "gamerule.vanilla-outsider-better-dogs.bd_wild_pack_spread_multiplier.description": "Scale factor for how much wild wolves spread out as the pack size increases. Default: 80 (0.8x multiplier)",
     "gamerule.vanilla-outsider-better-dogs.bd_wild_pack_spread_max": "Wild Pack Spread Max Extra",
     "gamerule.vanilla-outsider-better-dogs.bd_wild_pack_spread_max.description": "The maximum extra spacing distance added to wild wolves follow range. Default: 40 (4.0 blocks)",
-    "text.betterdogs.calmed_down": "Calmed down %s"
+    "text.betterdogs.calmed_down": "Calmed down %s",
+    "text.betterdogs.adoption_pending": "%s is now ready for adoption! Another player can right-click them to claim.",
+    "text.betterdogs.adoption_cancelled": "Adoption cancelled for %s.",
+    "text.betterdogs.adoption_cancelled_damage": "Adoption cancelled for %s because they took damage!",
+    "text.betterdogs.adopted_new_owner": "You have adopted %s!",
+    "text.betterdogs.adopted_old_owner": "%s has been adopted by %s!"
 }
