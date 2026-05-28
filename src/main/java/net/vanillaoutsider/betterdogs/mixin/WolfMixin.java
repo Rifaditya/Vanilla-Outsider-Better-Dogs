@@ -205,6 +205,31 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
                     serverLevel.sendParticles(new net.minecraft.core.particles.DustParticleOptions(0xFF3333, 0.6f), px, py, pz, 1, 0, 0.05, 0, 0.0);
                 } else if (personality == WolfPersonality.PACIFIST) {
                     serverLevel.sendParticles(new net.minecraft.core.particles.DustParticleOptions(0x00FF88, 0.6f), px, py, pz, 1, 0, 0.05, 0, 0.0);
+
+                    // Watchdog Grace Buff (Regeneration and Resistance to owner/allies within 6 blocks of wolf OR guard post)
+                    if (net.dasik.social.api.gamerule.DynamicGameRuleManager.getBoolean(serverLevel, net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_PACIFIST_GUARD_BUFFS)) {
+                        double buffRangeSqr = 36.0; // 6 blocks
+                        net.minecraft.world.entity.player.Player owner = this.getOwner() instanceof net.minecraft.world.entity.player.Player ? (net.minecraft.world.entity.player.Player) this.getOwner() : null;
+                        if (owner != null) {
+                            if (owner.isAlive()) {
+                                boolean isNearWolf = wolf.distanceToSqr(owner) <= buffRangeSqr;
+                                net.minecraft.core.BlockPos post = betterdogs$getGuardPos();
+                                boolean isNearPost = post != null && owner.distanceToSqr(post.getX() + 0.5, post.getY() + 0.5, post.getZ() + 0.5) <= buffRangeSqr;
+                                
+                                if (isNearWolf || isNearPost) {
+                                    owner.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.REGENERATION, 80, 0, true, true));
+                                    owner.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.RESISTANCE, 80, 0, true, true));
+                                }
+                            }
+
+                            // Buff allied wolves within 6 blocks of this wolf
+                            java.util.List<Wolf> allies = serverLevel.getEntitiesOfClass(Wolf.class, wolf.getBoundingBox().inflate(6.0), w -> w.isTame() && w.getOwner() == owner);
+                            for (Wolf ally : allies) {
+                                ally.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.REGENERATION, 80, 0, true, true));
+                                ally.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.RESISTANCE, 80, 0, true, true));
+                            }
+                        }
+                    }
                 } else {
                     serverLevel.sendParticles(new net.minecraft.core.particles.DustParticleOptions(0xFFD700, 0.6f), px, py, pz, 1, 0, 0.05, 0, 0.0);
                 }

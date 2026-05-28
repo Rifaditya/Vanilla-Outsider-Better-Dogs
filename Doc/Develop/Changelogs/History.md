@@ -1,5 +1,9 @@
 # Better Dogs - Historical Changelog
 
+## [4.5.5+A-26.2] - 2026-05-28
+### Summary
+- **Standard Alignment**: Fixed Pacifist watchdog grace buff area validation and config integration. Moved grace buff application from goal ticking to entity ticking so it persists during active combat. Exposed `pacifistGuardBuffs` in configuration files and the Cloth Config GUI screen.
+
 ## [4.5.4+A-26.2] - 2026-05-28
 ### Summary
 - **Standard Alignment**: Expanded GameRule screen tooltips with detailed explanations of behavior and default values for all configuration parameters, complying with localization guidelines.

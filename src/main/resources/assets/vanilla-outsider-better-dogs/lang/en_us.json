@@ -137,6 +137,7 @@
     "config.betterdogs.enableFriendlyFireProtection": "Friendly Fire Protection",
     "config.betterdogs.enableDogsEatRawGroundFood": "Dogs: Eat Raw Ground Food",
     "config.betterdogs.enableDogsEatCookedGroundFood": "Dogs: Eat Cooked Ground Food",
+    "config.betterdogs.pacifistGuardBuffs": "Pacifist Guard Buffs",
     "config.betterdogs.followCatchUpSpeed": "Follow Catch Up Speed",
     "config.betterdogs.followCatchUpThreshold": "Follow Catch Up Threshold",
     "config.betterdogs.teleportToOwnerSpread": "Teleport Spread",

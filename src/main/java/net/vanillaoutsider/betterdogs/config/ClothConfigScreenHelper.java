@@ -74,6 +74,12 @@ public class ClothConfigScreenHelper {
                 .setSaveConsumer(val -> config.enableDogsEatCookedGroundFood = val)
                 .build());
 
+        general.addEntry(entryBuilder.startBooleanToggle(Component.translatable("config.betterdogs.pacifistGuardBuffs"), config.pacifistGuardBuffs)
+                .setDefaultValue(false)
+                .setTooltip(warningTooltip)
+                .setSaveConsumer(val -> config.pacifistGuardBuffs = val)
+                .build());
+
         general.addEntry(entryBuilder.startDoubleField(Component.translatable("config.betterdogs.followCatchUpSpeed"), config.followCatchUpSpeed)
                 .setDefaultValue(1.5)
                 .setTooltip(warningTooltip)

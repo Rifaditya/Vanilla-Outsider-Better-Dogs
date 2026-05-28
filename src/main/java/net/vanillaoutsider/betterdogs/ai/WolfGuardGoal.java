@@ -99,26 +99,9 @@ public class WolfGuardGoal extends Goal {
             alertCooldown--;
         }
 
-        // 3. Pacifist Sentinel Watchdog Actions (Alarm and Grace Buffs)
+        // 3. Pacifist Sentinel Watchdog Actions (Alarm)
         if (personality == WolfPersonality.PACIFIST) {
             if (wolf.tickCount % 20 == 0) {
-                // Watchdog Grace Buff (Regeneration and Resistance to owner/allies within 6 blocks)
-                if (DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_PACIFIST_GUARD_BUFFS)) {
-                    double buffRangeSqr = 36.0; // 6 blocks
-                    Player owner = wolf.getOwner() instanceof Player ? (Player) wolf.getOwner() : null;
-                    if (owner != null && owner.isAlive() && wolf.distanceToSqr(owner) <= buffRangeSqr) {
-                        owner.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 80, 0, true, true));
-                        owner.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 80, 0, true, true));
-                    }
-                    
-                    // Buff allied wolves
-                    List<Wolf> allies = wolf.level().getEntitiesOfClass(Wolf.class, wolf.getBoundingBox().inflate(6.0), w -> w.isTame() && w.getOwner() == owner);
-                    for (Wolf ally : allies) {
-                        ally.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 80, 0, true, true));
-                        ally.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 80, 0, true, true));
-                    }
-                }
-
                 // Watchdog Alarm (Whining and note particles when hostiles approach within 16 blocks)
                 List<Monster> enemies = wolf.level().getEntitiesOfClass(Monster.class, wolf.getBoundingBox().inflate(16.0));
                 this.isAlertActive = !enemies.isEmpty();
