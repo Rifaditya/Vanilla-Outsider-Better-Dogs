@@ -8,6 +8,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.wolf.Wolf;
+import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.WolfPersistentData;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
@@ -128,6 +129,12 @@ public class WolfStatManager {
         float healthBonus = WolfPersistentData.getPersistedHealthBonus(wolf);
         float damageMod = WolfPersistentData.getPersistedDamageMod(wolf);
         float speedMod = WolfPersistentData.getPersistedSpeedMod(wolf);
+
+        // Calculate and apply dynamic scale based on health bonus (Option 2: 0.808x to 1.312x range)
+        float calculatedScale = 1.0f + (healthBonus * 0.012f);
+        if (wolf instanceof WolfExtensions ext) {
+            ext.betterdogs$setSocialScale(calculatedScale);
+        }
 
         // 3. Apply Attack Damage Modifier
         damageAttr.addPermanentModifier(new AttributeModifier(rolledDamageId, damageMod,

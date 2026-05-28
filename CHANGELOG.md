@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.4.0+A-26.2] - 2026-05-28
+### Summary
+The **"Health-Based Dog Scaling"** minor release.
+- **Dynamic Size Scaling**: Tamed wolf scales are now dynamically calculated and applied based on their rolled max health bonus.
+  - Formula: `scale = 1.0 + (healthBonus * 0.012)`
+  - Re-scales range from a tiny **0.808x** (worst-case Aggressive) to a massive **1.312x** (best-case Pacifist) size.
+- **Dynamic Updates**: Recalculates and adjusts the scale automatically if a wolf is tamed, loaded, or if its personality is cycled via command/debug stick.
+
 ## [4.3.1+R-26.2] - 2026-05-28
 ### Summary
 The production **Release** version of the **"Personality-Based Range Stats"** features.
