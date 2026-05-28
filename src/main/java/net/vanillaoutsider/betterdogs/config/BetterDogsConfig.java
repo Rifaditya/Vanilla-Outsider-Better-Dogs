@@ -81,10 +81,10 @@ public class BetterDogsConfig {
     // ========== Wild Wolves ==========
     public float wildHuntHealthThreshold = 0.5f;
 
-    // ========== Taming ==========
-    public int tamingChanceNormal = 60;
-    public int tamingChanceAggressive = 20;
-    public int tamingChancePacifist = 20;
+    // ========== Spawning Chance Weights ==========
+    public int spawnChanceNormal = 60;
+    public int spawnChanceAggressive = 20;
+    public int spawnChancePacifist = 20;
 
     // ========== Breeding Genetics ==========
     public int breedingSameParentChance = 80;

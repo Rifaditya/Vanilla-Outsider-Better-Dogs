@@ -106,9 +106,9 @@ public class BetterDogsGameRules {
 	public static GameRule<Integer> BD_WOLF_LITTER_EXTRA_CHANCE;
 
 	// --- Taming Chances ---
-	public static GameRule<Integer> BD_TAME_NORMAL_PERCENT;
-	public static GameRule<Integer> BD_TAME_AGGRO_PERCENT;
-	public static GameRule<Integer> BD_TAME_PACI_PERCENT;
+	public static GameRule<Integer> BD_SPAWN_NORMAL_PERCENT;
+	public static GameRule<Integer> BD_SPAWN_AGGRO_PERCENT;
+	public static GameRule<Integer> BD_SPAWN_PACI_PERCENT;
 
 	// --- Guard Mode ---
 	public static GameRule<Boolean> BD_PACIFIST_GUARD_BUFFS;
@@ -255,12 +255,12 @@ public class BetterDogsGameRules {
 
 
 
-		BD_TAME_NORMAL_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_tame_normal_percent", BETTER_DOGS,
-				config.tamingChanceNormal);
-		BD_TAME_AGGRO_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_tame_aggro_percent", BETTER_DOGS,
-				config.tamingChanceAggressive);
-		BD_TAME_PACI_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_tame_paci_percent", BETTER_DOGS,
-				config.tamingChancePacifist);
+		BD_SPAWN_NORMAL_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_spawn_normal_percent", BETTER_DOGS,
+				config.spawnChanceNormal);
+		BD_SPAWN_AGGRO_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_spawn_aggro_percent", BETTER_DOGS,
+				config.spawnChanceAggressive);
+		BD_SPAWN_PACI_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_spawn_paci_percent", BETTER_DOGS,
+				config.spawnChancePacifist);
 		BD_WOLF_PACK_CLUSTER_SIZE = registerInteger("vanilla-outsider-better-dogs:bd_wolf_pack_cluster_size",
 				BETTER_DOGS, 8);
 		BD_WOLF_SPAWN_DENSITY_BOOST = registerInteger("vanilla-outsider-better-dogs:bd_wolf_spawn_density_boost",

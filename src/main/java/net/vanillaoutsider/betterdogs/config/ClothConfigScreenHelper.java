@@ -245,22 +245,22 @@ public class ClothConfigScreenHelper {
         // --- BREEDING & GENETICS CATEGORY ---
         ConfigCategory breeding = builder.getOrCreateCategory(Component.translatable("config.betterdogs.category.breeding"));
 
-        breeding.addEntry(entryBuilder.startIntField(Component.translatable("config.betterdogs.tamingChanceNormal"), config.tamingChanceNormal)
+        breeding.addEntry(entryBuilder.startIntField(Component.translatable("config.betterdogs.spawnChanceNormal"), config.spawnChanceNormal)
                 .setDefaultValue(60)
                 .setTooltip(warningTooltip)
-                .setSaveConsumer(val -> config.tamingChanceNormal = val)
+                .setSaveConsumer(val -> config.spawnChanceNormal = val)
                 .build());
 
-        breeding.addEntry(entryBuilder.startIntField(Component.translatable("config.betterdogs.tamingChanceAggressive"), config.tamingChanceAggressive)
+        breeding.addEntry(entryBuilder.startIntField(Component.translatable("config.betterdogs.spawnChanceAggressive"), config.spawnChanceAggressive)
                 .setDefaultValue(20)
                 .setTooltip(warningTooltip)
-                .setSaveConsumer(val -> config.tamingChanceAggressive = val)
+                .setSaveConsumer(val -> config.spawnChanceAggressive = val)
                 .build());
 
-        breeding.addEntry(entryBuilder.startIntField(Component.translatable("config.betterdogs.tamingChancePacifist"), config.tamingChancePacifist)
+        breeding.addEntry(entryBuilder.startIntField(Component.translatable("config.betterdogs.spawnChancePacifist"), config.spawnChancePacifist)
                 .setDefaultValue(20)
                 .setTooltip(warningTooltip)
-                .setSaveConsumer(val -> config.tamingChancePacifist = val)
+                .setSaveConsumer(val -> config.spawnChancePacifist = val)
                 .build());
 
         breeding.addEntry(entryBuilder.startIntField(Component.translatable("config.betterdogs.breedingSameParentChance"), config.breedingSameParentChance)

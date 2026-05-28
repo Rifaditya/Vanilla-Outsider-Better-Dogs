@@ -47,9 +47,9 @@ public enum WolfPersonality {
              // Client side fallback (shouldn't happen for spawning logic, but safe)
              return NORMAL;
         } else {
-             normal = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_TAME_NORMAL_PERCENT);
-             aggressive = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_TAME_AGGRO_PERCENT);
-             pacifist = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_TAME_PACI_PERCENT);
+             normal = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_SPAWN_NORMAL_PERCENT);
+             aggressive = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_SPAWN_AGGRO_PERCENT);
+             pacifist = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_SPAWN_PACI_PERCENT);
         }
 
         int total = normal + aggressive + pacifist;

@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.5.2+A-26.2] - 2026-05-28
+### Summary
+- **Standard Alignment**: Rebranded "Taming Chance" gamerules, config settings, and translations to "Spawn Chance" to better match the mechanic where wolves roll their personality when they spawn as wild wolves, not when they are tamed.
+
 ## [4.5.1+A-26.2] - 2026-05-28
 ### Summary
 - **Breeding Mixin Performance Optimization**: Optimized the breeding method by caching the data record lookups for the parents (reducing attachment lookups by over 70%) and refactoring UUID comparisons to use plain null-gated checks, eliminating short-lived object allocations.
