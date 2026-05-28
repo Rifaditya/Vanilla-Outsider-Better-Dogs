@@ -3,11 +3,14 @@ package net.vanillaoutsider.betterdogs.mixin;
 
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import java.util.Random;
+import java.util.UUID;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
+import net.vanillaoutsider.betterdogs.WolfPersistentData;
+import net.vanillaoutsider.betterdogs.util.WolfStatManager;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -57,20 +60,24 @@ public abstract class WolfBreedingMixin {
         babyExt.betterdogs$setPersonality(babyPersonality);
 
         // Ensure both parents have their stats rolled/applied so they have valid values
-        if (!net.vanillaoutsider.betterdogs.WolfPersistentData.arePersistedStatsRolled(parent1)) {
-            net.vanillaoutsider.betterdogs.util.WolfStatManager.applyPersonalityStats(parent1, p1);
+        if (!WolfPersistentData.arePersistedStatsRolled(parent1)) {
+            WolfStatManager.applyPersonalityStats(parent1, p1);
         }
-        if (!net.vanillaoutsider.betterdogs.WolfPersistentData.arePersistedStatsRolled(parent2)) {
-            net.vanillaoutsider.betterdogs.util.WolfStatManager.applyPersonalityStats(parent2, p2);
+        if (!WolfPersistentData.arePersistedStatsRolled(parent2)) {
+            WolfStatManager.applyPersonalityStats(parent2, p2);
         }
 
-        // Get parent stat bonuses
-        float parent1Hp = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedHealthBonus(parent1);
-        float parent2Hp = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedHealthBonus(parent2);
-        float parent1Dmg = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedDamageMod(parent1);
-        float parent2Dmg = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedDamageMod(parent2);
-        float parent1Speed = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedSpeedMod(parent1);
-        float parent2Speed = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedSpeedMod(parent2);
+        // Get latest parent data records
+        WolfPersistentData d1 = WolfPersistentData.getWolfData(parent1);
+        WolfPersistentData d2 = WolfPersistentData.getWolfData(parent2);
+
+        // Retrieve stat bonuses directly from records
+        float parent1Hp = d1.healthBonus();
+        float parent2Hp = d2.healthBonus();
+        float parent1Dmg = d1.damageMod();
+        float parent2Dmg = d2.damageMod();
+        float parent1Speed = d1.speedMod();
+        float parent2Speed = d2.speedMod();
 
         // Roll mutation values using the standard triangular range stats for the baby's personality
         net.minecraft.util.RandomSource rand = level.getRandom();
@@ -97,7 +104,7 @@ public abstract class WolfBreedingMixin {
         }
 
         // Check if breeding is inbred (parent-offspring or siblings sharing at least one parent)
-        boolean inbred = betterdogs$checkInbreeding(parent1, parent2);
+        boolean inbred = betterdogs$checkInbreeding(parent1, parent2, d1, d2);
 
         // Apply inheritance formula: Average of parents + mutation
         float avgHp = (parent1Hp + parent2Hp + mutationHp) / 3.0f;
@@ -131,7 +138,7 @@ public abstract class WolfBreedingMixin {
         babyExt.betterdogs$setStatsRolled(true);
 
         // Persist kinship data (parents UUIDs and inbred flag)
-        net.vanillaoutsider.betterdogs.WolfPersistentData.setPersistedParentsAndInbred(baby, parent1.getUUID(), parent2.getUUID(), inbred);
+        WolfPersistentData.setPersistedParentsAndInbred(baby, parent1.getUUID(), parent2.getUUID(), inbred);
     }
 
     /**
@@ -216,36 +223,27 @@ public abstract class WolfBreedingMixin {
     }
 
     @Unique
-    private boolean betterdogs$checkInbreeding(Wolf parent1, Wolf parent2) {
-        java.util.UUID u1 = parent1.getUUID();
-        java.util.UUID u2 = parent2.getUUID();
+    private boolean betterdogs$checkInbreeding(Wolf parent1, Wolf parent2, WolfPersistentData d1, WolfPersistentData d2) {
+        UUID u1 = parent1.getUUID();
+        UUID u2 = parent2.getUUID();
 
-        java.util.Optional<java.util.UUID> p1_1 = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedParent1Uuid(parent1);
-        java.util.Optional<java.util.UUID> p1_2 = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedParent2Uuid(parent1);
+        UUID p1_1 = d1.parent1Uuid().orElse(null);
+        UUID p1_2 = d1.parent2Uuid().orElse(null);
 
-        java.util.Optional<java.util.UUID> p2_1 = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedParent1Uuid(parent2);
-        java.util.Optional<java.util.UUID> p2_2 = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedParent2Uuid(parent2);
+        UUID p2_1 = d2.parent1Uuid().orElse(null);
+        UUID p2_2 = d2.parent2Uuid().orElse(null);
 
         // Parent-offspring check
-        if (p2_1.filter(uuid -> uuid.equals(u1)).isPresent() || p2_2.filter(uuid -> uuid.equals(u1)).isPresent()) {
-            return true;
-        }
-        if (p1_1.filter(uuid -> uuid.equals(u2)).isPresent() || p1_2.filter(uuid -> uuid.equals(u2)).isPresent()) {
+        if (u1.equals(p2_1) || u1.equals(p2_2) || u2.equals(p1_1) || u2.equals(p1_2)) {
             return true;
         }
 
         // Sibling check (sharing at least one parent)
-        if (p1_1.isPresent()) {
-            java.util.UUID p = p1_1.get();
-            if ((p2_1.isPresent() && p2_1.get().equals(p)) || (p2_2.isPresent() && p2_2.get().equals(p))) {
-                return true;
-            }
+        if (p1_1 != null && (p1_1.equals(p2_1) || p1_1.equals(p2_2))) {
+            return true;
         }
-        if (p1_2.isPresent()) {
-            java.util.UUID p = p1_2.get();
-            if ((p2_1.isPresent() && p2_1.get().equals(p)) || (p2_2.isPresent() && p2_2.get().equals(p))) {
-                return true;
-            }
+        if (p1_2 != null && (p1_2.equals(p2_1) || p1_2.equals(p2_2))) {
+            return true;
         }
 
         return false;
