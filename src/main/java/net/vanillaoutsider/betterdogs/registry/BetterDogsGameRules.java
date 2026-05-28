@@ -46,6 +46,7 @@ public class BetterDogsGameRules {
 	public static GameRule<Integer> BD_AGGRO_FOLLOW_START;
 	public static GameRule<Integer> BD_AGGRO_CHASE_DIST;
 	public static GameRule<Integer> BD_AGGRO_DETECT_RANGE;
+	public static GameRule<Integer> BD_AGGRO_FLEE_CHANCE;
 
 	// --- Pacifist Personality ---
 	public static GameRule<Integer> BD_PACI_HEALTH;
@@ -53,12 +54,14 @@ public class BetterDogsGameRules {
 	public static GameRule<Integer> BD_PACI_DMG_PCT;
 	public static GameRule<Integer> BD_PACI_KNOCKBACK_PCT;
 	public static GameRule<Integer> BD_PACI_FOLLOW_START;
+	public static GameRule<Integer> BD_PACI_FLEE_CHANCE;
 
 	// --- Normal Personality ---
 	public static GameRule<Integer> BD_NORMAL_FOLLOW_START;
 	public static GameRule<Integer> BD_NORMAL_SPEED_PCT;
 	public static GameRule<Integer> BD_NORMAL_DMG_PCT;
 	public static GameRule<Integer> BD_NORMAL_HEALTH;
+	public static GameRule<Integer> BD_NORMAL_FLEE_CHANCE;
 
 	// --- Misc ---
 	public static GameRule<Integer> BD_BABY_MISCHIEF_PERMILLE;
@@ -147,6 +150,8 @@ public class BetterDogsGameRules {
 				(int) (config.getAggressiveSpeedModifier() * 100));
 		BD_AGGRO_DMG_PCT = registerInteger("vanilla-outsider-better-dogs:bd_aggro_dmg_percent", BETTER_DOGS,
 				(int) (config.getAggressiveDamageModifier() * 100));
+		BD_AGGRO_FLEE_CHANCE = registerInteger("vanilla-outsider-better-dogs:bd_aggro_flee_chance", BETTER_DOGS,
+				config.getAggressiveFleeChance());
 		// Pacifist
 		BD_PACI_HEALTH = registerInteger("vanilla-outsider-better-dogs:bd_paci_health", BETTER_DOGS,
 				(int) config.getPacifistHealthBonus());
@@ -156,6 +161,8 @@ public class BetterDogsGameRules {
 				(int) (config.getPacifistDamageModifier() * 100));
 		BD_PACI_KNOCKBACK_PCT = registerInteger("vanilla-outsider-better-dogs:bd_paci_knockback_percent", BETTER_DOGS,
 				(int) (config.getPacifistKnockbackModifier() * 100));
+		BD_PACI_FLEE_CHANCE = registerInteger("vanilla-outsider-better-dogs:bd_paci_flee_chance", BETTER_DOGS,
+				config.getPacifistFleeChance());
 		// Normal
 		BD_NORMAL_HEALTH = registerInteger("vanilla-outsider-better-dogs:bd_normal_health", BETTER_DOGS,
 				(int) config.getNormalHealthBonus());
@@ -163,6 +170,8 @@ public class BetterDogsGameRules {
 				(int) (config.getNormalSpeedModifier() * 100));
 		BD_NORMAL_DMG_PCT = registerInteger("vanilla-outsider-better-dogs:bd_normal_dmg_percent", BETTER_DOGS,
 				(int) (config.getNormalDamageModifier() * 100));
+		BD_NORMAL_FLEE_CHANCE = registerInteger("vanilla-outsider-better-dogs:bd_normal_flee_chance", BETTER_DOGS,
+				config.getNormalFleeChance());
 
 
 

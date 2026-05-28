@@ -41,6 +41,9 @@ public class BetterDogsConfig {
     public boolean enableStormAnxiety = true;
     public boolean enableCliffSafety = true;
     public boolean enableFleeLowHealth = true;
+    public int pacifistFleeChance = 100;
+    public int normalFleeChance = 50;
+    public int aggressiveFleeChance = 10;
     public boolean enableFriendlyFireProtection = true;
     public boolean enableDogsEatRawGroundFood = true;
     public boolean enableDogsEatCookedGroundFood = true;
@@ -193,6 +196,9 @@ public class BetterDogsConfig {
     public boolean getEnableStormAnxiety() { return enableStormAnxiety; }
     public boolean getEnableCliffSafety() { return enableCliffSafety; }
     public boolean getEnableFleeLowHealth() { return enableFleeLowHealth; }
+    public int getPacifistFleeChance() { return pacifistFleeChance; }
+    public int getNormalFleeChance() { return normalFleeChance; }
+    public int getAggressiveFleeChance() { return aggressiveFleeChance; }
     public boolean getEnableFriendlyFireProtection() { return enableFriendlyFireProtection; }
     public boolean getEnableDogsEatRawGroundFood() { return enableDogsEatRawGroundFood; }
     public boolean getEnableDogsEatCookedGroundFood() { return enableDogsEatCookedGroundFood; }

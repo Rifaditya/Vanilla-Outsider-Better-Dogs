@@ -8,6 +8,8 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.phys.Vec3;
+import net.vanillaoutsider.betterdogs.WolfExtensions;
+import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 
 /**
@@ -38,6 +40,22 @@ public class WolfFleeLowHealthGoal extends Goal {
         // Must be below 30% health
         float lowHealthThreshold = wolf.getMaxHealth() * 0.30f;
         if (wolf.getHealth() >= lowHealthThreshold) {
+            return false;
+        }
+
+        // Check personality probability
+        WolfExtensions ext = (WolfExtensions) wolf;
+        WolfPersonality personality = ext.betterdogs$hasPersonality() 
+                ? ext.betterdogs$getPersonality() 
+                : WolfPersonality.NORMAL;
+
+        int chance = switch (personality) {
+            case PACIFIST -> DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_PACI_FLEE_CHANCE);
+            case NORMAL -> DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_NORMAL_FLEE_CHANCE);
+            case AGGRESSIVE -> DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_AGGRO_FLEE_CHANCE);
+        };
+
+        if (wolf.getRandom().nextInt(100) >= chance) {
             return false;
         }
 

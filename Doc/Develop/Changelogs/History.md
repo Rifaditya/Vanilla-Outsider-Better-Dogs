@@ -1,5 +1,15 @@
 # Better Dogs - Historical Changelog
 
+## [4.1.1+A-26.2] - 2026-05-28
+### Summary
+The **"Personality-Based Flee Probability"** patch.
+- **Personality-Based Fleeing**: Refactored low health fleeing behavior so that a wolf's probability of running away is checked based on its personality.
+  - 🟢 **Pacifist**: 100% chance by default.
+  - ✨ **Normal**: 50% chance by default.
+  - 💢 **Aggressive**: 10% chance by default.
+- **Gamerule & Config Integration**: Exposes the three personality-based flee probability settings via new GameRules (`bd_paci_flee_chance`, `bd_normal_flee_chance`, `bd_aggro_flee_chance`) and corresponding config values.
+- **Strict Versioning**: Bumped the patch version to `4.1.1+A-26.2` and archived previous `4.1.0` jars.
+
 ## [4.1.0+A-26.2] - 2026-05-28
 ### Summary
 The **"Low Health Fleeing & Version Upgrade"** minor release.

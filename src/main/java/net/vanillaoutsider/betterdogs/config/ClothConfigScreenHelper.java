@@ -156,6 +156,12 @@ public class ClothConfigScreenHelper {
                 .setSaveConsumer(val -> config.aggressiveFollowStop = val)
                 .build());
 
+        personalities.addEntry(entryBuilder.startIntField(Component.translatable("config.betterdogs.aggressiveFleeChance"), config.aggressiveFleeChance)
+                .setDefaultValue(10)
+                .setTooltip(warningTooltip)
+                .setSaveConsumer(val -> config.aggressiveFleeChance = val)
+                .build());
+
         // Pacifist
         personalities.addEntry(entryBuilder.startDoubleField(Component.translatable("config.betterdogs.pacifistHealthBonus"), config.pacifistHealthBonus)
                 .setDefaultValue(20.0)
@@ -193,6 +199,12 @@ public class ClothConfigScreenHelper {
                 .setSaveConsumer(val -> config.pacifistFollowStop = val)
                 .build());
 
+        personalities.addEntry(entryBuilder.startIntField(Component.translatable("config.betterdogs.pacifistFleeChance"), config.pacifistFleeChance)
+                .setDefaultValue(100)
+                .setTooltip(warningTooltip)
+                .setSaveConsumer(val -> config.pacifistFleeChance = val)
+                .build());
+
         // Normal
         personalities.addEntry(entryBuilder.startDoubleField(Component.translatable("config.betterdogs.normalHealthBonus"), config.normalHealthBonus)
                 .setDefaultValue(0.0)
@@ -222,6 +234,12 @@ public class ClothConfigScreenHelper {
                 .setDefaultValue(2.0f)
                 .setTooltip(warningTooltip)
                 .setSaveConsumer(val -> config.normalFollowStop = val)
+                .build());
+
+        personalities.addEntry(entryBuilder.startIntField(Component.translatable("config.betterdogs.normalFleeChance"), config.normalFleeChance)
+                .setDefaultValue(50)
+                .setTooltip(warningTooltip)
+                .setSaveConsumer(val -> config.normalFleeChance = val)
                 .build());
 
         // --- BREEDING & GENETICS CATEGORY ---
