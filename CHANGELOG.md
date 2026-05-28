@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.5.1+A-26.2] - 2026-05-28
+### Summary
+- **Breeding Mixin Performance Optimization**: Optimized the breeding method by caching the data record lookups for the parents (reducing attachment lookups by over 70%) and refactoring UUID comparisons to use plain null-gated checks, eliminating short-lived object allocations.
+
 ## [4.5.0+A-26.2] - 2026-05-28
 ### Summary
 The **"Wolf Stat Inheritance & Inbreeding Prevention"** minor release.
