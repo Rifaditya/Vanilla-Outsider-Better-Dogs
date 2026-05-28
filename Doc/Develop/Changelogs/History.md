@@ -1,5 +1,12 @@
 # Better Dogs - Historical Changelog
 
+## [4.1.0+A-26.2] - 2026-05-28
+### Summary
+The **"Low Health Fleeing & Version Upgrade"** minor release.
+- **Low Health Fleeing AI**: Added a new survival AI goal where all wolves (both tamed and wild) attempt to flee when their health falls below 30% of their maximum health.
+- **Hybrid Configuration**: Exposed the fleeing behavior under a new namespaced game rule `bd_flee_low_health` and a config toggle in `BetterDogsConfig` and the ModMenu/Cloth Config screen.
+- **Strict Versioning**: Bumped the minor version to `4.1.0+A-26.2` and archived previous `4.0.1` jars.
+
 ## [4.0.1+A-26.2] - 2026-05-27
 ### Summary
 The **"Storm Anxiety Personality Gating"** patch. Gates the Storm Anxiety behavior based on the wolf's personality.

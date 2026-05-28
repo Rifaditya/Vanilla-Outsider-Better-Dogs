@@ -31,6 +31,7 @@ public class BetterDogsGameRules {
 	// --- General ---
 	public static GameRule<Boolean> BD_STORM_ANXIETY;
 	public static GameRule<Boolean> BD_CLIFF_SAFETY;
+	public static GameRule<Boolean> BD_FLEE_LOW_HEALTH;
 	public static GameRule<Boolean> BD_DOGS_EAT_RAW_FOOD;
 	public static GameRule<Boolean> BD_DOGS_EAT_COOKED_FOOD;
 	public static GameRule<Boolean> BD_DEBUGGING;
@@ -127,6 +128,8 @@ public class BetterDogsGameRules {
 				config.getEnableStormAnxiety());
 		BD_CLIFF_SAFETY = registerBoolean("vanilla-outsider-better-dogs:bd_cliff_safety", BETTER_DOGS,
 				config.getEnableCliffSafety());
+		BD_FLEE_LOW_HEALTH = registerBoolean("vanilla-outsider-better-dogs:bd_flee_low_health", BETTER_DOGS,
+				config.getEnableFleeLowHealth());
 		BD_DOGS_EAT_RAW_FOOD = registerBoolean("vanilla-outsider-better-dogs:bd_dogs_eat_raw_food", BETTER_DOGS,
 				config.getEnableDogsEatRawGroundFood());
 		BD_DOGS_EAT_COOKED_FOOD = registerBoolean("vanilla-outsider-better-dogs:bd_dogs_eat_cooked_food", BETTER_DOGS,

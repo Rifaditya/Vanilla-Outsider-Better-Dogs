@@ -3,6 +3,7 @@
   "globalSpeedBuff": 0.2,
   "enableStormAnxiety": true,
   "enableCliffSafety": true,
+  "enableFleeLowHealth": true,
   "enableFriendlyFireProtection": true,
   "enableDogsEatRawGroundFood": true,
   "enableDogsEatCookedGroundFood": true,

@@ -50,6 +50,12 @@ public class ClothConfigScreenHelper {
                 .setSaveConsumer(val -> config.enableCliffSafety = val)
                 .build());
 
+        general.addEntry(entryBuilder.startBooleanToggle(Component.translatable("config.betterdogs.enableFleeLowHealth"), config.enableFleeLowHealth)
+                .setDefaultValue(true)
+                .setTooltip(warningTooltip)
+                .setSaveConsumer(val -> config.enableFleeLowHealth = val)
+                .build());
+
         general.addEntry(entryBuilder.startBooleanToggle(Component.translatable("config.betterdogs.enableFriendlyFireProtection"), config.enableFriendlyFireProtection)
                 .setDefaultValue(true)
                 .setTooltip(warningTooltip)
