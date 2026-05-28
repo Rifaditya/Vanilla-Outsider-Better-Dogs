@@ -1,12 +1,13 @@
 # Better Dogs - Historical Changelog
 
-## [4.3.1+A-26.2] - 2026-05-28
+## [4.3.1+R-26.2] - 2026-05-28
 ### Summary
-The **"Personality-Based Range Stats"** alpha release.
+The production **Release** version of the **"Personality-Based Range Stats"** features.
 - **Range-Based Stats**: Wolf stats (Max Health, Attack Damage, and Movement Speed) are now determined by rolling within personality-defined ranges using a symmetric triangular distribution.
   - Worst-case rolls are significantly lowered to allow for weak or "handicapped" wolves.
 - **UUID Seeding**: Seeding utilizes the wolf's unique UUID, ensuring that rolled stats are deterministic, persistent, and do not change across reloads.
 - **Backward Compatibility**: Existing tamed wolves automatically roll their stats once upon load if they have not been rolled yet.
+- **Stable Release**: Promoted the personality range stats rolling and deterministic UUID seeding to a stable production Release.
 
 ## [4.3.0+R-26.2] - 2026-05-28
 ### Summary
