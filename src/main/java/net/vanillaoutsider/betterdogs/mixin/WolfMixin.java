@@ -176,9 +176,16 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         WolfStatManager.applyPersonalityStats((Wolf) (Object) this, personality);
     }
 
+    @Inject(method = "applyTamingSideEffects", at = @At("TAIL"))
+    private void betterdogs$onApplyTamingSideEffectsTail(CallbackInfo ci) {
+        if (this.isTame() && !this.level().isClientSide()) {
+            this.setHealth(this.getMaxHealth());
+        }
+    }
+
     @Inject(method = "tick", at = @At("TAIL"))
     private void betterdogs$tickHandler(CallbackInfo ci) {
-        if (!betterdogs$statsApplied && this.isTame() && betterdogs$hasPersonality()) {
+        if (!betterdogs$statsApplied && betterdogs$hasPersonality()) {
             betterdogs$applyPersonalityStats(betterdogs$getPersonality());
             betterdogs$statsApplied = true;
         }

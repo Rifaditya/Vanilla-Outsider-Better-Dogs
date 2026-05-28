@@ -226,10 +226,8 @@ public abstract class WolfInteractMixin extends TamableAnimal {
                             WolfPersonality current = ext.betterdogs$getPersonality();
                             WolfPersonality next = current.next();
                             ext.betterdogs$setPersonality(next);
-                            // Force re-apply stats if tamed
-                            if (wolf.isTame()) {
-                                WolfStatManager.applyPersonalityStats(wolf, next);
-                            }
+                            // Force re-apply stats
+                            WolfStatManager.applyPersonalityStats(wolf, next);
                             player.sendOverlayMessage(Component.literal("§b[Debug] §fPersonality: " + next.name()));
                             WolfDebugLogger.log(wolf, "DebugStick", "Personality changed to " + next.name());
                         }

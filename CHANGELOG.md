@@ -1,8 +1,13 @@
 # Changelog
 
+## [4.5.3+A-26.2] - 2026-05-28
+### Summary
+- **Standard Alignment**: Wild wolves now roll and apply their personality-based stats (Max Health, Attack Damage, Movement Speed, and calculated Scale) immediately when they spawn, eliminating visual scale jumps and sudden attribute shifts during taming. Tamed wolves are now also correctly full-healed upon taming.
+
 ## [4.5.2+A-26.2] - 2026-05-28
 ### Summary
 - **Standard Alignment**: Rebranded "Taming Chance" gamerules, config settings, and translations to "Spawn Chance" to better match the mechanic where wolves roll their personality when they spawn as wild wolves, not when they are tamed.
+
 
 ## [4.5.1+A-26.2] - 2026-05-28
 ### Summary

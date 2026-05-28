@@ -15,6 +15,7 @@ import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.vanillaoutsider.betterdogs.util.WolfDebugLogger;
+import net.vanillaoutsider.betterdogs.util.WolfStatManager;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -45,8 +46,9 @@ public abstract class WolfSpawnMixin extends TamableAnimal {
 
                 long dna = this.getRandom().nextLong();
                 ext.betterdogs$setDNA(dna);
-                float scale = 0.9f + (this.getRandom().nextFloat() * 0.2f); // 0.9x to 1.1x
-                ext.betterdogs$setSocialScale(scale);
+
+                // Apply personality stats and scale immediately at spawn
+                WolfStatManager.applyPersonalityStats(wolf, personality);
 
                 net.dasik.social.core.SocialRegistry.register((net.dasik.social.api.SocialEntity) wolf);
                 WolfDebugLogger.log(wolf, "Spawn", "Initialized with personality: " + personality.name());
