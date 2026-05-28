@@ -55,6 +55,83 @@ public abstract class WolfBreedingMixin {
         // Calculate baby personality based on genetics
         WolfPersonality babyPersonality = betterdogs$calculateOffspringPersonality(level, p1, p2);
         babyExt.betterdogs$setPersonality(babyPersonality);
+
+        // Ensure both parents have their stats rolled/applied so they have valid values
+        if (!net.vanillaoutsider.betterdogs.WolfPersistentData.arePersistedStatsRolled(parent1)) {
+            net.vanillaoutsider.betterdogs.util.WolfStatManager.applyPersonalityStats(parent1, p1);
+        }
+        if (!net.vanillaoutsider.betterdogs.WolfPersistentData.arePersistedStatsRolled(parent2)) {
+            net.vanillaoutsider.betterdogs.util.WolfStatManager.applyPersonalityStats(parent2, p2);
+        }
+
+        // Get parent stat bonuses
+        float parent1Hp = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedHealthBonus(parent1);
+        float parent2Hp = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedHealthBonus(parent2);
+        float parent1Dmg = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedDamageMod(parent1);
+        float parent2Dmg = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedDamageMod(parent2);
+        float parent1Speed = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedSpeedMod(parent1);
+        float parent2Speed = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedSpeedMod(parent2);
+
+        // Roll mutation values using the standard triangular range stats for the baby's personality
+        net.minecraft.util.RandomSource rand = level.getRandom();
+        float mutationHp = 0.0f;
+        float mutationDmg = 0.0f;
+        float mutationSpeed = 0.0f;
+
+        switch (babyPersonality) {
+            case NORMAL -> {
+                mutationHp = rand.triangle(-2.0f, 10.0f);
+                mutationDmg = rand.triangle(-0.05f, 0.25f);
+                mutationSpeed = rand.triangle(-0.025f, 0.175f);
+            }
+            case AGGRESSIVE -> {
+                mutationHp = rand.triangle(-5.0f, 11.0f);
+                mutationDmg = rand.triangle(0.15f, 0.25f);
+                mutationSpeed = rand.triangle(0.075f, 0.175f);
+            }
+            case PACIFIST -> {
+                mutationHp = rand.triangle(11.0f, 15.0f);
+                mutationDmg = rand.triangle(-0.20f, 0.30f);
+                mutationSpeed = rand.triangle(-0.15f, 0.20f);
+            }
+        }
+
+        // Check if breeding is inbred (parent-offspring or siblings sharing at least one parent)
+        boolean inbred = betterdogs$checkInbreeding(parent1, parent2);
+
+        // Apply inheritance formula: Average of parents + mutation
+        float avgHp = (parent1Hp + parent2Hp + mutationHp) / 3.0f;
+        float avgDmg = (parent1Dmg + parent2Dmg + mutationDmg) / 3.0f;
+        float avgSpeed = (parent1Speed + parent2Speed + mutationSpeed) / 3.0f;
+
+        float finalHp;
+        float finalDmg;
+        float finalSpeed;
+
+        if (inbred) {
+            // Apply severe genetic penalties: 0.6x multiplier + flat penalties
+            finalHp = avgHp * 0.6f - 6.0f;
+            finalDmg = avgDmg * 0.6f - 0.20f;
+            finalSpeed = avgSpeed * 0.6f - 0.15f;
+        } else {
+            finalHp = avgHp;
+            finalDmg = avgDmg;
+            finalSpeed = avgSpeed;
+        }
+
+        // Clamp final modifiers to protect against excessive penalties and ensure stability
+        finalHp = Math.max(finalHp, -30.0f);
+        finalDmg = Math.max(finalDmg, -0.8f);
+        finalSpeed = Math.max(finalSpeed, -0.6f);
+
+        // Write stats to offspring
+        babyExt.betterdogs$setHealthBonus(finalHp);
+        babyExt.betterdogs$setDamageMod(finalDmg);
+        babyExt.betterdogs$setSpeedMod(finalSpeed);
+        babyExt.betterdogs$setStatsRolled(true);
+
+        // Persist kinship data (parents UUIDs and inbred flag)
+        net.vanillaoutsider.betterdogs.WolfPersistentData.setPersistedParentsAndInbred(baby, parent1.getUUID(), parent2.getUUID(), inbred);
     }
 
     /**
@@ -136,5 +213,41 @@ public abstract class WolfBreedingMixin {
                 return p;
         }
         return WolfPersonality.NORMAL;
+    }
+
+    @Unique
+    private boolean betterdogs$checkInbreeding(Wolf parent1, Wolf parent2) {
+        java.util.UUID u1 = parent1.getUUID();
+        java.util.UUID u2 = parent2.getUUID();
+
+        java.util.Optional<java.util.UUID> p1_1 = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedParent1Uuid(parent1);
+        java.util.Optional<java.util.UUID> p1_2 = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedParent2Uuid(parent1);
+
+        java.util.Optional<java.util.UUID> p2_1 = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedParent1Uuid(parent2);
+        java.util.Optional<java.util.UUID> p2_2 = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedParent2Uuid(parent2);
+
+        // Parent-offspring check
+        if (p2_1.filter(uuid -> uuid.equals(u1)).isPresent() || p2_2.filter(uuid -> uuid.equals(u1)).isPresent()) {
+            return true;
+        }
+        if (p1_1.filter(uuid -> uuid.equals(u2)).isPresent() || p1_2.filter(uuid -> uuid.equals(u2)).isPresent()) {
+            return true;
+        }
+
+        // Sibling check (sharing at least one parent)
+        if (p1_1.isPresent()) {
+            java.util.UUID p = p1_1.get();
+            if ((p2_1.isPresent() && p2_1.get().equals(p)) || (p2_2.isPresent() && p2_2.get().equals(p))) {
+                return true;
+            }
+        }
+        if (p1_2.isPresent()) {
+            java.util.UUID p = p1_2.get();
+            if ((p2_1.isPresent() && p2_1.get().equals(p)) || (p2_2.isPresent() && p2_2.get().equals(p))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

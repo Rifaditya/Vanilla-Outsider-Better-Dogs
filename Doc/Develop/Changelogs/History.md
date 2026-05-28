@@ -1,5 +1,12 @@
 # Better Dogs - Historical Changelog
 
+## [4.5.0+A-26.2] - 2026-05-28
+### Summary
+The **"Wolf Stat Inheritance & Inbreeding Prevention"** minor release.
+- **Genetic Stat Inheritance**: Bred tamed wolves now inherit their Max Health, Attack Damage, and Movement Speed based on their parents' genes (calculated as the average of the parents' stats plus a minor triangular mutation roll).
+- **Inbreeding Prevention & Penalties**: Breeding related wolves (siblings or parent-child pairings) triggers a severe genetic penalty, rendering the baby wolf tiny (runt scale), weak, slow, and fragile.
+- **Kinship NBT Tracking**: Added tracking for `parent1Uuid` and `parent2Uuid` and an `inbred` status flag.
+
 ## [4.4.0+R-26.2] - 2026-05-28
 ### Summary
 The production **Release** version of the **"Health-Based Dog Scaling"** features.
