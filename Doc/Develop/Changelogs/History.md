@@ -1,5 +1,9 @@
 # Better Dogs - Historical Changelog
 
+## [4.5.4+A-26.2] - 2026-05-28
+### Summary
+- **Standard Alignment**: Expanded GameRule screen tooltips with detailed explanations of behavior and default values for all configuration parameters, complying with localization guidelines.
+
 ## [4.5.3+A-26.2] - 2026-05-28
 ### Summary
 - **Standard Alignment**: Wild wolves now roll and apply their personality-based stats (Max Health, Attack Damage, Movement Speed, and calculated Scale) immediately when they spawn, eliminating visual scale jumps and sudden attribute shifts during taming. Tamed wolves are now also correctly full-healed upon taming.
