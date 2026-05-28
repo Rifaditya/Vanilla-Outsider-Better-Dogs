@@ -1,32 +1,44 @@
-// Verified against: WolfStatManager.java (26.1.2+)
+// Verified against: WolfStatManager.java (26.2+)
 package net.vanillaoutsider.betterdogs.util;
 
+import java.util.UUID;
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
+import net.vanillaoutsider.betterdogs.WolfPersistentData;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 
 public class WolfStatManager {
 
+    private static final String BASE_SPEED_ID = "betterdogs:base_speed_boost";
+    private static final String PACIFIST_KNOCKBACK_ID = "betterdogs:pacifist_knockback";
+    
+    // Legacy Modifier IDs for cleanup
     private static final String AGGRESSIVE_SPEED_ID = "betterdogs:aggressive_speed";
     private static final String AGGRESSIVE_DAMAGE_ID = "betterdogs:aggressive_damage";
     private static final String PACIFIST_SPEED_ID = "betterdogs:pacifist_speed";
     private static final String PACIFIST_DAMAGE_ID = "betterdogs:pacifist_damage";
-    private static final String PACIFIST_KNOCKBACK_ID = "betterdogs:pacifist_knockback";
-    private static final String BASE_SPEED_ID = "betterdogs:base_speed_boost";
     private static final String AGGRESSIVE_HEALTH_ID = "betterdogs:aggressive_health";
     private static final String NORMAL_SPEED_ID = "betterdogs:normal_speed";
     private static final String NORMAL_DAMAGE_ID = "betterdogs:normal_damage";
     private static final String NORMAL_HEALTH_ID = "betterdogs:normal_health";
+    private static final String PACIFIST_HEALTH_ID = "betterdogs:pacifist_health";
+
+    // New Rolled Modifier IDs
+    private static final String ROLLED_HEALTH_ID = "betterdogs:rolled_health";
+    private static final String ROLLED_DAMAGE_ID = "betterdogs:rolled_damage";
+    private static final String ROLLED_SPEED_ID = "betterdogs:rolled_speed";
 
     public static void applyPersonalityStats(Wolf wolf, WolfPersonality personality) {
         var speedAttr = wolf.getAttribute(Attributes.MOVEMENT_SPEED);
         var damageAttr = wolf.getAttribute(Attributes.ATTACK_DAMAGE);
         var knockbackAttr = wolf.getAttribute(Attributes.ATTACK_KNOCKBACK);
+        var healthAttr = wolf.getAttribute(Attributes.MAX_HEALTH);
 
         if (speedAttr == null || damageAttr == null)
             return;
@@ -37,115 +49,122 @@ public class WolfStatManager {
         Identifier pacifistDamageId = Identifier.parse(PACIFIST_DAMAGE_ID);
         Identifier pacifistKnockbackId = Identifier.parse(PACIFIST_KNOCKBACK_ID);
         Identifier baseSpeedId = Identifier.parse(BASE_SPEED_ID);
+        Identifier aggressiveHealthId = Identifier.parse(AGGRESSIVE_HEALTH_ID);
+        Identifier normalSpeedId = Identifier.parse(NORMAL_SPEED_ID);
+        Identifier normalDamageId = Identifier.parse(NORMAL_DAMAGE_ID);
+        Identifier normalHealthId = Identifier.parse(NORMAL_HEALTH_ID);
+        Identifier pacifistHealthId = Identifier.parse(PACIFIST_HEALTH_ID);
 
-        // Remove existing modifiers
+        Identifier rolledHealthId = Identifier.parse(ROLLED_HEALTH_ID);
+        Identifier rolledDamageId = Identifier.parse(ROLLED_DAMAGE_ID);
+        Identifier rolledSpeedId = Identifier.parse(ROLLED_SPEED_ID);
+
+        // Remove ALL legacy modifiers to prevent conflict/stacking
         speedAttr.removeModifier(aggressiveSpeedId);
         speedAttr.removeModifier(pacifistSpeedId);
+        speedAttr.removeModifier(normalSpeedId);
         speedAttr.removeModifier(baseSpeedId);
+
         damageAttr.removeModifier(aggressiveDamageId);
         damageAttr.removeModifier(pacifistDamageId);
+        damageAttr.removeModifier(normalDamageId);
 
-        // Apply Base Speed Boost (Configurable) to all Better Dogs
-        // Note: Global Speed Buff remains a Config setting (client/server sync issue potential, but keeping as planned)
-        // Wait, plan said migrate everything. Let's see. 
-        // Plan Table Pass 3 didn't list strict Global Speed migration. 
-        // Let's assume Config for Global for now to be safe, or migrate. 
-        // The user said "global setting... world gamerule as per world".
-        // Global Speed Buff sounds like a global setting. Leaving it as Config.
-        double speedBuff = BetterDogsConfig.get().getGlobalSpeedBuff();
-        speedAttr.addPermanentModifier(new AttributeModifier(baseSpeedId, speedBuff,
-                AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         if (knockbackAttr != null) {
             knockbackAttr.removeModifier(pacifistKnockbackId);
         }
 
-        switch (personality) {
-            case AGGRESSIVE -> {
-                double speedMod = DynamicGameRuleManager.getPct(wolf.level(), BetterDogsGameRules.BD_AGGRO_SPEED_PCT);
-                double damageMod = DynamicGameRuleManager.getPct(wolf.level(), BetterDogsGameRules.BD_AGGRO_DMG_PCT);
+        if (healthAttr != null) {
+            healthAttr.removeModifier(aggressiveHealthId);
+            healthAttr.removeModifier(normalHealthId);
+            healthAttr.removeModifier(pacifistHealthId);
+            healthAttr.removeModifier(rolledHealthId);
+        }
 
-                speedAttr.addPermanentModifier(new AttributeModifier(aggressiveSpeedId, speedMod,
-                        AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-                damageAttr.addPermanentModifier(new AttributeModifier(aggressiveDamageId, damageMod,
-                        AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+        // Remove new modifiers before re-applying to prevent stacking
+        speedAttr.removeModifier(rolledSpeedId);
+        damageAttr.removeModifier(rolledDamageId);
 
-                var healthAttr = wolf.getAttribute(Attributes.MAX_HEALTH);
-                if (healthAttr != null) {
-                    Identifier aggressiveHealthId = Identifier.parse(AGGRESSIVE_HEALTH_ID);
-                    healthAttr.removeModifier(aggressiveHealthId);
+        // Apply Base Speed Boost (Configurable) to all Better Dogs
+        double speedBuff = BetterDogsConfig.get().getGlobalSpeedBuff();
+        speedAttr.addPermanentModifier(new AttributeModifier(baseSpeedId, speedBuff,
+                AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
 
-                    double hpBonus = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_AGGRO_HEALTH);
-                    // Handle negative bonus explicitly if needed, but health logic usually handles add_value fine.
-                    // Config was -10.0. Game Rule will be -10.
-                    
-                    if (hpBonus != 0) { // Allow negative HP bonus
-                        healthAttr.addPermanentModifier(new AttributeModifier(aggressiveHealthId, hpBonus,
-                                AttributeModifier.Operation.ADD_VALUE));
-                         // If reducing health, we might need to clamp current health
-                        if (wolf.getHealth() > wolf.getMaxHealth()) {
-                            wolf.setHealth(wolf.getMaxHealth());
-                        }
+        // 1. Check/Roll stats
+        if (!WolfPersistentData.arePersistedStatsRolled(wolf)) {
+            UUID uuid = wolf.getUUID();
+            long seed = uuid.getMostSignificantBits() ^ uuid.getLeastSignificantBits();
+            RandomSource rand = RandomSource.create(seed);
+
+            float rolledHp = 0.0f;
+            float rolledDmg = 0.0f;
+            float rolledSpeed = 0.0f;
+
+            switch (personality) {
+                case NORMAL -> {
+                    rolledHp = rand.triangle(-2.0f, 10.0f);
+                    rolledDmg = rand.triangle(-0.05f, 0.25f);
+                    rolledSpeed = rand.triangle(-0.025f, 0.175f);
+                }
+                case AGGRESSIVE -> {
+                    rolledHp = rand.triangle(-5.0f, 11.0f);
+                    rolledDmg = rand.triangle(0.15f, 0.25f);
+                    rolledSpeed = rand.triangle(0.075f, 0.175f);
+                }
+                case PACIFIST -> {
+                    rolledHp = rand.triangle(11.0f, 15.0f);
+                    rolledDmg = rand.triangle(-0.20f, 0.30f);
+                    rolledSpeed = rand.triangle(-0.15f, 0.20f);
+                }
+            }
+
+            // Save rolled stats to persistent data
+            WolfPersistentData.setPersistedHealthBonus(wolf, rolledHp);
+            WolfPersistentData.setPersistedDamageMod(wolf, rolledDmg);
+            WolfPersistentData.setPersistedSpeedMod(wolf, rolledSpeed);
+            WolfPersistentData.setPersistedStatsRolled(wolf, true);
+        }
+
+        // 2. Retrieve rolled stats
+        float healthBonus = WolfPersistentData.getPersistedHealthBonus(wolf);
+        float damageMod = WolfPersistentData.getPersistedDamageMod(wolf);
+        float speedMod = WolfPersistentData.getPersistedSpeedMod(wolf);
+
+        // 3. Apply Attack Damage Modifier
+        damageAttr.addPermanentModifier(new AttributeModifier(rolledDamageId, damageMod,
+                AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+
+        // 4. Apply Movement Speed Modifier
+        speedAttr.addPermanentModifier(new AttributeModifier(rolledSpeedId, speedMod,
+                AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+
+        // 5. Apply Max Health Modifier
+        if (healthAttr != null) {
+            float prevMaxHealth = wolf.getMaxHealth();
+            float prevHealth = wolf.getHealth();
+            boolean wasAtFullHealth = prevHealth >= prevMaxHealth;
+
+            if (healthBonus != 0.0f) {
+                healthAttr.addPermanentModifier(new AttributeModifier(rolledHealthId, healthBonus,
+                        AttributeModifier.Operation.ADD_VALUE));
+
+                float newMaxHealth = wolf.getMaxHealth();
+                if (healthBonus < 0.0f) {
+                    if (wolf.getHealth() > newMaxHealth) {
+                        wolf.setHealth(newMaxHealth);
+                    }
+                } else {
+                    if (wasAtFullHealth && wolf.getHealth() < newMaxHealth) {
+                        wolf.heal(newMaxHealth - prevMaxHealth);
                     }
                 }
             }
-            case PACIFIST -> {
-                double speedMod = DynamicGameRuleManager.getPct(wolf.level(), BetterDogsGameRules.BD_PACI_SPEED_PCT);
-                double damageMod = DynamicGameRuleManager.getPct(wolf.level(), BetterDogsGameRules.BD_PACI_DMG_PCT);
-                double kbMod = DynamicGameRuleManager.getPct(wolf.level(), BetterDogsGameRules.BD_PACI_KNOCKBACK_PCT);
+        }
 
-                speedAttr.addPermanentModifier(new AttributeModifier(pacifistSpeedId, speedMod,
-                        AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-                damageAttr.addPermanentModifier(new AttributeModifier(pacifistDamageId, damageMod,
-                        AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-                if (knockbackAttr != null) {
-                    knockbackAttr.addPermanentModifier(new AttributeModifier(pacifistKnockbackId, kbMod,
-                            AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-                }
-
-                var healthAttr = wolf.getAttribute(Attributes.MAX_HEALTH);
-                if (healthAttr != null) {
-                    Identifier pacifistHealthId = Identifier.parse("betterdogs:pacifist_health");
-                    healthAttr.removeModifier(pacifistHealthId);
-
-                    double hpBonus = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_PACI_HEALTH);
-                    if (hpBonus != 0) {
-                        healthAttr.addPermanentModifier(new AttributeModifier(pacifistHealthId, hpBonus,
-                                AttributeModifier.Operation.ADD_VALUE));
-                        if (hpBonus > 0 && wolf.getHealth() < wolf.getMaxHealth()) {
-                            wolf.heal((float) hpBonus);
-                        }
-                    }
-                }
-            }
-            case NORMAL -> {
-                double speedMod = DynamicGameRuleManager.getPct(wolf.level(), BetterDogsGameRules.BD_NORMAL_SPEED_PCT);
-                double damageMod = DynamicGameRuleManager.getPct(wolf.level(), BetterDogsGameRules.BD_NORMAL_DMG_PCT);
-                double healthMod = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_NORMAL_HEALTH);
-
-                Identifier normalSpeedId = Identifier.parse(NORMAL_SPEED_ID);
-                Identifier normalDamageId = Identifier.parse(NORMAL_DAMAGE_ID);
-                Identifier normalHealthId = Identifier.parse(NORMAL_HEALTH_ID);
-
-                if (speedMod != 0.0) {
-                    speedAttr.addPermanentModifier(new AttributeModifier(normalSpeedId, speedMod,
-                            AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-                }
-                if (damageMod != 0.0) {
-                    damageAttr.addPermanentModifier(new AttributeModifier(normalDamageId, damageMod,
-                            AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-                }
-
-                var healthAttr = wolf.getAttribute(Attributes.MAX_HEALTH);
-                if (healthAttr != null) {
-                    if (healthMod > 0) {
-                         healthAttr.addPermanentModifier(new AttributeModifier(normalHealthId, healthMod,
-                                AttributeModifier.Operation.ADD_VALUE));
-                        if (wolf.getHealth() < wolf.getMaxHealth()) {
-                            wolf.heal((float) healthMod);
-                        }
-                    }
-                }
-            }
+        // 6. Apply Pacifist Knockback Modifier (Static GameRule value)
+        if (personality == WolfPersonality.PACIFIST && knockbackAttr != null) {
+            double kbMod = DynamicGameRuleManager.getPct(wolf.level(), BetterDogsGameRules.BD_PACI_KNOCKBACK_PCT);
+            knockbackAttr.addPermanentModifier(new AttributeModifier(pacifistKnockbackId, kbMod,
+                    AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
         }
     }
 }

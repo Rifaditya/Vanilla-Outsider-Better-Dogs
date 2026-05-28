@@ -114,6 +114,48 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         WolfPersistentData.setPersistedAdoptable((Wolf) (Object) this, adoptable);
     }
 
+    // ========== Range Stats (v4.3.1) ==========
+
+    @Override
+    public float betterdogs$getHealthBonus() {
+        return WolfPersistentData.getPersistedHealthBonus((Wolf) (Object) this);
+    }
+
+    @Override
+    public void betterdogs$setHealthBonus(float hp) {
+        WolfPersistentData.setPersistedHealthBonus((Wolf) (Object) this, hp);
+    }
+
+    @Override
+    public float betterdogs$getDamageMod() {
+        return WolfPersistentData.getPersistedDamageMod((Wolf) (Object) this);
+    }
+
+    @Override
+    public void betterdogs$setDamageMod(float dmg) {
+        WolfPersistentData.setPersistedDamageMod((Wolf) (Object) this, dmg);
+    }
+
+    @Override
+    public float betterdogs$getSpeedMod() {
+        return WolfPersistentData.getPersistedSpeedMod((Wolf) (Object) this);
+    }
+
+    @Override
+    public void betterdogs$setSpeedMod(float speed) {
+        WolfPersistentData.setPersistedSpeedMod((Wolf) (Object) this, speed);
+    }
+
+    @Override
+    public boolean betterdogs$areStatsRolled() {
+        return WolfPersistentData.arePersistedStatsRolled((Wolf) (Object) this);
+    }
+
+    @Override
+    public void betterdogs$setStatsRolled(boolean rolled) {
+        WolfPersistentData.setPersistedStatsRolled((Wolf) (Object) this, rolled);
+    }
+
     // ========== Dunce Cap (Transient Disciplinary State) ==========
 
     @Unique
