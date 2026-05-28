@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.2.1+A-26.2] - 2026-05-28
+### Summary
+The **"Named Guard Mode Overlay"** patch.
+- **Named Guard Mode overlay**: Modified the Guard Mode activation and deactivation messages to include the name of the wolf (e.g., "Guard Mode Activated for Buddy at X, Y, Z").
+- **Strict Versioning**: Bumped the patch version to `4.2.1+A-26.2` and archived previous `4.2.0` jars.
+
 ## [4.2.0+A-26.2] - 2026-05-28
 ### Summary
 The **"Calm Down Interaction"** minor release.

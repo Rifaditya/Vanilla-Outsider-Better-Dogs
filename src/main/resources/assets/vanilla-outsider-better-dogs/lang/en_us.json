@@ -203,8 +203,8 @@
     "config.betterdogs.pacifistGiftFlower": "Pacifist Gift: Flower (%)",
     "config.betterdogs.pacifistGiftMushroom": "Pacifist Gift: Mushroom (%)",
     
-    "text.betterdogs.guard_activated": "Guard Mode Activated at %d, %d, %d",
-    "text.betterdogs.guard_deactivated": "Guard Mode Deactivated. Following owner.",
+    "text.betterdogs.guard_activated": "Guard Mode Activated for %s at %d, %d, %d",
+    "text.betterdogs.guard_deactivated": "Guard Mode Deactivated for %s. Following owner.",
     "gamerule.vanilla-outsider-better-dogs.bd_pacifist_guard_buffs": "Pacifist Guard Buffs",
     "gamerule.vanilla-outsider-better-dogs.bd_pacifist_guard_buffs.description": "If true, Pacifist dogs guarding an area apply Regeneration and Resistance to nearby owners.",
     "gamerule.vanilla-outsider-better-dogs.bd_guard_patrol_range_aggressive": "Aggressive Guard Patrol Range",

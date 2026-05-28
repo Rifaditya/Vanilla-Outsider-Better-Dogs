@@ -79,7 +79,7 @@ public abstract class WolfInteractMixin extends TamableAnimal {
                     if (newGuard) {
                         ext.betterdogs$setGuardPos(wolf.blockPosition());
                         BlockPos pos = wolf.blockPosition();
-                        player.sendOverlayMessage(Component.translatable("text.betterdogs.guard_activated", pos.getX(), pos.getY(), pos.getZ()));
+                        player.sendOverlayMessage(Component.translatable("text.betterdogs.guard_activated", wolf.getName(), pos.getX(), pos.getY(), pos.getZ()));
                         
                         WolfPersonality personality = ext.betterdogs$getPersonality();
                         float pitch = switch (personality) {
@@ -94,7 +94,7 @@ public abstract class WolfInteractMixin extends TamableAnimal {
                     } else {
                         ext.betterdogs$setGuardPos(null);
                         ext.betterdogs$setSittingManually(false);
-                        player.sendOverlayMessage(Component.translatable("text.betterdogs.guard_deactivated"));
+                        player.sendOverlayMessage(Component.translatable("text.betterdogs.guard_deactivated", wolf.getName()));
                         wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), ((WolfAccessor) this).betterdogs$invokeGetSoundSet().ambientSound().value(), wolf.getSoundSource(), 1.0f, 1.0f);
                     }
                     itemStack.consume(1, player);
