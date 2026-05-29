@@ -1,5 +1,9 @@
 # Better Dogs - Historical Changelog
 
+## [4.5.10+A-26.2] - 2026-05-29
+### Summary
+- **Standard Alignment**: Optimized the performance of tamed wolves by throttling the active follower spacing search in `PersonalityFollowOwnerGoal`. Instead of scanning a 32-block bounding box for all other tamed followers on every tick when the goal is inactive/active, the query runs once every 20-40 ticks (1-2 seconds) using a staggered, entity-randomized throttle timer. This prevents severe server TPS degradation when players have large packs of wolves.
+
 ## [4.5.9+A-26.2] - 2026-05-29
 ### Summary
 - **Standard Alignment**: Optimized the performance of wild wolf pack leader interactions by throttling the 96-block rival pack search in `WildWolfTerritorialGoal`. Instead of scanning for rival leaders every tick when none are nearby, the search is restricted to run once every 40-80 ticks (2-4 seconds), protecting server TPS when multiple packs are loaded.

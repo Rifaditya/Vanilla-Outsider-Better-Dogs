@@ -18,15 +18,20 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
     private int simDistRefreshTimer = 0;
     private int cachedSimDist = 10;
     private float betterdogs$followerSpacingOffset = 0.0f;
+    private int spacingThrottleTimer = 0;
 
     public PersonalityFollowOwnerGoal(Wolf wolf, double speedModifier, boolean leavesAllowed) {
         super(wolf, speedModifier, 10.0f, 2.0f);
         this.wolf = wolf;
         this.speedModifier = speedModifier;
         this.recalcTimer = 0;
+        this.spacingThrottleTimer = wolf.getRandom().nextInt(20);
     }
 
     private void betterdogs$updateFollowerSpacingOffset() {
+        if (this.spacingThrottleTimer > 0) {
+            return;
+        }
         LivingEntity owner = wolf.getOwner();
         if (owner == null || wolf.level() == null) {
             betterdogs$followerSpacingOffset = 0.0f;
@@ -38,11 +43,13 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
         int N = activeFollowers.size();
         if (N <= 1) {
             betterdogs$followerSpacingOffset = 0.0f;
+            this.spacingThrottleTimer = 20 + wolf.getRandom().nextInt(21);
             return;
         }
         float multiplier = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_TAMED_PACK_SPREAD_MULTIPLIER) / 100.0f;
         float maxExtra = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_TAMED_PACK_SPREAD_MAX) / 10.0f;
         betterdogs$followerSpacingOffset = Math.min((float) Math.sqrt(N - 1) * multiplier, maxExtra);
+        this.spacingThrottleTimer = 20 + wolf.getRandom().nextInt(21);
     }
 
     private float getStartDistance() {
@@ -99,6 +106,9 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
 
     @Override
     public boolean canUse() {
+        if (this.spacingThrottleTimer > 0) {
+            this.spacingThrottleTimer--;
+        }
         if (wolf instanceof WolfExtensions ext && ext.betterdogs$isGuardMode()) {
             return false;
         }
@@ -150,6 +160,9 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
 
     @Override
     public void tick() {
+        if (this.spacingThrottleTimer > 0) {
+            this.spacingThrottleTimer--;
+        }
         LivingEntity owner = wolf.getOwner();
         if (owner == null)
             return;
