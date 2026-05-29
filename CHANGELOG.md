@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.5.9+A-26.2] - 2026-05-29
+### Summary
+- **Standard Alignment**: Optimized the performance of wild wolf pack leader interactions by throttling the 96-block rival pack search in `WildWolfTerritorialGoal`. Instead of scanning for rival leaders every tick when none are nearby, the search is restricted to run once every 40-80 ticks (2-4 seconds), protecting server TPS when multiple packs are loaded.
+
 ## [4.5.8+A-26.2] - 2026-05-29
 ### Summary
 - **Standard Alignment**: Limited the range and line-of-sight conditions for guarding wolves. Normal/Aggressive guarding wolves now strictly require line-of-sight to target hostile mobs, preventing them from targeting cave monsters. Pacifist sentinels use a hybrid model: detecting mobs up to 16 blocks vertically with line-of-sight, but only up to 4 blocks vertically without line-of-sight (hearing through solid walls). Also adjusted pacing look targets to eye level (+1.0 block).

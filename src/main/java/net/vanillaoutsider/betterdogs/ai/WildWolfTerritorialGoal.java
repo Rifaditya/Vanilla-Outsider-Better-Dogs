@@ -29,6 +29,7 @@ public class WildWolfTerritorialGoal extends Goal {
     private Behavior behavior = Behavior.STARE;
     private int behaviorTicks = 0;
     private boolean isFatal = false;
+    private int queryThrottleTimer = 0;
 
     private enum Behavior {
         STARE,
@@ -75,6 +76,14 @@ public class WildWolfTerritorialGoal extends Goal {
             this.cooldown--;
             return false;
         }
+        if (this.queryThrottleTimer > 0) {
+            this.queryThrottleTimer--;
+            return false;
+        }
+
+        // Reset query throttling timer for the next check (2-4 seconds / 40-80 ticks)
+        this.queryThrottleTimer = 40 + this.wolf.getRandom().nextInt(41);
+
         if (this.wolf.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
             this.searchRadius = DynamicGameRuleManager.getInt(serverLevel, BetterDogsGameRules.BD_TERRITORIAL_SEARCH_RADIUS);
             this.rival = serverLevel.getNearestEntity(Wolf.class, this.targeting.range(this.searchRadius), this.wolf, this.wolf.getX(), this.wolf.getY(), this.wolf.getZ(), this.wolf.getBoundingBox().inflate(this.searchRadius));
