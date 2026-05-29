@@ -110,8 +110,9 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
     }
 
     private float getStartDistance() {
-        if (!wolf.isTame())
+        if (!wolf.isTame()) {
             return 10.0f;
+        }
         float dist = 10.0f;
         if (wolf instanceof WolfExtensions ext) {
             BetterDogsConfig config = BetterDogsConfig.get();
@@ -145,8 +146,9 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
     }
 
     private float getStopDistance() {
-        if (!wolf.isTame())
+        if (!wolf.isTame()) {
             return 2.0f;
+        }
         float dist = 2.0f;
         if (wolf instanceof WolfExtensions ext) {
             BetterDogsConfig config = BetterDogsConfig.get();
@@ -170,14 +172,17 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
             return false;
         }
         LivingEntity owner = wolf.getOwner();
-        if (owner == null || owner.isSpectator())
+        if (owner == null || owner.isSpectator()) {
             return false;
+        }
         betterdogs$updateFollowerSpacingOffset();
         float startDist = getStartDistance();
-        if (wolf.distanceToSqr(owner) < (startDist * startDist))
+        if (wolf.distanceToSqr(owner) < (startDist * startDist)) {
             return false;
-        if (wolf.isOrderedToSit() || wolf.isLeashed())
+        }
+        if (wolf.isOrderedToSit() || wolf.isLeashed()) {
             return false;
+        }
         
         // IndyPets Compatibility: Respect independence
         if (net.vanillaoutsider.betterdogs.util.IndyPetsCompatibility.isIndependent(wolf)) {
@@ -192,10 +197,12 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
         if (wolf instanceof WolfExtensions ext && ext.betterdogs$isGuardMode()) {
             return false;
         }
-        if (wolf.getNavigation().isDone())
+        if (wolf.getNavigation().isDone()) {
             return false;
-        if (wolf.isOrderedToSit() || wolf.isLeashed())
+        }
+        if (wolf.isOrderedToSit() || wolf.isLeashed()) {
             return false;
+        }
         
         // IndyPets Compatibility: Respect independence
         if (net.vanillaoutsider.betterdogs.util.IndyPetsCompatibility.isIndependent(wolf)) {
@@ -203,8 +210,9 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
         }
 
         LivingEntity owner = wolf.getOwner();
-        if (owner == null)
+        if (owner == null) {
             return false;
+        }
         float stopDist = getStopDistance();
         return wolf.distanceToSqr(owner) > (stopDist * stopDist);
     }
@@ -221,8 +229,9 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
             this.spacingThrottleTimer--;
         }
         LivingEntity owner = wolf.getOwner();
-        if (owner == null)
+        if (owner == null) {
             return;
+        }
 
         // Refresh Simulation Distance Cache (every 5 seconds)
         if (--this.simDistRefreshTimer <= 0) {
@@ -299,8 +308,9 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
             double dx = (wolf.getRandom().nextFloat() - 0.5) * spread;
             double dy = (wolf.getRandom().nextFloat() - 0.5) * spread;
             double dz = (wolf.getRandom().nextFloat() - 0.5) * spread;
-            if (wolf.randomTeleport(owner.getX() + dx, owner.getY() + dy, owner.getZ() + dz, false))
+            if (wolf.randomTeleport(owner.getX() + dx, owner.getY() + dy, owner.getZ() + dz, false)) {
                 break;
+            }
         }
     }
 }

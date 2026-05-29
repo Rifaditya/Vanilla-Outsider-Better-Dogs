@@ -1,5 +1,9 @@
 # Better Dogs - Historical Changelog
 
+## [4.5.14+A-26.2] - 2026-05-29
+### Summary
+- **Standard Alignment**: Resolved code quality and modularity violations from the sanitary audit. Cleaned up unused imports in `WolfMixin` and `WolfGuardGoal`. Modularized `WolfMixin` by extracting complex tick-handler calculations (colored particle emitting, watchdog grace buffs, adoptable particles, and passive healing calculations) into a new dedicated helper class `WolfTickHelper`, bringing `WolfMixin` well under the 300 LOC limit (down to 276 LOC). Formatted single-line conditional blocks with brackets in `WolfMixin` and `PersonalityFollowOwnerGoal` to satisfy style guidelines.
+
 ## [4.5.13+A-26.2] - 2026-05-29
 ### Summary
 - **Standard Alignment**: Optimized the performance of Pacifist sentinel watchdogs in `WolfGuardGoal`. Refactored the monster scan filter lambda to check vertical distance first (`dy <= 4.0`). For monsters within 4 blocks vertically, the goal immediately counts them and skips the expensive `hasLineOfSight` raycast calculation. This bypasses raycasting for over 90% of scanned mobs, preserving server TPS.

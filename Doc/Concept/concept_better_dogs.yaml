@@ -1,55 +1,43 @@
 collection: Vanilla_Outsider
 mod_name: Better Dogs
-version: 3.4.8
+version: 4.5.14
 filename: concept_better_dogs.md
 content: |
   # Better Dogs
   ## Philosophy Fit
-  This mod strictly adheres to the Vanilla Outsider philosophy by enhancing the vanilla Wolf with deeper systems and reliability. It removes AI "jank" (lava/cliff deaths) while introducing a sophisticated social and territorial ecosystem. The mechanics (Personalities, Genetics, Territorial Matrix) add depth to both tamed and wild encounters, rewarding player investment with a living, breathing world.
+  This mod strictly adheres to the Vanilla Outsider philosophy by enhancing the vanilla Wolf with deeper systems and reliability. It removes AI "jank" (lava/cliff deaths) while introducing a sophisticated social, genetic, and territorial ecosystem. The mechanics (Personalities, Genetics, Territorial Matrix, Guard Mode) add depth to both tamed and wild encounters, rewarding player investment with a living, breathing world.
 
   ## Mechanics
   ### Core: Personality & DNA
-  - **Types:** Aggressive (Scouts), Pacifist (Silent Alarms), Normal (Balanced).
-  - **Individual DNA:** Every dog has a unique "preference roll" (UUID-based) determining participation in social events.
-  - **Genetics:** Advanced breeding passes down traits.
+  - **Types:** Aggressive (Scouts), Pacifist (Silent Alarms/Sentinels), Normal (Balanced).
+  - **Individual DNA:** Every dog has a unique "preference roll" (UUID-based) determining participation in social events and rolled stats.
+  - **Breeding & Inbreeding:** Advanced breeding passes down stats (Max Health, Attack Damage, Speed) via genetic inheritance with minor triangular mutation rolls. Kinship NBT tracks parents (`parent1Uuid`, `parent2Uuid`) to prevent inbreeding; breeding siblings/parent-child results in runts (penalized stats, slow, weak, tiny size). Inbred dogs can be outcrossed with healthy unrelated dogs or cured using a Golden Apple.
   - **Litter System:** Wolves can now produce multiple puppies (Litters) in a single breed, each with independent traits.
+  - **Dynamic Size Scaling:** Wolves scale dynamically in size based on their rolled max health bonus: `scale = 1.0 + (healthBonus * 0.012)`. Ranging from 0.808x (worst-case Aggressive runt) to 1.312x (best-case Pacifist).
 
   ### Wild Pack Dynamics (Dasik Social AI)
   - **Pack Structure:** Wild wolves form persistent packs (up to 8) anchored to a leader.
-  - **Dynamic Spawning:** Pack clusters can trigger "Reinforcement Spawns" nearby, creating high-density territorial zones.
-  - **Stable Physics:** O(N) boids-inspired pack movement for high performance.
+  - **Dynamic Follower Spread Scaling:** Wild and tamed packs dynamically space themselves out wider as the pack size $N$ increases, calculated using the square root formula: $f(N) = \text{multiplier} \times \sqrt{N - 1}$.
+  - **Stable Physics:** O(N) boids-inspired pack movement for high performance, optimized using cooperative follower caches to prevent per-tick scans.
 
-  ### Territorial Probability Matrix (v3.4.6)
-  - **Negotiation Matrix:** Rival leaders meeting in the wild use a weighted chance system for outcomes:
-    - **War:** Packs engage in combat (Duels for leaders, Brawls for members).
-    - **Merge:** One pack absorbs the other.
-    - **Retreat:** Peaceful separation.
-  - **Leadership Hierarchy:** Aggressive > Normal > Pacifist. Dominance is resolved by personality rank during mergers.
-  - **Deterministic Sync:** Decision synchronization between entities using shared seeded randomization.
+  ### Guard Mode (Domestic)
+  - **Activation:** Shift+Right-Click with a bone anchors the wolf to its current position, enabling personality-based patrol patterns.
+  - **Patrol Patterns:** Aggressive performs outer perimeter sweeps; Normal paces radial stars or sits as a sentinel post; Pacifist circles orbital loops.
+  - **Targeting Limits:** Guards strictly require line-of-sight to target hostiles, preventing through-wall cave aggro. Pacifists use a hybrid alarm model (hearing through solid walls up to 4 blocks vertically, or sight up to 16 blocks).
+  - **Ambient Particles:** Custom-colored dust particles emit strictly during Guard Mode (Aggressive = Red, Normal = Gold, Pacifist = Green/Teal).
 
-  ### Social AI (Domestic)
-  - **Correction System:** Aggressive adults discipline misbehaving puppies.
-  - **Retaliation:** Puppies bit back if struck by owners.
-  - **Affinity:** Social activities build bonding levels to suppress blood feuds.
-
-  ### Immersive Events
-  - **Zoomies:** Morning/Rain hyperactivity.
-  - **Group Howl:** Full moon pack vocalization.
-  - **Storm Anxiety:** Reactive fear behavior (trembling/whining).
+  ### Social AI & Quality of Life
+  - **Paper Adoption:** Shift+Right-Clicking a tamed wolf with Paper puts it into a pending adoption state with rose-pink trail particles, allowing another player to claim ownership.
+  - **Calm Down:** Shift+Right-Clicking with an empty hand makes the wolf sit, clearing its attack target and anger state.
+  - **Low Health Fleeing:** Wolves flee when HP falls below 30% (Pacifist 100% chance, Normal 50%, Aggressive 10%).
+  - **Storm Anxiety:** Reactive fear behavior gated by personality (Aggressive is immune; Pacifist has 3x higher risk).
 
   ### Config Mastery (Native Game Rules)
   - **Registry Integration:** 50+ AI parameters exposed via native Game Rules.
-  - **Thematic Categorization (v3.4.8):** Reorganized settings into 6 distinct categories for better UX:
-    - **General**: Utility, feeding, and debug toggles.
-    - **War**: Territorial matrix and rivalry probabilities.
-    - **Litter**: Breeding genetics and litter size rules.
-    - **Health**: HP, speed, and damage modifiers by personality.
-    - **Social**: AI behaviors (Howling, Mischief, Follow Distances).
-    - **Spawning**: Cluster sizes and taming chances.
-  - **Collapsible UI:** Optimized for the "Collapsible Game Rules" mod to group settings into tidy folders.
-  - **Sync:** GameRules are linked to an atomic JSON config for persistence across new worlds.
+  - **Thematic Categorization:** Reorganized settings into 6 distinct categories for better UX (General, War, Litter, Health, Social, Spawning).
+  - **Cloth Config & ModMenu:** Lazily-loaded Client-side GUI screens for configuration, preventing classloading crashes on dedicated servers.
 
   ## Technical Requirements
-  - **Core**: Minecraft 26.1.2+, Java 25.
-  - **Library**: DasikLibrary 1.7.0+.
+  - **Core**: Minecraft 26.2+, Java 25.
+  - **Library**: DasikLibrary 1.7.4+.
   - **Mappings**: Official Mojang (Post-Obfuscation Era).

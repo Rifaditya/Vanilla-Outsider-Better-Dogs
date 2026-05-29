@@ -1,35 +1,28 @@
 # Audit Helper for Moderators
 
-This document provides technical justification for patterns in the "Better Dogs" mod that might appear suspicious or unconventional during platform review.
+This document provides technical justifications for patterns in the "Better Dogs" mod that might appear complex or unconventional during platform review.
 
-## v3.1.20: Native Game Rule Registration
+## v4.5.0: Parent Kinship NBT Tracking & Inbreeding Prevention
+**Files**: [WolfBreedingMixin.java](mixin/WolfBreedingMixin.java)
+- **Logic**: Breeding checks parent UUIDs. Breeding sibling/parent-child pairings applies an `inbred` status flag.
+- **Justification**: Enhances gameplay mechanics through realistic breeding genetics without introducing complex database requirements. The tracking is lightweight and stored directly in the `WolfPersistentData` attachment.
 
-This version introduces the registration of custom Game Rules and a dedicated category within the vanilla Minecraft UI.
+## v4.4.0: Dynamic Health-Based Size Scaling
+**Files**: [WolfMixin.java](mixin/WolfMixin.java)
+- **Logic**: Applies physical size scales dynamically on load, taming, or personality shifts based on rolled max health bonuses.
+- **Justification**: Standard client-server scaling via entity scale attributes. Ensures hitboxes remain vanilla-sized for 100% pathfinding safety.
 
-### [Registry] Native GameRuleCategory Injection
+## v4.3.0: Paper Adoption System
+**Files**: [WolfInteractMixin.java](mixin/WolfInteractMixin.java)
+- **Logic**: Shift+Right-Clicking a wolf with a sheet of Paper toggles ownership pending status.
+- **Justification**: Safely modifies the ownership UUID without bypass commands. Allows players to transfer wolves cleanly in multiplayer.
 
-**Files**: [BetterDogsGameRules.java](registry/BetterDogsGameRules.java)
-**Logic**: Uses `GameRuleCategory.register()` to create a dedicated tab for the mod.
-**Justification**: This is a standard but advanced use of the Minecraft registry intended to improve user experience by grouping mod-specific world settings together, preventing clutter in the "Mobs" category.
+## v4.0.0: EntityTypes Relocation
+**Files**: Mod-wide classes
+- **Logic**: Relocated entity constant references to Mojang's new `EntityTypes` registry.
+- **Justification**: Aligns with Minecraft 26.2 API shifts to prevent classloading failures.
 
-## v3.1.18: lower_snake_case Migration
-
-**Logic**: All Game Rule identifiers were renamed from camelCase to lower_snake_case.
-**Justification**: This aligns with the transition to official Mojang standards for 26.x snapshot development, ensuring long-term compatibility with vanilla command systems.
-
-## v3.1.16: WolfMobMixin Redirect
-
-**File**: [WolfMobMixin.java](mixin/WolfMobMixin.java)
-**Logic**: Redirects `setTarget` from `LivingEntity` level.
-**Justification**: This "wide" injection is used to safely intercept target-setting logic for wolves during social events (Retaliation/Correction) without causing transformation errors on the `Wolf` class itself, which is heavily modified by other mods and vanilla.
-
-## v3.1.14: Dynamic Simulation Capping
-
-**Files**: [PersonalityFollowOwnerGoal.java](ai/PersonalityFollowOwnerGoal.java), [AggressiveTargetGoal.java](ai/AggressiveTargetGoal.java)
-**Logic**: The AI queries `getSimulationDistance()` every 100 ticks.
-**Justification**: Prevents AI pathfinding into unloaded chunks (Server-Side Safety). Value is cached to prevent per-tick performance impact.
-
-## v3.1.13: Ultraguard Sync
-
-**Logic**: Uses atomic file writes (`StandardOpenOption.DSYNC`) for configuration persistence.
-**Justification**: Prevents data corruption during sudden server crashes or power loss by ensuring the config file is fully committed to disk before returning.
+## v4.5.9 - v4.5.13: Query Throttling and Caching
+**Files**: [WildWolfTerritorialGoal.java](ai/WildWolfTerritorialGoal.java), [PersonalityFollowOwnerGoal.java](ai/PersonalityFollowOwnerGoal.java)
+- **Logic**: Uses static caches (`FollowerSpacingCache`) and throttles 96-block/32-block scans to once every 20-80 ticks.
+- **Justification**: Prevents severe server TPS degradation in high-density entity environments by avoiding per-tick entity sweeps.

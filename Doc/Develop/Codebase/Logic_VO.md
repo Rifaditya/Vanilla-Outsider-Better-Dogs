@@ -1,54 +1,35 @@
-# Core Logic: Better Dogs (v3.4.17)
+# Core Logic: Better Dogs (v4.5.13)
 
-This document explains the internal logic governing wolf personalities, their impact on gameplay, and the advanced social interaction architecture.
+This document explains the internal logic governing wolf personalities, genetics, and performance-minded optimization architectures.
 
-## 1. Personality Selection Logic
+## 1. Personality & Stat Rolling Logic
 
-Personalities are assigned once per wolf life cycle, typically during taming or spawning.
+Personalities and stat ranges roll once per wolf life cycle, typically when wild wolves spawn.
 
-### Roll Mechanism
+- **UUID-based Seeding**: A deterministic seed based on the wolf's unique UUID is used to roll attribute modifiers (Max Health, Attack Damage, Speed) using a symmetric triangular distribution.
+- **Taming**: Personality and attributes persist upon successful taming (preventing size jumps).
+- **Spawn Chance Rules**: `bd_spawn_normal_percent`, `bd_spawn_aggro_percent`, and `bd_spawn_paci_percent` govern the relative distribution weights of spawned wild personalities.
 
-- **Individual DNA**: A unique seed derived from the wolf's UUID is used to roll for event participation thresholds.
-- **Taming**: Assigned upon successful taming.
-- **Breeding**: `WolfBreedingMixin` calculates the offspring personality based on parent genetic data and configurable Game Rule chances.
-
-## 2. Stat Influence & Initial Behaviors
-
-Personalities apply attribute modifiers and determine AI priorities.
-
-| Personality | Health Mod | Speed Mod | Damage Mod | Behavior |
-| :--- | :--- | :--- | :--- | :--- |
-| **Aggressive** | -10.0 | +0.15 | +0.50 | **The Guardian**. Proactive. |
-| **Pacifist** | +20.0 | -0.10 | -0.30 | **The Loyal**. Reactive. |
-| **Normal** | +0.0 | +0.0 | +0.0 | **The Classic**. Balanced. |
+## 2. Stat Modifiers & Scaling
+Max health modifiers translate directly to visual size scales:
+$$\text{scale} = 1.0 + (\text{healthBonus} \times 0.012)$$
+- Re-scales range from a tiny **0.808x** (worst-case Aggressive runt) to a giant **1.312x** (best-case Pacifist).
+- Hitboxes remain vanilla-sized for pathfinding compatibility.
 
 ## 3. Persistent Data (Fabric Attachment API)
+Stored in the immutable `WolfPersistentData` record via Fabric's Data Attachment API:
+- `personalityId`: Trait ID.
+- `parent1Uuid`, `parent2Uuid`: DNA markers for parent lineage tracking.
+- `inbred`: Boolean flag denoting genetic stunting.
+- `guardMode`, `guardPos`: Position sentinel markers.
 
-To ensure consistency, the mod uses the **Fabric Data Attachment API**.
+## 4. Breeding & Inbreeding Prevention Logic
+- **Genetic Stat Inheritance**: Offspring inherit attributes as the average of their parents' stats plus a minor mutation.
+- **Inbreeding Check**: If `parent1Uuid` or `parent2Uuid` match between the parents (sibling or parent-child pairings), the child is flagged as `inbred`.
+- **Runt Penalties**: Inbred puppies spawn at a stunted size with heavily penalized HP, damage, and speed.
+- **Outcrossing & Curing**: Outcrossing an inbred runt with an unrelated healthy wolf restores baseline genes to their offspring. Feeding a runt a Golden Apple can cure it if enabled by `bd_enable_inbred_curing` GameRule.
 
-- `personalityId`: The permanent trait.
-- `grudgeTarget`: UUID of entities for Blood Feuds.
-- `lastMischiefDay`: Rate-limiting for puppy play.
-- `affinityMap`: Map of UUIDs to bonding scores (-100 to 100).
-
-## 4. Social Interaction Architecture
-
-The mod uses a centralized **WolfScheduler** to manage event-driven behaviors.
-
-### A. The "Snitch" System
-
-If a puppy hits its owner (`BabyBiteBackGoal`), it triggers a `CorrectionDogEvent`. One nearby Aggressive Adult with the correct DNA threshold will intervene via `AdultCorrectionGoal`.
-
-### B. Genetic Inheritance
-
-Breeding roles are now governed by native Game Rules (e.g., `bd_breed_same_chance`). The matrix allows for dominance, recession, and mutation.
-
-### C. Large-Scale Events
-
-- **Zoomies**: Morning/Rain energy bursts.
-- **Group Howl**: Night-time atmospheric pack behavior.
-- **Play Fight**: Non-lethal training for large packs.
-
-## 5. UI Integration
-
-All logic variables are now exposed through a custom Game Rule category. This allows per-world tuning without restarting the server or manual JSON edits.
+## 5. Performance Optimization Logic
+- **Query Throttling**: Heavy searches (96-block pack leader scans, 32-block follower scans) are throttled to run every 20-80 ticks via staggering timers, preventing server TPS degradation.
+- **Static Spacing Cache**: Pack followers coordinate using a shared `FollowerSpacingCache` mapped to the owner's UUID, reducing scans to a single request per interval.
+- **Transient Memory**: Ticking/volatile values are stored in JVM memory as `@Unique` fields to avoid allocation churn, serialized to/from NBT only when saving/loading.

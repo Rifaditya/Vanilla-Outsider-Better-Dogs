@@ -2,7 +2,7 @@
 
 **Mod Name:** Vanilla Outsider: Better Dogs
 **Mod ID:** `vanilla-outsider-better-dogs` (Fabric)
-**Version:** 3.4.17
+**Version:** 4.5.13
 **Creator:** DasikIgaijin
 
 ## 🛡️ Safety & Compliance Statement
@@ -12,32 +12,25 @@ To assist Platform Moderators (Modrinth/CurseForge) in auditing this project, I 
 1. **No External Network Connections**: This mod runs entirely offline within the Minecraft game loop. It does **NOT** make any HTTP/Web requests.
 2. **No Data Collection**: No telemetry, analytics, or user-data tracking.
 3. **No Binary Execution**: No OS-level commands or external binary execution.
-4. **Filesystem Hygiene**: Only writes to `config/vanilla-outsider-better-dogs.json` (via **Ultraguard Sync**) and uses native Fabric Attachments for world data.
+4. **Filesystem Hygiene**: Only writes to standard config directory `config/vanilla-outsider-better-dogs.json` (delegated via **DasikLibrary ConfigHelper**) and uses native Fabric Attachments for world data.
 
 ## 📂 Codebase Overview for Reviewers
 
 | Feature | Source File | Description |
 | :--- | :--- | :--- |
-| **Data Persistence** | `WolfPersistentData` | Records personality and social state via **Fabric Attachment API** (Modern Data Components replacement). |
-| **Core Logic** | `mixin.WolfMixin` | Handles randomization, stat buffs, and social state transition hooks. |
-| **Scheduler** | `ai.WolfScheduler` | Centralized O(1) sampling to trigger social behaviors without per-tick entity scans. |
-| **Persistence Safety** | `config.BetterDogsConfig` | Implements **Ultraguard Sync** with atomic writes and `.bak` auto-redundancy. |
+| **Data Persistence** | `WolfPersistentData` | Records personality, parentage markers, and social state via **Fabric Attachment API**. |
+| **Core Logic** | `mixin.WolfMixin` | Handles taming adjustments, dynamic size scaling, and combat hooks. |
+| **Scheduler** | `mixin.WolfSocialMixin` | Ticks events (Zoomies, Howls) and registers to Dasik Social registry. |
+| **Optimized AI** | `ai.PersonalityFollowOwnerGoal` / `ai.WildWolfTerritorialGoal` | Follow and pack interaction goals utilizing **FollowerSpacingCache** and staggered throttles. |
 
-## 🔍 "Behavioral Injection" Explained
+## 🔍 Advanced Logic & Safety
 
-Reviewers auditing the Mixins may notice entities "injecting" states into other entities (e.g., Baby to Adult).
-
-- **The "Snitch" System**: Instead of Adult Wolves constantly scanning (High CPU), a Baby Wolf broadcasts a `CorrectionEvent` when it bites the owner. This "wakes up" exactly one adult enforcer.
-- **Gatekeeper Logic**: `WolfMixin.setTarget()` redirects vanilla AI while `isSocialModeActive()` is true, ensuring social interactions (discipline/play) are not interrupted by generic mob combat.
-
-## 🔍 Technical Justifications (Post-Obfuscation Era)
-
-- **Official Mappings**: This mod targets the **Minecraft 26.x Post-Obfuscation Era**. All method calls use Official Mojang names.
-- **Friendly Fire Bypass**: `WolfCombatHooks` explicitly authorizes specific attacks (Retaliation/Correction) that vanilla hardcodes to block. These are strictly capped at 1 hit per interaction and gated by UUID/Ownership checks.
-- **Persistence Hygiene**: I use `AttachmentType` (Fabric) to store data. This is the modern, state-safe replacement for legacy NBT handling, ensuring data survives version jumps and prevents "Ghost Data" corruption.
+- **Line-of-Sight Filtering**: Normal and Aggressive guarding wolves strictly require line-of-sight to target hostiles, preventing them from targeting cave monsters through solid walls.
+- **Inbreeding Logic**: Sibling or parent-child pairings are verified by matching UUID parent markers. Applies attribute stunting and size reduction to runts.
+- **Optimized Raycasting**: Pacifist sentinel warning scans check vertical distance (`dy <= 4.0`) first. If they are close, the goal bypasses the expensive `hasLineOfSight` raycast check, preserving server TPS.
 
 ## 🛠️ Build & Dependencies
 
 - **Loader**: Fabric Loader (>=0.16.10)
-- **Mappings**: Official Minecraft Mappings (Mojang/Unobfuscated)
-- **External Libs**: `dasik-library` (Required). Optionally supports `cloth-config` and `modmenu` for configuration GUI.
+- **Toolchain**: JDK 25, Gradle 9.3+
+- **External Libs**: `dasik-library` (Required, >= 1.7.4). Optionally supports `cloth-config` and `modmenu` for configuration GUI.

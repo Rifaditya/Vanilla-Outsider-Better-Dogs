@@ -2,158 +2,72 @@
 
 ## 🎯 Core Concept
 
-Tamed wolves get a **random permanent personality** that affects combat behavior.  
-**Players cannot change it** — this makes each dog unique and worth seeking out!
+Tamed and wild wolves roll a **random permanent personality** that determines their attribute ranges and modifies their AI goals. Players learn the personality through observation and guard mode particle hints.
 
 ---
 
 ## 🐕 Dog Personalities (3 Types)
 
-| Personality | Chance | Behavior |
-|-------------|--------|----------|
-| 🔴 **Aggressive** | 33% | Auto-attacks hostile mobs; **Scouts ahead** |
-| 🟢 **Pacifist** | 33% | Only fights when you're hurt; **Silent Alarm** |
-| 🟡 **Normal** | 34% | Attacks when player attacks (vanilla) |
+| Personality | Base Spawn Weight | Primary Guard Patrol Style | Attribute Focus |
+|-------------|--------|----------------------------|-----------------|
+| 🔴 **Aggressive** | 20% | Perimeter sweeps (80% range) | +Attack Damage, -Max Health |
+| 🟢 **Pacifist** | 20% | Orbital circles around post | +Max Health, -Attack Damage, Buffs Allies |
+| 🟡 **Normal** | 60% | Post sentry or radial star pacing | Balanced base stats |
 
 ---
 
 ### 🔴 Aggressive
->
-> *"Guardian - attacks threats before they attack you"*
+> *"Fierce guardian - proactive combat and base sweeping"*
 
-- **Trigger:** Hostile mob within ~16 blocks of player
-- **Targets:** Zombies, Skeletons, Spiders, Creepers, Endermen, etc.
-- **Scouting Agent:** Occasionally wanders 3-5 blocks ahead or to the side of the owner to "scout" the area.
-- **Best for:** Cave exploration, night travel, base defense
+- **Targeting**: Auto-attacks hostile mobs within 16-24 blocks of owner or post. Strictly requires line-of-sight to prevent targeting cave monsters.
+- **Scouting**: 10% chance per path recalc to sprint 5 blocks ahead of the owner to scout.
+- **Guard Mode**: Performs outer sweeps along patrol ranges, pausing to scan outward.
 
 ---
 
 ### 🟢 Pacifist
->
-> *"Loyal defender - only fights when you're hurt"*
+> *"Gentle watcher - alerts hostiles and empowers allies"*
 
-- **Trigger:** Player takes damage from a mob
-- **Targets:** Only the mob that hurt the player
-- **Silent Alarm:** Emits a "Whine" sound if a Monster is within 12 blocks but not yet in combat.
-- **Best for:** Building, farming, keeping dog safe
+- **Watchdog Alarm**: Whines and emits warning `NOTE` particles when monsters are within 16 blocks (with line-of-sight, or within 4 blocks vertically without line-of-sight).
+- **Grace Buffs**: Ticking regenerates and resists nearby players and allied tamed wolves within 6 blocks.
+- **Guard Mode**: Orbit circles, standing near the post block if alarm ticks are triggered.
 
 ---
 
-### 🟡 Normal (Vanilla-like)
->
-> *"Fighting partner - attacks what you attack"*
+### 🟡 Normal
+> *"Balanced ally - standard vanilla-plus behavior"*
 
-- **Trigger:** Player attacks a mob
-- **Targets:** The mob player attacked
-- **Best for:** Full control during combat
+- **Combat**: Classic behavior (attacks targets attacked by the owner or targets that hit the owner).
+- **Guard Mode**: Post sentinel posture (sits at post if patrol range is 0) or alternate radial star pacing sweeps.
 
 ---
 
-## 🎲 Personality Assignment
+## 🎲 Personality & Attribute Assignment
 
-```
-On Tame:
-  Roll random 1-100
-  1-33   → Aggressive
-  34-66  → Pacifist
-  67-100 → Normal
-  
-  Personality is PERMANENT (cannot be changed)
-```
+Personalities and their corresponding stats roll once during the wild spawn cycle, preventing attribute shifts when tamed.
+- **Symmetric Triangular Distribution**: rolled max health, attack damage, and speed are rolled within personality-defined min/max ranges.
+- **UUID Seeding**: seeded by the entity's UUID, guaranteeing persistent, reload-safe values.
 
 ---
 
-## 👁️ Visual Feedback (One-time on Tame)
-
-| Personality | Particles |
-|-------------|-----------|
-| 🔴 Aggressive | 💢 Angry particles |
-| 🟢 Pacifist | ❤️ Heart particles |
-| 🟡 Normal | ✨ Happy villager particles |
-
-**No chat message** — players learn personality through observation.
+## 📐 Dynamic Health-Based Scale
+Tamed wolf scale is dynamically adjusted by their rolled max health bonus:
+$$\text{scale} = 1.0 + (\text{healthBonus} \times 0.012)$$
+- Worst-case Aggressive runt scale: **0.808x**
+- Best-case Pacifist giant scale: **1.312x**
 
 ---
 
-## 🛡️ Pathfinding & Safety (All Personalities)
-
-| Feature | Behavior |
-|---------|----------|
-| **Avoid lava** | Don't walk into lava blocks |
-| **Avoid fire** | Don't walk into fire |
-| **Avoid high falls** | Don't jump off >3 blocks |
-| **Flee from creepers** | Run away when creeper hisses |
-| **Smarter pathfinding** | Avoid getting stuck on obstacles |
+## 🧬 Breeding Genetics & Inbreeding Penalty
+- **Inheritance**: Puppies inherit base stats as the average of parent stats with a minor triangular mutation.
+- **Inbreeding Prevention**: Breeding related wolves (parent-child or sibling pairings tracked by parent UUIDs) applies an `inbred` flag, stunting scale to tiny runt levels and heavily penalizing stats.
+- **Recovery & Curing**: Outcrossing an inbred runt with an unrelated healthy wolf restores baseline genes to their offspring. Feeding a runt a Golden Apple can optionally cure the inbred status if `bd_enable_inbred_curing` is enabled.
 
 ---
 
-## ⚔️ Combat Improvements (All Personalities)
+## 🔧 Technical Specification
 
-| Feature | Behavior |
-|---------|----------|
-| **Knockback resistance** | 50% reduction |
-| **Friendly fire protection** | Owner can't damage own wolves |
-| **Emergency kill** | Sneak+attack overrides protection |
-
----
-
-## 🔧 Technical Implementation
-
-### NBT Data
-
-```
-Wolf Entity NBT:
-- "Personality": byte (0 = Normal, 1 = Aggressive, 2 = Pacifist)
-```
-
-### AI Goals by Personality
-
-**Aggressive:** Add goal to target hostile mobs near owner (16 block range)
-
-**Pacifist:** Remove proactive attack goal, only defend when owner takes damage
-
-**Normal:** Keep vanilla behavior unchanged
-
----
-
-## 📋 Implementation Checklist
-
-### Phase 1: Core
-
-- [ ] Add `personality` field to Wolf entity (Mixin)
-- [ ] Randomize personality on tame event
-- [ ] Save/load personality in NBT
-- [ ] Display particles on tame
-
-### Phase 2: Personality AI
-
-- [ ] Aggressive: Add hostile mob scanning goal
-- [ ] Pacifist: Only react to owner damage
-- [ ] Normal: No changes (vanilla)
-
-### Phase 3: Safety AI
-
-- [ ] Avoid lava/fire blocks in pathfinding
-- [ ] Avoid high falls (>3 blocks)
-- [ ] Flee from hissing creepers
-
-### Phase 4: Combat Improvements
-
-- [ ] Add knockback resistance attribute
-- [ ] Block owner damage (except sneak+attack)
-
----
-
-## 🎨 Mod Info
-
-| Property | Value |
-|----------|-------|
-| **Mod Name** | Vanilla Outsider: Better Dogs |
-| **Mod ID** | `vanilla-outsider-better-dogs` |
-| **MC Version** | 1.21.11 |
-| **Loader** | Fabric |
-| **Language** | Kotlin |
-
----
-
-*Design document - December 29, 2025*
+- **Mod ID**: `vanilla-outsider-better-dogs`
+- **Environment**: Minecraft 26.2+ (Java 25)
+- **Persistence**: Fabric Data Attachment API (`WolfPersistentData` record)
+- **GUI Config**: ModMenu & Cloth Config API
