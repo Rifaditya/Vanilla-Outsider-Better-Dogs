@@ -290,4 +290,42 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
             cir.setReturnValue(result);
         }
     }
+
+    @Inject(method = "addAdditionalSaveData", at = @At("HEAD"))
+    private void betterdogs$onAddAdditionalSaveData(net.minecraft.world.level.storage.ValueOutput output, CallbackInfo ci) {
+        Wolf wolf = (Wolf) (Object) this;
+        WolfPersistentData current = WolfPersistentData.getWolfData(wolf);
+        int elapsed = wolf.tickCount - this.betterdogs$lastDamageTime;
+        int cooldownRemaining = Math.max(0, BetterDogsConfig.get().getCombatHealDelayTicks() - elapsed);
+
+        WolfPersistentData updated = new WolfPersistentData(
+            current.personalityId(),
+            cooldownRemaining,
+            current.submissive(),
+            current.bloodFeudTarget(),
+            current.lastMischiefDay(),
+            current.dna(),
+            current.scale(),
+            current.affinityMap(),
+            current.leaderUuid(),
+            current.guardMode(),
+            current.guardPos(),
+            current.adoptable(),
+            current.healthBonus(),
+            current.damageMod(),
+            current.speedMod(),
+            current.statsRolled(),
+            current.parent1Uuid(),
+            current.parent2Uuid(),
+            current.inbred()
+        );
+        WolfPersistentData.setWolfData(wolf, updated);
+    }
+
+    @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
+    private void betterdogs$onReadAdditionalSaveData(net.minecraft.world.level.storage.ValueInput input, CallbackInfo ci) {
+        Wolf wolf = (Wolf) (Object) this;
+        int cooldownRemaining = WolfPersistentData.getPersistedLastDamageTime(wolf);
+        this.betterdogs$lastDamageTime = wolf.tickCount - (BetterDogsConfig.get().getCombatHealDelayTicks() - cooldownRemaining);
+    }
 }
