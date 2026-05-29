@@ -5,6 +5,7 @@ import java.util.UUID;
 import net.dasik.social.api.SocialEntity;
 import net.dasik.social.core.EntitySocialScheduler;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersistentData;
@@ -46,6 +47,10 @@ public abstract class WolfSocialMixin implements SocialEntity, WolfExtensions {
         WolfPersistentData current = WolfPersistentData.getWolfData((Wolf) (Object) this);
         WolfPersistentData.setScale(current.personalityId(), current.lastDamageTime(), current.submissive(),
                 current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), (Wolf) (Object) this, scale, current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable());
+        var scaleAttr = ((Wolf) (Object) this).getAttribute(Attributes.SCALE);
+        if (scaleAttr != null) {
+            scaleAttr.setBaseValue(scale);
+        }
     }
 
     @Override
@@ -232,6 +237,11 @@ public abstract class WolfSocialMixin implements SocialEntity, WolfExtensions {
                     betterdogs$setDNA(wolf.getUUID().getMostSignificantBits());
                     float scale = 0.9f + (wolf.getRandom().nextFloat() * 0.2f);
                     betterdogs$setSocialScale(scale);
+                } else {
+                    var scaleAttr = wolf.getAttribute(Attributes.SCALE);
+                    if (scaleAttr != null && scaleAttr.getBaseValue() != betterdogs$getSocialScale()) {
+                        scaleAttr.setBaseValue(betterdogs$getSocialScale());
+                    }
                 }
 
                 betterdogs$socialInitialized = true;
