@@ -1,5 +1,9 @@
 # Better Dogs - Historical Changelog
 
+## [4.6.2+A-26.2] - 2026-05-30
+### Summary
+- **Refactor**: Changed the custom advancement "A Pack of Personalities" icon from the Wolf Spawn Egg to a Bone, and its visual frame type from a standard task to a challenge frame to display progress in the tooltip.
+
 ## [4.6.1+A-26.2] - 2026-05-30
 ### Summary
 - **Bug Fix**: Renamed the custom taming advancement and item tag data folders to singular (`advancement` and `tags/item`) to align with Minecraft 26.2+ data pack directory naming conventions. This fixes the custom advancement and food items tags not loading in-game.

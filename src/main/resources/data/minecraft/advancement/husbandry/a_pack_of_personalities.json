@@ -2,7 +2,7 @@
   "parent": "minecraft:husbandry/tame_an_animal",
   "display": {
     "icon": {
-      "id": "minecraft:wolf_spawn_egg"
+      "id": "minecraft:bone"
     },
     "title": {
       "translate": "advancements.betterdogs.husbandry.a_pack_of_personalities.title"
@@ -10,7 +10,7 @@
     "description": {
       "translate": "advancements.betterdogs.husbandry.a_pack_of_personalities.description"
     },
-    "frame": "task",
+    "frame": "challenge",
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false
