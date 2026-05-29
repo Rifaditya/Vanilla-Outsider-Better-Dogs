@@ -106,6 +106,21 @@ public abstract class WolfBreedingMixin {
         // Check if breeding is inbred (parent-offspring or siblings sharing at least one parent)
         boolean inbred = betterdogs$checkInbreeding(parent1, parent2, d1, d2);
 
+        // Genetic Recovery: if breeding is NOT inbred, but a parent was inbred,
+        // we use their reconstructed (original) stats for the inheritance calculation.
+        if (!inbred) {
+            if (d1.inbred()) {
+                parent1Hp = (parent1Hp + 6.0f) / 0.6f;
+                parent1Dmg = (parent1Dmg + 0.20f) / 0.6f;
+                parent1Speed = (parent1Speed + 0.15f) / 0.6f;
+            }
+            if (d2.inbred()) {
+                parent2Hp = (parent2Hp + 6.0f) / 0.6f;
+                parent2Dmg = (parent2Dmg + 0.20f) / 0.6f;
+                parent2Speed = (parent2Speed + 0.15f) / 0.6f;
+            }
+        }
+
         // Apply inheritance formula: Average of parents + mutation
         float avgHp = (parent1Hp + parent2Hp + mutationHp) / 3.0f;
         float avgDmg = (parent1Dmg + parent2Dmg + mutationDmg) / 3.0f;

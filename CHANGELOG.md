@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.5.7+A-26.2] - 2026-05-29
+### Summary
+- **Standard Alignment**: Implemented a breeding-based genetic outcrossing recovery system. Breeding an inbred runt wolf with a healthy, unrelated wolf will now produce healthy offspring that inherit the parent's reconstructed, unpenalized baseline stats instead of the parent's stunted/penalized values. The active Golden Apple cure remains available but is off by default.
+
 ## [4.5.6+A-26.2] - 2026-05-29
 ### Summary
 - **Standard Alignment**: Added a genetic recovery system (off by default) to cure inbred runt wolves. Feeding a tamed, inbred wolf a Golden Apple will clear the inbred status, reverse the inbreeding modifiers to normal levels, and dynamically update the wolf's scale and attributes. Exposes the curing feature under a configurable GameRule `bd_enable_inbred_curing` and Cloth Config GUI.
