@@ -1,5 +1,9 @@
 # Better Dogs - Historical Changelog
 
+## [4.6.1+A-26.2] - 2026-05-30
+### Summary
+- **Bug Fix**: Renamed the custom taming advancement and item tag data folders to singular (`advancement` and `tags/item`) to align with Minecraft 26.2+ data pack directory naming conventions. This fixes the custom advancement and food items tags not loading in-game.
+
 ## [4.6.0+A-26.2] - 2026-05-30
 ### Summary
 - **New Feature Planning**: Initializing version 4.6.0 for a new feature implementation. Corrected all mixin file header comments and dynamic mod version logging statements.
