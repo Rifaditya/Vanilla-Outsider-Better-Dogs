@@ -48,6 +48,7 @@ public class BetterDogsConfig {
     public boolean enableDogsEatRawGroundFood = true;
     public boolean enableDogsEatCookedGroundFood = true;
     public boolean pacifistGuardBuffs = false;
+    public boolean enableInbredCuring = false;
 
     // ========== Aggressive Personality ==========
     public double aggressiveHealthBonus = -10.0;
@@ -204,6 +205,7 @@ public class BetterDogsConfig {
     public boolean getEnableDogsEatRawGroundFood() { return enableDogsEatRawGroundFood; }
     public boolean getEnableDogsEatCookedGroundFood() { return enableDogsEatCookedGroundFood; }
     public boolean getPacifistGuardBuffs() { return pacifistGuardBuffs; }
+    public boolean getEnableInbredCuring() { return enableInbredCuring; }
     public double getAggressiveHealthBonus() { return aggressiveHealthBonus; }
     public double getAggressiveSpeedModifier() { return aggressiveSpeedModifier; }
     public double getAggressiveDetectionRange() { return aggressiveDetectionRange; }

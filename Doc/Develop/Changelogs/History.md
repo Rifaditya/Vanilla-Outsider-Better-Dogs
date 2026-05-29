@@ -1,5 +1,9 @@
 # Better Dogs - Historical Changelog
 
+## [4.5.6+A-26.2] - 2026-05-29
+### Summary
+- **Standard Alignment**: Added a genetic recovery system (off by default) to cure inbred runt wolves. Feeding a tamed, inbred wolf a Golden Apple will clear the inbred status, reverse the inbreeding modifiers to normal levels, and dynamically update the wolf's scale and attributes. Exposes the curing feature under a configurable GameRule `bd_enable_inbred_curing` and Cloth Config GUI.
+
 ## [4.5.5+A-26.2] - 2026-05-28
 ### Summary
 - **Standard Alignment**: Fixed Pacifist watchdog grace buff area validation and config integration. Moved grace buff application from goal ticking to entity ticking so it persists during active combat. Exposed `pacifistGuardBuffs` in configuration files and the Cloth Config GUI screen.

@@ -44,6 +44,55 @@ public abstract class WolfInteractMixin extends TamableAnimal {
         Wolf wolf = (Wolf) (Object) this;
         ItemStack itemStack = player.getItemInHand(hand);
 
+        if (wolf.isTame() && wolf.isOwnedBy(player) && itemStack.is(Items.GOLDEN_APPLE) && hand == InteractionHand.MAIN_HAND) {
+            if (wolf instanceof WolfExtensions ext && net.vanillaoutsider.betterdogs.WolfPersistentData.isPersistedInbred(wolf)) {
+                if (DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_ENABLE_INBRED_CURING)) {
+                    if (!wolf.level().isClientSide()) {
+                        itemStack.consume(1, player);
+                        
+                        float finalHp = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedHealthBonus(wolf);
+                        float finalDmg = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedDamageMod(wolf);
+                        float finalSpeed = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedSpeedMod(wolf);
+                        
+                        // Inverse formulas:
+                        // finalHp = avgHp * 0.6f - 6.0f;  =>  avgHp = (finalHp + 6.0f) / 0.6f;
+                        // finalDmg = avgDmg * 0.6f - 0.20f; => avgDmg = (finalDmg + 0.20f) / 0.6f;
+                        // finalSpeed = avgSpeed * 0.6f - 0.15f; => avgSpeed = (finalSpeed + 0.15f) / 0.6f;
+                        float avgHp = (finalHp + 6.0f) / 0.6f;
+                        float avgDmg = (finalDmg + 0.20f) / 0.6f;
+                        float avgSpeed = (finalSpeed + 0.15f) / 0.6f;
+                        
+                        avgHp = Math.max(avgHp, -30.0f);
+                        avgDmg = Math.max(avgDmg, -0.8f);
+                        avgSpeed = Math.max(avgSpeed, -0.6f);
+                        
+                        net.vanillaoutsider.betterdogs.WolfPersistentData.setPersistedHealthBonus(wolf, avgHp);
+                        net.vanillaoutsider.betterdogs.WolfPersistentData.setPersistedDamageMod(wolf, avgDmg);
+                        net.vanillaoutsider.betterdogs.WolfPersistentData.setPersistedSpeedMod(wolf, avgSpeed);
+                        
+                        java.util.Optional<UUID> p1 = net.vanillaoutsider.betterdogs.WolfPersistentData.getWolfData(wolf).parent1Uuid();
+                        java.util.Optional<UUID> p2 = net.vanillaoutsider.betterdogs.WolfPersistentData.getWolfData(wolf).parent2Uuid();
+                        net.vanillaoutsider.betterdogs.WolfPersistentData.setPersistedParentsAndInbred(wolf, p1.orElse(null), p2.orElse(null), false);
+                        
+                        WolfPersonality personality = ext.betterdogs$getPersonality();
+                        WolfStatManager.applyPersonalityStats(wolf, personality);
+                        
+                        wolf.setHealth(wolf.getMaxHealth());
+                        
+                        wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), SoundEvents.ZOMBIE_VILLAGER_CURE, wolf.getSoundSource(), 1.0f, 1.0f);
+                        
+                        if (wolf.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+                            serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, wolf.getRandomX(1.0), wolf.getRandomY() + 0.5, wolf.getRandomZ(1.0), 10, 0.2, 0.2, 0.2, 0.05);
+                        }
+                        
+                        player.sendOverlayMessage(Component.translatable("text.betterdogs.cured_inbred", wolf.getName()));
+                    }
+                    cir.setReturnValue(InteractionResult.SUCCESS);
+                    return;
+                }
+            }
+        }
+
         if (wolf.isTame() && wolf instanceof WolfExtensions ext) {
             // 1. Triggering / Toggling Pending Adoption
             if (wolf.isOwnedBy(player) && player.isSecondaryUseActive() && itemStack.is(Items.PAPER) && hand == InteractionHand.MAIN_HAND) {
