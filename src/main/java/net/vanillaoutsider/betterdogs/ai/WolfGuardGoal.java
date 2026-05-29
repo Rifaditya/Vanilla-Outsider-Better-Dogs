@@ -106,12 +106,8 @@ public class WolfGuardGoal extends Goal {
                 List<Monster> enemies = wolf.level().getEntitiesOfClass(Monster.class, wolf.getBoundingBox().inflate(16.0, 16.0, 16.0), enemy -> {
                     double dy = Math.abs(enemy.getY() - wolf.getY());
                     if (dy > 16.0) return false;
-                    boolean hasLineOfSight = wolf.getSensing().hasLineOfSight(enemy);
-                    if (hasLineOfSight) {
-                        return true; // Visible up to 16.0 blocks
-                    } else {
-                        return dy <= 4.0; // Hidden only up to 4.0 blocks
-                    }
+                    if (dy <= 4.0) return true;
+                    return wolf.getSensing().hasLineOfSight(enemy);
                 });
                 this.isAlertActive = !enemies.isEmpty();
                 if (this.isAlertActive) {

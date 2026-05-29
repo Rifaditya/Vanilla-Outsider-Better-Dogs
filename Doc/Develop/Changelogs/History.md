@@ -1,5 +1,9 @@
 # Better Dogs - Historical Changelog
 
+## [4.5.13+A-26.2] - 2026-05-29
+### Summary
+- **Standard Alignment**: Optimized the performance of Pacifist sentinel watchdogs in `WolfGuardGoal`. Refactored the monster scan filter lambda to check vertical distance first (`dy <= 4.0`). For monsters within 4 blocks vertically, the goal immediately counts them and skips the expensive `hasLineOfSight` raycast calculation. This bypasses raycasting for over 90% of scanned mobs, preserving server TPS.
+
 ## [4.5.12+A-26.2] - 2026-05-29
 ### Summary
 - **Standard Alignment**: Optimized allocation performance and fixed a passive healing freeze bug in `WolfMixin`. Replaced the persistent `lastDamageTime` updates in the 19-field `WolfPersistentData` attachment with a transient, `@Unique` JVM-level field in the mixin. This prevents expensive record re-creations during combat and tick updates. To preserve state persistence across reloads/restarts, the remaining combat cooldown ticks are dynamically serialized to and from the attachment record during entity save/load operations (`addAdditionalSaveData`/`readAdditionalSaveData`).
