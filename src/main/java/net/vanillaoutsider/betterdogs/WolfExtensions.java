@@ -1,4 +1,4 @@
-// Verified against: Wolf.java (26.1.2+)
+// Verified against: Wolf.java (26.2+)
 package net.vanillaoutsider.betterdogs;
 
 import java.util.UUID;

@@ -1,4 +1,4 @@
-// Verified against: BetterDogs.java (26.1.2+)
+// Mod Initializer (Fabric)
 package net.vanillaoutsider.betterdogs;
 
 import net.dasik.social.api.SocialEventRegistry;
@@ -46,7 +46,10 @@ public class BetterDogs implements ModInitializer {
             throw new net.minecraft.ReportedException(report);
         }
 
-        LOGGER.info("Vanilla Outsider: Better Dogs v3.4.18+A-26.1.2 initializing [Aligned]...");
+        String version = FabricLoader.getInstance().getModContainer(MOD_ID)
+                .map(container -> container.getMetadata().getVersion().getFriendlyString())
+                .orElse("4.6.0+A-26.2");
+        LOGGER.info("Vanilla Outsider: Better Dogs v{} initializing [Aligned]...", version);
 
         // Load Configuration
         BetterDogsConfig.load(FabricLoader.getInstance().getConfigDir());

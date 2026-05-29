@@ -1,4 +1,4 @@
-// Verified against: ServerLevelMixin.java (26.1.2+)
+// Verified against: ServerLevel.java (26.2+)
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.dasik.social.core.GlobalSocialSystem;

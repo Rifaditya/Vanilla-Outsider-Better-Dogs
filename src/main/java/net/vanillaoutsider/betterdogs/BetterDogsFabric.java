@@ -1,4 +1,4 @@
-// Verified against: BetterDogsFabric.java (26.1.2+)
+// Mod Entrypoint (Fabric)
 package net.vanillaoutsider.betterdogs;
 
 import net.fabricmc.api.ModInitializer;

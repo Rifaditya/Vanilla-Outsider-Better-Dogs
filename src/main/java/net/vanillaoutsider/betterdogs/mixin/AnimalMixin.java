@@ -1,4 +1,4 @@
-// Verified against: AnimalMixin.java (26.1.2+)
+// Verified against: Animal.java (26.2+)
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;

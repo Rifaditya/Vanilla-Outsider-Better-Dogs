@@ -1,4 +1,4 @@
-// Verified against: OwnerHurtTargetGoalMixin.java (26.1.2+)
+// Verified against: OwnerHurtTargetGoal.java (26.2+)
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.minecraft.world.entity.TamableAnimal;

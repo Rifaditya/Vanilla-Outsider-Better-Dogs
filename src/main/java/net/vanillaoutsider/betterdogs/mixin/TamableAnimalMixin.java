@@ -1,4 +1,4 @@
-// Verified against: TamableAnimalMixin.java (26.1.2+)
+// Verified against: TamableAnimal.java (26.2+)
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.minecraft.server.level.ServerPlayer;

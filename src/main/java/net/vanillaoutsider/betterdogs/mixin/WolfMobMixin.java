@@ -1,4 +1,4 @@
-// Verified against: WolfMobMixin.java (26.1.2+)
+// Verified against: Mob.java (26.2+)
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.minecraft.world.entity.LivingEntity;
