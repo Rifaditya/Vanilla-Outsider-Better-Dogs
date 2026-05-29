@@ -38,6 +38,9 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     @Unique
     private boolean betterdogs$statsApplied = false;
 
+    @Unique
+    private int betterdogs$lastDamageTime = 0;
+
     protected WolfMixin() {
         super(null, null);
     }
@@ -61,12 +64,12 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
 
     @Override
     public int betterdogs$getLastDamageTime() {
-        return WolfPersistentData.getPersistedLastDamageTime((Wolf) (Object) this);
+        return this.betterdogs$lastDamageTime;
     }
 
     @Override
     public void betterdogs$setLastDamageTime(int time) {
-        WolfPersistentData.setPersistedLastDamageTime((Wolf) (Object) this, time);
+        this.betterdogs$lastDamageTime = time;
     }
 
     @Override

@@ -1,5 +1,9 @@
 # Better Dogs - Historical Changelog
 
+## [4.5.12+A-26.2] - 2026-05-29
+### Summary
+- **Standard Alignment**: Optimized allocation performance and fixed a passive healing freeze bug in `WolfMixin`. Replaced the persistent `lastDamageTime` updates in the 19-field `WolfPersistentData` attachment with a transient, `@Unique` JVM-level field in the mixin. This prevents expensive record re-creations during combat and ensures that when wolves are reloaded (resetting `tickCount` to 0), `lastDamageTime` resets correctly as well, avoiding negative subtraction values that freeze healing.
+
 ## [4.5.11+A-26.2] - 2026-05-29
 ### Summary
 - **Standard Alignment**: Implemented a cooperative cache and dynamic scan radius for follow goal spacing offsets in `PersonalityFollowOwnerGoal`. Wolves now share active follower counts through a static registry `FollowerSpacingCache` mapped to their owner's UUID, reducing scans to a single request per interval for the entire pack. Additionally, the scan radius scales dynamically based on the last known follower count ($\min(32.0 + N \times 0.5, 64.0)$) to ensure outer dogs are counted in larger packs without bloated queries for smaller packs.
