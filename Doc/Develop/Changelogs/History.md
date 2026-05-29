@@ -1,5 +1,9 @@
 # Better Dogs - Historical Changelog
 
+## [4.5.8+A-26.2] - 2026-05-29
+### Summary
+- **Standard Alignment**: Limited the range and line-of-sight conditions for guarding wolves. Normal/Aggressive guarding wolves now strictly require line-of-sight to target hostile mobs, preventing them from targeting cave monsters. Pacifist sentinels use a hybrid model: detecting mobs up to 16 blocks vertically with line-of-sight, but only up to 4 blocks vertically without line-of-sight (hearing through solid walls). Also adjusted pacing look targets to eye level (+1.0 block).
+
 ## [4.5.7+A-26.2] - 2026-05-29
 ### Summary
 - **Standard Alignment**: Implemented a breeding-based genetic outcrossing recovery system. Breeding an inbred runt wolf with a healthy, unrelated wolf will now produce healthy offspring that inherit the parent's reconstructed, unpenalized baseline stats instead of the parent's stunted/penalized values. The active Golden Apple cure remains available but is off by default.

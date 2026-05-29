@@ -103,7 +103,16 @@ public class WolfGuardGoal extends Goal {
         if (personality == WolfPersonality.PACIFIST) {
             if (wolf.tickCount % 20 == 0) {
                 // Watchdog Alarm (Whining and note particles when hostiles approach within 16 blocks)
-                List<Monster> enemies = wolf.level().getEntitiesOfClass(Monster.class, wolf.getBoundingBox().inflate(16.0));
+                List<Monster> enemies = wolf.level().getEntitiesOfClass(Monster.class, wolf.getBoundingBox().inflate(16.0, 16.0, 16.0), enemy -> {
+                    double dy = Math.abs(enemy.getY() - wolf.getY());
+                    if (dy > 16.0) return false;
+                    boolean hasLineOfSight = wolf.getSensing().hasLineOfSight(enemy);
+                    if (hasLineOfSight) {
+                        return true; // Visible up to 16.0 blocks
+                    } else {
+                        return dy <= 4.0; // Hidden only up to 4.0 blocks
+                    }
+                });
                 this.isAlertActive = !enemies.isEmpty();
                 if (this.isAlertActive) {
                     if (alertCooldown <= 0) {
@@ -174,12 +183,13 @@ public class WolfGuardGoal extends Goal {
         if (patrolPauseTimer > 0) {
             patrolPauseTimer--;
             if (personality == WolfPersonality.AGGRESSIVE) {
-                // Look outward from post
+                // Look outward from post (at eye level)
                 double dx = wolf.getX() - post.getX();
                 double dz = wolf.getZ() - post.getZ();
-                wolf.getLookControl().setLookAt(wolf.getX() + dx, wolf.getY(), wolf.getZ() + dz, 10.0f, (float) wolf.getMaxHeadXRot());
+                wolf.getLookControl().setLookAt(wolf.getX() + dx, wolf.getEyeY(), wolf.getZ() + dz, 10.0f, (float) wolf.getMaxHeadXRot());
             } else {
-                wolf.getLookControl().setLookAt(post.getX(), post.getY(), post.getZ(), 10.0f, (float) wolf.getMaxHeadXRot());
+                // Look at post (at eye level)
+                wolf.getLookControl().setLookAt(post.getX() + 0.5, post.getY() + 1.0, post.getZ() + 0.5, 10.0f, (float) wolf.getMaxHeadXRot());
             }
             return;
         }
