@@ -1,5 +1,9 @@
 # Better Dogs - Historical Changelog
 
+## [4.5.17+R-26.2] - 2026-05-29
+### Summary
+- **Stable Release**: Promoted the migration of the wolf/dog scaling system to the native Minecraft `Attributes.SCALE` attribute to a stable production Release.
+
 ## [4.5.16+A-26.2] - 2026-05-29
 ### Summary
 - **Standard Alignment**: Migrated the custom wolf/dog scaling system to the native Minecraft `Attributes.SCALE` attribute introduced in 1.20.5+ / 26.2+. This resolves the client-side visual scaling sync issues and enables native physical size scaling (hitboxes, eye height, step height, passenger offsets, and interaction range) out of the box. Deleted redundant custom client rendering mixins (`WolfRendererMixin`, `WolfRenderStateMixin`, and `WolfRenderStateExtensions`).
