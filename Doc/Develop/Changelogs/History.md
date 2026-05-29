@@ -1,5 +1,9 @@
 # Better Dogs - Historical Changelog
 
+## [4.5.15+R-26.2] - 2026-05-29
+### Summary
+- **Stable Release**: Promoted all recent codebase sanitary refactoring, optimized Pacifist sentinel scans, transient damage cooldown serialization, and cooperative follower cache spacing offsets to a stable production Release.
+
 ## [4.5.14+A-26.2] - 2026-05-29
 ### Summary
 - **Standard Alignment**: Resolved code quality and modularity violations from the sanitary audit. Cleaned up unused imports in `WolfMixin` and `WolfGuardGoal`. Modularized `WolfMixin` by extracting complex tick-handler calculations (colored particle emitting, watchdog grace buffs, adoptable particles, and passive healing calculations) into a new dedicated helper class `WolfTickHelper`, bringing `WolfMixin` well under the 300 LOC limit (down to 276 LOC). Formatted single-line conditional blocks with brackets in `WolfMixin` and `PersonalityFollowOwnerGoal` to satisfy style guidelines.
