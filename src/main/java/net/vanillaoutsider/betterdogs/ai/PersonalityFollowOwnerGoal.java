@@ -28,6 +28,48 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
         this.spacingThrottleTimer = wolf.getRandom().nextInt(20);
     }
 
+    public static class FollowerSpacingCache {
+        private static final java.util.Map<java.util.UUID, CacheEntry> cache = new java.util.concurrent.ConcurrentHashMap<>();
+
+        public static class CacheEntry {
+            public final int followerCount;
+            public final long expiryTime;
+
+            public CacheEntry(int followerCount, long expiryTime) {
+                this.followerCount = followerCount;
+                this.expiryTime = expiryTime;
+            }
+        }
+
+        public static int getCount(java.util.UUID ownerUuid, long currentTime) {
+            CacheEntry entry = cache.get(ownerUuid);
+            if (entry != null && currentTime < entry.expiryTime) {
+                return entry.followerCount;
+            }
+            return -1;
+        }
+
+        public static int getLastKnownCount(java.util.UUID ownerUuid) {
+            CacheEntry entry = cache.get(ownerUuid);
+            return entry != null ? entry.followerCount : 0;
+        }
+
+        public static void update(java.util.UUID ownerUuid, int count, long currentTime, int lifetime) {
+            cache.put(ownerUuid, new CacheEntry(count, currentTime + lifetime));
+            cache.entrySet().removeIf(e -> currentTime > e.getValue().expiryTime + 600);
+        }
+    }
+
+    private void betterdogs$applyFollowerSpacing(int N) {
+        if (N <= 1) {
+            betterdogs$followerSpacingOffset = 0.0f;
+            return;
+        }
+        float multiplier = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_TAMED_PACK_SPREAD_MULTIPLIER) / 100.0f;
+        float maxExtra = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_TAMED_PACK_SPREAD_MAX) / 10.0f;
+        betterdogs$followerSpacingOffset = Math.min((float) Math.sqrt(N - 1) * multiplier, maxExtra);
+    }
+
     private void betterdogs$updateFollowerSpacingOffset() {
         if (this.spacingThrottleTimer > 0) {
             return;
@@ -37,19 +79,34 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
             betterdogs$followerSpacingOffset = 0.0f;
             return;
         }
-        java.util.List<Wolf> activeFollowers = wolf.level().getEntitiesOfClass(Wolf.class, owner.getBoundingBox().inflate(32.0),
+
+        java.util.UUID ownerUuid = owner.getUUID();
+        long currentTime = wolf.level().getGameTime();
+
+        // 1. Try to read from the cooperative cache
+        int cachedCount = FollowerSpacingCache.getCount(ownerUuid, currentTime);
+        if (cachedCount != -1) {
+            this.spacingThrottleTimer = 20 + wolf.getRandom().nextInt(21);
+            betterdogs$applyFollowerSpacing(cachedCount);
+            return;
+        }
+
+        // 2. Cache Miss: Perform dynamic-radius search
+        int lastCount = FollowerSpacingCache.getLastKnownCount(ownerUuid);
+        double scanRadius = Math.min(32.0 + lastCount * 0.5, 64.0);
+
+        java.util.List<Wolf> activeFollowers = wolf.level().getEntitiesOfClass(Wolf.class, owner.getBoundingBox().inflate(scanRadius),
             w -> w.isTame() && w.getOwner() == owner && !w.isOrderedToSit() && !w.isLeashed()
         );
         int N = activeFollowers.size();
-        if (N <= 1) {
-            betterdogs$followerSpacingOffset = 0.0f;
-            this.spacingThrottleTimer = 20 + wolf.getRandom().nextInt(21);
-            return;
-        }
-        float multiplier = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_TAMED_PACK_SPREAD_MULTIPLIER) / 100.0f;
-        float maxExtra = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_TAMED_PACK_SPREAD_MAX) / 10.0f;
-        betterdogs$followerSpacingOffset = Math.min((float) Math.sqrt(N - 1) * multiplier, maxExtra);
-        this.spacingThrottleTimer = 20 + wolf.getRandom().nextInt(21);
+
+        // 3. Update the cooperative cache
+        int lifetime = 20 + wolf.getRandom().nextInt(21);
+        FollowerSpacingCache.update(ownerUuid, N, currentTime, lifetime);
+
+        // 4. Apply the spacing offset
+        this.spacingThrottleTimer = lifetime;
+        betterdogs$applyFollowerSpacing(N);
     }
 
     private float getStartDistance() {

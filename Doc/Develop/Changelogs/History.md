@@ -1,5 +1,9 @@
 # Better Dogs - Historical Changelog
 
+## [4.5.11+A-26.2] - 2026-05-29
+### Summary
+- **Standard Alignment**: Implemented a cooperative cache and dynamic scan radius for follow goal spacing offsets in `PersonalityFollowOwnerGoal`. Wolves now share active follower counts through a static registry `FollowerSpacingCache` mapped to their owner's UUID, reducing scans to a single request per interval for the entire pack. Additionally, the scan radius scales dynamically based on the last known follower count ($\min(32.0 + N \times 0.5, 64.0)$) to ensure outer dogs are counted in larger packs without bloated queries for smaller packs.
+
 ## [4.5.10+A-26.2] - 2026-05-29
 ### Summary
 - **Standard Alignment**: Optimized the performance of tamed wolves by throttling the active follower spacing search in `PersonalityFollowOwnerGoal`. Instead of scanning a 32-block bounding box for all other tamed followers on every tick when the goal is inactive/active, the query runs once every 20-40 ticks (1-2 seconds) using a staggered, entity-randomized throttle timer. This prevents severe server TPS degradation when players have large packs of wolves.
