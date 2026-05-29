@@ -1,8 +1,12 @@
 # Better Dogs - Historical Changelog
 
+## [4.6.3+A-26.2] - 2026-05-30
+### Summary
+- **Visual Polish**: Changed the custom advancement "A Pack of Personalities" display frame shape from Challenge to Goal.
+
 ## [4.6.2+A-26.2] - 2026-05-30
 ### Summary
-- **Refactor**: Changed the custom advancement "A Pack of Personalities" icon from the Wolf Spawn Egg to a Bone, and its visual frame type from a standard task to a challenge frame to display progress in the tooltip.
+- **Visual Polish**: Changed the custom advancement "A Pack of Personalities" icon from a Wolf Spawn Egg to a Bone, and its border shape to a Challenge frame.
 
 ## [4.6.1+A-26.2] - 2026-05-30
 ### Summary

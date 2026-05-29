@@ -10,7 +10,7 @@
     "description": {
       "translate": "advancements.betterdogs.husbandry.a_pack_of_personalities.description"
     },
-    "frame": "challenge",
+    "frame": "goal",
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false
