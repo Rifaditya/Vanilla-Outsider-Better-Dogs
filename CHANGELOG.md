@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.5.18+A-26.2] - 2026-05-30
+### Summary
+- **Standard Alignment**: Added a custom advancement "A Pack of Personalities" under the Husbandry tab, parented by the vanilla "Tame an Animal" advancement. The advancement triggers when a player tames a wolf of each personality type: Normal, Aggressive, and Pacifist. Uses the Wolf Spawn Egg as its visual icon.
+
 ## [4.5.17+R-26.2] - 2026-05-29
 ### Summary
 - **Stable Release**: Promoted the migration of the wolf/dog scaling system to the native Minecraft `Attributes.SCALE` attribute to a stable production Release.

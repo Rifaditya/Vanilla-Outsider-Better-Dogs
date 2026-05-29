@@ -235,5 +235,7 @@
     "text.betterdogs.adoption_cancelled": "Adoption cancelled for %s.",
     "text.betterdogs.adoption_cancelled_damage": "Adoption cancelled for %s because they took damage!",
     "text.betterdogs.adopted_new_owner": "You have adopted %s!",
-    "text.betterdogs.adopted_old_owner": "%s has been adopted by %s!"
+    "text.betterdogs.adopted_old_owner": "%s has been adopted by %s!",
+    "advancements.betterdogs.husbandry.a_pack_of_personalities.title": "A Pack of Personalities",
+    "advancements.betterdogs.husbandry.a_pack_of_personalities.description": "Tame a wolf of each personality type: Normal, Aggressive, and Pacifist"
 }

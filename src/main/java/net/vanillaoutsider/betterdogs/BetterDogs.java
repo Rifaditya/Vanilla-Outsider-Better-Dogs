@@ -6,7 +6,10 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+import net.vanillaoutsider.betterdogs.advancement.TameWolfPersonalityTrigger;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +25,12 @@ public class BetterDogs implements ModInitializer {
     public static final AttachmentType<WolfPersistentData> WOLF_DATA = AttachmentRegistry.createPersistent(
             Identifier.parse("betterdogs:wolf_data"),
             WolfPersistentData.CODEC);
+
+    public static final TameWolfPersonalityTrigger TAME_WOLF_PERSONALITY = Registry.register(
+            BuiltInRegistries.TRIGGER_TYPES,
+            Identifier.fromNamespaceAndPath(MOD_ID, "tame_wolf_personality"),
+            new TameWolfPersonalityTrigger()
+    );
 
     @Override
     public void onInitialize() {
