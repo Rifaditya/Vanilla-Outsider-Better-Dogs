@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.6.5+A-26.2] - 2026-05-30
+### Summary
+- **New Feature**: Added custom advancement "On Guard!" parented to "Tame an Animal". The advancement is awarded when a player places a tamed wolf into Guard Mode for the first time. It uses a Bone as its icon and uses a Task frame.
+
 ## [4.6.4+A-26.2] - 2026-05-30
 ### Summary
 - **New Feature**: Added custom advancement "A Pack of Guardians" parented to "A Pack of Personalities". The advancement is awarded when a player places a tamed wolf of each personality type (Normal, Aggressive, and Pacifist) into Guard Mode (by sneak right-clicking with a bone). It uses a Bone as its icon and uses a Goal frame.
