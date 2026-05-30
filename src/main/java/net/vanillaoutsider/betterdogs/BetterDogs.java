@@ -17,6 +17,7 @@ import net.vanillaoutsider.betterdogs.advancement.CureInbredTrigger;
 import net.vanillaoutsider.betterdogs.advancement.WolfLitterTrigger;
 import net.vanillaoutsider.betterdogs.advancement.PutUpForAdoptionTrigger;
 import net.vanillaoutsider.betterdogs.advancement.OnPatrolTrigger;
+import net.vanillaoutsider.betterdogs.advancement.SelfServiceTrigger;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,6 +80,12 @@ public class BetterDogs implements ModInitializer {
             BuiltInRegistries.TRIGGER_TYPES,
             Identifier.fromNamespaceAndPath(MOD_ID, "on_patrol"),
             new OnPatrolTrigger()
+    );
+
+    public static final SelfServiceTrigger SELF_SERVICE = Registry.register(
+            BuiltInRegistries.TRIGGER_TYPES,
+            Identifier.fromNamespaceAndPath(MOD_ID, "self_service"),
+            new SelfServiceTrigger()
     );
 
     @Override

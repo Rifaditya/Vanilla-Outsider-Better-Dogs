@@ -244,5 +244,7 @@
     "advancements.betterdogs.husbandry.put_up_for_adoption.title": "Mencari Rumah Baru",
     "advancements.betterdogs.husbandry.put_up_for_adoption.description": "Siapkan salah satu anjing jinakmu untuk diadopsi menggunakan selembar kertas sambil mengendap",
     "advancements.betterdogs.husbandry.on_patrol.title": "Patroli Aktif",
-    "advancements.betterdogs.husbandry.on_patrol.description": "Buat anjing Agresif penjagamu mengalahkan monster dalam radius patrolinya"
+    "advancements.betterdogs.husbandry.on_patrol.description": "Buat anjing Agresif penjagamu mengalahkan monster dalam radius patrolinya",
+    "advancements.betterdogs.husbandry.self_service.title": "Makan Mandiri",
+    "advancements.betterdogs.husbandry.self_service.description": "Biarkan anjing jinakmu yang terluka menyembuhkan diri dengan memakan makanan yang kamu jatuhkan di tanah"
 }

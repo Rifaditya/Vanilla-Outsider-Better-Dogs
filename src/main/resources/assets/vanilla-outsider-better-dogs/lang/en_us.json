@@ -262,5 +262,7 @@
     "advancements.betterdogs.husbandry.put_up_for_adoption.title": "Looking for a Home",
     "advancements.betterdogs.husbandry.put_up_for_adoption.description": "Put one of your tamed dogs up for adoption using a piece of paper while sneaking",
     "advancements.betterdogs.husbandry.on_patrol.title": "On Patrol",
-    "advancements.betterdogs.husbandry.on_patrol.description": "Have your guarding Aggressive dog defeat a monster within its patrol radius"
+    "advancements.betterdogs.husbandry.on_patrol.description": "Have your guarding Aggressive dog defeat a monster within its patrol radius",
+    "advancements.betterdogs.husbandry.self_service.title": "Self-Service",
+    "advancements.betterdogs.husbandry.self_service.description": "Let your hurt tamed dog heal itself by automatically eating food you dropped on the ground"
 }

@@ -122,6 +122,16 @@ public class EatGroundFoodGoal extends Goal {
             }
         }
 
+        // Trigger Self-Service advancement if food was dropped by the owner
+        if (wolf.isTame()) {
+            net.minecraft.world.entity.Entity thrower = food.getOwner();
+            if (thrower != null && wolf.getOwnerReference() != null && thrower.getUUID().equals(wolf.getOwnerReference().getUUID())) {
+                if (thrower instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                    net.vanillaoutsider.betterdogs.BetterDogs.SELF_SERVICE.trigger(serverPlayer);
+                }
+            }
+        }
+
         // Consume one item
         if (stack.getCount() > 1) {
             stack.shrink(1);
