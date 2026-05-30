@@ -1,4 +1,4 @@
-// Verified against: TameAnimalTrigger.java (26.2+)
+// Verified against: BredAnimalsTrigger.java (26.2+)
 package net.vanillaoutsider.betterdogs.advancement;
 
 import com.mojang.serialization.Codec;
@@ -9,7 +9,7 @@ import net.minecraft.advancements.predicates.entity.EntityPredicate;
 import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
 import net.minecraft.server.level.ServerPlayer;
 
-public class CureInbredTrigger extends SimpleCriterionTrigger<CureInbredTrigger.TriggerInstance> {
+public class OutcrossRuntTrigger extends SimpleCriterionTrigger<OutcrossRuntTrigger.TriggerInstance> {
 
     @Override
     public Codec<TriggerInstance> codec() {

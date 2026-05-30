@@ -12,8 +12,7 @@ import net.minecraft.resources.Identifier;
 import net.vanillaoutsider.betterdogs.advancement.TameWolfPersonalityTrigger;
 import net.vanillaoutsider.betterdogs.advancement.GuardWolfPersonalityTrigger;
 import net.vanillaoutsider.betterdogs.advancement.InbredWolfTrigger;
-import net.vanillaoutsider.betterdogs.advancement.CureInbredTrigger;
-import net.vanillaoutsider.betterdogs.advancement.OutcrossWolfTrigger;
+import net.vanillaoutsider.betterdogs.advancement.OutcrossRuntTrigger;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,16 +47,10 @@ public class BetterDogs implements ModInitializer {
             new InbredWolfTrigger()
     );
 
-    public static final CureInbredTrigger CURE_INBRED = Registry.register(
+    public static final OutcrossRuntTrigger OUTCROSS_RUNT = Registry.register(
             BuiltInRegistries.TRIGGER_TYPES,
-            Identifier.fromNamespaceAndPath(MOD_ID, "cure_inbred"),
-            new CureInbredTrigger()
-    );
-
-    public static final OutcrossWolfTrigger OUTCROSS_WOLF = Registry.register(
-            BuiltInRegistries.TRIGGER_TYPES,
-            Identifier.fromNamespaceAndPath(MOD_ID, "outcross_wolf"),
-            new OutcrossWolfTrigger()
+            Identifier.fromNamespaceAndPath(MOD_ID, "outcross_runt"),
+            new OutcrossRuntTrigger()
     );
 
     @Override

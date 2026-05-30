@@ -169,7 +169,7 @@ public abstract class WolfBreedingMixin {
                 player = parent2.getLoveCause();
             }
             if (player != null) {
-                net.vanillaoutsider.betterdogs.BetterDogs.OUTCROSS_WOLF.trigger(player);
+                net.vanillaoutsider.betterdogs.BetterDogs.OUTCROSS_RUNT.trigger(player);
             }
         }
     }

@@ -244,8 +244,6 @@
     "advancements.betterdogs.husbandry.on_guard.description": "Place a wolf into Guard Mode for the first time using a bone while sneaking",
     "advancements.betterdogs.husbandry.inbred_wolf.title": "Keep it in the family",
     "advancements.betterdogs.husbandry.inbred_wolf.description": "Breed two closely related wolves and produce an inbred runt... yuck!",
-    "advancements.betterdogs.husbandry.cure_runt.title": "A Fresh Start",
-    "advancements.betterdogs.husbandry.cure_runt.description": "Cure an inbred runt using a Golden Apple",
-    "advancements.betterdogs.husbandry.outcross_wolf.title": "Outcrossed",
-    "advancements.betterdogs.husbandry.outcross_wolf.description": "Breed an inbred runt wolf with an unrelated, healthy wolf to recover the genetic line"
+    "advancements.betterdogs.husbandry.outcross_runt.title": "Fresh Blood",
+    "advancements.betterdogs.husbandry.outcross_runt.description": "Breed an inbred runt parent with an unrelated wolf to produce a healthy puppy and recover the lineage"
 }

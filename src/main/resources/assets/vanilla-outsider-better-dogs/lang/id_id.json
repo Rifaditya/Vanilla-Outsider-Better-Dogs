@@ -226,8 +226,6 @@
     "advancements.betterdogs.husbandry.on_guard.description": "Tempatkan serigala ke Mode Penjaga untuk pertama kalinya menggunakan tulang sambil mengendap",
     "advancements.betterdogs.husbandry.inbred_wolf.title": "Hubungan Sedarah",
     "advancements.betterdogs.husbandry.inbred_wolf.description": "Kawinkan dua serigala kerabat dekat untuk melahirkan anak kerdil... ih, jijik!",
-    "advancements.betterdogs.husbandry.cure_runt.title": "Awal Baru",
-    "advancements.betterdogs.husbandry.cure_runt.description": "Sembuhkan kerdil perkawinan sedarah menggunakan Apel Emas",
-    "advancements.betterdogs.husbandry.outcross_wolf.title": "Kawin Silang Luar",
-    "advancements.betterdogs.husbandry.outcross_wolf.description": "Kawinkan serigala kerdil perkawinan sedarah dengan serigala sehat yang tidak berkerabat untuk memulihkan garis genetik"
+    "advancements.betterdogs.husbandry.outcross_runt.title": "Darah Segar",
+    "advancements.betterdogs.husbandry.outcross_runt.description": "Kawinkan induk kerdil perkawinan sedarah dengan serigala yang tidak berkerabat untuk melahirkan anak yang sehat dan memulihkan silsilah"
 }
