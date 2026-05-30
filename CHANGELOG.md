@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.6.10+A-26.2] - 2026-05-30
+### Summary
+- **New Feature**: Added custom advancement "Looking for a Home" under the Husbandry tab, parented to the vanilla "Tame an Animal" advancement. The advancement is awarded when a player puts one of their tamed dogs up for adoption (by sneak right-clicking them with a piece of paper). It uses Paper as its icon and a Task frame.
+
 ## [4.6.9+A-26.2] - 2026-05-30
 ### Summary
 - **New Feature**: Added custom advancements to track wolf litter sizes when breeding tamed wolves:

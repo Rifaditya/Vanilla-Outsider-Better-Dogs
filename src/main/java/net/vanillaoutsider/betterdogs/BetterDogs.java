@@ -15,6 +15,7 @@ import net.vanillaoutsider.betterdogs.advancement.InbredWolfTrigger;
 import net.vanillaoutsider.betterdogs.advancement.OutcrossRuntTrigger;
 import net.vanillaoutsider.betterdogs.advancement.CureInbredTrigger;
 import net.vanillaoutsider.betterdogs.advancement.WolfLitterTrigger;
+import net.vanillaoutsider.betterdogs.advancement.PutUpForAdoptionTrigger;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,6 +66,12 @@ public class BetterDogs implements ModInitializer {
             BuiltInRegistries.TRIGGER_TYPES,
             Identifier.fromNamespaceAndPath(MOD_ID, "wolf_litter"),
             new WolfLitterTrigger()
+    );
+
+    public static final PutUpForAdoptionTrigger PUT_UP_FOR_ADOPTION = Registry.register(
+            BuiltInRegistries.TRIGGER_TYPES,
+            Identifier.fromNamespaceAndPath(MOD_ID, "put_up_for_adoption"),
+            new PutUpForAdoptionTrigger()
     );
 
     @Override

@@ -258,5 +258,7 @@
     "advancements.betterdogs.husbandry.litter_four.title": "Puppy Rain",
     "advancements.betterdogs.husbandry.litter_four.description": "Breed two tamed wolves to get a maximum litter of 4 puppies",
     "advancements.betterdogs.husbandry.litter_legend.title": "Litter Legend",
-    "advancements.betterdogs.husbandry.litter_legend.description": "Experience all litter sizes: get a litter of 2, 3, and 4 puppies at least once"
+    "advancements.betterdogs.husbandry.litter_legend.description": "Experience all litter sizes: get a litter of 2, 3, and 4 puppies at least once",
+    "advancements.betterdogs.husbandry.put_up_for_adoption.title": "Looking for a Home",
+    "advancements.betterdogs.husbandry.put_up_for_adoption.description": "Put one of your tamed dogs up for adoption using a piece of paper while sneaking"
 }

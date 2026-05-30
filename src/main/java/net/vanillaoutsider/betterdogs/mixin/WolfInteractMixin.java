@@ -112,6 +112,10 @@ public abstract class WolfInteractMixin extends TamableAnimal {
                         itemStack.consume(1, player);
                         wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), SoundEvents.BOOK_PAGE_TURN, wolf.getSoundSource(), 1.0f, 1.0f);
                         player.sendOverlayMessage(Component.translatable("text.betterdogs.adoption_pending", wolf.getName()));
+
+                        if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                            net.vanillaoutsider.betterdogs.BetterDogs.PUT_UP_FOR_ADOPTION.trigger(serverPlayer);
+                        }
                     } else {
                         wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), SoundEvents.BOOK_PAGE_TURN, wolf.getSoundSource(), 1.0f, 1.0f);
                         player.sendOverlayMessage(Component.translatable("text.betterdogs.adoption_cancelled", wolf.getName()));
