@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:husbandry/on_guard",
+  "display": {
+    "icon": {
+      "id": "minecraft:iron_sword"
+    },
+    "title": {
+      "translate": "advancements.betterdogs.husbandry.on_patrol.title"
+    },
+    "description": {
+      "translate": "advancements.betterdogs.husbandry.on_patrol.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "defeat_mob_on_patrol": {
+      "trigger": "vanilla-outsider-better-dogs:on_patrol"
+    }
+  },
+  "requirements": [
+    [
+      "defeat_mob_on_patrol"
+    ]
+  ]
+}

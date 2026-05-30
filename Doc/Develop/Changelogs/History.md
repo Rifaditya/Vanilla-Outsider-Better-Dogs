@@ -1,5 +1,9 @@
 # Better Dogs - Historical Changelog
 
+## [4.6.11+A-26.2] - 2026-05-30
+### Summary
+- **New Feature**: Added custom advancement "On Patrol" (Indonesian: "Patroli Aktif") parented to "On Guard!" (`minecraft:husbandry/on_guard`). The advancement is awarded when a player's guarding Aggressive dog defeats a monster within its patrol radius. It uses an Iron Sword as its icon and a Task frame.
+
 ## [4.6.10+A-26.2] - 2026-05-30
 ### Summary
 - **New Feature**: Added custom advancement "Looking for a Home" under the Husbandry tab, parented to the vanilla "Tame an Animal" advancement. The advancement is awarded when a player puts one of their tamed dogs up for adoption (by sneak right-clicking them with a piece of paper). It uses Paper as its icon and a Task frame.
