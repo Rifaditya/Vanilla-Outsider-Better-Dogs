@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.6.4+A-26.2] - 2026-05-30
+### Summary
+- **New Feature**: Added custom advancement "A Pack of Guardians" parented to "A Pack of Personalities". The advancement is awarded when a player places a tamed wolf of each personality type (Normal, Aggressive, and Pacifist) into Guard Mode (by sneak right-clicking with a bone). It uses a Bone as its icon and uses a Goal frame.
+
 ## [4.6.3+A-26.2] - 2026-05-30
 ### Summary
 - **Visual Polish**: Changed the custom advancement "A Pack of Personalities" display frame shape from Challenge to Goal.

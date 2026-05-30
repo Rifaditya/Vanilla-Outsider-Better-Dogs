@@ -217,5 +217,9 @@
     "gamerule.vanilla-outsider-better-dogs.bd_wild_pack_spread_multiplier": "Pengali Jarak Penyebaran Serigala Liar",
     "gamerule.vanilla-outsider-better-dogs.bd_wild_pack_spread_multiplier.description": "Faktor skala untuk seberapa lebar serigala liar menyebar seiring bertambahnya ukuran kelompok. Default: 80 (pengali 0.8x)",
     "gamerule.vanilla-outsider-better-dogs.bd_wild_pack_spread_max": "Batas Jarak Penyebaran Serigala Liar",
-    "gamerule.vanilla-outsider-better-dogs.bd_wild_pack_spread_max.description": "Jarak tambahan maksimal yang ditambahkan ke rentang mengikuti serigala liar. Default: 40 (4.0 blok)"
+    "gamerule.vanilla-outsider-better-dogs.bd_wild_pack_spread_max.description": "Jarak tambahan maksimal yang ditambahkan ke rentang mengikuti serigala liar. Default: 40 (4.0 blok)",
+    "advancements.betterdogs.husbandry.a_pack_of_personalities.title": "Sekawanan Kepribadian",
+    "advancements.betterdogs.husbandry.a_pack_of_personalities.description": "Jinakkan serigala dari setiap tipe kepribadian: Normal, Agresif, dan Pasifis",
+    "advancements.betterdogs.husbandry.a_pack_of_guardians.title": "Sekawanan Penjaga",
+    "advancements.betterdogs.husbandry.a_pack_of_guardians.description": "Tempatkan serigala dari setiap tipe kepribadian (Normal, Agresif, dan Pasifis) ke Mode Penjaga menggunakan tulang sambil mengendap"
 }

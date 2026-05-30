@@ -211,6 +211,11 @@ public abstract class WolfInteractMixin extends TamableAnimal {
                         player.sendOverlayMessage(Component.translatable("text.betterdogs.guard_activated", wolf.getName(), pos.getX(), pos.getY(), pos.getZ()));
                         
                         WolfPersonality personality = ext.betterdogs$getPersonality();
+                        
+                        if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                            net.vanillaoutsider.betterdogs.BetterDogs.GUARD_WOLF_PERSONALITY.trigger(serverPlayer, personality);
+                        }
+
                         float pitch = switch (personality) {
                             case AGGRESSIVE -> 0.8f;
                             case NORMAL -> 1.2f;

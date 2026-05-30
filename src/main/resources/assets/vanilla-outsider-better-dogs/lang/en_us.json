@@ -237,5 +237,7 @@
     "text.betterdogs.adopted_new_owner": "You have adopted %s!",
     "text.betterdogs.adopted_old_owner": "%s has been adopted by %s!",
     "advancements.betterdogs.husbandry.a_pack_of_personalities.title": "A Pack of Personalities",
-    "advancements.betterdogs.husbandry.a_pack_of_personalities.description": "Tame a wolf of each personality type: Normal, Aggressive, and Pacifist"
+    "advancements.betterdogs.husbandry.a_pack_of_personalities.description": "Tame a wolf of each personality type: Normal, Aggressive, and Pacifist",
+    "advancements.betterdogs.husbandry.a_pack_of_guardians.title": "A Pack of Guardians",
+    "advancements.betterdogs.husbandry.a_pack_of_guardians.description": "Place a wolf of each personality type (Normal, Aggressive, and Pacifist) into Guard Mode using a bone while sneaking"
 }
