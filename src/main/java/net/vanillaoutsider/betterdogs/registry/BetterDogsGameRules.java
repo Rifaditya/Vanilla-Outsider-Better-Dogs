@@ -113,6 +113,7 @@ public class BetterDogsGameRules {
 	// --- Guard Mode ---
 	public static GameRule<Boolean> BD_PACIFIST_GUARD_BUFFS;
 	public static GameRule<Boolean> BD_ENABLE_INBRED_CURING;
+	public static GameRule<Boolean> BD_SHOW_RUNT_PARTICLES;
 	public static GameRule<Integer> BD_GUARD_PATROL_RANGE_AGGRESSIVE;
 	public static GameRule<Integer> BD_GUARD_PATROL_RANGE_NORMAL;
 	public static GameRule<Integer> BD_GUARD_PATROL_RANGE_PACIFIST;
@@ -270,6 +271,7 @@ public class BetterDogsGameRules {
 		// Guard Mode
 		BD_PACIFIST_GUARD_BUFFS = registerBoolean("vanilla-outsider-better-dogs:bd_pacifist_guard_buffs", BETTER_DOGS, config.getPacifistGuardBuffs());
 		BD_ENABLE_INBRED_CURING = registerBoolean("vanilla-outsider-better-dogs:bd_enable_inbred_curing", BETTER_DOGS, config.getEnableInbredCuring());
+		BD_SHOW_RUNT_PARTICLES = registerBoolean("vanilla-outsider-better-dogs:bd_show_runt_particles", BETTER_DOGS, config.getShowRuntParticles());
 		BD_GUARD_PATROL_RANGE_AGGRESSIVE = registerInteger("vanilla-outsider-better-dogs:bd_guard_patrol_range_aggressive", BETTER_DOGS, 12);
 		BD_GUARD_PATROL_RANGE_NORMAL = registerInteger("vanilla-outsider-better-dogs:bd_guard_patrol_range_normal", BETTER_DOGS, 0);
 		BD_GUARD_PATROL_RANGE_PACIFIST = registerInteger("vanilla-outsider-better-dogs:bd_guard_patrol_range_pacifist", BETTER_DOGS, 3);

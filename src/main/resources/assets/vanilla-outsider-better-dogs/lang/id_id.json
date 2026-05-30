@@ -130,6 +130,7 @@
     "config.betterdogs.enableDogsEatCookedGroundFood": "Anjing: Makan Makanan Matang di Tanah",
     "config.betterdogs.pacifistGuardBuffs": "Efek Tambahan Penjaga Pasifis",
     "config.betterdogs.enableInbredCuring": "Aktifkan Penyembuhan Perkawinan Sedarah",
+    "config.betterdogs.showRuntParticles": "Tampilkan Partikel Kerdil",
     "config.betterdogs.followCatchUpSpeed": "Kecepatan Ikut Mengejar",
     "config.betterdogs.followCatchUpThreshold": "Ambang Ikut Mengejar",
     "config.betterdogs.teleportToOwnerSpread": "Penyebaran Teleportasi",
@@ -199,7 +200,9 @@
     "gamerule.vanilla-outsider-better-dogs.bd_pacifist_guard_buffs": "Efek Tambahan Penjaga Pasifis",
     "gamerule.vanilla-outsider-better-dogs.bd_pacifist_guard_buffs.description": "Jika benar, anjing Pasifis yang menjaga area akan memberikan efek Regenerasi dan Ketahanan kepada pemilik di sekitar.",
     "gamerule.vanilla-outsider-better-dogs.bd_enable_inbred_curing": "Aktifkan Penyembuhan Perkawinan Sedarah",
-    "gamerule.vanilla-outsider-better-dogs.bd_enable_inbred_curing.description": "Jika benar, memberikan Apel Emas kepada serigala perkawinan sedarah akan menyembuhkan efek penalti genetik. Default: false.",
+    "gamerule.vanilla-outsider-better-dogs.bd_enable_inbred_curing.description": "If true, memberikan Apel Emas kepada serigala perkawinan sedarah akan menyembuhkan efek penalti genetik. Default: true.",
+    "gamerule.vanilla-outsider-better-dogs.bd_show_runt_particles": "Tampilkan Partikel Kerdil",
+    "gamerule.vanilla-outsider-better-dogs.bd_show_runt_particles.description": "Jika benar, serigala kerdil (perkawinan sedarah) yang jinak akan mengeluarkan partikel daging busuk kecil secara halus untuk membantu pemain mengidentifikasinya. Default: false.",
     "gamerule.vanilla-outsider-better-dogs.bd_guard_patrol_range_aggressive": "Jarak Patroli Penjaga Agresif",
     "gamerule.vanilla-outsider-better-dogs.bd_guard_patrol_range_aggressive.description": "Jarak patroli saat santai untuk penjaga Agresif (Default: 12).",
     "gamerule.vanilla-outsider-better-dogs.bd_guard_patrol_range_normal": "Jarak Patroli Penjaga Normal",
@@ -227,5 +230,7 @@
     "advancements.betterdogs.husbandry.inbred_wolf.title": "Hubungan Sedarah",
     "advancements.betterdogs.husbandry.inbred_wolf.description": "Kawinkan dua serigala kerabat dekat untuk melahirkan anak kerdil... ih, jijik!",
     "advancements.betterdogs.husbandry.outcross_runt.title": "Darah Segar",
-    "advancements.betterdogs.husbandry.outcross_runt.description": "Kawinkan induk kerdil perkawinan sedarah dengan serigala yang tidak berkerabat untuk melahirkan anak yang sehat dan memulihkan silsilah"
+    "advancements.betterdogs.husbandry.outcross_runt.description": "Kawinkan induk kerdil perkawinan sedarah dengan serigala yang tidak berkerabat untuk melahirkan anak yang sehat dan memulihkan silsilah",
+    "advancements.betterdogs.husbandry.cure_runt.title": "Awal Baru",
+    "advancements.betterdogs.husbandry.cure_runt.description": "Sembuhkan kerdil perkawinan sedarah menggunakan Apel Emas"
 }

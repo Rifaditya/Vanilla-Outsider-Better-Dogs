@@ -139,6 +139,7 @@
     "config.betterdogs.enableDogsEatCookedGroundFood": "Dogs: Eat Cooked Ground Food",
     "config.betterdogs.pacifistGuardBuffs": "Pacifist Guard Buffs",
     "config.betterdogs.enableInbredCuring": "Enable Inbreeding Cure",
+    "config.betterdogs.showRuntParticles": "Show Runt Particles",
     "config.betterdogs.followCatchUpSpeed": "Follow Catch Up Speed",
     "config.betterdogs.followCatchUpThreshold": "Follow Catch Up Threshold",
     "config.betterdogs.teleportToOwnerSpread": "Teleport Spread",
@@ -211,7 +212,9 @@
     "gamerule.vanilla-outsider-better-dogs.bd_pacifist_guard_buffs": "Pacifist Guard Buffs",
     "gamerule.vanilla-outsider-better-dogs.bd_pacifist_guard_buffs.description": "If true, Pacifist dogs guarding an area apply Regeneration and Resistance to nearby owners. Default: false.",
     "gamerule.vanilla-outsider-better-dogs.bd_enable_inbred_curing": "Enable Inbreeding Cure",
-    "gamerule.vanilla-outsider-better-dogs.bd_enable_inbred_curing.description": "If true, feeding a Golden Apple to an inbred wolf will cure its genetic penalties and restore normal attributes. Default: false.",
+    "gamerule.vanilla-outsider-better-dogs.bd_enable_inbred_curing.description": "If true, feeding a Golden Apple to an inbred wolf will cure its genetic penalties and restore normal attributes. Default: true.",
+    "gamerule.vanilla-outsider-better-dogs.bd_show_runt_particles": "Show Runt Particles",
+    "gamerule.vanilla-outsider-better-dogs.bd_show_runt_particles.description": "If true, tamed runt (inbred) wolves will subtly emit tiny rotten flesh particles to help players identify them. Default: false.",
     "gamerule.vanilla-outsider-better-dogs.bd_guard_patrol_range_aggressive": "Aggressive Guard Patrol Range",
     "gamerule.vanilla-outsider-better-dogs.bd_guard_patrol_range_aggressive.description": "The radius (in blocks) within which an Aggressive guard dog will patrol around its post. Default: 12.",
     "gamerule.vanilla-outsider-better-dogs.bd_guard_patrol_range_normal": "Normal Guard Patrol Range",
@@ -245,5 +248,7 @@
     "advancements.betterdogs.husbandry.inbred_wolf.title": "Keep it in the family",
     "advancements.betterdogs.husbandry.inbred_wolf.description": "Breed two closely related wolves and produce an inbred runt... yuck!",
     "advancements.betterdogs.husbandry.outcross_runt.title": "Fresh Blood",
-    "advancements.betterdogs.husbandry.outcross_runt.description": "Breed an inbred runt parent with an unrelated wolf to produce a healthy puppy and recover the lineage"
+    "advancements.betterdogs.husbandry.outcross_runt.description": "Breed an inbred runt parent with an unrelated wolf to produce a healthy puppy and recover the lineage",
+    "advancements.betterdogs.husbandry.cure_runt.title": "A Fresh Start",
+    "advancements.betterdogs.husbandry.cure_runt.description": "Cure an inbred runt using a Golden Apple"
 }

@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.6.8+A-26.2] - 2026-05-30
+### Summary
+- **New Feature**: Added custom advancement "A Fresh Start" (`minecraft:husbandry/cure_runt`) parented to "Keep it in the family" (`minecraft:husbandry/inbred_runt`). Awarded when the player cures an inbred runt using a Golden Apple, displaying with a Golden Apple icon and a Goal frame.
+- **New Feature**: Added subtle rotten flesh particle emitter for tamed runt (inbred) wolves, so players can visually identify them. This effect is optional and can be enabled/disabled via the custom GameRule `vanilla-outsider-better-dogs:bd_show_runt_particles` or debug mode `betterdogdebugging`.
+- **Configuration**: Changed the default value of the `bd_enable_inbred_curing` GameRule and the config default to `true`.
+
 ## [4.6.7+A-26.2] - 2026-05-30
 ### Summary
 - **New Feature**: Added custom advancement "Fresh Blood" parented to "Keep it in the family" (`minecraft:husbandry/inbred_runt`). The advancement is awarded when a player breeds an inbred runt parent with an unrelated wolf, successfully recovering the lineage. It uses Raw Beef as its icon and a Task frame.

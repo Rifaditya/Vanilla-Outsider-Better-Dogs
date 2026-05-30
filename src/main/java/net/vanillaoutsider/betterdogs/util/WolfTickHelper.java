@@ -3,6 +3,8 @@ package net.vanillaoutsider.betterdogs.util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.TrailParticleOption;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -16,6 +18,7 @@ import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
+import net.minecraft.world.item.Items;
 
 import java.util.List;
 
@@ -87,6 +90,16 @@ public class WolfTickHelper {
             return healTimer;
         } else {
             return 0;
+        }
+    }
+
+    public static void tickRuntParticles(Wolf wolf, ServerLevel serverLevel) {
+        if (DynamicGameRuleManager.getBoolean(serverLevel, BetterDogsGameRules.BD_SHOW_RUNT_PARTICLES)
+                || DynamicGameRuleManager.getBoolean(serverLevel, BetterDogsGameRules.BD_DEBUGGING)) {
+            double px = wolf.getRandomX(0.4);
+            double py = wolf.getRandomY() + 0.2;
+            double pz = wolf.getRandomZ(0.4);
+            serverLevel.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, Items.ROTTEN_FLESH), px, py, pz, 1, 0.01, 0.01, 0.01, 0.01);
         }
     }
 }
