@@ -243,5 +243,7 @@
     "advancements.betterdogs.husbandry.on_guard.title": "On Guard!",
     "advancements.betterdogs.husbandry.on_guard.description": "Place a wolf into Guard Mode for the first time using a bone while sneaking",
     "advancements.betterdogs.husbandry.inbred_wolf.title": "Keep it in the family",
-    "advancements.betterdogs.husbandry.inbred_wolf.description": "Breed two closely related wolves and produce an inbred runt... yuck!"
+    "advancements.betterdogs.husbandry.inbred_wolf.description": "Breed two closely related wolves and produce an inbred runt... yuck!",
+    "advancements.betterdogs.husbandry.cure_runt.title": "A Fresh Start",
+    "advancements.betterdogs.husbandry.cure_runt.description": "Cure an inbred runt using a Golden Apple"
 }

@@ -12,6 +12,7 @@ import net.minecraft.resources.Identifier;
 import net.vanillaoutsider.betterdogs.advancement.TameWolfPersonalityTrigger;
 import net.vanillaoutsider.betterdogs.advancement.GuardWolfPersonalityTrigger;
 import net.vanillaoutsider.betterdogs.advancement.InbredWolfTrigger;
+import net.vanillaoutsider.betterdogs.advancement.CureInbredTrigger;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +45,12 @@ public class BetterDogs implements ModInitializer {
             BuiltInRegistries.TRIGGER_TYPES,
             Identifier.fromNamespaceAndPath(MOD_ID, "inbred_wolf"),
             new InbredWolfTrigger()
+    );
+
+    public static final CureInbredTrigger CURE_INBRED = Registry.register(
+            BuiltInRegistries.TRIGGER_TYPES,
+            Identifier.fromNamespaceAndPath(MOD_ID, "cure_inbred"),
+            new CureInbredTrigger()
     );
 
     @Override

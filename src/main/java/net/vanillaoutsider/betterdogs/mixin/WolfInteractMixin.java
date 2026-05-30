@@ -86,6 +86,10 @@ public abstract class WolfInteractMixin extends TamableAnimal {
                         }
                         
                         player.sendOverlayMessage(Component.translatable("text.betterdogs.cured_inbred", wolf.getName()));
+
+                        if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                            net.vanillaoutsider.betterdogs.BetterDogs.CURE_INBRED.trigger(serverPlayer);
+                        }
                     }
                     cir.setReturnValue(InteractionResult.SUCCESS);
                     return;
