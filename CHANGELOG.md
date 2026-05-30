@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.6.6+A-26.2] - 2026-05-30
+### Summary
+- **New Feature**: Added custom advancement "Keep it in the family" parented to "The Parrots and the Bats" (`minecraft:husbandry/breed_an_animal`). The advancement is awarded when a player breeds two closely related wolves and produces an inbred runt. It uses Rotten Flesh as its icon and a Task frame.
+
 ## [4.6.5+A-26.2] - 2026-05-30
 ### Summary
 - **New Feature**: Added custom advancement "On Guard!" parented to "Tame an Animal". The advancement is awarded when a player places a tamed wolf into Guard Mode for the first time. It uses a Bone as its icon and uses a Task frame.

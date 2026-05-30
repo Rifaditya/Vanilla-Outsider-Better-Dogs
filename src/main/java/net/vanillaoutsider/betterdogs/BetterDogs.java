@@ -11,6 +11,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.vanillaoutsider.betterdogs.advancement.TameWolfPersonalityTrigger;
 import net.vanillaoutsider.betterdogs.advancement.GuardWolfPersonalityTrigger;
+import net.vanillaoutsider.betterdogs.advancement.InbredWolfTrigger;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,12 @@ public class BetterDogs implements ModInitializer {
             BuiltInRegistries.TRIGGER_TYPES,
             Identifier.fromNamespaceAndPath(MOD_ID, "guard_wolf_personality"),
             new GuardWolfPersonalityTrigger()
+    );
+
+    public static final InbredWolfTrigger INBRED_WOLF = Registry.register(
+            BuiltInRegistries.TRIGGER_TYPES,
+            Identifier.fromNamespaceAndPath(MOD_ID, "inbred_wolf"),
+            new InbredWolfTrigger()
     );
 
     @Override

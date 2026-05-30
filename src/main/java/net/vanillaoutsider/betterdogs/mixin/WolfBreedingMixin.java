@@ -154,6 +154,16 @@ public abstract class WolfBreedingMixin {
 
         // Persist kinship data (parents UUIDs and inbred flag)
         WolfPersistentData.setPersistedParentsAndInbred(baby, parent1.getUUID(), parent2.getUUID(), inbred);
+
+        if (inbred) {
+            net.minecraft.server.level.ServerPlayer player = parent1.getLoveCause();
+            if (player == null) {
+                player = parent2.getLoveCause();
+            }
+            if (player != null) {
+                net.vanillaoutsider.betterdogs.BetterDogs.INBRED_WOLF.trigger(player);
+            }
+        }
     }
 
     /**

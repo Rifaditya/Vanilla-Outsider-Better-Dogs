@@ -241,5 +241,7 @@
     "advancements.betterdogs.husbandry.a_pack_of_guardians.title": "A Pack of Guardians",
     "advancements.betterdogs.husbandry.a_pack_of_guardians.description": "Place a wolf of each personality type (Normal, Aggressive, and Pacifist) into Guard Mode using a bone while sneaking",
     "advancements.betterdogs.husbandry.on_guard.title": "On Guard!",
-    "advancements.betterdogs.husbandry.on_guard.description": "Place a wolf into Guard Mode for the first time using a bone while sneaking"
+    "advancements.betterdogs.husbandry.on_guard.description": "Place a wolf into Guard Mode for the first time using a bone while sneaking",
+    "advancements.betterdogs.husbandry.inbred_wolf.title": "Keep it in the family",
+    "advancements.betterdogs.husbandry.inbred_wolf.description": "Breed two closely related wolves and produce an inbred runt... yuck!"
 }

@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:husbandry/breed_an_animal",
+  "display": {
+    "icon": {
+      "id": "minecraft:rotten_flesh"
+    },
+    "title": {
+      "translate": "advancements.betterdogs.husbandry.inbred_wolf.title"
+    },
+    "description": {
+      "translate": "advancements.betterdogs.husbandry.inbred_wolf.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "breed_inbred_wolf": {
+      "trigger": "vanilla-outsider-better-dogs:inbred_wolf"
+    }
+  },
+  "requirements": [
+    [
+      "breed_inbred_wolf"
+    ]
+  ]
+}
