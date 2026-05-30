@@ -26,6 +26,7 @@ public abstract class AnimalMixin {
         if (parent1 instanceof Wolf wolf && partner instanceof Wolf partnerWolf && wolf.isTame()) {
             int maxSize = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_WOLF_LITTER_MAX_SIZE);
             int extraChance = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_WOLF_LITTER_EXTRA_CHANCE);
+            int litterSize = 1;
 
             // Already spawned one baby in the original method.
             // Loop for additional puppies up to max size.
@@ -38,6 +39,7 @@ public abstract class AnimalMixin {
                         extraOffspring.snapTo(parent1.getX(), parent1.getY(), parent1.getZ(), 0.0f, 0.0f);
                         
                         level.addFreshEntityWithPassengers(extraOffspring);
+                        litterSize++;
                         
                         // Visual feedback: Hearts
                         level.broadcastEntityEvent(parent1, (byte)18);
@@ -52,6 +54,16 @@ public abstract class AnimalMixin {
                 } else {
                     // Probability chain: If one fails, stop (prevents large litters being too common)
                     break;
+                }
+            }
+
+            if (litterSize >= 2) {
+                net.minecraft.server.level.ServerPlayer player = wolf.getLoveCause();
+                if (player == null) {
+                    player = partnerWolf.getLoveCause();
+                }
+                if (player != null) {
+                    net.vanillaoutsider.betterdogs.BetterDogs.WOLF_LITTER.trigger(player, litterSize);
                 }
             }
         }

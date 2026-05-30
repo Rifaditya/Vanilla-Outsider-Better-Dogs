@@ -250,5 +250,13 @@
     "advancements.betterdogs.husbandry.outcross_runt.title": "Fresh Blood",
     "advancements.betterdogs.husbandry.outcross_runt.description": "Breed an inbred runt parent with an unrelated wolf to produce a healthy puppy and recover the lineage",
     "advancements.betterdogs.husbandry.cure_runt.title": "A Fresh Start",
-    "advancements.betterdogs.husbandry.cure_runt.description": "Cure an inbred runt using a Golden Apple"
+    "advancements.betterdogs.husbandry.cure_runt.description": "Cure an inbred runt using a Golden Apple",
+    "advancements.betterdogs.husbandry.litter_two.title": "Double Trouble",
+    "advancements.betterdogs.husbandry.litter_two.description": "Breed two tamed wolves to get a litter of 2 puppies",
+    "advancements.betterdogs.husbandry.litter_three.title": "Triple Threat",
+    "advancements.betterdogs.husbandry.litter_three.description": "Breed two tamed wolves to get a litter of 3 puppies",
+    "advancements.betterdogs.husbandry.litter_four.title": "Puppy Rain",
+    "advancements.betterdogs.husbandry.litter_four.description": "Breed two tamed wolves to get a maximum litter of 4 puppies",
+    "advancements.betterdogs.husbandry.litter_legend.title": "Litter Legend",
+    "advancements.betterdogs.husbandry.litter_legend.description": "Experience all litter sizes: get a litter of 2, 3, and 4 puppies at least once"
 }

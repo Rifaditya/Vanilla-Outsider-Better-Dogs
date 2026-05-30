@@ -1,5 +1,13 @@
 # Better Dogs - Historical Changelog
 
+## [4.6.9+A-26.2] - 2026-05-30
+### Summary
+- **New Feature**: Added custom advancements to track wolf litter sizes when breeding tamed wolves:
+  - **Double Trouble** (2 puppies): Awarded when breeding tamed wolves results in a litter of at least 2 puppies (displays with 2 Wolf Spawn Eggs icon).
+  - **Triple Threat** (3 puppies): Awarded when breeding tamed wolves results in a litter of at least 3 puppies (displays with 3 Wolf Spawn Eggs icon).
+  - **Puppy Rain** (4 puppies): Awarded when breeding tamed wolves results in a maximum litter of 4 puppies (displays with 4 Wolf Spawn Eggs icon).
+  - **Litter Legend** (Experiencing all): A challenge advancement awarded when the player experiences a litter of exactly 2, exactly 3, and exactly 4 puppies (displays with a Golden Carrot icon).
+
 ## [4.6.8+A-26.2] - 2026-05-30
 ### Summary
 - **New Feature**: Added custom advancement "A Fresh Start" (`minecraft:husbandry/cure_runt`) parented to "Keep it in the family" (`minecraft:husbandry/inbred_runt`). Awarded when the player cures an inbred runt using a Golden Apple, displaying with a Golden Apple icon and a Goal frame.

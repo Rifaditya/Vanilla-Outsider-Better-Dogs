@@ -14,6 +14,7 @@ import net.vanillaoutsider.betterdogs.advancement.GuardWolfPersonalityTrigger;
 import net.vanillaoutsider.betterdogs.advancement.InbredWolfTrigger;
 import net.vanillaoutsider.betterdogs.advancement.OutcrossRuntTrigger;
 import net.vanillaoutsider.betterdogs.advancement.CureInbredTrigger;
+import net.vanillaoutsider.betterdogs.advancement.WolfLitterTrigger;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,6 +59,12 @@ public class BetterDogs implements ModInitializer {
             BuiltInRegistries.TRIGGER_TYPES,
             Identifier.fromNamespaceAndPath(MOD_ID, "cure_inbred"),
             new CureInbredTrigger()
+    );
+
+    public static final WolfLitterTrigger WOLF_LITTER = Registry.register(
+            BuiltInRegistries.TRIGGER_TYPES,
+            Identifier.fromNamespaceAndPath(MOD_ID, "wolf_litter"),
+            new WolfLitterTrigger()
     );
 
     @Override
