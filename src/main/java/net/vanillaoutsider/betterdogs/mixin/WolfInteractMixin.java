@@ -44,6 +44,16 @@ public abstract class WolfInteractMixin extends TamableAnimal {
         Wolf wolf = (Wolf) (Object) this;
         ItemStack itemStack = player.getItemInHand(hand);
 
+        if (itemStack.is(Items.GOLDEN_APPLE) && hand == InteractionHand.MAIN_HAND) {
+            net.vanillaoutsider.betterdogs.BetterDogs.LOGGER.info("[Better Dogs Debug] Golden Apple interact: isClientSide={}, isTame={}, isOwnedByOwner={}, isPersistedInbred={}, curingEnabled={}",
+                wolf.level().isClientSide(),
+                wolf.isTame(),
+                wolf.isOwnedBy(player),
+                net.vanillaoutsider.betterdogs.WolfPersistentData.isPersistedInbred(wolf),
+                DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_ENABLE_INBRED_CURING)
+            );
+        }
+
         if (wolf.isTame() && wolf.isOwnedBy(player) && itemStack.is(Items.GOLDEN_APPLE) && hand == InteractionHand.MAIN_HAND) {
             if (wolf instanceof WolfExtensions ext && net.vanillaoutsider.betterdogs.WolfPersistentData.isPersistedInbred(wolf)) {
                 if (DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_ENABLE_INBRED_CURING)) {

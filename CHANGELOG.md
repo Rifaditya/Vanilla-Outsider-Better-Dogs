@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.6.9+A-26.2] - 2026-05-30
+### Summary
+- **Debugging**: Added in-game console debug logs on Golden Apple interact to check ownership, inbred status, and game rules.
+
 ## [4.6.8+A-26.2] - 2026-05-30
 ### Summary
 - **New Feature**: Added custom advancement "Outcrossed" parented to "Keep it in the family" (`minecraft:husbandry/inbred_runt`). The advancement is awarded when a player breeds an inbred runt wolf with an unrelated, healthy wolf to recover the genetic line. It uses Raw Beef as its icon and a Task frame.
