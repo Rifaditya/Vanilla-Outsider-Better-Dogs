@@ -1,6 +1,29 @@
 # Changelog
 
-## [4.6.13+R-26.2] - 2026-05-30
+## [4.6.15+R-26.2] - 2026-05-30
+### Summary
+- **Stable Release**: Promoted the custom advancements/achievements system for Minecraft 26.2 to a stable production Release.
+- **Bug Fix**: Includes the critical startup crash fix (`InvalidInjectionException` for `killedEntity` in `WolfMixin`) that impacted versions `4.6.11` to `4.6.13`.
+- **Skipped Versions Warning**: Versions `4.6.11+A-26.2`, `4.6.12+A-26.2`, and `4.6.13+R-26.2` have been deprecated/skipped due to the startup crash.
+- **Custom Advancements**:
+  - **A Pack of Personalities**: Tame all three wolf personality types (Normal, Aggressive, and Pacifist).
+  - **On Guard!**: Place a tamed wolf into Guard Mode for the first time.
+  - **A Pack of Guardians**: Place a tamed wolf of each personality type into Guard Mode.
+  - **Looking for a Home**: Put a tamed dog up for adoption by sneak-right-clicking them with a piece of paper.
+  - **On Patrol**: Defeat a monster using an Aggressive dog in Guard Mode within its patrol radius.
+  - **Self-Service**: Tamed dog automatically eats food dropped on the ground by its owner to heal itself.
+  - **Keep it in the family**: Breed closely related dogs to produce an inbred runt.
+  - **Fresh Blood**: Breed an inbred runt with an unrelated dog to recover the lineage.
+  - **A Fresh Start**: Cure an inbred runt using a Golden Apple.
+  - **Litter Size Trackers**: Double Trouble (2 puppies), Triple Threat (3 puppies), Puppy Rain (4 puppies), and the Litter Legend challenge advancement (experiencing all).
+
+## [4.6.14+B-26.2] - 2026-05-30
+### Summary
+- **Bug Fix**: Resolved a critical startup crash (`InvalidInjectionException` for `killedEntity` in `WolfMixin`) that caused the game to crash.
+- **Skipped Versions Warning**: Versions `4.6.11+A-26.2`, `4.6.12+A-26.2`, and `4.6.13+R-26.2` are deprecated and skipped due to this crash.
+- **Technical Detail**: Replaced the invalid inherited method injection in `WolfMixin` with a new `EntityMixin` targeting the base `Entity` class, dynamically resolving the wolf instance at runtime.
+
+## [4.6.13+R-26.2] - 2026-05-30 [CRASHING - DEPRECATED]
 ### Summary
 - **Stable Release**: Promoted the custom advancements/achievements system for Minecraft 26.2 to a stable production Release.
 - **Custom Advancements**:
@@ -16,11 +39,11 @@
   - **Litter Size Trackers**: Double Trouble (2 puppies), Triple Threat (3 puppies), Puppy Rain (4 puppies), and the Litter Legend challenge advancement (experiencing all).
 
 
-## [4.6.12+A-26.2] - 2026-05-30
+## [4.6.12+A-26.2] - 2026-05-30 [CRASHING - DEPRECATED]
 ### Summary
 - **New Feature**: Added custom advancement "Self-Service" (Indonesian: "Makan Mandiri") parented to "Tame an Animal" (`minecraft:husbandry/tame_an_animal`). The advancement is awarded when a player's tamed dog heals itself by automatically eating food dropped on the ground by its owner. It uses Cooked Beef as its icon and a Task frame.
 
-## [4.6.11+A-26.2] - 2026-05-30
+## [4.6.11+A-26.2] - 2026-05-30 [CRASHING - DEPRECATED]
 ### Summary
 - **New Feature**: Added custom advancement "On Patrol" (Indonesian: "Patroli Aktif") parented to "On Guard!" (`minecraft:husbandry/on_guard`). The advancement is awarded when a player's guarding Aggressive dog defeats a monster within its patrol radius. It uses an Iron Sword as its icon and a Task frame.
 

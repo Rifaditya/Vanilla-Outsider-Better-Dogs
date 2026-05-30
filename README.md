@@ -1,8 +1,8 @@
-# 🐕 Better Dogs: A Social & Behavioral Overhaul (v4.6.13+R-26.2)
+# 🐕 Better Dogs: A Social & Behavioral Overhaul (v4.6.15+R-26.2)
 
 **Better Dogs** is a comprehensive overhaul of the Minecraft Wolf, replacing robotic behaviors with a dynamic, personality-driven social system. Built for the modern "Post-Obfuscation" era of Minecraft, it enhances the taming loop with genetics, social bonding, and smart survival logic.
 
-## 🔥 New in v4.6.13+R-26.2: Custom Advancements & Achievements (Release)
+## 🔥 New in v4.6.15+R-26.2: Custom Advancements & Achievements (Release)
 
 - **Custom Advancements**: A full set of 12 custom husbandry achievements to reward personality taming, guard patrol training, breeding lineage recovery, inbred runt curing, litter sizes, and ground feeding.
 - **P2P Multiplayer Compatibility**: In theory, singleplayer hosts opening their world to multiplayer using the new Minecraft 26.2 P2P friends system will work seamlessly with unmodded vanilla clients (joining players do not need to install the mod).

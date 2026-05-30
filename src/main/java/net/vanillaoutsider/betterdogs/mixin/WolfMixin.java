@@ -283,14 +283,4 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         this.betterdogs$lastDamageTime = wolf.tickCount - (BetterDogsConfig.get().getCombatHealDelayTicks() - cooldownRemaining);
     }
 
-    // Verified against: Entity.java (26.2+)
-    @Inject(method = "killedEntity", at = @At("HEAD"))
-    private void betterdogs$onKilledEntity(ServerLevel level, LivingEntity entity, DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-        if (this.isTame() && this.betterdogs$isGuardMode() && this.betterdogs$getPersonality() == WolfPersonality.AGGRESSIVE) {
-            LivingEntity owner = this.getOwner();
-            if (owner instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
-                net.vanillaoutsider.betterdogs.BetterDogs.ON_PATROL.trigger(serverPlayer);
-            }
-        }
-    }
 }
