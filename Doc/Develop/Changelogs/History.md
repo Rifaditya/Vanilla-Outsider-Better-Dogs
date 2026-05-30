@@ -1,5 +1,21 @@
 # Better Dogs - Historical Changelog
 
+## [4.6.13+R-26.2] - 2026-05-30
+### Summary
+- **Stable Release**: Promoted the custom advancements/achievements system for Minecraft 26.2 to a stable production Release.
+- **Custom Advancements**:
+  - **A Pack of Personalities**: Tame all three wolf personality types (Normal, Aggressive, and Pacifist).
+  - **On Guard!**: Place a tamed wolf into Guard Mode for the first time.
+  - **A Pack of Guardians**: Place a tamed wolf of each personality type into Guard Mode.
+  - **Looking for a Home**: Put a tamed dog up for adoption by sneak-right-clicking them with a piece of paper.
+  - **On Patrol**: Defeat a monster using an Aggressive dog in Guard Mode within its patrol radius.
+  - **Self-Service**: Tamed dog automatically eats food dropped on the ground by its owner to heal itself.
+  - **Keep it in the family**: Breed closely related dogs to produce an inbred runt.
+  - **Fresh Blood**: Breed an inbred runt with an unrelated dog to recover the lineage.
+  - **A Fresh Start**: Cure an inbred runt using a Golden Apple.
+  - **Litter Size Trackers**: Double Trouble (2 puppies), Triple Threat (3 puppies), Puppy Rain (4 puppies), and the Litter Legend challenge advancement (experiencing all).
+
+
 ## [4.6.12+A-26.2] - 2026-05-30
 ### Summary
 - **New Feature**: Added custom advancement "Self-Service" (Indonesian: "Makan Mandiri") parented to "Tame an Animal" (`minecraft:husbandry/tame_an_animal`). The advancement is awarded when a player's tamed dog heals itself by automatically eating food dropped on the ground by its owner. It uses Cooked Beef as its icon and a Task frame.

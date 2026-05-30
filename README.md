@@ -1,13 +1,14 @@
-# 🐕 Better Dogs: A Social & Behavioral Overhaul (v4.0.0+A-26.2)
+# 🐕 Better Dogs: A Social & Behavioral Overhaul (v4.6.13+R-26.2)
 
 **Better Dogs** is a comprehensive overhaul of the Minecraft Wolf, replacing robotic behaviors with a dynamic, personality-driven social system. Built for the modern "Post-Obfuscation" era of Minecraft, it enhances the taming loop with genetics, social bonding, and smart survival logic.
 
-## 🔥 New in v4.0.0+A-26.2: Minecraft 26.2 Port & P2P Multiplayer Support (Alpha)
+## 🔥 New in v4.6.13+R-26.2: Custom Advancements & Achievements (Release)
 
-- **Minecraft 26.2 Port**: Ported the codebase to Minecraft 26.2-pre-1 and aligned with Fabric API 0.149.2. Entity references were refactored to use `EntityTypes` instead of legacy `EntityType`.
-- **P2P Multiplayer Compatibility**: In theory, singleplayer hosts opening their world to multiplayer using the new Minecraft 26.2 P2P friends system will work seamlessly with unmodded vanilla clients (joining players do not need to install the mod). *Note: As this is a newly released pre-release feature, P2P compatibility has not been extensively tested. If you encounter any bugs, please report them to the GitHub issues page!*
-- **Guarding Sit Lock Fix (v3.7.1)**: Resolves manual sitting issues for guarding wolves of all personalities. Normal sentinel wolves remain sitting and locked from movement/attack, pausing the active `WolfGuardGoal`.
-- **Dynamic Follower Spread Scaling (v3.7.0)**: Tamed and wild wolves now space themselves out wider as the pack size $N$ increases. Spacing is calculated mathematically using the square root formula: $f(N) = \text{multiplier} \times \sqrt{N - 1}$.
+- **Custom Advancements**: A full set of 12 custom husbandry achievements to reward personality taming, guard patrol training, breeding lineage recovery, inbred runt curing, litter sizes, and ground feeding.
+- **P2P Multiplayer Compatibility**: In theory, singleplayer hosts opening their world to multiplayer using the new Minecraft 26.2 P2P friends system will work seamlessly with unmodded vanilla clients (joining players do not need to install the mod).
+- **Guarding Sit Lock Fix**: Resolves manual sitting issues for guarding wolves of all personalities. Normal sentinel wolves remain sitting and locked from movement/attack, pausing the active `WolfGuardGoal`.
+- **Dynamic Follower Spread Scaling**: Tamed and wild wolves now space themselves out wider as the pack size $N$ increases. Spacing is calculated mathematically using the square root formula: $f(N) = \text{multiplier} \times \sqrt{N - 1}$.
+
 
 This update scales the follow/spread spacing of wild and tamed wolf packs dynamically based on the number of active followers:
 
