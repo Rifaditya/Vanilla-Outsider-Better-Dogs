@@ -245,5 +245,7 @@
     "advancements.betterdogs.husbandry.inbred_wolf.title": "Keep it in the family",
     "advancements.betterdogs.husbandry.inbred_wolf.description": "Breed two closely related wolves and produce an inbred runt... yuck!",
     "advancements.betterdogs.husbandry.cure_runt.title": "A Fresh Start",
-    "advancements.betterdogs.husbandry.cure_runt.description": "Cure an inbred runt using a Golden Apple"
+    "advancements.betterdogs.husbandry.cure_runt.description": "Cure an inbred runt using a Golden Apple",
+    "advancements.betterdogs.husbandry.outcross_wolf.title": "Outcrossed",
+    "advancements.betterdogs.husbandry.outcross_wolf.description": "Breed an inbred runt wolf with an unrelated, healthy wolf to recover the genetic line"
 }

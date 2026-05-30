@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:husbandry/inbred_runt",
+  "display": {
+    "icon": {
+      "id": "minecraft:beef"
+    },
+    "title": {
+      "translate": "advancements.betterdogs.husbandry.outcross_wolf.title"
+    },
+    "description": {
+      "translate": "advancements.betterdogs.husbandry.outcross_wolf.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "breed_outcrossed_wolf": {
+      "trigger": "vanilla-outsider-better-dogs:outcross_wolf"
+    }
+  },
+  "requirements": [
+    [
+      "breed_outcrossed_wolf"
+    ]
+  ]
+}

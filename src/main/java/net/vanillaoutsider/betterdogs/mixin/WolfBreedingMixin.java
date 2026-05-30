@@ -163,6 +163,14 @@ public abstract class WolfBreedingMixin {
             if (player != null) {
                 net.vanillaoutsider.betterdogs.BetterDogs.INBRED_WOLF.trigger(player);
             }
+        } else if (d1.inbred() || d2.inbred()) {
+            net.minecraft.server.level.ServerPlayer player = parent1.getLoveCause();
+            if (player == null) {
+                player = parent2.getLoveCause();
+            }
+            if (player != null) {
+                net.vanillaoutsider.betterdogs.BetterDogs.OUTCROSS_WOLF.trigger(player);
+            }
         }
     }
 
