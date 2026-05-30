@@ -1,5 +1,10 @@
 # Better Dogs - Historical Changelog
 
+## [4.6.17+A-26.2] - 2026-05-30
+### Summary
+- **Bug Fix**: Resolved size scaling override conflict in `WolfSocialMixin` where the genetic scale calculation was replaced by a random value during DNA initialization.
+- **New Feature**: Added a deterministic random offset of between `-0.10` and `+0.10` based on the wolf's UUID seed to the final genetic scale in `WolfStatManager`.
+
 ## [4.6.16+A-26.2] - 2026-05-30
 ### Summary
 - **Bug Fix**: Resolved an issue where toggling the storm anxiety GameRule (`vanilla-outsider-better-dogs:bd_storm_anxiety`) mid-game had no effect on already-spawned wolves.

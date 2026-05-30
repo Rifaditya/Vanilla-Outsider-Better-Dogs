@@ -132,6 +132,14 @@ public class WolfStatManager {
 
         // Calculate and apply dynamic scale based on health bonus (Option 2: 0.808x to 1.312x range)
         float calculatedScale = 1.0f + (healthBonus * 0.012f);
+
+        // Add dynamic, deterministic random offset between -0.10 and +0.10 based on UUID
+        UUID uuid = wolf.getUUID();
+        long seed = uuid.getMostSignificantBits() ^ uuid.getLeastSignificantBits() ^ 5829103L;
+        net.minecraft.util.RandomSource scaleRand = net.minecraft.util.RandomSource.create(seed);
+        float offset = -0.10f + (scaleRand.nextFloat() * 0.20f);
+        calculatedScale += offset;
+
         if (wolf instanceof WolfExtensions ext) {
             ext.betterdogs$setSocialScale(calculatedScale);
         }

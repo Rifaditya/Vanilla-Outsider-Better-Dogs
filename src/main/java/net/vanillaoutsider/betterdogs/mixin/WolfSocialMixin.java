@@ -9,6 +9,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersistentData;
+import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.scheduler.events.BeggingDogEvent;
 import net.vanillaoutsider.betterdogs.scheduler.events.ZoomiesDogEvent;
 import net.vanillaoutsider.betterdogs.util.WolfDebugLogger;
@@ -235,8 +236,11 @@ public abstract class WolfSocialMixin implements SocialEntity, WolfExtensions {
 
                 if (betterdogs$getDNA() == 0L) {
                     betterdogs$setDNA(wolf.getUUID().getMostSignificantBits());
-                    float scale = 0.9f + (wolf.getRandom().nextFloat() * 0.2f);
-                    betterdogs$setSocialScale(scale);
+                    WolfPersonality personality = betterdogs$getPersonality();
+                    if (personality == null) {
+                        personality = WolfPersonality.NORMAL;
+                    }
+                    net.vanillaoutsider.betterdogs.util.WolfStatManager.applyPersonalityStats(wolf, personality);
                 } else {
                     var scaleAttr = wolf.getAttribute(Attributes.SCALE);
                     if (scaleAttr != null && scaleAttr.getBaseValue() != betterdogs$getSocialScale()) {
