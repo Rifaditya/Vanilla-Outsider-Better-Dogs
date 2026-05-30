@@ -1,5 +1,10 @@
 # Better Dogs - Historical Changelog
 
+## [4.6.16+A-26.2] - 2026-05-30
+### Summary
+- **Bug Fix**: Resolved an issue where toggling the storm anxiety GameRule (`vanilla-outsider-better-dogs:bd_storm_anxiety`) mid-game had no effect on already-spawned wolves.
+- **Implementation**: Registered `WolfStormAnxietyGoal` unconditionally in `WolfAIMixin` and moved the dynamic GameRule check inside `WolfStormAnxietyGoal`'s `canUse()` and `canContinueToUse()` methods to evaluate it dynamically.
+
 ## [4.6.15+R-26.2] - 2026-05-30
 ### Summary
 - **Stable Release**: Promoted the custom advancements/achievements system for Minecraft 26.2 to a stable production Release.

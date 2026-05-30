@@ -1,6 +1,8 @@
 // Verified against: WolfStormAnxietyGoal.java (26.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
+import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import java.util.EnumSet;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -22,6 +24,7 @@ public class WolfStormAnxietyGoal extends Goal {
 
     @Override
     public boolean canUse() {
+        if (!DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_STORM_ANXIETY)) return false;
         if (!wolf.isTame()) return false;
         if (!wolf.level().isThundering()) return false;
 
@@ -42,6 +45,7 @@ public class WolfStormAnxietyGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
+        if (!DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_STORM_ANXIETY)) return false;
         BetterDogsConfig config = BetterDogsConfig.get();
         return wolf.level().isThundering() && wolf.getRandom().nextFloat() < (1.0f - config.getStormAnxietyStopChance());
     }

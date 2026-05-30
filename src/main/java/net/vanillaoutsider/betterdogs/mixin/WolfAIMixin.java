@@ -121,9 +121,7 @@ public abstract class WolfAIMixin extends TamableAnimal {
                 false,
                 preySelector));
 
-        if (DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_STORM_ANXIETY)) {
-            this.goalSelector.addGoal(6, new WolfStormAnxietyGoal(wolf));
-        }
+        this.goalSelector.addGoal(6, new WolfStormAnxietyGoal(wolf));
 
         this.goalSelector.addGoal(7, new GroupHowlGoal(wolf));
         this.goalSelector.addGoal(7, new BabyCuriosityGoal(wolf, 0.8));
