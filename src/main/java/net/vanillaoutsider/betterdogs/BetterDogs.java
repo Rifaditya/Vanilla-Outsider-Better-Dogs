@@ -136,6 +136,33 @@ public class BetterDogs implements ModInitializer {
         SocialEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.IdleCuriosityEvent());
         SocialEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.HowlDogEvent());
 
+        // Register Wolf Genetics Config (Engine v1.8.0 Migration)
+        java.util.Map<String, net.dasik.social.api.genetics.TraitConfig> wolfTraits = java.util.Map.of(
+            "max_health", new net.dasik.social.api.genetics.TraitConfig("max_health", "minecraft:generic.max_health", "ADD_VALUE", 6.0f, 0.6f, -30.0f, 100.0f),
+            "attack_damage", new net.dasik.social.api.genetics.TraitConfig("attack_damage", "minecraft:generic.attack_damage", "ADD_MULTIPLIED_TOTAL", 0.20f, 0.6f, -0.8f, 5.0f),
+            "movement_speed", new net.dasik.social.api.genetics.TraitConfig("movement_speed", "minecraft:generic.movement_speed", "ADD_MULTIPLIED_TOTAL", 0.15f, 0.6f, -0.6f, 3.0f)
+        );
+
+        java.util.Map<String, java.util.Map<String, net.dasik.social.api.genetics.MutationRule>> wolfMutations = java.util.Map.of(
+            "normal", java.util.Map.of(
+                "max_health", new net.dasik.social.api.genetics.MutationRule("triangular", -2.0f, 10.0f),
+                "attack_damage", new net.dasik.social.api.genetics.MutationRule("triangular", -0.05f, 0.25f),
+                "movement_speed", new net.dasik.social.api.genetics.MutationRule("triangular", -0.025f, 0.175f)
+            ),
+            "aggressive", java.util.Map.of(
+                "max_health", new net.dasik.social.api.genetics.MutationRule("triangular", -5.0f, 11.0f),
+                "attack_damage", new net.dasik.social.api.genetics.MutationRule("triangular", 0.15f, 0.25f),
+                "movement_speed", new net.dasik.social.api.genetics.MutationRule("triangular", 0.075f, 0.175f)
+            ),
+            "pacifist", java.util.Map.of(
+                "max_health", new net.dasik.social.api.genetics.MutationRule("triangular", 11.0f, 15.0f),
+                "attack_damage", new net.dasik.social.api.genetics.MutationRule("triangular", -0.20f, 0.30f),
+                "movement_speed", new net.dasik.social.api.genetics.MutationRule("triangular", -0.15f, 0.20f)
+            )
+        );
+
+        net.dasik.social.api.genetics.EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityType.WOLF, new net.dasik.social.api.genetics.GeneticsConfig(wolfTraits, wolfMutations));
+
         LOGGER.info("Better Dogs initialized! Social Hive Mind active (DasikLibrary).");
     }
 }
