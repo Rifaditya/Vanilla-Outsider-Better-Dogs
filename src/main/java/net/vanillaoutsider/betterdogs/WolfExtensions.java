@@ -215,4 +215,18 @@ public interface WolfExtensions {
     void betterdogs$setGuardPos(@Nullable BlockPos pos);
     boolean betterdogs$isSittingManually();
     void betterdogs$setSittingManually(boolean sitting);
+
+    // === ADOPTION SYSTEM (V4.3.0) ===
+    boolean betterdogs$isAdoptable();
+    void betterdogs$setAdoptable(boolean adoptable);
+
+    // === RANGE STATS SYSTEM (V4.3.1) ===
+    float betterdogs$getHealthBonus();
+    void betterdogs$setHealthBonus(float hp);
+    float betterdogs$getDamageMod();
+    void betterdogs$setDamageMod(float dmg);
+    float betterdogs$getSpeedMod();
+    void betterdogs$setSpeedMod(float speed);
+    boolean betterdogs$areStatsRolled();
+    void betterdogs$setStatsRolled(boolean rolled);
 }

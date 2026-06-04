@@ -19,6 +19,8 @@ import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 public class AvoidHazardsGoal extends Goal {
 
     private final Wolf wolf;
+    private final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+    private final BlockPos.MutableBlockPos mutableCheckPos = new BlockPos.MutableBlockPos();
 
     public AvoidHazardsGoal(Wolf wolf) {
         this.wolf = wolf;
@@ -38,9 +40,9 @@ public class AvoidHazardsGoal extends Goal {
         int checkLimit = Math.min(path.getNodeCount(), BetterDogsConfig.get().getHazardCheckLimit());
         for (int i = 0; i < checkLimit; i++) {
             Node node = path.getNode(i);
-            BlockPos pos = new BlockPos(node.x, node.y, node.z);
+            mutablePos.set(node.x, node.y, node.z);
 
-            if (isHazard(pos)) {
+            if (isHazard(mutablePos)) {
                 return true;
             }
         }
@@ -59,11 +61,11 @@ public class AvoidHazardsGoal extends Goal {
 
         // Check for high fall
         int fallDistance = 0;
-        BlockPos checkPos = pos.below();
+        mutableCheckPos.set(pos.getX(), pos.getY() - 1, pos.getZ());
         int searchLimit = BetterDogsConfig.get().getHazardFallSearchLimit();
-        while (fallDistance < searchLimit && level.getBlockState(checkPos).isAir()) {
+        while (fallDistance < searchLimit && level.getBlockState(mutableCheckPos).isAir()) {
             fallDistance++;
-            checkPos = checkPos.below();
+            mutableCheckPos.setY(mutableCheckPos.getY() - 1);
         }
 
         return fallDistance > BetterDogsConfig.get().getMaxSafeFall();

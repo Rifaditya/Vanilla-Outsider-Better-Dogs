@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:husbandry/inbred_runt",
+  "display": {
+    "icon": {
+      "id": "minecraft:beef"
+    },
+    "title": {
+      "translate": "advancements.betterdogs.husbandry.outcross_runt.title"
+    },
+    "description": {
+      "translate": "advancements.betterdogs.husbandry.outcross_runt.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "breed_outcross_runt": {
+      "trigger": "vanilla-outsider-better-dogs:outcross_runt"
+    }
+  },
+  "requirements": [
+    [
+      "breed_outcross_runt"
+    ]
+  ]
+}

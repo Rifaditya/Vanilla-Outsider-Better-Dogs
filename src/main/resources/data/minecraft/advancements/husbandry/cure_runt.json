@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:husbandry/inbred_runt",
+  "display": {
+    "icon": {
+      "id": "minecraft:golden_apple"
+    },
+    "title": {
+      "translate": "advancements.betterdogs.husbandry.cure_runt.title"
+    },
+    "description": {
+      "translate": "advancements.betterdogs.husbandry.cure_runt.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "cure_inbred_wolf": {
+      "trigger": "vanilla-outsider-better-dogs:cure_inbred"
+    }
+  },
+  "requirements": [
+    [
+      "cure_inbred_wolf"
+    ]
+  ]
+}

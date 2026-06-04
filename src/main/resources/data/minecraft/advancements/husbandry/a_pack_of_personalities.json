@@ -1,0 +1,49 @@
+{
+  "parent": "minecraft:husbandry/tame_an_animal",
+  "display": {
+    "icon": {
+      "id": "minecraft:bone"
+    },
+    "title": {
+      "translate": "advancements.betterdogs.husbandry.a_pack_of_personalities.title"
+    },
+    "description": {
+      "translate": "advancements.betterdogs.husbandry.a_pack_of_personalities.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "tamed_normal": {
+      "trigger": "vanilla-outsider-better-dogs:tame_wolf_personality",
+      "conditions": {
+        "personality": "NORMAL"
+      }
+    },
+    "tamed_aggressive": {
+      "trigger": "vanilla-outsider-better-dogs:tame_wolf_personality",
+      "conditions": {
+        "personality": "AGGRESSIVE"
+      }
+    },
+    "tamed_pacifist": {
+      "trigger": "vanilla-outsider-better-dogs:tame_wolf_personality",
+      "conditions": {
+        "personality": "PACIFIST"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "tamed_normal"
+    ],
+    [
+      "tamed_aggressive"
+    ],
+    [
+      "tamed_pacifist"
+    ]
+  ]
+}

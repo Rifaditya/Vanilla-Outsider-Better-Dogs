@@ -20,7 +20,7 @@ public class BetterDogsGameRules {
 
 	// Single unified category
 	public static final GameRuleCategory BETTER_DOGS = GameRuleCategory
-			.register(Identifier.parse("vanilla-outsider-better-dogs:better_dogs"));
+			.register(Identifier.fromNamespaceAndPath("vanilla-outsider-better-dogs", "better_dogs"));
 
 
 
@@ -31,6 +31,7 @@ public class BetterDogsGameRules {
 	// --- General ---
 	public static GameRule<Boolean> BD_STORM_ANXIETY;
 	public static GameRule<Boolean> BD_CLIFF_SAFETY;
+	public static GameRule<Boolean> BD_FLEE_LOW_HEALTH;
 	public static GameRule<Boolean> BD_DOGS_EAT_RAW_FOOD;
 	public static GameRule<Boolean> BD_DOGS_EAT_COOKED_FOOD;
 	public static GameRule<Boolean> BD_DEBUGGING;
@@ -45,6 +46,7 @@ public class BetterDogsGameRules {
 	public static GameRule<Integer> BD_AGGRO_FOLLOW_START;
 	public static GameRule<Integer> BD_AGGRO_CHASE_DIST;
 	public static GameRule<Integer> BD_AGGRO_DETECT_RANGE;
+	public static GameRule<Integer> BD_AGGRO_FLEE_CHANCE;
 
 	// --- Pacifist Personality ---
 	public static GameRule<Integer> BD_PACI_HEALTH;
@@ -52,12 +54,14 @@ public class BetterDogsGameRules {
 	public static GameRule<Integer> BD_PACI_DMG_PCT;
 	public static GameRule<Integer> BD_PACI_KNOCKBACK_PCT;
 	public static GameRule<Integer> BD_PACI_FOLLOW_START;
+	public static GameRule<Integer> BD_PACI_FLEE_CHANCE;
 
 	// --- Normal Personality ---
 	public static GameRule<Integer> BD_NORMAL_FOLLOW_START;
 	public static GameRule<Integer> BD_NORMAL_SPEED_PCT;
 	public static GameRule<Integer> BD_NORMAL_DMG_PCT;
 	public static GameRule<Integer> BD_NORMAL_HEALTH;
+	public static GameRule<Integer> BD_NORMAL_FLEE_CHANCE;
 
 	// --- Misc ---
 	public static GameRule<Integer> BD_BABY_MISCHIEF_PERMILLE;
@@ -102,12 +106,14 @@ public class BetterDogsGameRules {
 	public static GameRule<Integer> BD_WOLF_LITTER_EXTRA_CHANCE;
 
 	// --- Taming Chances ---
-	public static GameRule<Integer> BD_TAME_NORMAL_PERCENT;
-	public static GameRule<Integer> BD_TAME_AGGRO_PERCENT;
-	public static GameRule<Integer> BD_TAME_PACI_PERCENT;
+	public static GameRule<Integer> BD_SPAWN_NORMAL_PERCENT;
+	public static GameRule<Integer> BD_SPAWN_AGGRO_PERCENT;
+	public static GameRule<Integer> BD_SPAWN_PACI_PERCENT;
 
 	// --- Guard Mode ---
 	public static GameRule<Boolean> BD_PACIFIST_GUARD_BUFFS;
+	public static GameRule<Boolean> BD_ENABLE_INBRED_CURING;
+	public static GameRule<Boolean> BD_SHOW_RUNT_PARTICLES;
 	public static GameRule<Integer> BD_GUARD_PATROL_RANGE_AGGRESSIVE;
 	public static GameRule<Integer> BD_GUARD_PATROL_RANGE_NORMAL;
 	public static GameRule<Integer> BD_GUARD_PATROL_RANGE_PACIFIST;
@@ -127,13 +133,15 @@ public class BetterDogsGameRules {
 				config.getEnableStormAnxiety());
 		BD_CLIFF_SAFETY = registerBoolean("vanilla-outsider-better-dogs:bd_cliff_safety", BETTER_DOGS,
 				config.getEnableCliffSafety());
+		BD_FLEE_LOW_HEALTH = registerBoolean("vanilla-outsider-better-dogs:bd_flee_low_health", BETTER_DOGS,
+				config.getEnableFleeLowHealth());
 		BD_DOGS_EAT_RAW_FOOD = registerBoolean("vanilla-outsider-better-dogs:bd_dogs_eat_raw_food", BETTER_DOGS,
 				config.getEnableDogsEatRawGroundFood());
 		BD_DOGS_EAT_COOKED_FOOD = registerBoolean("vanilla-outsider-better-dogs:bd_dogs_eat_cooked_food", BETTER_DOGS,
 				config.getEnableDogsEatCookedGroundFood());
 		BD_FRIENDLY_FIRE = registerBoolean("vanilla-outsider-better-dogs:bd_friendly_fire_protection", BETTER_DOGS,
 				config.getEnableFriendlyFireProtection());
-		BD_DEBUGGING = registerBoolean("vanilla-outsider-better-dogs:betterdogdebugging", BETTER_DOGS, false);
+		BD_DEBUGGING = registerBoolean("vanilla-outsider-better-dogs:bd_debugging", BETTER_DOGS, false);
 
 
 
@@ -144,6 +152,8 @@ public class BetterDogsGameRules {
 				(int) (config.getAggressiveSpeedModifier() * 100));
 		BD_AGGRO_DMG_PCT = registerInteger("vanilla-outsider-better-dogs:bd_aggro_dmg_percent", BETTER_DOGS,
 				(int) (config.getAggressiveDamageModifier() * 100));
+		BD_AGGRO_FLEE_CHANCE = registerInteger("vanilla-outsider-better-dogs:bd_aggro_flee_chance", BETTER_DOGS,
+				config.getAggressiveFleeChance());
 		// Pacifist
 		BD_PACI_HEALTH = registerInteger("vanilla-outsider-better-dogs:bd_paci_health", BETTER_DOGS,
 				(int) config.getPacifistHealthBonus());
@@ -153,6 +163,8 @@ public class BetterDogsGameRules {
 				(int) (config.getPacifistDamageModifier() * 100));
 		BD_PACI_KNOCKBACK_PCT = registerInteger("vanilla-outsider-better-dogs:bd_paci_knockback_percent", BETTER_DOGS,
 				(int) (config.getPacifistKnockbackModifier() * 100));
+		BD_PACI_FLEE_CHANCE = registerInteger("vanilla-outsider-better-dogs:bd_paci_flee_chance", BETTER_DOGS,
+				config.getPacifistFleeChance());
 		// Normal
 		BD_NORMAL_HEALTH = registerInteger("vanilla-outsider-better-dogs:bd_normal_health", BETTER_DOGS,
 				(int) config.getNormalHealthBonus());
@@ -160,6 +172,8 @@ public class BetterDogsGameRules {
 				(int) (config.getNormalSpeedModifier() * 100));
 		BD_NORMAL_DMG_PCT = registerInteger("vanilla-outsider-better-dogs:bd_normal_dmg_percent", BETTER_DOGS,
 				(int) (config.getNormalDamageModifier() * 100));
+		BD_NORMAL_FLEE_CHANCE = registerInteger("vanilla-outsider-better-dogs:bd_normal_flee_chance", BETTER_DOGS,
+				config.getNormalFleeChance());
 
 
 
@@ -243,19 +257,21 @@ public class BetterDogsGameRules {
 
 
 
-		BD_TAME_NORMAL_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_tame_normal_percent", BETTER_DOGS,
-				config.tamingChanceNormal);
-		BD_TAME_AGGRO_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_tame_aggro_percent", BETTER_DOGS,
-				config.tamingChanceAggressive);
-		BD_TAME_PACI_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_tame_paci_percent", BETTER_DOGS,
-				config.tamingChancePacifist);
+		BD_SPAWN_NORMAL_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_spawn_normal_percent", BETTER_DOGS,
+				config.spawnChanceNormal);
+		BD_SPAWN_AGGRO_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_spawn_aggro_percent", BETTER_DOGS,
+				config.spawnChanceAggressive);
+		BD_SPAWN_PACI_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_spawn_paci_percent", BETTER_DOGS,
+				config.spawnChancePacifist);
 		BD_WOLF_PACK_CLUSTER_SIZE = registerInteger("vanilla-outsider-better-dogs:bd_wolf_pack_cluster_size",
 				BETTER_DOGS, 8);
 		BD_WOLF_SPAWN_DENSITY_BOOST = registerInteger("vanilla-outsider-better-dogs:bd_wolf_spawn_density_boost",
 				BETTER_DOGS, 0);
 
 		// Guard Mode
-		BD_PACIFIST_GUARD_BUFFS = registerBoolean("vanilla-outsider-better-dogs:bd_pacifist_guard_buffs", BETTER_DOGS, false);
+		BD_PACIFIST_GUARD_BUFFS = registerBoolean("vanilla-outsider-better-dogs:bd_pacifist_guard_buffs", BETTER_DOGS, config.getPacifistGuardBuffs());
+		BD_ENABLE_INBRED_CURING = registerBoolean("vanilla-outsider-better-dogs:bd_enable_inbred_curing", BETTER_DOGS, config.getEnableInbredCuring());
+		BD_SHOW_RUNT_PARTICLES = registerBoolean("vanilla-outsider-better-dogs:bd_show_runt_particles", BETTER_DOGS, config.getShowRuntParticles());
 		BD_GUARD_PATROL_RANGE_AGGRESSIVE = registerInteger("vanilla-outsider-better-dogs:bd_guard_patrol_range_aggressive", BETTER_DOGS, 12);
 		BD_GUARD_PATROL_RANGE_NORMAL = registerInteger("vanilla-outsider-better-dogs:bd_guard_patrol_range_normal", BETTER_DOGS, 0);
 		BD_GUARD_PATROL_RANGE_PACIFIST = registerInteger("vanilla-outsider-better-dogs:bd_guard_patrol_range_pacifist", BETTER_DOGS, 3);

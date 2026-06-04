@@ -4,11 +4,15 @@ package net.vanillaoutsider.betterdogs.mixin;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.vanillaoutsider.betterdogs.BetterDogs;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(TamableAnimal.class)
@@ -61,6 +65,18 @@ public abstract class TamableAnimalMixin {
                 LivingEntity targetOwner = targetWolf.getOwner();
                 if (wolf.isTame() && myOwner != null && targetOwner != null && myOwner.equals(targetOwner)) {
                     cir.setReturnValue(false);
+                }
+            }
+        }
+    }
+
+    @Inject(method = "tame", at = @At("TAIL"))
+    private void betterdogs$onTame(Player player, CallbackInfo ci) {
+        if ((Object) this instanceof Wolf wolf && player instanceof ServerPlayer serverPlayer) {
+            if (wolf instanceof WolfExtensions ext) {
+                WolfPersonality personality = ext.betterdogs$getPersonality();
+                if (personality != null) {
+                    BetterDogs.TAME_WOLF_PERSONALITY.trigger(serverPlayer, personality);
                 }
             }
         }

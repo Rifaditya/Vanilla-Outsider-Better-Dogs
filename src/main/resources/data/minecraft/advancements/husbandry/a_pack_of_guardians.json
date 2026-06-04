@@ -1,0 +1,49 @@
+{
+  "parent": "minecraft:husbandry/a_pack_of_personalities",
+  "display": {
+    "icon": {
+      "id": "minecraft:bone"
+    },
+    "title": {
+      "translate": "advancements.betterdogs.husbandry.a_pack_of_guardians.title"
+    },
+    "description": {
+      "translate": "advancements.betterdogs.husbandry.a_pack_of_guardians.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "guard_normal": {
+      "trigger": "vanilla-outsider-better-dogs:guard_wolf_personality",
+      "conditions": {
+        "personality": "NORMAL"
+      }
+    },
+    "guard_aggressive": {
+      "trigger": "vanilla-outsider-better-dogs:guard_wolf_personality",
+      "conditions": {
+        "personality": "AGGRESSIVE"
+      }
+    },
+    "guard_pacifist": {
+      "trigger": "vanilla-outsider-better-dogs:guard_wolf_personality",
+      "conditions": {
+        "personality": "PACIFIST"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "guard_normal"
+    ],
+    [
+      "guard_aggressive"
+    ],
+    [
+      "guard_pacifist"
+    ]
+  ]
+}

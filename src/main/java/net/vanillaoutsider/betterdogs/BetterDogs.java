@@ -15,6 +15,22 @@ import org.slf4j.LoggerFactory;
  * Better Dogs Main Entrypoint.
  * Protocol: Architectural Protocol 2.1
  */
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.vanillaoutsider.betterdogs.advancement.TameWolfPersonalityTrigger;
+import net.vanillaoutsider.betterdogs.advancement.GuardWolfPersonalityTrigger;
+import net.vanillaoutsider.betterdogs.advancement.InbredWolfTrigger;
+import net.vanillaoutsider.betterdogs.advancement.OutcrossRuntTrigger;
+import net.vanillaoutsider.betterdogs.advancement.CureInbredTrigger;
+import net.vanillaoutsider.betterdogs.advancement.WolfLitterTrigger;
+import net.vanillaoutsider.betterdogs.advancement.PutUpForAdoptionTrigger;
+import net.vanillaoutsider.betterdogs.advancement.OnPatrolTrigger;
+import net.vanillaoutsider.betterdogs.advancement.SelfServiceTrigger;
+
+/**
+ * Better Dogs Main Entrypoint.
+ * Protocol: Architectural Protocol 2.1
+ */
 public class BetterDogs implements ModInitializer {
     public static final String MOD_ID = "vanilla-outsider-better-dogs";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
@@ -22,6 +38,60 @@ public class BetterDogs implements ModInitializer {
     public static final AttachmentType<WolfPersistentData> WOLF_DATA = AttachmentRegistry.createPersistent(
             Identifier.parse("betterdogs:wolf_data"),
             WolfPersistentData.CODEC);
+
+    public static final TameWolfPersonalityTrigger TAME_WOLF_PERSONALITY = Registry.register(
+            BuiltInRegistries.TRIGGER_TYPES,
+            Identifier.fromNamespaceAndPath(MOD_ID, "tame_wolf_personality"),
+            new TameWolfPersonalityTrigger()
+    );
+
+    public static final GuardWolfPersonalityTrigger GUARD_WOLF_PERSONALITY = Registry.register(
+            BuiltInRegistries.TRIGGER_TYPES,
+            Identifier.fromNamespaceAndPath(MOD_ID, "guard_wolf_personality"),
+            new GuardWolfPersonalityTrigger()
+    );
+
+    public static final InbredWolfTrigger INBRED_WOLF = Registry.register(
+            BuiltInRegistries.TRIGGER_TYPES,
+            Identifier.fromNamespaceAndPath(MOD_ID, "inbred_wolf"),
+            new InbredWolfTrigger()
+    );
+
+    public static final OutcrossRuntTrigger OUTCROSS_RUNT = Registry.register(
+            BuiltInRegistries.TRIGGER_TYPES,
+            Identifier.fromNamespaceAndPath(MOD_ID, "outcross_runt"),
+            new OutcrossRuntTrigger()
+    );
+
+    public static final CureInbredTrigger CURE_INBRED = Registry.register(
+            BuiltInRegistries.TRIGGER_TYPES,
+            Identifier.fromNamespaceAndPath(MOD_ID, "cure_inbred"),
+            new CureInbredTrigger()
+    );
+
+    public static final WolfLitterTrigger WOLF_LITTER = Registry.register(
+            BuiltInRegistries.TRIGGER_TYPES,
+            Identifier.fromNamespaceAndPath(MOD_ID, "wolf_litter"),
+            new WolfLitterTrigger()
+    );
+
+    public static final PutUpForAdoptionTrigger PUT_UP_FOR_ADOPTION = Registry.register(
+            BuiltInRegistries.TRIGGER_TYPES,
+            Identifier.fromNamespaceAndPath(MOD_ID, "put_up_for_adoption"),
+            new PutUpForAdoptionTrigger()
+    );
+
+    public static final OnPatrolTrigger ON_PATROL = Registry.register(
+            BuiltInRegistries.TRIGGER_TYPES,
+            Identifier.fromNamespaceAndPath(MOD_ID, "on_patrol"),
+            new OnPatrolTrigger()
+    );
+
+    public static final SelfServiceTrigger SELF_SERVICE = Registry.register(
+            BuiltInRegistries.TRIGGER_TYPES,
+            Identifier.fromNamespaceAndPath(MOD_ID, "self_service"),
+            new SelfServiceTrigger()
+    );
 
     @Override
     public void onInitialize() {
@@ -37,7 +107,10 @@ public class BetterDogs implements ModInitializer {
             throw new net.minecraft.ReportedException(report);
         }
 
-        LOGGER.info("Vanilla Outsider: Better Dogs v3.4.18+A-26.1.2 initializing [Aligned]...");
+        String version = FabricLoader.getInstance().getModContainer(MOD_ID)
+                .map(container -> container.getMetadata().getVersion().getFriendlyString())
+                .orElse("3.8.0+A-26.1.2");
+        LOGGER.info("Vanilla Outsider: Better Dogs v{} initializing [Aligned]...", version);
 
         // Load Configuration
         BetterDogsConfig.load(FabricLoader.getInstance().getConfigDir());

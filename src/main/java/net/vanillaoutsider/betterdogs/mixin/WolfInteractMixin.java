@@ -1,24 +1,19 @@
 // Verified against: Wolf.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.mixin;
 
-import net.dasik.social.api.gamerule.DynamicGameRuleManager;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DebugStickItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
-import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.vanillaoutsider.betterdogs.util.WolfDebugLogger;
 import net.vanillaoutsider.betterdogs.util.WolfParticleHandler;
 import net.vanillaoutsider.betterdogs.util.WolfStatManager;
+import net.vanillaoutsider.betterdogs.util.WolfInteractionHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -35,98 +30,14 @@ public abstract class WolfInteractMixin extends TamableAnimal {
     protected WolfInteractMixin() {
         super(null, null);
     }
+
     @Inject(method = "mobInteract", at = @At("HEAD"), cancellable = true)
     private void betterdogs$onMobInteract(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
         Wolf wolf = (Wolf) (Object) this;
         ItemStack itemStack = player.getItemInHand(hand);
-        if (wolf.isTame() && wolf.isOwnedBy(player) && itemStack.is(Items.BONE) && player.isSecondaryUseActive()) {
-            if (wolf instanceof WolfExtensions ext) {
-                boolean currentGuard = ext.betterdogs$isGuardMode();
-                boolean newGuard = !currentGuard;
-                
-                if (!wolf.level().isClientSide()) {
-                    ext.betterdogs$setGuardMode(newGuard);
-                    if (newGuard) {
-                        ext.betterdogs$setGuardPos(wolf.blockPosition());
-                        BlockPos pos = wolf.blockPosition();
-                        player.sendOverlayMessage(Component.translatable("text.betterdogs.guard_activated", pos.getX(), pos.getY(), pos.getZ()));
-                        
-                        WolfPersonality personality = ext.betterdogs$getPersonality();
-                        float pitch = switch (personality) {
-                            case AGGRESSIVE -> 0.8f;
-                            case NORMAL -> 1.2f;
-                            case PACIFIST -> 1.5f;
-                        };
-                        net.minecraft.sounds.SoundEvent sound = personality == WolfPersonality.PACIFIST ? 
-                            ((WolfAccessor) this).betterdogs$invokeGetSoundSet().whineSound().value() : 
-                            ((WolfAccessor) this).betterdogs$invokeGetSoundSet().ambientSound().value();
-                        wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), sound, wolf.getSoundSource(), 1.0f, pitch);
-                    } else {
-                        ext.betterdogs$setGuardPos(null);
-                        ext.betterdogs$setSittingManually(false);
-                        player.sendOverlayMessage(Component.translatable("text.betterdogs.guard_deactivated"));
-                        wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), ((WolfAccessor) this).betterdogs$invokeGetSoundSet().ambientSound().value(), wolf.getSoundSource(), 1.0f, 1.0f);
-                    }
-                    itemStack.consume(1, player);
-                }
-                
-                // Force standing pose on both client and server when toggling guard mode
-                wolf.setOrderedToSit(false);
-            }
-            cir.setReturnValue(InteractionResult.SUCCESS);
-            return;
-        }
-
-        if (wolf.isTame() && wolf.isOwnedBy(player) && hand == InteractionHand.MAIN_HAND) {
-            if (wolf instanceof WolfExtensions ext && ext.betterdogs$isGuardMode()) {
-                if (!itemStack.is(Items.BONE)
-                    && !wolf.isFood(itemStack) && !itemStack.is(net.minecraft.tags.ItemTags.WOLF_COLLAR_DYES) 
-                    && !wolf.isEquippableInSlot(itemStack, net.minecraft.world.entity.EquipmentSlot.BODY)
-                    && !(wolf.isInSittingPose() && wolf.isWearingBodyArmor() && wolf.getBodyArmorItem().isDamaged() && wolf.getBodyArmorItem().isValidRepairItem(itemStack))) {
-                    
-                    if (!wolf.level().isClientSide()) {
-                        boolean currentSitting = ext.betterdogs$isSittingManually();
-                        boolean newSitting = !currentSitting;
-                        ext.betterdogs$setSittingManually(newSitting);
-                        wolf.setOrderedToSit(newSitting);
-                        wolf.getNavigation().stop();
-                        wolf.setTarget(null);
-                    }
-                    cir.setReturnValue(InteractionResult.SUCCESS);
-                    return;
-                }
-            }
-        }
-
-        if (player.getItemInHand(hand).getItem() instanceof DebugStickItem) {
-            if (DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_DEBUGGING)
-                && player.permissions().hasPermission(net.minecraft.server.permissions.Permissions.COMMANDS_GAMEMASTER)) {
-                if (!wolf.level().isClientSide()) {
-                    if (wolf instanceof WolfExtensions ext) {
-                        if (player.isSecondaryUseActive()) {
-                            // Shift + Click: Cycle Scale
-                            float currentScale = ext.betterdogs$getSocialScale();
-                            float nextScale = currentScale + 0.1f;
-                            if (nextScale > 1.5f) nextScale = 0.5f;
-                            ext.betterdogs$setSocialScale(nextScale);
-                            player.sendOverlayMessage(Component.literal("§b[Debug] §fScale: " + String.format("%.1f", nextScale)));
-                            WolfDebugLogger.log(wolf, "DebugStick", "Scale changed to " + nextScale);
-                        } else {
-                            // Normal Click: Cycle Personality
-                            WolfPersonality current = ext.betterdogs$getPersonality();
-                            WolfPersonality next = current.next();
-                            ext.betterdogs$setPersonality(next);
-                            // Force re-apply stats if tamed
-                            if (wolf.isTame()) {
-                                WolfStatManager.applyPersonalityStats(wolf, next);
-                            }
-                            player.sendOverlayMessage(Component.literal("§b[Debug] §fPersonality: " + next.name()));
-                            WolfDebugLogger.log(wolf, "DebugStick", "Personality changed to " + next.name());
-                        }
-                    }
-                }
-                cir.setReturnValue(InteractionResult.SUCCESS);
-            }
+        InteractionResult result = WolfInteractionHelper.handleMobInteract(wolf, player, hand, itemStack);
+        if (result != null) {
+            cir.setReturnValue(result);
         }
     }
 

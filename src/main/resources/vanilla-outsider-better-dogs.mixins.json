@@ -20,7 +20,8 @@
         "WolfAccessor",
         "WolfMobMixin",
         "ServerLevelMixin",
-        "AnimalMixin"
+        "AnimalMixin",
+        "EntityMixin"
     ],
     "injectors": {
         "defaultRequire": 1

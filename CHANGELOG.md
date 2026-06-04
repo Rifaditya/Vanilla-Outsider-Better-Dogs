@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.8.0+A-26.1.2] - 2026-06-04
+### Summary
+The **"Feature Parity Backport"** update. Backports the advanced genetics, dynamic sizing, custom advancements, and performance optimizations from the Minecraft 26.2 (`v4.6.22`) codebase.
+- **Custom Advancements & Triggers**: Registered and configured 9 custom criteria triggers (`TameWolfPersonalityTrigger`, `GuardWolfPersonalityTrigger`, `InbredWolfTrigger`, `OutcrossRuntTrigger`, `CureInbredTrigger`, `WolfLitterTrigger`, `PutUpForAdoptionTrigger`, `OnPatrolTrigger`, `SelfServiceTrigger`) and implemented 13 custom advancements JSON files under the 26.1.2 plural resource path (`data/minecraft/advancements/husbandry/`).
+- **Genetic Breeding & Sizing**: Ported inheritance, mutations, runt penalties, and sibling breeding checks. Players can selectively breed dogs over generations to optimize attribute combinations (such as breeding massive high-health Aggressive watchdogs or fast Pacifists). Implemented UUID-based size scaling mapped directly to `Attributes.SCALE`, automatically syncing physical sizes and hitboxes to match genetic health stats.
+- **AI Performance Optimizations**:
+  - Throttled search scans in `EatGroundFoodGoal` to a random 10-20 tick cooldown and replaced allocations/streams with enhanced `for` loops.
+  - Purged closures and lambda allocations in `PersonalityFollowOwnerGoal` using static final predicates and cached cooperative spacing counts.
+- **Code Splitting**: Extracted taming, paper adoption, debug stick and bone guard mode handlers to `WolfInteractionHelper` to keep Mixin sizes modular and well below the 300 LOC limit.
+
 ## [3.7.1+A-26.1.2] - 2026-05-26
 ### Summary
 The **"Guarding Sit Lock Fix"** patch. Resolves sit command issues for guarding wolves of all personalities.

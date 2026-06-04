@@ -40,9 +40,16 @@ public class BetterDogsConfig {
     public double globalSpeedBuff = 0.20;
     public boolean enableStormAnxiety = true;
     public boolean enableCliffSafety = true;
+    public boolean enableFleeLowHealth = true;
+    public int pacifistFleeChance = 100;
+    public int normalFleeChance = 50;
+    public int aggressiveFleeChance = 10;
     public boolean enableFriendlyFireProtection = true;
     public boolean enableDogsEatRawGroundFood = true;
     public boolean enableDogsEatCookedGroundFood = true;
+    public boolean pacifistGuardBuffs = false;
+    public boolean enableInbredCuring = true;
+    public boolean showRuntParticles = false;
 
     // ========== Aggressive Personality ==========
     public double aggressiveHealthBonus = -10.0;
@@ -77,10 +84,10 @@ public class BetterDogsConfig {
     // ========== Wild Wolves ==========
     public float wildHuntHealthThreshold = 0.5f;
 
-    // ========== Taming ==========
-    public int tamingChanceNormal = 60;
-    public int tamingChanceAggressive = 20;
-    public int tamingChancePacifist = 20;
+    // ========== Spawning Chance Weights ==========
+    public int spawnChanceNormal = 60;
+    public int spawnChanceAggressive = 20;
+    public int spawnChancePacifist = 20;
 
     // ========== Breeding Genetics ==========
     public int breedingSameParentChance = 80;
@@ -191,9 +198,16 @@ public class BetterDogsConfig {
     public double getGlobalSpeedBuff() { return globalSpeedBuff; }
     public boolean getEnableStormAnxiety() { return enableStormAnxiety; }
     public boolean getEnableCliffSafety() { return enableCliffSafety; }
+    public boolean getEnableFleeLowHealth() { return enableFleeLowHealth; }
+    public int getPacifistFleeChance() { return pacifistFleeChance; }
+    public int getNormalFleeChance() { return normalFleeChance; }
+    public int getAggressiveFleeChance() { return aggressiveFleeChance; }
     public boolean getEnableFriendlyFireProtection() { return enableFriendlyFireProtection; }
     public boolean getEnableDogsEatRawGroundFood() { return enableDogsEatRawGroundFood; }
     public boolean getEnableDogsEatCookedGroundFood() { return enableDogsEatCookedGroundFood; }
+    public boolean getPacifistGuardBuffs() { return pacifistGuardBuffs; }
+    public boolean getEnableInbredCuring() { return enableInbredCuring; }
+    public boolean getShowRuntParticles() { return showRuntParticles; }
     public double getAggressiveHealthBonus() { return aggressiveHealthBonus; }
     public double getAggressiveSpeedModifier() { return aggressiveSpeedModifier; }
     public double getAggressiveDetectionRange() { return aggressiveDetectionRange; }

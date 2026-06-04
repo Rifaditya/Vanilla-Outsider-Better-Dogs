@@ -1,4 +1,4 @@
-// Verified against: PersonalityFollowOwnerGoal.java (26.1.2+)
+// Verified against: PersonalityFollowOwnerGoal.java (26.1.2+), EntityGetter.java (26.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
@@ -18,24 +18,57 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
     private int simDistRefreshTimer = 0;
     private int cachedSimDist = 10;
     private float betterdogs$followerSpacingOffset = 0.0f;
+    private int spacingThrottleTimer = 0;
+
+    private static final java.util.function.Predicate<net.minecraft.world.entity.Mob> IS_MONSTER =
+        m -> m instanceof net.minecraft.world.entity.monster.Monster;
 
     public PersonalityFollowOwnerGoal(Wolf wolf, double speedModifier, boolean leavesAllowed) {
         super(wolf, speedModifier, 10.0f, 2.0f);
         this.wolf = wolf;
         this.speedModifier = speedModifier;
         this.recalcTimer = 0;
+        this.spacingThrottleTimer = wolf.getRandom().nextInt(20);
     }
 
-    private void betterdogs$updateFollowerSpacingOffset() {
-        LivingEntity owner = wolf.getOwner();
-        if (owner == null || wolf.level() == null) {
-            betterdogs$followerSpacingOffset = 0.0f;
-            return;
+    public static class FollowerSpacingCache {
+        private static final java.util.Map<java.util.UUID, CacheEntry> cache = new java.util.concurrent.ConcurrentHashMap<>();
+
+        public static class CacheEntry {
+            public final int followerCount;
+            public final long expiryTime;
+
+            public CacheEntry(int followerCount, long expiryTime) {
+                this.followerCount = followerCount;
+                this.expiryTime = expiryTime;
+            }
         }
-        java.util.List<Wolf> activeFollowers = wolf.level().getEntitiesOfClass(Wolf.class, owner.getBoundingBox().inflate(32.0),
-            w -> w.isTame() && w.getOwner() == owner && !w.isOrderedToSit() && !w.isLeashed()
-        );
-        int N = activeFollowers.size();
+
+        public static int getCount(java.util.UUID ownerUuid, long currentTime) {
+            CacheEntry entry = cache.get(ownerUuid);
+            if (entry != null && currentTime < entry.expiryTime) {
+                return entry.followerCount;
+            }
+            return -1;
+        }
+
+        public static int getLastKnownCount(java.util.UUID ownerUuid) {
+            CacheEntry entry = cache.get(ownerUuid);
+            return entry != null ? entry.followerCount : 0;
+        }
+
+        public static void update(java.util.UUID ownerUuid, int count, long currentTime, int lifetime) {
+            cache.put(ownerUuid, new CacheEntry(count, currentTime + lifetime));
+            java.util.Iterator<java.util.Map.Entry<java.util.UUID, CacheEntry>> iterator = cache.entrySet().iterator();
+            while (iterator.hasNext()) {
+                if (currentTime > iterator.next().getValue().expiryTime + 600) {
+                    iterator.remove();
+                }
+            }
+        }
+    }
+
+    private void betterdogs$applyFollowerSpacing(int N) {
         if (N <= 1) {
             betterdogs$followerSpacingOffset = 0.0f;
             return;
@@ -45,9 +78,52 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
         betterdogs$followerSpacingOffset = Math.min((float) Math.sqrt(N - 1) * multiplier, maxExtra);
     }
 
+    private void betterdogs$updateFollowerSpacingOffset() {
+        if (this.spacingThrottleTimer > 0) {
+            return;
+        }
+        LivingEntity owner = wolf.getOwner();
+        if (owner == null || wolf.level() == null) {
+            betterdogs$followerSpacingOffset = 0.0f;
+            return;
+        }
+
+        java.util.UUID ownerUuid = owner.getUUID();
+        long currentTime = wolf.level().getGameTime();
+
+        // 1. Try to read from the cooperative cache
+        int cachedCount = FollowerSpacingCache.getCount(ownerUuid, currentTime);
+        if (cachedCount != -1) {
+            this.spacingThrottleTimer = 20 + wolf.getRandom().nextInt(21);
+            betterdogs$applyFollowerSpacing(cachedCount);
+            return;
+        }
+
+        // 2. Cache Miss: Perform dynamic-radius search
+        int lastCount = FollowerSpacingCache.getLastKnownCount(ownerUuid);
+        double scanRadius = Math.min(32.0 + lastCount * 0.5, 64.0);
+
+        java.util.List<Wolf> activeFollowers = wolf.level().getEntitiesOfClass(Wolf.class, owner.getBoundingBox().inflate(scanRadius));
+        int N = 0;
+        for (Wolf w : activeFollowers) {
+            if (w.isTame() && w.getOwner() == owner && !w.isOrderedToSit() && !w.isLeashed()) {
+                N++;
+            }
+        }
+
+        // 3. Update the cooperative cache
+        int lifetime = 20 + wolf.getRandom().nextInt(21);
+        FollowerSpacingCache.update(ownerUuid, N, currentTime, lifetime);
+
+        // 4. Apply the spacing offset
+        this.spacingThrottleTimer = lifetime;
+        betterdogs$applyFollowerSpacing(N);
+    }
+
     private float getStartDistance() {
-        if (!wolf.isTame())
+        if (!wolf.isTame()) {
             return 10.0f;
+        }
         float dist = 10.0f;
         if (wolf instanceof WolfExtensions ext) {
             BetterDogsConfig config = BetterDogsConfig.get();
@@ -81,8 +157,9 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
     }
 
     private float getStopDistance() {
-        if (!wolf.isTame())
+        if (!wolf.isTame()) {
             return 2.0f;
+        }
         float dist = 2.0f;
         if (wolf instanceof WolfExtensions ext) {
             BetterDogsConfig config = BetterDogsConfig.get();
@@ -99,18 +176,24 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
 
     @Override
     public boolean canUse() {
+        if (this.spacingThrottleTimer > 0) {
+            this.spacingThrottleTimer--;
+        }
         if (wolf instanceof WolfExtensions ext && ext.betterdogs$isGuardMode()) {
             return false;
         }
         LivingEntity owner = wolf.getOwner();
-        if (owner == null || owner.isSpectator())
+        if (owner == null || owner.isSpectator()) {
             return false;
+        }
         betterdogs$updateFollowerSpacingOffset();
         float startDist = getStartDistance();
-        if (wolf.distanceToSqr(owner) < (startDist * startDist))
+        if (wolf.distanceToSqr(owner) < (startDist * startDist)) {
             return false;
-        if (wolf.isOrderedToSit() || wolf.isLeashed())
+        }
+        if (wolf.isOrderedToSit() || wolf.isLeashed()) {
             return false;
+        }
         
         // IndyPets Compatibility: Respect independence
         if (net.vanillaoutsider.betterdogs.util.IndyPetsCompatibility.isIndependent(wolf)) {
@@ -125,10 +208,12 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
         if (wolf instanceof WolfExtensions ext && ext.betterdogs$isGuardMode()) {
             return false;
         }
-        if (wolf.getNavigation().isDone())
+        if (wolf.getNavigation().isDone()) {
             return false;
-        if (wolf.isOrderedToSit() || wolf.isLeashed())
+        }
+        if (wolf.isOrderedToSit() || wolf.isLeashed()) {
             return false;
+        }
         
         // IndyPets Compatibility: Respect independence
         if (net.vanillaoutsider.betterdogs.util.IndyPetsCompatibility.isIndependent(wolf)) {
@@ -136,8 +221,9 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
         }
 
         LivingEntity owner = wolf.getOwner();
-        if (owner == null)
+        if (owner == null) {
             return false;
+        }
         float stopDist = getStopDistance();
         return wolf.distanceToSqr(owner) > (stopDist * stopDist);
     }
@@ -150,9 +236,13 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
 
     @Override
     public void tick() {
+        if (this.spacingThrottleTimer > 0) {
+            this.spacingThrottleTimer--;
+        }
         LivingEntity owner = wolf.getOwner();
-        if (owner == null)
+        if (owner == null) {
             return;
+        }
 
         // Refresh Simulation Distance Cache (every 5 seconds)
         if (--this.simDistRefreshTimer <= 0) {
@@ -192,7 +282,7 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
                         
                         java.util.List<net.minecraft.world.entity.Mob> hostiles = wolf.level().getEntitiesOfClass(net.minecraft.world.entity.Mob.class, 
                             wolf.getBoundingBox().inflate(12.0), 
-                            m -> m instanceof net.minecraft.world.entity.monster.Monster);
+                            IS_MONSTER);
                         
                         if (!hostiles.isEmpty()) {
                             wolf.playSound(net.minecraft.sounds.SoundEvents.GENERIC_HURT, 1.0f, 2.0f);
@@ -229,8 +319,9 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
             double dx = (wolf.getRandom().nextFloat() - 0.5) * spread;
             double dy = (wolf.getRandom().nextFloat() - 0.5) * spread;
             double dz = (wolf.getRandom().nextFloat() - 0.5) * spread;
-            if (wolf.randomTeleport(owner.getX() + dx, owner.getY() + dy, owner.getZ() + dz, false))
+            if (wolf.randomTeleport(owner.getX() + dx, owner.getY() + dy, owner.getZ() + dz, false)) {
                 break;
+            }
         }
     }
 }

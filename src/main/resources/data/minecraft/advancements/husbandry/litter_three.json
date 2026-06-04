@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:husbandry/litter_two",
+  "display": {
+    "icon": {
+      "id": "minecraft:wolf_spawn_egg",
+      "count": 3
+    },
+    "title": {
+      "translate": "advancements.betterdogs.husbandry.litter_three.title"
+    },
+    "description": {
+      "translate": "advancements.betterdogs.husbandry.litter_three.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "breed_litter_three": {
+      "trigger": "vanilla-outsider-better-dogs:wolf_litter",
+      "conditions": {
+        "min_size": 3
+      }
+    }
+  },
+  "requirements": [
+    [
+      "breed_litter_three"
+    ]
+  ]
+}

@@ -1,0 +1,47 @@
+## Memory Read Receipt
+- **Checked File**: `.core/logs/MEMORY.md`
+- **Timestamp**: 2026-05-30T20:29:24+07:00
+- **Status**: Verified
+
+## Tasks
+
+- [x] Port Custom Advancements Triggers:
+  - [x] Create `CureInbredTrigger.java`
+  - [x] Create `GuardWolfPersonalityTrigger.java`
+  - [x] Create `InbredWolfTrigger.java`
+  - [x] Create `OnPatrolTrigger.java`
+  - [x] Create `OutcrossRuntTrigger.java`
+  - [x] Create `PutUpForAdoptionTrigger.java`
+  - [x] Create `SelfServiceTrigger.java`
+  - [x] Create `TameWolfPersonalityTrigger.java`
+  - [x] Create `WolfLitterTrigger.java`
+  - [x] Register all 9 triggers in `BetterDogs.java`
+- [x] Update Codec & Schema:
+  - [x] Update `WolfPersistentData.java` record and Codec
+- [x] Implement Genetics & Sizing Calculations:
+  - [x] Update `WolfBreedingMixin.java` to handle stats inheritance, mutations, inbreeding checks, and litters
+  - [x] Update `WolfStatManager.java` to apply genetic max health, speed, and attack modifiers
+  - [x] Implement UUID-based deterministic size scaling on `Attributes.SCALE` in `WolfStatManager`
+  - [x] Update `WolfSocialMixin.java` to set the base value of `Attributes.SCALE` on initialization and ticks
+- [x] Clean up Render Scaling Mixins (Attributes.SCALE migration):
+  - [x] Delete `WolfRendererMixin.java`
+  - [x] Delete `WolfRenderStateMixin.java`
+  - [x] Delete `WolfRenderStateExtensions.java`
+  - [x] Delete `vanilla-outsider-better-dogs.client.mixins.json`
+  - [x] Remove client mixins JSON reference from `fabric.mod.json`
+- [x] Code Splitting & Performance Optimizations:
+  - [x] Extract player taming, paper adoption, debug stick and bone guard mode handlers to `WolfInteractionHelper.java`
+  - [x] Clean up `WolfInteractMixin.java` (reduce lines under 300)
+  - [x] Optimize `AvoidHazardsGoal.java` with static `MutableBlockPos` instances
+  - [x] Optimize `EatGroundFoodGoal.java` with throttled scans and enhanced `for` loops
+  - [x] Optimize `PersonalityFollowOwnerGoal.java` to purge lambdas and closures
+- [x] Resources & Localizations:
+  - [x] Create all 13 advancements JSON files in `src/main/resources/data/minecraft/advancements/husbandry/` (plural)
+  - [x] Update `en_us.json` with all new advancement names, descriptions, and task strings
+  - [x] Update `id_id.json` with localized Indonesian translations
+- [x] Versioning & Compilation Verification:
+  - [x] Update version to `3.8.0+A-26.1.2` in `gradle.properties`
+  - [x] Update version to `3.8.0+A-26.1.2` in `fabric.mod.json`
+  - [x] Prepend changelog entries in `CHANGELOG.md` and `History.md`
+  - [x] Verify the mod compiles successfully via `.\gradlew build`
+  - [x] Commit all files individually (no `git add .`)

@@ -1,0 +1,49 @@
+{
+  "parent": "minecraft:husbandry/litter_four",
+  "display": {
+    "icon": {
+      "id": "minecraft:golden_carrot"
+    },
+    "title": {
+      "translate": "advancements.betterdogs.husbandry.litter_legend.title"
+    },
+    "description": {
+      "translate": "advancements.betterdogs.husbandry.litter_legend.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "got_two": {
+      "trigger": "vanilla-outsider-better-dogs:wolf_litter",
+      "conditions": {
+        "size": 2
+      }
+    },
+    "got_three": {
+      "trigger": "vanilla-outsider-better-dogs:wolf_litter",
+      "conditions": {
+        "size": 3
+      }
+    },
+    "got_four": {
+      "trigger": "vanilla-outsider-better-dogs:wolf_litter",
+      "conditions": {
+        "size": 4
+      }
+    }
+  },
+  "requirements": [
+    [
+      "got_two"
+    ],
+    [
+      "got_three"
+    ],
+    [
+      "got_four"
+    ]
+  ]
+}
