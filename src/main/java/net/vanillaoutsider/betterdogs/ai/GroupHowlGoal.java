@@ -1,6 +1,7 @@
 // Verified against: GroupHowlGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import java.util.EnumSet;
 import java.util.List;
 import net.minecraft.sounds.SoundEvents;
@@ -51,7 +52,7 @@ public class GroupHowlGoal extends Goal {
         if (wolf.isOrderedToSit()) return false;
         
         // Random chance to start howl (permille per tick during night)
-        float chance = BetterDogsGameRules.getProb(wolf.level(), BetterDogsGameRules.BD_HOWL_CHANCE);
+        float chance = DynamicGameRuleManager.getProb(wolf.level(), BetterDogsGameRules.BD_HOWL_CHANCE);
         if (chance <= 0) return false;
         
         return wolf.getRandom().nextFloat() < chance;

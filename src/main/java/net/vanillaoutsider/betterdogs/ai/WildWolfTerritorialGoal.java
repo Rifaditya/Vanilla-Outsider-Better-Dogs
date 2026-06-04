@@ -1,6 +1,7 @@
 // Verified against: WildWolfTerritorialGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import java.util.EnumSet;
 import net.dasik.social.api.group.GroupMember;
 import net.minecraft.world.entity.LivingEntity;
@@ -44,11 +45,11 @@ public class WildWolfTerritorialGoal extends Goal {
             if (other.isTame() || ((GroupMember)other).getLeader() != null || other == this.wolf) return false;
             
             // Exclusive Disputes Check (v3.3.1)
-            if (BetterDogsGameRules.getBoolean(level, BetterDogsGameRules.BD_TERRITORIAL_EXCLUSIVE_DISPUTES)) {
+            if (DynamicGameRuleManager.getBoolean(level, BetterDogsGameRules.BD_TERRITORIAL_EXCLUSIVE_DISPUTES)) {
                 WolfExtensions otherExt = (WolfExtensions) other;
                 // Rival is busy with someone else
                 if (otherExt.betterdogs$getSocialAction() != WolfExtensions.SocialAction.NONE && otherExt.betterdogs$getSocialTarget() != this.wolf) {
-                    if (BetterDogsGameRules.getBoolean(level, BetterDogsGameRules.BD_DEBUGGING)) {
+                    if (DynamicGameRuleManager.getBoolean(level, BetterDogsGameRules.BD_DEBUGGING)) {
                         net.vanillaoutsider.betterdogs.BetterDogs.LOGGER.info("[Territory Debug] " + this.wolf.getName().getString() + " skipped rival " + other.getName().getString() + " (REASON: Busy with " + (otherExt.betterdogs$getSocialTarget() != null ? otherExt.betterdogs$getSocialTarget().getName().getString() : "Unknown") + ")");
                     }
                     return false;
@@ -61,7 +62,7 @@ public class WildWolfTerritorialGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (!BetterDogsGameRules.getBoolean(this.wolf.level(), BetterDogsGameRules.BD_TERRITORIAL_RIVALRY)) {
+        if (!DynamicGameRuleManager.getBoolean(this.wolf.level(), BetterDogsGameRules.BD_TERRITORIAL_RIVALRY)) {
             return false;
         }
         if (this.wolf.isTame() || ((GroupMember)this.wolf).getLeader() != null) {
@@ -75,7 +76,7 @@ public class WildWolfTerritorialGoal extends Goal {
             return false;
         }
         if (this.wolf.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-            this.searchRadius = BetterDogsGameRules.getInt(serverLevel, BetterDogsGameRules.BD_TERRITORIAL_SEARCH_RADIUS);
+            this.searchRadius = DynamicGameRuleManager.getInt(serverLevel, BetterDogsGameRules.BD_TERRITORIAL_SEARCH_RADIUS);
             this.rival = serverLevel.getNearestEntity(Wolf.class, this.targeting.range(this.searchRadius), this.wolf, this.wolf.getX(), this.wolf.getY(), this.wolf.getZ(), this.wolf.getBoundingBox().inflate(this.searchRadius));
             if (this.rival != null) {
                 this.debugLog("Targeting rival leader: " + this.rival.getName().getString() + " at " + this.rival.position());
@@ -118,7 +119,7 @@ public class WildWolfTerritorialGoal extends Goal {
             rivalExt.betterdogs$setSocialState(null, WolfExtensions.SocialAction.NONE, 0);
         }
         this.rival = null;
-        int maxCooldown = BetterDogsGameRules.getBoolean(this.wolf.level(), BetterDogsGameRules.BD_DEBUGGING) ? 20 : 400;
+        int maxCooldown = DynamicGameRuleManager.getBoolean(this.wolf.level(), BetterDogsGameRules.BD_DEBUGGING) ? 20 : 400;
         this.cooldown = maxCooldown;
     }
 
@@ -185,26 +186,26 @@ public class WildWolfTerritorialGoal extends Goal {
 
         // Determine which GameRules to use based on the personality pair
         if (myPers == WolfPersonality.AGGRESSIVE && rivalPers == WolfPersonality.AGGRESSIVE) {
-            warChance = BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_AA_WAR);
-            mergeChance = BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_AA_MERGE);
+            warChance = DynamicGameRuleManager.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_AA_WAR);
+            mergeChance = DynamicGameRuleManager.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_AA_MERGE);
         } else if ((myPers == WolfPersonality.AGGRESSIVE && rivalPers == WolfPersonality.NORMAL) || 
                    (myPers == WolfPersonality.NORMAL && rivalPers == WolfPersonality.AGGRESSIVE)) {
-            warChance = BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_AN_WAR);
-            mergeChance = BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_AN_MERGE);
+            warChance = DynamicGameRuleManager.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_AN_WAR);
+            mergeChance = DynamicGameRuleManager.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_AN_MERGE);
         } else if ((myPers == WolfPersonality.AGGRESSIVE && rivalPers == WolfPersonality.PACIFIST) || 
                    (myPers == WolfPersonality.PACIFIST && rivalPers == WolfPersonality.AGGRESSIVE)) {
-            warChance = BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_AP_WAR);
-            mergeChance = BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_AP_MERGE);
+            warChance = DynamicGameRuleManager.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_AP_WAR);
+            mergeChance = DynamicGameRuleManager.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_AP_MERGE);
         } else if (myPers == WolfPersonality.NORMAL && rivalPers == WolfPersonality.NORMAL) {
-            warChance = BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_NN_WAR);
-            mergeChance = BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_NN_MERGE);
+            warChance = DynamicGameRuleManager.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_NN_WAR);
+            mergeChance = DynamicGameRuleManager.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_NN_MERGE);
         } else if ((myPers == WolfPersonality.NORMAL && rivalPers == WolfPersonality.PACIFIST) || 
                    (myPers == WolfPersonality.PACIFIST && rivalPers == WolfPersonality.NORMAL)) {
-            warChance = BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_NP_WAR);
-            mergeChance = BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_NP_MERGE);
+            warChance = DynamicGameRuleManager.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_NP_WAR);
+            mergeChance = DynamicGameRuleManager.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_NP_MERGE);
         } else if (myPers == WolfPersonality.PACIFIST && rivalPers == WolfPersonality.PACIFIST) {
-            warChance = BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_PP_WAR);
-            mergeChance = BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_PP_MERGE);
+            warChance = DynamicGameRuleManager.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_PP_WAR);
+            mergeChance = DynamicGameRuleManager.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERR_PP_MERGE);
         }
 
         int roll = seededRandom.nextInt(100);
@@ -244,7 +245,7 @@ public class WildWolfTerritorialGoal extends Goal {
     }
 
     private void debugLog(String message) {
-        if (BetterDogsGameRules.getBoolean(this.wolf.level(), BetterDogsGameRules.BD_DEBUGGING)) {
+        if (DynamicGameRuleManager.getBoolean(this.wolf.level(), BetterDogsGameRules.BD_DEBUGGING)) {
             net.vanillaoutsider.betterdogs.BetterDogs.LOGGER.info("[Territory Debug] " + message);
         }
     }
@@ -253,7 +254,7 @@ public class WildWolfTerritorialGoal extends Goal {
         WolfExtensions ext = (WolfExtensions) this.wolf;
         this.behavior = Behavior.FIGHT;
         // Deterministic fatality decision
-        this.isFatal = seededRandom.nextInt(100) < BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERRITORIAL_FATAL_CHANCE);
+        this.isFatal = seededRandom.nextInt(100) < DynamicGameRuleManager.getInt(this.wolf.level(), BetterDogsGameRules.BD_TERRITORIAL_FATAL_CHANCE);
         ext.betterdogs$setSocialState(this.rival, WolfExtensions.SocialAction.TERRITORIAL_WAR, 1200);
         if (this.rival instanceof WolfExtensions rivalExt) {
             rivalExt.betterdogs$setSocialState(this.wolf, WolfExtensions.SocialAction.TERRITORIAL_WAR, 1200);

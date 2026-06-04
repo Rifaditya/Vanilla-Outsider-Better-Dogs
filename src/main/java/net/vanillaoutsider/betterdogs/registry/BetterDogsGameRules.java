@@ -1,4 +1,4 @@
-// Verified against: BetterDogsGameRules.java (26.1.2+)
+// Verified against: GameRules.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.registry;
 
 import com.mojang.brigadier.arguments.BoolArgumentType;
@@ -21,46 +21,6 @@ public class BetterDogsGameRules {
 	// Single unified category
 	public static final GameRuleCategory BETTER_DOGS = GameRuleCategory
 			.register(Identifier.parse("vanilla-outsider-better-dogs:better_dogs"));
-
-	// Helper to get Percentage (0-100 -> 0.0-1.0)
-	public static double getPct(Level level, GameRule<Integer> rule) {
-		if (level.isClientSide())
-			return 0.0; // Safety
-		return ((ServerLevel) level).getGameRules().get(rule) / 100.0;
-	}
-
-	// Helper to get Permille (0-1000 -> 0.0-1.0)
-	public static float getProb(Level level, GameRule<Integer> rule) {
-		if (level.isClientSide())
-			return 0.0f;
-		return ((ServerLevel) level).getGameRules().get(rule) / 1000.0f;
-	}
-
-	// Helper for direct percents/chance (0-100 -> 0.0-1.0)
-	public static float getChance(Level level, GameRule<Integer> rule) {
-		if (level.isClientSide())
-			return 0.0f;
-		return ((ServerLevel) level).getGameRules().get(rule) / 100.0f;
-	}
-
-	public static int getInt(Level level, GameRule<Integer> rule) {
-		if (level.isClientSide())
-			return 0;
-		return ((ServerLevel) level).getGameRules().get(rule);
-	}
-
-	// Helper to get Decile float (0-N -> 0.0-N/10.0 blocks)
-	public static float getDecileFloat(Level level, GameRule<Integer> rule) {
-		if (level.isClientSide())
-			return 0.0f;
-		return ((ServerLevel) level).getGameRules().get(rule) / 10.0f;
-	}
-
-	public static boolean getBoolean(Level level, GameRule<Boolean> rule) {
-		if (level.isClientSide())
-			return false;
-		return ((ServerLevel) level).getGameRules().get(rule);
-	}
 
 
 
@@ -145,6 +105,18 @@ public class BetterDogsGameRules {
 	public static GameRule<Integer> BD_TAME_NORMAL_PERCENT;
 	public static GameRule<Integer> BD_TAME_AGGRO_PERCENT;
 	public static GameRule<Integer> BD_TAME_PACI_PERCENT;
+
+	// --- Guard Mode ---
+	public static GameRule<Boolean> BD_PACIFIST_GUARD_BUFFS;
+	public static GameRule<Integer> BD_GUARD_PATROL_RANGE_AGGRESSIVE;
+	public static GameRule<Integer> BD_GUARD_PATROL_RANGE_NORMAL;
+	public static GameRule<Integer> BD_GUARD_PATROL_RANGE_PACIFIST;
+
+	// --- Pack Spread Scaling ---
+	public static GameRule<Integer> BD_TAMED_PACK_SPREAD_MULTIPLIER;
+	public static GameRule<Integer> BD_TAMED_PACK_SPREAD_MAX;
+	public static GameRule<Integer> BD_WILD_PACK_SPREAD_MULTIPLIER;
+	public static GameRule<Integer> BD_WILD_PACK_SPREAD_MAX;
 
 	public static void register() {
 		BetterDogsConfig config = BetterDogsConfig.get();
@@ -281,6 +253,22 @@ public class BetterDogsGameRules {
 				BETTER_DOGS, 8);
 		BD_WOLF_SPAWN_DENSITY_BOOST = registerInteger("vanilla-outsider-better-dogs:bd_wolf_spawn_density_boost",
 				BETTER_DOGS, 0);
+
+		// Guard Mode
+		BD_PACIFIST_GUARD_BUFFS = registerBoolean("vanilla-outsider-better-dogs:bd_pacifist_guard_buffs", BETTER_DOGS, false);
+		BD_GUARD_PATROL_RANGE_AGGRESSIVE = registerInteger("vanilla-outsider-better-dogs:bd_guard_patrol_range_aggressive", BETTER_DOGS, 12);
+		BD_GUARD_PATROL_RANGE_NORMAL = registerInteger("vanilla-outsider-better-dogs:bd_guard_patrol_range_normal", BETTER_DOGS, 0);
+		BD_GUARD_PATROL_RANGE_PACIFIST = registerInteger("vanilla-outsider-better-dogs:bd_guard_patrol_range_pacifist", BETTER_DOGS, 3);
+
+		// Pack Spread Scaling
+		BD_TAMED_PACK_SPREAD_MULTIPLIER = registerInteger("vanilla-outsider-better-dogs:bd_tamed_pack_spread_multiplier", BETTER_DOGS,
+				config.getTamedPackSpreadMultiplier());
+		BD_TAMED_PACK_SPREAD_MAX = registerInteger("vanilla-outsider-better-dogs:bd_tamed_pack_spread_max", BETTER_DOGS,
+				config.getTamedPackSpreadMax());
+		BD_WILD_PACK_SPREAD_MULTIPLIER = registerInteger("vanilla-outsider-better-dogs:bd_wild_pack_spread_multiplier", BETTER_DOGS,
+				config.getWildPackSpreadMultiplier());
+		BD_WILD_PACK_SPREAD_MAX = registerInteger("vanilla-outsider-better-dogs:bd_wild_pack_spread_max", BETTER_DOGS,
+				config.getWildPackSpreadMax());
 	}
 
         // Internal Registration Helpers

@@ -1,6 +1,7 @@
 // Verified against: WolfStatManager.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.util;
 
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -60,8 +61,8 @@ public class WolfStatManager {
 
         switch (personality) {
             case AGGRESSIVE -> {
-                double speedMod = BetterDogsGameRules.getPct(wolf.level(), BetterDogsGameRules.BD_AGGRO_SPEED_PCT);
-                double damageMod = BetterDogsGameRules.getPct(wolf.level(), BetterDogsGameRules.BD_AGGRO_DMG_PCT);
+                double speedMod = DynamicGameRuleManager.getPct(wolf.level(), BetterDogsGameRules.BD_AGGRO_SPEED_PCT);
+                double damageMod = DynamicGameRuleManager.getPct(wolf.level(), BetterDogsGameRules.BD_AGGRO_DMG_PCT);
 
                 speedAttr.addPermanentModifier(new AttributeModifier(aggressiveSpeedId, speedMod,
                         AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
@@ -73,7 +74,7 @@ public class WolfStatManager {
                     Identifier aggressiveHealthId = Identifier.parse(AGGRESSIVE_HEALTH_ID);
                     healthAttr.removeModifier(aggressiveHealthId);
 
-                    double hpBonus = BetterDogsGameRules.getInt(wolf.level(), BetterDogsGameRules.BD_AGGRO_HEALTH);
+                    double hpBonus = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_AGGRO_HEALTH);
                     // Handle negative bonus explicitly if needed, but health logic usually handles add_value fine.
                     // Config was -10.0. Game Rule will be -10.
                     
@@ -88,9 +89,9 @@ public class WolfStatManager {
                 }
             }
             case PACIFIST -> {
-                double speedMod = BetterDogsGameRules.getPct(wolf.level(), BetterDogsGameRules.BD_PACI_SPEED_PCT);
-                double damageMod = BetterDogsGameRules.getPct(wolf.level(), BetterDogsGameRules.BD_PACI_DMG_PCT);
-                double kbMod = BetterDogsGameRules.getPct(wolf.level(), BetterDogsGameRules.BD_PACI_KNOCKBACK_PCT);
+                double speedMod = DynamicGameRuleManager.getPct(wolf.level(), BetterDogsGameRules.BD_PACI_SPEED_PCT);
+                double damageMod = DynamicGameRuleManager.getPct(wolf.level(), BetterDogsGameRules.BD_PACI_DMG_PCT);
+                double kbMod = DynamicGameRuleManager.getPct(wolf.level(), BetterDogsGameRules.BD_PACI_KNOCKBACK_PCT);
 
                 speedAttr.addPermanentModifier(new AttributeModifier(pacifistSpeedId, speedMod,
                         AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
@@ -106,7 +107,7 @@ public class WolfStatManager {
                     Identifier pacifistHealthId = Identifier.parse("betterdogs:pacifist_health");
                     healthAttr.removeModifier(pacifistHealthId);
 
-                    double hpBonus = BetterDogsGameRules.getInt(wolf.level(), BetterDogsGameRules.BD_PACI_HEALTH);
+                    double hpBonus = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_PACI_HEALTH);
                     if (hpBonus != 0) {
                         healthAttr.addPermanentModifier(new AttributeModifier(pacifistHealthId, hpBonus,
                                 AttributeModifier.Operation.ADD_VALUE));
@@ -117,9 +118,9 @@ public class WolfStatManager {
                 }
             }
             case NORMAL -> {
-                double speedMod = BetterDogsGameRules.getPct(wolf.level(), BetterDogsGameRules.BD_NORMAL_SPEED_PCT);
-                double damageMod = BetterDogsGameRules.getPct(wolf.level(), BetterDogsGameRules.BD_NORMAL_DMG_PCT);
-                double healthMod = BetterDogsGameRules.getInt(wolf.level(), BetterDogsGameRules.BD_NORMAL_HEALTH);
+                double speedMod = DynamicGameRuleManager.getPct(wolf.level(), BetterDogsGameRules.BD_NORMAL_SPEED_PCT);
+                double damageMod = DynamicGameRuleManager.getPct(wolf.level(), BetterDogsGameRules.BD_NORMAL_DMG_PCT);
+                double healthMod = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_NORMAL_HEALTH);
 
                 Identifier normalSpeedId = Identifier.parse(NORMAL_SPEED_ID);
                 Identifier normalDamageId = Identifier.parse(NORMAL_DAMAGE_ID);

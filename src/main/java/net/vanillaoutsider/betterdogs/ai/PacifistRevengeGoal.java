@@ -1,6 +1,7 @@
 // Verified against: PacifistRevengeGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.dasik.social.api.group.GroupMember;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -25,7 +26,7 @@ public class PacifistRevengeGoal extends HurtByTargetGoal {
     @Override
     public boolean canUse() {
         // Only for wolves with Pacifist personality (Adults)
-        boolean isWildEnabled = BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_WILD_PERSONALITY_BEHAVIOR);
+        boolean isWildEnabled = DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_WILD_PERSONALITY_BEHAVIOR);
 
         if (!wolf.isTame() && (!isWildEnabled || ((GroupMember)wolf).getLeader() == null)) {
             return false;

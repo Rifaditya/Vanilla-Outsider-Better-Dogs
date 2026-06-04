@@ -27,6 +27,25 @@ public class WildWolfFollowLeaderGoal extends FollowLeaderGoal<Wolf> {
     }
 
     @Override
+    public void tick() {
+        LivingEntity leader = ((GroupMember)this.mob).getLeader();
+        if (leader instanceof GroupMember groupLeader) {
+            int N = groupLeader.getGroupSize();
+            float multiplier = net.dasik.social.api.gamerule.DynamicGameRuleManager.getInt(this.mob.level(), net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_WILD_PACK_SPREAD_MULTIPLIER) / 100.0f;
+            float maxExtra = net.dasik.social.api.gamerule.DynamicGameRuleManager.getInt(this.mob.level(), net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_WILD_PACK_SPREAD_MAX) / 10.0f;
+            float extra = Math.min((float) Math.sqrt(Math.max(0, N - 1)) * multiplier, maxExtra);
+            
+            float cohesion = 5.0f + extra;
+            float separation = 2.5f + extra;
+            
+            this.setParameters(new GroupParameters(
+                cohesion, separation, 1.2f, true, 144.0f, 6.0f, 2.0f, 0.0f, 0.0f, 0.0f
+            ));
+        }
+        super.tick();
+    }
+
+    @Override
     public boolean canUse() {
         // Tamed wolves follow owners, not wild leaders.
         if (this.mob.isTame()) {

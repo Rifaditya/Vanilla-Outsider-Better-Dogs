@@ -78,11 +78,10 @@ Wild wolf packs are now dynamic, territorial entities led by a dominant leader:
 
 No messy config files. Better Dogs uses the **Native Minecraft Game Rules** system. All 50+ mod parameters are grouped into a dedicated **"Better Dogs"** category in the official UI.
 
-> [!TIP]
-> **Too many rules?** If the game rule screen feels cluttered, we highly recommend installing **[Collapsible Game Rules](https://www.curseforge.com/minecraft/mc-mods/collapsible-gamerules)**. It will automatically group the new Personality Matrix settings into clean, expandable folders!
+<blockquote>💡 <strong>Too many rules?</strong> If the game rule screen feels cluttered, we highly recommend installing <a href="https://www.curseforge.com/minecraft/mc-mods/collapsible-gamerules">Collapsible Game Rules</a>. It will automatically group the new Personality Matrix settings into clean, expandable folders!</blockquote>
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.1-core-migration/Doc/Media/Gallery/native_game_rules_ui.png" alt="Native gamerule UI">
+<img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/refs/heads/26.2-core-alignment/Doc/Media/Gallery/Gamerule%20Screen%20options.png" alt="Native gamerule UI">
 </p>
 
 ---
@@ -93,14 +92,13 @@ If you enjoy the **Vanilla Outsider** collection, consider fueling the next upda
 
 <p align="center">
 
-[![Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20Me-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/dasikigaijin/tip)
-[![SocioBuzz](https://img.shields.io/badge/SocioBuzz-Local_Support-7BB32E?style=for-the-badge)](https://sociabuzz.com/dasikigaijin/tribe)
-[![Saweria](https://img.shields.io/badge/Saweria-Local_Support-FFA500?style=for-the-badge)](https://saweria.co/DasikIgaijinn)
+<a href="https://ko-fi.com/dasikigaijin/tip"><img src="https://img.shields.io/badge/Ko--fi-Support%20Me-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white" alt="Ko-fi"></a>
+<a href="https://sociabuzz.com/dasikigaijin/tribe"><img src="https://img.shields.io/badge/SocioBuzz-Local_Support-7BB32E?style=for-the-badge" alt="SocioBuzz"></a>
+<a href="https://saweria.co/DasikIgaijinn"><img src="https://img.shields.io/badge/Saweria-Local_Support-FFA500?style=for-the-badge" alt="Saweria"></a>
 
 </p>
 
-> [!NOTE]
-> **Indonesian Users:** SocioBuzz and Saweria support local payment methods (Gopay, OVO, Dana, etc.) if you want to support me without using PayPal/Ko-fi!
+<blockquote><strong>🇮🇩 Indonesian Users:</strong> SocioBuzz and Saweria support local payment methods (Gopay, OVO, Dana, etc.) if you want to support me without using PayPal/Ko-fi!</blockquote>
 
 ---
 

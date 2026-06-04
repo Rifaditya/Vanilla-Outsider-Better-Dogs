@@ -1,6 +1,7 @@
 // Verified against: AnimalMixin.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.mixin;
 
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.ExperienceOrb;
@@ -23,8 +24,8 @@ public abstract class AnimalMixin {
         
         // Only target tamed wolves as per requirement
         if (parent1 instanceof Wolf wolf && partner instanceof Wolf partnerWolf && wolf.isTame()) {
-            int maxSize = BetterDogsGameRules.getInt(level, BetterDogsGameRules.BD_WOLF_LITTER_MAX_SIZE);
-            int extraChance = BetterDogsGameRules.getInt(level, BetterDogsGameRules.BD_WOLF_LITTER_EXTRA_CHANCE);
+            int maxSize = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_WOLF_LITTER_MAX_SIZE);
+            int extraChance = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_WOLF_LITTER_EXTRA_CHANCE);
 
             // Already spawned one baby in the original method.
             // Loop for additional puppies up to max size.

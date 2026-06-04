@@ -4,7 +4,6 @@ package net.vanillaoutsider.betterdogs.config;
 public class BetterDogsConfig {
 
     private static BetterDogsConfig INSTANCE = new BetterDogsConfig();
-    private static final com.google.gson.Gson GSON = new com.google.gson.GsonBuilder().setPrettyPrinting().create();
     private static java.nio.file.Path CONFIG_PATH;
 
     public static final int VERSION = 3470;
@@ -13,100 +12,25 @@ public class BetterDogsConfig {
     public static synchronized void load(java.nio.file.Path configDir) {
         CONFIG_PATH = configDir.resolve("vanilla-outsider-better-dogs.json");
         org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger("Better Dogs");
-        
-        if (!java.nio.file.Files.exists(CONFIG_PATH)) {
-            logger.info("No config found, copying default config from resources");
-            try (java.io.InputStream in = BetterDogsConfig.class.getResourceAsStream("/vanilla-outsider-better-dogs.json")) {
-                if (in != null) {
-                    java.nio.file.Files.createDirectories(CONFIG_PATH.getParent());
-                    java.nio.file.Files.copy(in, CONFIG_PATH);
-                } else {
-                    logger.warn("Default config resource not found in JAR! Generating from code defaults.");
-                    save();
-                    return;
-                }
-            } catch (Exception e) {
-                logger.error("Failed to copy default config from resources, generating defaults from code.", e);
-                save();
-                return;
-            }
-        }
-
-        try {
-            // Pass 4: Size Guard (1MB limit)
-            long size = java.nio.file.Files.size(CONFIG_PATH);
-            if (size > 1024 * 1024) {
-                logger.error("Config file too large ({} bytes). Using defaults for safety!", size);
-                return;
-            }
-
-            // Pass 5: UTF-8 Enforcement
-            try (java.io.Reader reader = java.nio.file.Files.newBufferedReader(CONFIG_PATH, java.nio.charset.StandardCharsets.UTF_8)) {
-                BetterDogsConfig tempInstance = GSON.fromJson(reader, BetterDogsConfig.class);
-                
-                if (tempInstance != null) {
-                    // Pass 3: Version Awareness & Backup
-                    boolean needsSync = false;
-                    if (tempInstance.configVersion < INSTANCE.configVersion) {
-                        logger.info("Old config version {} detected. Backing up and updating to {}...", tempInstance.configVersion, INSTANCE.configVersion);
-                        createBackup();
-                        tempInstance.configVersion = INSTANCE.configVersion;
-                        needsSync = true;
-                    }
-
-                    INSTANCE = tempInstance;
-                    
-                    // Pass 2 & 5: Additive Sync (Merge new defaults into existing file)
-                    // If we added new fields to the class, GSON will write them out now.
-                    if (needsSync) {
-                        save();
-                    } else {
-                        // Optional: Always save to ensure stale fields are purged? 
-                        // User specifically asked for "new config version update to change the user settings to default"
-                        // wait, "i dont want the new config version update to change the user settings to default"
-                        // Correct: save() will write back CURRENT java fields, which merges new ones and preserves old ones.
-                        save(); 
-                    }
-                }
-            }
-        } catch (Exception e) {
-            logger.error("Critical error loading config. Preserving file and using defaults.", e);
-        }
+        INSTANCE = net.dasik.social.api.config.ConfigHelper.load(
+                CONFIG_PATH,
+                INSTANCE,
+                BetterDogsConfig.class,
+                VERSION,
+                config -> config.configVersion,
+                (config, ver) -> config.configVersion = ver,
+                "/vanilla-outsider-better-dogs.json",
+                logger
+        );
     }
 
     public static synchronized void save() {
         if (CONFIG_PATH == null) return;
-        org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger("Better Dogs");
-        
-        try {
-            // Pass 2: Directory Guard
-            java.nio.file.Files.createDirectories(CONFIG_PATH.getParent());
-
-            // Pass 4: Atomic Swapping
-            java.nio.file.Path tempPath = CONFIG_PATH.resolveSibling(CONFIG_PATH.getFileName().toString() + ".tmp");
-            
-            try (java.io.Writer writer = java.nio.file.Files.newBufferedWriter(tempPath, java.nio.charset.StandardCharsets.UTF_8)) {
-                GSON.toJson(INSTANCE, writer);
-            }
-
-            try {
-                java.nio.file.Files.move(tempPath, CONFIG_PATH, java.nio.file.StandardCopyOption.REPLACE_EXISTING, java.nio.file.StandardCopyOption.ATOMIC_MOVE);
-            } catch (java.io.IOException e) {
-                // Pass 5: Fallback for non-atomic FS
-                java.nio.file.Files.move(tempPath, CONFIG_PATH, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
-            }
-        } catch (Exception e) {
-            logger.error("Failed to save config safely!", e);
-        }
-    }
-
-    private static void createBackup() {
-        try {
-            java.nio.file.Path backupPath = CONFIG_PATH.resolveSibling(CONFIG_PATH.getFileName().toString() + ".bak");
-            java.nio.file.Files.copy(CONFIG_PATH, backupPath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception e) {
-            org.slf4j.LoggerFactory.getLogger("Better Dogs").error("Failed to create config backup!", e);
-        }
+        net.dasik.social.api.config.ConfigHelper.save(
+                CONFIG_PATH,
+                INSTANCE,
+                org.slf4j.LoggerFactory.getLogger("Better Dogs")
+        );
     }
 
     // ========== Game Rule Defaults ==========
@@ -196,6 +120,12 @@ public class BetterDogsConfig {
     public int terrMatrixNPMerge = 45;
     public int terrMatrixPPWar = 0;
     public int terrMatrixPPMerge = 50;
+
+    // ========== Pack Wander Scaling (v3.7.0) ==========
+    public int tamedPackSpreadMultiplier = 120;
+    public int tamedPackSpreadMax = 60;
+    public int wildPackSpreadMultiplier = 80;
+    public int wildPackSpreadMax = 40;
 
     // ========== Pack Separation (REMOVED v3.1.17) ==========
     // public boolean enablePackSeparation = true;
@@ -341,4 +271,9 @@ public class BetterDogsConfig {
     public int getTerrMatrixNPMerge() { return terrMatrixNPMerge; }
     public int getTerrMatrixPPWar() { return terrMatrixPPWar; }
     public int getTerrMatrixPPMerge() { return terrMatrixPPMerge; }
+
+    public int getTamedPackSpreadMultiplier() { return tamedPackSpreadMultiplier; }
+    public int getTamedPackSpreadMax() { return tamedPackSpreadMax; }
+    public int getWildPackSpreadMultiplier() { return wildPackSpreadMultiplier; }
+    public int getWildPackSpreadMax() { return wildPackSpreadMax; }
 }

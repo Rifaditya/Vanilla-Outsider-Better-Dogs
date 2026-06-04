@@ -1,6 +1,7 @@
 // Verified against: AdultCorrectionGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -74,7 +75,7 @@ public class AdultCorrectionGoal extends Goal {
     }
 
     private void onHitBaby() {
-        float baseChance = BetterDogsGameRules.getChance(wolf.level(), BetterDogsGameRules.BD_BLOOD_FEUD_PERCENT);
+        float baseChance = DynamicGameRuleManager.getChance(wolf.level(), BetterDogsGameRules.BD_BLOOD_FEUD_PERCENT);
         
         // INTEGRATION: Bonding reduces feud chance
         float chance = baseChance;
