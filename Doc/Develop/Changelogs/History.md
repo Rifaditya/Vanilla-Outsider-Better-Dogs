@@ -3,6 +3,7 @@
 ## [4.6.22+R-26.2] - 2026-06-04
 ### Summary
 - **Release Promotion**: Promoted all recent codebase optimizations and refactoring alignments to a stable production Release.
+- **Genetics & Breeding Info**: Players can selectively breed dogs over generations to optimize attribute combinations (such as breeding massive high-health Aggressive watchdogs or fast Pacifists), creating unique and specialized companions.
 - **Naming Polish**: Renamed the debugging GameRule from `betterdogdebugging` to namespaced `vanilla-outsider-better-dogs:bd_debugging` (along with english and indonesian translation key updates).
 - **API Cleanups**: Replaced legacy `Identifier.parse` calls with the modern `Identifier.fromNamespaceAndPath` API, pre-allocating static fields inside `WolfStatManager` to eliminate dynamic parser allocations.
 - **Config Sync**: Synchronized the template config JSON with all newly introduced configuration settings.
@@ -37,7 +38,6 @@
 ### Summary
 - **Stable Release**: Promoted the custom advancements/achievements system for Minecraft 26.2 to a stable production Release.
 - **Bug Fix**: Includes the critical startup crash fix (`InvalidInjectionException` for `killedEntity` in `WolfMixin`) that impacted versions `4.6.11` to `4.6.13`.
-- **Skipped Versions Warning**: Versions `4.6.11+A-26.2`, `4.6.12+A-26.2`, and `4.6.13+R-26.2` have been deprecated/skipped due to the startup crash.
 - **Custom Advancements**:
   - **A Pack of Personalities**: Tame all three wolf personality types (Normal, Aggressive, and Pacifist).
   - **On Guard!**: Place a tamed wolf into Guard Mode for the first time.
@@ -53,7 +53,6 @@
 ## [4.6.14+B-26.2] - 2026-05-30
 ### Summary
 - **Bug Fix**: Resolved a critical startup crash (`InvalidInjectionException` for `killedEntity` in `WolfMixin`) that caused the game to crash.
-- **Skipped Versions Warning**: Versions `4.6.11+A-26.2`, `4.6.12+A-26.2`, and `4.6.13+R-26.2` are deprecated and skipped due to this crash.
 - **Technical Detail**: Replaced the invalid inherited method injection in `WolfMixin` with a new `EntityMixin` targeting the base `Entity` class, dynamically resolving the wolf instance at runtime.
 
 ## [4.6.13+R-26.2] - 2026-05-30 [CRASHING - DEPRECATED]
