@@ -30,7 +30,7 @@ public class WolfStatManager {
     private static final Identifier NORMAL_HEALTH_ID = Identifier.fromNamespaceAndPath("betterdogs", "normal_health");
     private static final Identifier PACIFIST_HEALTH_ID = Identifier.fromNamespaceAndPath("betterdogs", "pacifist_health");
 
-    // New Rolled Modifier IDs
+    // New Rolled Modifier IDs (to be cleaned up during migration to DasikLibrary)
     private static final Identifier ROLLED_HEALTH_ID = Identifier.fromNamespaceAndPath("betterdogs", "rolled_health");
     private static final Identifier ROLLED_DAMAGE_ID = Identifier.fromNamespaceAndPath("betterdogs", "rolled_damage");
     private static final Identifier ROLLED_SPEED_ID = Identifier.fromNamespaceAndPath("betterdogs", "rolled_speed");
@@ -81,7 +81,7 @@ public class WolfStatManager {
             healthAttr.removeModifier(rolledHealthId);
         }
 
-        // Remove new modifiers before re-applying to prevent stacking
+        // Remove previous rolled modifiers before re-applying to prevent stacking
         speedAttr.removeModifier(rolledSpeedId);
         damageAttr.removeModifier(rolledDamageId);
 
@@ -90,47 +90,17 @@ public class WolfStatManager {
         speedAttr.addPermanentModifier(new AttributeModifier(baseSpeedId, speedBuff,
                 AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
 
-        // 1. Check/Roll stats
-        if (!WolfPersistentData.arePersistedStatsRolled(wolf)) {
-            UUID uuid = wolf.getUUID();
-            long seed = uuid.getMostSignificantBits() ^ uuid.getLeastSignificantBits();
-            RandomSource rand = RandomSource.create(seed);
-
-            float rolledHp = 0.0f;
-            float rolledDmg = 0.0f;
-            float rolledSpeed = 0.0f;
-
-            switch (personality) {
-                case NORMAL -> {
-                    rolledHp = rand.triangle(-2.0f, 10.0f);
-                    rolledDmg = rand.triangle(-0.05f, 0.25f);
-                    rolledSpeed = rand.triangle(-0.025f, 0.175f);
-                }
-                case AGGRESSIVE -> {
-                    rolledHp = rand.triangle(-5.0f, 11.0f);
-                    rolledDmg = rand.triangle(0.15f, 0.25f);
-                    rolledSpeed = rand.triangle(0.075f, 0.175f);
-                }
-                case PACIFIST -> {
-                    rolledHp = rand.triangle(11.0f, 15.0f);
-                    rolledDmg = rand.triangle(-0.20f, 0.30f);
-                    rolledSpeed = rand.triangle(-0.15f, 0.20f);
-                }
-            }
-
-            // Save rolled stats to persistent data
-            WolfPersistentData.setPersistedHealthBonus(wolf, rolledHp);
-            WolfPersistentData.setPersistedDamageMod(wolf, rolledDmg);
-            WolfPersistentData.setPersistedSpeedMod(wolf, rolledSpeed);
-            WolfPersistentData.setPersistedStatsRolled(wolf, true);
+        // 1. Check/Roll stats via DasikLibrary Genetics Engine
+        if (!net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf).traitsRolled()) {
+            net.dasik.social.api.genetics.GeneticsEngine.rollInitialStats(wolf, personality.name().toLowerCase(java.util.Locale.ROOT));
+        } else {
+            net.dasik.social.api.genetics.GeneticsEngine.applyGeneticsModifiers(wolf);
         }
 
-        // 2. Retrieve rolled stats
+        // 2. Retrieve rolled stats for scale calculation
         float healthBonus = WolfPersistentData.getPersistedHealthBonus(wolf);
-        float damageMod = WolfPersistentData.getPersistedDamageMod(wolf);
-        float speedMod = WolfPersistentData.getPersistedSpeedMod(wolf);
 
-        // Calculate and apply dynamic scale based on health bonus (Option 2: 0.808x to 1.312x range)
+        // Calculate and apply dynamic scale based on health bonus
         float calculatedScale = 1.0f + (healthBonus * 0.012f);
 
         // Add dynamic, deterministic random offset between -0.10 and +0.10 based on UUID
@@ -144,38 +114,13 @@ public class WolfStatManager {
             ext.betterdogs$setSocialScale(calculatedScale);
         }
 
-        // 3. Apply Attack Damage Modifier
-        damageAttr.addPermanentModifier(new AttributeModifier(rolledDamageId, damageMod,
-                AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-
-        // 4. Apply Movement Speed Modifier
-        speedAttr.addPermanentModifier(new AttributeModifier(rolledSpeedId, speedMod,
-                AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-
-        // 5. Apply Max Health Modifier
-        if (healthAttr != null) {
-            float prevMaxHealth = wolf.getMaxHealth();
-            float prevHealth = wolf.getHealth();
-            boolean wasAtFullHealth = prevHealth >= prevMaxHealth;
-
-            if (healthBonus != 0.0f) {
-                healthAttr.addPermanentModifier(new AttributeModifier(rolledHealthId, healthBonus,
-                        AttributeModifier.Operation.ADD_VALUE));
-
-                float newMaxHealth = wolf.getMaxHealth();
-                if (healthBonus < 0.0f) {
-                    if (wolf.getHealth() > newMaxHealth) {
-                        wolf.setHealth(newMaxHealth);
-                    }
-                } else {
-                    if (wasAtFullHealth && wolf.getHealth() < newMaxHealth) {
-                        wolf.heal(newMaxHealth - prevMaxHealth);
-                    }
-                }
-            }
+        // Apply scale directly to standard SCALE attribute in 26.2
+        var scaleAttr = wolf.getAttribute(Attributes.SCALE);
+        if (scaleAttr != null && scaleAttr.getBaseValue() != calculatedScale) {
+            scaleAttr.setBaseValue(calculatedScale);
         }
 
-        // 6. Apply Pacifist Knockback Modifier (Static GameRule value)
+        // 3. Apply Pacifist Knockback Modifier (Static GameRule value)
         if (personality == WolfPersonality.PACIFIST && knockbackAttr != null) {
             double kbMod = DynamicGameRuleManager.getPct(wolf.level(), BetterDogsGameRules.BD_PACI_KNOCKBACK_PCT);
             knockbackAttr.addPermanentModifier(new AttributeModifier(pacifistKnockbackId, kbMod,

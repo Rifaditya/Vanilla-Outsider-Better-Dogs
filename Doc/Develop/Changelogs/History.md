@@ -1,5 +1,11 @@
 # Better Dogs - Historical Changelog
 
+## [4.6.23+A-26.2] - 2026-06-04
+### Summary
+The **"Genetics Library Migration"** update. Abstracts and migrates all selective breeding, inbreeding, and outcross recovery calculations to `DasikLibrary` `v1.8.0`.
+- **Genetics Centralization**: Migrated `WolfPersistentData` genetics fields to the library-provided `dasik-library:genetics` attachment type.
+- **Thin Mod Architecture**: Delegated breeding calculations, inbreeding checks, and outcross recovery rules to `GeneticsEngine.inheritGenetics`, keeping the mod lightweight and clean.
+
 ## [4.6.22+R-26.2] - 2026-06-04
 ### Summary
 - **Release Promotion**: Promoted all recent codebase optimizations and refactoring alignments to a stable production Release.

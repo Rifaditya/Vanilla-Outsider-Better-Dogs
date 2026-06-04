@@ -52,8 +52,8 @@ public class WolfInteractionHelper {
                         net.vanillaoutsider.betterdogs.WolfPersistentData.setPersistedDamageMod(wolf, avgDmg);
                         net.vanillaoutsider.betterdogs.WolfPersistentData.setPersistedSpeedMod(wolf, avgSpeed);
                         
-                        java.util.Optional<UUID> p1 = net.vanillaoutsider.betterdogs.WolfPersistentData.getWolfData(wolf).parent1Uuid();
-                        java.util.Optional<UUID> p2 = net.vanillaoutsider.betterdogs.WolfPersistentData.getWolfData(wolf).parent2Uuid();
+                        java.util.Optional<UUID> p1 = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedParent1Uuid(wolf);
+                        java.util.Optional<UUID> p2 = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedParent2Uuid(wolf);
                         net.vanillaoutsider.betterdogs.WolfPersistentData.setPersistedParentsAndInbred(wolf, p1.orElse(null), p2.orElse(null), false);
                         
                         WolfPersonality personality = ext.betterdogs$getPersonality();
