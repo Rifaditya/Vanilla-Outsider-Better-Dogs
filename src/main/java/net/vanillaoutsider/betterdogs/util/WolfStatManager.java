@@ -16,24 +16,24 @@ import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 
 public class WolfStatManager {
 
-    private static final String BASE_SPEED_ID = "betterdogs:base_speed_boost";
-    private static final String PACIFIST_KNOCKBACK_ID = "betterdogs:pacifist_knockback";
+    private static final Identifier BASE_SPEED_ID = Identifier.fromNamespaceAndPath("betterdogs", "base_speed_boost");
+    private static final Identifier PACIFIST_KNOCKBACK_ID = Identifier.fromNamespaceAndPath("betterdogs", "pacifist_knockback");
     
     // Legacy Modifier IDs for cleanup
-    private static final String AGGRESSIVE_SPEED_ID = "betterdogs:aggressive_speed";
-    private static final String AGGRESSIVE_DAMAGE_ID = "betterdogs:aggressive_damage";
-    private static final String PACIFIST_SPEED_ID = "betterdogs:pacifist_speed";
-    private static final String PACIFIST_DAMAGE_ID = "betterdogs:pacifist_damage";
-    private static final String AGGRESSIVE_HEALTH_ID = "betterdogs:aggressive_health";
-    private static final String NORMAL_SPEED_ID = "betterdogs:normal_speed";
-    private static final String NORMAL_DAMAGE_ID = "betterdogs:normal_damage";
-    private static final String NORMAL_HEALTH_ID = "betterdogs:normal_health";
-    private static final String PACIFIST_HEALTH_ID = "betterdogs:pacifist_health";
+    private static final Identifier AGGRESSIVE_SPEED_ID = Identifier.fromNamespaceAndPath("betterdogs", "aggressive_speed");
+    private static final Identifier AGGRESSIVE_DAMAGE_ID = Identifier.fromNamespaceAndPath("betterdogs", "aggressive_damage");
+    private static final Identifier PACIFIST_SPEED_ID = Identifier.fromNamespaceAndPath("betterdogs", "pacifist_speed");
+    private static final Identifier PACIFIST_DAMAGE_ID = Identifier.fromNamespaceAndPath("betterdogs", "pacifist_damage");
+    private static final Identifier AGGRESSIVE_HEALTH_ID = Identifier.fromNamespaceAndPath("betterdogs", "aggressive_health");
+    private static final Identifier NORMAL_SPEED_ID = Identifier.fromNamespaceAndPath("betterdogs", "normal_speed");
+    private static final Identifier NORMAL_DAMAGE_ID = Identifier.fromNamespaceAndPath("betterdogs", "normal_damage");
+    private static final Identifier NORMAL_HEALTH_ID = Identifier.fromNamespaceAndPath("betterdogs", "normal_health");
+    private static final Identifier PACIFIST_HEALTH_ID = Identifier.fromNamespaceAndPath("betterdogs", "pacifist_health");
 
     // New Rolled Modifier IDs
-    private static final String ROLLED_HEALTH_ID = "betterdogs:rolled_health";
-    private static final String ROLLED_DAMAGE_ID = "betterdogs:rolled_damage";
-    private static final String ROLLED_SPEED_ID = "betterdogs:rolled_speed";
+    private static final Identifier ROLLED_HEALTH_ID = Identifier.fromNamespaceAndPath("betterdogs", "rolled_health");
+    private static final Identifier ROLLED_DAMAGE_ID = Identifier.fromNamespaceAndPath("betterdogs", "rolled_damage");
+    private static final Identifier ROLLED_SPEED_ID = Identifier.fromNamespaceAndPath("betterdogs", "rolled_speed");
 
     public static void applyPersonalityStats(Wolf wolf, WolfPersonality personality) {
         var speedAttr = wolf.getAttribute(Attributes.MOVEMENT_SPEED);
@@ -44,21 +44,21 @@ public class WolfStatManager {
         if (speedAttr == null || damageAttr == null)
             return;
 
-        Identifier aggressiveSpeedId = Identifier.parse(AGGRESSIVE_SPEED_ID);
-        Identifier aggressiveDamageId = Identifier.parse(AGGRESSIVE_DAMAGE_ID);
-        Identifier pacifistSpeedId = Identifier.parse(PACIFIST_SPEED_ID);
-        Identifier pacifistDamageId = Identifier.parse(PACIFIST_DAMAGE_ID);
-        Identifier pacifistKnockbackId = Identifier.parse(PACIFIST_KNOCKBACK_ID);
-        Identifier baseSpeedId = Identifier.parse(BASE_SPEED_ID);
-        Identifier aggressiveHealthId = Identifier.parse(AGGRESSIVE_HEALTH_ID);
-        Identifier normalSpeedId = Identifier.parse(NORMAL_SPEED_ID);
-        Identifier normalDamageId = Identifier.parse(NORMAL_DAMAGE_ID);
-        Identifier normalHealthId = Identifier.parse(NORMAL_HEALTH_ID);
-        Identifier pacifistHealthId = Identifier.parse(PACIFIST_HEALTH_ID);
+        Identifier aggressiveSpeedId = AGGRESSIVE_SPEED_ID;
+        Identifier aggressiveDamageId = AGGRESSIVE_DAMAGE_ID;
+        Identifier pacifistSpeedId = PACIFIST_SPEED_ID;
+        Identifier pacifistDamageId = PACIFIST_DAMAGE_ID;
+        Identifier pacifistKnockbackId = PACIFIST_KNOCKBACK_ID;
+        Identifier baseSpeedId = BASE_SPEED_ID;
+        Identifier aggressiveHealthId = AGGRESSIVE_HEALTH_ID;
+        Identifier normalSpeedId = NORMAL_SPEED_ID;
+        Identifier normalDamageId = NORMAL_DAMAGE_ID;
+        Identifier normalHealthId = NORMAL_HEALTH_ID;
+        Identifier pacifistHealthId = PACIFIST_HEALTH_ID;
 
-        Identifier rolledHealthId = Identifier.parse(ROLLED_HEALTH_ID);
-        Identifier rolledDamageId = Identifier.parse(ROLLED_DAMAGE_ID);
-        Identifier rolledSpeedId = Identifier.parse(ROLLED_SPEED_ID);
+        Identifier rolledHealthId = ROLLED_HEALTH_ID;
+        Identifier rolledDamageId = ROLLED_DAMAGE_ID;
+        Identifier rolledSpeedId = ROLLED_SPEED_ID;
 
         // Remove ALL legacy modifiers to prevent conflict/stacking
         speedAttr.removeModifier(aggressiveSpeedId);

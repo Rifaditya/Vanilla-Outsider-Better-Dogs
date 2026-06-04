@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.6.22+R-26.2] - 2026-06-04
+### Summary
+- **Release Promotion**: Promoted all recent codebase optimizations and refactoring alignments to a stable production Release.
+- **Naming Polish**: Renamed the debugging GameRule from `betterdogdebugging` to namespaced `vanilla-outsider-better-dogs:bd_debugging` (along with english and indonesian translation key updates).
+- **API Cleanups**: Replaced legacy `Identifier.parse` calls with the modern `Identifier.fromNamespaceAndPath` API, pre-allocating static fields inside `WolfStatManager` to eliminate dynamic parser allocations.
+- **Config Sync**: Synchronized the template config JSON with all newly introduced configuration settings.
+
 ## [4.6.21+A-26.2] - 2026-06-04
 ### Summary
 - **Refactor**: Cleaned up and modularized player-wolf right-click interactions. Extracted all interaction handlers from `WolfInteractMixin` into a new utility class, `WolfInteractionHelper`, successfully reducing the Mixin code size from 347 lines to 92 lines to comply with a self-imposed 300 LOC limit.

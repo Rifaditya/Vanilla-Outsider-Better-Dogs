@@ -73,7 +73,7 @@ public class BetterDogsCommand {
 
     private static boolean isDebugEnabled(CommandSourceStack source) {
         if (!DynamicGameRuleManager.getBoolean(source.getLevel(), net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_DEBUGGING)) {
-            source.sendFailure(net.minecraft.network.chat.Component.literal("Better Dogs debugging is currently disabled. Enable it via GameRules: /gamerule betterdogdebugging true"));
+            source.sendFailure(net.minecraft.network.chat.Component.literal("Better Dogs debugging is currently disabled. Enable it via GameRules: /gamerule vanilla-outsider-better-dogs:bd_debugging true"));
             return false;
         }
         return true;

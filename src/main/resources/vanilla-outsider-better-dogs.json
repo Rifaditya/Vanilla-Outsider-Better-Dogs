@@ -100,5 +100,12 @@
   "pacifistGiftBerries": 30,
   "pacifistGiftSeeds": 25,
   "pacifistGiftFlower": 20,
-  "pacifistGiftMushroom": 15
+  "pacifistGiftMushroom": 15,
+  "pacifistGuardBuffs": false,
+  "enableInbredCuring": true,
+  "showRuntParticles": false,
+  "tamedPackSpreadMultiplier": 120,
+  "tamedPackSpreadMax": 60,
+  "wildPackSpreadMultiplier": 80,
+  "wildPackSpreadMax": 40
 }

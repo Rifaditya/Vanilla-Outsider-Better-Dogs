@@ -20,7 +20,7 @@ public class BetterDogsGameRules {
 
 	// Single unified category
 	public static final GameRuleCategory BETTER_DOGS = GameRuleCategory
-			.register(Identifier.parse("vanilla-outsider-better-dogs:better_dogs"));
+			.register(Identifier.fromNamespaceAndPath("vanilla-outsider-better-dogs", "better_dogs"));
 
 
 
@@ -141,7 +141,7 @@ public class BetterDogsGameRules {
 				config.getEnableDogsEatCookedGroundFood());
 		BD_FRIENDLY_FIRE = registerBoolean("vanilla-outsider-better-dogs:bd_friendly_fire_protection", BETTER_DOGS,
 				config.getEnableFriendlyFireProtection());
-		BD_DEBUGGING = registerBoolean("vanilla-outsider-better-dogs:betterdogdebugging", BETTER_DOGS, false);
+		BD_DEBUGGING = registerBoolean("vanilla-outsider-better-dogs:bd_debugging", BETTER_DOGS, false);
 
 
 
