@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.6.18+A-26.2] - 2026-06-04
+### Summary
+- **Performance**: Optimized `AvoidHazardsGoal` by using `BlockPos.MutableBlockPos` instead of allocating new `BlockPos` objects in the hot AI path, eliminating heap allocations.
+
 ## [4.6.17+A-26.2] - 2026-05-30
 ### Summary
 - **Bug Fix**: Resolved size scaling override conflict in `WolfSocialMixin` where the genetic scale calculation was replaced by a random value during DNA initialization.
