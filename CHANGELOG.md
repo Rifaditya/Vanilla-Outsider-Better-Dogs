@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.6.19+A-26.2] - 2026-06-04
+### Summary
+- **Performance**: Optimized `EatGroundFoodGoal` by throttling nearby item scanning to a random 10-20 tick cooldown, and replaced Java Stream API/lambdas with a standard loop to eliminate heap allocations.
+
 ## [4.6.18+A-26.2] - 2026-06-04
 ### Summary
 - **Performance**: Optimized `AvoidHazardsGoal` by using `BlockPos.MutableBlockPos` instead of allocating new `BlockPos` objects in the hot AI path, eliminating heap allocations.

@@ -1,8 +1,7 @@
-// Verified against: EatGroundFoodGoal.java (26.1.2+)
+// Verified against: EatGroundFoodGoal.java (26.1.2+), EntityGetter.java (26.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
-import java.util.Comparator;
 import java.util.EnumSet;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
@@ -20,6 +19,7 @@ public class EatGroundFoodGoal extends Goal {
 
     private final Wolf wolf;
     private ItemEntity targetFood;
+    private int checkCooldown = 0;
 
     private static final double SEARCH_RANGE = 10.0;
     private static final double PICKUP_RANGE = 1.5;
@@ -31,6 +31,12 @@ public class EatGroundFoodGoal extends Goal {
 
     @Override
     public boolean canUse() {
+        if (this.checkCooldown > 0) {
+            this.checkCooldown--;
+            return false;
+        }
+        this.checkCooldown = 10 + wolf.getRandom().nextInt(11); // Cooldown of 10-20 ticks
+
         if (wolf.getHealth() >= wolf.getMaxHealth())
             return false;
 
@@ -40,15 +46,27 @@ public class EatGroundFoodGoal extends Goal {
                 return false;
         }
 
-        // Find nearby food items
-        ItemEntity nearbyFood = wolf.level().getEntitiesOfClass(
+        // Find nearby food items without stream API / lambda allocations
+        java.util.List<ItemEntity> items = wolf.level().getEntitiesOfClass(
                 ItemEntity.class,
-                wolf.getBoundingBox().inflate(SEARCH_RANGE),
-                itemEntity -> isEdible(itemEntity.getItem())).stream()
-                .min(Comparator.comparingDouble(wolf::distanceTo)).orElse(null);
+                wolf.getBoundingBox().inflate(SEARCH_RANGE)
+        );
 
-        if (nearbyFood != null) {
-            targetFood = nearbyFood;
+        ItemEntity closestFood = null;
+        double closestDistanceSqr = Double.MAX_VALUE;
+
+        for (ItemEntity itemEntity : items) {
+            if (itemEntity.isAlive() && isEdible(itemEntity.getItem())) {
+                double distSqr = wolf.distanceToSqr(itemEntity);
+                if (distSqr < closestDistanceSqr) {
+                    closestDistanceSqr = distSqr;
+                    closestFood = itemEntity;
+                }
+            }
+        }
+
+        if (closestFood != null) {
+            targetFood = closestFood;
             return true;
         }
 
