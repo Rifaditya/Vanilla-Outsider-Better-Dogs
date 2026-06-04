@@ -1,5 +1,9 @@
 # Better Dogs - Historical Changelog
 
+## [4.6.21+A-26.2] - 2026-06-04
+### Summary
+- **Refactor**: Cleaned up and modularized player-wolf right-click interactions. Extracted all interaction handlers from `WolfInteractMixin` into a new utility class, `WolfInteractionHelper`, successfully reducing the Mixin code size from 347 lines to 92 lines to comply with a self-imposed 300 LOC limit.
+
 ## [4.6.20+A-26.2] - 2026-06-04
 ### Summary
 - **Performance**: Optimized `PersonalityFollowOwnerGoal` by purging dynamic lambda and closure allocations in its tick and offset calculations. Switched from inline functional predicates to standard loops and static predicate fields to eliminate heap garbage.
