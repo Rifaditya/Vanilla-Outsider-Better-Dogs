@@ -1,5 +1,9 @@
 # Better Dogs - Historical Changelog
 
+## [4.6.20+A-26.2] - 2026-06-04
+### Summary
+- **Performance**: Optimized `PersonalityFollowOwnerGoal` by purging dynamic lambda and closure allocations in its tick and offset calculations. Switched from inline functional predicates to standard loops and static predicate fields to eliminate heap garbage.
+
 ## [4.6.19+A-26.2] - 2026-06-04
 ### Summary
 - **Performance**: Optimized `EatGroundFoodGoal` by throttling nearby item scanning to a random 10-20 tick cooldown, and replaced Java Stream API/lambdas with a standard loop to eliminate heap allocations.

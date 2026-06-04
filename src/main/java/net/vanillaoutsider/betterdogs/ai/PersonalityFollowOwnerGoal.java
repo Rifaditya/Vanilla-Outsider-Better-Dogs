@@ -1,4 +1,4 @@
-// Verified against: PersonalityFollowOwnerGoal.java (26.1.2+)
+// Verified against: PersonalityFollowOwnerGoal.java (26.1.2+), EntityGetter.java (26.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
@@ -19,6 +19,9 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
     private int cachedSimDist = 10;
     private float betterdogs$followerSpacingOffset = 0.0f;
     private int spacingThrottleTimer = 0;
+
+    private static final java.util.function.Predicate<net.minecraft.world.entity.Mob> IS_MONSTER =
+        m -> m instanceof net.minecraft.world.entity.monster.Monster;
 
     public PersonalityFollowOwnerGoal(Wolf wolf, double speedModifier, boolean leavesAllowed) {
         super(wolf, speedModifier, 10.0f, 2.0f);
@@ -56,7 +59,12 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
 
         public static void update(java.util.UUID ownerUuid, int count, long currentTime, int lifetime) {
             cache.put(ownerUuid, new CacheEntry(count, currentTime + lifetime));
-            cache.entrySet().removeIf(e -> currentTime > e.getValue().expiryTime + 600);
+            java.util.Iterator<java.util.Map.Entry<java.util.UUID, CacheEntry>> iterator = cache.entrySet().iterator();
+            while (iterator.hasNext()) {
+                if (currentTime > iterator.next().getValue().expiryTime + 600) {
+                    iterator.remove();
+                }
+            }
         }
     }
 
@@ -95,10 +103,13 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
         int lastCount = FollowerSpacingCache.getLastKnownCount(ownerUuid);
         double scanRadius = Math.min(32.0 + lastCount * 0.5, 64.0);
 
-        java.util.List<Wolf> activeFollowers = wolf.level().getEntitiesOfClass(Wolf.class, owner.getBoundingBox().inflate(scanRadius),
-            w -> w.isTame() && w.getOwner() == owner && !w.isOrderedToSit() && !w.isLeashed()
-        );
-        int N = activeFollowers.size();
+        java.util.List<Wolf> activeFollowers = wolf.level().getEntitiesOfClass(Wolf.class, owner.getBoundingBox().inflate(scanRadius));
+        int N = 0;
+        for (Wolf w : activeFollowers) {
+            if (w.isTame() && w.getOwner() == owner && !w.isOrderedToSit() && !w.isLeashed()) {
+                N++;
+            }
+        }
 
         // 3. Update the cooperative cache
         int lifetime = 20 + wolf.getRandom().nextInt(21);
@@ -271,7 +282,7 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
                         
                         java.util.List<net.minecraft.world.entity.Mob> hostiles = wolf.level().getEntitiesOfClass(net.minecraft.world.entity.Mob.class, 
                             wolf.getBoundingBox().inflate(12.0), 
-                            m -> m instanceof net.minecraft.world.entity.monster.Monster);
+                            IS_MONSTER);
                         
                         if (!hostiles.isEmpty()) {
                             wolf.playSound(net.minecraft.sounds.SoundEvents.GENERIC_HURT, 1.0f, 2.0f);
