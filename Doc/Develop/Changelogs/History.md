@@ -1,5 +1,11 @@
 # Better Dogs - Historical Changelog
 
+## [3.8.2+A-26.1.2] - 2026-06-05
+### Summary
+The **"Library Dependency Realignment"** update.
+- **Dependency Constraint Update**: Updated `fabric.mod.json` depends block to require `"dasik-library": ">=1.8.0"` (preventing startup crashes with older library versions due to missing genetics API classes).
+- **Library Realignment**: Re-aligned and compiled against `DasikLibrary` `v1.8.1`.
+
 ## [3.8.1+A-26.1.2] - 2026-06-04
 ### Summary
 The **"Genetics Library Migration"** update. Abstracts and migrates all selective breeding, inbreeding, and outcross recovery calculations to `DasikLibrary` `v1.8.0`.
