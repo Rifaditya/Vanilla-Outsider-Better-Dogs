@@ -91,6 +91,9 @@ Wild wolf packs are now dynamic, territorial entities led by a dominant leader:
 - **P2P Multiplayer Compatibility (Minecraft 26.2+)**: In theory, singleplayer hosts opening their world to online multiplayer using the new Minecraft 26.2 P2P friends system will work seamlessly with vanilla clients (your friends do not need to install the mod). *Note: As this is a newly released pre-release feature, P2P compatibility has not been extensively tested. If you find any issues, please report them to our GitHub repository!*
 - **Dedicated Server Support**: Client-only rendering logic is isolated to prevent classloading crashes on headless dedicated servers.
 - **GUI Config Integration**: Fully supports configuration GUI integrations via **ModMenu** + **Cloth Config** in singleplayer mode.
+  <p align="center">
+    <img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.2-core-alignment/Doc/Media/Gallery/Cloth%20config%20sreen.webp" alt="Cloth Config Screen" width="85%">
+  </p>
 - **Production Stable**: Fully compatible with high-performance engines like **C2ME**, ensuring safe multi-threaded AI execution.
 - **Performance Hardened**: All AI logic is performance-optimized using **DasikLibrary 1.7.4**, ensuring zero console spam and smooth server TPS even with massive packs.
 
@@ -104,7 +107,7 @@ No messy config files. Better Dogs uses the **Native Minecraft Game Rules** syst
 > **Too many rules?** If the game rule screen feels cluttered, we highly recommend installing **[Collapsible Game Rules](https://www.curseforge.com/minecraft/mc-mods/collapsible-gamerules)**. It will automatically group the new Personality Matrix settings into clean, expandable folders!
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.2-core-alignment/Doc/Media/Gallery/native_game_rules_ui.png" alt="Native gamerule UI">
+<img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.2-core-alignment/Doc/Media/Gallery/Gamerule%20Screen%20options.webp" alt="Native gamerule UI">
 </p>
 
 ---
