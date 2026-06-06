@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.8.4+A-26.1.2] - 2026-06-06
+### Added
+- **Unrelated Mate Prioritization**: Added `BreedGoalMixin` to prioritize breeding with unrelated wolves in range. If no unrelated wolves are available, they will fallback to related ones.
+
 ## [3.8.3+R-26.1.2] - 2026-06-06
 ### Summary
 The **"Stability & Loot API Alignment Release"** promotion.
