@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.7.2+R-26.2] - 2026-06-06
+### Summary
+- **Release Promotion**: Promoted the Select-and-Ride Dog Command System and Cloth Config GUI warning layout fixes to a stable production Release.
+
+## [4.7.1+A-26.2] - 2026-06-06
+### Added
+- **Optional GUI Integration**: Upgraded config screen classloading to resolve via `GuiHelper` in `DasikLibrary` 1.8.2.
+- **UI Warning Polish**: Removed repetitive hover tooltips from config options and moved them to category headers.
+
 ## [4.7.0+A-26.2] - 2026-06-06
 ### Added
 - **Select-and-Ride Dog Command System**: Command dogs to sit/ride in vehicles, mounts, and modded chairs using a Stick tool.

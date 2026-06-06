@@ -1,5 +1,14 @@
 # Better Dogs - Historical Changelog
 
+## [4.7.2+R-26.2] - 2026-06-06
+### Summary
+- **Release Promotion**: Promoted the Select-and-Ride Dog Command System and Cloth Config GUI warning layout fixes to a stable production Release.
+
+## [4.7.1+A-26.2] - 2026-06-06
+### Summary
+- **Optional GUI Integration**: Upgraded config screen classloading to resolve via `GuiHelper` in `DasikLibrary` 1.8.2.
+- **UI Warning Polish**: Removed repetitive hover tooltips from config options and moved them to category headers.
+
 ## [4.7.0+A-26.2] - 2026-06-06
 ### Summary
 The **"Select-and-Ride Dog Command System"** update. Adds a Stick-based dog selection, mounting, and dismounting system with custom visual sitting poses.
