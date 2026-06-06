@@ -9,8 +9,12 @@ Central navigation hub for all project documentation.
 ## 🧠 Concept & Design
 - [Current Concept (YAML)](Concept/concept_better_dogs.yaml): Technical design specifications.
 - [Initial Concept (Historical)](Concept/initial_concept.md): [ARCHIVE] Original design document.
-- [Personality System](Players/index.md): Player guide to dog behaviors.
-- [Territorial Disputes](Players/Features/territorial_disputes.md): [NEW] Guide to wild pack logic.
+- [Player Hub](Players/index.md): Player guide navigation hub.
+- [Genetics & Breeding](Players/Features/genetics_and_breeding.md): Stats, inbreeding, and prioritization.
+- [Personalities & Behavior](Players/Features/personalities_and_behavior.md): Archetypes and fleeing.
+- [Guard Mode & Patrols](Players/Features/guard_mode.md): Guard setups and patrol paths.
+- [Social Dynamics & QoL](Players/Features/social_dynamics.md): Packs, spacing, howling, and safety.
+- [Territorial Disputes](Players/Features/territorial_disputes.md): Pack interactions and merging.
 
 ## 🛠️ Development
 - [Development Index](Develop/index.md): Dev setup and architecture.

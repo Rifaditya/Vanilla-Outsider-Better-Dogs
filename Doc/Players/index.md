@@ -1,12 +1,12 @@
 # Player Hub
 
-Welcome to the **Better Dogs** player guide.
+Welcome to the player guide. This guide explains all systems and mechanics introduced in the mod.
 
-## Features
+## Core Features
 
-- **Personalities**: Every dog has a unique personality (Normal, Aggressive, Pacifist).
-- **Behavioral Specialization**: Aggressive dogs **Scout** ahead; Pacifist dogs act as a **Silent Alarm**.
-- **Social Interaction**: Dogs perform "Zoomies", play fetch, and have rivalries.
-- **Social Bonding**: Build affinity through pack activities (Howling/Play) to prevent feuds.
+*   **[Genetics & Breeding](Features/genetics_and_breeding.md)**: Explore attributes, DNA inheritance, runes/inbreeding curing, litters, scaling, and smart mate selection.
+*   **[Personalities & Behavior](Features/personalities_and_behavior.md)**: Learn about Normal, Aggressive, and Pacifist archetypes, fleeing thresholds, and weather anxiety.
+*   **[Guard Mode & Patrols](Features/guard_mode.md)**: Anchor your wolves to secure areas and assign custom personality patrol sweeps.
+*   **[Social Dynamics & QoL](Features/social_dynamics.md)**: Find details on flocking, dynamic spacing, group howls, play fights, adoptable states, target resetting, and cliff/lava safety.
+*   **[Territorial Disputes](Features/territorial_disputes.md)**: Learn how wild wolf packs interact, merge, or fight for territory dominance.
 
-See the [Features](Features/index.md) directory for more details.
