@@ -40,7 +40,7 @@ import net.vanillaoutsider.betterdogs.ai.WolfFleeLowHealthGoal;
 import net.vanillaoutsider.betterdogs.ai.WolfStormAnxietyGoal;
 import net.vanillaoutsider.betterdogs.ai.ZoomiesGoal;
 import net.vanillaoutsider.betterdogs.ai.group.WildWolfFollowLeaderGoal;
-import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
+import net.vanillaoutsider.betterdogs.ai.MoveToVehicleGoal;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -74,6 +74,7 @@ public abstract class WolfAIMixin extends TamableAnimal {
         this.goalSelector.addGoal(1, new FleeCreeperGoal(wolf));
         this.goalSelector.addGoal(1, new AvoidHazardsGoal(wolf));
         this.goalSelector.addGoal(1, new WolfFleeLowHealthGoal(wolf, 1.25));
+        this.goalSelector.addGoal(1, new MoveToVehicleGoal(wolf));
         this.goalSelector.addGoal(3, new EatGroundFoodGoal(wolf));
         this.goalSelector.addGoal(4, new WildWolfTerritorialGoal(wolf));
         this.goalSelector.addGoal(4, new WildWolfPackWarGoal(wolf));

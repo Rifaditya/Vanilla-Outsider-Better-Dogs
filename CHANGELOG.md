@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.7.0+A-26.2] - 2026-06-06
+### Added
+- **Select-and-Ride Dog Command System**: Command dogs to sit/ride in vehicles, mounts, and modded chairs using a Stick tool.
+- **Visual Sitting Pose**: Force visual sitting pose on wolves while riding any vehicle.
+- **Dismount Controls**: Dismount using Stick (dismount & stand) or Empty-hand Shift+Right-click (dismount & sit).
+- **Optional Unrestricted Riding GameRule**: Added `betterdogs:allow_unrestricted_dog_riding` to allow dogs to ride any entity (e.g. Ghasts).
+
 ## [4.6.26+A-26.2] - 2026-06-06
 ### Added
 - **Unrelated Mate Prioritization**: Added `BreedGoalMixin` to prioritize breeding with unrelated wolves in range. If no unrelated wolves are available, they will fallback to related ones.

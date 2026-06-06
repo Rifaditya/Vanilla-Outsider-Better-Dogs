@@ -70,15 +70,24 @@ public abstract class TamableAnimalMixin {
         }
     }
 
-    @Inject(method = "tame", at = @At("TAIL"))
-    private void betterdogs$onTame(Player player, CallbackInfo ci) {
-        if ((Object) this instanceof Wolf wolf && player instanceof ServerPlayer serverPlayer) {
-            if (wolf instanceof WolfExtensions ext) {
-                WolfPersonality personality = ext.betterdogs$getPersonality();
-                if (personality != null) {
-                    BetterDogs.TAME_WOLF_PERSONALITY.trigger(serverPlayer, personality);
-                }
-            }
-        }
-    }
+	@Inject(method = "tame", at = @At("TAIL"))
+	private void betterdogs$onTame(Player player, CallbackInfo ci) {
+		if ((Object) this instanceof Wolf wolf && player instanceof ServerPlayer serverPlayer) {
+			if (wolf instanceof WolfExtensions ext) {
+				WolfPersonality personality = ext.betterdogs$getPersonality();
+				if (personality != null) {
+					BetterDogs.TAME_WOLF_PERSONALITY.trigger(serverPlayer, personality);
+				}
+			}
+		}
+	}
+
+	@Inject(method = "isInSittingPose", at = @At("HEAD"), cancellable = true)
+	private void betterdogs$forceSittingPoseWhileRiding(CallbackInfoReturnable<Boolean> cir) {
+		if ((Object) this instanceof TamableAnimal animal) {
+			if (animal.isPassenger()) {
+				cir.setReturnValue(true);
+			}
+		}
+	}
 }
