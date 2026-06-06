@@ -5,6 +5,7 @@
   "package": "net.vanillaoutsider.betterdogs.mixin",
   "compatibilityLevel": "JAVA_25",
     "mixins": [
+        "BreedGoalMixin",
         "EntityMixin",
         "WolfMixin",
         "WolfSocialMixin",

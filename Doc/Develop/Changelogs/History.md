@@ -1,5 +1,10 @@
 # Better Dogs - Historical Changelog
 
+## [4.6.26+A-26.2] - 2026-06-06
+### Summary
+The **"Unrelated Mate Prioritization"** update. Prioritizes breeding with unrelated wolves in range.
+- **Unrelated Mate Prioritization**: Added `BreedGoalMixin` to prioritize breeding with unrelated wolves in range. If no unrelated wolves are available, they will fallback to related ones.
+
 ## [4.6.25+R-26.2] - 2026-06-06
 ### Summary
 The **"Stability & Loot API Alignment Release"** promotion.
