@@ -1,5 +1,11 @@
 # Better Dogs - Historical Changelog
 
+## [3.8.3+R-26.1.2] - 2026-06-06
+### Summary
+The **"Stability & Loot API Alignment Release"** promotion.
+- **Release Promotion**: Promoted the genetics calculation engine integration and dependency constraints updates to a stable production Release.
+- **Dependency Alignment**: Compiled against `DasikLibrary` `v1.8.1`.
+
 ## [3.8.2+A-26.1.2] - 2026-06-05
 ### Summary
 The **"Library Dependency Realignment"** update.
