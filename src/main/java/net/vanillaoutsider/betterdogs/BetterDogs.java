@@ -163,6 +163,7 @@ public class BetterDogs implements ModInitializer {
 
         net.dasik.social.api.genetics.EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityType.WOLF, new net.dasik.social.api.genetics.GeneticsConfig(wolfTraits, wolfMutations));
 
+        net.vanillaoutsider.betterdogs.util.DogCommandManager.registerEvents();
         LOGGER.info("Better Dogs initialized! Social Hive Mind active (DasikLibrary).");
     }
 }

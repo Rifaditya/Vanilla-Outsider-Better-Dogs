@@ -18,6 +18,8 @@ import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityReference;
 import java.util.UUID;
+import net.minecraft.world.entity.Entity;
+import net.vanillaoutsider.betterdogs.util.DogCommandManager;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.vanillaoutsider.betterdogs.util.WolfDebugLogger;
 import net.vanillaoutsider.betterdogs.util.WolfStatManager;
@@ -75,6 +77,40 @@ public class WolfInteractionHelper {
         }
 
         if (wolf.isTame() && wolf instanceof WolfExtensions ext) {
+			// 0. Stick command: select or dismount
+			if (wolf.isOwnedBy(player) && player.isSecondaryUseActive() && itemStack.is(Items.STICK) && hand == InteractionHand.MAIN_HAND) {
+				if (!wolf.level().isClientSide()) {
+					if (wolf.isPassenger()) {
+						// Dismount and Stand
+						Entity vehicle = wolf.getVehicle();
+						wolf.stopRiding();
+						if (vehicle != null && vehicle.entityTags().contains("betterdogs:seat")) {
+							vehicle.discard();
+						}
+						
+						DogCommandManager.clearVehicleTarget(wolf.getUUID());
+						DogCommandManager.clearSelection(player.getUUID());
+						
+						net.minecraft.sounds.SoundEvent sound = ((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().ambientSound().value();
+						wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), sound, wolf.getSoundSource(), 1.0f, 1.0f);
+						player.sendOverlayMessage(Component.translatable("text.betterdogs.dog_dismounted", wolf.getName()));
+						if (wolf.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+							serverLevel.sendParticles(ParticleTypes.CLOUD, wolf.getX(), wolf.getY() + 0.5, wolf.getZ(), 5, 0.2, 0.2, 0.2, 0.02);
+						}
+					} else {
+						// Select dog
+						DogCommandManager.selectDog(player.getUUID(), wolf.getUUID());
+						net.minecraft.sounds.SoundEvent sound = ((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().ambientSound().value();
+						wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), sound, wolf.getSoundSource(), 1.0f, 1.2f);
+						player.sendOverlayMessage(Component.translatable("text.betterdogs.dog_selected", wolf.getName()));
+						if (wolf.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+							serverLevel.sendParticles(ParticleTypes.NOTE, wolf.getX(), wolf.getY() + 0.5, wolf.getZ(), 5, 0.2, 0.2, 0.2, 0.05);
+						}
+					}
+				}
+				return InteractionResult.SUCCESS;
+			}
+
             // 1. Triggering / Toggling Pending Adoption
             if (wolf.isOwnedBy(player) && player.isSecondaryUseActive() && itemStack.is(Items.PAPER) && hand == InteractionHand.MAIN_HAND) {
                 if (!wolf.level().isClientSide()) {
@@ -154,6 +190,15 @@ public class WolfInteractionHelper {
         // Shift + Right click empty hand: calm down interaction
         if (wolf.isTame() && wolf.isOwnedBy(player) && player.isSecondaryUseActive() && itemStack.isEmpty() && hand == InteractionHand.MAIN_HAND) {
             if (!wolf.level().isClientSide()) {
+                if (wolf.isPassenger()) {
+                    Entity vehicle = wolf.getVehicle();
+                    wolf.stopRiding();
+                    if (vehicle != null && vehicle.entityTags().contains("betterdogs:seat")) {
+                        vehicle.discard();
+                    }
+                    DogCommandManager.clearVehicleTarget(wolf.getUUID());
+                }
+
                 wolf.setOrderedToSit(true);
                 wolf.getNavigation().stop();
                 wolf.setTarget(null);

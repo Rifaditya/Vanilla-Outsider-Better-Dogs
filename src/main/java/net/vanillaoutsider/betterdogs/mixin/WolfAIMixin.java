@@ -17,6 +17,7 @@ import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.ai.AdultCorrectionGoal;
 import net.vanillaoutsider.betterdogs.ai.AggressiveTargetGoal;
+import net.vanillaoutsider.betterdogs.ai.MoveToVehicleGoal;
 import net.vanillaoutsider.betterdogs.ai.AvoidHazardsGoal;
 import net.vanillaoutsider.betterdogs.ai.BabyBiteBackGoal;
 import net.vanillaoutsider.betterdogs.ai.BabyCuriosityGoal;
@@ -72,6 +73,7 @@ public abstract class WolfAIMixin extends TamableAnimal {
         this.goalSelector.addGoal(8, new WolfGiftGoal(wolf));
         this.goalSelector.addGoal(1, new FleeCreeperGoal(wolf));
         this.goalSelector.addGoal(1, new AvoidHazardsGoal(wolf));
+        this.goalSelector.addGoal(1, new MoveToVehicleGoal(wolf));
         this.goalSelector.addGoal(3, new EatGroundFoodGoal(wolf));
         this.goalSelector.addGoal(4, new WildWolfTerritorialGoal(wolf));
         this.goalSelector.addGoal(4, new WildWolfPackWarGoal(wolf));

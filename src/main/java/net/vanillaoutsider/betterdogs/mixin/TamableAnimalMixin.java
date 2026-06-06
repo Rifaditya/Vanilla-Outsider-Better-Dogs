@@ -81,4 +81,13 @@ public abstract class TamableAnimalMixin {
             }
         }
     }
+
+	@Inject(method = "isInSittingPose", at = @At("HEAD"), cancellable = true)
+	private void betterdogs$forceSittingPoseWhileRiding(CallbackInfoReturnable<Boolean> cir) {
+		if ((Object) this instanceof TamableAnimal animal) {
+			if (animal.isPassenger()) {
+				cir.setReturnValue(true);
+			}
+		}
+	}
 }

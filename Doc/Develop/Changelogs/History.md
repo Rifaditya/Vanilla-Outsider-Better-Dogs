@@ -1,5 +1,13 @@
 # Better Dogs - Historical Changelog
 
+## [3.9.0+A-26.1.2] - 2026-06-06
+### Summary
+The **"Select-and-Ride Dog Command System"** update. Adds a Stick-based dog selection, mounting, and dismounting system with custom visual sitting poses.
+- **Select-and-Ride Dog Command System**: Command dogs to sit/ride in vehicles, mounts, and modded chairs using a Stick tool.
+- **Visual Sitting Pose**: Force visual sitting pose on wolves while riding any vehicle.
+- **Dismount Controls**: Dismount using Stick (dismount & stand) or Empty-hand Shift+Right-click (dismount & sit).
+- **Optional Unrestricted Riding GameRule**: Added `betterdogs:allow_unrestricted_dog_riding` to allow dogs to ride any entity (e.g. Ghasts).
+
 ## [3.8.4+A-26.1.2] - 2026-06-06
 ### Summary
 The **"Unrelated Mate Prioritization"** update. Prioritizes breeding with unrelated wolves in range.

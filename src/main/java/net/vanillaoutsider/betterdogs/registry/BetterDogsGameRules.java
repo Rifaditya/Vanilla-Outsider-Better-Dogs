@@ -124,6 +124,9 @@ public class BetterDogsGameRules {
 	public static GameRule<Integer> BD_WILD_PACK_SPREAD_MULTIPLIER;
 	public static GameRule<Integer> BD_WILD_PACK_SPREAD_MAX;
 
+	// --- Commands / Sitting ---
+	public static GameRule<Boolean> BD_ALLOW_UNRESTRICTED_RIDING;
+
 	public static void register() {
 		BetterDogsConfig config = BetterDogsConfig.get();
 
@@ -285,6 +288,8 @@ public class BetterDogsGameRules {
 				config.getWildPackSpreadMultiplier());
 		BD_WILD_PACK_SPREAD_MAX = registerInteger("vanilla-outsider-better-dogs:bd_wild_pack_spread_max", BETTER_DOGS,
 				config.getWildPackSpreadMax());
+
+		BD_ALLOW_UNRESTRICTED_RIDING = registerBoolean("vanilla-outsider-better-dogs:bd_allow_unrestricted_dog_riding", BETTER_DOGS, false);
 	}
 
         // Internal Registration Helpers
