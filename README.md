@@ -77,3 +77,10 @@ Better Dogs uses the **Native Minecraft Game Rules** system. All 50+ parameters 
 - **Creator**: DasikIgaijin (Vanilla Outsider Collection)
 - **License**: GNU GPLv3
 - **Dev**: [GitHub Repository](https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs)
+
+### 💖 Support the Project
+Keeping this mod open-source, up-to-date, and completely free takes a massive amount of time and dedication. If you like the mod, please support me! Even if you build and use the latest code straight from this repository, **downloading the mod on Modrinth or CurseForge** generates crucial support that keeps this project alive.
+
+You can also donate directly to help cover hosting and development costs. Every single download, share, and donation really helps me keep this mod open-source and active!
+- **Download on Modrinth**: [Modrinth Page](https://modrinth.com/mod/vanilla-outsider-better-dogs)
+- **Download on CurseForge**: [CurseForge Page](https://www.curseforge.com/minecraft/mc-mods/vanilla-outsider-better-dogs)
