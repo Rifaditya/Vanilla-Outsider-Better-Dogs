@@ -50,16 +50,45 @@ public abstract class EntityMixin {
 
             if (thisImmune || otherImmune) {
                 if (!thisImmune) {
-                    thisWolf.getNavigation().stop();
-                    thisExt.betterdogs$setPushWaitTimer(60);
+                    if (!betterdogs$tryFindAlternativePath(thisWolf, otherWolf)) {
+                        thisWolf.getNavigation().stop();
+                        thisExt.betterdogs$setPushWaitTimer(60);
+                    }
                 }
                 if (!otherImmune) {
-                    otherWolf.getNavigation().stop();
-                    otherExt.betterdogs$setPushWaitTimer(60);
+                    if (!betterdogs$tryFindAlternativePath(otherWolf, thisWolf)) {
+                        otherWolf.getNavigation().stop();
+                        otherExt.betterdogs$setPushWaitTimer(60);
+                    }
                 }
                 ci.cancel();
             }
         }
+    }
+
+    @org.spongepowered.asm.mixin.Unique
+    private static boolean betterdogs$tryFindAlternativePath(Wolf pusher, Wolf blocked) {
+        if (!(pusher instanceof WolfExtensions pusherExt)) {
+            return false;
+        }
+        var nav = pusher.getNavigation();
+        net.minecraft.world.level.pathfinder.Path currentPath = nav.getPath();
+        if (currentPath == null || currentPath.isDone()) {
+            return false;
+        }
+        net.minecraft.core.BlockPos targetPos = nav.getTargetPos();
+        if (targetPos == null) {
+            return false;
+        }
+        
+        pusherExt.betterdogs$setPathfindAvoidPos(blocked.blockPosition());
+        net.minecraft.world.level.pathfinder.Path newPath = nav.createPath(targetPos, 1);
+        pusherExt.betterdogs$setPathfindAvoidPos(null);
+        
+        if (newPath != null && !newPath.isDone() && (newPath.canReach() || newPath.getDistToTarget() < 3.0f)) {
+            return nav.moveTo(newPath, 1.0D);
+        }
+        return false;
     }
 
     @Inject(method = "killedEntity", at = @At("HEAD"))

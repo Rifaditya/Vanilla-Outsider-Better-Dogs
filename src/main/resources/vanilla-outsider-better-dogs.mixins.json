@@ -22,7 +22,8 @@
         "WolfMobMixin",
         "ServerLevelMixin",
         "AnimalMixin",
-        "EntityMixin"
+        "EntityMixin",
+        "WalkNodeEvaluatorMixin"
     ],
     "injectors": {
         "defaultRequire": 1

@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.9.5+A-26.1.2] - 2026-06-11
+### Added
+- **Alternative Pathfinding on Push**: Added checks to see if another path exists to get to the target area (even if longer) before giving up and halting navigation.
+
 ## [3.9.4+A-26.1.2] - 2026-06-11
 ### Added
 - **Ground Food Refusal Trait**: Added a feature where some tamed-from-birth dogs (bred from parents, not wild-tamed) persistently refuse to eat food from the ground.
