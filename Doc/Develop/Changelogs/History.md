@@ -1,10 +1,5 @@
 # Better Dogs - Historical Changelog
 
-## [4.8.2+A-26.2] - 2026-06-11
-### Summary
-The **"CurseForge Documentation Compliance"** patch. Resolves formatting issues preventing platform pages from rendering correctly on CurseForge.
-- **CurseForge Documentation**: Resolved CurseForge platform page rendering issues by replacing forbidden Markdown badge-links and GitHub-style callouts with raw HTML code blocks and anchors.
-
 ## [4.8.1+A-26.2] - 2026-06-11
 ### Summary
 The **"Classloader Mixin Shadow Crash Fix"** patch. Resolves a startup crash caused by an invalid `@Shadow` on the inherited `mob` field in `WalkNodeEvaluatorMixin`.
