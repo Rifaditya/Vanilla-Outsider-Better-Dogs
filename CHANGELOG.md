@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.8.3+A-26.2] - 2026-06-11
+### Changed
+- **Pacifist Guard warning sound**: Changed the sentinel alarm sound for Pacifist dogs in Guard Mode from a whine to the specific growl sound corresponding to the wolf's sound variant itself (pitch adjusted to 1.0f).
+
 ## [4.8.2+A-26.2] - 2026-06-11
 ### Fixed
 - **Low-Health Whimpering Scaling**: Fixed low-health whining behavior by replacing the vanilla absolute health `< 20.0f` threshold check with a dynamic check scaled to the dog's maximum health (`< 50% max health`). This prevents dogs with low max health (such as Runts and puppies) from whimpering constantly when fully healthy.

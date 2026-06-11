@@ -1,5 +1,10 @@
 # Better Dogs - Historical Changelog
 
+## [4.8.3+A-26.2] - 2026-06-11
+### Summary
+The **"Pacifist Guard Sentinel Growl Alert"** patch. Changes the sentinel alarm sound for Pacifist dogs in Guard Mode from a whine to the specific growl sound corresponding to the wolf's sound variant itself.
+- **Pacifist Guard warning sound**: Changed the sentinel alarm sound for Pacifist dogs in Guard Mode from a whine to the specific growl sound corresponding to the wolf's sound variant itself (pitch adjusted to 1.0f).
+
 ## [4.8.2+A-26.2] - 2026-06-11
 ### Summary
 The **"Low-Health Whimpering Scaling Fix"** patch. Scales the low-health whine sound threshold dynamically based on the dog's maximum health percentage to prevent Runts/puppies from whimpering constantly when healthy.
