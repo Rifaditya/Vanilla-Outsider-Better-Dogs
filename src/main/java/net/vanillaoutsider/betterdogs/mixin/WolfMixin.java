@@ -290,4 +290,22 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         this.betterdogs$lastDamageTime = wolf.tickCount - (BetterDogsConfig.get().getCombatHealDelayTicks() - cooldownRemaining);
     }
 
+    @Inject(method = "getAmbientSound", at = @At("HEAD"), cancellable = true)
+    private void betterdogs$onGetAmbientSound(CallbackInfoReturnable<net.minecraft.sounds.SoundEvent> cir) {
+        Wolf wolf = (Wolf) (Object) this;
+        if (wolf.isAngry()) {
+            cir.setReturnValue(((WolfAccessor) this).betterdogs$invokeGetSoundSet().growlSound().value());
+            return;
+        }
+        if (this.random.nextInt(3) == 0) {
+            if (wolf.isTame() && wolf.getHealth() < wolf.getMaxHealth() * 0.5f) {
+                cir.setReturnValue(((WolfAccessor) this).betterdogs$invokeGetSoundSet().whineSound().value());
+                return;
+            }
+            cir.setReturnValue(((WolfAccessor) this).betterdogs$invokeGetSoundSet().pantSound().value());
+            return;
+        }
+        cir.setReturnValue(((WolfAccessor) this).betterdogs$invokeGetSoundSet().ambientSound().value());
+    }
+
 }

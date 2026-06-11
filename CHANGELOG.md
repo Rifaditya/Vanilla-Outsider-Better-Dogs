@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.10.3+A-26.1.2] - 2026-06-11
+### Fixed
+- **Low-Health Whimpering Scaling**: Fixed low-health whining behavior by replacing the vanilla absolute health `< 20.0f` threshold check with a dynamic check scaled to the dog's maximum health (`< 50% max health`). This prevents dogs with low max health (such as Runts and puppies) from whimpering constantly when fully healthy.
+
 ## [3.10.2+A-26.1.2] - 2026-06-11
 ### Added
 - **Low Health Fleeing Goal**: Backported `WolfFleeLowHealthGoal` from 26.2 to 26.1.2 to align concept parity. Wolves will now retreat from combat at low health (<30% health) depending on their personality probability.

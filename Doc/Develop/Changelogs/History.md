@@ -1,5 +1,10 @@
 # Better Dogs - Historical Changelog
 
+## [3.10.3+A-26.1.2] - 2026-06-11
+### Summary
+The **"Low-Health Whimpering Scaling Fix"** patch. Scales the low-health whine sound threshold dynamically based on the dog's maximum health percentage to prevent Runts/puppies from whimpering constantly when healthy.
+- **Low-Health Whimpering Scaling**: Fixed low-health whining behavior by replacing the vanilla absolute health `< 20.0f` threshold check with a dynamic check scaled to the dog's maximum health (`< 50% max health`). This prevents dogs with low max health (such as Runts and puppies) from whimpering constantly when fully healthy.
+
 ## [3.10.2+A-26.1.2] - 2026-06-11
 ### Summary
 The **"Concept Parity Alignment"** patch. Backports the low health fleeing goal and fixes static registration and missing personality multipliers for Storm Anxiety goal in 26.1.
