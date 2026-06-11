@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.8.1+A-26.2] - 2026-06-11
+### Fixed
+- **Classloader Mixin Shadow Crash**: Fixed a startup and runtime crash when trying to locate `@Shadow Mob mob` field inside `WalkNodeEvaluatorMixin` by making the mixin class inherit from `NodeEvaluator` directly.
+
 ## [4.8.0+A-26.2] - 2026-06-11
 ### Added
 - **Custom Howling Sound Restoration**: Packaged and restored the deleted vanilla `Wolf_howl1.ogg` and `Wolf_howl2.ogg` sound files into the mod assets.
