@@ -88,6 +88,12 @@ public class BetterDogs implements ModInitializer {
             new SelfServiceTrigger()
     );
 
+    public static final net.minecraft.sounds.SoundEvent WOLF_HOWL = Registry.register(
+            BuiltInRegistries.SOUND_EVENT,
+            Identifier.fromNamespaceAndPath("betterdogs", "entity.wolf.howl"),
+            net.minecraft.sounds.SoundEvent.createVariableRangeEvent(Identifier.fromNamespaceAndPath("betterdogs", "entity.wolf.howl"))
+    );
+
     @Override
     public void onInitialize() {
         init();

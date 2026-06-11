@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.8.0+A-26.2] - 2026-06-11
+### Added
+- **Custom Howling Sound Restoration**: Packaged and restored the deleted vanilla `Wolf_howl1.ogg` and `Wolf_howl2.ogg` sound files into the mod assets.
+- **Custom Sound Event Registration**: Registered the `betterdogs:entity.wolf.howl` sound event.
+- **AI Group Howl update**: Updated `GroupHowlGoal` to play the authentic howling sound effects instead of the baby whine fallback.
+
 ## [4.7.6+A-26.2] - 2026-06-11
 ### Added
 - **Alternative Pathfinding on Push**: Added checks to see if another path exists to get to the target area (even if longer) before giving up and halting navigation.
