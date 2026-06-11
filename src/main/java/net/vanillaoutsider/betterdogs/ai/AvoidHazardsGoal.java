@@ -54,8 +54,8 @@ public class AvoidHazardsGoal extends Goal {
         Level level = wolf.level();
         BlockState state = level.getBlockState(pos);
 
-        // Check for lava or fire
-        if (state.is(Blocks.LAVA) || state.is(Blocks.FIRE) || state.is(Blocks.SOUL_FIRE)) {
+        // Check for lava, magma block, or fire
+        if (state.is(Blocks.LAVA) || state.is(Blocks.MAGMA_BLOCK) || state.is(Blocks.FIRE) || state.is(Blocks.SOUL_FIRE)) {
             return true;
         }
 

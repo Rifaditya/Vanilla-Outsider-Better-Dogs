@@ -1,5 +1,10 @@
 # Changelog
 
+## [4.7.3+A-26.2] - 2026-06-11
+### Added
+- **Magma Block Avoidance**: Added `Blocks.MAGMA_BLOCK` to the hazard list in `AvoidHazardsGoal`, preventing wolves from walking onto magma blocks.
+- **Lava Safety Verification**: Confirmed that any level of lava (source or flowing) is avoided.
+
 ## [4.7.2+R-26.2] - 2026-06-06
 ### Summary
 - **Release Promotion**: Promoted the Select-and-Ride Dog Command System and Cloth Config GUI warning layout fixes to a stable production Release.
