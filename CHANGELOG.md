@@ -4,13 +4,19 @@
 ### Fixed
 - **Classloader Mixin Shadow Crash**: Fixed a startup and runtime crash when trying to locate `@Shadow Mob mob` field inside `WalkNodeEvaluatorMixin` by making the mixin class inherit from `NodeEvaluator` directly.
 
-## [4.8.0+A-26.2] - 2026-06-11
+## [4.8.0+A-26.2] - 2026-06-11 [DEPRECATED - CRITICAL BUG]
+> [!WARNING]
+> This version contains a classloader startup crash (InvalidMixinException) in `WalkNodeEvaluatorMixin` and is deprecated. Use `4.8.1+A-26.2` instead.
+
 ### Added
 - **Custom Howling Sound Restoration**: Packaged and restored the deleted vanilla `Wolf_howl1.ogg` and `Wolf_howl2.ogg` sound files into the mod assets.
 - **Custom Sound Event Registration**: Registered the `betterdogs:entity.wolf.howl` sound event.
 - **AI Group Howl update**: Updated `GroupHowlGoal` to play the authentic howling sound effects instead of the baby whine fallback.
 
-## [4.7.6+A-26.2] - 2026-06-11
+## [4.7.6+A-26.2] - 2026-06-11 [DEPRECATED - CRITICAL BUG]
+> [!WARNING]
+> This version contains a classloader startup crash (InvalidMixinException) in `WalkNodeEvaluatorMixin` and is deprecated. Use `4.8.1+A-26.2` instead.
+
 ### Added
 - **Alternative Pathfinding on Push**: Added checks to see if another path exists to get to the target area (even if longer) before giving up and halting navigation.
 
