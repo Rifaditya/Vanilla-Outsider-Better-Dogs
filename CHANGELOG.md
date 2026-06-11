@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.8.2+A-26.2] - 2026-06-11
+### Fixed
+- **CurseForge Documentation**: Resolved CurseForge platform page rendering issues by replacing forbidden Markdown badge-links and GitHub-style callouts with raw HTML code blocks and anchors.
+
 ## [4.8.1+A-26.2] - 2026-06-11
 ### Fixed
 - **Classloader Mixin Shadow Crash**: Fixed a startup and runtime crash when trying to locate `@Shadow Mob mob` field inside `WalkNodeEvaluatorMixin` by making the mixin class inherit from `NodeEvaluator` directly.
