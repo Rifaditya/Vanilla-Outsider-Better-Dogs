@@ -1,0 +1,10 @@
+{
+  "entity.wolf.howl": {
+    "category": "neutral",
+    "sounds": [
+      "betterdogs:mob/wolf/howl1",
+      "betterdogs:mob/wolf/howl2"
+    ],
+    "subtitle": "subtitles.betterdogs.entity.wolf.howl"
+  }
+}

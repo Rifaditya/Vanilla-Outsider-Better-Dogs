@@ -1,5 +1,11 @@
 # Better Dogs - Historical Changelog
 
+## [3.10.0+A-26.1.2] - 2026-06-11
+### Summary
+The **"Restored Howling Sounds"** update. Restores original wolf howling sounds when wolves howl.
+- **Restored Howling Sounds**: Bundled original vanilla wolf howling sound effects (`Wolf_howl1.ogg` and `Wolf_howl2.ogg`) within the mod and registered the `betterdogs:entity.wolf.howl` sound event.
+- **AI Integration**: Updated `GroupHowlGoal` to play the authentic wolf howl sound instead of the baby whine fallback.
+
 ## [3.9.5+A-26.1.2] - 2026-06-11
 ### Summary
 The **"Alternative Pathfinding on Push"** update. Adds checks to see if another path exists to get to the target area (even if longer) before giving up and halting navigation.

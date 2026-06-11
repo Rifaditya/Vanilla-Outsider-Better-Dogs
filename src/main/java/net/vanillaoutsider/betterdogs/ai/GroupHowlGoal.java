@@ -78,8 +78,7 @@ public class GroupHowlGoal extends Goal {
     }
     
     private void playHowlSound(Wolf target, float volume, float pitch) {
-        // Use lowered-pitch baby whine for howl-like effect
-        target.playSound(SoundEvents.WOLF_WHINE_BABY.value(), volume, pitch);
+        target.playSound(net.vanillaoutsider.betterdogs.BetterDogs.WOLF_HOWL, volume, pitch);
     }
 
     private void spreadHowl() {
