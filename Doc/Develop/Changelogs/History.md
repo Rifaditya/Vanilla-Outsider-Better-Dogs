@@ -1,5 +1,10 @@
 # Better Dogs - Historical Changelog
 
+## [3.10.1+A-26.1.2] - 2026-06-11
+### Summary
+The **"Classloader Mixin Shadow Crash Fix"** patch. Resolves a startup crash caused by an invalid `@Shadow` on the inherited `mob` field in `WalkNodeEvaluatorMixin`.
+- **Classloader Mixin Shadow Crash**: Fixed a startup and runtime crash when trying to locate `@Shadow Mob mob` field inside `WalkNodeEvaluatorMixin` by making the mixin class inherit from `NodeEvaluator` directly.
+
 ## [3.10.0+A-26.1.2] - 2026-06-11
 ### Summary
 The **"Restored Howling Sounds"** update. Restores original wolf howling sounds when wolves howl.

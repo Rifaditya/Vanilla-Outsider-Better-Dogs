@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.10.1+A-26.1.2] - 2026-06-11
+### Fixed
+- **Classloader Mixin Shadow Crash**: Fixed a startup and runtime crash when trying to locate `@Shadow Mob mob` field inside `WalkNodeEvaluatorMixin` by making the mixin class inherit from `NodeEvaluator` directly.
+
 ## [3.10.0+A-26.1.2] - 2026-06-11
 ### Added
 - **Restored Howling Sounds**: Bundled original vanilla wolf howling sound effects (`Wolf_howl1.ogg` and `Wolf_howl2.ogg`) within the mod and registered the `betterdogs:entity.wolf.howl` sound event.
