@@ -1,5 +1,12 @@
 # Better Dogs - Historical Changelog
 
+## [3.10.2+A-26.1.2] - 2026-06-11
+### Summary
+The **"Concept Parity Alignment"** patch. Backports the low health fleeing goal and fixes static registration and missing personality multipliers for Storm Anxiety goal in 26.1.
+- **Low Health Fleeing Goal**: Backported `WolfFleeLowHealthGoal` from 26.2 to 26.1.2 to align concept parity. Wolves will now retreat from combat at low health (<30% health) depending on their personality probability.
+- **Storm Anxiety AI Registration**: Refactored `WolfAIMixin` to register `WolfStormAnxietyGoal` unconditionally to enable dynamic runtime GameRule toggling.
+- **Storm Anxiety Personality Modifiers**: Updated `WolfStormAnxietyGoal` to query the GameRule state inside the goal methods, and added personality-based trigger modifiers (Pacifist 3x risk, Normal 1x, Aggressive immune).
+
 ## [3.10.1+A-26.1.2] - 2026-06-11
 ### Summary
 The **"Classloader Mixin Shadow Crash Fix"** patch. Resolves a startup crash caused by an invalid `@Shadow` on the inherited `mob` field in `WalkNodeEvaluatorMixin`.

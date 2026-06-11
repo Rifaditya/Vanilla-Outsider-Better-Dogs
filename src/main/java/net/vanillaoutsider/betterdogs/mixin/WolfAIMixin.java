@@ -37,6 +37,7 @@ import net.vanillaoutsider.betterdogs.ai.WildWolfTerritorialGoal;
 import net.vanillaoutsider.betterdogs.ai.WolfFetchGoal;
 import net.vanillaoutsider.betterdogs.ai.WolfGiftGoal;
 import net.vanillaoutsider.betterdogs.ai.WolfGuardGoal;
+import net.vanillaoutsider.betterdogs.ai.WolfFleeLowHealthGoal;
 import net.vanillaoutsider.betterdogs.ai.WolfStormAnxietyGoal;
 import net.vanillaoutsider.betterdogs.ai.ZoomiesGoal;
 import net.vanillaoutsider.betterdogs.ai.group.WildWolfFollowLeaderGoal;
@@ -73,6 +74,7 @@ public abstract class WolfAIMixin extends TamableAnimal {
         this.goalSelector.addGoal(8, new WolfGiftGoal(wolf));
         this.goalSelector.addGoal(1, new FleeCreeperGoal(wolf));
         this.goalSelector.addGoal(1, new AvoidHazardsGoal(wolf));
+        this.goalSelector.addGoal(1, new WolfFleeLowHealthGoal(wolf, 1.25));
         this.goalSelector.addGoal(1, new MoveToVehicleGoal(wolf));
         this.goalSelector.addGoal(3, new EatGroundFoodGoal(wolf));
         this.goalSelector.addGoal(4, new WildWolfTerritorialGoal(wolf));
@@ -121,9 +123,7 @@ public abstract class WolfAIMixin extends TamableAnimal {
                 false,
                 preySelector));
 
-        if (DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_STORM_ANXIETY)) {
-            this.goalSelector.addGoal(6, new WolfStormAnxietyGoal(wolf));
-        }
+        this.goalSelector.addGoal(6, new WolfStormAnxietyGoal(wolf));
 
         this.goalSelector.addGoal(7, new GroupHowlGoal(wolf));
         this.goalSelector.addGoal(7, new BabyCuriosityGoal(wolf, 0.8));
