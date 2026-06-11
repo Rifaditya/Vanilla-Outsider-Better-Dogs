@@ -47,6 +47,8 @@ public class BetterDogsConfig {
     public boolean enableFriendlyFireProtection = true;
     public boolean enableDogsEatRawGroundFood = true;
     public boolean enableDogsEatCookedGroundFood = true;
+    public boolean enableRefuseGroundFood = true;
+    public int refuseGroundFoodChance = 30;
     public boolean pacifistGuardBuffs = false;
     public boolean enableInbredCuring = true;
     public boolean showRuntParticles = false;
@@ -205,6 +207,8 @@ public class BetterDogsConfig {
     public boolean getEnableFriendlyFireProtection() { return enableFriendlyFireProtection; }
     public boolean getEnableDogsEatRawGroundFood() { return enableDogsEatRawGroundFood; }
     public boolean getEnableDogsEatCookedGroundFood() { return enableDogsEatCookedGroundFood; }
+    public boolean getEnableRefuseGroundFood() { return enableRefuseGroundFood; }
+    public int getRefuseGroundFoodChance() { return refuseGroundFoodChance; }
     public boolean getPacifistGuardBuffs() { return pacifistGuardBuffs; }
     public boolean getEnableInbredCuring() { return enableInbredCuring; }
     public boolean getShowRuntParticles() { return showRuntParticles; }
