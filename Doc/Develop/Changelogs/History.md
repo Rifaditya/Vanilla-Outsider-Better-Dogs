@@ -1,5 +1,10 @@
 # Better Dogs - Historical Changelog
 
+## [4.7.6+A-26.2] - 2026-06-11
+### Summary
+The **"Alternative Pathfinding on Push"** update. Adds checks to see if another path exists to get to the target area (even if longer) before giving up and halting navigation.
+- **Alternative Pathfinding on Push**: Added checks to see if another path exists to get to the target area (even if longer) before giving up and halting navigation.
+
 ## [4.7.5+A-26.2] - 2026-06-11
 ### Summary
 The **"Ground Food Refusal Trait"** update. Adds a feature where some tamed-from-birth dogs persistently refuse to eat food from the ground.

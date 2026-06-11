@@ -233,4 +233,8 @@ public interface WolfExtensions {
     // === COLLISION PUSH WAIT COOLDOWN ===
     int betterdogs$getPushWaitTimer();
     void betterdogs$setPushWaitTimer(int ticks);
+
+    // === PATHFINDING AVOIDANCE POS ===
+    @Nullable BlockPos betterdogs$getPathfindAvoidPos();
+    void betterdogs$setPathfindAvoidPos(@Nullable BlockPos pos);
 }

@@ -40,6 +40,9 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     @Unique
     private int betterdogs$pushWaitTimer = 0;
 
+    @Unique
+    private net.minecraft.core.BlockPos betterdogs$pathfindAvoidPos = null;
+
     @Override
     public int betterdogs$getPushWaitTimer() {
         return this.betterdogs$pushWaitTimer;
@@ -48,6 +51,16 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     @Override
     public void betterdogs$setPushWaitTimer(int ticks) {
         this.betterdogs$pushWaitTimer = ticks;
+    }
+
+    @Override
+    public net.minecraft.core.BlockPos betterdogs$getPathfindAvoidPos() {
+        return this.betterdogs$pathfindAvoidPos;
+    }
+
+    @Override
+    public void betterdogs$setPathfindAvoidPos(net.minecraft.core.BlockPos pos) {
+        this.betterdogs$pathfindAvoidPos = pos;
     }
 
     protected WolfMixin() {

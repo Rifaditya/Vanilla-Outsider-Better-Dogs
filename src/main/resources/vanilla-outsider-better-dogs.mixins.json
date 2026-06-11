@@ -22,7 +22,8 @@
         "WolfAccessor",
         "WolfMobMixin",
         "ServerLevelMixin",
-        "AnimalMixin"
+        "AnimalMixin",
+        "WalkNodeEvaluatorMixin"
     ],
     "injectors": {
         "defaultRequire": 1
