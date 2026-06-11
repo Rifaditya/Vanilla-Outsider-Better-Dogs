@@ -78,6 +78,13 @@ public abstract class WolfBreedingMixin {
                 net.vanillaoutsider.betterdogs.BetterDogs.OUTCROSS_RUNT.trigger(player);
             }
         }
+
+        // Roll chance for ground food refusal
+        if (DynamicGameRuleManager.getBoolean(level, BetterDogsGameRules.BD_ENABLE_REFUSE_GROUND_FOOD)) {
+            int chance = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_REFUSE_GROUND_FOOD_CHANCE);
+            boolean refuses = baby.getRandom().nextInt(100) < chance;
+            WolfPersistentData.setRefusesGroundFood(baby, refuses);
+        }
     }
 
     /**

@@ -64,6 +64,16 @@ public class ClothConfigScreenHelper {
                 .setSaveConsumer(val -> config.enableDogsEatCookedGroundFood = val)
                 .build());
 
+        general.addEntry(entryBuilder.startBooleanToggle(Component.translatable("config.betterdogs.enableRefuseGroundFood"), config.enableRefuseGroundFood)
+                .setDefaultValue(true)
+                .setSaveConsumer(val -> config.enableRefuseGroundFood = val)
+                .build());
+
+        general.addEntry(entryBuilder.startIntField(Component.translatable("config.betterdogs.refuseGroundFoodChance"), config.refuseGroundFoodChance)
+                .setDefaultValue(30)
+                .setSaveConsumer(val -> config.refuseGroundFoodChance = val)
+                .build());
+
         general.addEntry(entryBuilder.startBooleanToggle(Component.translatable("config.betterdogs.pacifistGuardBuffs"), config.pacifistGuardBuffs)
                 .setDefaultValue(false)
                 .setSaveConsumer(val -> config.pacifistGuardBuffs = val)

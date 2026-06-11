@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.7.5+A-26.2] - 2026-06-11
+### Added
+- **Ground Food Refusal Trait**: Added a feature where some tamed-from-birth dogs (bred from parents, not wild-tamed) persistently refuse to eat food from the ground.
+  - Adds `bd_enable_refuse_ground_food` GameRule and toggle setting to enable/disable the feature globally.
+  - Adds `bd_refuse_ground_food_chance` GameRule and setting to configure the percentage chance (default: 30%) that a puppy receives the refusal trait at birth.
+
 ## [4.7.4+A-26.2] - 2026-06-11
 ### Added
 - **Wolf-on-Wolf Collision Push Safety**: Added cooperative collision handling between tamed wolves.

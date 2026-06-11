@@ -44,6 +44,11 @@ public class EatGroundFoodGoal extends Goal {
         if (wolf.isTame()) {
             if (wolf.isInSittingPose())
                 return false;
+
+            if (net.vanillaoutsider.betterdogs.WolfPersistentData.refusesGroundFood(wolf) &&
+                net.dasik.social.api.gamerule.DynamicGameRuleManager.getBoolean(wolf.level(), net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_ENABLE_REFUSE_GROUND_FOOD)) {
+                return false;
+            }
         }
 
         // Find nearby food items without stream API / lambda allocations

@@ -34,6 +34,8 @@ public class BetterDogsGameRules {
 	public static GameRule<Boolean> BD_FLEE_LOW_HEALTH;
 	public static GameRule<Boolean> BD_DOGS_EAT_RAW_FOOD;
 	public static GameRule<Boolean> BD_DOGS_EAT_COOKED_FOOD;
+	public static GameRule<Boolean> BD_ENABLE_REFUSE_GROUND_FOOD;
+	public static GameRule<Integer> BD_REFUSE_GROUND_FOOD_CHANCE;
 	public static GameRule<Boolean> BD_DEBUGGING;
 
 	// --- Player ---
@@ -142,6 +144,10 @@ public class BetterDogsGameRules {
 				config.getEnableDogsEatRawGroundFood());
 		BD_DOGS_EAT_COOKED_FOOD = registerBoolean("vanilla-outsider-better-dogs:bd_dogs_eat_cooked_food", BETTER_DOGS,
 				config.getEnableDogsEatCookedGroundFood());
+		BD_ENABLE_REFUSE_GROUND_FOOD = registerBoolean("vanilla-outsider-better-dogs:bd_enable_refuse_ground_food", BETTER_DOGS,
+				config.getEnableRefuseGroundFood());
+		BD_REFUSE_GROUND_FOOD_CHANCE = registerInteger("vanilla-outsider-better-dogs:bd_refuse_ground_food_chance", BETTER_DOGS,
+				config.getRefuseGroundFoodChance());
 		BD_FRIENDLY_FIRE = registerBoolean("vanilla-outsider-better-dogs:bd_friendly_fire_protection", BETTER_DOGS,
 				config.getEnableFriendlyFireProtection());
 		BD_DEBUGGING = registerBoolean("vanilla-outsider-better-dogs:bd_debugging", BETTER_DOGS, false);
