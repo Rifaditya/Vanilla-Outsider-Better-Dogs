@@ -125,7 +125,7 @@ public class WolfGuardGoal extends Goal {
                 if (this.isAlertActive) {
                     if (alertCooldown <= 0) {
                         alertCooldown = 60; // 3 seconds alert cooldown
-                        wolf.playSound(((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().whineSound().value(), 1.0f, 1.5f);
+                        wolf.playSound(((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().growlSound().value(), 1.0f, 1.0f);
                         if (wolf.level() instanceof ServerLevel serverLevel) {
                             serverLevel.sendParticles(ParticleTypes.NOTE, wolf.getX(), wolf.getY() + 1.2, wolf.getZ(), 4, 0.2, 0.1, 0.2, 0.0);
                         }
