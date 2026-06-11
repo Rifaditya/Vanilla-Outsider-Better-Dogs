@@ -229,4 +229,8 @@ public interface WolfExtensions {
     void betterdogs$setSpeedMod(float speed);
     boolean betterdogs$areStatsRolled();
     void betterdogs$setStatsRolled(boolean rolled);
+
+    // === COLLISION PUSH WAIT COOLDOWN ===
+    int betterdogs$getPushWaitTimer();
+    void betterdogs$setPushWaitTimer(int ticks);
 }

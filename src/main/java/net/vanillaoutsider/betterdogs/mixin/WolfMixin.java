@@ -37,6 +37,19 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     @Unique
     private int betterdogs$lastDamageTime = 0;
 
+    @Unique
+    private int betterdogs$pushWaitTimer = 0;
+
+    @Override
+    public int betterdogs$getPushWaitTimer() {
+        return this.betterdogs$pushWaitTimer;
+    }
+
+    @Override
+    public void betterdogs$setPushWaitTimer(int ticks) {
+        this.betterdogs$pushWaitTimer = ticks;
+    }
+
     protected WolfMixin() {
         super(null, null);
     }
@@ -184,6 +197,10 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void betterdogs$tickHandler(CallbackInfo ci) {
+        if (this.betterdogs$pushWaitTimer > 0) {
+            this.betterdogs$pushWaitTimer--;
+        }
+
         if (!this.betterdogs$statsApplied && this.betterdogs$hasPersonality()) {
             this.betterdogs$applyPersonalityStats(this.betterdogs$getPersonality());
             this.betterdogs$statsApplied = true;

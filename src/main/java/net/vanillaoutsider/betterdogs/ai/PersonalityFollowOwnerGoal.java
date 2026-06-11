@@ -253,6 +253,21 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
         }
 
         wolf.getLookControl().setLookAt(owner, 10.0f, (float) wolf.getMaxHeadXRot());
+        
+        if (wolf instanceof WolfExtensions ext && ext.betterdogs$getPushWaitTimer() > 0) {
+            wolf.getNavigation().stop();
+            if (!wolf.isLeashed() && !wolf.isPassenger()) {
+                float startDist = getStartDistance();
+                double teleportMultiplier = BetterDogsConfig.get().getTeleportMultiplier();
+                double teleportThreshold = (startDist * teleportMultiplier) * (startDist * teleportMultiplier);
+
+                if (wolf.distanceToSqr(owner) >= teleportThreshold) {
+                    teleportToOwner(owner);
+                }
+            }
+            return;
+        }
+
         if (this.recalcTimer <= 1) {
             betterdogs$updateFollowerSpacingOffset();
         }

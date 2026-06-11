@@ -1,5 +1,12 @@
 # Better Dogs - Historical Changelog
 
+## [4.7.4+A-26.2] - 2026-06-11
+### Summary
+- **Wolf-on-Wolf Collision Push Safety**: Added cooperative collision handling between tamed wolves.
+  - Tamed wolves colliding with a sitting, guarding, or endangered dog (facing a cliff/lava/magma/fire hazard) will immediately halt their navigation path.
+  - A patience timer (`pushWaitTimer` of 60 ticks / 3 seconds) is applied to the pushing dog to prevent continuous pathfinding attempts and jittering.
+  - Player-to-dog pushes are exempted to prevent player blocking.
+
 ## [4.7.3+A-26.2] - 2026-06-11
 ### Summary
 - **Magma Block Avoidance**: Added `Blocks.MAGMA_BLOCK` to the hazard list in `AvoidHazardsGoal`, preventing wolves from walking onto magma blocks.
