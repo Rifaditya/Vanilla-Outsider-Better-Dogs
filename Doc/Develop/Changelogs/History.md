@@ -1,5 +1,13 @@
 # Better Dogs - Historical Changelog
 
+## [3.9.3+A-26.1.2] - 2026-06-11
+### Summary
+The **"Wolf-on-Wolf Collision Push Safety"** update. Adds cooperative collision handling between tamed wolves.
+- **Wolf-on-Wolf Collision Push Safety**: Added cooperative collision handling between tamed wolves.
+  - Tamed wolves colliding with a sitting, guarding, or endangered dog (facing a cliff/lava/magma/fire hazard) will immediately halt their navigation path.
+  - A patience timer (`pushWaitTimer` of 60 ticks / 3 seconds) is applied to the pushing dog to prevent continuous pathfinding attempts and jittering.
+  - Player-to-dog pushes are exempted to prevent player blocking.
+
 ## [3.9.2+R-26.1.2] - 2026-06-06
 ### Summary
 - **Release Promotion**: Promoted the Select-and-Ride Dog Command System and Cloth Config GUI warning layout fixes to a stable production Release.
