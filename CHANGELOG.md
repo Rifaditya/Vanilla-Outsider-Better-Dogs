@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.10.11+A-26.1.2] - 2026-06-12
+### Changed
+- **Directional Guard Alarm Particles**: Modified Pacifist watchdog alarm particles to shoot forward in a 60-degree cone aligning with the wolf's looking direction, spawned at head/mouth level.
+
 ## [3.10.10+A-26.1.2] - 2026-06-12
 ### Added
 - **Configurable Guard Particle Density**: Introduced a client/server configuration setting `guardParticleDensity` inside a new "Visual & Performance Options" Cloth Config screen tab to scale or toggle guard alert particles (`high` = 12, `medium` = 6 [default], `low` = 3, `off` = 0).
