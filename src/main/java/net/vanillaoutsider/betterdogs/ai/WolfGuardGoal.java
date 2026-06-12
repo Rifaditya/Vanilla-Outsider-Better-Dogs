@@ -124,17 +124,25 @@ public class WolfGuardGoal extends Goal {
                             };
                             if (count > 0) {
                                 DustParticleOptions alertDust = new DustParticleOptions(0xFF0000, 1.5f);
-                                double px = wolf.getX();
-                                double py = wolf.getY() + 0.2;
-                                double pz = wolf.getZ();
+                                net.minecraft.world.phys.Vec3 look = wolf.getLookAngle();
+                                double yaw = Math.atan2(look.z, look.x);
+                                double horizontalLength = Math.sqrt(look.x * look.x + look.z * look.z);
+                                double pitch = look.y;
                                 double speed = 0.5;
+                                double spread = Math.PI / 6.0; // 30 degrees spread on each side
+
                                 for (int i = 0; i < count; i++) {
-                                    double angle = i * (Math.PI * 2.0 / count);
-                                    double vx = Math.cos(angle);
-                                    double vz = Math.sin(angle);
-                                    double spawnX = px + vx * 0.5;
-                                    double spawnZ = pz + vz * 0.5;
-                                    serverLevel.sendParticles(alertDust, spawnX, py, spawnZ, 0, vx, 0.0, vz, speed);
+                                    double angleOffset = (count > 1) ? (((double) i / (count - 1)) - 0.5) * spread : 0.0;
+                                    double pAngle = yaw + angleOffset;
+                                    double vx = Math.cos(pAngle) * horizontalLength;
+                                    double vz = Math.sin(pAngle) * horizontalLength;
+                                    
+                                    // Spawn slightly in front of mouth
+                                    double spawnX = wolf.getX() + vx * 0.5;
+                                    double spawnY = wolf.getEyeY() - 0.1;
+                                    double spawnZ = wolf.getZ() + vz * 0.5;
+                                    
+                                    serverLevel.sendParticles(alertDust, spawnX, spawnY, spawnZ, 0, vx, pitch, vz, speed);
                                 }
                             }
                         }

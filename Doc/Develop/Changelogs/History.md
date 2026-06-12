@@ -1,5 +1,11 @@
 # Better Dogs - Historical Changelog
 
+## [4.8.10+A-26.2] - 2026-06-12
+### Summary
+The **"Directional Guard Alarm Particles"** patch. Aligns the Pacifist watchdog alert particles with the wolf's looking direction, creating a 3D forward-pointing warning cone spray.
+- **Directional Cone Spray**: Modified `WolfGuardGoal.java` to calculate a 3D cone spray spanning 60 degrees centered around the wolf's exact looking vector (pitch and yaw).
+- **Mouth Emittance**: Set particle spawn position slightly in front of the wolf's face at mouth level (`y = eyeHeight - 0.1`) to represent a warning bark/breath.
+
 ## [4.8.9+A-26.2] - 2026-06-12
 ### Summary
 The **"Configurable Guard Particle Density"** patch. Introduces a client/server configuration setting `guardParticleDensity` inside a new "Visual & Performance Options" Cloth Config screen tab to scale or toggle guard alert particles.
