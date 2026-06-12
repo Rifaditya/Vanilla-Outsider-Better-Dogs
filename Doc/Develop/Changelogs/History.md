@@ -1,5 +1,10 @@
 # Better Dogs - Historical Changelog
 
+## [4.8.5+A-26.2] - 2026-06-12
+### Summary
+The **"Sound Variant Weighted Lottery"** patch. Transitions the sound variant selection from a strict deterministic max-score model to a UUID-seeded weighted lottery.
+- **Weighted Lottery Math**: Replaced maximum score logic with a UUID-seeded weighted lottery using `Math.max(0.0f, ...)` trait weight modifiers. This ensures every individual dog gets a highly unique, stable, and randomish sound variant that aligns with its personality and genetics.
+
 ## [4.8.4+A-26.2] - 2026-06-12
 ### Summary
 The **"Dynamic Sound Variant Mapping"** patch. Implements a mathematical decision-tree/scoring system that resolves the wolf's sound variant dynamically based on genetics, scale, and personality.

@@ -140,41 +140,68 @@ public class WolfStatManager {
         float speedMod = genetics.traits().getOrDefault("movement_speed", 0.0f);
         boolean isInbred = genetics.inbred();
 
-        // Calculate scores
-        float bigScore = (scale - 1.0f) * 10.0f + (healthBonus > 0 ? healthBonus * 0.5f : 0);
-        float cuteScore = (1.0f - scale) * 10.0f + (personality == WolfPersonality.PACIFIST ? 3.0f : 0) + (speedMod > 0 ? speedMod * 5.0f : 0);
-        float puglinScore = (isInbred ? 6.0f : 0.0f) + (scale < 0.85f ? 4.0f : 0.0f) + (speedMod < 0 ? -speedMod * 10.0f : 0);
-        float angryScore = (personality == WolfPersonality.AGGRESSIVE ? 5.0f : 0.0f) + (damageMod > 0 ? damageMod * 15.0f : 0) + (speedMod > 0 ? speedMod * 5.0f : 0);
-        float grumpyScore = (personality == WolfPersonality.AGGRESSIVE ? 3.0f : 0.0f) + (damageMod > 0 ? damageMod * 10.0f : 0) + (speedMod < 0 ? -speedMod * 15.0f : 0);
-        float sadScore = (personality == WolfPersonality.PACIFIST ? 5.0f : 0.0f) + (healthBonus < 0 ? -healthBonus * 1.5f : 0) + (damageMod < 0 ? -damageMod * 10.0f : 0);
+        // Base weights (Classic is highly weighted as standard fallback, others have a small base probability)
+        float classicWeight = 3.0f;
+        float bigWeight = 0.5f;
+        float cuteWeight = 0.5f;
+        float puglinWeight = 0.5f;
+        float angryWeight = 0.5f;
+        float grumpyWeight = 0.5f;
+        float sadWeight = 0.5f;
 
-        // Find the maximum score
-        float maxScore = 2.0f; // Threshold to override Classic
+        // Apply stat modifiers to weights (ensuring no weight goes below 0.0)
+        bigWeight = Math.max(0.0f, bigWeight + (scale - 1.0f) * 10.0f + (healthBonus > 0 ? healthBonus * 0.5f : 0));
+        cuteWeight = Math.max(0.0f, cuteWeight + (1.0f - scale) * 10.0f + (personality == WolfPersonality.PACIFIST ? 3.0f : 0) + (speedMod > 0 ? speedMod * 5.0f : 0));
+        puglinWeight = Math.max(0.0f, puglinWeight + (isInbred ? 6.0f : 0.0f) + (scale < 0.85f ? 4.0f : 0.0f) + (speedMod < 0 ? -speedMod * 10.0f : 0));
+        angryWeight = Math.max(0.0f, angryWeight + (personality == WolfPersonality.AGGRESSIVE ? 5.0f : 0.0f) + (damageMod > 0 ? damageMod * 15.0f : 0) + (speedMod > 0 ? speedMod * 5.0f : 0));
+        grumpyWeight = Math.max(0.0f, grumpyWeight + (personality == WolfPersonality.AGGRESSIVE ? 3.0f : 0.0f) + (damageMod > 0 ? damageMod * 10.0f : 0) + (speedMod < 0 ? -speedMod * 15.0f : 0));
+        sadWeight = Math.max(0.0f, sadWeight + (personality == WolfPersonality.PACIFIST ? 5.0f : 0.0f) + (healthBonus < 0 ? -healthBonus * 1.5f : 0) + (damageMod < 0 ? -damageMod * 10.0f : 0));
+
+        // Seed a RandomSource with the wolf's unique UUID to ensure stable selection
+        java.util.UUID uuid = wolf.getUUID();
+        long seed = uuid.getMostSignificantBits() ^ uuid.getLeastSignificantBits() ^ 7381940L;
+        net.minecraft.util.RandomSource rand = net.minecraft.util.RandomSource.create(seed);
+
+        // Sum total weight and select via lottery
+        float totalWeight = classicWeight + bigWeight + cuteWeight + puglinWeight + angryWeight + grumpyWeight + sadWeight;
+        float target = rand.nextFloat() * totalWeight;
+
         net.minecraft.resources.ResourceKey<net.minecraft.world.entity.animal.wolf.WolfSoundVariant> bestVariant = net.minecraft.world.entity.animal.wolf.WolfSoundVariants.CLASSIC;
+        float cumulative = 0.0f;
 
-        if (bigScore > maxScore) {
-            maxScore = bigScore;
-            bestVariant = net.minecraft.world.entity.animal.wolf.WolfSoundVariants.BIG;
-        }
-        if (cuteScore > maxScore) {
-            maxScore = cuteScore;
-            bestVariant = net.minecraft.world.entity.animal.wolf.WolfSoundVariants.CUTE;
-        }
-        if (puglinScore > maxScore) {
-            maxScore = puglinScore;
-            bestVariant = net.minecraft.world.entity.animal.wolf.WolfSoundVariants.PUGLIN;
-        }
-        if (angryScore > maxScore) {
-            maxScore = angryScore;
-            bestVariant = net.minecraft.world.entity.animal.wolf.WolfSoundVariants.ANGRY;
-        }
-        if (grumpyScore > maxScore) {
-            maxScore = grumpyScore;
-            bestVariant = net.minecraft.world.entity.animal.wolf.WolfSoundVariants.GRUMPY;
-        }
-        if (sadScore > maxScore) {
-            maxScore = sadScore;
-            bestVariant = net.minecraft.world.entity.animal.wolf.WolfSoundVariants.SAD;
+        cumulative += classicWeight;
+        if (target <= cumulative) {
+            bestVariant = net.minecraft.world.entity.animal.wolf.WolfSoundVariants.CLASSIC;
+        } else {
+            cumulative += bigWeight;
+            if (target <= cumulative) {
+                bestVariant = net.minecraft.world.entity.animal.wolf.WolfSoundVariants.BIG;
+            } else {
+                cumulative += cuteWeight;
+                if (target <= cumulative) {
+                    bestVariant = net.minecraft.world.entity.animal.wolf.WolfSoundVariants.CUTE;
+                } else {
+                    cumulative += puglinWeight;
+                    if (target <= cumulative) {
+                        bestVariant = net.minecraft.world.entity.animal.wolf.WolfSoundVariants.PUGLIN;
+                    } else {
+                        cumulative += angryWeight;
+                        if (target <= cumulative) {
+                            bestVariant = net.minecraft.world.entity.animal.wolf.WolfSoundVariants.ANGRY;
+                        } else {
+                            cumulative += grumpyWeight;
+                            if (target <= cumulative) {
+                                bestVariant = net.minecraft.world.entity.animal.wolf.WolfSoundVariants.GRUMPY;
+                            } else {
+                                cumulative += sadWeight;
+                                if (target <= cumulative) {
+                                    bestVariant = net.minecraft.world.entity.animal.wolf.WolfSoundVariants.SAD;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         var soundRegistry = wolf.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.WOLF_SOUND_VARIANT);

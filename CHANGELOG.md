@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.8.5+A-26.2] - 2026-06-12
+### Changed
+- **Sound Variant Weighted Lottery**: Transitioned the sound variant selection from a strict deterministic max-score model to a UUID-seeded weighted lottery. This ensures every individual dog gets a highly unique, stable, and randomish sound variant that aligns with its personality and genetics.
+
 ## [4.8.4+A-26.2] - 2026-06-12
 ### Added
 - **Dynamic Sound Variant Mapping**: Implemented a mathematical scoring system that deterministically assigns the wolf's sound variant (Classic, Big, Cute, Puglin, Angry, Grumpy, Sad) based on its rolled genetics, scale, and personality type rather than relying on vanilla's random selection.
