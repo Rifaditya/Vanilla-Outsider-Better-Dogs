@@ -24,7 +24,7 @@ public class GroupHowlGoal extends Goal {
     private int howlTimer = 0;
     private int howlCooldown = 0;
     private static final int HOWL_DURATION = 60; // 3 seconds
-    private static final int HOWL_COOLDOWN = 2400; // 2 minutes
+    private static final int HOWL_COOLDOWN = 12000; // 10 minutes
 
     public GroupHowlGoal(Wolf wolf) {
         this.wolf = wolf;
@@ -40,13 +40,16 @@ public class GroupHowlGoal extends Goal {
         if (!isNightTime()) return false;
 
         // NEW: Full Moon check to match documentation
-        if (wolf.level().environmentAttributes().getDimensionValue(EnvironmentAttributes.MOON_PHASE).index() != 0) return false;
+        if (wolf.level().environmentAttributes().getDimensionValue(net.minecraft.world.attribute.EnvironmentAttributes.MOON_PHASE).index() != 0) return false;
         
         // Cooldown check
         if (howlCooldown > 0) {
             howlCooldown--;
             return false;
         }
+
+        // Only roll chance once every 100 ticks (5 seconds) to prevent spamming rolls per tick
+        if (wolf.tickCount % 100 != 0) return false;
         
         // Sitting wolves don't howl
         if (wolf.isOrderedToSit()) return false;
@@ -96,6 +99,13 @@ public class GroupHowlGoal extends Goal {
         for (Wolf nearbyWolf : nearbyWolves) {
             // Play howl sounds simultaneously with harmonized pitch
             playHowlSound(nearbyWolf, 1.3f, 0.6f);
+
+            // Set the cooldown of GroupHowlGoal on this nearby wolf as well
+            for (net.minecraft.world.entity.ai.goal.WrappedGoal wrappedGoal : ((net.vanillaoutsider.betterdogs.WolfExtensions) nearbyWolf).betterdogs$getGoalSelector().getAvailableGoals()) {
+                if (wrappedGoal.getGoal() instanceof GroupHowlGoal howlGoal) {
+                    howlGoal.betterdogs$setHowlCooldown(HOWL_COOLDOWN);
+                }
+            }
         }
     }
 
@@ -113,5 +123,9 @@ public class GroupHowlGoal extends Goal {
     public void stop() {
         howlCooldown = HOWL_COOLDOWN;
         howlTimer = 0;
+    }
+
+    public void betterdogs$setHowlCooldown(int cooldown) {
+        this.howlCooldown = cooldown;
     }
 }

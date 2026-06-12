@@ -237,4 +237,7 @@ public interface WolfExtensions {
     // === PATHFINDING AVOIDANCE POS ===
     @Nullable BlockPos betterdogs$getPathfindAvoidPos();
     void betterdogs$setPathfindAvoidPos(@Nullable BlockPos pos);
+
+    // === GOAL SELECTOR ACCESSOR ===
+    net.minecraft.world.entity.ai.goal.GoalSelector betterdogs$getGoalSelector();
 }

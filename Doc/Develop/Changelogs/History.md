@@ -1,5 +1,11 @@
 # Better Dogs - Historical Changelog
 
+## [4.8.7+A-26.2] - 2026-06-12
+### Summary
+The **"Rare Pack-Wide Howling"** patch. Reduces howling frequency and applies shared cooldowns to pack members to make howling a rare, ambient event.
+- **Pack-Wide Shared Cooldowns**: Modified `GroupHowlGoal.java` so that when a wolf spreads its howl to nearby pack members, it sets their goal cooldowns to `HOWL_COOLDOWN` (10 minutes) as well.
+- **Gated Howl Chance Checks**: Gated the howling chance check to run only once every 100 ticks (5 seconds) instead of every tick.
+
 ## [4.8.6+A-26.2] - 2026-06-12
 ### Summary
 The **"Optimized Red Alert Dust Particles"** patch. Replaces the note particles during Pacifist sentinel guarding alarms with low-overhead, red dust alert particles.

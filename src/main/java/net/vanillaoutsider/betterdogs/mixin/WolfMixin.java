@@ -308,4 +308,8 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         cir.setReturnValue(((WolfAccessor) this).betterdogs$invokeGetSoundSet().ambientSound().value());
     }
 
+    @Override
+    public net.minecraft.world.entity.ai.goal.GoalSelector betterdogs$getGoalSelector() {
+        return this.goalSelector;
+    }
 }
