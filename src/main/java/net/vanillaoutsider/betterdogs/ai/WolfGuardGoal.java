@@ -28,6 +28,7 @@ public class WolfGuardGoal extends Goal {
     private int patrolPauseTimer = 0;
     private int alertCooldown = 0;
     private boolean isAlertActive = false;
+    private Monster closestAlertTarget = null;
 
     public WolfGuardGoal(Wolf wolf) {
         this.wolf = wolf;
@@ -123,7 +124,16 @@ public class WolfGuardGoal extends Goal {
                 // Watchdog Alarm (Whining and note particles when hostiles approach within 16 blocks)
                 List<Monster> enemies = wolf.level().getEntitiesOfClass(Monster.class, wolf.getBoundingBox().inflate(16.0));
                 this.isAlertActive = !enemies.isEmpty();
+                this.closestAlertTarget = null;
                 if (this.isAlertActive) {
+                    double closestDist = Double.MAX_VALUE;
+                    for (Monster enemy : enemies) {
+                        double dist = wolf.distanceToSqr(enemy);
+                        if (dist < closestDist) {
+                            closestDist = dist;
+                            this.closestAlertTarget = enemy;
+                        }
+                    }
                     if (alertCooldown <= 0) {
                         alertCooldown = 60; // 3 seconds alert cooldown
                         wolf.playSound(((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().growlSound().value(), 1.0f, 1.0f);
@@ -164,9 +174,13 @@ public class WolfGuardGoal extends Goal {
             }
 
             if (this.isAlertActive) {
+                wolf.setOrderedToSit(false);
+                wolf.setInSittingPose(false);
+                if (this.closestAlertTarget != null && this.closestAlertTarget.isAlive()) {
+                    wolf.getLookControl().setLookAt(this.closestAlertTarget, 30.0f, 30.0f);
+                }
                 // When alert is active, pacifist stands at the post block
                 if (distToPostSqr > 2.25) {
-                    wolf.setOrderedToSit(false);
                     wolf.getNavigation().moveTo(post.getX(), post.getY(), post.getZ(), 1.0);
                 } else {
                     wolf.getNavigation().stop();

@@ -1,5 +1,11 @@
 # Better Dogs - Historical Changelog
 
+## [3.10.12+A-26.1.2] - 2026-06-12
+### Summary
+The **"Guard Alarm Point & Freeze"** patch. Configures Pacifist watchdogs to perform a hunting-dog-style pointing freeze during active alarms, locking onto the closest hostile target.
+- **Pointing Target Sweep**: Updated the alarm detection routine to track the closest hostile target.
+- **Target Tracking & Posture**: Forced the dog to stand up (breaking sitting pose) and orientation-lock towards the target every tick using look control.
+
 ## [3.10.11+A-26.1.2] - 2026-06-12
 ### Summary
 The **"Directional Guard Alarm Particles"** patch. Aligns the Pacifist watchdog alert particles with the wolf's looking direction, creating a 3D forward-pointing warning cone spray.
