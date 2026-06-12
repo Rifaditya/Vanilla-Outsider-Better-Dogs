@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.10.8+A-26.1.2] - 2026-06-12
+### Changed
+- **Rare Pack-Wide Howling**: Gated howling chance checks to run only once every 100 ticks (5 seconds) and implemented shared pack-wide cooldowns (10 minutes) when one wolf initiates a pack howl.
+
 ## [3.10.7+A-26.1.2] - 2026-06-12
 ### Changed
 - **Red Alert Dust Particles**: Replaced the default music note particles with an optimized horizontal burst of 6 red dust particles (`DustParticleOptions`), sent in a single network packet to avoid performance overhead while providing a clear threat/warning color.
