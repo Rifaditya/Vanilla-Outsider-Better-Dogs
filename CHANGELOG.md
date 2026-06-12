@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.8.11+A-26.2] - 2026-06-12
+### Changed
+- **Guard Alarm Point & Freeze**: Pacifist dogs will now stand up, freeze in place, and look directly at the closest detected hostile mob during sentinel alarms.
+
 ## [4.8.10+A-26.2] - 2026-06-12
 ### Changed
 - **Directional Guard Alarm Particles**: Modified Pacifist watchdog alarm particles to shoot forward in a 60-degree cone aligning with the wolf's looking direction, spawned at head/mouth level.
