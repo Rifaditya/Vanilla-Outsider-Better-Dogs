@@ -5,6 +5,7 @@ import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import java.util.EnumSet;
 import java.util.List;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -127,7 +128,8 @@ public class WolfGuardGoal extends Goal {
                         alertCooldown = 60; // 3 seconds alert cooldown
                         wolf.playSound(((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().growlSound().value(), 1.0f, 1.0f);
                         if (wolf.level() instanceof ServerLevel serverLevel) {
-                            serverLevel.sendParticles(ParticleTypes.NOTE, wolf.getX(), wolf.getY() + 1.2, wolf.getZ(), 4, 0.2, 0.1, 0.2, 0.0);
+                            DustParticleOptions alertDust = new DustParticleOptions(0xFF5555, 1.2f);
+                            serverLevel.sendParticles(alertDust, wolf.getX(), wolf.getY() + 1.2, wolf.getZ(), 6, 0.2, 0.0, 0.2, 0.1);
                         }
                     }
                 }

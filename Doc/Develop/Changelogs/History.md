@@ -1,5 +1,10 @@
 # Better Dogs - Historical Changelog
 
+## [3.10.7+A-26.1.2] - 2026-06-12
+### Summary
+The **"Optimized Red Alert Dust Particles"** patch. Replaces the note particles during Pacifist sentinel guarding alarms with low-overhead, red dust alert particles.
+- **Red Alert Dust**: Replaced the default music note particles with an optimized horizontal burst of 6 red dust particles (`DustParticleOptions`), sent in a single network packet to avoid performance overhead while providing a clear threat/warning color.
+
 ## [3.10.6+A-26.1.2] - 2026-06-12
 ### Summary
 The **"Sound Variant Weighted Lottery"** patch. Transitions the sound variant selection from a strict deterministic max-score model to a UUID-seeded weighted lottery.

@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.10.7+A-26.1.2] - 2026-06-12
+### Changed
+- **Red Alert Dust Particles**: Replaced the default music note particles with an optimized horizontal burst of 6 red dust particles (`DustParticleOptions`), sent in a single network packet to avoid performance overhead while providing a clear threat/warning color.
+
 ## [3.10.6+A-26.1.2] - 2026-06-12
 ### Changed
 - **Sound Variant Weighted Lottery**: Transitioned the sound variant selection from a strict deterministic max-score model to a UUID-seeded weighted lottery. This ensures every individual dog gets a highly unique, stable, and randomish sound variant that aligns with its personality and genetics.
