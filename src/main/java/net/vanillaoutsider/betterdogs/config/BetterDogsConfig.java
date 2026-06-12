@@ -52,6 +52,7 @@ public class BetterDogsConfig {
     public boolean pacifistGuardBuffs = false;
     public boolean enableInbredCuring = true;
     public boolean showRuntParticles = false;
+    public String guardParticleDensity = "medium";
 
     // ========== Aggressive Personality ==========
     public double aggressiveHealthBonus = -10.0;
@@ -294,4 +295,5 @@ public class BetterDogsConfig {
     public int getTamedPackSpreadMax() { return tamedPackSpreadMax; }
     public int getWildPackSpreadMultiplier() { return wildPackSpreadMultiplier; }
     public int getWildPackSpreadMax() { return wildPackSpreadMax; }
+    public String getGuardParticleDensity() { return guardParticleDensity; }
 }

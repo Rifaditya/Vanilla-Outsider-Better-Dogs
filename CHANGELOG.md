@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.10.10+A-26.1.2] - 2026-06-12
+### Added
+- **Configurable Guard Particle Density**: Introduced a client/server configuration setting `guardParticleDensity` inside a new "Visual & Performance Options" Cloth Config screen tab to scale or toggle guard alert particles (`high` = 12, `medium` = 6 [default], `low` = 3, `off` = 0).
+
 ## [3.10.9+A-26.1.2] - 2026-06-12
 ### Changed
 - **Guarding Pacifist Particles**: Redesigned the alert particles for guarding Pacifist dogs to spawn a highly noticeable, expanding horizontal circular ring of 12 pure red dust particles (0xFF0000) using trigonometric direction vectors and client-side outward velocity.

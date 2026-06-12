@@ -120,6 +120,8 @@
     "config.betterdogs.category.breeding": "Genetika & Pembiakan",
     "config.betterdogs.category.territoriality": "Kewilayahan Liar",
     "config.betterdogs.category.gifts": "Hadiah & Penghargaan",
+    "config.betterdogs.category.performance": "Opsi Visual & Performa",
+    "config.betterdogs.guardParticleDensity": "Kepadatan Partikel Alarm Penjaga",
     "config.betterdogs.warning": "PERINGATAN: Perubahan di sini hanya memengaruhi default baseline untuk dunia BARU. Untuk mengonfigurasi dunia Anda yang aktif/ada, gunakan layar /gamerule atau perintah dalam game.",
     
     "config.betterdogs.globalSpeedBuff": "Peningkatan Kecepatan Global",

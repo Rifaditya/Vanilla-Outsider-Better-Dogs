@@ -128,18 +128,27 @@ public class WolfGuardGoal extends Goal {
                         alertCooldown = 60; // 3 seconds alert cooldown
                         wolf.playSound(((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().growlSound().value(), 1.0f, 1.0f);
                         if (wolf.level() instanceof ServerLevel serverLevel) {
-                            DustParticleOptions alertDust = new DustParticleOptions(0xFF0000, 1.5f);
-                            double px = wolf.getX();
-                            double py = wolf.getY() + 0.2;
-                            double pz = wolf.getZ();
-                            double speed = 0.5;
-                            for (int i = 0; i < 12; i++) {
-                                double angle = i * (Math.PI * 2.0 / 12.0);
-                                double vx = Math.cos(angle);
-                                double vz = Math.sin(angle);
-                                double spawnX = px + vx * 0.5;
-                                double spawnZ = pz + vz * 0.5;
-                                serverLevel.sendParticles(alertDust, spawnX, py, spawnZ, 0, vx, 0.0, vz, speed);
+                            String density = net.vanillaoutsider.betterdogs.config.BetterDogsConfig.get().getGuardParticleDensity();
+                            int count = switch (density) {
+                                case "high" -> 12;
+                                case "medium" -> 6;
+                                case "low" -> 3;
+                                default -> 0;
+                            };
+                            if (count > 0) {
+                                DustParticleOptions alertDust = new DustParticleOptions(0xFF0000, 1.5f);
+                                double px = wolf.getX();
+                                double py = wolf.getY() + 0.2;
+                                double pz = wolf.getZ();
+                                double speed = 0.5;
+                                for (int i = 0; i < count; i++) {
+                                    double angle = i * (Math.PI * 2.0 / count);
+                                    double vx = Math.cos(angle);
+                                    double vz = Math.sin(angle);
+                                    double spawnX = px + vx * 0.5;
+                                    double spawnZ = pz + vz * 0.5;
+                                    serverLevel.sendParticles(alertDust, spawnX, py, spawnZ, 0, vx, 0.0, vz, speed);
+                                }
                             }
                         }
                     }
