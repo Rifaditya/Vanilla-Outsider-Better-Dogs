@@ -1,5 +1,12 @@
 # Better Dogs - Historical Changelog
 
+## [4.8.9+A-26.2] - 2026-06-12
+### Summary
+The **"Configurable Guard Particle Density"** patch. Introduces a client/server configuration setting `guardParticleDensity` inside a new "Visual & Performance Options" Cloth Config screen tab to scale or toggle guard alert particles.
+- **Configurable Particle Scaling**: Added `guardParticleDensity` setting to `BetterDogsConfig` supporting `high`, `medium` (default), `low`, and `off` options.
+- **Visual & Performance Category**: Created a dedicated Cloth Config category for Visual & Performance options that is separated from baseline game rule default configuration warnings.
+- **Conditional Alert Loop**: Updated `WolfGuardGoal.java` to scale trigonometry loop size and angle steps based on user preference to optimize client-side rendering.
+
 ## [4.8.8+A-26.2] - 2026-06-12
 ### Summary
 The **"Trigonometric Pacifist Sentinel Warning Circle"** patch. Redesigns the alert particles for guarding Pacifist dogs to spawn a highly noticeable, expanding horizontal circular ring of 12 pure red dust particles.

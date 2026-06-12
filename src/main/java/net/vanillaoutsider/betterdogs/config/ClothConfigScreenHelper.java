@@ -402,6 +402,14 @@ public class ClothConfigScreenHelper {
                 .setSaveConsumer(val -> config.pacifistGiftMushroom = val)
                 .build());
 
+        // --- VISUAL & PERFORMANCE CATEGORY ---
+        ConfigCategory performance = builder.getOrCreateCategory(Component.translatable("config.betterdogs.category.performance"));
+        performance.addEntry(entryBuilder.startStringDropdownMenu(Component.translatable("config.betterdogs.guardParticleDensity"), config.guardParticleDensity)
+                .setDefaultValue("medium")
+                .setSelections(java.util.List.of("high", "medium", "low", "off"))
+                .setSaveConsumer(val -> config.guardParticleDensity = val)
+                .build());
+
         return builder.build();
     }
 }

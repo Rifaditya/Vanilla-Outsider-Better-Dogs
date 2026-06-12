@@ -128,6 +128,8 @@
     "config.betterdogs.category.breeding": "Genetics & Breeding",
     "config.betterdogs.category.territoriality": "Wild Territoriality",
     "config.betterdogs.category.gifts": "Gifts & Rewards",
+    "config.betterdogs.category.performance": "Visual & Performance Options",
+    "config.betterdogs.guardParticleDensity": "Guard Alarm Particle Density",
     "config.betterdogs.warning": "WARNING: Changes made here only affect the baseline defaults for NEW worlds. To configure your active/existing world, use the in-game /gamerule screen or command instead.",
     
     "config.betterdogs.globalSpeedBuff": "Global Speed Buff",
