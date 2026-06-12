@@ -126,5 +126,60 @@ public class WolfStatManager {
             knockbackAttr.addPermanentModifier(new AttributeModifier(pacifistKnockbackId, kbMod,
                     AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
         }
+
+        // 4. Determine and apply Sound Variant based on genetics/stats mapping
+        determineAndApplySoundVariant(wolf, personality, calculatedScale);
+    }
+
+    public static void determineAndApplySoundVariant(Wolf wolf, WolfPersonality personality, float scale) {
+        if (wolf.level().isClientSide()) return;
+
+        net.dasik.social.api.genetics.EntityGenetics genetics = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf);
+        float healthBonus = genetics.traits().getOrDefault("max_health", 0.0f);
+        float damageMod = genetics.traits().getOrDefault("attack_damage", 0.0f);
+        float speedMod = genetics.traits().getOrDefault("movement_speed", 0.0f);
+        boolean isInbred = genetics.inbred();
+
+        // Calculate scores
+        float bigScore = (scale - 1.0f) * 10.0f + (healthBonus > 0 ? healthBonus * 0.5f : 0);
+        float cuteScore = (1.0f - scale) * 10.0f + (personality == WolfPersonality.PACIFIST ? 3.0f : 0) + (speedMod > 0 ? speedMod * 5.0f : 0);
+        float puglinScore = (isInbred ? 6.0f : 0.0f) + (scale < 0.85f ? 4.0f : 0.0f) + (speedMod < 0 ? -speedMod * 10.0f : 0);
+        float angryScore = (personality == WolfPersonality.AGGRESSIVE ? 5.0f : 0.0f) + (damageMod > 0 ? damageMod * 15.0f : 0) + (speedMod > 0 ? speedMod * 5.0f : 0);
+        float grumpyScore = (personality == WolfPersonality.AGGRESSIVE ? 3.0f : 0.0f) + (damageMod > 0 ? damageMod * 10.0f : 0) + (speedMod < 0 ? -speedMod * 15.0f : 0);
+        float sadScore = (personality == WolfPersonality.PACIFIST ? 5.0f : 0.0f) + (healthBonus < 0 ? -healthBonus * 1.5f : 0) + (damageMod < 0 ? -damageMod * 10.0f : 0);
+
+        // Find the maximum score
+        float maxScore = 2.0f; // Threshold to override Classic
+        net.minecraft.resources.ResourceKey<net.minecraft.world.entity.animal.wolf.WolfSoundVariant> bestVariant = net.minecraft.world.entity.animal.wolf.WolfSoundVariants.CLASSIC;
+
+        if (bigScore > maxScore) {
+            maxScore = bigScore;
+            bestVariant = net.minecraft.world.entity.animal.wolf.WolfSoundVariants.BIG;
+        }
+        if (cuteScore > maxScore) {
+            maxScore = cuteScore;
+            bestVariant = net.minecraft.world.entity.animal.wolf.WolfSoundVariants.CUTE;
+        }
+        if (puglinScore > maxScore) {
+            maxScore = puglinScore;
+            bestVariant = net.minecraft.world.entity.animal.wolf.WolfSoundVariants.PUGLIN;
+        }
+        if (angryScore > maxScore) {
+            maxScore = angryScore;
+            bestVariant = net.minecraft.world.entity.animal.wolf.WolfSoundVariants.ANGRY;
+        }
+        if (grumpyScore > maxScore) {
+            maxScore = grumpyScore;
+            bestVariant = net.minecraft.world.entity.animal.wolf.WolfSoundVariants.GRUMPY;
+        }
+        if (sadScore > maxScore) {
+            maxScore = sadScore;
+            bestVariant = net.minecraft.world.entity.animal.wolf.WolfSoundVariants.SAD;
+        }
+
+        var soundRegistry = wolf.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.WOLF_SOUND_VARIANT);
+        soundRegistry.get(bestVariant).ifPresent(holder -> {
+            ((net.vanillaoutsider.betterdogs.mixin.WolfAccessor) wolf).betterdogs$invokeSetSoundVariant(holder);
+        });
     }
 }

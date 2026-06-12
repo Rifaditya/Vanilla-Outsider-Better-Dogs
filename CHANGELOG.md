@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.10.5+A-26.1.2] - 2026-06-12
+### Added
+- **Dynamic Sound Variant Mapping**: Implemented a mathematical scoring system that deterministically assigns the wolf's sound variant (Classic, Big, Cute, Puglin, Angry, Grumpy, Sad) based on its rolled genetics, scale, and personality type rather than relying on vanilla's random selection.
+
 ## [3.10.4+A-26.1.2] - 2026-06-11
 ### Changed
 - **Pacifist Guard warning sound**: Changed the sentinel alarm sound for Pacifist dogs in Guard Mode from a whine to the specific growl sound corresponding to the wolf's sound variant itself (pitch adjusted to 1.0f).

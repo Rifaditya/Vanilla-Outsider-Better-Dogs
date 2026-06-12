@@ -1,5 +1,10 @@
 # Better Dogs - Historical Changelog
 
+## [3.10.5+A-26.1.2] - 2026-06-12
+### Summary
+The **"Dynamic Sound Variant Mapping"** patch. Implements a mathematical decision-tree/scoring system that resolves the wolf's sound variant dynamically based on genetics, scale, and personality.
+- **Dynamic Sound Variant Mapping**: Implemented a mathematical scoring system that deterministically assigns the wolf's sound variant (Classic, Big, Cute, Puglin, Angry, Grumpy, Sad) based on its rolled genetics, scale, and personality type rather than relying on vanilla's random selection.
+
 ## [3.10.4+A-26.1.2] - 2026-06-11
 ### Summary
 The **"Pacifist Guard Sentinel Growl Alert"** patch. Changes the sentinel alarm sound for Pacifist dogs in Guard Mode from a whine to the specific growl sound corresponding to the wolf's sound variant itself.
