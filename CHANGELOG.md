@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.10.9+A-26.1.2] - 2026-06-12
+### Changed
+- **Guarding Pacifist Particles**: Redesigned the alert particles for guarding Pacifist dogs to spawn a highly noticeable, expanding horizontal circular ring of 12 pure red dust particles (0xFF0000) using trigonometric direction vectors and client-side outward velocity.
+
 ## [3.10.8+A-26.1.2] - 2026-06-12
 ### Changed
 - **Rare Pack-Wide Howling**: Gated howling chance checks to run only once every 100 ticks (5 seconds) and implemented shared pack-wide cooldowns (10 minutes) when one wolf initiates a pack howl.

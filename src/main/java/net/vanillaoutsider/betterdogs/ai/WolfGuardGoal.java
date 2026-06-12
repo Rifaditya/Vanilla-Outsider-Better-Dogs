@@ -128,8 +128,19 @@ public class WolfGuardGoal extends Goal {
                         alertCooldown = 60; // 3 seconds alert cooldown
                         wolf.playSound(((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().growlSound().value(), 1.0f, 1.0f);
                         if (wolf.level() instanceof ServerLevel serverLevel) {
-                            DustParticleOptions alertDust = new DustParticleOptions(0xFF5555, 1.2f);
-                            serverLevel.sendParticles(alertDust, wolf.getX(), wolf.getY() + 1.2, wolf.getZ(), 6, 0.2, 0.0, 0.2, 0.1);
+                            DustParticleOptions alertDust = new DustParticleOptions(0xFF0000, 1.5f);
+                            double px = wolf.getX();
+                            double py = wolf.getY() + 0.2;
+                            double pz = wolf.getZ();
+                            double speed = 0.5;
+                            for (int i = 0; i < 12; i++) {
+                                double angle = i * (Math.PI * 2.0 / 12.0);
+                                double vx = Math.cos(angle);
+                                double vz = Math.sin(angle);
+                                double spawnX = px + vx * 0.5;
+                                double spawnZ = pz + vz * 0.5;
+                                serverLevel.sendParticles(alertDust, spawnX, py, spawnZ, 0, vx, 0.0, vz, speed);
+                            }
                         }
                     }
                 }

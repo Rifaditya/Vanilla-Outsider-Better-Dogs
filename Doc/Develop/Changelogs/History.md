@@ -1,5 +1,11 @@
 # Better Dogs - Historical Changelog
 
+## [3.10.9+A-26.1.2] - 2026-06-12
+### Summary
+The **"Trigonometric Pacifist Sentinel Warning Circle"** patch. Redesigns the alert particles for guarding Pacifist dogs to spawn a highly noticeable, expanding horizontal circular ring of 12 pure red dust particles.
+- **Trigonometric Ring Spawning**: Modified `WolfGuardGoal.java` to calculate a 12-particle circle using `cos` and `sin` over $360^\circ$ at a 0.5 blocks radius offset.
+- **Expanding Velocity**: Spawns particles with `count = 0` and outward directional velocity vectors scaled by speed `0.5` to make the circle physically expand.
+
 ## [3.10.8+A-26.1.2] - 2026-06-12
 ### Summary
 The **"Rare Pack-Wide Howling"** patch. Reduces howling frequency and applies shared cooldowns to pack members to make howling a rare, ambient event.
