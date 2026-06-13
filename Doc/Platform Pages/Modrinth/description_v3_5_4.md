@@ -7,18 +7,12 @@
     <a href="https://modrinth.com/mod/fabric-api"><img src="https://img.shields.io/badge/Requires-Fabric_API-blue?style=for-the-badge&logo=fabric" alt="Requires Fabric API"></a>
     <img src="https://img.shields.io/badge/Language-Java_25-orange?style=for-the-badge&logo=java" alt="Java 25">
     <img src="https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge" alt="License">
-    <img src="https://img.shields.io/badge/Minecraft-26.1.2%20%2F%2026.2+-brightgreen?style=for-the-badge" alt="Minecraft 26.1.2 / 26.2+">
+    <img src="https://img.shields.io/badge/Minecraft-26.1+-brightgreen?style=for-the-badge" alt="Minecraft 26.1+">
 </p>
 
 # 🐕 Better Dogs
 
-### 🎮 Version Compatibility & Parity
-
-This mod is active and fully supported across both major version streams:
-* **Minecraft 26.2+ (1.21.4)**: Powered by mod versions **`4.8.x`** (and newer).
-* **Minecraft 26.1.2 (1.21.1)**: Powered by mod versions **`3.10.x`** (and newer).
-
-Both versions share **complete feature parity**, offering identical AI improvements, personality dynamics, territorial systems, and configuration options.
+**No Backports:** This mod targets **Minecraft 26.1+**. Older versions are unsupported.
 
 > **Make Wolves Worthy Companions. Smarter, Safer, Livelier.**
 
@@ -31,7 +25,7 @@ Part of the **Vanilla Outsider Collection** — mods that refine the vanilla exp
 ## ✨ Features
 
 ### 🧠 Personality Intelligence
-When tamed, wolves develop one of three permanent personalities. When in active **Guard Mode**, they emit tiny, custom-colored dust particles indicating their personality:
+When tamed, wolves develop one of three permanent personalities, visible via custom particles:
 
 <p align="center">
   <img src="https://cdn.modrinth.com/data/cached_images/bcda6a78fa3159bc710566a2cbedfa1e94a03930.png" alt="Aggressive dog particle" width="30%">
@@ -39,23 +33,9 @@ When tamed, wolves develop one of three permanent personalities. When in active 
   <img src="https://cdn.modrinth.com/data/cached_images/8722821ac9f7e1b6ca653e77cf90cf83dff2c432.png" alt="Vanilla/Normal" width="30%">
 </p>
 
-- 💢 **Aggressive**: The Guardian. Proactively attacks hostile mobs and scouts ahead. Emits red dust particles (`0xFF3333`) on patrol.
-- ❤️ **Pacifist**: The Healer. Avoids combat unless you are hurt. High health, low damage. Emits green/teal dust particles (`0x00FF88`) on patrol.
-- ✨ **Normal**: The Classic. Balanced stats and standard vanilla-plus behavior. Emits gold/yellow dust particles (`0xFFD700`) on patrol.
-
-### 🛡️ Tamed Wolf Guard Mode
-Right-click a tamed wolf with a bone while sneaking (Shift + Right Click) to toggle **Guard Mode** (consuming exactly 1 bone) and anchor the wolf to its current spot. Guard Mode is locked to the owner:
-- **Patrol Patterns**:
-  - **Aggressive**: Paces in a circular/polygon shape along its outer perimeter sweep (80% range), pausing to scan outward for threats.
-  - **Normal**: Sentry posture at the guard post (range = 0), or radial patrols outward and back (range > 0).
-  - **Pacifist**: Close protective orbital circular pacing around the post.
-- **Auto-Targeting & Chase Caps**: Normal and Aggressive guards automatically attack hostiles within their range but are capped from chasing targets too far to prevent them from being lured away.
-- **Watchdog Alarms & Alert Stance**: Pacifist sentinels whine, freeze in a pointing/alert stance facing the direction of detected threats, and emit warning note particles when hostiles approach, applying Regeneration and Resistance to owners/allies if enabled.
-
-### 📏 Dynamic Follower Spread Scaling
-Follow/spread spacing of wild and tamed wolf packs scales dynamically based on the number of active followers:
-- Spacing increases mathematically based on the square root formula: $f(N) = \text{multiplier} \times \sqrt{N - 1}$ to prevent visual overcrowding.
-- Fully configurable via 4 native GameRules: `bd_tamed_pack_spread_multiplier`, `bd_tamed_pack_spread_max`, `bd_wild_pack_spread_multiplier`, `bd_wild_pack_spread_max`.
+- 💢 **Aggressive**: The Guardian. Proactively attacks hostile mobs and scouts ahead.
+- ❤️ **Pacifist**: The Healer. Avoids combat unless you are hurt. High health, low damage.
+- ✨ **Normal**: The Classic. Balanced stats and standard vanilla-plus behavior.
 
 ### 🤝 Advanced Social AI
 - **Social Bonding (Affinity)**: Dogs form relationships within their pack. Socializing builds trust and reduces accidental infighting.
@@ -71,14 +51,37 @@ Follow/spread spacing of wild and tamed wolf packs scales dynamically based on t
 
 ### 📡 Behavioral Specialization
 - **Scouting**: Aggressive dogs proactively range ahead to clear your path.
-- **Silent Alarm**: Pacifist dogs emit a high-pitched whine and freeze to point toward nearby monsters.
+- **Silent Alarm**: Pacifist dogs emit a high-pitched whine when they detect nearby monsters.
 - **Gift System**: Loyal dogs bring you treasures based on their personality.
 - **Debug Tools**: Use `/betterdogs debug` to test pack interactions and behaviors (Locked behind OP permissions and a safety GameRule).
+
+---
+
+## 🐕‍🦺 Tamed Wolf Guard Mode *(Added in v3.4.19)*
+
+Put your tamed wolves to work protecting your base while you're away. **Sneak + Right-click** a tamed wolf with a bone (consumes 1 bone) to assign it to a **Guard Post** — it will anchor to that spot and defend the area on its own.
+
+> [!TIP]
+> Guard Mode requires **Sneak (Shift) + Right Click** with a bone to activate. This prevents accidental toggling during normal interactions.
+
+- **Personality Patrols**: Each personality guards differently:
+  - 💢 **Aggressive**: Wide outer perimeter sweeps, actively scanning and attacking hostiles.
+  - ✨ **Normal**: Sit-sentry at the post, or structured radial star patrols outward and back.
+  - ❤️ **Pacifist**: Close protective orbital pacing — acts as a watchdog and alarm system.
+- **Auto-Target & Chase Caps**: Guards automatically attack hostiles within range (16–24 blocks) but are hard-capped from chasing targets too far — they stay at their post.
+- **Watchdog Alarms**: Pacifist guards whine and emit warning note particles when threats approach, and optionally apply Regeneration and Resistance to nearby allies.
+- **Visual Indicators**: Subtle foot particles every 4 seconds (ASH / WHITE_ASH / MYCELIUM) show which wolves are on active guard duty at a glance.
+- **Ownership Locked**: Only the wolf's owner can toggle Guard Mode or issue commands — other players are ignored entirely.
+- **Clean Deactivation**: Deactivating Guard Mode instantly stands the wolf up and resumes follow-owner behaviour — no leftover states.
+
+---
+
+## ✨ More Features
 
 ### 🌤️ Immersive Events
 - **Zoomies**: Dogs burst into hyperactive sprints in the morning or when it starts raining — pure joy!
 - **Group Howl**: Under a full moon, wolves trigger pack-wide howling sessions that spread to nearby pack members.
-- **Storm Anxiety**: Thunderstorms make dogs anxious — they whine, tremble, and pace nervously until the storm passes. This is highly dependent on their personality: Pacifist dogs are extremely prone to anxiety, Normal dogs have standard chances, and Aggressive dogs are completely immune.
+- **Storm Anxiety**: Thunderstorms make dogs anxious — they whine, tremble, and pace nervously until the storm passes.
 
 ### 🏰 Wild Wolf Territoriality
 Wild wolf packs are now dynamic, territorial entities led by a dominant leader:
@@ -86,19 +89,11 @@ Wild wolf packs are now dynamic, territorial entities led by a dominant leader:
 - **Dynamic Outcomes**: Depending on leader personalities, packs may **Merge** (Dominance based), engage in **War** (1v1 Duels or Pack Combat), or peacefully **Retreat** to maintain their own borders.
 - **Configurable Instincts**: Use GameRules to fine-tune exactly how Aggressive, Normal, and Pacifist leaders react to each other.
 - **1v1 Leader Duels**: If a dispute escalates to War, leaders engage in a cinematic 1v1 duel to settle dominance.
-- **Yield & Merge**: Defeated packs yield and **merge** with the winning pack, allowing for the natural formation of massive wolf colonies.
+- **Yield & Merge**: Defeated packs are not lost; they yield and **merge** with the winning pack, allowing for the natural formation of massive wolf colonies.
 - **Wild Personality AI (New Default)**: Out of the box, wild pack members exhibit unique behaviors (like Aggressive hunting or Pack Retreats) while anchored to their leader.
 - **Dynamic Spawning & Reinforcements**: When a pack goes to war or is challenged, nearby wild wolves can spawn or join as reinforcements to defend their pack's territory.
-
-### 💻 Server-Side Optional & Client Gating
-- **Server-Side Optional**: Better Dogs is fully compatible with vanilla clients! Vanilla clients can connect to servers running the mod without installing it.
-- **Dedicated Server Support**: Client-only rendering logic is isolated to prevent classloading crashes on headless dedicated servers.
-- **GUI Config Integration**: Fully supports configuration GUI integrations via **ModMenu** + **Cloth Config** in singleplayer mode.
-  <p align="center">
-    <img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.2-core-alignment/Doc/Media/Gallery/Cloth%20config%20sreen.webp" alt="Cloth Config Screen" width="85%">
-  </p>
 - **Production Stable**: Fully compatible with high-performance engines like **C2ME**, ensuring safe multi-threaded AI execution.
-- **Performance Hardened**: All AI logic is performance-optimized using **DasikLibrary 1.8.0**, ensuring zero console spam and smooth server TPS even with massive packs.
+- **Performance Hardened**: All AI logic is performance-optimized using **DasikLibrary 1.7.4**, ensuring zero console spam and smooth server TPS even with massive packs.
 
 ---
 
@@ -107,11 +102,16 @@ Wild wolf packs are now dynamic, territorial entities led by a dominant leader:
 No messy config files. Better Dogs uses the **Native Minecraft Game Rules** system. All 50+ mod parameters are grouped into a dedicated **"Better Dogs"** category in the official UI.
 
 > [!TIP]
-> **Too many rules?** If the game rule screen feels cluttered, we highly recommend installing **[Collapsible Game Rules](https://modrinth.com/mod/collapsible-gamerules)**. It will automatically group the new Personality Matrix settings into clean, expandable folders!
+> **Want a GUI?** Install the optional **[Cloth Config API](https://modrinth.com/mod/cloth-config)** and **[ModMenu](https://modrinth.com/mod/modmenu)** to get a full categorized settings screen inside the game — no commands needed! *(Added in v3.4.16)*
+
+> [!TIP]
+> **Too many options?** If the game rule screen feels cluttered, we highly recommend installing **[Collapsible Game Rules](https://modrinth.com/mod/collapsible-gamerules)**. It will automatically group the settings into clean, expandable folders!
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.2-core-alignment/Doc/Media/Gallery/Gamerule%20Screen%20options.webp" alt="Native gamerule UI">
+  <img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/refs/heads/26.2-core-alignment/Doc/Media/Gallery/Cloth%20config%20sreen.png" alt="Cloth Config settings screen" width="48%">
+  <img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/refs/heads/26.2-core-alignment/Doc/Media/Gallery/Gamerule%20Screen%20options.png" alt="Native GameRule screen" width="48%">
 </p>
+<p align="center"><em>Optional Cloth Config GUI (left) · Native GameRule screen (right)</em></p>
 
 ---
 
