@@ -7,12 +7,18 @@
     <a href="https://modrinth.com/mod/fabric-api"><img src="https://img.shields.io/badge/Requires-Fabric_API-blue?style=for-the-badge&logo=fabric" alt="Requires Fabric API"></a>
     <img src="https://img.shields.io/badge/Language-Java_25-orange?style=for-the-badge&logo=java" alt="Java 25">
     <img src="https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge" alt="License">
-    <img src="https://img.shields.io/badge/Minecraft-26.2+-brightgreen?style=for-the-badge" alt="Minecraft 26.2+">
+    <img src="https://img.shields.io/badge/Minecraft-26.1.2%20%2F%2026.2+-brightgreen?style=for-the-badge" alt="Minecraft 26.1.2 / 26.2+">
 </p>
 
 # 🐕 Better Dogs
 
-**No Backports:** This mod targets **Minecraft 26.2+**. Older versions are unsupported.
+### 🎮 Version Compatibility & Parity
+
+This mod is active and fully supported across both major version streams:
+* **Minecraft 26.2+ (1.21.4)**: Powered by mod versions **`4.8.x`** (and newer).
+* **Minecraft 26.1.2 (1.21.1)**: Powered by mod versions **`3.10.x`** (and newer).
+
+Both versions share **complete feature parity**, offering identical AI improvements, personality dynamics, territorial systems, and configuration options.
 
 > **Make Wolves Worthy Companions. Smarter, Safer, Livelier.**
 
@@ -38,14 +44,13 @@ When tamed, wolves develop one of three permanent personalities. When in active 
 - ✨ **Normal**: The Classic. Balanced stats and standard vanilla-plus behavior. Emits gold/yellow dust particles (`0xFFD700`) on patrol.
 
 ### 🛡️ Tamed Wolf Guard Mode
-Right-click a tamed wolf with a bone to toggle **Guard Mode** (consuming exactly 1 bone) and anchor the wolf to its current spot:
+Right-click a tamed wolf with a bone while sneaking (Shift + Right Click) to toggle **Guard Mode** (consuming exactly 1 bone) and anchor the wolf to its current spot. Guard Mode is locked to the owner:
 - **Patrol Patterns**:
   - **Aggressive**: Paces in a circular/polygon shape along its outer perimeter sweep (80% range), pausing to scan outward for threats.
   - **Normal**: Sentry posture at the guard post (range = 0), or radial patrols outward and back (range > 0).
   - **Pacifist**: Close protective orbital circular pacing around the post.
 - **Auto-Targeting & Chase Caps**: Normal and Aggressive guards automatically attack hostiles within their range but are capped from chasing targets too far to prevent them from being lured away.
-- **Watchdog Alarms & Grace Buffs**: Pacifist sentinels whine and emit warning note particles when hostiles approach, applying Regeneration and Resistance to owners/allies if the gamerule is enabled.
-- **Safety Gating**: Toggling Guard Mode requires **Shift + Right Click** while holding a bone to prevent accidental activation during taming. Guard Mode is also gated strictly to the wolf's owner.
+- **Watchdog Alarms & Alert Stance**: Pacifist sentinels whine, freeze in a pointing/alert stance facing the direction of detected threats, and emit warning note particles when hostiles approach, applying Regeneration and Resistance to owners/allies if enabled.
 
 ### 📏 Dynamic Follower Spread Scaling
 Follow/spread spacing of wild and tamed wolf packs scales dynamically based on the number of active followers:
@@ -66,14 +71,14 @@ Follow/spread spacing of wild and tamed wolf packs scales dynamically based on t
 
 ### 📡 Behavioral Specialization
 - **Scouting**: Aggressive dogs proactively range ahead to clear your path.
-- **Silent Alarm**: Pacifist dogs emit a high-pitched whine when they detect nearby monsters.
+- **Silent Alarm**: Pacifist dogs emit a high-pitched whine and freeze to point toward nearby monsters.
 - **Gift System**: Loyal dogs bring you treasures based on their personality.
 - **Debug Tools**: Use `/betterdogs debug` to test pack interactions and behaviors (Locked behind OP permissions and a safety GameRule).
 
 ### 🌤️ Immersive Events
 - **Zoomies**: Dogs burst into hyperactive sprints in the morning or when it starts raining — pure joy!
 - **Group Howl**: Under a full moon, wolves trigger pack-wide howling sessions that spread to nearby pack members.
-- **Storm Anxiety**: Thunderstorms make dogs anxious — they whine, tremble, and pace nervously until the storm passes.
+- **Storm Anxiety**: Thunderstorms make dogs anxious — they whine, tremble, and pace nervously until the storm passes. This is highly dependent on their personality: Pacifist dogs are extremely prone to anxiety, Normal dogs have standard chances, and Aggressive dogs are completely immune.
 
 ### 🏰 Wild Wolf Territoriality
 Wild wolf packs are now dynamic, territorial entities led by a dominant leader:
@@ -87,14 +92,13 @@ Wild wolf packs are now dynamic, territorial entities led by a dominant leader:
 
 ### 💻 Server-Side Optional & Client Gating
 - **Server-Side Optional**: Better Dogs is fully compatible with vanilla clients! Vanilla clients can connect to servers running the mod without installing it.
-- **P2P Multiplayer Compatibility (Minecraft 26.2+)**: In theory, singleplayer hosts opening their world to online multiplayer using the new Minecraft 26.2 P2P friends system will work seamlessly with vanilla clients (your friends do not need to install the mod). *Note: As this is a newly released pre-release feature, P2P compatibility has not been extensively tested. If you find any issues, please report them to our GitHub repository!*
 - **Dedicated Server Support**: Client-only rendering logic is isolated to prevent classloading crashes on headless dedicated servers.
 - **GUI Config Integration**: Fully supports configuration GUI integrations via **ModMenu** + **Cloth Config** in singleplayer mode.
   <p align="center">
     <img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.2-core-alignment/Doc/Media/Gallery/Cloth%20config%20sreen.webp" alt="Cloth Config Screen" width="85%">
   </p>
 - **Production Stable**: Fully compatible with high-performance engines like **C2ME**, ensuring safe multi-threaded AI execution.
-- **Performance Hardened**: All AI logic is performance-optimized using **DasikLibrary 1.7.4**, ensuring zero console spam and smooth server TPS even with massive packs.
+- **Performance Hardened**: All AI logic is performance-optimized using **DasikLibrary 1.8.0**, ensuring zero console spam and smooth server TPS even with massive packs.
 
 ---
 
