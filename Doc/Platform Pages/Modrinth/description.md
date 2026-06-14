@@ -34,6 +34,10 @@ Part of the **Vanilla Outsider Collection** — mods that refine the vanilla exp
 When tamed, wolves develop one of three permanent personalities. When in active **Guard Mode**, they emit tiny, custom-colored dust particles indicating their personality:
 
 <p align="center">
+  <img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.2-core-alignment/Doc/Media/Gallery/particles_showcase.png" alt="Personality Particles Showcase" width="85%">
+</p>
+
+<p align="center">
   <img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.2-core-alignment/Doc/Media/Gallery/particle_aggressive.png" alt="Aggressive dog particle" width="30%">
   <img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.2-core-alignment/Doc/Media/Gallery/particle_pacifist.png" alt="Pacifist all love particle" width="30%">
   <img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.2-core-alignment/Doc/Media/Gallery/particle_classic.png" alt="Vanilla/Normal" width="30%">
