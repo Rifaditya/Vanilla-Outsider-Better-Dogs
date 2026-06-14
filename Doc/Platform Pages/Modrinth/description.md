@@ -7,18 +7,15 @@
     <a href="https://modrinth.com/mod/fabric-api"><img src="https://img.shields.io/badge/Requires-Fabric_API-blue?style=for-the-badge&logo=fabric" alt="Requires Fabric API"></a>
     <img src="https://img.shields.io/badge/Language-Java_25-orange?style=for-the-badge&logo=java" alt="Java 25">
     <img src="https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge" alt="License">
-    <img src="https://img.shields.io/badge/Minecraft-26.1.2%20%2F%2026.2+-brightgreen?style=for-the-badge" alt="Minecraft 26.1.2 / 26.2+">
+    <img src="https://img.shields.io/badge/Minecraft-26.1.2-brightgreen?style=for-the-badge" alt="Minecraft 26.1.2">
 </p>
 
 # 🐕 Better Dogs
 
-### 🎮 Version Compatibility & Parity
+### 🎮 Version Info
 
-This mod is active and fully supported across both major version streams:
-* **Minecraft 26.2+ (1.21.4)**: Powered by mod versions **`4.8.x`** (and newer).
-* **Minecraft 26.1.2 (1.21.1)**: Powered by mod versions **`3.10.x`** (and newer).
-
-Both versions share **complete feature parity**, offering identical AI improvements, personality dynamics, territorial systems, and configuration options.
+* **Minecraft 26.1.2**: Current public release — **`v3.7.1`**
+* **Minecraft 26.2+**: See the 26.2 version page for the latest `4.x` release.
 
 > **Make Wolves Worthy Companions. Smarter, Safer, Livelier.**
 
@@ -50,7 +47,7 @@ Right-click a tamed wolf with a bone while sneaking (Shift + Right Click) to tog
   - **Normal**: Sentry posture at the guard post (range = 0), or radial patrols outward and back (range > 0).
   - **Pacifist**: Close protective orbital circular pacing around the post.
 - **Auto-Targeting & Chase Caps**: Normal and Aggressive guards automatically attack hostiles within their range but are capped from chasing targets too far to prevent them from being lured away.
-- **Watchdog Alarms & Alert Stance**: Pacifist sentinels whine, freeze in a pointing/alert stance facing the direction of detected threats, and emit warning note particles when hostiles approach, applying Regeneration and Resistance to owners/allies if enabled.
+- **Watchdog Alarms & Buffs**: Pacifist sentinels whine and emit warning note particles when hostiles approach, and optionally apply Regeneration and Resistance to owners/allies if the `bd_pacifist_guard_buffs` GameRule is enabled.
 
 ### 📏 Dynamic Follower Spread Scaling
 Follow/spread spacing of wild and tamed wolf packs scales dynamically based on the number of active followers:
@@ -71,14 +68,14 @@ Follow/spread spacing of wild and tamed wolf packs scales dynamically based on t
 
 ### 📡 Behavioral Specialization
 - **Scouting**: Aggressive dogs proactively range ahead to clear your path.
-- **Silent Alarm**: Pacifist dogs emit a high-pitched whine and freeze to point toward nearby monsters.
+- **Silent Alarm**: Pacifist dogs emit a high-pitched whine when monsters are nearby.
 - **Gift System**: Loyal dogs bring you treasures based on their personality.
 - **Debug Tools**: Use `/betterdogs debug` to test pack interactions and behaviors (Locked behind OP permissions and a safety GameRule).
 
 ### 🌤️ Immersive Events
 - **Zoomies**: Dogs burst into hyperactive sprints in the morning or when it starts raining — pure joy!
 - **Group Howl**: Under a full moon, wolves trigger pack-wide howling sessions that spread to nearby pack members.
-- **Storm Anxiety**: Thunderstorms make dogs anxious — they whine, tremble, and pace nervously until the storm passes. This is highly dependent on their personality: Pacifist dogs are extremely prone to anxiety, Normal dogs have standard chances, and Aggressive dogs are completely immune.
+- **Storm Anxiety**: Thunderstorms make dogs anxious — they whine, tremble, and pace nervously until the storm passes.
 
 ### 🏰 Wild Wolf Territoriality
 Wild wolf packs are now dynamic, territorial entities led by a dominant leader:
@@ -98,7 +95,7 @@ Wild wolf packs are now dynamic, territorial entities led by a dominant leader:
     <img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.2-core-alignment/Doc/Media/Gallery/Cloth%20config%20sreen.webp" alt="Cloth Config Screen" width="85%">
   </p>
 - **Production Stable**: Fully compatible with high-performance engines like **C2ME**, ensuring safe multi-threaded AI execution.
-- **Performance Hardened**: All AI logic is performance-optimized using **DasikLibrary 1.8.0**, ensuring zero console spam and smooth server TPS even with massive packs.
+- **Performance Hardened**: All AI logic is performance-optimized using **DasikLibrary**, ensuring zero console spam and smooth server TPS even with massive packs.
 
 ---
 
