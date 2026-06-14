@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.10.12+A-26.1.2] - 2026-06-12
+## [3.10.12-26.1.2] - 2026-06-12
 ### Changed
 - **Guard Alarm Point & Freeze**: Pacifist dogs will now stand up, freeze in place, and look directly at the closest detected hostile mob during sentinel alarms.
 
