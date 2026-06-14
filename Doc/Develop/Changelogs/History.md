@@ -1,6 +1,6 @@
 # Better Dogs - Historical Changelog
 
-## [4.8.11+A-26.2] - 2026-06-12
+## [4.8.11-26.2] - 2026-06-12
 ### Summary
 The **"Guard Alarm Point & Freeze"** patch. Configures Pacifist watchdogs to perform a hunting-dog-style pointing freeze during active alarms, locking onto the closest hostile target.
 - **Pointing Target Sweep**: Updated the alarm detection routine to track the closest hostile target.
