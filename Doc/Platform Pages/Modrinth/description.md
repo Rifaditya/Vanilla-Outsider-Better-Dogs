@@ -41,6 +41,11 @@ When tamed, wolves develop one of three permanent personalities. When in active 
 - ✨ **Normal**: The Classic. Balanced stats and standard vanilla-plus behavior. Emits gold/yellow dust particles (`0xFFD700`) on patrol.
 
 ### 🛡️ Tamed Wolf Guard Mode
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.1-core-migration/Doc/Media/Gallery/guard_mode_activation.png" alt="Guard Mode Activation - Shift + Bone" width="85%">
+</p>
+
 Right-click a tamed wolf with a bone while sneaking (Shift + Right Click) to toggle **Guard Mode** (consuming exactly 1 bone) and anchor the wolf to its current spot. Guard Mode is locked to the owner:
 - **Patrol Patterns**:
   - **Aggressive**: Paces in a circular/polygon shape along its outer perimeter sweep (80% range), pausing to scan outward for threats.
