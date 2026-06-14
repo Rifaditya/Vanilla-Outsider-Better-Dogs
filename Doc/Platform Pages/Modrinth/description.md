@@ -15,8 +15,8 @@
 ### 🎮 Version Compatibility & Parity
 
 This mod is active and fully supported across both major version streams:
-* **Minecraft 26.2+ (1.21.4)**: Powered by mod versions **`4.8.x`** (and newer).
-* **Minecraft 26.1.2 (1.21.1)**: Powered by mod versions **`3.10.x`** (and newer).
+* **Minecraft 26.2+**: Powered by mod versions **`4.8.x`** (and newer).
+* **Minecraft 26.1.2**: Powered by mod versions **`3.10.x`** (and newer).
 
 Both versions share **complete feature parity**, offering identical AI improvements, personality dynamics, territorial systems, and configuration options.
 
@@ -34,9 +34,9 @@ Part of the **Vanilla Outsider Collection** — mods that refine the vanilla exp
 When tamed, wolves develop one of three permanent personalities. When in active **Guard Mode**, they emit tiny, custom-colored dust particles indicating their personality:
 
 <p align="center">
-  <img src="https://cdn.modrinth.com/data/cached_images/bcda6a78fa3159bc710566a2cbedfa1e94a03930.png" alt="Aggressive dog particle" width="30%">
-  <img src="https://cdn.modrinth.com/data/cached_images/6d8c999c94d61346d925ecadd1f2655ef412bb0d.png" alt="Pacifist all love particle" width="30%">
-  <img src="https://cdn.modrinth.com/data/cached_images/8722821ac9f7e1b6ca653e77cf90cf83dff2c432.png" alt="Vanilla/Normal" width="30%">
+  <img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.2-core-alignment/Doc/Media/Gallery/particle_aggressive.png" alt="Aggressive dog particle" width="30%">
+  <img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.2-core-alignment/Doc/Media/Gallery/particle_pacifist.png" alt="Pacifist all love particle" width="30%">
+  <img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.2-core-alignment/Doc/Media/Gallery/particle_classic.png" alt="Vanilla/Normal" width="30%">
 </p>
 
 - 💢 **Aggressive**: The Guardian. Proactively attacks hostile mobs and scouts ahead. Emits red dust particles (`0xFF3333`) on patrol.
@@ -44,6 +44,12 @@ When tamed, wolves develop one of three permanent personalities. When in active 
 - ✨ **Normal**: The Classic. Balanced stats and standard vanilla-plus behavior. Emits gold/yellow dust particles (`0xFFD700`) on patrol.
 
 ### 🛡️ Tamed Wolf Guard Mode
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.2-core-alignment/Doc/Media/Gallery/guard_mode_activation.png" alt="Guard Mode Activation" width="48%">
+  <img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.2-core-alignment/Doc/Media/Gallery/guard_mode_deactivation.png" alt="Guard Mode Deactivation" width="48%">
+</p>
+
 Right-click a tamed wolf with a bone while sneaking (Shift + Right Click) to toggle **Guard Mode** (consuming exactly 1 bone) and anchor the wolf to its current spot. Guard Mode is locked to the owner:
 - **Patrol Patterns**:
   - **Aggressive**: Paces in a circular/polygon shape along its outer perimeter sweep (80% range), pausing to scan outward for threats.

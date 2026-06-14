@@ -10,8 +10,8 @@ Better Dogs is actively maintained across two distinct Minecraft version streams
 
 | Minecraft Version | Target Mod Release | Dependency Mappings |
 | :--- | :--- | :--- |
-| **Minecraft 1.21.4 (26.2+)** | `4.8.x-26.2` (and newer) | Java 25, Fabric API, DasikLibrary 1.8.0 |
-| **Minecraft 1.21.1 (26.1.2)** | `3.10.x-26.1.2` (and newer) | Java 25, Fabric API, DasikLibrary 1.8.0 |
+| **Minecraft 26.2+** | `4.8.x-26.2` (and newer) | Java 25, Fabric API, DasikLibrary 1.8.0 |
+| **Minecraft 26.1.2** | `3.10.x-26.1.2` (and newer) | Java 25, Fabric API, DasikLibrary 1.8.0 |
 
 ---
 
