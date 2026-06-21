@@ -96,6 +96,7 @@ public class BetterDogsGameRules {
 	// --- Spawning ---
 	public static GameRule<Integer> BD_WOLF_PACK_CLUSTER_SIZE;
 	public static GameRule<Integer> BD_WOLF_SPAWN_DENSITY_BOOST;
+	public static GameRule<Integer> BD_WOLF_SPAWN_MULTIPLIER_PCT;
 
 	// --- Breeding Genetics ---
 	public static GameRule<Integer> BD_BREED_SAME_CHANCE;
@@ -276,6 +277,8 @@ public class BetterDogsGameRules {
 				BETTER_DOGS, 8);
 		BD_WOLF_SPAWN_DENSITY_BOOST = registerInteger("vanilla-outsider-better-dogs:bd_wolf_spawn_density_boost",
 				BETTER_DOGS, 0);
+		BD_WOLF_SPAWN_MULTIPLIER_PCT = registerInteger("vanilla-outsider-better-dogs:bd_wolf_spawn_multiplier_percent",
+				BETTER_DOGS, (int)(config.getWolfSpawnMultiplier() * 100));
 
 		// Guard Mode
 		BD_PACIFIST_GUARD_BUFFS = registerBoolean("vanilla-outsider-better-dogs:bd_pacifist_guard_buffs", BETTER_DOGS, config.getPacifistGuardBuffs());

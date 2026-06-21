@@ -23,7 +23,8 @@
         "ServerLevelMixin",
         "AnimalMixin",
         "EntityMixin",
-        "WalkNodeEvaluatorMixin"
+        "WalkNodeEvaluatorMixin",
+        "NaturalSpawnerMixin"
     ],
     "injectors": {
         "defaultRequire": 1

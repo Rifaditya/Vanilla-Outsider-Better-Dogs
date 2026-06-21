@@ -1,5 +1,7 @@
 {
     "gamerule.category.vanilla-outsider-better-dogs.better_dogs": "Vanilla Outsider: Better Dogs",
+    "gamerule.vanilla-outsider-better-dogs.bd_wolf_spawn_multiplier_percent": "Wolf Spawn Multiplier (%)",
+    "gamerule.vanilla-outsider-better-dogs.bd_wolf_spawn_multiplier_percent.description": "Multiplier for wolf spawning weight in biome spawn settings. Default: 150 (represented as 1.5x spawn weight).",
 
     "gamerule.vanilla-outsider-better-dogs.bd_storm_anxiety": "Enable Storm Anxiety",
     "gamerule.vanilla-outsider-better-dogs.bd_storm_anxiety.description": "If true, wolves will whine and shake in fear during thunderstorms depending on personality (Pacifist has 3x anxiety, Aggressive is immune). Default: true.",
@@ -178,6 +180,7 @@
     "config.betterdogs.spawnChanceNormal": "Spawn Chance: Normal (%)",
     "config.betterdogs.spawnChanceAggressive": "Spawn Chance: Aggressive (%)",
     "config.betterdogs.spawnChancePacifist": "Spawn Chance: Pacifist (%)",
+    "config.betterdogs.wolfSpawnMultiplier": "Wolf Spawn Multiplier",
     "config.betterdogs.breedingSameParentChance": "Inherit Same Personality (%)",
     "config.betterdogs.breedingSameParentOtherChance": "Mutate Same Personality (%)",
     "config.betterdogs.breedingMixedDominantChance": "Mixed Breeding Dominant (%)",

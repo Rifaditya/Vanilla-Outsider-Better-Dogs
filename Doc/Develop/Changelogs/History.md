@@ -1,5 +1,12 @@
 # Better Dogs - Historical Changelog
 
+## [3.10.14-26.1.2] - 2026-06-21
+### Summary
+The **"Wolf Spawns Multiplier"** patch. Introduces a configuration setting and game rule `bd_wolf_spawn_multiplier_percent` (default: 1.5x) to scale the spawning weight of wolves in biome settings.
+- **NaturalSpawner Mixin**: Injected `NaturalSpawnerMixin.java` targeting `NaturalSpawner.mobsAt()` at return. Intercepts biome spawn settings, checks if `net.minecraft.world.entity.EntityType.WOLF` is in the candidate list, and rebuilds the `WeightedList` with the multiplied weight if a non-1.0x setting is configured.
+- **Config & Registry**: Added `wolfSpawnMultiplier` double to `BetterDogsConfig` and registered `BD_WOLF_SPAWN_MULTIPLIER_PCT` GameRule. Added screen entry in `ClothConfigScreenHelper`.
+- **Translations**: Added localization keys for both ModMenu config screen and GameRule descriptions.
+
 ## [3.10.13-26.1.2] - 2026-06-21
 ### Summary
 The **"Tamed Wolf Wander Restriction"** patch. Replaces the owner-unaware vanilla wandering behavior (`WaterAvoidingRandomStrollGoal`) with a personality-based `TamedWanderNearOwnerGoal` to restrict tamed wolf wandering radius around their owners.

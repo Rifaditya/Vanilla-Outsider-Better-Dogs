@@ -136,6 +136,7 @@ public class BetterDogsConfig {
     public int tamedPackSpreadMax = 60;
     public int wildPackSpreadMultiplier = 80;
     public int wildPackSpreadMax = 40;
+    public double wolfSpawnMultiplier = 1.5;
 
     // ========== Pack Separation (REMOVED v3.1.17) ==========
     // public boolean enablePackSeparation = true;
@@ -296,4 +297,5 @@ public class BetterDogsConfig {
     public int getWildPackSpreadMultiplier() { return wildPackSpreadMultiplier; }
     public int getWildPackSpreadMax() { return wildPackSpreadMax; }
     public String getGuardParticleDensity() { return guardParticleDensity; }
+    public double getWolfSpawnMultiplier() { return wolfSpawnMultiplier; }
 }
