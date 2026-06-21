@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.10.13-26.1.2] - 2026-06-21
+### Changed
+- **Tamed Wolf Wander Restriction**: Replaced the owner-unaware vanilla wandering behavior (`WaterAvoidingRandomStrollGoal`) with a personality-based `TamedWanderNearOwnerGoal`. Wolves now stay closer to their owner: Aggressive (max 14 blocks), Normal (max 8 blocks), and Pacifist (max 4 blocks), preventing them from drifting too far away.
+
 ## [3.10.12-26.1.2] - 2026-06-12
 ### Changed
 - **Guard Alarm Point & Freeze**: Pacifist dogs will now stand up, freeze in place, and look directly at the closest detected hostile mob during sentinel alarms.
