@@ -53,6 +53,16 @@ public class TamedWanderNearOwnerGoal extends WaterAvoidingRandomStrollGoal {
             };
         }
 
+        // Apply follower spacing offset to expand the wander radius and prevent clumping in large groups
+        java.util.UUID ownerUuid = owner.getUUID();
+        int followerCount = net.vanillaoutsider.betterdogs.ai.PersonalityFollowOwnerGoal.FollowerSpacingCache.getLastKnownCount(ownerUuid);
+        if (followerCount > 1) {
+            float multiplier = net.dasik.social.api.gamerule.DynamicGameRuleManager.getInt(this.wolf.level(), net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_TAMED_PACK_SPREAD_MULTIPLIER) / 100.0f;
+            float maxExtra = net.dasik.social.api.gamerule.DynamicGameRuleManager.getInt(this.wolf.level(), net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_TAMED_PACK_SPREAD_MAX) / 10.0f;
+            double spacingOffset = Math.min(Math.sqrt(followerCount - 1) * multiplier, maxExtra);
+            maxRadius += spacingOffset;
+        }
+
         // If the wolf is already outside the allowed radius from the owner,
         // force it to select a position towards the owner to return.
         if (distToOwner > maxRadius) {
