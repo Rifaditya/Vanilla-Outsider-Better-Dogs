@@ -8,6 +8,7 @@ The **"Tamed Wolf Wander Restriction"** patch. Replaces the owner-unaware vanill
 - **Target Search Loop**: Evaluates standard stroll positions up to 10 times; if all are outside the radius, it defaults to moving towards the owner.
 - **Mixin Registration**: Refactored `WolfAIMixin.java` to scan, isolate, and remove the vanilla `WaterAvoidingRandomStrollGoal.class` (preserving subclasses like `WanderlustGoal`) and inject `TamedWanderNearOwnerGoal` at priority `8`.
 - **Gated Checks**: Optimizes server performance by short-circuiting AI evaluations if the wolf is untamed, sitting, leashed, or in Guard Mode.
+- **Dynamic Wander Scaling**: Links the wander `maxRadius` calculation in `TamedWanderNearOwnerGoal.java` to `PersonalityFollowOwnerGoal.FollowerSpacingCache` to retrieve the owner's active follower count. If $N > 1$, it adds the square-root-based follower spacing offset to `maxRadius`, naturally expanding the boundary to prevent clumping and overcrowding in larger packs.
 
 ## [4.8.11-26.2] - 2026-06-12
 ### Summary
