@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.8.13-26.2] - 2026-06-21
+### Added
+- **Wolf Spawn Multiplier**: Introduced a configuration setting and game rule `bd_wolf_spawn_multiplier_percent` (default: 1.5x) to dynamically adjust wolf spawning weights in biome settings, making them spawn more commonly.
+
 ## [4.8.12-26.2] - 2026-06-21
 ### Changed
 - **Tamed Wolf Wander Restriction**: Replaced the owner-unaware vanilla wandering behavior (`WaterAvoidingRandomStrollGoal`) with a personality-based `TamedWanderNearOwnerGoal`. Wolves now stay closer to their owner: Aggressive (max 14 blocks), Normal (max 8 blocks), and Pacifist (max 4 blocks), preventing them from drifting too far away.

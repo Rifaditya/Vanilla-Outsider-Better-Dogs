@@ -247,6 +247,11 @@ public class ClothConfigScreenHelper {
                 .setSaveConsumer(val -> config.spawnChancePacifist = val)
                 .build());
 
+        breeding.addEntry(entryBuilder.startDoubleField(Component.translatable("config.betterdogs.wolfSpawnMultiplier"), config.wolfSpawnMultiplier)
+                .setDefaultValue(1.5)
+                .setSaveConsumer(val -> config.wolfSpawnMultiplier = val)
+                .build());
+
         breeding.addEntry(entryBuilder.startIntField(Component.translatable("config.betterdogs.breedingSameParentChance"), config.breedingSameParentChance)
                 .setDefaultValue(80)
                 .setSaveConsumer(val -> config.breedingSameParentChance = val)
