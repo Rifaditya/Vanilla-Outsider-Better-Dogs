@@ -1,7 +1,7 @@
 {
     "schemaVersion": 1,
     "id": "vanilla-outsider-better-dogs",
-    "version": "4.8.11-26.2",
+    "version": "4.8.12-26.2",
     "name": "Vanilla Outsider: Better Dogs",
     "description": "Gives wolves personalities and stats. Includes a dog feeding system from dropped items.",
     "authors": [
@@ -30,7 +30,7 @@
     ],
     "depends": {
         "fabricloader": ">=0.16.9",
-        "minecraft": ">=26.2-",
+        "minecraft": ">=26.2",
         "java": ">=25",
         "fabric-api": "*",
         "dasik-library": ">=1.8.0"

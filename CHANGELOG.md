@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.8.12-26.2] - 2026-06-21
+### Changed
+- **Tamed Wolf Wander Restriction**: Replaced the owner-unaware vanilla wandering behavior (`WaterAvoidingRandomStrollGoal`) with a personality-based `TamedWanderNearOwnerGoal`. Wolves now stay closer to their owner: Aggressive (max 14 blocks), Normal (max 8 blocks), and Pacifist (max 4 blocks), preventing them from drifting too far away.
+
 ## [4.8.11-26.2] - 2026-06-12
 ### Changed
 - **Guard Alarm Point & Freeze**: Pacifist dogs will now stand up, freeze in place, and look directly at the closest detected hostile mob during sentinel alarms.
@@ -356,6 +360,11 @@ The production **Release** version of the **"Paper Ownership Transfer (Adoption)
 ### Summary
 The production **Release** version of the **"Calm Down Interaction & Named Guard Mode Overlay"** features.
 - **Stable Release**: Promoted the Calm Down empty-hand Shift-Right Click interaction and the Named Guard Mode activation/deactivation overlays to a stable production Release.
+
+## [4.2.1+A-26.2] - 2026-05-28
+### Summary
+The **"Named Guard Mode Overlay"** patch.
+- **Named Guard Mode overlay**: Modified the Guard Mode activation and deactivation messages to include the name of the wolf (e.g., "Guard Mode Activated for Buddy at X, Y, Z").
 
 ## [4.2.0+A-26.2] - 2026-05-28
 ### Summary

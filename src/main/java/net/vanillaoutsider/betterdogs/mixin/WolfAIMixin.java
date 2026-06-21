@@ -29,6 +29,7 @@ import net.vanillaoutsider.betterdogs.ai.GroupHowlGoal;
 import net.vanillaoutsider.betterdogs.ai.PacifistRevengeGoal;
 import net.vanillaoutsider.betterdogs.ai.PersonalityFollowOwnerGoal;
 import net.vanillaoutsider.betterdogs.ai.SmallFightGoal;
+import net.vanillaoutsider.betterdogs.ai.TamedWanderNearOwnerGoal;
 import net.vanillaoutsider.betterdogs.ai.WanderlustGoal;
 import net.vanillaoutsider.betterdogs.ai.WildWolfHuntGoal;
 import net.vanillaoutsider.betterdogs.ai.WildWolfPackWarGoal;
@@ -126,6 +127,19 @@ public abstract class WolfAIMixin extends TamableAnimal {
 
         this.goalSelector.addGoal(7, new GroupHowlGoal(wolf));
         this.goalSelector.addGoal(7, new BabyCuriosityGoal(wolf, 0.8));
+        
+        // Remove the vanilla WaterAvoidingRandomStrollGoal for tamed wolves and register custom TamedWanderNearOwnerGoal
+        Set<WrappedGoal> strollGoalsToRemove = new HashSet<>();
+        for (WrappedGoal goal : this.goalSelector.getAvailableGoals()) {
+            if (goal.getGoal().getClass() == net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal.class) {
+                strollGoalsToRemove.add(goal);
+            }
+        }
+        for (WrappedGoal goal : strollGoalsToRemove) {
+            this.goalSelector.removeGoal(goal.getGoal());
+        }
+
+        this.goalSelector.addGoal(8, new TamedWanderNearOwnerGoal(wolf, 1.0));
         this.goalSelector.addGoal(8, new WanderlustGoal(wolf, 1.0));
         
         // DasikLibrary Wild Pack Group Logic (Disabled automatically if Tamed)

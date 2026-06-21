@@ -1,5 +1,14 @@
 # Better Dogs - Historical Changelog
 
+## [4.8.12-26.2] - 2026-06-21
+### Summary
+The **"Tamed Wolf Wander Restriction"** patch. Replaces the owner-unaware vanilla wandering behavior (`WaterAvoidingRandomStrollGoal`) with a personality-based `TamedWanderNearOwnerGoal` to restrict tamed wolf wandering radius around their owners.
+- **Wander Radius Limits**: Restricts tamed wolf wandering radius to: 14.0 blocks for `AGGRESSIVE`, 8.0 blocks for `NORMAL`/Classic, and 4.0 blocks for `PACIFIST`.
+- **Navigation Return Pathing**: If the wolf drifts outside its personality's max radius, it generates a pathing target directly towards the owner using `DefaultRandomPos.getPosTowards()`.
+- **Target Search Loop**: Evaluates standard stroll positions up to 10 times; if all are outside the radius, it defaults to moving towards the owner.
+- **Mixin Registration**: Refactored `WolfAIMixin.java` to scan, isolate, and remove the vanilla `WaterAvoidingRandomStrollGoal.class` (preserving subclasses like `WanderlustGoal`) and inject `TamedWanderNearOwnerGoal` at priority `8`.
+- **Gated Checks**: Optimizes server performance by short-circuiting AI evaluations if the wolf is untamed, sitting, leashed, or in Guard Mode.
+
 ## [4.8.11-26.2] - 2026-06-12
 ### Summary
 The **"Guard Alarm Point & Freeze"** patch. Configures Pacifist watchdogs to perform a hunting-dog-style pointing freeze during active alarms, locking onto the closest hostile target.
@@ -378,6 +387,11 @@ The production **Release** version of the **"Paper Ownership Transfer (Adoption)
 ### Summary
 The production **Release** version of the **"Calm Down Interaction & Named Guard Mode Overlay"** features.
 - **Stable Release**: Promoted the Calm Down empty-hand Shift-Right Click interaction and the Named Guard Mode activation/deactivation overlays to a stable production Release.
+
+## [4.2.1+A-26.2] - 2026-05-28
+### Summary
+The **"Named Guard Mode Overlay"** patch.
+- **Named Guard Mode overlay**: Modified the Guard Mode activation and deactivation messages to include the name of the wolf (e.g., "Guard Mode Activated for Buddy at X, Y, Z").
 
 ## [4.2.0+A-26.2] - 2026-05-28
 ### Summary
