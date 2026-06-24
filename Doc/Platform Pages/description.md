@@ -64,8 +64,8 @@ Right-click a tamed wolf with a bone while sneaking (Shift + Right Click) to tog
 ### 📄 Wolf Ownership Transfer (Adoption)
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.2-core-alignment/Doc/Media/Gallery/wolve_is_ready_for_adoption_image.webp" alt="Wolf is Ready for Adoption" width="48%">
-  <img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.2-core-alignment/Doc/Media/Gallery/adoption_called_off_image.webp" alt="Adoption Called Off" width="48%">
+  <img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.2-core-alignment/Doc/Media/Gallery/wolve_is_ready_for_adoption_image.png" alt="Wolf is Ready for Adoption" width="48%">
+  <img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.2-core-alignment/Doc/Media/Gallery/adoption_called_off_image.png" alt="Adoption Called Off" width="48%">
 </p>
 
 Easily transfer ownership of your tamed wolves to other players using standard, vanilla-only **Paper**:
