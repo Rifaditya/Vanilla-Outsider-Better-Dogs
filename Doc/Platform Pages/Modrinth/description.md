@@ -10,8 +10,8 @@
 ### 🎮 Version Compatibility & Parity
 
 This mod is active and fully supported across both major version streams:
-* **Minecraft 26.2+**: Powered by mod versions **`4.8.x`** (and newer).
-* **Minecraft 26.1.2**: Powered by mod versions **`3.10.x`** (and newer).
+* **Minecraft 26.2+**: Current public release — **`v4.3.1`**
+* **Minecraft 26.1.2**: Current public release — **`v3.7.1`**
 
 Both versions share **complete feature parity**, offering identical AI improvements, personality dynamics, territorial systems, and configuration options.
 
@@ -62,6 +62,19 @@ Right-click a tamed wolf with a bone while sneaking (Shift + Right Click) to tog
   - **Pacifist**: Close protective orbital circular pacing around the post.
 - **Auto-Targeting & Chase Caps**: Normal and Aggressive guards automatically attack hostiles within their range but are capped from chasing targets too far to prevent them from being lured away.
 - **Watchdog Alarms & Alert Stance**: Pacifist sentinels whine, freeze in a pointing/alert stance facing the direction of detected threats, and emit warning note particles when hostiles approach, applying Regeneration and Resistance to owners/allies if enabled.
+
+### 📄 Wolf Ownership Transfer (Adoption)
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.2-core-alignment/Doc/Media/Gallery/wolve_is_ready_for_adoption_image.png" alt="Wolf is Ready for Adoption" width="85%">
+  <br><br>
+  <img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.2-core-alignment/Doc/Media/Gallery/adoption_called_off_image.png" alt="Adoption Called Off" width="85%">
+</p>
+
+Easily transfer ownership of your tamed wolves to other players using standard, vanilla-only **Paper**:
+- **Pending Adoption State**: Shift + Right-Click your tamed wolf with a sheet of Paper to put them up for adoption. The wolf will sit down, halt pathfinding, clear all aggression, and emit a beautiful, sparkling trail of **Rose Pink** particles.
+- **Claiming the Wolf**: Any non-owner player can right-click the adoptable wolf with an empty main hand to claim them as their new companion, instantly triggering heart particles and mutual overlay notifications.
+- **Safety Checks**: The adoption state is automatically cancelled if the wolf takes any damage, or if the owner simply right-clicks the dog again normally to cancel, preventing accidental claims.
 
 ### 📏 Dynamic Follower Spread Scaling
 Follow/spread spacing of wild and tamed wolf packs scales dynamically based on the number of active followers:
