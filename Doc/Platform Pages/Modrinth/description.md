@@ -10,8 +10,8 @@
 ### 🎮 Version Compatibility & Parity
 
 This mod is active and fully supported across both major version streams:
-* **Minecraft 26.2+**: Current public release — **`v4.9.8`**
-* **Minecraft 26.1.2**: Current public release — **`v3.10.15`**
+* **Minecraft 26.2+**: Current public release — **`v4.5.0`**
+* **Minecraft 26.1.2**: Current public release — **`v3.7.1`**
 
 Both versions share **complete feature parity**, offering identical AI improvements, personality dynamics, territorial systems, and configuration options.
 
@@ -75,6 +75,8 @@ Easily transfer ownership of your tamed wolves to other players using standard, 
 - **Pending Adoption State**: Shift + Right-Click your tamed wolf with a sheet of Paper to put them up for adoption. The wolf will sit down, halt pathfinding, clear all aggression, and emit a beautiful, sparkling trail of **Rose Pink** particles.
 - **Claiming the Wolf**: Any non-owner player can right-click the adoptable wolf with an empty main hand to claim them as their new companion, instantly triggering heart particles and mutual overlay notifications.
 - **Safety Checks**: The adoption state is automatically cancelled if the wolf takes any damage, or if the owner simply right-clicks the dog again normally to cancel, preventing accidental claims.
+
+> ⚠️ **Notice**: This feature has a known bug in the current public releases where adopted wolves retain their old pack leader, guard mode, and blood feuds. This is fully fixed in the upcoming `v4.9.8-26.2` and `v3.10.15-26.1.2` updates.
 
 ### 📏 Dynamic Follower Spread Scaling
 Follow/spread spacing of wild and tamed wolf packs scales dynamically based on the number of active followers:
