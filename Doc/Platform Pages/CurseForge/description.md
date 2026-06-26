@@ -10,8 +10,8 @@
 ### 🎮 Version Compatibility & Parity
 
 This mod is active and fully supported across both major version streams:
-* **Minecraft 26.2+**: Current public release — **`v4.5.0`**
-* **Minecraft 26.1.2**: Current public release — **`v3.7.1`**
+* **Minecraft 26.2+**: Current public release — **`v4.9.8`**
+* **Minecraft 26.1.2**: Current public release — **`v3.10.15`**
 
 Both versions share **complete feature parity**, offering identical AI improvements, personality dynamics, territorial systems, and configuration options.
 
