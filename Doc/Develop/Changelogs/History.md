@@ -1,5 +1,9 @@
 # Better Dogs - Historical Changelog
 
+## [3.10.15-26.1.2] - 2026-06-26
+### Fixed
+- Fixed an issue where adopted wolves would retain their old pack leader UUID, guard mode status, and old grudges after being claimed by a new owner.
+
 ## [3.10.14-26.1.2] - 2026-06-21
 ### Summary
 The **"Wolf Spawns Multiplier"** patch. Introduces a configuration setting and game rule `bd_wolf_spawn_multiplier_percent` (default: 1.5x) to scale the spawning weight of wolves in biome settings.
