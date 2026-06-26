@@ -76,7 +76,7 @@ Easily transfer ownership of your tamed wolves to other players using standard, 
 - **Claiming the Wolf**: Any non-owner player can right-click the adoptable wolf with an empty main hand to claim them as their new companion, instantly triggering heart particles and mutual overlay notifications.
 - **Safety Checks**: The adoption state is automatically cancelled if the wolf takes any damage, or if the owner simply right-clicks the dog again normally to cancel, preventing accidental claims.
 
-> ⚠️ **Notice**: This feature has a known bug in the current public releases where adopted wolves retain their old pack leader, guard mode, and blood feuds. This is fully fixed in the upcoming `v4.9.8-26.2` and `v3.10.15-26.1.2` updates.
+> ⚠️ **Notice**: This feature is **unavailable in the 26.1.2 version**, and is **currently bugged in the 26.2+ (v4.5.0) version** (adopted wolves will still pathfind and follow their original owner's dogs, retain guard posts, and keep old grudges). This is fully fixed and backported in the upcoming `v4.9.8-26.2` and `v3.10.15-26.1.2` updates.
 
 ### 📏 Dynamic Follower Spread Scaling
 Follow/spread spacing of wild and tamed wolf packs scales dynamically based on the number of active followers:
@@ -86,8 +86,8 @@ Follow/spread spacing of wild and tamed wolf packs scales dynamically based on t
 ### 🤝 Advanced Social AI
 - **Social Bonding (Affinity)**: Dogs form relationships within their pack. Socializing builds trust and reduces accidental infighting.
 - **Adult Correction**: Aggressive adults discipline misbehaving puppies, preventing death loops.
-- **Pack Genetics**: Puppies inherit personality traits and stats from their parents.
-- **Litter System**: Wolves can produce multiple puppies in a single breed — each with independent personality rolls and stats.
+- **Pack Genetics**: Puppies inherit personality traits and stats from their parents. *(Feature unavailable in 26.1.2)*
+- **Litter System**: Wolves can produce multiple puppies in a single breed — each with independent personality rolls and stats. *(Feature unavailable in 26.1.2)*
 
 ### 🛡️ Smart Survival AI
 - **Cliff Safety**: Wolves detect fatal drops and airborne targets, stopping dangerous chases.
