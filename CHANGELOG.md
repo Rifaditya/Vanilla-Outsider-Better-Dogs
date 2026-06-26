@@ -1,5 +1,49 @@
 # Changelog
 
+## [Unreleased]
+
+## [4.9.8-26.2] - 2026-06-26
+### Fixed
+- Fixed an issue where adopted wolves would retain their old pack leader UUID, guard mode status, and old grudges after being claimed by a new owner.
+
+## [4.9.7-26.2] - 2026-06-23
+### Changed
+- **Merit-Scaled Gifting Chances**: Rebalanced how gift chances are evaluated to create a true daily chance. The dog's chance to give a gift now scales linearly based on its interaction merits, from the base percentage (default 1%) at the minimum threshold, up to a 100% chance when reaching maximum interaction merits (10,000).
+
+## [4.9.6-26.2] - 2026-06-23
+### Changed
+- **Gifting Threshold Balancing**: Increased the default required interactions for a gift (`bd_gift_feed_threshold`) from `3` to `10`. Increased the maximum hard-limit of accumulated interaction merits from `10` to `10,000`, allowing players who configure high thresholds to actually reach them.
+
+## [4.9.5-26.2] - 2026-06-23
+### Changed
+- **Gifting Demerits Refinement**: Refined the demerit system. Intentional attacks (shift-attacking) still fully reset the wolf's gifting merits to 0. Accidental attacks (normal hitting) when `bd_demerit_accidental_attacks` is enabled now only reduce the merit count by 1 instead of a full reset.
+
+## [4.9.4-26.2] - 2026-06-23
+### Fixed
+- **Gifting Demerits on Owner Attacks Fix**: Fixed a bug where any accidental attack on a tamed dog would reset its interaction merits. Players must now be sneaking/crouching while attacking their dog to trigger the demerit/reset logic.
+
+## [4.9.3-26.2] - 2026-06-23
+### Added
+- **Configurable Interaction Cooldown**: Replaced the hardcoded 5-second cooldown on free player-wolf interactions (like sitting/standing) with a configurable GameRule `bd_gift_interaction_cooldown` (default: 100 ticks / 5 seconds) to prevent exploit spamming.
+
+## [4.9.2-26.2] - 2026-06-23
+### Added
+- **Gifting Demerits on Owner Attacks**: Attacking your own tamed wolf now immediately resets its interaction/gifting merits to `0`. The wolf will not bring morning gifts again until positive interactions are rebuilt back to the threshold. This demerit applies to all attacks (including sneak-attacks) even if friendly fire protection is enabled and blocks the actual damage.
+
+## [4.9.1-26.2] - 2026-06-23
+### Added
+- **Expanded Gifting Interaction Gates**: Expanded the wolf gifting gates to track all forms of positive player-wolf interaction instead of just feeding.
+  - Interacting to sit/stand, calming down, toggling guard mode, stick commands, and putting up for adoption now count towards the gift eligibility threshold.
+  - Implemented a 5-second (100 ticks) anti-spam cooldown for free interactions to prevent exploit gating, while feeding actions bypass the cooldown and always count.
+  - Rebranded the GameRule to **Gift Interaction Threshold** (`bd_gift_feed_threshold`) and updated localizations.
+
+## [4.9.0-26.2] - 2026-06-23
+### Added
+- **Feeding-Gated Wolf Gift System**: Tamed wolves will now only bring morning gifts if they are fed regularly by their owner.
+  - Added namespaced GameRule `vanilla-outsider-better-dogs:bd_gift_feed_threshold` (default: 3) to configure the feeding threshold.
+  - Feeding a tamed wolf its favorite food increments its persistent feed count (capped at 10 to prevent overflow).
+  - Spawning a morning gift consumes the threshold amount of feeds, triggers a happy whine sound effect, and displays an action bar notification to the owner.
+
 ## [4.8.13-26.2] - 2026-06-21
 ### Added
 - **Wolf Spawn Multiplier**: Introduced a configuration setting and game rule `bd_wolf_spawn_multiplier_percent` (default: 1.5x) to dynamically adjust wolf spawning weights in biome settings, making them spawn more commonly.

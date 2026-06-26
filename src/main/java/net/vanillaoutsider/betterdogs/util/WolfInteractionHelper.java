@@ -150,6 +150,12 @@ public class WolfInteractionHelper {
                     wolf.tame(player);
                     wolf.setOrderedToSit(false);
                     ext.betterdogs$setAdoptable(false);
+                    
+                    // Reset old social and guarding states
+                    ext.betterdogs$setLeaderUuid(null);
+                    ext.betterdogs$setBloodFeudTarget(null);
+                    ext.betterdogs$setGuardMode(false);
+                    ext.betterdogs$setGuardPos(null);
 
                     // Re-apply personality stats for the new owner relationship
                     WolfPersonality personality = ext.betterdogs$getPersonality();

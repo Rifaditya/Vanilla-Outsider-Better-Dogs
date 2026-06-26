@@ -1,5 +1,53 @@
 # Better Dogs - Historical Changelog
 
+## [4.9.7-26.2] - 2026-06-23
+### Summary
+The **"Merit-Scaled Gifting Chances"** patch. Rebalanced how gift chances are evaluated to create a true daily chance that scales with interaction merits.
+- **Scaled Daily Chance**: Modified `WolfGiftGoal` to evaluate the gift probability exactly once when the cooldown ends. If the random roll fails, the dog's cooldown is reset. The chance scales linearly from the base percentage (default 1%) at the minimum threshold, up to 100% when the dog reaches maximum interaction merits (10,000).
+
+## [4.9.6-26.2] - 2026-06-23
+### Summary
+The **"Gifting Threshold Balancing"** patch. Adjusted the interaction thresholds and limits for dog gifts.
+- **Higher Threshold**: Increased the default required interactions for a gift (`bd_gift_feed_threshold`) from `3` to `10`.
+- **Extended Interaction Cap**: Increased the maximum hard-limit of accumulated interaction merits from `10` to `10,000`, allowing players who configure high thresholds to actually reach them without getting capped artificially.
+
+## [4.9.5-26.2] - 2026-06-23
+### Summary
+The **"Accidental Attack Partial Demerits"** patch. Refined the gifting demerits system.
+- **Accidental Penalties**: Intentional attacks (shift-attacking) still fully reset the wolf's gifting merits to 0. Accidental attacks (normal hitting) when `bd_demerit_accidental_attacks` is enabled now only reduce the merit count by 1 instead of a full reset.
+
+## [4.9.4-26.2] - 2026-06-23
+### Summary
+The **"Gifting Demerits on Owner Attacks Fix"** patch. Resolves an issue where normal/accidental attacks would reset a wolf's interaction count.
+- **Crouch Condition**: Modified the demerit logic in `WolfMixin.java` to check if `player.isCrouching()`. Players must now be explicitly crouching/sneaking while attacking their dog to trigger the demerit and reset the feed count to 0.
+
+## [4.9.3-26.2] - 2026-06-23
+### Summary
+The **"Configurable Interaction Cooldown"** patch. Expose a new GameRule to make the positive interaction cooldown configurable.
+- **Configurable Cooldown**: Replaced the hardcoded 5-second cooldown on free interactions with a configurable GameRule `bd_gift_interaction_cooldown` (default: 100 ticks / 5 seconds).
+- **Mixin Integration**: Updated `WolfInteractMixin.java` to read the GameRule value dynamically instead of using a hardcoded cooldown.
+
+## [4.9.2-26.2] - 2026-06-23
+### Summary
+The **"Gifting Demerits on Owner Attacks"** patch. Reset a tamed wolf's gifting merits (interaction count) to 0 if attacked by its owner.
+- **Demerit Logic**: Hooked into `actuallyHurt` in `WolfMixin.java` to check if the causing entity is the owner player. If so, it resets the wolf's interaction count (`feedCount`) to `0`.
+- **Friendly Fire Compatibility**: Runs at the beginning of the damage chain, ensuring demerits are applied even if actual damage is cancelled by friendly fire protection.
+
+## [4.9.1-26.2] - 2026-06-23
+### Summary
+The **"Expanded Gifting Interaction Gates"** patch. Expands gifting eligibility gates to track all forms of positive player-dog interaction.
+- **Universal Interaction Tracker**: Hooked into the return of `mobInteract` to track sitting/standing, calming down, toggling guard mode, commands, and adoption status.
+- **Anti-Spam Cooldown**: Added a transient, 5-second (100 ticks) cooldown for free interactions to prevent exploit gating, while feeding actions bypass the cooldown and always count.
+- **Rebranding**: Rebranded GameRule descriptions and localizations to **Gift Interaction Threshold**.
+
+## [4.9.0-26.2] - 2026-06-23
+### Summary
+The **"Feeding-Gated Wolf Gift System"** patch. Tamed wolves will now only bring morning gifts if they are fed regularly by their owner.
+- **GameRule & Config**: Registered the Namespaced GameRule `vanilla-outsider-better-dogs:bd_gift_feed_threshold` (default: 3) to configure the feeding threshold.
+- **Feeding Counter**: Hooked into the return of `mobInteract` to track successful wolf feeding (healing, breeding, or aging up). Increments a persistent `feedCount` on the tamed wolf (capped at 10 to prevent NBT overflow).
+- **Gift AI Goal**: Gated the morning gift AI goal (`WolfGiftGoal`) to require a feed count of at least the threshold.
+- **Consumption, Audio, and HUD Overlay**: Consumes the threshold amount of feeds when a gift is generated, plays a happy whine sound effect, and displays a localized action bar overlay notification to the owner.
+
 ## [4.8.13-26.2] - 2026-06-21
 ### Summary
 The **"Wolf Spawns Multiplier"** patch. Introduces a configuration setting and game rule `bd_wolf_spawn_multiplier_percent` (default: 1.5x) to scale the spawning weight of wolves in biome settings.
