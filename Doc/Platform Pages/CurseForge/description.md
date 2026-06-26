@@ -13,7 +13,7 @@ This mod is active and fully supported across both major version streams:
 * **Minecraft 26.2+**: Current public release — **`v4.5.0`**
 * **Minecraft 26.1.2**: Current public release — **`v3.7.1`**
 
-Both versions share **complete feature parity**, offering identical AI improvements, personality dynamics, territorial systems, and configuration options.
+While both versions receive ongoing support and bug fixes, **Minecraft 26.2+ contains additional advanced features** (such as Pack Genetics, the Litter System, and the dynamic Gifting System) that are currently unavailable in the 26.1.2 release.
 
 <blockquote><strong>Make Wolves Worthy Companions. Smarter, Safer, Livelier.</strong></blockquote>
 
@@ -78,7 +78,7 @@ Easily transfer ownership of your tamed wolves to other players using standard, 
 
 ### 📏 Dynamic Follower Spread Scaling
 Follow/spread spacing of wild and tamed wolf packs scales dynamically based on the number of active followers:
-- Spacing increases mathematically based on the square root formula: $f(N) = \text{multiplier} \times \sqrt{N - 1}$ to prevent visual overcrowding.
+- Spacing increases mathematically based on the square root formula: `f(N) = multiplier * sqrt(N - 1)` to prevent visual overcrowding.
 - Fully configurable via 4 native GameRules: `bd_tamed_pack_spread_multiplier`, `bd_tamed_pack_spread_max`, `bd_wild_pack_spread_multiplier`, `bd_wild_pack_spread_max`.
 
 ### 🤝 Advanced Social AI
