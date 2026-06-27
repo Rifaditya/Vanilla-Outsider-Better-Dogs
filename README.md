@@ -1,8 +1,17 @@
-# 🐕 Better Dogs: A Social & Behavioral Overhaul (v4.6.15+R-26.2)
+# 🐕 Better Dogs: A Social & Behavioral Overhaul (v4.10.1)
 
 **Better Dogs** is a comprehensive overhaul of the Minecraft Wolf, replacing robotic behaviors with a dynamic, personality-driven social system. Built for the modern "Post-Obfuscation" era of Minecraft, it enhances the taming loop with genetics, social bonding, and smart survival logic.
 
-## 🔥 New in v4.6.15+R-26.2: Custom Advancements & Achievements (Release)
+## 🔥 New in v4.10.1: True Pack Hunting & Gifting
+
+- **True Pack Hunting (Flanking Tactics)**: Wolves no longer charge mindlessly in a single-file line. Followers intelligently spread out to flank and encircle targets, maximizing combat effectiveness and dodging splash attacks. (Configurable via `bd_pack_flanking_tactics`).
+- **Morning Gifts & Interaction Rewards**: Positive interactions (feeding, sitting, calming down) accumulate hidden merits. Build up enough merits, and your dog has a chance to wake you up with a random gift in its mouth after you sleep!
+- **Accidents Forgiven**: By default, accidentally hitting your dog removes its merits. Enable `bd_demerit_accidental_attacks` so only sneaking while attacking resets progress.
+- **Sanitary Refactors**: Reduced `WolfMixin` footprint and updated NBT data structures to adhere to strict Fabric standards.
+
+---
+
+## 🌟 Recent Highlights (v4.6.15 - v4.9.8)
 
 - **Custom Advancements**: A full set of 12 custom husbandry achievements to reward personality taming, guard patrol training, breeding lineage recovery, inbred runt curing, litter sizes, and ground feeding.
 - **P2P Multiplayer Compatibility**: In theory, singleplayer hosts opening their world to multiplayer using the new Minecraft 26.2 P2P friends system will work seamlessly with unmodded vanilla clients (joining players do not need to install the mod).

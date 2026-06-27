@@ -75,3 +75,4 @@ Breeding wolves no longer guarantees exactly one puppy. The **Litter System** ro
 
 * **Paper Adoption**: Sneak + Right-Clicking a tamed wolf with Paper sets it into a pending adoption state with pink particle indicators. Any other player can then Right-Click to claim ownership of the dog.
 * **Calm Down**: Sneak + Right-Clicking a wolf with an empty hand forces it to sit, immediately purging its anger state and clearing its current attack target.
+* **Gifting & Rewards**: Interact positively with your dog (feeding, sitting, or calming down) to build up its merit points over time. Once the threshold is met, the dog may wake you up with a gift the next time you sleep in a bed! Accidental attacks will reset their merit progress unless `bd_demerit_accidental_attacks` is turned off.

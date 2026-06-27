@@ -1,4 +1,19 @@
 // Verified against: Wolf.java (26.2+)
+/*
+ * Copyright (c) 2026 Vanilla Outsider
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.minecraft.server.level.ServerLevel;
@@ -250,6 +265,20 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
 
     @Inject(method = "actuallyHurt", at = @At("HEAD"), cancellable = true)
     private void betterdogs$onActuallyHurt(ServerLevel level, DamageSource source, float amount, CallbackInfo ci) {
+        Wolf wolf = (Wolf) (Object) this;
+        if (source.getEntity() instanceof net.minecraft.world.entity.player.Player player && wolf.isTame() && wolf.isOwnedBy(player)) {
+            boolean demeritAccidental = net.dasik.social.api.gamerule.DynamicGameRuleManager.getBoolean(wolf.level(), net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_DEMERIT_ACCIDENTAL_ATTACKS);
+            if (player.isCrouching()) {
+                WolfPersistentData.setPersistedFeedCount(wolf, 0);
+                WolfDebugLogger.log(wolf, "Interaction", "Owner intentionally attacked dog (crouching), resetting interaction/feed count to 0");
+            } else if (demeritAccidental) {
+                int current = WolfPersistentData.getPersistedFeedCount(wolf);
+                int newValue = Math.max(0, current - 1);
+                WolfPersistentData.setPersistedFeedCount(wolf, newValue);
+                WolfDebugLogger.log(wolf, "Interaction", "Owner accidentally attacked dog, reducing interaction/feed count by 1 (Current: " + newValue + ")");
+            }
+        }
+
         betterdogs$setLastDamageTime(this.tickCount);
         WolfDebugLogger.log((Wolf)(Object)this, "Hurt", "Source: " + source.getMsgId() + ", Amount: " + amount);
 
@@ -292,20 +321,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
 
     @Inject(method = "getAmbientSound", at = @At("HEAD"), cancellable = true)
     private void betterdogs$onGetAmbientSound(CallbackInfoReturnable<net.minecraft.sounds.SoundEvent> cir) {
-        Wolf wolf = (Wolf) (Object) this;
-        if (wolf.isAngry()) {
-            cir.setReturnValue(((WolfAccessor) this).betterdogs$invokeGetSoundSet().growlSound().value());
-            return;
-        }
-        if (this.random.nextInt(3) == 0) {
-            if (wolf.isTame() && wolf.getHealth() < wolf.getMaxHealth() * 0.5f) {
-                cir.setReturnValue(((WolfAccessor) this).betterdogs$invokeGetSoundSet().whineSound().value());
-                return;
-            }
-            cir.setReturnValue(((WolfAccessor) this).betterdogs$invokeGetSoundSet().pantSound().value());
-            return;
-        }
-        cir.setReturnValue(((WolfAccessor) this).betterdogs$invokeGetSoundSet().ambientSound().value());
+        net.vanillaoutsider.betterdogs.util.WolfTickHelper.handleAmbientSound((Wolf) (Object) this, ((WolfAccessor) this).betterdogs$invokeGetSoundSet(), cir);
     }
 
     @Override

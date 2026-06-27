@@ -24,6 +24,15 @@ To prevent multiple wolves from colliding and overlapping while moving, pack spr
 
 ---
 
+## ⚔️ True Pack Hunting Tactics (Flanking)
+
+Unlike vanilla wolves that path directly at their targets in a single-file line, Better Dogs implements advanced pack hunting tactics:
+* **Dynamic Flanking**: The pack leader will attack the target directly, while the followers intelligently spread out and attempt to attack the target from the sides or behind.
+* **Encirclement**: By spacing out at varying angles around the enemy, the pack can effectively surround their prey, minimizing the chance of being hit by a single sweeping attack or splash potion.
+* **Configurable**: This advanced combat AI can be fully controlled via the `bd_pack_flanking_tactics` GameRule.
+
+---
+
 ## ⚔️ The Territorial Probability Matrix
 
 When two wild packs cross paths, the mod runs a complex, personality-driven math matrix based on the leaders' personalities to resolve the border dispute:

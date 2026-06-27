@@ -10,6 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
+import net.vanillaoutsider.betterdogs.WolfPersistentData;
 import net.vanillaoutsider.betterdogs.util.WolfDebugLogger;
 import net.vanillaoutsider.betterdogs.util.WolfParticleHandler;
 import net.vanillaoutsider.betterdogs.util.WolfStatManager;
@@ -26,6 +27,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  */
 @Mixin(Wolf.class)
 public abstract class WolfInteractMixin extends TamableAnimal {
+
+    @Unique
+    private long betterdogs$lastInteractionTime = -100L;
 
     protected WolfInteractMixin() {
         super(null, null);
@@ -87,5 +91,32 @@ public abstract class WolfInteractMixin extends TamableAnimal {
     @Unique
     private void betterdogs$playTameParticles(WolfPersonality personality) {
         WolfParticleHandler.playTameParticles((Wolf) (Object) this, personality);
+    }
+
+    @Inject(method = "mobInteract", at = @At("RETURN"))
+    private void betterdogs$onMobInteractReturn(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
+        Wolf wolf = (Wolf) (Object) this;
+        ItemStack itemStack = player.getItemInHand(hand);
+        if (!wolf.level().isClientSide() && wolf.isTame() && wolf.isOwnedBy(player)) {
+            InteractionResult result = cir.getReturnValue();
+            if (result != null && result.consumesAction()) {
+                boolean isFeeding = result instanceof InteractionResult.Success success
+                        && success.wasItemInteraction()
+                        && wolf.isFood(itemStack);
+
+                long currentTime = wolf.level().getGameTime();
+                int cooldownTicks = net.dasik.social.api.gamerule.DynamicGameRuleManager.getInt(wolf.level(), net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_GIFT_INTERACTION_COOLDOWN);
+                boolean cooldownPassed = (currentTime - this.betterdogs$lastInteractionTime) >= cooldownTicks;
+
+                if (isFeeding || cooldownPassed) {
+                    if (!isFeeding) {
+                        this.betterdogs$lastInteractionTime = currentTime;
+                    }
+                    int currentFeed = WolfPersistentData.getPersistedFeedCount(wolf);
+                    WolfPersistentData.setPersistedFeedCount(wolf, Math.min(currentFeed + 1, 10000));
+                    WolfDebugLogger.log(wolf, "Interaction", "Interacted with dog, count is now " + (currentFeed + 1) + " (isFeeding: " + isFeeding + ")");
+                }
+            }
+        }
     }
 }

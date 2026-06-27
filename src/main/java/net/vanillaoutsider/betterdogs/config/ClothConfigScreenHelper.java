@@ -59,6 +59,16 @@ public class ClothConfigScreenHelper {
                 .setSaveConsumer(val -> config.enableDogsEatRawGroundFood = val)
                 .build());
 
+        general.addEntry(entryBuilder.startBooleanToggle(Component.translatable("config.betterdogs.creeperAwareness"), config.creeperAwareness)
+                .setDefaultValue(true)
+                .setSaveConsumer(val -> config.creeperAwareness = val)
+                .build());
+
+        general.addEntry(entryBuilder.startBooleanToggle(Component.translatable("config.betterdogs.enablePackFlankingTactics"), config.enablePackFlankingTactics)
+                .setDefaultValue(true)
+                .setSaveConsumer(val -> config.enablePackFlankingTactics = val)
+                .build());
+
         general.addEntry(entryBuilder.startBooleanToggle(Component.translatable("config.betterdogs.enableDogsEatCookedGroundFood"), config.enableDogsEatCookedGroundFood)
                 .setDefaultValue(true)
                 .setSaveConsumer(val -> config.enableDogsEatCookedGroundFood = val)
@@ -370,6 +380,11 @@ public class ClothConfigScreenHelper {
         gifts.addEntry(entryBuilder.startFloatField(Component.translatable("config.betterdogs.giftTriggerChance"), config.giftTriggerChance)
                 .setDefaultValue(0.01f)
                 .setSaveConsumer(val -> config.giftTriggerChance = val)
+                .build());
+
+        gifts.addEntry(entryBuilder.startBooleanToggle(Component.translatable("config.betterdogs.demeritAccidentalAttacks"), config.demeritAccidentalAttacks)
+                .setDefaultValue(true)
+                .setSaveConsumer(val -> config.demeritAccidentalAttacks = val)
                 .build());
 
         gifts.addEntry(entryBuilder.startIntField(Component.translatable("config.betterdogs.aggressiveGiftBone"), config.aggressiveGiftBone)

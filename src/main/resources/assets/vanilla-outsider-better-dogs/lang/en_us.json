@@ -212,6 +212,8 @@
     "config.betterdogs.pacifistGiftSeeds": "Pacifist Gift: Seeds (%)",
     "config.betterdogs.pacifistGiftFlower": "Pacifist Gift: Flower (%)",
     "config.betterdogs.pacifistGiftMushroom": "Pacifist Gift: Mushroom (%)",
+    "config.betterdogs.giftInteractionCooldown": "Gift Interaction Cooldown (Ticks)",
+    "config.betterdogs.demeritAccidentalAttacks": "Demerit on Accidental Attacks",
     
     "text.betterdogs.guard_activated": "Guard Mode Activated for %s at %d, %d, %d",
     "text.betterdogs.guard_deactivated": "Guard Mode Deactivated for %s. Following owner.",
@@ -282,5 +284,14 @@
     "text.betterdogs.dog_dismounted": "%s hopped out of the vehicle.",
     "text.betterdogs.dog_commanded_to_board": "Commanded %s to board %s.",
     "text.betterdogs.dog_too_far": "%s is too far away to board.",
-    "text.betterdogs.seat_occupied": "That seat is already occupied."
+    "text.betterdogs.seat_occupied": "That seat is already occupied.",
+    "gamerule.vanilla-outsider-better-dogs.bd_gift_feed_threshold": "Gift Interaction Threshold",
+    "gamerule.vanilla-outsider-better-dogs.bd_gift_feed_threshold.description": "The number of interactions (feeding, sitting, calming down) required before a tamed wolf brings morning gifts. Default: 10.",
+    "gamerule.vanilla-outsider-better-dogs.bd_gift_interaction_cooldown": "Gift Interaction Cooldown",
+    "gamerule.vanilla-outsider-better-dogs.bd_gift_interaction_cooldown.description": "The cooldown in ticks (20 ticks = 1 second) required between free positive interactions (sitting, calming down) to count towards the gift threshold. Default: 100.",
+    "gamerule.vanilla-outsider-better-dogs.bd_demerit_accidental_attacks": "Demerit on Accidental Attacks",
+    "gamerule.vanilla-outsider-better-dogs.bd_demerit_accidental_attacks.description": "If true, accidentally attacking your dog will reset its gifting merits. If false, only sneaking and attacking will reset the merits. Default: true.",
+    "text.betterdogs.gift_received": "%s brought you a gift!",
+    "gamerule.vanilla-outsider-better-dogs.bd_pack_flanking_tactics": "Enable Pack Flanking Tactics",
+    "gamerule.vanilla-outsider-better-dogs.bd_pack_flanking_tactics.description": "If true, wolves will dynamically surround their targets instead of attacking in a straight line. Default: true."
 }

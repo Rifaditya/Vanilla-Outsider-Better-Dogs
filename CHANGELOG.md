@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [4.10.0-26.2] - 2026-06-26
+### Added
+- **True Pack Hunting Tactics (Flanking)**: When a pack of wolves engages a target, only the leader will attack directly. The follower wolves will now perform flanking maneuvers, dynamically pathfinding around the target to strike from the sides or behind. This makes packs significantly deadlier and more visually coordinated without causing server strain.
+  - Can be toggled off via the `bd_pack_flanking_tactics` GameRule (defaults to `true`).
+
 ## [4.9.8-26.2] - 2026-06-26
 ### Fixed
 - Fixed an issue where adopted wolves would retain their old pack leader UUID, guard mode status, and old grudges after being claimed by a new owner.
