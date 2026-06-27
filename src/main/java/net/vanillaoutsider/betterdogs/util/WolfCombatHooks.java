@@ -11,6 +11,9 @@ import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.vanillaoutsider.betterdogs.scheduler.events.RetaliationDogEvent;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.vanillaoutsider.betterdogs.WolfPersistentData;
+import net.minecraft.world.entity.TamableAnimal;
 
 public class WolfCombatHooks {
 
@@ -174,5 +177,23 @@ public class WolfCombatHooks {
         }
 
         return null; // Pass to super
+    }
+
+    public static void onDeath(Wolf wolf, DamageSource source) {
+        if (!wolf.isTame()) return;
+        if (!DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_NEMESIS_SYSTEM)) return;
+        
+        if (source.getEntity() instanceof LivingEntity attacker && !(attacker instanceof Player) && !(attacker instanceof TamableAnimal)) {
+            String type = BuiltInRegistries.ENTITY_TYPE.getKey(attacker.getType()).toString();
+            int durationDays = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_NEMESIS_DURATION_DAYS);
+            long expiry = wolf.level().getGameTime() + (durationDays * 24000L);
+            
+            java.util.List<Wolf> nearbyWolves = wolf.level().getEntitiesOfClass(Wolf.class, wolf.getBoundingBox().inflate(32.0D), 
+                w -> w.isTame() && wolf.getOwner() != null && w.isOwnedBy(wolf.getOwner()));
+            
+            for (Wolf w : nearbyWolves) {
+                WolfPersistentData.setPersistedNemesis(w, type, expiry);
+            }
+        }
     }
 }

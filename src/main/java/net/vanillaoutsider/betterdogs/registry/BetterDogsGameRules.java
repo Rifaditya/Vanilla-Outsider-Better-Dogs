@@ -132,6 +132,10 @@ public class BetterDogsGameRules {
 	// --- Commands / Sitting ---
 	public static GameRule<Boolean> BD_ALLOW_UNRESTRICTED_RIDING;
 
+	// --- Nemesis System ---
+	public static GameRule<Boolean> BD_NEMESIS_SYSTEM;
+	public static GameRule<Integer> BD_NEMESIS_DURATION_DAYS;
+
 	public static void register() {
 		BetterDogsConfig config = BetterDogsConfig.get();
 
@@ -306,6 +310,10 @@ public class BetterDogsGameRules {
 				config.getWildPackSpreadMax());
 
 		BD_ALLOW_UNRESTRICTED_RIDING = registerBoolean("vanilla-outsider-better-dogs:bd_allow_unrestricted_dog_riding", BETTER_DOGS, false);
+
+		// Nemesis System
+		BD_NEMESIS_SYSTEM = registerBoolean("vanilla-outsider-better-dogs:bd_nemesis_system", BETTER_DOGS, true);
+		BD_NEMESIS_DURATION_DAYS = registerInteger("vanilla-outsider-better-dogs:bd_nemesis_duration_days", BETTER_DOGS, 3);
 	}
 
         // Internal Registration Helpers

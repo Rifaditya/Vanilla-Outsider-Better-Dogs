@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.12.0] - Minecraft 26.1.2
+
+### Added
+- Backported the Nemesis Grudge System from 26.2 (v4.11.0).
+- If a non-player entity kills a tamed wolf, all nearby tamed wolves of the same owner gain a permanent grudge against that entity type.
+- When attacking their nemesis, wolves gain Strength and Speed buffs and emit angry particles.
+- The grudge expires after 3 in-game days by default.
+- New GameRules: `bd_nemesis_system` (default: true) and `bd_nemesis_duration_days` (default: 3).
+
+# Changelog
+
 ## [Unreleased]
 
 ## [3.11.0-26.1.2] - 2026-06-26
@@ -616,3 +627,4 @@ The **"Wolf Litters"** update. Tamed wolves can now have multiple puppies in one
 - Detailed descriptions for all gamerules, including the previously missing `bd_howl_chance`.
 
 ---
+

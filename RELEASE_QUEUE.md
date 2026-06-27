@@ -1,3 +1,4 @@
+- [x] 3.12.0: Nemesis Grudge System backported from 26.2.
 # 📋 Vanilla Outsider: Better Dogs Release Queue & Backlog
 
 This file tracks which built versions (from `/Archive/builds/`) have been manually uploaded to Modrinth/CurseForge.
@@ -87,3 +88,4 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 - [ ] **`3.10.12-26.1.2`** (2026-06-12) - - **Guard Alarm Point & Freeze**: Pacifist dogs will now stand up, freeze in place, and look directly at the closest detected hostile mob during sentinel alarms.
 - [ ] **`3.10.13-26.1.2`** (2026-06-21) - - **Tamed Wolf Wander Restriction**: Replaced the owner-unaware vanilla wandering behavior (`WaterAvoidingRandomStrollGoal`) with a personality-based `TamedWanderNearOwnerGoal`. Wolves now stay closer to their owner: Aggressive (max 14 blocks), Normal (max 8 blocks), and Pacifist (max 4 blocks), preventing them from drifting too far away.
 - [ ] **`3.10.14-26.1.2`** (2026-06-21) - - **Wolf Spawn Multiplier**: Introduced a configuration setting and game rule `bd_wolf_spawn_multiplier_percent` (default: 1.5x) to dynamically adjust wolf spawning weights in biome settings, making them spawn more commonly.
+

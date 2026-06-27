@@ -21,6 +21,7 @@ import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.minecraft.world.item.Items;
 
 import java.util.List;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 /**
  * Helper utility to manage tick-level computations and particle spawning
@@ -119,5 +120,28 @@ public class WolfTickHelper {
             return;
         }
         cir.setReturnValue(soundSet.ambientSound().value());
+    }
+
+    public static void tickNemesisSystem(Wolf wolf, ServerLevel serverLevel) {
+        if (!wolf.isTame()) return;
+        if (!DynamicGameRuleManager.getBoolean(serverLevel, BetterDogsGameRules.BD_NEMESIS_SYSTEM)) return;
+        
+        String nemesis = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedNemesisType(wolf);
+        if (nemesis.isEmpty()) return;
+        
+        long expiry = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedNemesisExpiry(wolf);
+        if (serverLevel.getGameTime() > expiry) {
+            net.vanillaoutsider.betterdogs.WolfPersistentData.setPersistedNemesis(wolf, "", 0L);
+            return;
+        }
+        
+        if (wolf.getTarget() != null) {
+            String targetType = BuiltInRegistries.ENTITY_TYPE.getKey(wolf.getTarget().getType()).toString();
+            if (targetType.equals(nemesis)) {
+                wolf.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 40, 0, true, false));
+                wolf.addEffect(new MobEffectInstance(MobEffects.SPEED, 40, 0, true, false));
+                serverLevel.sendParticles(ParticleTypes.ANGRY_VILLAGER, wolf.getRandomX(0.5), wolf.getRandomY() + 0.5, wolf.getRandomZ(0.5), 1, 0, 0.05, 0, 0.0);
+            }
+        }
     }
 }
