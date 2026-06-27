@@ -258,9 +258,20 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
                     net.vanillaoutsider.betterdogs.util.WolfTickHelper.tickRuntParticles(wolf, serverLevel);
                 }
             }
+
+            if (this.tickCount % 20 == 0) {
+                if (wolf.level() instanceof ServerLevel serverLevel) {
+                    net.vanillaoutsider.betterdogs.util.WolfTickHelper.tickNemesisSystem(wolf, serverLevel);
+                }
+            }
         }
 
         this.betterdogs$healTimer = net.vanillaoutsider.betterdogs.util.WolfTickHelper.tickPassiveHealing(wolf, this, this.betterdogs$healTimer);
+    }
+
+    @Inject(method = "die", at = @At("HEAD"))
+    private void betterdogs$onDie(DamageSource source, CallbackInfo ci) {
+        WolfCombatHooks.onDeath((Wolf) (Object) this, source);
     }
 
     @Inject(method = "actuallyHurt", at = @At("HEAD"), cancellable = true)

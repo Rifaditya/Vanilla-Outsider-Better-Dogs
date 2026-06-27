@@ -85,6 +85,7 @@ public abstract class WolfAIMixin extends TamableAnimal {
         this.targetSelector.addGoal(2, new AggressiveTargetGoal(wolf));
         this.targetSelector.addGoal(2, new PacifistRevengeGoal(wolf));
 
+        this.targetSelector.addGoal(1, new net.vanillaoutsider.betterdogs.ai.WolfNemesisTargetGoal(wolf));
         this.targetSelector.addGoal(1, new BloodFeudGoal(wolf));
         this.goalSelector.addGoal(0, new BabyBiteBackGoal(wolf));
         this.goalSelector.addGoal(4, new AdultCorrectionGoal(wolf));

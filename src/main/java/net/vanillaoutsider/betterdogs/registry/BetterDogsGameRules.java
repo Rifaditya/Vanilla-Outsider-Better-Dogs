@@ -37,6 +37,8 @@ public class BetterDogsGameRules {
 	public static GameRule<Boolean> BD_ENABLE_REFUSE_GROUND_FOOD;
 	public static GameRule<Integer> BD_REFUSE_GROUND_FOOD_CHANCE;
 	public static GameRule<Boolean> BD_DEBUGGING;
+	public static GameRule<Boolean> BD_NEMESIS_SYSTEM;
+	public static GameRule<Integer> BD_NEMESIS_DURATION_DAYS;
 
 	// --- Player ---
 	public static GameRule<Boolean> BD_FRIENDLY_FIRE;
@@ -160,6 +162,8 @@ public class BetterDogsGameRules {
 		BD_PACK_FLANKING_TACTICS = registerBoolean("vanilla-outsider-better-dogs:bd_pack_flanking_tactics",
 				BETTER_DOGS, BetterDogsConfig.get().enablePackFlankingTactics);
 		BD_DEBUGGING = registerBoolean("vanilla-outsider-better-dogs:bd_debugging", BETTER_DOGS, false);
+		BD_NEMESIS_SYSTEM = registerBoolean("vanilla-outsider-better-dogs:bd_nemesis_system", BETTER_DOGS, true);
+		BD_NEMESIS_DURATION_DAYS = registerInteger("vanilla-outsider-better-dogs:bd_nemesis_duration_days", BETTER_DOGS, 3);
 
 
 

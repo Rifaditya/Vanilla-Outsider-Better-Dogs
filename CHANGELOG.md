@@ -2,6 +2,15 @@
 
 ## [Unreleased]
 
+## [4.11.0-26.2] - 2026-06-27
+### Added
+- **Nemesis (Grudge) System**: When a tamed wolf dies to a hostile mob (LivingEntity), all other tamed wolves of the same owner within a 32-block radius form a 'Nemesis' grudge against that mob type.
+  - While holding a grudge, wolves will actively seek out and attack any mob of the nemesis type.
+  - When attacking their nemesis, wolves gain Strength and Speed buffs and emit angry particles.
+  - Grudges last for a configurable duration (default: 3 in-game days).
+  - Can be toggled via GameRule `bd_nemesis_system` (default: true).
+  - Duration is configurable via GameRule `bd_nemesis_duration_days` (default: 3).
+
 ## [4.10.0-26.2] - 2026-06-26
 ### Added
 - **True Pack Hunting Tactics (Flanking)**: When a pack of wolves engages a target, only the leader will attack directly. The follower wolves will now perform flanking maneuvers, dynamically pathfinding around the target to strike from the sides or behind. This makes packs significantly deadlier and more visually coordinated without causing server strain.

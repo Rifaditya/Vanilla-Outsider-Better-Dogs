@@ -1,5 +1,14 @@
 # Better Dogs - Historical Changelog
 
+## [4.11.0-26.2] - 2026-06-27
+### Summary
+The **"Nemesis (Grudge) System"** update. Implements a grudge system where tamed wolves will actively seek revenge on hostile mobs that kill their pack-mates.
+- **Grudge Formation**: Injected `die` inside `WolfMixin` to trigger `WolfCombatHooks.onDeath`. When a tamed wolf is killed by a hostile mob (`LivingEntity`), it broadcasts the nemesis mob type to all tamed wolves with the same owner within a 32-block radius.
+- **Persistent Storage**: Utilizes the `WolfPersistentData` attachment to store `nemesisType` (String) and `nemesisExpiry` (Long), allowing the grudge to persist across reloads.
+- **AI Targeting**: Added `WolfNemesisTargetGoal` (priority 1 in `targetSelector`) that forces wolves with an active grudge to lock onto targets of the nemesis type.
+- **Combat Buffs**: Added `tickNemesisSystem` in `WolfTickHelper` (called from `WolfMixin` tick) which applies `STRENGTH` and `SPEED` buffs and emits angry particles while the wolf is actively attacking its nemesis.
+- **Configuration**: Implemented GameRules `bd_nemesis_system` (boolean, default true) and `bd_nemesis_duration_days` (int, default 3) to configure the system.
+
 ## [4.10.1-26.2] - 2026-06-26
 ### Fixed
 - Fixed Code Auditor violations (spacing, unused imports, citations, GPLv3 headers, God Mixin size limit).

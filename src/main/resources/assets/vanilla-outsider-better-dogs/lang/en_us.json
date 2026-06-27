@@ -293,5 +293,9 @@
     "gamerule.vanilla-outsider-better-dogs.bd_demerit_accidental_attacks.description": "If true, accidentally attacking your dog will reset its gifting merits. If false, only sneaking and attacking will reset the merits. Default: true.",
     "text.betterdogs.gift_received": "%s brought you a gift!",
     "gamerule.vanilla-outsider-better-dogs.bd_pack_flanking_tactics": "Enable Pack Flanking Tactics",
-    "gamerule.vanilla-outsider-better-dogs.bd_pack_flanking_tactics.description": "If true, wolves will dynamically surround their targets instead of attacking in a straight line. Default: true."
+    "gamerule.vanilla-outsider-better-dogs.bd_pack_flanking_tactics.description": "If true, wolves will dynamically surround their targets instead of attacking in a straight line. Default: true.",
+    "gamerule.vanilla-outsider-better-dogs.bd_nemesis_system": "Enable Nemesis Grudge System",
+    "gamerule.vanilla-outsider-better-dogs.bd_nemesis_system.description": "If true, tamed wolves will hold a temporary grudge against specific mob types that kill their pack mates. Default: true.",
+    "gamerule.vanilla-outsider-better-dogs.bd_nemesis_duration_days": "Nemesis Grudge Duration (Days)",
+    "gamerule.vanilla-outsider-better-dogs.bd_nemesis_duration_days.description": "The number of in-game days a pack will hold a grudge against a mob type before forgiving them. Default: 3."
 }

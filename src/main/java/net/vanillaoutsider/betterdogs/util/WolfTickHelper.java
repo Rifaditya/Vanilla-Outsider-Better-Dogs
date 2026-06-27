@@ -120,4 +120,32 @@ public class WolfTickHelper {
         }
         cir.setReturnValue(soundSet.ambientSound().value());
     }
+
+    public static void tickNemesisSystem(Wolf wolf, ServerLevel serverLevel) {
+        String nemesisType = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedNemesisType(wolf);
+        if (nemesisType.isEmpty()) return;
+
+        long expiry = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedNemesisExpiry(wolf);
+        if (serverLevel.getGameTime() > expiry) {
+            net.vanillaoutsider.betterdogs.WolfPersistentData.clearPersistedNemesis(wolf);
+            net.vanillaoutsider.betterdogs.util.WolfDebugLogger.log(wolf, "Nemesis", "Grudge against " + nemesisType + " has expired.");
+            return;
+        }
+
+        // Buffs when attacking the nemesis
+        net.minecraft.world.entity.LivingEntity target = wolf.getTarget();
+        if (target != null && target.isAlive()) {
+            String targetType = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(target.getType()).toString();
+            if (nemesisType.equals(targetType)) {
+                wolf.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 40, 0, true, false));
+                wolf.addEffect(new MobEffectInstance(MobEffects.SPEED, 40, 0, true, false));
+                
+                // Spawn angry particles
+                double px = wolf.getRandomX(0.5);
+                double py = wolf.getRandomY() + 0.5;
+                double pz = wolf.getRandomZ(0.5);
+                serverLevel.sendParticles(ParticleTypes.ANGRY_VILLAGER, px, py, pz, 1, 0.2, 0.2, 0.2, 0.0);
+            }
+        }
+    }
 }
