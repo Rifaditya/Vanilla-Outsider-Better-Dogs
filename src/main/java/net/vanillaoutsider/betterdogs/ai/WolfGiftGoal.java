@@ -1,4 +1,3 @@
-// Verified against: WolfGiftGoal.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.ai;
 
 import java.util.EnumSet;
@@ -12,6 +11,12 @@ import net.minecraft.world.level.Level;
 import net.vanillaoutsider.betterdogs.WolfPersistentData;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
+import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
+import net.vanillaoutsider.betterdogs.mixin.WolfAccessor;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.sounds.SoundEvent;
 
 public class WolfGiftGoal extends Goal {
 
@@ -28,18 +33,55 @@ public class WolfGiftGoal extends Goal {
     @Override
     public boolean canUse() {
         if (!wolf.isTame() || !WolfPersistentData.hasPersistedPersonality(wolf)) return false;
+
+        int threshold = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_GIFT_FEED_THRESHOLD);
+        int currentMerits = WolfPersistentData.getPersistedFeedCount(wolf);
+        if (currentMerits < threshold) return false;
+
         if (cooldown > 0) {
             cooldown--;
             return false;
         }
-        return wolf.getRandom().nextFloat() < BetterDogsConfig.get().giftTriggerChance;
+
+        float baseChance = BetterDogsConfig.get().giftTriggerChance;
+        float maxMerits = 10000f;
+        float boundedMerits = Math.max((float) threshold, Math.min((float) currentMerits, maxMerits));
+        
+        float progress = 0f;
+        if (maxMerits > threshold) {
+            progress = (boundedMerits - threshold) / (maxMerits - threshold);
+        }
+        
+        float finalChance = baseChance + (progress * (1.0f - baseChance));
+
+        if (wolf.getRandom().nextFloat() < finalChance) {
+            return true;
+        } else {
+            resetCooldown();
+            return false;
+        }
     }
 
     @Override
     public void start() {
-        BetterDogsConfig config = BetterDogsConfig.get();
-        int range = config.giftCooldownMax - config.giftCooldownMin;
-        cooldown = config.giftCooldownMin + (range > 0 ? wolf.getRandom().nextInt(range) : 0);
+        resetCooldown();
+
+        int threshold = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_GIFT_FEED_THRESHOLD);
+        int currentFeeds = WolfPersistentData.getPersistedFeedCount(wolf);
+        WolfPersistentData.setPersistedFeedCount(wolf, Math.max(0, currentFeeds - threshold));
+
+        try {
+            SoundEvent whineSound = ((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().whineSound().value();
+            wolf.playSound(whineSound, 1.0f, 1.0f);
+        } catch (Exception e) {
+            // Fallback just in case
+        }
+
+        LivingEntity owner = wolf.getOwner();
+        if (owner instanceof Player player) {
+            player.sendOverlayMessage(net.minecraft.network.chat.Component.translatable("text.betterdogs.gift_received", wolf.getName()));
+        }
+
         WolfPersonality personality = WolfPersistentData.getPersistedPersonality(wolf);
         switch (personality) {
             case AGGRESSIVE -> attemptAggressiveGift();
@@ -76,5 +118,11 @@ public class WolfGiftGoal extends Goal {
         ItemEntity itemEntity = new ItemEntity(level, wolf.getX(), wolf.getY() + 0.5, wolf.getZ(), stack);
         itemEntity.setDefaultPickUpDelay();
         level.addFreshEntity(itemEntity);
+    }
+
+    private void resetCooldown() {
+        BetterDogsConfig config = BetterDogsConfig.get();
+        int range = config.giftCooldownMax - config.giftCooldownMin;
+        cooldown = config.giftCooldownMin + (range > 0 ? wolf.getRandom().nextInt(range) : 0);
     }
 }

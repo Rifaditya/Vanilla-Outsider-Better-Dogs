@@ -15,6 +15,9 @@ Here is a microscopic breakdown of the key GameRules supported by the mod, categ
 | `bd_calm_down` | Boolean | `true` | Enables clearing a wolf's anger and target states via Shift+Right-Click with an empty hand. |
 | `bd_paper_adoption` | Boolean | `true` | Allows players to put tamed dogs into a pending adoption state using Paper. |
 | `bd_friendly_fire_protection` | Boolean | `true` | Blocks sweeping edge attack damage from the owner to their tamed wolves. |
+| `bd_gift_feed_threshold` | Integer | `10` | The number of interactions (feeding, sitting, calming down) required before a tamed wolf brings morning gifts. |
+| `bd_gift_interaction_cooldown` | Integer | `100` | The cooldown in ticks (20 ticks = 1 second) required between free positive interactions to count towards the gift threshold. |
+| `bd_demerit_accidental_attacks` | Boolean | `true` | If true, accidentally attacking your dog will reset its gifting merits. If false, only sneaking and attacking resets it. |
 
 ### 2. Genetics & Breeding Settings
 | GameRule | Type | Default | Description |
@@ -31,6 +34,7 @@ Here is a microscopic breakdown of the key GameRules supported by the mod, categ
 | `bd_tamed_pack_spread_max` | Double | `2.5` | The absolute maximum spacing bounds (in blocks) for tamed pack followers. |
 | `bd_wild_pack_spread_multiplier` | Double | `0.75` | The scaling factor (multiplier) applied to wild packs during boids spacing calculations. |
 | `bd_wild_pack_spread_max` | Double | `3.5` | The absolute maximum spacing bounds (in blocks) for wild pack followers. |
+| `bd_pack_flanking_tactics` | Boolean | `true` | Enables true pack hunting AI, allowing followers to dynamically flank and surround enemies instead of attacking in a straight line. |
 
 ### 4. Domestic Guard Mode Settings
 | GameRule | Type | Default | Description |

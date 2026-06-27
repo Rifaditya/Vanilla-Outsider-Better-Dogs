@@ -1,5 +1,15 @@
 # Better Dogs - Historical Changelog
 
+## [3.11.1-26.1.2] - 2026-06-26
+### Fixed
+- Fixed Code Auditor violations (spacing, unused imports, citations, GPLv3 headers, God Mixin size limit).
+
+## [3.11.0-26.1.2] - 2026-06-26
+### Summary
+The **"True Pack Hunting Tactics (Flanking)"** patch. Revolutionizes wolf pack combat by implementing dynamic flanking maneuvers for followers.
+- **Flanking Tactics**: When a pack engages a target, only the leader will attack directly. The follower wolves will perform flanking maneuvers, dynamically pathfinding around the target to strike from the sides or behind. This makes packs significantly deadlier and more visually coordinated without causing server strain.
+- **Flanking GameRule**: Added `bd_pack_flanking_tactics` (default `true`) to toggle this behavior.
+
 ## [3.10.15-26.1.2] - 2026-06-26
 ### Fixed
 - Fixed an issue where adopted wolves would retain their old pack leader UUID, guard mode status, and old grudges after being claimed by a new owner.

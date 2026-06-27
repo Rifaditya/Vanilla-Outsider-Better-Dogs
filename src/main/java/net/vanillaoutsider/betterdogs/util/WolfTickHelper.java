@@ -26,6 +26,8 @@ import java.util.List;
  * Helper utility to manage tick-level computations and particle spawning
  * for Wolf entities, keeping WolfMixin size within guidelines.
  */
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
 public class WolfTickHelper {
 
     public static void tickGuardMode(Wolf wolf, WolfExtensions ext, ServerLevel serverLevel) {
@@ -101,5 +103,21 @@ public class WolfTickHelper {
             double pz = wolf.getRandomZ(0.4);
             serverLevel.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, Items.ROTTEN_FLESH), px, py, pz, 1, 0.01, 0.01, 0.01, 0.01);
         }
+    }
+
+    public static void handleAmbientSound(Wolf wolf, net.minecraft.world.entity.animal.wolf.WolfSoundVariant.WolfSoundSet soundSet, CallbackInfoReturnable<net.minecraft.sounds.SoundEvent> cir) {
+        if (wolf.isAngry()) {
+            cir.setReturnValue(soundSet.growlSound().value());
+            return;
+        }
+        if (wolf.getRandom().nextInt(3) == 0) {
+            if (wolf.isTame() && wolf.getHealth() < wolf.getMaxHealth() * 0.5f) {
+                cir.setReturnValue(soundSet.whineSound().value());
+                return;
+            }
+            cir.setReturnValue(soundSet.pantSound().value());
+            return;
+        }
+        cir.setReturnValue(soundSet.ambientSound().value());
     }
 }

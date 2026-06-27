@@ -2,6 +2,18 @@
 
 ## [Unreleased]
 
+## [3.11.0-26.1.2] - 2026-06-26
+### Summary
+- **Parity Update to v4.10.0-26.2**: This massive update brings Minecraft 26.1.2 into full feature parity with the latest 26.2 branch! Includes the new Flanking mechanics, Gifting enhancements, and various AI bugfixes.
+
+### Added
+- **True Pack Hunting Tactics (Flanking)**: When a pack of wolves engages a target, only the leader will attack directly. The follower wolves will now perform flanking maneuvers, dynamically pathfinding around the target to strike from the sides or behind. This makes packs significantly deadlier and more visually coordinated without causing server strain.
+  - Can be toggled off via the `bd_pack_flanking_tactics` GameRule (defaults to `true`).
+
+### Changed
+- **Merit-Scaled Gifting Chances**: Rebalanced how gift chances are evaluated to create a true daily chance. The dog's chance to give a gift now scales linearly based on its interaction merits, from the base percentage (default 1%) at the minimum threshold, up to a 100% chance when reaching maximum interaction merits (10,000).
+- **Gifting Threshold Balancing**: Increased the default required interactions for a gift (`bd_gift_feed_threshold`) from `3` to `10`. Increased the maximum hard-limit of accumulated interaction merits from `10` to `10,000`.
+
 ## [3.10.15-26.1.2] - 2026-06-26
 ### Fixed
 - Fixed an issue where adopted wolves would retain their old pack leader UUID, guard mode status, and old grudges after being claimed by a new owner.

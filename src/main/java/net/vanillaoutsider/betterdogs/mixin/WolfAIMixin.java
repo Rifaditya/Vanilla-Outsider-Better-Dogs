@@ -8,6 +8,7 @@ import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Animal;
@@ -38,6 +39,7 @@ import net.vanillaoutsider.betterdogs.ai.WildWolfTerritorialGoal;
 import net.vanillaoutsider.betterdogs.ai.WolfFetchGoal;
 import net.vanillaoutsider.betterdogs.ai.WolfGiftGoal;
 import net.vanillaoutsider.betterdogs.ai.WolfGuardGoal;
+import net.vanillaoutsider.betterdogs.ai.WolfFlankAttackGoal;
 import net.vanillaoutsider.betterdogs.ai.WolfFleeLowHealthGoal;
 import net.vanillaoutsider.betterdogs.ai.WolfStormAnxietyGoal;
 import net.vanillaoutsider.betterdogs.ai.ZoomiesGoal;
@@ -104,16 +106,23 @@ public abstract class WolfAIMixin extends TamableAnimal {
         }
 
         Set<WrappedGoal> followGoalsToRemove = new HashSet<>();
+        Set<WrappedGoal> meleeGoalsToRemove = new HashSet<>();
         for (WrappedGoal goal : this.goalSelector.getAvailableGoals()) {
             if (goal.getGoal() instanceof FollowOwnerGoal) {
                 followGoalsToRemove.add(goal);
+            } else if (goal.getGoal() instanceof MeleeAttackGoal) {
+                meleeGoalsToRemove.add(goal);
             }
         }
         for (WrappedGoal goal : followGoalsToRemove) {
             this.goalSelector.removeGoal(goal.getGoal());
         }
+        for (WrappedGoal goal : meleeGoalsToRemove) {
+            this.goalSelector.removeGoal(goal.getGoal());
+        }
 
         this.goalSelector.addGoal(6, new PersonalityFollowOwnerGoal(wolf, 1.0, false));
+        this.goalSelector.addGoal(5, new WolfFlankAttackGoal(wolf, 1.2D, true));
 
         TargetingConditions.Selector preySelector = (entity, level) -> entity instanceof Sheep
                 || entity instanceof Rabbit || entity instanceof Chicken;

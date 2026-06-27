@@ -7,9 +7,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.flag.FeatureFlagSet;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gamerules.GameRule;
 import net.minecraft.world.level.gamerules.GameRuleCategory;
 import net.minecraft.world.level.gamerules.GameRuleType;
@@ -30,6 +28,7 @@ public class BetterDogsGameRules {
 
 	// --- General ---
 	public static GameRule<Boolean> BD_STORM_ANXIETY;
+	public static GameRule<Boolean> BD_PACK_FLANKING_TACTICS;
 	public static GameRule<Boolean> BD_CLIFF_SAFETY;
 	public static GameRule<Boolean> BD_FLEE_LOW_HEALTH;
 	public static GameRule<Boolean> BD_DOGS_EAT_RAW_FOOD;
@@ -69,6 +68,9 @@ public class BetterDogsGameRules {
 	public static GameRule<Integer> BD_BABY_MISCHIEF_PERMILLE;
 	public static GameRule<Integer> BD_HOWL_CHANCE;
 	public static GameRule<Integer> BD_PACK_SPREAD;
+	public static GameRule<Integer> BD_GIFT_FEED_THRESHOLD;
+	public static GameRule<Integer> BD_GIFT_INTERACTION_COOLDOWN;
+	public static GameRule<Boolean> BD_DEMERIT_ACCIDENTAL_ATTACKS;
 
 	// --- Correction/Retaliation ---
 	public static GameRule<Integer> BD_BLOOD_FEUD_PERCENT;
@@ -137,6 +139,8 @@ public class BetterDogsGameRules {
 
 		BD_STORM_ANXIETY = registerBoolean("vanilla-outsider-better-dogs:bd_storm_anxiety", BETTER_DOGS,
 				config.getEnableStormAnxiety());
+		BD_PACK_FLANKING_TACTICS = registerBoolean("vanilla-outsider-better-dogs:bd_pack_flanking_tactics",
+				BETTER_DOGS, config.getEnablePackFlankingTactics());
 		BD_CLIFF_SAFETY = registerBoolean("vanilla-outsider-better-dogs:bd_cliff_safety", BETTER_DOGS,
 				config.getEnableCliffSafety());
 		BD_FLEE_LOW_HEALTH = registerBoolean("vanilla-outsider-better-dogs:bd_flee_low_health", BETTER_DOGS,
@@ -203,6 +207,9 @@ public class BetterDogsGameRules {
 				(int) (config.getBabyMischiefChance() * 10));
 		BD_HOWL_CHANCE = registerInteger("vanilla-outsider-better-dogs:bd_howl_chance", BETTER_DOGS, 10);
 		BD_PACK_SPREAD = registerInteger("vanilla-outsider-better-dogs:bd_pack_spread", BETTER_DOGS, 20);
+		BD_GIFT_FEED_THRESHOLD = registerInteger("vanilla-outsider-better-dogs:bd_gift_feed_threshold", BETTER_DOGS, config.getGiftFeedThreshold());
+		BD_GIFT_INTERACTION_COOLDOWN = registerInteger("vanilla-outsider-better-dogs:bd_gift_interaction_cooldown", BETTER_DOGS, config.getGiftInteractionCooldown());
+		BD_DEMERIT_ACCIDENTAL_ATTACKS = registerBoolean("vanilla-outsider-better-dogs:bd_demerit_accidental_attacks", BETTER_DOGS, config.getDemeritAccidentalAttacks());
 
 		// Discipline
 		BD_BLOOD_FEUD_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_blood_feud_percent", BETTER_DOGS,

@@ -35,6 +35,10 @@ public class AggressiveTargetGoal extends NearestAttackableTargetGoal<Monster> {
             if (guardPos == null)
                 return false;
 
+            // Ignore targets behind solid blocks/floors (caves)
+            if (!wolf.getSensing().hasLineOfSight(target))
+                return false;
+
             double maxRange = ext.betterdogs$getPersonality() == WolfPersonality.AGGRESSIVE ? 24.0 : 16.0;
             if (target.distanceToSqr(guardPos.getX() + 0.5, guardPos.getY() + 0.5, guardPos.getZ() + 0.5) > maxRange * maxRange)
                 return false;

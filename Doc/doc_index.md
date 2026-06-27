@@ -1,4 +1,4 @@
-# Better Dogs - Documentation Index
+﻿# Better Dogs - Documentation Index
 
 Central navigation hub for all project documentation.
 
@@ -23,3 +23,7 @@ Central navigation hub for all project documentation.
 
 ## 🛡️ Audit & QA
 - [Audit Helper](Audit_Helper_For_Moderators.md): Tool for moderators to verify features.
+
+---
+## 🧭 Navigation
+- [⬆ Back to Collection](../../../../philosophy.md)

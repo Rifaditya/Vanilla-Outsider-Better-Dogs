@@ -41,6 +41,7 @@ public class BetterDogsConfig {
     public boolean enableStormAnxiety = true;
     public boolean enableCliffSafety = true;
     public boolean enableFleeLowHealth = true;
+    public boolean enablePackFlankingTactics = true;
     public int pacifistFleeChance = 100;
     public int normalFleeChance = 50;
     public int aggressiveFleeChance = 10;
@@ -104,6 +105,9 @@ public class BetterDogsConfig {
     public int giftCooldownMin = 12000;
     public int giftCooldownMax = 18000;
     public float giftTriggerChance = 0.01f;
+    public int giftFeedThreshold = 10;
+    public int giftInteractionCooldown = 100;
+    public boolean demeritAccidentalAttacks = true;
 
     // ========== General/Misc expansions ==========
     public float stormAnxietyTriggerChance = 0.01f;
@@ -203,6 +207,7 @@ public class BetterDogsConfig {
     public boolean getEnableStormAnxiety() { return enableStormAnxiety; }
     public boolean getEnableCliffSafety() { return enableCliffSafety; }
     public boolean getEnableFleeLowHealth() { return enableFleeLowHealth; }
+    public boolean getEnablePackFlankingTactics() { return enablePackFlankingTactics; }
     public int getPacifistFleeChance() { return pacifistFleeChance; }
     public int getNormalFleeChance() { return normalFleeChance; }
     public int getAggressiveFleeChance() { return aggressiveFleeChance; }
@@ -298,4 +303,7 @@ public class BetterDogsConfig {
     public int getWildPackSpreadMax() { return wildPackSpreadMax; }
     public String getGuardParticleDensity() { return guardParticleDensity; }
     public double getWolfSpawnMultiplier() { return wolfSpawnMultiplier; }
+    public int getGiftFeedThreshold() { return giftFeedThreshold; }
+    public int getGiftInteractionCooldown() { return giftInteractionCooldown; }
+    public boolean getDemeritAccidentalAttacks() { return demeritAccidentalAttacks; }
 }

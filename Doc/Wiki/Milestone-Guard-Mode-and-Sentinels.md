@@ -43,9 +43,9 @@ The mod projects a 3D forward-pointing cone spanning $60^\circ$ centered around 
 
 ### 2. Configurable Particle Density
 A dedicated, client-side configuration setting `guardParticleDensity` inside the Cloth Config screen scales particle spawn counts to balance aesthetics and performance:
-* **High**: Spawns 12 particles (spaced at $30^\circ$ steps within the $60^\circ$ cone).
-* **Medium** (Default): Spawns 6 particles (spaced at $60^\circ$ steps).
-* **Low**: Spawns 3 particles (spaced at $120^\circ$ steps).
+* **High**: Spawns 12 particles (spaced at $30^\circ$).
+* **Medium** (Default): Spawns 6 particles (spaced at $60^\circ$).
+* **Low**: Spawns 3 particles (spaced at $120^\circ$).
 * **Off**: Disables particles entirely.
 
 ---

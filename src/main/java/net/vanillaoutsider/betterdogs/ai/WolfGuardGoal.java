@@ -13,7 +13,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.mixin.WolfAccessor;
@@ -101,28 +100,16 @@ public class WolfGuardGoal extends Goal {
             alertCooldown--;
         }
 
-        // 3. Pacifist Sentinel Watchdog Actions (Alarm and Grace Buffs)
+        // 3. Pacifist Sentinel Watchdog Actions (Alarm)
         if (personality == WolfPersonality.PACIFIST) {
             if (wolf.tickCount % 20 == 0) {
-                // Watchdog Grace Buff (Regeneration and Resistance to owner/allies within 6 blocks)
-                if (DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_PACIFIST_GUARD_BUFFS)) {
-                    double buffRangeSqr = 36.0; // 6 blocks
-                    Player owner = wolf.getOwner() instanceof Player ? (Player) wolf.getOwner() : null;
-                    if (owner != null && owner.isAlive() && wolf.distanceToSqr(owner) <= buffRangeSqr) {
-                        owner.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 80, 0, true, true));
-                        owner.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 80, 0, true, true));
-                    }
-                    
-                    // Buff allied wolves
-                    List<Wolf> allies = wolf.level().getEntitiesOfClass(Wolf.class, wolf.getBoundingBox().inflate(6.0), w -> w.isTame() && w.getOwner() == owner);
-                    for (Wolf ally : allies) {
-                        ally.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 80, 0, true, true));
-                        ally.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 80, 0, true, true));
-                    }
-                }
-
                 // Watchdog Alarm (Whining and note particles when hostiles approach within 16 blocks)
-                List<Monster> enemies = wolf.level().getEntitiesOfClass(Monster.class, wolf.getBoundingBox().inflate(16.0));
+                List<Monster> enemies = wolf.level().getEntitiesOfClass(Monster.class, wolf.getBoundingBox().inflate(16.0, 16.0, 16.0), enemy -> {
+                    double dy = Math.abs(enemy.getY() - wolf.getY());
+                    if (dy > 16.0) return false;
+                    if (dy <= 4.0) return true;
+                    return wolf.getSensing().hasLineOfSight(enemy);
+                });
                 this.isAlertActive = !enemies.isEmpty();
                 this.closestAlertTarget = null;
                 if (this.isAlertActive) {
@@ -235,12 +222,13 @@ public class WolfGuardGoal extends Goal {
         if (patrolPauseTimer > 0) {
             patrolPauseTimer--;
             if (personality == WolfPersonality.AGGRESSIVE) {
-                // Look outward from post
+                // Look outward from post (at eye level)
                 double dx = wolf.getX() - post.getX();
                 double dz = wolf.getZ() - post.getZ();
-                wolf.getLookControl().setLookAt(wolf.getX() + dx, wolf.getY(), wolf.getZ() + dz, 10.0f, (float) wolf.getMaxHeadXRot());
+                wolf.getLookControl().setLookAt(wolf.getX() + dx, wolf.getEyeY(), wolf.getZ() + dz, 10.0f, (float) wolf.getMaxHeadXRot());
             } else {
-                wolf.getLookControl().setLookAt(post.getX(), post.getY(), post.getZ(), 10.0f, (float) wolf.getMaxHeadXRot());
+                // Look at post (at eye level)
+                wolf.getLookControl().setLookAt(post.getX() + 0.5, post.getY() + 1.0, post.getZ() + 0.5, 10.0f, (float) wolf.getMaxHeadXRot());
             }
             return;
         }
