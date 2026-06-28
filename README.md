@@ -1,4 +1,4 @@
-# 🐕 Better Dogs: A Social & Behavioral Overhaul (v3.7.1+A-26.1.2)
+# 🐕 Better Dogs: A Social & Behavioral Overhaul (v3.7.1+A-26.1.2) (Discontinued)
 
 **Better Dogs** is a comprehensive overhaul of the Minecraft Wolf, replacing robotic behaviors with a dynamic, personality-driven social system. Built for the modern "Post-Obfuscation" era of Minecraft, it enhances the taming loop with genetics, social bonding, and smart survival logic.
 
