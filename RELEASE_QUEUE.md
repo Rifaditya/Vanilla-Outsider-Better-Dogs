@@ -5,6 +5,10 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`4.13.1-26.2`** (2026-06-28) - **Hotfix:** Jade integration now properly displays accurate Unicode hearts (`❤` and `♡`) and exact values (`HP: X / Y`), bypassing Jade's default 10-heart scaling cap that visually misrepresented large dynamic health pools.
+- [ ] **`4.13.0-26.2`** (2026-06-28) - **Jade Mod Integration:** Added official support for the Jade HUD tooltip mod. Now correctly overrides Jade's default health renderer to display the accurate dynamic health/max health of wolves, accounting for Better Dogs' genetic scaling and personality traits. Adds a custom tooltip line for tamed dogs showing their hidden "Favorite Treat" if the feature is enabled.
+- [ ] **`4.12.1-26.2`** (2026-06-27) - **Localization & GUI Quality Polish:** Cleaned up duplicate blocks and syntax errors in `id_id.json`. Added missing config keys for Creeper Avoidance and Pack Flanking Tactics to `en_us.json`. Corrected default values for Aggressive/Pacifist HP descriptions in both language files to match active code properties.
+- [ ] **`4.12.0-26.2`** (2026-06-27) - **Favorite Treats Mechanic:** Wolves now have a hidden favorite treat (seeded by their UUID)! Finding and feeding them their favorite treat fully heals them, grants Regeneration II, and triggers their native Zoomies!
 - [x] **`3.1.35`** (2026-02-03) - - Detailed descriptions for all gamerules, including the previously missing `bd_howl_chance`.
 - [x] **`3.1.36`** (2026-02-16) - - Dependency conflict: Allow `DasikLibrary` >= 1.0.1 (removed < 2.0.0 cap) to support version 2.0.0.
 - [x] **`3.1.36+build.1`** (2026-02-19) - - **DasikLibrary Integration**: Switched to standalone dependency (JiJ removed). - - **Versioning**: Adopted strict Build Number policy.

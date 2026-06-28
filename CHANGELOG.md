@@ -1,6 +1,25 @@
 # Changelog
 
-## [Unreleased]
+## [4.13.2-26.2] - 2026-06-28 (Broken - Skip)
+### Fixed
+- **Jade Health Override Priority**: Fixed an issue where the custom Jade health provider was executing before Jade's default provider, causing the accurate dynamic hearts to be immediately overwritten by the default vanilla capped hearts. The custom provider now correctly replaces the default health component.
+
+## [4.13.0-26.2] - 2026-06-28 (Broken - Skip)
+### Added
+- **Jade Mod Integration**: Added official support for the Jade HUD tooltip mod.
+  - Now correctly overrides Jade's default health renderer to display the accurate dynamic health/max health of wolves, accounting for Better Dogs' genetic scaling and personality traits.
+  - Adds a custom tooltip line for tamed dogs showing their hidden "Favorite Treat" if the feature is enabled.
+  - The plugin is built as an isolated, optional dependency; the mod will not crash on clients/servers running without Jade.
+
+## [4.12.1-26.2] - 2026-06-27
+### Fixed
+- **Localization & GUI Quality Polish**: Cleaned up duplicate blocks and malformed JSON syntax in `id_id.json`. Added missing config keys for Creeper Avoidance and Pack Flanking Tactics in `en_us.json`.
+- **Tooltip Precision**: Corrected default value descriptions for Aggressive HP (from `20` to `-10`) and Pacifist HP (from `0` to `20`) in both language sheets to match the active code constants.
+
+## [4.12.0-26.2] - 2026-06-27
+### Added
+- **Favorite Treats Mechanic**: Tamed wolves now have a hidden favorite treat determined dynamically by their UUID. Feeding them their favorite treat fully heals them, grants Regeneration II, and triggers their morning Zoomies.
+- **Dynamic Config/GameRules**: Toggles for the mechanic are integrated in Cloth Config GUI and registered via the `bd_favorite_treats` gamerule.
 
 ## [4.11.0-26.2] - 2026-06-27
 ### Added
@@ -938,3 +957,7 @@ The **"Wolf Litters"** update. Tamed wolves can now have multiple puppies in one
 - Detailed descriptions for all gamerules, including the previously missing `bd_howl_chance`.
 
 ---
+
+
+
+
