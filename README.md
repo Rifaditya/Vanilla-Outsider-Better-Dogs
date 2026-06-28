@@ -1,4 +1,4 @@
-# 🐕 Better Dogs 1.21.11: Developer Guide
+# 🐕 Better Dogs 1.21.11: Developer Guide (Discontinue)
 
 Technical repository for the Minecraft 1.21.11 port of the Better Dogs AI overhaul.
 
