@@ -1,4 +1,5 @@
 // Verified against: PersonalityFollowOwnerGoal.java (26.1.2+), EntityGetter.java (26.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.ai;
 
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;

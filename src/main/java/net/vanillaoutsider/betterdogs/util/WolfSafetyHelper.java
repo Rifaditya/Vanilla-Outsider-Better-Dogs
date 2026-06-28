@@ -1,4 +1,5 @@
 // Verified against: Block.java (26.2+), DefaultRandomPos.java (26.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.util;
 
 import net.minecraft.core.BlockPos;

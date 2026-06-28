@@ -1,4 +1,5 @@
-// Verified against: ClothConfigScreenHelper.java (26.1.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Verified against: TitleScreen.java (26.2+)
 package net.vanillaoutsider.betterdogs.config;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
@@ -82,6 +83,12 @@ public class ClothConfigScreenHelper {
         general.addEntry(entryBuilder.startIntField(Component.translatable("config.betterdogs.refuseGroundFoodChance"), config.refuseGroundFoodChance)
                 .setDefaultValue(30)
                 .setSaveConsumer(val -> config.refuseGroundFoodChance = val)
+                .build());
+
+        general.addEntry(entryBuilder.startBooleanToggle(Component.translatable("config.betterdogs.enableFavoriteTreats"), config.enableFavoriteTreats)
+                .setDefaultValue(true)
+                .setTooltip(Component.translatable("config.betterdogs.enableFavoriteTreats.tooltip"))
+                .setSaveConsumer(val -> config.enableFavoriteTreats = val)
                 .build());
 
         general.addEntry(entryBuilder.startBooleanToggle(Component.translatable("config.betterdogs.pacifistGuardBuffs"), config.pacifistGuardBuffs)

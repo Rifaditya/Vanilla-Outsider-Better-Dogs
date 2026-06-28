@@ -1,4 +1,5 @@
 // Verified against: Wolf.java (26.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.util;
 
 import net.minecraft.core.BlockPos;
@@ -30,6 +31,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 public class WolfTickHelper {
 
+    private static final DustParticleOptions AGGRESSIVE_PARTICLE = new DustParticleOptions(0xFF3333, 0.6f);
+    private static final DustParticleOptions PACIFIST_PARTICLE = new DustParticleOptions(0x00FF88, 0.6f);
+    private static final DustParticleOptions GUARD_PARTICLE = new DustParticleOptions(0xFFD700, 0.6f);
+    private static final ItemParticleOption RUNT_PARTICLE = new ItemParticleOption(ParticleTypes.ITEM, Items.ROTTEN_FLESH);
+
     public static void tickGuardMode(Wolf wolf, WolfExtensions ext, ServerLevel serverLevel) {
         WolfPersonality personality = ext.betterdogs$getPersonality();
         double px = wolf.getRandomX(0.5);
@@ -37,12 +43,12 @@ public class WolfTickHelper {
         double pz = wolf.getRandomZ(0.5);
 
         if (personality == WolfPersonality.AGGRESSIVE) {
-            serverLevel.sendParticles(new DustParticleOptions(0xFF3333, 0.6f), px, py, pz, 1, 0, 0.05, 0, 0.0);
+            serverLevel.sendParticles(AGGRESSIVE_PARTICLE, px, py, pz, 1, 0, 0.05, 0, 0.0);
         } else if (personality == WolfPersonality.PACIFIST) {
-            serverLevel.sendParticles(new DustParticleOptions(0x00FF88, 0.6f), px, py, pz, 1, 0, 0.05, 0, 0.0);
+            serverLevel.sendParticles(PACIFIST_PARTICLE, px, py, pz, 1, 0, 0.05, 0, 0.0);
 
             // Watchdog Grace Buff (Regeneration and Resistance to owner/allies within 6 blocks of wolf OR guard post)
-            if (DynamicGameRuleManager.getBoolean(serverLevel, BetterDogsGameRules.BD_PACIFIST_GUARD_BUFFS)) {
+            if (wolf.tickCount % 40 == 0 && DynamicGameRuleManager.getBoolean(serverLevel, BetterDogsGameRules.BD_PACIFIST_GUARD_BUFFS)) {
                 double buffRangeSqr = 36.0; // 6 blocks
                 Player owner = wolf.getOwner() instanceof Player ? (Player) wolf.getOwner() : null;
                 if (owner != null) {
@@ -66,7 +72,7 @@ public class WolfTickHelper {
                 }
             }
         } else {
-            serverLevel.sendParticles(new DustParticleOptions(0xFFD700, 0.6f), px, py, pz, 1, 0, 0.05, 0, 0.0);
+            serverLevel.sendParticles(GUARD_PARTICLE, px, py, pz, 1, 0, 0.05, 0, 0.0);
         }
     }
 
@@ -101,7 +107,7 @@ public class WolfTickHelper {
             double px = wolf.getRandomX(0.4);
             double py = wolf.getRandomY() + 0.2;
             double pz = wolf.getRandomZ(0.4);
-            serverLevel.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, Items.ROTTEN_FLESH), px, py, pz, 1, 0.01, 0.01, 0.01, 0.01);
+            serverLevel.sendParticles(RUNT_PARTICLE, px, py, pz, 1, 0.01, 0.01, 0.01, 0.01);
         }
     }
 
@@ -122,6 +128,9 @@ public class WolfTickHelper {
     }
 
     public static void tickNemesisSystem(Wolf wolf, ServerLevel serverLevel) {
+        if (!wolf.isTame()) return;
+        if (!net.dasik.social.api.gamerule.DynamicGameRuleManager.getBoolean(serverLevel, net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_NEMESIS_SYSTEM)) return;
+        
         String nemesisType = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedNemesisType(wolf);
         if (nemesisType.isEmpty()) return;
 
@@ -137,9 +146,6 @@ public class WolfTickHelper {
         if (target != null && target.isAlive()) {
             String targetType = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(target.getType()).toString();
             if (nemesisType.equals(targetType)) {
-                wolf.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 40, 0, true, false));
-                wolf.addEffect(new MobEffectInstance(MobEffects.SPEED, 40, 0, true, false));
-                
                 // Spawn angry particles
                 double px = wolf.getRandomX(0.5);
                 double py = wolf.getRandomY() + 0.5;

@@ -1,4 +1,5 @@
 // Verified against: WolfStatManager.java (26.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.util;
 
 import java.util.UUID;
@@ -99,6 +100,11 @@ public class WolfStatManager {
 
         // 2. Retrieve rolled stats for scale calculation
         float healthBonus = WolfPersistentData.getPersistedHealthBonus(wolf);
+        
+        // 2.5 Apply health modifier explicitly so it syncs to the client
+        if (healthAttr != null && healthBonus != 0) {
+            healthAttr.addPermanentModifier(new AttributeModifier(rolledHealthId, healthBonus, AttributeModifier.Operation.ADD_VALUE));
+        }
 
         // Calculate and apply dynamic scale based on health bonus
         float calculatedScale = 1.0f + (healthBonus * 0.012f);

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.config;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;

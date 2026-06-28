@@ -1,4 +1,5 @@
-// Verified against: BetterDogsConfig.java (26.1.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Verified against: DedicatedServerProperties.java (26.2+)
 package net.vanillaoutsider.betterdogs.config;
 
 public class BetterDogsConfig {
@@ -51,6 +52,9 @@ public class BetterDogsConfig {
     public boolean enableDogsEatCookedGroundFood = true;
     public boolean enableRefuseGroundFood = true;
     public int refuseGroundFoodChance = 30;
+    public boolean enableFavoriteTreats = true;
+
+    // --- Player ---
     public boolean pacifistGuardBuffs = false;
     public boolean enableInbredCuring = true;
     public boolean showRuntParticles = false;
@@ -218,6 +222,7 @@ public class BetterDogsConfig {
     public boolean getEnableDogsEatCookedGroundFood() { return enableDogsEatCookedGroundFood; }
     public boolean getEnableRefuseGroundFood() { return enableRefuseGroundFood; }
     public int getRefuseGroundFoodChance() { return refuseGroundFoodChance; }
+    public boolean getEnableFavoriteTreats() { return enableFavoriteTreats; }
     public boolean getPacifistGuardBuffs() { return pacifistGuardBuffs; }
     public boolean getEnableInbredCuring() { return enableInbredCuring; }
     public boolean getShowRuntParticles() { return showRuntParticles; }

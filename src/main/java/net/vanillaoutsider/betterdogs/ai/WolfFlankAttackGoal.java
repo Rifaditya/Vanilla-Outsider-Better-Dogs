@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.ai;
 
 import net.minecraft.world.entity.LivingEntity;

@@ -1,5 +1,10 @@
 # 🐕 Better Dogs - Nemesis (Grudge) System Implementation
 
+- `[x]` Integrate Jade Tooltips
+  - [x] Configure dependencies (`modCompileOnly`) and create plugin entrypoint
+  - [x] Implement Favorite Treat Tooltip Provider
+  - [x] Implement Accurate Health Provider (Max health and Current health overriding Jade's default)
+  - [x] Build and test 4.13.0-26.2
 - `[x]` **1. NBT Updates (`WolfPersistentData.java`)**
   - Add `String nemesisType` to store the entity type ID (e.g. "minecraft:skeleton").
   - Add `long nemesisExpiry` to store the world tick expiration.
@@ -17,10 +22,9 @@
 - `[x]` **5. AI Targeting (`WolfNemesisTargetGoal.java`)**
   - Create the new high-priority Goal class for auto-targeting Nemesis mobs.
   - Register the goal in `WolfMixin.java` `registerGoals()`.
-- `[ ]` **6. Version Bump & Changelog (`gradle.properties`, `fabric.mod.json`, `History.md`)**
+- `[x]` **6. Version Bump & Changelog (`gradle.properties`, `fabric.mod.json`, `History.md`)**
   - Update version to `4.11.0`.
-  - Add changes to `History.md`.
-  - Read `## Memory Read Receipt` as per Rule 13.
+  - Populate changelogs and update `RELEASE_QUEUE.md`.
 - `[ ]` **7. Parity Backport (v3.12.0)**
   - Mirror all changes to the 26.1.2 workspace.
 - `[ ]` **8. Audit & Build**

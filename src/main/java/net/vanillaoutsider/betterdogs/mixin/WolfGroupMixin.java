@@ -1,4 +1,5 @@
 // Verified against: WolfGroupMixin.java (26.1.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.mixin;
 
 import java.util.UUID;

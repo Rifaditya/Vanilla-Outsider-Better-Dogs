@@ -1,4 +1,5 @@
 // Verified against: FleeCreeperGoal.java (26.1.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.ai;
 
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;

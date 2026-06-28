@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 // Mod Entrypoint (Fabric)
 package net.vanillaoutsider.betterdogs;
 

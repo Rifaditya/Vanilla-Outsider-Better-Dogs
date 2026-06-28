@@ -1,6 +1,69 @@
-# Better Dogs - Historical Changelog
+# Better Dogs History & Concept Changelog
 
-## [4.11.0-26.2] - 2026-06-27
+## [4.14.7-26.2] - 2026-06-28
+### Added
+- **Hidden Favorite Treats**: The Jade tooltip for a tamed dog's Favorite Treat now supports a "Hidden until discovered" mode. When enabled, the treat displays as `???` until the player successfully feeds the dog its specific favorite treat for the first time.
+- **Jade Setting**: Added the "Hide Undiscovered Treat" configuration option to the Jade plugin settings menu. By default, this is set to **OFF** to respect Jade's identity as a quick-info shortcut.
+
+> [!NOTE]
+> **Mod Page Update Requirement:** When `4.14.7` is pushed to public release, the CurseForge and Modrinth description pages MUST be updated to include a note about this new feature. It should explain that the "gamified" `???` feature exists for players who want to experiment, but they must manually enable it in their Jade settings.
+
+## [4.14.6-26.2] - 2026-06-28
+### Fixed
+- **Sanitary Compliance**: Migrated all GameRule registration keys and their corresponding `en_us.json` localization strings from the verbose `vanilla-outsider-better-dogs:` namespace down to the required `betterdogs:` namespace.
+
+## [4.14.5-26.2] - 2026-06-28
+### Added
+- **Jade Configuration**: Added built-in configuration toggles to the Jade plugin. Players can now toggle "Show Inbred Status" and "Show Wolf Info" directly from the Jade settings menu.
+
+## [4.14.4-26.2] - 2026-06-28
+### Fixed
+- **Jade Inbred Status**: Fixed an issue where the Jade tooltip would not display the "Inbred" tag on client screens because the genetics data wasn't synced from the server. Implemented a Jade `IServerDataProvider` to correctly sync this boolean to the client.
+
+## [4.14.3-26.2] - 2026-06-28
+### Changed
+- **Architectural**: Extracted combat hooks from `WolfMixin` into `WolfCombatMixin` to strictly adhere to the 300 LOC limit.
+- **Licensing**: Automatically applied missing GPLv3 SPDX license headers to all Java files.
+
+## [4.14.2-26.2] - 2026-06-28
+### Optimized
+- **Tick Performance Overhaul**: Fixed massive garbage collector overhead by properly extracting particle options (Aggressive, Pacifist, Guard, and Runt particles) into static fields. Adoptable particle trails and Pacifist buff radius checks are now properly gated via tick modulo, reducing tick allocations and checks by over 95% per wolf.
+
+## [4.14.1-26.2] - 2026-06-28
+### Fixed
+- **Jade Plugin Registration**: Fixed a critical crash where the `@WailaPlugin` annotation was given an invalid required `modid` ("betterdogs:jade_plugin"), which silently aborted the registration of all Better Dogs Jade providers (Health, Traits, and Inbred statuses) causing the mod to fallback to Jade's text-mode health renderer. All Jade integrations are now fully active!
+
+## [4.14.0-26.2] - 2026-06-28
+### Added
+- **Jade Inbred Status UI**: Tamed dogs with the `inbred` genetic trait will now display a red "Inbred" tag in their Jade tooltip. This feature includes proper Jade configuration toggles, fully localized in `en_us.json`.
+
+## [4.13.5-26.2] - 2026-06-28
+### Summary
+The **"Dynamic Jade Health UI"** update. 
+- **Jade Integration**: Hooked into the Jade API to display dynamic health values for Better Dogs (who possess randomized max health from genetics exceeding vanilla limits). 
+- **Custom Health Element**: Bypassed Jade's hardcoded 20-icon render cap by implementing `BetterDogsHealthElement`. A wolf with 60 HP will now render exactly 3 rows of 10 heart icons each.
+- **Priority Fix**: Set the Jade provider priority to `10000` (TAIL) to successfully replace the default health component while preserving adjacent elements (like armor) on the same UI line.
+- **Client Sync**: Added explicit attribute modifier synchronization for `MAX_HEALTH` in `WolfStatManager` so that the client UI correctly reflects the server-side rolled genetic max health.).
+
+## [4.12.0-26.2] - 2026-06-27
+### Added
+- **Favorite Treats Mechanic:** Wolves now have a hidden favorite treat (seeded by their UUID)! Finding and feeding them their favorite treat fully heals them, grants Regeneration II, and triggers their native Zoomies!
+
+## [4.11.2-26.2] - 2026-06-27
+### Changed
+- **Strict Parity Sync:** Cross-pollinated minor polish and safety checks with 26.1.2.
+  - Added safety checks: Grudges will no longer form against Players or other Tamed Animals to prevent infinite PvP loops.
+  - Added strict Tamed and GameRule checks before ticking the Nemesis buff.
+
+## [4.11.1-26.2] - 2026-06-27
+### ??? Fixed
+- **Architectural Audit Fixes:** 
+  - Extracted logic out of `WolfMixin` to reduce file size under 300 LOC limit (moved to `WolfCombatHooks`).
+  - Added missing GPLv3 headers to Nemesis system files.
+  - Added missing localization keys for the Nemesis System GameRules in `en_us.json`.
+  - Synced Nemesis Grudge tick frequency to 20 ticks (1 second) for parity.
+
+## [4.11.0-26.2] - 2026-06-26
 ### Summary
 The **"Nemesis (Grudge) System"** update. Implements a grudge system where tamed wolves will actively seek revenge on hostile mobs that kill their pack-mates.
 - **Grudge Formation**: Injected `die` inside `WolfMixin` to trigger `WolfCombatHooks.onDeath`. When a tamed wolf is killed by a hostile mob (`LivingEntity`), it broadcasts the nemesis mob type to all tamed wolves with the same owner within a 32-block radius.
@@ -490,9 +553,9 @@ The production **Release** version of the **"Personality-Based Flee Probability 
 ### Summary
 The **"Personality-Based Flee Probability"** patch.
 - **Personality-Based Fleeing**: Refactored low health fleeing behavior so that a wolf's probability of running away is checked based on its personality.
-  - 🟢 **Pacifist**: 100% chance by default.
-  - ✨ **Normal**: 50% chance by default.
-  - 💢 **Aggressive**: 10% chance by default.
+  - ?? **Pacifist**: 100% chance by default.
+  - ? **Normal**: 50% chance by default.
+  - ?? **Aggressive**: 10% chance by default.
 - **Gamerule & Config Integration**: Exposes the three personality-based flee probability settings via new GameRules (`bd_paci_flee_chance`, `bd_normal_flee_chance`, `bd_aggro_flee_chance`) and corresponding config values.
 - **Strict Versioning**: Bumped the patch version to `4.1.1+A-26.2` and archived previous `4.1.0` jars.
 
@@ -507,9 +570,9 @@ The **"Low Health Fleeing & Version Upgrade"** minor release.
 ### Summary
 The **"Storm Anxiety Personality Gating"** patch. Gates the Storm Anxiety behavior based on the wolf's personality.
 - **Storm Anxiety Personality Gating**: Wolf reaction to thunderstorms is now personality-dependent.
-  - 💢 **Aggressive**: Unaffected by thunderstorms (fully immune to storm anxiety).
-  - 🟢 **Pacifist**: Highly anxious, with a 3x higher trigger chance than normal.
-  - ✨ **Normal**: Standard chance (1% per tick / configured value).
+  - ?? **Aggressive**: Unaffected by thunderstorms (fully immune to storm anxiety).
+  - ?? **Pacifist**: Highly anxious, with a 3x higher trigger chance than normal.
+  - ? **Normal**: Standard chance (1% per tick / configured value).
 - **Versioning Alignment**: Bumped the patch version to `4.0.1+A-26.2` following the Strict Versioning Mandate, and archived previous `4.0.0` jars to `/Archive/builds/`.
 
 ## [4.0.0+A-26.2] - 2026-05-27
@@ -554,9 +617,9 @@ The production **Release** version of the **"Sentinel Watchdog Alarm Particle He
 ### Summary
 The production **Release** version of the **"Colored Dust Particles & Guard Mode Particle Fix"** updates.
 - **Subtle Colored Dust Particles**: Replaced ambient guard mode particles (formerly `ASH`, `WHITE_ASH`, `MYCELIUM`) and debug particles (formerly `FLAME`, `NOTE`, `HAPPY_VILLAGER`) with tiny, custom-colored `dust` particles at a subtle `0.5f`/`0.6f` scale.
-  - 🔴 **Aggressive**: Red particle (`0xFF3333`)
-  - 🟡 **Normal**: Gold/Yellow particle (`0xFFD700`)
-  - 🟢 **Pacifist**: Green/Teal particle (`0x00FF88`)
+  - ?? **Aggressive**: Red particle (`0xFF3333`)
+  - ?? **Normal**: Gold/Yellow particle (`0xFFD700`)
+  - ?? **Pacifist**: Green/Teal particle (`0x00FF88`)
 - **Guard Mode Particle Gating**: Modified personality particle ticking (Flame, Note, Happy Villager) in `WolfMixin.java` to strictly check `betterdogs$isGuardMode()`. Personality particles now only emit when the wolf is on active Guard Mode.
 - **Client Synchronization Fix**: Migrated debugging particle ticks in `WolfMixin.java` to run exclusively on the server side and transmit using `serverLevel.sendParticles()`. This ensures clients receive the actual, correct personality particles (Flame for Aggressive, Note for Pacifist, Happy Villager for Normal) without requiring network sync for the client-side attachments.
 
@@ -571,14 +634,14 @@ The **"Guard Mode Particle Fix"** patch. Restricts personality particle emission
 The **"ConfigHelper Migration"** update. Refactors configuration loading and saving to use the standard centralized API in `DasikLibrary`.
 - **Config Migration**: Refactored `BetterDogsConfig` to delegate all deserialization, serialization, backup, size limit checking, and atomic swap writes to the library's centralized `ConfigHelper` class.
 - **Runtime Dependency Guard**: Added a runtime version verification at startup. If `DasikLibrary` version is less than `1.7.4` (or `ConfigHelper` is missing), the game aborts and throws a Minecraft `ReportedException` wrapping a descriptive `CrashReport`: `"Better Dogs: DasikLibrary version mismatch! Requires version 1.7.4 or higher. Please update your mods."`
-- **⚠️ WARNING**: This version requires the newest **`DasikLibrary 1.7.4`** or higher. Older library versions will cause startup crashes.
+- **?? WARNING**: This version requires the newest **`DasikLibrary 1.7.4`** or higher. Older library versions will cause startup crashes.
 
 ## [3.6.3+A-26.1.2] - 2026-05-26
 ### Summary
 The **"DasikLibrary GameRule Helper Migration"** update. Refactors Better Dogs' GameRule queries to call the standard helpers in `DasikLibrary` directly.
 - **Direct Library Integration**: Completely removed local duplicate GameRule value conversion helper methods (`getPct`, `getProb`, `getChance`, `getDecileFloat`, `getInt`, `getBoolean`) from `BetterDogsGameRules.java`.
 - **Mod-Wide Refactoring**: Cleanly refactored all 21 source and mixin classes to query game rules directly via `DynamicGameRuleManager`.
-- **⚠️ WARNING**: This version requires the newest **`DasikLibrary 1.7.3`** or higher. Older library versions will cause crash-on-startup due to missing GameRule helper APIs.
+- **?? WARNING**: This version requires the newest **`DasikLibrary 1.7.3`** or higher. Older library versions will cause crash-on-startup due to missing GameRule helper APIs.
 
 ## [3.6.2+A-26.1.2] - 2026-05-24
 ### Summary
@@ -704,10 +767,10 @@ The **"Bundled Config"** update. Bundled a default `betterdogs.json` configurati
 ### Summary
 The **"Unified Panel"** update. Consolidated the 6 separate GameRule categories into a single unified category with visual divider rules separating each sub-section.
 - **Single Category**: All Better Dogs GameRules now appear under one **"Vanilla Outsider: Better Dogs"** category instead of 6 separate ones.
-- **Section Dividers**: Added 6 empty boolean GameRules (`div_general`, `div_health`, `div_social`, `div_war`, `div_litter`, `div_spawning`) that act as visual section headers with `────` decorations.
+- **Section Dividers**: Added 6 empty boolean GameRules (`div_general`, `div_health`, `div_social`, `div_war`, `div_litter`, `div_spawning`) that act as visual section headers with `----` decorations.
 - **Rule Reordering**: Reorganized registration order so Health, Social, War, Litter, and Spawning rules are grouped contiguously under their respective dividers.
 - **Localization**: Full English and Indonesian translations for the unified category and all divider labels.
-- **⚠️ Reset Warning**: Existing GameRule values may be reset to defaults due to this structural change.
+- **?? Reset Warning**: Existing GameRule values may be reset to defaults due to this structural change.
 
 
 ## [3.4.9+B-26.1.2] - 2026-05-21
@@ -729,7 +792,7 @@ The **"Categorical Mastery"** update. Reorganized the GameRule configuration UI 
     - **VO: Better Dogs - Spawning**: Cluster sizes and taming chances.
     - **VO: Better Dogs - General**: Utility toggles and environmental reactive rules.
 - **Localization**: Added full support for the new category labels in both English (`en_us`) and Indonesian (`id_id`).
-- **⚠️ Mandatory Warning**: Your gamerule might be reseted as I split it into many category and i changed stuff.
+- **?? Mandatory Warning**: Your gamerule might be reseted as I split it into many category and i changed stuff.
 
 
 ## [3.4.7] - 2026-05-16
@@ -1068,7 +1131,7 @@ This file contains the archived changelogs for historical versions of Better Dog
 
 ## [v3.1.7] - 2026-01-25
 
-### ✨ New Features
+### ? New Features
 
 - **Individual DNA System**:
   - Implemented a unique "Characteristic Roll" for every dog derived from its UUID.
@@ -1100,7 +1163,7 @@ This file contains the archived changelogs for historical versions of Better Dog
 
 ## [v3.1.6]
 
-### 🏈 Play Fighting
+### ?? Play Fighting
 
 - **Concept**: Large packs of aggressive wolves (>10) will now occasionally "play fight" to burn off energy.
 - **Behavior**: Two wolves will chase and attack each other for 10 seconds.
@@ -1120,7 +1183,7 @@ This file contains the archived changelogs for historical versions of Better Dog
 
 ## [1.09.009] - 2026-01-24
 
-### ⚔️ Domestic Retaliation & Intervention
+### ?? Domestic Retaliation & Intervention
 
 - **Owner-Attack Bypass**: Overrode hardcoded vanilla blocks in `TamableAnimal.canAttack` and `Wolf.wantsToAttack`.
   - *Utility*: Allows baby wolves to correctly retaliate when struck by their owners.
@@ -1128,12 +1191,12 @@ This file contains the archived changelogs for historical versions of Better Dog
 - **AI Priority Re-tuning**: Set domestic retaliation and intervention goals to priority 0 for instantaneous response.
 - **Aggressive State Handling**: Intervention now correctly triggers the wolf's aggressive visual state.
 
-### 🏗 Convention & Standards
+### ?? Convention & Standards
 
 - **New Versioning Strategy**: Transitioned to the `x.xx.xxx` Semantic Versioning format (e.g., 1.09.008).
 - **Protocol Update**: Documented the "Owner-Attack Barrier" in `Better_modder_agent_protocol.yaml` for consistency across projects.
 
-### 🛠 Technical Fixes
+### ?? Technical Fixes
 
 - **Mixin Consolidation**: Cleaned up `WolfMixin` logic to use proper `@Inject` patterns for bypasses instead of direct overrides where possible.
 - **Logging**: Added server-side logging for adult intervention events.
@@ -1142,19 +1205,19 @@ This file contains the archived changelogs for historical versions of Better Dog
 
 ## [1.9.5-26.1] - 2026-01-23
 
-### 🏗 Architecture Reversion
+### ?? Architecture Reversion
 
 - **Fabric Native Reversion**: Pivot from Multi-Loader (NeoForge/Fabric) back to it being **Fabric only**.
 - **Source Consolidation**: Smashed `common` and `fabric` into one root structure. Deleted NeoForge and all the extra dependencies.
 
-### 🛠 Technical Changes
+### ?? Technical Changes
 
 - **Java 25 Standardization**: Fully migrated the build system and toolchain to **Java 25**.
 - **Fabric Attachment API**: Fully integrated Fabric's native Attachment API for persistent wolf data.
 - **Build System**: Standardized on Fabric Loom 1.14.7.
 - **Critical Bug Fix**: Resolved a startup crash (`MixinApplyError`) by redirecting taming logic injection from `setTame` to `applyTamingSideEffects`.
 
-### ⚙️ Mod Configuration
+### ?? Mod Configuration
 
 - **Standalone JSON Loader**: Uses `config/betterdogs.json` instead of Cloth Config to ensure compatibility with snapshot versions where Mod Menu is absent.
 
@@ -1162,7 +1225,7 @@ This file contains the archived changelogs for historical versions of Better Dog
 
 ## [v1.8.7-26.1] - 2026-01-23
 
-### 🛠 Bug Fixes
+### ?? Bug Fixes
 
 #### Stale Class Cleanup
 
@@ -1176,7 +1239,7 @@ This release fixes a critical startup crash caused by stale compiled class files
 
 ## [v1.8.5-26.1] - 2026-01-23
 
-### 🛠 Bug Fixes
+### ?? Bug Fixes
 
 #### Persistent Crash Fix
 
@@ -1190,13 +1253,13 @@ This release fixes a critical startup crash caused by stale compiled class files
 
 ## [v1.8.4-26.1]
 
-### 🧠 Baby Curiosity (Passive/Normal)
+### ?? Baby Curiosity (Passive/Normal)
 
 - **Curiosty AI**: Non-aggressive baby wolves now exhibit natural curiosity.
 - **Entity Observation**: They will approach nearby mobs (passive or hostile) and players to "stare" at them for 2-6 seconds.
 - **Environmental Focus**: They will wander towards interesting blocks like flowers, grass, and trees to investigate their surroundings.
 
-### ⚔️ Reckless Aggression (Aggressive)
+### ?? Reckless Aggression (Aggressive)
 
 - **Immediate Engagement**: Aggressive baby wolves now immediately engage and attack hostile mobs they detect.
 - **Recklessness**: Aggressive babies will chase and attack monsters regardless of owner proximity.
@@ -1205,7 +1268,7 @@ This release fixes a critical startup crash caused by stale compiled class files
 
 ## [v1.8.3-26.1]
 
-### 🐾 Untrained Baby Wolf Behavior
+### ?? Untrained Baby Wolf Behavior
 
 - **2x Follow Radius (Default)**: Tamed baby wolves have double the follow distances compared to adults.
 - **2x Teleport Threshold (Default)**: Threshold increased to 24 blocks for babies.
@@ -1214,13 +1277,13 @@ This release fixes a critical startup crash caused by stale compiled class files
 
 ## [v1.8.2-26.1] - 2026-01-23
 
-### 🎉 New Features
+### ?? New Features
 
 - **Domestic Aggression & Retaliation**: Baby wolves retaliate with 2 strikes if hit by owner.
 - **Aggressive Adult Intervention**: Adults intervene to protect owner from misbehaving babies.
 - **Disciplined Combat**: 3-strike sequence for enforcers.
 
-### 🛠 Bug Fixes
+### ?? Bug Fixes
 
 - **Personality Stats Rebalance**: Fixed swapped Aggressive/Pacifist defaults.
 
@@ -1228,7 +1291,7 @@ This release fixes a critical startup crash caused by stale compiled class files
 
 ## [v1.8.1-26.1] - 2026-01-23
 
-### 🎉 New Features
+### ?? New Features
 
 - **Passive Baby Wolves**: Babies are now passive by default (except Aggressive personality hunting monsters).
 
@@ -1236,9 +1299,9 @@ This release fixes a critical startup crash caused by stale compiled class files
 
 ## [v1.8.0-26.1] - 2026-01-23
 
-### 🎉 New Features
+### ?? New Features
 
 - **NeoForge Support**: Multi-loader architecture (Fabric & NeoForge).
 - **Official Mappings**: Switched to official Mojang mappings.
 
----
+

@@ -1,4 +1,5 @@
 // Verified against: AvoidHazardsGoal.java (26.1.2+), BlockPos.java (26.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.ai;
 
 import java.util.EnumSet;

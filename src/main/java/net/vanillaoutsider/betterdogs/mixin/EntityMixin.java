@@ -1,4 +1,5 @@
 // Verified against: Entity.java (26.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.minecraft.server.level.ServerLevel;

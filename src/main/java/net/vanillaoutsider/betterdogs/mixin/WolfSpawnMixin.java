@@ -1,4 +1,5 @@
 // Verified against: WolfSpawnMixin.java (26.2-pre-1)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;

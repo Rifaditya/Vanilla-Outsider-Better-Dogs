@@ -1,4 +1,5 @@
 // Verified against: ModInitializer.java (Fabric)
+// SPDX-License-Identifier: GPL-3.0-or-later
 /*
  * Copyright (c) 2026 Vanilla Outsider
  *
@@ -125,7 +126,7 @@ public class BetterDogs implements ModInitializer {
 
         String version = FabricLoader.getInstance().getModContainer(MOD_ID)
                 .map(container -> container.getMetadata().getVersion().getFriendlyString())
-                .orElse("4.6.0+A-26.2");
+                .orElse("4.11.2+A-26.2");
         LOGGER.info("Vanilla Outsider: Better Dogs v{} initializing [Aligned]...", version);
 
         // Load Configuration

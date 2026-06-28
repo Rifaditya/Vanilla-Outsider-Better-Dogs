@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 /*
  * Vanilla Outsider: Better Dogs
  * AI Goal for moving to and boarding a targeted vehicle/seat.

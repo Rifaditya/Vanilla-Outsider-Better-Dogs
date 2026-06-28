@@ -1,4 +1,5 @@
 // Verified against: Wolf.java (26.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 /*
  * Copyright (c) 2026 Vanilla Outsider
  *
@@ -269,51 +270,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         this.betterdogs$healTimer = net.vanillaoutsider.betterdogs.util.WolfTickHelper.tickPassiveHealing(wolf, this, this.betterdogs$healTimer);
     }
 
-    @Inject(method = "die", at = @At("HEAD"))
-    private void betterdogs$onDie(DamageSource source, CallbackInfo ci) {
-        WolfCombatHooks.onDeath((Wolf) (Object) this, source);
-    }
 
-    @Inject(method = "actuallyHurt", at = @At("HEAD"), cancellable = true)
-    private void betterdogs$onActuallyHurt(ServerLevel level, DamageSource source, float amount, CallbackInfo ci) {
-        Wolf wolf = (Wolf) (Object) this;
-        if (source.getEntity() instanceof net.minecraft.world.entity.player.Player player && wolf.isTame() && wolf.isOwnedBy(player)) {
-            boolean demeritAccidental = net.dasik.social.api.gamerule.DynamicGameRuleManager.getBoolean(wolf.level(), net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_DEMERIT_ACCIDENTAL_ATTACKS);
-            if (player.isCrouching()) {
-                WolfPersistentData.setPersistedFeedCount(wolf, 0);
-                WolfDebugLogger.log(wolf, "Interaction", "Owner intentionally attacked dog (crouching), resetting interaction/feed count to 0");
-            } else if (demeritAccidental) {
-                int current = WolfPersistentData.getPersistedFeedCount(wolf);
-                int newValue = Math.max(0, current - 1);
-                WolfPersistentData.setPersistedFeedCount(wolf, newValue);
-                WolfDebugLogger.log(wolf, "Interaction", "Owner accidentally attacked dog, reducing interaction/feed count by 1 (Current: " + newValue + ")");
-            }
-        }
-
-        betterdogs$setLastDamageTime(this.tickCount);
-        WolfDebugLogger.log((Wolf)(Object)this, "Hurt", "Source: " + source.getMsgId() + ", Amount: " + amount);
-
-        if (betterdogs$isAdoptable()) {
-            betterdogs$setAdoptable(false);
-            LivingEntity owner = this.getOwner();
-            if (owner instanceof net.minecraft.world.entity.player.Player player) {
-                player.sendOverlayMessage(Component.translatable("text.betterdogs.adoption_cancelled_damage", this.getName()));
-            }
-        }
-
-        if (WolfCombatHooks.onActuallyHurt((Wolf) (Object) this, source, amount)) {
-            ci.cancel();
-        }
-    }
-
-    @Inject(method = "wantsToAttack", at = @At("HEAD"), cancellable = true)
-    private void betterdogs$onWantsToAttack(LivingEntity target, LivingEntity owner,
-            CallbackInfoReturnable<Boolean> cir) {
-        Boolean result = WolfCombatHooks.wantsToAttack((Wolf) (Object) this, target, owner);
-        if (result != null) {
-            cir.setReturnValue(result);
-        }
-    }
 
     @Inject(method = "addAdditionalSaveData", at = @At("HEAD"))
     private void betterdogs$onAddAdditionalSaveData(net.minecraft.world.level.storage.ValueOutput output, CallbackInfo ci) {

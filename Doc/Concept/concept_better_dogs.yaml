@@ -31,6 +31,8 @@ content: |
   - **Calm Down:** Shift+Right-Clicking with an empty hand makes the wolf sit, clearing its attack target and anger state.
   - **Low Health Fleeing:** Wolves flee when HP falls below 30% (Pacifist 100% chance, Normal 50%, Aggressive 10%).
   - **Storm Anxiety:** Reactive fear behavior gated by personality (Aggressive is immune; Pacifist has 3x higher risk).
+  - **Nemesis (Grudge) System:** If a non-player entity kills a tamed wolf, nearby tamed wolves of the same owner gain a 3-day grudge against that entity type. They will receive Strength and Speed buffs and emit angry particles when engaging their nemesis.
+  - **Favorite Treats:** Tamed wolves have a hidden favorite treat dynamically seeded by their UUID. Feeding them their favorite treat fully heals them, grants Regeneration II, and triggers their native Zoomies frantic running behavior.
 
   ### Config Mastery (Native Game Rules)
   - **Registry Integration:** 50+ AI parameters exposed via native Game Rules.

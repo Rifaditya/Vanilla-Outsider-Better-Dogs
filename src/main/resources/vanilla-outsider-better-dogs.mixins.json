@@ -8,6 +8,7 @@
         "BreedGoalMixin",
         "EntityMixin",
         "WolfMixin",
+        "WolfCombatMixin",
         "WolfSocialMixin",
         "WolfGuardMixin",
         "WolfAIMixin",

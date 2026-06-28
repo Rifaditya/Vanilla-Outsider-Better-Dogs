@@ -1,4 +1,5 @@
 // Verified against: WolfCommandHelper.java (26.2-pre-1)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.util;
 
 import java.util.Collection;
