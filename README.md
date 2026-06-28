@@ -3,6 +3,9 @@
 > [!IMPORTANT]
 > **Early Access & Latest Builds:** The latest versions of this mod may be delayed on public mainstream platforms (Modrinth/CurseForge). If you want immediate access to the newest updates, you can always compile the code directly from this repository, or support me on **[Ko-fi](https://ko-fi.com/dasikigaijin)** to get pre-compiled early access builds!
 
+> [!NOTE]
+> **🙏 I am begging you!** If you are enjoying this mod or compiling from source, please take a moment to visit and download the mod on **[Modrinth](https://modrinth.com/mod/vanilla-outsider-better-dogs)** or **[CurseForge](https://www.curseforge.com/minecraft/mc-mods/vanilla-outsider-better-dogs)**! Every single download on those pages gives me a little bit of money that helps me pay the bills and keeps this project alive. Thank you!
+
 **Better Dogs** is a comprehensive overhaul of the Minecraft Wolf, replacing robotic behaviors with a dynamic, personality-driven social system. Built for the modern "Post-Obfuscation" era of Minecraft, it enhances the taming loop with genetics, social bonding, and smart survival logic.
 
 ## 🔥 New in v4.14.7: Nemesis System & Hidden Treats
