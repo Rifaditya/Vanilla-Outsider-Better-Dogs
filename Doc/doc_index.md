@@ -21,6 +21,7 @@ Central navigation hub for all project documentation.
 - [Development Index](Develop/index.md): Dev setup and architecture.
 - [Historical Changelog](Develop/Changelogs/History.md): Full version history.
 - [Territorial Matrix](Develop/Architecture/territorial_matrix.md): [NEW] Detailed outcome logic.
+- [6-Month Developer Reflection](Develop/6_month_reflection.md): [NEW] A personal note on hitting the half-year milestone!
 
 ## 🌍 Platform Pages
 - [Modrinth Description](Platform%20Pages/Modrinth/description.md)
