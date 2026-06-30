@@ -85,6 +85,10 @@ In the 26.2+ release stream, I integrated wolf physical size directly with their
 - **Physical Collision & Eye Height**: Because this utilizes Minecraft's native attributes, the scale changes apply to their actual server-side collision hitboxes, eye heights, passenger offsets, step heights, and interaction ranges out of the box.
 - **UUID Seeded Stats**: Max Health, Attack Damage, and Movement Speed are rolled deterministically using the wolf's unique UUID, ensuring stats remain persistent and stable across game reloads.
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.2-core-alignment/Doc/Media/Gallery/the%20scale%20image.webp" alt="Genetics-Based Size Scaling" width="85%">
+</p>
+
 ### 🤝 Advanced Social AI
 - **Social Bonding (Affinity)**: Dogs form relationships within their pack. Socializing builds trust and reduces accidental infighting.
 - **Adult Correction**: Aggressive adults discipline misbehaving puppies, preventing death loops.
