@@ -10,7 +10,7 @@
 ### 🎮 Version Compatibility & Parity
 
 This mod is active and fully supported across both major version streams:
-* **Minecraft 26.2+**: Current public release — **`v4.5.0`**
+* **Minecraft 26.2+**: Current public release — **`v4.5.18`**
 * **Minecraft 26.1.2**: Current public release — **`v3.7.1`**
 
 While both versions receive ongoing support and bug fixes, **Minecraft 26.2+ contains additional advanced features** (such as Pack Genetics, the Litter System, and the dynamic Gifting System) that are currently unavailable in the 26.1.2 release.
@@ -72,18 +72,30 @@ Easily transfer ownership of your tamed wolves to other players using standard, 
 - **Claiming the Wolf**: Any non-owner player can right-click the adoptable wolf with an empty main hand to claim them as their new companion, instantly triggering heart particles and mutual overlay notifications.
 - **Safety Checks**: The adoption state is automatically cancelled if the wolf takes any damage, or if the owner simply right-clicks the dog again normally to cancel, preventing accidental claims.
 
-> ⚠️ **Notice**: This feature is **unavailable in the 26.1.2 version**, and is **currently bugged in the 26.2+ (v4.5.0) version** (adopted wolves will still pathfind and follow their original owner's dogs, retain guard posts, and keep old grudges). This is fully fixed and backported in the upcoming `v4.9.8-26.2` and `v3.10.15-26.1.2` updates.
+> ⚠️ **Notice**: This feature is **unavailable in the 26.1.2 version**, and is **currently bugged in the 26.2+ (v4.5.18) version** (adopted wolves will still pathfind and follow their original owner's dogs, retain guard posts, and keep old grudges). This is fully fixed and backported in the upcoming `v4.9.8-26.2` and `v3.10.15-26.1.2` updates.
 
 ### 📏 Dynamic Follower Spread Scaling
 Follow/spread spacing of wild and tamed wolf packs scales dynamically based on the number of active followers:
 - Spacing increases mathematically based on the square root formula: `f(N) = multiplier * sqrt(N - 1)` to prevent visual overcrowding.
 - Fully configurable via 4 native GameRules: `bd_tamed_pack_spread_multiplier`, `bd_tamed_pack_spread_max`, `bd_wild_pack_spread_multiplier`, `bd_wild_pack_spread_max`.
 
+### 📏 Dynamic Size & Attribute Scaling (Minecraft 26.2+)
+In the 26.2+ release stream, I integrated wolf physical size directly with their genetics and health using Minecraft's native `Attributes.SCALE` attribute:
+- **Health-Based Sizing**: A wolf's physical size scales dynamically based on its rolled max health. Sizes range from a tiny **0.808x** (for weaker/smaller wolves) up to a massive **1.312x** (for high-health champions).
+- **Physical Collision & Eye Height**: Because this utilizes Minecraft's native attributes, the scale changes apply to their actual server-side collision hitboxes, eye heights, passenger offsets, step heights, and interaction ranges out of the box.
+- **UUID Seeded Stats**: Max Health, Attack Damage, and Movement Speed are rolled deterministically using the wolf's unique UUID, ensuring stats remain persistent and stable across game reloads.
+
 ### 🤝 Advanced Social AI
 - **Social Bonding (Affinity)**: Dogs form relationships within their pack. Socializing builds trust and reduces accidental infighting.
 - **Adult Correction**: Aggressive adults discipline misbehaving puppies, preventing death loops.
 - **Pack Genetics**: Puppies inherit personality traits and stats from their parents. *(Feature unavailable in 26.1.2)*
 - **Litter System**: Wolves can produce multiple puppies in a single breed — each with independent personality rolls and stats. *(Feature unavailable in 26.1.2)*
+- **Inbreeding Penalties & Kinship Tracking**: Breeding closely related wolves (parent-child or sibling-sibling) triggers a severe genetic penalty, producing a tiny, weak, slow, and fragile "inbred runt." Parent UUIDs are tracked to prevent accidental inbreeding.
+- **Genetic Recovery & Curing**:
+  - **Outcrossing Recovery**: Breeding an inbred runt parent with an unrelated, healthy wolf will produce healthy offspring that inherit recovered baseline stats instead of the parent's stunted/penalized values.
+  - **Golden Apple Cure**: Feeding an inbred runt a Golden Apple cures its genetic status, restoring normal size and attribute multipliers. (Configurable via gamerule).
+
+<blockquote>⚠️ <strong>Inbreeding Note:</strong> Inbreeding penalties, outcrossing, and curing systems are only active in the 26.2+ release stream (v4.5.0+). I recommend keeping your breeding lineages clean to avoid stunting your dogs!</blockquote>
 
 ### 🛡️ Smart Survival AI
 - **Cliff Safety**: Wolves detect fatal drops and airborne targets, stopping dangerous chases.
@@ -101,6 +113,14 @@ Follow/spread spacing of wild and tamed wolf packs scales dynamically based on t
 - **Zoomies**: Dogs burst into hyperactive sprints in the morning or when it starts raining — pure joy!
 - **Group Howl**: Under a full moon, wolves trigger pack-wide howling sessions that spread to nearby pack members.
 - **Storm Anxiety**: Thunderstorms make dogs anxious — they whine, tremble, and pace nervously until the storm passes. This is highly dependent on their personality: Pacifist dogs are extremely prone to anxiety, Normal dogs have standard chances, and Aggressive dogs are completely immune.
+
+### 🏆 Custom Advancement System (Minecraft 26.2+)
+I added a collection of custom advancements to reward you for exploring all the new mechanics in the 4.5.x updates:
+- 🐕 **A Pack of Personalities**: Tame one of each wolf personality type (Normal, Aggressive, and Pacifist).
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Rifaditya/Vanilla-Outsider-Better-Dogs/26.2-core-alignment/Doc/Media/Gallery/a%20pack%20of%20personality%20advancement%20image.webp" alt="A Pack of Personalities Advancement" width="85%">
+</p>
 
 ### 🏰 Wild Wolf Territoriality
 Wild wolf packs are now dynamic, territorial entities led by a dominant leader:
@@ -121,6 +141,7 @@ Wild wolf packs are now dynamic, territorial entities led by a dominant leader:
   </p>
 - **Production Stable**: Fully compatible with high-performance engines like **C2ME**, ensuring safe multi-threaded AI execution.
 - **Performance Hardened**: All AI logic is performance-optimized using **DasikLibrary 1.8.0**, ensuring zero console spam and smooth server TPS even with massive packs.
+  - ⚡ **AI Query Throttling**: Heavy spatial search queries (such as scanning a 96-block radius for neighboring wild leaders in territorial goals, or tracking active follower counts in follow owner goals) are optimized. The AI uses cooperative caching (`FollowerSpacingCache`), dynamic-radius search scaling, and randomized execution cooldowns (2–4 seconds / 40–80 ticks) to completely prevent TPS spikes.
 
 ---
 
@@ -149,6 +170,13 @@ If you enjoy the **Vanilla Outsider** collection, consider fueling the next upda
 </p>
 
 <blockquote><strong>🇮🇩 Indonesian Users:</strong> SocioBuzz and Saweria support local payment methods (Gopay, OVO, Dana, etc.) if you want to support me without using PayPal/Ko-fi!</blockquote>
+
+---
+
+## 📦 Modpack Permissions
+
+<blockquote><strong>Modpack Distribution Policy:</strong><br>
+I grant permission to include this mod in any modpack, provided the modpack is hosted and distributed exclusively on the same platform (CurseForge). Redistribution of this mod or its compiled binaries on other platforms or third-party hosting sites without my explicit consent is strictly prohibited.</blockquote>
 
 ---
 
