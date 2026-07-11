@@ -1,4 +1,4 @@
-# 🐕 Better Dogs: A Social & Behavioral Overhaul (v4.14.7)
+# 🐕 Better Dogs: A Social & Behavioral Overhaul (v4.15.6)
 
 > [!IMPORTANT]
 > **Early Access & Latest Builds:** The latest versions of this mod may be delayed on public mainstream platforms (Modrinth/CurseForge). If you want immediate access to the newest updates, you can always compile the code directly from this repository, or support me on **[Ko-fi](https://ko-fi.com/dasikigaijin)** to get pre-compiled early access builds!
@@ -8,7 +8,7 @@
 
 **Better Dogs** is a comprehensive overhaul of the Minecraft Wolf, replacing robotic behaviors with a dynamic, personality-driven social system. Built for the modern "Post-Obfuscation" era of Minecraft, it enhances the taming loop with genetics, social bonding, and smart survival logic.
 
-## 🔥 New in v4.14.7: Nemesis System & Hidden Treats
+## 🔥 New in v4.15.5: Wide-Arc Flanking Encirclement & Treats
 
 - **Nemesis (Grudge) System**: Tamed wolves will now actively form a blood feud against hostile mobs that kill their pack-mates! Wolves with an active grudge gain `STRENGTH` and `SPEED` when attacking their nemesis.
 - **Hidden Favorite Treats**: Every dog has a hidden favorite treat! Finding and feeding them their favorite treat fully heals them, grants Regeneration II, and triggers their native Zoomies! (The specific treat can be hidden in Jade until discovered).
@@ -35,7 +35,7 @@ When tamed, wolves develop one of three permanent personalities:
   <img src="https://cdn.modrinth.com/data/cached_images/8722821ac9f7e1b6ca653e77cf90cf83dff2c432.png" alt="Vanilla/Normal" width="30%">
 </p>
 
-- 💢 **Aggressive**: The Guardian. Proactively attacks hostile mobs and scouts ahead. Emits red dust particles (`0xFF3333`) on patrol.
+- 💢 **Aggressive**: The Guardian. Proactively attacks hostile mobs, scouts ahead, and wanders in a wider outer circle far from the player to patrol the perimeter. Emits red dust particles (`0xFF3333`) on patrol.
 - ❤️ **Pacifist**: The Healer. Avoids combat unless you are hurt. High health, low damage. Emits green/teal dust particles (`0x00FF88`) on patrol.
 - ✨ **Normal**: The Classic. Balanced stats and standard vanilla-plus behavior. Emits gold/yellow dust particles (`0xFFD700`) on patrol.
 

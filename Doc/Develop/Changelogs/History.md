@@ -1,5 +1,68 @@
 # Better Dogs History & Concept Changelog
 
+## [4.15.11-26.2] - 2026-07-07
+### Changed
+- **Migrated Config GUI to YetAnotherConfigLib (YACL)**: Replaced optional Cloth Config integration with YACL (3.9.5+26.2-fabric):
+  - **Problem**: Cloth Config is legacy and less stable on newer environments, and the project policy requires using YACL for consistent and modernized UI controls.
+  - **Solution**: Removed Cloth Config dependencies and class files. Added `yet-another-config-lib` to suggests block in `fabric.mod.json`, declared it `compileOnly` in `build.gradle`, and registered the repository. Created `YaclScreenHelper` defining all categories (General, Personalities, Breeding, Territoriality, Gifts, Performance) with YACL-specific sliders, field inputs, tick boxes, and dropdown elements.
+  - **Environment Safety**: Utilized a standalone reflection check for `"yet-another-config-lib"` inside `ModMenuIntegration` to defer loading YACL classes. This ensures the mod remains 100% crash-safe on server environments or client installations that do not have YACL.
+
+## [4.15.10-26.2] - 2026-07-05
+### Changed
+- **Increased Tamed Pack Spread Multiplier**: Raised the default `tamedPackSpreadMultiplier` from `120` (1.2x) to `280` (2.8x):
+  - **Problem**: With the previous `1.2x` multiplier, a player would need over 150 wolves following to reach the new `15.0` block spacing max cap. This was far too high for standard gameplay where pack sizes are typically 5–30 wolves.
+  - **Solution**: Adjusted the default multiplier to `280` (2.8x). This mathematically scales follow distances such that a standard large pack of 30 following wolves ($\sqrt{30-1} \times 2.8 \approx 15.07$ blocks) naturally hits the `15.0` blocks spacing limit. Smaller packs (e.g. 5 wolves) now spread out up to 5.6 blocks, creating distinct coordination in normal play.
+
+## [4.15.9-26.2] - 2026-07-05
+### Changed
+- **Increased Tamed Pack Spread Max**: Raised the default `tamedPackSpreadMax` from `60` (6.0 blocks) to `150` (15.0 blocks):
+  - **Problem**: The previous 6.0-block hard cap was too restrictive for players with larger tamed wolf packs (10+ wolves). Wolves would cluster tightly once the cap was hit, reducing the visual impact of pack spreading and causing pathfinding congestion.
+  - **Solution**: Increased the decile value to `150` in both `BetterDogsConfig.java` and the JSON config default. Updated GameRule and Cloth Config descriptions in `en_us.json` and `id_id.json` to reflect the new default. The formula ($\text{offset} = \min(\sqrt{N-1} \times \text{multiplier}, \text{maxExtra})$) remains unchanged — only the ceiling is raised.
+
+## [4.15.8-26.2] - 2026-07-01
+### Added
+- **Dynamic Follow Range Scaling**: Configured tamed wolf `Attributes.FOLLOW_RANGE` to scale dynamically based on personality and active pack spread spacing:
+  - **Problem**: Wolves were instantly dropping targets shot by the player at distance (30+ blocks) because vanilla's hardcoded `FOLLOW_RANGE` defaults to 16.0 blocks. Once a wolf's target exceeded this range, `TargetGoal.canContinueToUse()` invalidated it on the very next tick.
+  - **Solution**: Applied personality-based base `FOLLOW_RANGE` values in `WolfStatManager` during stat initialization: Aggressive (32.0), Normal (24.0), Pacifist (16.0). Additionally, `PersonalityFollowOwnerGoal` now dynamically applies a transient `AttributeModifier` (`betterdogs:follow_range_spread`) that adds the current follower spacing offset to `FOLLOW_RANGE`. Using `addTransientModifier()` ensures the value updates in real-time without being written to NBT on level saves.
+
+## [4.15.7-26.2] - 2026-06-30
+### Fixed
+- **Wander Boundary Bouncing**: Replaced the forced return-path fallback in `TamedWanderNearOwnerGoal.getPosition()` with a clean `null` return:
+  - **Problem**: Wolves at their outer wander boundary were trapped in a restless, non-stop pacing loop. When all 10 random stroll attempts failed (because every candidate position fell outside the boundary), the fallback called `DefaultRandomPos.getPosTowards()` which forced a path back towards the owner. On the next tick, the wolf would wander outward again, repeating the cycle indefinitely.
+  - **Solution**: Returning `null` from `getPosition()` is the standard vanilla API contract for "no valid destination this tick," which causes `RandomStrollGoal` to gracefully cancel the walk action. The wolf now stands still naturally at its perimeter limit instead of pacing.
+
+## [4.15.6-26.2] - 2026-06-30
+### Fixed
+- **Sit & Flee Low Health Conflict**: Added checks to prevent the low-health flee AI goal (`WolfFleeLowHealthGoal`) from executing when a tamed wolf has been ordered to sit (`isOrderedToSit()`). This resolves the bug where injured dogs would frantically cycle between sitting and standing up to run away.
+
+## [4.15.5-26.2] - 2026-06-30
+### Changed
+- **Wide-Arc Encirclement & Direct Approach Dampening**: Adjusted flanking parameters to make encirclement patterns visually distinct:
+  - **Increased Flanking Radius**: Expanded side flanking coordinate offsets from 2.5 blocks to **4.5 blocks** and rear wrap offsets to **2.0 blocks** relative to the target's orientation. This forces flanking wolves to run in a wide, sweeping curve instead of a tight charge.
+  - **Dampened Direct Approach**: Reduced the approach speed of direct-charging wolves (lone/leader/closest wolves) further from 80% to **50% of combat speed** (`speedModifier * 0.5D`) when approaching from a distance (distance > 3 blocks). This creates a steady, slow-advancing central line, allowing flanking sweepers running at full speed to wrap around first.
+
+## [4.15.4-26.2] - 2026-06-30
+### Changed
+- **Context-Aware Flanking & Side Selection**: Refactored flanking tactics to select roles and directions dynamically based on physical coordinates:
+  - **Approach Time Role Assignment**: Instead of relying solely on the rolled speed attributes, each wolf's role is now determined by its *Approach Time*—the mathematical ratio of its physical distance from the target to its active movement speed attribute value ($\text{Approach Time} = \text{distance} / \text{speed}$). Sorting the active pack by this ratio ensures that the dogs closest and fastest to engage the target charge directly (first 50%) to lock it down, while the dogs farther away (remaining 50%) execute flanking maneuvers. This ensures that a close, slower dog does not sluggishly try to run away to "flank" while a distant, fast dog is forced to run straight.
+  - **Contextual Left/Right Split**: Flanking dogs choose their flank direction (Left or Right) dynamically based on their current physical position relative to the target's look vector. Using a 2D cross product of the target's horizontal look vector and the vector pointing from the target to the wolf ($\text{cross} = \text{forward.x} \times \text{toWolf.z} - \text{forward.z} \times \text{toWolf.x}$), a wolf already on the target's left side automatically flanks left, and a wolf on the right flanks right. This removes unnecessary, unnatural path crossings and collision intersections, creating a highly fluid and coordinated encirclement.
+
+## [4.15.3-26.2] - 2026-06-30
+### Changed
+- **Speed-Based Flanker Selection**: Replaced random/uniform flanking with attribute speed-based selection. The top 50% fastest dogs in the local pack execute flanking, while the slower 50% form the direct assault line. Split assignments (Left/Right) are dynamically balanced based on their speed ranking index to ensure a clean wrap-around split.
+
+## [4.15.2-26.2] - 2026-06-30
+### Changed
+- **Tamed Flanking Coordination**: Refactored the pack coordination behavior. Rather than boosting flanking dogs' speed, straight-charging wolves (lone/leader wolves) are now slowed to 80% speed during the target approach phase (distance > 3 blocks). Flanking followers move at full combat speed, allowing them to wrap around and encircle the target before the direct assault.
+
+## [4.15.1-26.2] - 2026-06-30
+### Fixed
+- **Tamed Flanking Tactics**: Fixed an issue where the flanking dogs would charge straight due to vanilla's `MeleeAttackGoal` pathing overrides. Overrode the `tick()` method completely to bypass vanilla overrides and added a `1.35x` movement speed boost during flanking to allow dogs to rapidly sweep around targets.
+
+## [4.15.0-26.2] - 2026-06-30
+### Added
+- **Tamed Pack Flanking Tactics**: Tamed wolves (dogs) now treat their owner (the player) as the pack leader. This enables cooperative flanking attacks during combat—dogs will automatically coordinate and split left and right around the target hostile relative to its direction, rather than running in straight lines.
+
 ## [4.14.7-26.2] - 2026-06-28
 ### Added
 - **Hidden Favorite Treats**: The Jade tooltip for a tamed dog's Favorite Treat now supports a "Hidden until discovered" mode. When enabled, the treat displays as `???` until the player successfully feeds the dog its specific favorite treat for the first time.

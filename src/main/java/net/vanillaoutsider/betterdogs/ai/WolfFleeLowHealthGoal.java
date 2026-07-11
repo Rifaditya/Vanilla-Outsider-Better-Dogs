@@ -1,4 +1,3 @@
-// Verified against: WolfFleeLowHealthGoal.java (26.2+)
 // SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.ai;
 
@@ -33,6 +32,11 @@ public class WolfFleeLowHealthGoal extends Goal {
 
     @Override
     public boolean canUse() {
+        // Prevent fleeing if ordered to sit
+        if (this.wolf.isOrderedToSit()) {
+            return false;
+        }
+
         // Toggleable via gamerule
         if (!DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_FLEE_LOW_HEALTH)) {
             return false;
@@ -84,6 +88,9 @@ public class WolfFleeLowHealthGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
+        if (this.wolf.isOrderedToSit()) {
+            return false;
+        }
         float lowHealthThreshold = wolf.getMaxHealth() * 0.30f;
         if (wolf.getHealth() >= lowHealthThreshold) {
             return false;
@@ -96,10 +103,5 @@ public class WolfFleeLowHealthGoal extends Goal {
         wolf.getNavigation().moveTo(this.posX, this.posY, this.posZ, this.speedModifier);
         // Clear active target to stop attacking while fleeing
         wolf.setTarget(null);
-    }
-
-    @Override
-    public void stop() {
-        wolf.getNavigation().stop();
     }
 }

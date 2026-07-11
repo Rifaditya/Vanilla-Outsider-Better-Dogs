@@ -1,10 +1,27 @@
 # 📋 Vanilla Outsider: Better Dogs Release Queue & Backlog
 
-This file tracks which built versions (from `/Archive/builds/`) have been manually uploaded to Modrinth/CurseForge.
+This file tracks which built versions (from the central archive folder "E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Archive Jar of all versions") have been manually uploaded to Modrinth/CurseForge.
 Open this file in your editor and change `[ ]` to `[x]` when you publish a version.
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`4.15.8-26.2`** (2026-07-01) - **Dynamic Follow Range Scaling:** Configured tamed wolf `Attributes.FOLLOW_RANGE` to scale with personality base stats (Aggressive: 32, Normal: 24, Pacifist: 16) and dynamically add the follower spacing offset. This prevents wolves from dropping target immediately when attacking distant mobs shot by their owner.
+- [ ] **`4.15.7-26.2`** (2026-06-30) - **Fix Wander Boundary Bouncing:** Replaced forced return-path fallback with null return in TamedWanderNearOwnerGoal, allowing wolves to naturally stand still at their expanded radius boundary instead of restlessly pacing back and forth. The spread multiplier now seamlessly governs all wander and follow distances without conflicting fallback behavior.
+- [ ] **`4.15.6-26.2`** (2026-06-30) - **Fix Sit & Flee Low Health Conflict:** Added checks to prevent low-health fleeing goals from activating or continuing when a tamed wolf is ordered to sit, resolving the frantic sit/stand loop bug.
+- [ ] **`4.15.5-26.2`** (2026-06-30) - **Wide-Arc Encirclement Adjustment:** Increased flanking coordinate side offset to 4.5 blocks and rear offset to 2.0 blocks. Dampened direct approach speed further to 50% speed during distant approaches to make the encircling tactic visually distinct.
+- [ ] **`4.15.4-26.2`** (2026-06-30) - **Context-Aware Flanking Selection:** Flanker role assignments now factor in both distance and speed (Approach Time). Dogs closer to the target engage directly to pin it, while farther dogs loop around. Flanking directions (left/right) are chosen contextually based on their current physical side to prevent crisscrossing.
+- [ ] **`4.15.3-26.2`** (2026-06-30) - **Speed-Based Flanker Selection:** Replaced random/uniform flanking with attribute speed-based selection. The top 50% fastest dogs in the local pack execute flanking, while the slower 50% form the direct assault line.
+- [ ] **`4.15.2-26.2`** (2026-06-30) - **Tamed Flanking Encirclement:** Modified pack coordination tactics to slow down straight-charging leaders/lone wolves to 80% speed during target approach, allowing flanking followers at normal speed to successfully encircle the target first.
+- [ ] **`4.15.1-26.2`** (2026-06-30) - **Tamed Flanking Fix:** Rewrote flanking goal to prevent vanilla pathing overrides from forcing straight-line charges, and added a 1.35x speed boost to allow flanking dogs to sweep around targets dynamically.
+- [ ] **`4.15.0-26.2`** (2026-06-30) - **Tamed Flanking Tactics:** Tamed wolves now treat their owner (the player) as the pack leader, enabling cooperative flanking AI during combat (splitting left/right around targets rather than running in straight lines).
+- [ ] **`4.14.7-26.2`** (2026-06-28) - **Hidden Treats:** Adds a "Hidden until discovered" mode to the Jade tooltip for a tamed dog's Favorite Treat.
+- [ ] **`4.14.6-26.2`** (2026-06-28) - **Sanitary Compliance:** Migrated all GameRule keys to the `betterdogs:` namespace.
+- [ ] **`4.14.5-26.2`** (2026-06-28) - **Jade Config:** Added built-in configuration toggles to the Jade plugin.
+- [ ] **`4.14.4-26.2`** (2026-06-28) - **Jade Sync:** Fixes client-side desync for the Inbred tag display.
+- [ ] **`4.14.3-26.2`** (2026-06-28) - **Refactor:** Extracted combat hooks from `WolfMixin` to `WolfCombatMixin` to stay under the 300 LOC limit.
+- [ ] **`4.14.2-26.2`** (2026-06-28) - **Optimization:** Throttled adoptable particles and watchdog radius checks via tick modulo to fix garbage collection overhead.
+- [ ] **`4.14.1-26.2`** (2026-06-28) - **Jade Hotfix:** Resolved plugin modid registration crashes.
+- [ ] **`4.14.0-26.2`** (2026-06-28) - **Jade Inbred Tag:** Displays inbred genetic tags in Jade HUD tooltips.
 - [ ] **`4.13.1-26.2`** (2026-06-28) - **Hotfix:** Jade integration now properly displays accurate Unicode hearts (`❤` and `♡`) and exact values (`HP: X / Y`), bypassing Jade's default 10-heart scaling cap that visually misrepresented large dynamic health pools.
 - [ ] **`4.13.0-26.2`** (2026-06-28) - **Jade Mod Integration:** Added official support for the Jade HUD tooltip mod. Now correctly overrides Jade's default health renderer to display the accurate dynamic health/max health of wolves, accounting for Better Dogs' genetic scaling and personality traits. Adds a custom tooltip line for tamed dogs showing their hidden "Favorite Treat" if the feature is enabled.
 - [ ] **`4.12.1-26.2`** (2026-06-27) - **Localization & GUI Quality Polish:** Cleaned up duplicate blocks and syntax errors in `id_id.json`. Added missing config keys for Creeper Avoidance and Pack Flanking Tactics to `en_us.json`. Corrected default values for Aggressive/Pacifist HP descriptions in both language files to match active code properties.

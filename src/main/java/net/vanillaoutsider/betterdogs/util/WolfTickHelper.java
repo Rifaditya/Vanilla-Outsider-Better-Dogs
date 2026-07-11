@@ -64,10 +64,12 @@ public class WolfTickHelper {
                     }
 
                     // Buff allied wolves within 6 blocks of this wolf
-                    List<Wolf> allies = serverLevel.getEntitiesOfClass(Wolf.class, wolf.getBoundingBox().inflate(6.0), w -> w.isTame() && w.getOwner() == owner);
+                    List<Wolf> allies = serverLevel.getEntitiesOfClass(Wolf.class, wolf.getBoundingBox().inflate(6.0), w -> w.isTame());
                     for (Wolf ally : allies) {
-                        ally.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 80, 0, true, true));
-                        ally.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 80, 0, true, true));
+                        if (ally.getOwner() == owner) {
+                            ally.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 80, 0, true, true));
+                            ally.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 80, 0, true, true));
+                        }
                     }
                 }
             }

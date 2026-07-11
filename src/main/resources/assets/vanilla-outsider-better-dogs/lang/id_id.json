@@ -1,4 +1,4 @@
-﻿{
+{
     "gamerule.category.vanilla-outsider-better-dogs.better_dogs": "Vanilla Outsider: Better Dogs",
     "gamerule.vanilla-outsider-better-dogs.bd_wolf_spawn_multiplier_percent": "Wolf Spawn Multiplier (%)",
     "gamerule.vanilla-outsider-better-dogs.bd_wolf_spawn_multiplier_percent.description": "Multiplier for wolf spawning weight in biome spawn settings. Default: 150 (represented as 1.5x spawn weight).",
@@ -233,9 +233,9 @@
     "config.betterdogs.wildPackSpreadMultiplier": "Pengali Jarak Kelompok Liar (%)",
     "config.betterdogs.wildPackSpreadMax": "Jarak Kelompok Liar Maksimal Tambahan (Blok)",
     "gamerule.vanilla-outsider-better-dogs.bd_tamed_pack_spread_multiplier": "Pengali Jarak Penyebaran Serigala Jinak",
-    "gamerule.vanilla-outsider-better-dogs.bd_tamed_pack_spread_multiplier.description": "Faktor skala untuk seberapa lebar serigala jinak menyebar saat banyak yang mengikuti pemilik. Default: 120 (pengali 1.2x)",
+    "gamerule.vanilla-outsider-better-dogs.bd_tamed_pack_spread_multiplier.description": "Faktor skala untuk seberapa lebar serigala jinak menyebar saat banyak yang mengikuti pemilik. Default: 280 (pengali 2.8x)",
     "gamerule.vanilla-outsider-better-dogs.bd_tamed_pack_spread_max": "Batas Jarak Penyebaran Serigala Jinak",
-    "gamerule.vanilla-outsider-better-dogs.bd_tamed_pack_spread_max.description": "Jarak tambahan maksimal yang ditambahkan ke rentang mengikuti serigala jinak. Default: 60 (6.0 blok)",
+    "gamerule.vanilla-outsider-better-dogs.bd_tamed_pack_spread_max.description": "Jarak tambahan maksimal yang ditambahkan ke rentang mengikuti serigala jinak. Default: 150 (15.0 blok)",
     "gamerule.vanilla-outsider-better-dogs.bd_wild_pack_spread_multiplier": "Pengali Jarak Penyebaran Serigala Liar",
     "gamerule.vanilla-outsider-better-dogs.bd_wild_pack_spread_multiplier.description": "Faktor skala untuk seberapa lebar serigala liar menyebar seiring bertambahnya ukuran kelompok. Default: 80 (pengali 0.8x)",
     "gamerule.vanilla-outsider-better-dogs.bd_wild_pack_spread_max": "Batas Jarak Penyebaran Serigala Liar",

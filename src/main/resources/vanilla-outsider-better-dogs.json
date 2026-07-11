@@ -104,8 +104,8 @@
   "pacifistGuardBuffs": false,
   "enableInbredCuring": true,
   "showRuntParticles": false,
-  "tamedPackSpreadMultiplier": 120,
-  "tamedPackSpreadMax": 60,
+  "tamedPackSpreadMultiplier": 280,
+  "tamedPackSpreadMax": 150,
   "wildPackSpreadMultiplier": 80,
   "wildPackSpreadMax": 40
 }

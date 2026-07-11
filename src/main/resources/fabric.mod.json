@@ -40,7 +40,7 @@
         "dasik-library": ">=1.8.0"
     },
     "suggests": {
-        "cloth-config": "*",
+        "yet-another-config-lib": "*",
         "modmenu": "*",
         "jade": "*"
     }

@@ -133,6 +133,17 @@ public class WolfStatManager {
                     AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
         }
 
+        // 3.5 Set personality base FOLLOW_RANGE value
+        var followRangeAttr = wolf.getAttribute(Attributes.FOLLOW_RANGE);
+        if (followRangeAttr != null) {
+            double baseFollowRange = switch (personality) {
+                case AGGRESSIVE -> 32.0;
+                case PACIFIST -> 16.0;
+                case NORMAL -> 24.0;
+            };
+            followRangeAttr.setBaseValue(baseFollowRange);
+        }
+
         // 4. Determine and apply Sound Variant based on genetics/stats mapping
         determineAndApplySoundVariant(wolf, personality, calculatedScale);
     }

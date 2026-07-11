@@ -141,8 +141,8 @@ public class BetterDogsConfig {
     public int terrMatrixPPMerge = 50;
 
     // ========== Pack Wander Scaling (v3.7.0) ==========
-    public int tamedPackSpreadMultiplier = 120;
-    public int tamedPackSpreadMax = 60;
+    public int tamedPackSpreadMultiplier = 280;
+    public int tamedPackSpreadMax = 150;
     public int wildPackSpreadMultiplier = 80;
     public int wildPackSpreadMax = 40;
     public double wolfSpawnMultiplier = 1.5;
