@@ -1,5 +1,143 @@
 # Changelog
 
+## [4.18.0+26.2] - 2026-07-21
+### Added
+- **Fast Travel & Chunk-Unload Catch-Up Teleport Safety**: Added automatic periodic catch-up teleportation for standing following wolves when the owner moves rapidly (via Elytra, horses, or speed buffs) and distance exceeds 40 blocks before entering unloaded chunks.
+- **Strict Follow Filter**: Only teleports active following wolves (`!unableToMoveToOwner()`), strictly ignoring dogs that are sitting, leashed, or assigned to Guard/Sentry Mode. Controlled via `betterdogs:bd_fast_travel_catchup`.
+
+## [4.17.0+26.2] - 2026-07-21
+### Added
+- **Configurable Wild Wolf Pack Group Sizes**: Added namespaced GameRules `betterdogs:bd_wolf_spawn_group_min` (default: `4`) and `betterdogs:bd_wolf_spawn_group_max` (default: `8`) to dynamically configure the minimum and maximum group size of naturally spawning wild wolf packs.
+- **Expanded Biomes Natural Spawning**: Added GameRule `betterdogs:bd_wolf_spawn_expanded_biomes` (default: `false`). When enabled, naturally expands wild wolf spawning to plains, meadows, forests, and mountain biomes cleanly without hard biome edits.
+- **YACL Controls**: Integrated controls for group size limits and expanded biomes into the YACL configuration screen.
+
+## [4.16.0+26.2] - 2026-07-21
+### Added
+- **Owner Teleport Synchronization**: Standing tamed wolves in the active follow state now automatically teleport alongside their owner during long-distance (> 24 blocks) or cross-dimension teleports.
+- **Strict Follow-State Filtering**: Restricts teleportation strictly to active following wolves. Wolves that are manually sitting, leashed, or assigned to Guard/Sentry Mode remain at their posts. Controlled via namespaced GameRule `betterdogs:bd_sync_owner_teleport`.
+
+## [4.15.18+26.2] - 2026-07-21
+### Added
+- **Farmer's Delight Favorite Treats Integration**: Tamed wolf Favorite Treats dynamically incorporate Farmer's Delight Refabricated food items (`farmersdelight:dog_food`, `minced_beef`, `mutton_chops`, `cooked_mutton_chops`, `bacon`, `cooked_bacon`, `chicken_cuts`, `cooked_chicken_cuts`, `ham`, `smoked_ham`, `beef_stew`, `chicken_soup`, `vegetable_soup`, `fish_stew`) into the candidate treat pool when Farmer's Delight is installed.
+- **Crash-Safe Vanilla Fallback**: Uses lazy runtime registry queries via `BuiltInRegistries.ITEM`. If Farmer's Delight is absent or on vanilla clients/servers, the system seamlessly defaults to the 9 standard vanilla treat items without errors or missing item references.
+
+## [4.15.17+26.2] - 2026-07-12
+### Added
+- **Dynamic Flanking Distance Scaling**: Tamed and wild pack flanking maneuvers now scale flanking offset distances dynamically based on the width of the targeted entity's bounding box. Radius scales to `Math.max(3.0, targetWidth * 2.5)` and rear shift scales to `Math.max(1.0, targetWidth * 1.1)`.
+- **Flanking Path Raycast Verification**: Added a namespaced GameRule `betterdogs:bd_flanking_raycast_check` that controls path raycast checking. When enabled, flanking dogs raycast from their eye height to the calculated destination to verify that paths are clear of solid obstacles and deep water before executing flanking loops.
+- **Raycast Fail Fallbacks**: If the primary flanking side is blocked, dogs try the opposite side. If both sides are blocked, they fall back to standard direct melee charging to prevent getting stuck in dead ends.
+
+## [4.15.16+26.2] - 2026-07-12
+### Added
+- **Cozy Storm Shelter**: Dogs suffering from storm anxiety now search for covered blocks where they cannot see the sky (in a 12x4x12 area, prioritizing the owner's vicinity). They will navigate to shelter if idle instead of pacing randomly.
+- **Comfort Soothing**: Players can comfort their anxious dogs during a storm by sneaking and right-clicking them with an empty hand, or by feeding them their Favorite Treat. Petting plays a comforting low-pitched whimper and note/heart particles, soothing their storm anxiety for 10 minutes (12000 ticks) and disabling whining and pacing.
+
+## [4.15.15+26.2] - 2026-07-12
+### Added
+- **Smart Creeper Blast Evasion**: Increased dog detection/avoidance range of active/swelling creepers to `10` blocks, raised walking/sprinting evasion speeds to `1.2`/`1.6`, and added visual smoke trails at their feet when running away.
+- **GameRule Compliance**: Properly checked the `betterdogs:bd_creeper_awareness` GameRule inside `FleeCreeperGoal` to support in-game toggling.
+
+## [4.15.14+26.2] - 2026-07-12
+### Added
+- **Configurable Wolf Size Range**: Added `wolfMinScale` and `wolfMaxScale` global options to config, allowing visual scale limits to be customized.
+- **Dynamic Size Range GameRules**: Added namespaced GameRules `betterdogs:bd_wolf_min_scale_percent` and `betterdogs:bd_wolf_max_scale_percent` to allow administrators to dynamically clamp scale on the logical server per-world.
+- **YACL UI Integration**: Integrated sliders for minimum and maximum size configuration in the Breeding & Genetics settings screen, including notice descriptions about per-world isolation.
+- **API Hardening**: Upgraded dependency constraint to `dasik-library >=1.8.3` to consume the new dynamic genetics limit APIs.
+
+## [4.15.13-26.2] - 2026-07-11
+### Added
+- **YACL Option Descriptions**: Implemented description tooltips for all configuration options.
+- **Dynamic Warning Notice**: Added a dynamic helper that appends a gold warning notice (`§6Notice:§r...`) to all GameRule-default configuration settings, notifying players that settings for existing worlds must be changed in-game.
+- **Added Localization Keys**: Registered custom description translations for the 11 configuration-only (non-GameRule) options in the mod's `en_us.json` file.
+
+## [4.15.12-26.2] - 2026-07-11
+### Fixed
+- **ModMenu Config Screen Integration**: Corrected the YACL mod ID check in `ModMenuIntegration` from `"yet-another-config-lib"` to `"yet_another_config_lib_v3"`, resolving the issue where the config button would not display or crashed when YACL v3 was installed.
+
+## [4.15.11-26.2] - 2026-07-07
+### Changed
+- **YACL Config Screen Migration**: Replaced optional Cloth Config integration with YetAnotherConfigLib (YACL) v3. Removed Cloth Config dependencies and classes. Added suggestions and configuration categories inside the client-only entrypoint, using a reflection-based ModMenu screen factory loader to ensure server-side compatibility.
+
+## [4.15.10-26.2] - 2026-07-05
+### Changed
+- **Tamed Pack Spacing Multiplier**: Increased default `tamedPackSpreadMultiplier` to `280` (2.8x) to mathematically scale follow distances so that standard large packs (approx. 30 wolves) reach the maximum follow range spacing limit.
+
+## [4.15.9-26.2] - 2026-07-05
+### Changed
+- **Tamed Pack Spacing Limit**: Increased default `tamedPackSpreadMax` to `150` (15.0 blocks) to prevent crowding when running large packs of tamed wolves.
+
+## [4.15.8-26.2] - 2026-07-01
+### Changed
+- **Dynamic Follow Range Scaling**: Scaled tamed wolf `Attributes.FOLLOW_RANGE` dynamically based on personality base stats (Aggressive: 32, Normal: 24, Pacifist: 16) plus a transient follow range spread offset to prevent wolves from dropping target too quickly in combat.
+
+## [4.15.7-26.2] - 2026-06-30
+### Fixed
+- **Tamed Wander Boundary Pacing**: Replaced the return-path fallback inside `TamedWanderNearOwnerGoal` with a clean null return. Wolves now naturally stand still at their perimeter boundary instead of pacing back and forth.
+
+## [4.15.6-26.2] - 2026-06-30
+### Fixed
+- **Sit and Flee Low Health Conflict**: Added checks to prevent low-health fleeing goals from activating when a tamed wolf is sitting.
+
+## [4.15.5-26.2] - 2026-06-30
+### Changed
+- **Wide-Arc Encirclement Adjustment**: Increased flanking coordinate side offset to 4.5 blocks and rear wrap to 2.0 blocks. Dampened direct approach speed to 50% during distant approaches.
+
+## [4.15.4-26.2] - 2026-06-30
+### Changed
+- **Context-Aware Flanking Selection**: Flanker role assignments now factor in both distance and speed (Approach Time). Dogs engagement directions (left/right) are chosen contextually based on their current physical side to prevent crossing.
+
+## [4.15.3-26.2] - 2026-06-30
+### Changed
+- **Speed-Based Flanker Selection**: The top 50% fastest dogs in the local pack execute flanking, while the slower 50% form the direct assault line.
+
+## [4.15.2-26.2] - 2026-06-30
+### Changed
+- **Tamed Flanking Coordination**: Direct-charging wolves slow down to 80% speed during target approach, allowing flanking followers at normal speed to successfully encircle the target first.
+
+## [4.15.1-26.2] - 2026-06-30
+### Fixed
+- **Tamed Flanking Navigation**: Overrode the `tick()` method in flanking goals to bypass vanilla pathing overrides and added a 1.35x speed boost to allow flanking dogs to sweep around targets dynamically.
+
+## [4.15.0-26.2] - 2026-06-30
+### Added
+- **Tamed Pack Flanking Tactics**: Tamed wolves now treat their owner as the pack leader, enabling cooperative flanking AI during combat (splitting left/right around targets).
+
+## [4.14.7-26.2] - 2026-06-28
+### Added
+- **Hidden Favorite Treats**: Added a "Hidden until discovered" mode to the Jade tooltip for a tamed dog's Favorite Treat.
+
+## [4.14.6-26.2] - 2026-06-28
+### Changed
+- **Sanitary Compliance**: Migrated all GameRule keys to the `betterdogs` namespace.
+
+## [4.14.5-26.2] - 2026-06-28
+### Added
+- **Jade Config**: Added built-in configuration toggles to the Jade plugin.
+
+## [4.14.4-26.2] - 2026-06-28
+### Fixed
+- **Jade Sync**: Fixed client-side desync for the Inbred tag display by implementing a Jade `IServerDataProvider` sync package.
+
+## [4.14.3-26.2] - 2026-06-28
+### Changed
+- **Refactor**: Extracted combat hooks from `WolfMixin` to `WolfCombatMixin` to stay under the 300 LOC limit.
+
+## [4.14.2-26.2] - 2026-06-28
+### Optimized
+- **Performance Optimization**: Extracted particle options into static fields and throttled adoptable particle trails and Pacifist buff checks via tick modulo.
+
+## [4.14.1-26.2] - 2026-06-28
+### Fixed
+- **Jade Registration**: Resolved Jade plugin modid registration crashes.
+
+## [4.14.0-26.2] - 2026-06-28
+### Added
+- **Jade Inbred Tag**: Displays inbred genetic tags in Jade HUD tooltips.
+
+## [4.13.5-26.2] - 2026-06-28
+### Added
+- **Dynamic Jade Health UI**: Added a custom heart element to bypass Jade's hardcoded 20-icon render cap, and implemented client synchronization for Max Health attribute modifications.
+
 ## [4.13.2-26.2] - 2026-06-28 (Broken - Skip)
 ### Fixed
 - **Jade Health Override Priority**: Fixed an issue where the custom Jade health provider was executing before Jade's default provider, causing the accurate dynamic hearts to be immediately overwritten by the default vanilla capped hearts. The custom provider now correctly replaces the default health component.

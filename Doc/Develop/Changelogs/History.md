@@ -1,5 +1,79 @@
 # Better Dogs History & Concept Changelog
 
+## [4.18.0+26.2] - 2026-07-21
+### Added
+- **Fast Travel & Chunk-Unload Catch-Up Teleport Safety**:
+  - **Problem**: When an owner moves rapidly (via Elytra, horses, speed potions, or boats), following wolves fall far behind and get trapped in unloaded or frozen border chunks before standard vanilla pathfinding teleports them.
+  - **Solution**: Intercepted player tick (`ServerPlayer.tick`) to perform a 1-second interval catch-up scan for active following wolves. If a wolf is further than 40 blocks away from the player, it is automatically teleported to a safe ground location near the owner before its chunk unloads.
+  - **Strict Follow Filter**: Only teleports wolves in active follow state (`!wolf.unableToMoveToOwner()`), strictly excluding dogs that are sitting, leashed, or assigned to Guard/Sentry Mode. Governed by `betterdogs:bd_fast_travel_catchup`.
+
+## [4.17.0+26.2] - 2026-07-21
+### Added
+- **Configurable Wild Wolf Pack Group Sizes**:
+  - **Problem**: Wild wolf packs were hardcoded to vanilla group sizes (4-4), making it tedious to encounter natural larger packs or adjust spawning behavior for modpacks.
+  - **Solution**: Added GameRules `betterdogs:bd_wolf_spawn_group_min` (default: 4) and `betterdogs:bd_wolf_spawn_group_max` (default: 8) to dynamically adjust wild pack group sizes.
+- **Expanded Biomes Natural Spawning**:
+  - **Problem**: Wild wolves only spawned naturally in sparse taigas and snowy slopes, making them rare and grindy to locate in survival mode.
+  - **Solution**: Added GameRule `betterdogs:bd_wolf_spawn_expanded_biomes` (default: false). When enabled, dynamically injects natural wild wolf spawns into plains, meadows, forests, and mountain biomes without modifying biome files.
+
+## [4.16.0+26.2] - 2026-07-21
+### Added
+- **Owner Teleport Synchronization**:
+  - **Problem**: When a player teleports over long distances (via `/tp` or waypoints) or transitions across dimensions, active following wolves are left behind in unloaded origin chunks, requiring tedious manual commands or travel to recover them.
+  - **Solution**: Intercepted player teleportation (`ServerPlayer.teleport`) to scan origin vicinity (32-block radius) for active following wolves.
+  - **Strict Follow-State Filtering**: Teleportation is strictly restricted to wolves in active follow state (`!wolf.unableToMoveToOwner()`, not sitting, not leashed, and not in Guard/Sentry Mode). Governed by `betterdogs:bd_sync_owner_teleport`.
+
+## [4.15.18+26.2] - 2026-07-21
+### Added
+- **Farmer's Delight Favorite Treats Integration**:
+  - **Problem**: Favorite Treats only supported 9 vanilla Minecraft food items. Players using popular food mods like Farmer's Delight Refabricated could not use custom modded meats or dog food as Favorite Treats.
+  - **Solution**: Dynamically resolve Farmer's Delight items (`farmersdelight:dog_food`, `minced_beef`, `mutton_chops`, `cooked_mutton_chops`, `bacon`, `cooked_bacon`, `chicken_cuts`, `cooked_chicken_cuts`, `ham`, `smoked_ham`, `beef_stew`, `chicken_soup`, `vegetable_soup`, `fish_stew`) at runtime when the `farmersdelight` mod is installed.
+  - **Crash-Safe Vanilla Fallback**: Uses runtime `BuiltInRegistries.ITEM` queries. If Farmer's Delight is absent, the treat pool defaults seamlessly to the standard 9 vanilla items without throwing errors on vanilla clients or servers.
+
+## [4.15.17+26.2] - 2026-07-12
+### Added
+- **Dynamic Flanking Distance Scaling**:
+  - **Problem**: Flanking offsets were previously hardcoded to 4.5 blocks (side) and 2.0 blocks (rear). While this worked for standard humanoid mobs, it was ineffective for larger targets (such as Ravagers, Ghasts, or Wardens) causing dogs to run inside the collision box, or smaller targets where they spread out too far.
+  - **Solution**: Scaled flanking radius to `Math.max(3.0, targetWidth * 2.5)` and rear shift to `Math.max(1.0, targetWidth * 1.1)`. This scales flanking sweeps dynamically based on the targeted mob's bounding box size.
+- **Flanking Path Raycast Verification**:
+  - **Problem**: Dogs had no safety verification before committing to flanking positions, causing them to run into solid walls, clip into dead ends, or get stuck in deep water.
+  - **Solution**: Added a namespaced GameRule `betterdogs:bd_flanking_raycast_check` that defaults to `true`. When enabled, flanking dogs raycast using `ClipContext` from their eye level to the destination. If the path is blocked by solid obstacles or water, the dog attempts to flank via the opposite side. If both sides are blocked, it falls back to standard direct charge pathing.
+
+## [4.15.16+26.2] - 2026-07-12
+### Added
+- **Cozy Storm Shelter**:
+  - **Problem**: During thunder storms, storm-anxious dogs would pacify in random locations using a basic pacing goal. They did not actively seek shelter blocks to escape the lightning and rain, nor did they try to stay close to their owner.
+  - **Solution**: Updated `WolfStormAnxietyGoal.java` to scan a 12x4x12 area for covered blocks where the sky is not visible. Prioritizes the owner's location if the owner is within 32 blocks. If the dog is already sheltered near the owner, it stays put. Otherwise, it paths to the shelter block.
+- **Comfort Soothing**:
+  - **Problem**: There was no way for players to calm down their anxious, whimpering dogs during a storm, forcing them to listen to whimpers until the storm ended.
+  - **Solution**: Added soothing capability via sneaking right-click petting (with an empty hand) or feeding the dog its Favorite Treat. Comforting sets a transient `betterdogs$soothedTime` field, disabling the anxiety pacing and whimpering goals for 10 minutes (12000 ticks) and playing heart/note particles alongside a low-pitched whimper comfort sound.
+
+## [4.15.15+26.2] - 2026-07-12
+### Added
+- **Smart Creeper Blast Evasion**:
+  - **Problem**: Previously, tamed dogs fled creepers within a short `6.0`-block range at standard speeds, which was too late to escape active explosions. Also, the behavior failed to respect the `bd_creeper_awareness` GameRule.
+  - **Solution**: Increased range to `10.0` blocks, adjusted walking/sprinting speeds to `1.2`/`1.6`, added a GameRule check inside `canUse()`, and spawned visual panic smoke trails at the feet of fleeing dogs in `tick()`.
+
+## [4.15.14+26.2] - 2026-07-12
+### Added
+- **Configurable Wolf Size Range limits**:
+  - **Problem**: Wolves had their visual scale calculated using a fixed formula based on health and UUID random offset, with no upper/lower boundary settings. Players could end up with extremely large or small wolves that clipped through blocks or became hard to see, and server admins could not enforce size limits.
+  - **Solution**: Added global configuration fields `wolfMinScale` and `wolfMaxScale` to `BetterDogsConfig`. Added namespaced GameRules `betterdogs:bd_wolf_min_scale_percent` and `betterdogs:bd_wolf_max_scale_percent` which default to the configuration values. Added dynamic clamping of the final visual scale in `WolfStatManager.java` using these GameRules.
+  - **YACL UI Integration**: Integrated sliders for minimum and maximum size configuration in the Breeding & Genetics settings screen, including notice descriptions about per-world isolation.
+  - **API Hardening**: Upgraded dependency constraint to `dasik-library >=1.8.3` to consume the new dynamic genetics limit APIs.
+
+## [4.15.13-26.2] - 2026-07-11
+### Added
+- **YACL Option Descriptions Tooltips**:
+  - **Problem**: Option descriptions in the YACL screen were completely blank when hovering, making it hard for players to understand settings.
+  - **Solution**: Injected `.description(...)` calls in `YaclScreenHelper.java`. Added translation keys for config-only options to `en_us.json`. Created a dynamic mapping helper `getDescription` that loads GameRule and config translation keys and automatically appends the gold warning notice for GameRule-default configuration settings.
+
+## [4.15.12-26.2] - 2026-07-11
+### Fixed
+- **ModMenu Config Screen Integration**:
+  - **Problem**: ModMenu did not display the gear button and crashed due to an invalid YACL mod ID check.
+  - **Solution**: Changed YACL mod ID string from `"yet-another-config-lib"` to `"yet_another_config_lib_v3"` in `ModMenuIntegration.java`.
+
 ## [4.15.11-26.2] - 2026-07-07
 ### Changed
 - **Migrated Config GUI to YetAnotherConfigLib (YACL)**: Replaced optional Cloth Config integration with YACL (3.9.5+26.2-fabric):

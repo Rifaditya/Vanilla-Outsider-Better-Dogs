@@ -1,4 +1,4 @@
-<p align="center">
+﻿<p align="center">
     <a href="https://www.curseforge.com/minecraft/mc-mods/fabric-api"><img src="https://img.shields.io/badge/Requires-Fabric_API-blue?style=for-the-badge&logo=fabric" alt="Requires Fabric API"></a>
     <img src="https://img.shields.io/badge/Language-Java_25-orange?style=for-the-badge&logo=java" alt="Java 25">
     <img src="https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge" alt="License">
@@ -7,13 +7,7 @@
 
 # 🐕 Better Dogs
 
-### 🎮 Version Compatibility & Parity
 
-This mod is active and fully supported:
-* **Minecraft 26.2+**: Current public release — **`v4.6.15`**
-* **Minecraft 26.1.2**: **Discontinued** — **`v3.7.1`**
-
-While 26.1.2 is discontinued, **Minecraft 26.2+ contains additional advanced features** (such as Pack Genetics, the Litter System, and the dynamic Gifting System).
 
 <blockquote><strong>Make Wolves Worthy Companions. Smarter, Safer, Livelier.</strong></blockquote>
 
@@ -75,22 +69,27 @@ Follow/spread spacing of wild and tamed wolf packs scales dynamically based on t
 - **Adult Correction**: Aggressive adults discipline misbehaving puppies, preventing death loops.
 - **Pack Genetics**: Puppies inherit personality traits and stats from their parents.
 - **Litter System**: Wolves can produce multiple puppies in a single breed — each with independent personality rolls and stats.
+- **Unrelated Mate Prioritization**: Tamed wolves will prioritize breeding with unrelated pack mates in range to prevent accidental inbreeding. If no unrelated options exist, they will fallback to related mates.
+- **Selective Ground Food Refusal**: Some selectively bred or tamed-from-birth lineages can persistently refuse to eat food scavenged from the ground, ensuring they only eat when fed directly by their owner. Toggleable via game rules.
 
 ### 🛡️ Smart Survival AI
 - **Cliff Safety**: Wolves detect fatal drops and airborne targets, stopping dangerous chases.
-- **Hazard Awareness**: Improved pathfinding around lava, fire, and drowning hazards.
+- **Hazard & Magma Block Avoidance**: Wolves intelligently pathfind around lava, fire, drowning hazards, and magma blocks.
+- **Collision & Push Safety**: Tamed wolves colliding with a sitting, guarding, or endangered packmate (facing a cliff, lava, or magma hazard) immediately halt their navigation to prevent pushing them into danger.
 - **Creeper Awareness**: Wolves flee from hissing Creepers!
 - **Dog Feeding**: Tamed dogs scavenge dropped raw or cooked food from the ground to restore health — no manual feeding required.
+- **Dynamic Whimpering Thresholds**: Low-health whining/whimpering is dynamically scaled based on the wolf's maximum health (< 50% max HP) instead of a fixed threshold, preventing Runts and puppies from whining constantly when healthy.
 
 ### 📡 Behavioral Specialization
 - **Scouting**: Aggressive dogs proactively range ahead to clear your path.
 - **Silent Alarm**: Pacifist dogs emit a high-pitched whine and freeze to point toward nearby monsters.
+- **Select-and-Ride Command System**: Sneak-right-click a tamed wolf with a standard Stick to command them to sit or ride inside vehicles, mounts, boats, minecarts, or modded chairs, forcing a proper visual sitting pose.
 - **Gift System**: Loyal dogs bring you treasures based on their personality.
 - **Debug Tools**: Use `/betterdogs debug` to test pack interactions and behaviors (Locked behind OP permissions and a safety GameRule).
 
 ### 🌤️ Immersive Events
 - **Zoomies**: Dogs burst into hyperactive sprints in the morning or when it starts raining — pure joy!
-- **Group Howl**: Under a full moon, wolves trigger pack-wide howling sessions that spread to nearby pack members.
+- **Restored Soundscapes & Group Howl**: Restored the atmospheric vanilla pack howl audio files as a registered sound event. Under a full moon, wolves trigger pack-wide howling sessions that spread to nearby pack members.
 - **Storm Anxiety**: Thunderstorms make dogs anxious — they whine, tremble, and pace nervously until the storm passes. This is highly dependent on their personality: Pacifist dogs are extremely prone to anxiety, Normal dogs have standard chances, and Aggressive dogs are completely immune.
 
 ### 🏰 Wild Wolf Territoriality
@@ -118,10 +117,10 @@ Wild wolf packs are now dynamic, territorial entities led by a dominant leader:
 ## ⚙️ Configuration (Native Game Rules)
 
 
-> [!IMPORTANT]
-> **Config vs. In-Game GameRules:**
-> The global configuration file only defines **default values for new worlds** at creation time.
-> If you have **already created/opened a world**, changing the config file will have no effect. You must change the settings in-game using the **Edit Game Rules** UI screen or the /gamerule command.
+<blockquote>
+    <strong>⚠️ Config vs. In-Game GameRules:</strong><br>
+    The global configuration file only defines <strong>default values for new worlds</strong> at creation time. If you have <strong>already created/opened a world</strong>, changing the config file will have no effect. You must change the settings in-game using the <strong>Edit Game Rules</strong> UI screen or the /gamerule command.
+</blockquote>
 No messy config files. Better Dogs uses the **Native Minecraft Game Rules** system. All 50+ mod parameters are grouped into a dedicated **"Better Dogs"** category in the official UI.
 
 <blockquote>💡 <strong>Too many rules?</strong> If the game rule screen feels cluttered, we highly recommend installing <a href="https://www.curseforge.com/minecraft/mc-mods/collapsible-gamerules">Collapsible Game Rules</a>. It will automatically group the new Personality Matrix settings into clean, expandable folders!</blockquote>
@@ -155,6 +154,14 @@ If you enjoy the **Vanilla Outsider** collection, consider fueling the next upda
 | **Creator** | **Dasik** (Rifaditya) |
 | **Collection** | Vanilla Outsider |
 | **License** | GPLv3 |
+
+<blockquote>
+    <strong>📦 Modpack Permissions & Distribution:</strong><br>
+    You are free to include this mod in any modpack on any platform. However, the mod itself must be downloaded from its official distribution pages on <strong>Modrinth</strong> or <strong>CurseForge</strong>. Re-uploading or redistributing the mod jar file to third-party sites is strictly prohibited unless explicitly permitted by the creator.
+    <br><br>
+    <strong>License & Forks:</strong><br>
+    Since the source code is licensed under <strong>GNU GPLv3</strong>, you are fully permitted to fork the repository, make modifications, build your own versions, and distribute them under the terms of the GPLv3. The prohibition on third-party redistribution applies exclusively to the official compiled releases/jars published by the original creator (Dasik/Rifaditya). Forks must be published as distinct projects, not direct re-uploads of official builds.
+</blockquote>
 
 ---
 
