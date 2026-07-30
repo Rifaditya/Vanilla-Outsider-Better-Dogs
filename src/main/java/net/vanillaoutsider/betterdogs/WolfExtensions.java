@@ -251,4 +251,7 @@ public interface WolfExtensions {
     void betterdogs$setSoundLocationTarget(@Nullable BlockPos pos);
     int betterdogs$getPassiveOverrideTicks();
     void betterdogs$setPassiveOverrideTicks(int ticks);
+
+    // ========== Transient Memory & State Cleanup (V5.0.4) ==========
+    void betterdogs$clearTransientState();
 }

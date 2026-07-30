@@ -1,5 +1,9 @@
 # Changelog
 
+## [5.0.4+26.3] - 2026-07-31
+### Refactored
+- **Memory Leak & Entity Removal Cleanup Hooks**: Implemented `betterdogs$clearTransientState()` and injected `die` and `remove` hooks in `WolfMixin.java`. Nullifies transient `socialTarget` entity references, resets spatial targets (`soundLocationTarget`, `pathfindAvoidPos`), clears Goat Horn override timers (`passiveOverrideTicks`), and cancels running scheduler tasks when a wolf dies or is removed.
+
 ## [5.0.3+26.3] - 2026-07-31
 ### Refactored
 - **C2ME & Multi-Threading Asynchronous Chunk Safety**: Added strict `level.hasChunkAt(pos)` guards across AI goals (`WolfStormAnxietyGoal`, `EatGroundFoodGoal`) and teleportation helpers (`WolfTeleportHelper`, `WolfCatchUpHelper`) to prevent chunk loading deadlocks and race conditions under multi-threaded chunk generators (C2ME / Noisium).

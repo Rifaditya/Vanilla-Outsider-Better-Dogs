@@ -312,4 +312,23 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     public net.minecraft.world.entity.ai.goal.GoalSelector betterdogs$getGoalSelector() {
         return this.goalSelector;
     }
+
+    @Override
+    public void betterdogs$clearTransientState() {
+        this.betterdogs$soundLocationTarget = null;
+        this.betterdogs$pathfindAvoidPos = null;
+        this.betterdogs$passiveOverrideTicks = 0;
+        this.betterdogs$setBeingDisciplined(false);
+        this.betterdogs$setSocialState(null, SocialAction.NONE, 0);
+    }
+
+    @Inject(method = "die", at = @At("HEAD"))
+    private void betterdogs$onDie(net.minecraft.world.damagesource.DamageSource damageSource, CallbackInfo ci) {
+        this.betterdogs$clearTransientState();
+    }
+
+    @Inject(method = "remove", at = @At("HEAD"))
+    private void betterdogs$onRemove(net.minecraft.world.entity.Entity.RemovalReason reason, CallbackInfo ci) {
+        this.betterdogs$clearTransientState();
+    }
 }

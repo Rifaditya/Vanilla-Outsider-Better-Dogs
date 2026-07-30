@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`5.0.4+26.3`** (2026-07-31) - **Memory Leak Cleanup Hooks:** Added `die` and `remove` hooks in `WolfMixin` to nullify `socialTarget` entity references, clear spatial targets, reset Goat Horn timers, and cancel scheduler tasks upon entity removal.
 - [ ] **`5.0.3+26.3`** (2026-07-31) - **C2ME Multi-Threading Chunk Safety:** Added `level.hasChunkAt(pos)` guards to teleportation and AI goal block searches to prevent asynchronous chunk loading deadlocks under C2ME/Noisium.
 - [ ] **`5.0.2+26.3`** (2026-07-31) - **Mixin Security & Architecture Refactor:** Audited all 25 Mixin classes for `@Unique` annotations and `betterdogs$` member prefixing. Extracted 260-line Goat Horn command logic from `InstrumentItemMixin` into standalone `WolfHornHelper`.
 - [ ] **`5.0.1+26.3`** (2026-07-30) - **MC 26.3 Fixes:** Fixed world tick crash by aligning `NaturalSpawnerMixin.mobsAt` descriptor to MC 26.3 refactored method signature, and resolved game load crash from duplicate `betterdogs:bd_creeper_awareness` GameRule.
