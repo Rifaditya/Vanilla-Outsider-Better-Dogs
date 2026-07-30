@@ -59,7 +59,11 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
     // ========== Static Helper Methods (using Fabric Attachment API) ==========
 
     public static WolfPersistentData getWolfData(Wolf wolf) {
-        return wolf.getAttachedOrCreate(BetterDogs.WOLF_DATA, () -> WolfPersistentData.DEFAULT);
+        if (wolf == null) {
+            return WolfPersistentData.DEFAULT;
+        }
+        WolfPersistentData data = wolf.getAttached(BetterDogs.WOLF_DATA);
+        return data != null ? data : WolfPersistentData.DEFAULT;
     }
 
     public static void setWolfData(Wolf wolf, WolfPersistentData data) {
@@ -165,7 +169,11 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
     }
 
     public static float getScale(Wolf wolf) {
-        return getWolfData(wolf).scale();
+        float rawScale = getWolfData(wolf).scale();
+        if (Float.isNaN(rawScale) || Float.isInfinite(rawScale)) {
+            return 1.0f;
+        }
+        return Math.clamp(rawScale, 0.5f, 2.0f);
     }
 
     public static void setScale(int personalityId, int lastDamageTime, boolean submissive, @Nullable String bloodFeudTarget, long lastMischiefDay, long dna, Wolf wolf, float scale, Map<String, Integer> affinityMap, Optional<UUID> leaderUuid, boolean guardMode, Optional<BlockPos> guardPos, boolean adoptable) {
