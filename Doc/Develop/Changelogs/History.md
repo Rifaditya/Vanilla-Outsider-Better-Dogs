@@ -1,5 +1,9 @@
 # Better Dogs History & Concept Changelog
 
+## [5.0.7+26.3] - 2026-07-31
+### Added
+- **Universal AnimalGeneticsAPI Integration**: Created `net.dasik.social.api.genetics.AnimalGeneticsAPI` in `DasikLibrary` providing a standardized, multi-animal genetics API facade (`hasGenetics`, `getTrait`, `getHealthBonus`, `getDamageMod`, `getSpeedMod`, `isInbred`, `inherit`, `rollStats`) usable across all animal mods. Integrated API calls into `WolfPersistentData.java` and `WolfBreedingMixin.java`.
+
 ## [5.0.6+26.3] - 2026-07-31
 ### Refactored
 - **NBT Data & Codec Serialization Hardening**: Added null-safety fallback guards to `WolfPersistentData.getWolfData(wolf)` returning `DEFAULT` if attachment decoding yields null. Added NaN/Infinity checks and scale clamping (`Math.clamp(scale, 0.5f, 2.0f)`) to prevent rendering and hitbox corruption from legacy or malformed entity NBT tags.

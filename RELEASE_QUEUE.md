@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`5.0.7+26.3`** (2026-07-31) - **Universal AnimalGeneticsAPI Integration:** Created `AnimalGeneticsAPI` in `DasikLibrary` and integrated multi-animal genetics calls into `WolfPersistentData` and `WolfBreedingMixin`.
 - [ ] **`5.0.6+26.3`** (2026-07-31) - **NBT Serialization Hardening:** Fortified `WolfPersistentData.getWolfData(wolf)` with null-safety fallback guards and added NaN/Infinity scale clamping (`[0.5f, 2.0f]`).
 - [ ] **`5.0.5+26.3`** (2026-07-31) - **Automated GameTest Framework & Mandate:** Established `gradle-tester` skill, added GameTest verification mandate to Core Constitution, and implemented `BetterDogsGameTests.java` suite.
 - [ ] **`5.0.4+26.3`** (2026-07-31) - **Memory Leak Cleanup Hooks:** Added `die` and `remove` hooks in `WolfMixin` to nullify `socialTarget` entity references, clear spatial targets, reset Goat Horn timers, and cancel scheduler tasks upon entity removal.

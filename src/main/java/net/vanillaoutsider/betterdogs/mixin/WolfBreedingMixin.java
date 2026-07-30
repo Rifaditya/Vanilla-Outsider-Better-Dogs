@@ -54,15 +54,14 @@ public abstract class WolfBreedingMixin {
         WolfPersonality babyPersonality = betterdogs$calculateOffspringPersonality(level, p1, p2);
         babyExt.betterdogs$setPersonality(babyPersonality);
 
-        // Inherit genetics via DasikLibrary Genetics Engine
-        net.dasik.social.api.genetics.GeneticsEngine.inheritGenetics(baby, parent1, parent2, babyPersonality.name().toLowerCase(java.util.Locale.ROOT));
+        // Inherit genetics via DasikLibrary DasikAnimalGeneticsAPI
+        net.dasik.social.api.genetics.DasikAnimalGeneticsAPI.inherit(baby, parent1, parent2, babyPersonality.name().toLowerCase(java.util.Locale.ROOT));
 
-        // Get parent and baby genetics for advancement triggers
-        var babyGen = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(baby);
-        var p1Gen = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(parent1);
-        var p2Gen = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(parent2);
+        boolean babyInbred = net.dasik.social.api.genetics.DasikAnimalGeneticsAPI.isInbred(baby);
+        boolean p1Inbred = net.dasik.social.api.genetics.DasikAnimalGeneticsAPI.isInbred(parent1);
+        boolean p2Inbred = net.dasik.social.api.genetics.DasikAnimalGeneticsAPI.isInbred(parent2);
 
-        if (babyGen.inbred()) {
+        if (babyInbred) {
             net.minecraft.server.level.ServerPlayer player = parent1.getLoveCause();
             if (player == null) {
                 player = parent2.getLoveCause();
@@ -70,7 +69,7 @@ public abstract class WolfBreedingMixin {
             if (player != null) {
                 net.vanillaoutsider.betterdogs.BetterDogs.INBRED_WOLF.trigger(player);
             }
-        } else if (p1Gen.inbred() || p2Gen.inbred()) {
+        } else if (p1Inbred || p2Inbred) {
             net.minecraft.server.level.ServerPlayer player = parent1.getLoveCause();
             if (player == null) {
                 player = parent2.getLoveCause();
