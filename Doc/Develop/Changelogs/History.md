@@ -1,5 +1,9 @@
 # Better Dogs History & Concept Changelog
 
+## [5.0.11+26.3] - 2026-07-31
+### Added
+- **Automated GameTest Expansion**: Added `testGeneticsScaleClamping`, `testKinshipAndInbreedingRisk`, `testTraitMutationAndReset`, and `testGuardModePosAnchoring` to `BetterDogsGameTests.java`.
+
 ## [5.0.10+26.3] - 2026-07-31
 ### Added
 - **Dynamic Trait Modifiers & Stat Reset API Integration**: Integrated `setTrait`, `modifyTrait`, and `resetGenetics` methods from `DasikAnimalGeneticsAPI` in `DasikLibrary` v1.8.8. Delegated `setPersistedHealthBonus`, `setPersistedDamageMod`, and `setPersistedSpeedMod` in `WolfPersistentData.java` directly to `DasikAnimalGeneticsAPI.setTrait`.
