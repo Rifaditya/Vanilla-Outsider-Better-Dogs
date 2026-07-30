@@ -132,6 +132,7 @@ public class WolfStormAnxietyGoal extends Goal {
             for (int y = -4; y <= 4; y++) {
                 for (int z = -12; z <= 12; z++) {
                     mutable.set(basePos.getX() + x, basePos.getY() + y, basePos.getZ() + z);
+                    if (!wolf.level().hasChunkAt(mutable)) continue;
                     if (!wolf.level().canSeeSky(mutable) && isSafeStandBlock(mutable)) {
                         double dist = wolf.blockPosition().distSqr(mutable);
                         if (dist < bestDistance) {

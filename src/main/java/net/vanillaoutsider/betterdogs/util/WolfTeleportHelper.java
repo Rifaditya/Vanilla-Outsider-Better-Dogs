@@ -113,6 +113,9 @@ public class WolfTeleportHelper {
     }
 
     private static boolean canTeleportTo(Wolf wolf, ServerLevel level, BlockPos pos) {
+        if (!level.hasChunkAt(pos)) {
+            return false;
+        }
         PathType pathType = WalkNodeEvaluator.getPathTypeStatic(wolf, pos);
         if (pathType != PathType.WALKABLE) {
             return false;

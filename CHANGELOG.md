@@ -1,5 +1,9 @@
 # Changelog
 
+## [5.0.3+26.3] - 2026-07-31
+### Refactored
+- **C2ME & Multi-Threading Asynchronous Chunk Safety**: Added strict `level.hasChunkAt(pos)` guards across AI goals (`WolfStormAnxietyGoal`, `EatGroundFoodGoal`) and teleportation helpers (`WolfTeleportHelper`, `WolfCatchUpHelper`) to prevent chunk loading deadlocks and race conditions under multi-threaded chunk generators (C2ME / Noisium).
+
 ## [5.0.2+26.3] - 2026-07-31
 ### Refactored
 - **Mixin Security & Naming Compliance**: Audited all 25 Mixin classes to enforce `@Unique` annotations on all custom fields and helper methods, and ensured strict `betterdogs$` member prefixing across all injection points.

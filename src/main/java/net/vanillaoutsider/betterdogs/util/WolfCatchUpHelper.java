@@ -34,6 +34,11 @@ public class WolfCatchUpHelper {
             return;
         }
 
+        BlockPos playerBlockPos = player.blockPosition();
+        if (!level.hasChunkAt(playerBlockPos)) {
+            return;
+        }
+
         AABB scanBox = player.getBoundingBox().inflate(64.0, 32.0, 64.0);
         List<Wolf> nearbyWolves = level.getEntitiesOfClass(Wolf.class, scanBox);
 
@@ -41,7 +46,6 @@ public class WolfCatchUpHelper {
             return;
         }
 
-        BlockPos playerBlockPos = player.blockPosition();
         for (Wolf wolf : nearbyWolves) {
             // Strictly check if wolf is in active follow state (ignoring sitting, leashed, or guarding dogs)
             if (!WolfTeleportHelper.isEligibleFollowingWolf(wolf, player)) {
