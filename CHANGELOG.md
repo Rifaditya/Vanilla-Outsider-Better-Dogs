@@ -1,5 +1,9 @@
 # Changelog
 
+## [5.0.8+26.3] - 2026-07-31
+### Added
+- **Size-Stats & Scale API Expansion**: Added universal `getScale`, `setScale`, `isRunt`, and `isGiant` helper methods to `DasikAnimalGeneticsAPI` in `DasikLibrary`. Delegated wolf scale querying in `WolfPersistentData.java` directly to `DasikAnimalGeneticsAPI.getScale(wolf)`.
+
 ## [5.0.7+26.3] - 2026-07-31
 ### Added
 - **Universal AnimalGeneticsAPI Integration**: Created `net.dasik.social.api.genetics.AnimalGeneticsAPI` in `DasikLibrary` providing a standardized, multi-animal genetics API facade (`hasGenetics`, `getTrait`, `getHealthBonus`, `getDamageMod`, `getSpeedMod`, `isInbred`, `inherit`, `rollStats`) usable across all animal mods. Integrated API calls into `WolfPersistentData.java` and `WolfBreedingMixin.java`.

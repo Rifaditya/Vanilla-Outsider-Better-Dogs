@@ -169,11 +169,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
     }
 
     public static float getScale(Wolf wolf) {
-        float rawScale = getWolfData(wolf).scale();
-        if (Float.isNaN(rawScale) || Float.isInfinite(rawScale)) {
-            return 1.0f;
-        }
-        return Math.clamp(rawScale, 0.5f, 2.0f);
+        return net.dasik.social.api.genetics.DasikAnimalGeneticsAPI.getScale(wolf);
     }
 
     public static void setScale(int personalityId, int lastDamageTime, boolean submissive, @Nullable String bloodFeudTarget, long lastMischiefDay, long dna, Wolf wolf, float scale, Map<String, Integer> affinityMap, Optional<UUID> leaderUuid, boolean guardMode, Optional<BlockPos> guardPos, boolean adoptable) {
