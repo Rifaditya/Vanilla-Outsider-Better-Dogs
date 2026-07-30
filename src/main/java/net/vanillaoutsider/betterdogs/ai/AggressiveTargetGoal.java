@@ -105,6 +105,8 @@ public class AggressiveTargetGoal extends NearestAttackableTargetGoal<Monster> {
         }
 
         if (wolf instanceof WolfExtensions ext) {
+            if (ext.betterdogs$getPassiveOverrideTicks() > 0)
+                return false;
             if (ext.betterdogs$getPersonality() != WolfPersonality.AGGRESSIVE)
                 return false;
         } else {

@@ -1,11 +1,10 @@
-// Verified against: WolfStatManager.java (26.2+)
+// Verified against: Wolf.java (26.2+)
 // SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.util;
 
 import java.util.UUID;
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.wolf.Wolf;
@@ -115,6 +114,11 @@ public class WolfStatManager {
         net.minecraft.util.RandomSource scaleRand = net.minecraft.util.RandomSource.create(seed);
         float offset = -0.10f + (scaleRand.nextFloat() * 0.20f);
         calculatedScale += offset;
+
+        // Clamp the visual scale dynamically using config / GameRules (V3.8+)
+        float minScale = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_WOLF_MIN_SCALE_PERCENT) / 100.0f;
+        float maxScale = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_WOLF_MAX_SCALE_PERCENT) / 100.0f;
+        calculatedScale = Math.max(minScale, Math.min(maxScale, calculatedScale));
 
         if (wolf instanceof WolfExtensions ext) {
             ext.betterdogs$setSocialScale(calculatedScale);

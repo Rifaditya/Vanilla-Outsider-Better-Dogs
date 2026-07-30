@@ -23,9 +23,12 @@
         "WolfAccessor",
         "WolfMobMixin",
         "ServerLevelMixin",
+        "ServerPlayerMixin",
+        "ServerPlayerTickMixin",
         "AnimalMixin",
         "WalkNodeEvaluatorMixin",
-        "NaturalSpawnerMixin"
+        "NaturalSpawnerMixin",
+        "InstrumentItemMixin"
     ],
     "injectors": {
         "defaultRequire": 1

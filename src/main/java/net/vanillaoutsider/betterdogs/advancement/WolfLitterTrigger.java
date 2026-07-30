@@ -1,14 +1,14 @@
-// Verified against: TameAnimalTrigger.java (26.2+)
-// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
+// Verified against: BredAnimalsTrigger.java (26.3+)
 package net.vanillaoutsider.betterdogs.advancement;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.Optional;
-import net.minecraft.advancements.predicates.ContextAwarePredicate;
-import net.minecraft.advancements.predicates.entity.EntityPredicate;
 import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
 public class WolfLitterTrigger extends SimpleCriterionTrigger<WolfLitterTrigger.TriggerInstance> {
 
@@ -17,30 +17,25 @@ public class WolfLitterTrigger extends SimpleCriterionTrigger<WolfLitterTrigger.
         return TriggerInstance.CODEC;
     }
 
-    public void trigger(ServerPlayer player, int litterSize) {
-        this.trigger(player, triggerInstance -> triggerInstance.matches(litterSize));
+    public void trigger(ServerPlayer player, int puppyCount) {
+        this.trigger(player, triggerInstance -> triggerInstance.matches(puppyCount));
     }
 
     public record TriggerInstance(
-        Optional<ContextAwarePredicate> player,
-        Optional<Integer> minSize,
-        Optional<Integer> size
+        Optional<Holder<LootItemCondition>> player,
+        Optional<Integer> minPuppies
     ) implements SimpleCriterionTrigger.SimpleInstance {
 
         public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(TriggerInstance::player),
-            Codec.INT.optionalFieldOf("min_size").forGetter(TriggerInstance::minSize),
-            Codec.INT.optionalFieldOf("size").forGetter(TriggerInstance::size)
+            LootItemCondition.CODEC.optionalFieldOf("player").forGetter(TriggerInstance::player),
+            Codec.INT.optionalFieldOf("min_puppies").forGetter(TriggerInstance::minPuppies)
         ).apply(instance, TriggerInstance::new));
 
-        public boolean matches(int litterSize) {
-            if (this.minSize.isPresent() && litterSize < this.minSize.get()) {
-                return false;
+        public boolean matches(int puppyCount) {
+            if (this.minPuppies.isEmpty()) {
+                return true;
             }
-            if (this.size.isPresent() && litterSize != this.size.get()) {
-                return false;
-            }
-            return true;
+            return puppyCount >= this.minPuppies.get();
         }
     }
 }

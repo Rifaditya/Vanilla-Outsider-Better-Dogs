@@ -1,5 +1,78 @@
 # Changelog
 
+## [5.0.2+26.3] - 2026-07-31
+### Refactored
+- **Mixin Security & Naming Compliance**: Audited all 25 Mixin classes to enforce `@Unique` annotations on all custom fields and helper methods, and ensured strict `betterdogs$` member prefixing across all injection points.
+- **Architectural Extraction (Goat Horn Handler)**: Extracted 260-line Goat Horn command logic (Ponder, Feel, Sing, Yearn, Seek) out of `InstrumentItemMixin.java` into standalone helper class `WolfHornHelper.java`, keeping `InstrumentItemMixin` clean and minimal ("1 File, 1 Purpose").
+
+## [5.0.1+26.3] - 2026-07-30
+### Fixed
+- **MC 26.3 NaturalSpawner Mixin Fix**: Resolved world tick crash (`InvalidInjectionException`) by updating `NaturalSpawnerMixin.mobsAt` descriptor to match MC 26.3's refactored `NaturalSpawner.mobsAt` method signature.
+- **GameRule Registry Fix**: Fixed game initialization crash (`IllegalStateException: Adding duplicate key`) caused by redundant `betterdogs:bd_creeper_awareness` registration.
+
+## [5.0.0+26.3] - 2026-07-30
+### Added
+- **Minecraft 26.3 Upgrade**:
+  - Upgraded mod target to **Minecraft 26.3** (`5.0.0+26.3`).
+  - **Advancement Trigger API Fix**: Fixed `GuardWolfPersonalityTrigger` codec compatibility for MC 26.3 advancement predicate refactors (`EntityPredicate.CODEC`), resolving world loading crash.
+
+## [4.24.0+26.2] - 2026-07-30
+### Added
+- **AI Refinement: Creeper Blast Evasion**:
+  - **Swelling Fuse Detection**: Enhanced creeper awareness (`FleeCreeperGoal.java`). When a nearby creeper begins swelling/igniting within 10 blocks, tamed wolves sprint radially away at maximum speed (`1.5x`).
+  - **Smoke Particle Trails**: Emits emergency sprint smoke trails (`ParticleTypes.SMOKE`) at the feet of the fleeing wolf.
+  - **GameRules**: Governed by `betterdogs:bd_creeper_evasion_enabled` (default `true`).
+
+## [4.23.0+26.2] - 2026-07-30
+### Added
+- **Goat Horn Command System (Stage 5: Seek Horn - Search & Track Target Command)**:
+  - **Seek Goat Horn (Focus Fire & Area Search)**: Blowing the Seek Goat Horn (`seek_goat_horn`) commands active following wolves in range (default: `64` blocks) to focus fire on a targeted entity or enter aggressive area search mode at `1.3x` speed.
+  - **Cone-Inflated Crosshair Raycast (`EntityRaycastHelper`)**: Reliable 32-block cone raycast intersects target entity under player's crosshair.
+  - **Fallback Area Search**: If no entity is highlighted under crosshair, wolves automatically search `bd_horn_command_range` for hostiles targeting the owner or pack. Emits smoke particles if no hostile targets are found.
+
+## [4.22.0+26.2] - 2026-07-30
+### Added
+- **Goat Horn Command System (Stage 4: Yearn Horn - Resume Follow Command)**:
+  - **Yearn Goat Horn (Resume Follow / Stand Up)**: Blowing the Yearn Goat Horn (`yearn_goat_horn`) orders all sitting owned wolves in range (default: `64` blocks) to stand up (`setOrderedToSit(false)` & `setSittingManually(false)`) and resume following.
+  - **Dedicated Filter (`isEligibleSittingWolf`)**: Specifically targets owned, non-leashed, non-guarding sitting dogs.
+  - **State Reset**: Clears assemble pathing targets and Tactical Pacifist override timers. Emits joyful musical note and green particles.
+
+## [4.21.0+26.2] - 2026-07-30
+### Added
+- **Goat Horn Command System (Stage 3: Sing Horn - Hold Command)**:
+  - **Sing Goat Horn (Hold Command / Sit)**: Blowing the Sing Goat Horn (`sing_goat_horn`) orders all active following wolves in range (default: `64` blocks) to sit down in place (`setOrderedToSit(true)` & `setSittingManually(true)`).
+  - **Preemption Handling**: Blowing Sing Horn clears active assemble pathing (`soundLocationTarget = null`) and active Tactical Pacifist overrides (`passiveOverrideTicks = 0`).
+  - **Combat Disengagement**: Instantly clears attack targets, hostility, and navigation. Emits single-burst musical note particles.
+
+## [4.20.0+26.2] - 2026-07-30
+### Added
+- **Goat Horn Command System (Stage 2: Feel Horn - Tactical Pacifist Override)**:
+  - **Feel Goat Horn (Tactical Pacifist - 30s)**: Blowing the Feel Goat Horn (`feel_goat_horn`) triggers a 30-second (`600` ticks) Tactical Pacifist override on all active following wolves in range (default: `64` blocks).
+  - **Immediate Combat Clear**: Wolves instantly drop active attack targets, clear hostility, stop navigation, and emit single-burst green happy villager particles.
+  - **Preemption Handling**: Blowing Feel Horn cancels any active Ponder assemble pathing, and blowing Ponder Horn immediately cancels Tactical Pacifist override.
+  - **GameRules**: Added `betterdogs:bd_horn_override_duration` (default `600` ticks).
+
+## [4.19.0+26.2] - 2026-07-30
+### Added
+- **Goat Horn Command System (Stage 1: Ponder Horn)**:
+  - **Ponder Goat Horn (Assemble Call)**: Blowing the Ponder Goat Horn (`ponder_goat_horn`) issues an Assemble Call, commanding all active following wolves in range (default: `64` blocks) to pathfind directly to the location where the horn was blown at `1.25x` speed.
+  - **Single-Burst Note Particles**: Wolves emit single-burst musical note particles upon receiving the call without visual noise.
+  - **Strict Follow Filtering**: Sitting, leashed, or guarding dogs remain stationed at their posts and ignore the call.
+  - **GameRules**: Added `betterdogs:bd_horn_command_range` (default `64`) and `betterdogs:bd_horn_pathing_timeout` (default `400` ticks).
+
+## [4.18.2+26.2] - 2026-07-22
+
+### ⚠️ Version Guard Notice
+- Includes zero-dependency ModVersionGuard pre-release protection. Halts startup with an explicit warning banner if run on incompatible Minecraft drops or missing core dependencies to prevent world save corruption.
+
+### Fixed
+- **ModVersionGuard Protection Banner**: Updated ModVersionGuard.java to use Knot ClassLoader resolution (Thread.currentThread().getContextClassLoader()) and display explicit pre-release protection warnings upon an API mismatch.
+
+## [4.18.1+26.2] - 2026-07-22 Do not upload
+
+### Added
+- **Forward Compatibility & Version Guard**: Configured `fabric.mod.json` with `"minecraft": ">=26.2-"` for open-ended forward compatibility. Added zero-dependency `ModVersionGuard` check on startup to display human-readable guidance if an incompatible Minecraft API version is encountered.
+
 ## [4.18.0+26.2] - 2026-07-21
 ### Added
 - **Fast Travel & Chunk-Unload Catch-Up Teleport Safety**: Added automatic periodic catch-up teleportation for standing following wolves when the owner moves rapidly (via Elytra, horses, or speed buffs) and distance exceeds 40 blocks before entering unloaded chunks.

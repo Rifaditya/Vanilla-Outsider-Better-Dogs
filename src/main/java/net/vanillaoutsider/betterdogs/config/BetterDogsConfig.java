@@ -59,12 +59,14 @@ public class BetterDogsConfig {
     public boolean enableInbredCuring = true;
     public boolean showRuntParticles = false;
     public String guardParticleDensity = "medium";
+    public double wolfMinScale = 0.70;
+    public double wolfMaxScale = 1.45;
 
     // ========== Aggressive Personality ==========
     public double aggressiveHealthBonus = -10.0;
     public double aggressiveSpeedModifier = 0.15;
     public double aggressiveDetectionRange = 20.0;
-   // ...
+    // ...
     public double aggressiveChaseDistance = 50.0;
     public double aggressiveDamageModifier = 0.50;
     public float aggressiveFollowStart = 50.0f;
@@ -97,6 +99,9 @@ public class BetterDogsConfig {
     public int spawnChanceNormal = 60;
     public int spawnChanceAggressive = 20;
     public int spawnChancePacifist = 20;
+    public int spawnGroupMin = 4;
+    public int spawnGroupMax = 8;
+    public boolean enableExpandedBiomes = false;
 
     // ========== Breeding Genetics ==========
     public int breedingSameParentChance = 80;
@@ -226,6 +231,9 @@ public class BetterDogsConfig {
     public boolean getPacifistGuardBuffs() { return pacifistGuardBuffs; }
     public boolean getEnableInbredCuring() { return enableInbredCuring; }
     public boolean getShowRuntParticles() { return showRuntParticles; }
+    public int getSpawnGroupMin() { return spawnGroupMin; }
+    public int getSpawnGroupMax() { return spawnGroupMax; }
+    public boolean getEnableExpandedBiomes() { return enableExpandedBiomes; }
     public double getAggressiveHealthBonus() { return aggressiveHealthBonus; }
     public double getAggressiveSpeedModifier() { return aggressiveSpeedModifier; }
     public double getAggressiveDetectionRange() { return aggressiveDetectionRange; }
@@ -313,4 +321,6 @@ public class BetterDogsConfig {
     public int getGiftFeedThreshold() { return giftFeedThreshold; }
     public int getGiftInteractionCooldown() { return giftInteractionCooldown; }
     public boolean getDemeritAccidentalAttacks() { return demeritAccidentalAttacks; }
+    public double getWolfMinScale() { return wolfMinScale; }
+    public double getWolfMaxScale() { return wolfMaxScale; }
 }

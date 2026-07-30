@@ -1,14 +1,14 @@
-// Verified against: TameAnimalTrigger.java (26.2+)
-// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
+// Verified against: BredAnimalsTrigger.java (26.3+)
 package net.vanillaoutsider.betterdogs.advancement;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.Optional;
-import net.minecraft.advancements.predicates.ContextAwarePredicate;
-import net.minecraft.advancements.predicates.entity.EntityPredicate;
 import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 
 public class GuardWolfPersonalityTrigger extends SimpleCriterionTrigger<GuardWolfPersonalityTrigger.TriggerInstance> {
@@ -23,12 +23,12 @@ public class GuardWolfPersonalityTrigger extends SimpleCriterionTrigger<GuardWol
     }
 
     public record TriggerInstance(
-        Optional<ContextAwarePredicate> player,
+        Optional<Holder<LootItemCondition>> player,
         Optional<String> personality
     ) implements SimpleCriterionTrigger.SimpleInstance {
 
         public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(TriggerInstance::player),
+            LootItemCondition.CODEC.optionalFieldOf("player").forGetter(TriggerInstance::player),
             Codec.STRING.optionalFieldOf("personality").forGetter(TriggerInstance::personality)
         ).apply(instance, TriggerInstance::new));
 

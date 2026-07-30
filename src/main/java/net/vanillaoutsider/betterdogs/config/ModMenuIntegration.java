@@ -7,7 +7,7 @@ import net.fabricmc.loader.api.FabricLoader;
 public class ModMenuIntegration implements ModMenuApi {
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        if (FabricLoader.getInstance().isModLoaded("yet-another-config-lib")) {
+        if (FabricLoader.getInstance().isModLoaded("yet_another_config_lib_v3")) {
             try {
                 Class<?> helperClass = Class.forName("net.vanillaoutsider.betterdogs.config.YaclScreenHelper");
                 java.lang.reflect.Method method = helperClass.getMethod("createFactory");

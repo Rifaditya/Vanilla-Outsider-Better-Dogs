@@ -79,7 +79,7 @@ public class BetterDogsHealthElement extends Element {
         for (int i = iconCount; i > 0; --i) {
             int xPos = getX() + xOffset;
             int yPos = getY() + yOffset;
-            helper.blitSprite(graphics, RenderPipelines.GUI_TEXTURED, containerSprite, xPos, yPos, 9, 9);
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, containerSprite, xPos, yPos, 9, 9);
 
             boolean renderAbsorb = i > Mth.ceil(maxHealth * 0.5F);
             Hud.HeartType curHeart = heartType;
@@ -92,17 +92,17 @@ public class BetterDogsHealthElement extends Element {
                 curLastHealth = (Mth.ceil(maxHealth) + lastAbsorption) * 0.5F;
             }
             if (i <= Mth.floor(curHealth)) { // Full heart
-                helper.blitSprite(graphics, RenderPipelines.GUI_TEXTURED, curHeart.getSprite(false, false, false), xPos, yPos, 9, 9);
+                graphics.blitSprite(RenderPipelines.GUI_TEXTURED, curHeart.getSprite(false, false, false), xPos, yPos, 9, 9);
             }
 
             if (i > curHealth) {
                 if (i <= Mth.floor(curLastHealth)) { // Full heart (last + blink)
-                    helper.blitSprite(graphics, RenderPipelines.GUI_TEXTURED, curHeart.getSprite(false, false, true), xPos, yPos, 9, 9);
+                    graphics.blitSprite(RenderPipelines.GUI_TEXTURED, curHeart.getSprite(false, false, true), xPos, yPos, 9, 9);
                 } else if ((i > curLastHealth) && (i < curLastHealth + 1)) { // Half heart (blink)
-                    helper.blitSprite(graphics, RenderPipelines.GUI_TEXTURED, curHeart.getSprite(false, true, true), xPos, yPos, 9, 9);
+                    graphics.blitSprite(RenderPipelines.GUI_TEXTURED, curHeart.getSprite(false, true, true), xPos, yPos, 9, 9);
                 }
                 if (i < curHealth + 1) { // Half heart
-                    helper.blitSprite(graphics, RenderPipelines.GUI_TEXTURED, curHeart.getSprite(false, true, false), xPos, yPos, 9, 9);
+                    graphics.blitSprite(RenderPipelines.GUI_TEXTURED, curHeart.getSprite(false, true, false), xPos, yPos, 9, 9);
                 }
             }
 
