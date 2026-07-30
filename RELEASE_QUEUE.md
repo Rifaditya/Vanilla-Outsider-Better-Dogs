@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`5.0.12+26.3`** (2026-07-31) - **AI Goal Tick Throttling & Spatial Search Optimization:** Added entity ID staggered modulo gating to `FleeCreeperGoal`, `WolfNemesisTargetGoal`, and `WolfGuardGoal`.
 - [ ] **`5.0.11+26.3`** (2026-07-31) - **Automated GameTest Expansion:** Added `testGeneticsScaleClamping`, `testKinshipAndInbreedingRisk`, `testTraitMutationAndReset`, and `testGuardModePosAnchoring` to `BetterDogsGameTests.java`.
 - [ ] **`5.0.10+26.3`** (2026-07-31) - **Dynamic Trait Modifiers & Stat Reset API:** Integrated `setTrait`, `modifyTrait`, and `resetGenetics` methods from `DasikAnimalGeneticsAPI` in `DasikLibrary` v1.8.8 into `WolfPersistentData`.
 - [ ] **`5.0.9+26.3`** (2026-07-31) - **Kinship & Pedigree API Expansion:** Added `isRelated`, `isParentOf`, `areSiblings`, and `predictInbreedingRiskPercent` to `DasikAnimalGeneticsAPI` in `DasikLibrary` v1.8.7.

@@ -26,6 +26,11 @@ public class WolfNemesisTargetGoal extends TargetGoal {
 
     @Override
     public boolean canUse() {
+        // Tick Throttle: stagger nemesis entity queries across wolves (INTERVAL=10)
+        if ((wolf.getId() + wolf.tickCount) % 10 != 0) {
+            return false;
+        }
+
         if (!wolf.isTame()) return false;
         
         if (!DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_NEMESIS_SYSTEM)) return false;

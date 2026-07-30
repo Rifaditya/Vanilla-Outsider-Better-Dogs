@@ -1,5 +1,9 @@
 # Better Dogs History & Concept Changelog
 
+## [5.0.12+26.3] - 2026-07-31
+### Changed
+- **AI Goal Tick Throttling & Spatial Search Optimization**: Added entity ID staggered modulo gating to `FleeCreeperGoal`, `WolfNemesisTargetGoal`, and `WolfGuardGoal` to prevent all wolves from running expensive spatial bounding-box searches on the same tick frame.
+
 ## [5.0.11+26.3] - 2026-07-31
 ### Added
 - **Automated GameTest Expansion**: Added `testGeneticsScaleClamping`, `testKinshipAndInbreedingRisk`, `testTraitMutationAndReset`, and `testGuardModePosAnchoring` to `BetterDogsGameTests.java`.

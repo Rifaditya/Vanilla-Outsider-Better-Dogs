@@ -103,7 +103,8 @@ public class WolfGuardGoal extends Goal {
 
         // 3. Pacifist Sentinel Watchdog Actions (Alarm)
         if (personality == WolfPersonality.PACIFIST) {
-            if (wolf.tickCount % 20 == 0) {
+            // Tick Throttle: stagger alert scanning across guard wolves (INTERVAL=5, effective 20-tick cycle)
+            if ((wolf.getId() + wolf.tickCount) % 20 == 0) {
                 // Watchdog Alarm (Whining and note particles when hostiles approach within 16 blocks)
                 List<Monster> enemies = wolf.level().getEntitiesOfClass(Monster.class, wolf.getBoundingBox().inflate(16.0, 16.0, 16.0), enemy -> {
                     double dy = Math.abs(enemy.getY() - wolf.getY());
