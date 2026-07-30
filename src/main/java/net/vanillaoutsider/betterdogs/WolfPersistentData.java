@@ -263,16 +263,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
     }
 
     public static void setPersistedHealthBonus(Wolf wolf, float hp) {
-        net.dasik.social.api.genetics.EntityGenetics genetics = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf);
-        java.util.Map<String, Float> traits = new HashMap<>(genetics.traits());
-        traits.put("max_health", hp);
-        net.dasik.social.api.genetics.GeneticsEngine.setGenetics(wolf, new net.dasik.social.api.genetics.EntityGenetics(
-            genetics.parent1Uuid(),
-            genetics.parent2Uuid(),
-            genetics.inbred(),
-            genetics.traitsRolled(),
-            traits
-        ));
+        net.dasik.social.api.genetics.DasikAnimalGeneticsAPI.setTrait(wolf, "max_health", hp);
     }
 
     public static float getPersistedDamageMod(Wolf wolf) {
@@ -280,16 +271,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
     }
 
     public static void setPersistedDamageMod(Wolf wolf, float dmg) {
-        net.dasik.social.api.genetics.EntityGenetics genetics = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf);
-        java.util.Map<String, Float> traits = new HashMap<>(genetics.traits());
-        traits.put("attack_damage", dmg);
-        net.dasik.social.api.genetics.GeneticsEngine.setGenetics(wolf, new net.dasik.social.api.genetics.EntityGenetics(
-            genetics.parent1Uuid(),
-            genetics.parent2Uuid(),
-            genetics.inbred(),
-            genetics.traitsRolled(),
-            traits
-        ));
+        net.dasik.social.api.genetics.DasikAnimalGeneticsAPI.setTrait(wolf, "attack_damage", dmg);
     }
 
     public static float getPersistedSpeedMod(Wolf wolf) {
@@ -297,16 +279,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
     }
 
     public static void setPersistedSpeedMod(Wolf wolf, float speed) {
-        net.dasik.social.api.genetics.EntityGenetics genetics = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf);
-        java.util.Map<String, Float> traits = new HashMap<>(genetics.traits());
-        traits.put("movement_speed", speed);
-        net.dasik.social.api.genetics.GeneticsEngine.setGenetics(wolf, new net.dasik.social.api.genetics.EntityGenetics(
-            genetics.parent1Uuid(),
-            genetics.parent2Uuid(),
-            genetics.inbred(),
-            genetics.traitsRolled(),
-            traits
-        ));
+        net.dasik.social.api.genetics.DasikAnimalGeneticsAPI.setTrait(wolf, "movement_speed", speed);
     }
 
     public static boolean arePersistedStatsRolled(Wolf wolf) {

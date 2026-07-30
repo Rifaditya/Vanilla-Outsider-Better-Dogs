@@ -1,5 +1,9 @@
 # Changelog
 
+## [5.0.10+26.3] - 2026-07-31
+### Added
+- **Dynamic Trait Modifiers & Stat Reset API Integration**: Integrated `setTrait`, `modifyTrait`, and `resetGenetics` methods from `DasikAnimalGeneticsAPI` in `DasikLibrary` v1.8.8. Delegated `setPersistedHealthBonus`, `setPersistedDamageMod`, and `setPersistedSpeedMod` in `WolfPersistentData.java` directly to `DasikAnimalGeneticsAPI.setTrait`.
+
 ## [5.0.9+26.3] - 2026-07-31
 ### Added
 - **Kinship & Pedigree API Expansion**: Added `isRelated`, `isParentOf`, `areSiblings`, and `predictInbreedingRiskPercent` helper methods to `DasikAnimalGeneticsAPI` in `DasikLibrary` v1.8.7 for family tree tracking and inbreeding risk prediction.

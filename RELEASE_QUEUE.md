@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`5.0.10+26.3`** (2026-07-31) - **Dynamic Trait Modifiers & Stat Reset API:** Integrated `setTrait`, `modifyTrait`, and `resetGenetics` methods from `DasikAnimalGeneticsAPI` in `DasikLibrary` v1.8.8 into `WolfPersistentData`.
 - [ ] **`5.0.9+26.3`** (2026-07-31) - **Kinship & Pedigree API Expansion:** Added `isRelated`, `isParentOf`, `areSiblings`, and `predictInbreedingRiskPercent` to `DasikAnimalGeneticsAPI` in `DasikLibrary` v1.8.7.
 - [ ] **`5.0.8+26.3`** (2026-07-31) - **Size-Stats & Scale API Expansion:** Added universal `getScale`, `setScale`, `isRunt`, and `isGiant` helper methods to `DasikAnimalGeneticsAPI` in `DasikLibrary` and delegated `WolfPersistentData.getScale(wolf)`.
 - [ ] **`5.0.7+26.3`** (2026-07-31) - **Universal AnimalGeneticsAPI Integration:** Created `AnimalGeneticsAPI` in `DasikLibrary` and integrated multi-animal genetics calls into `WolfPersistentData` and `WolfBreedingMixin`.
