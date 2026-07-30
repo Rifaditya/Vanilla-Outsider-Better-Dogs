@@ -1,5 +1,9 @@
 # Changelog
 
+## [5.0.9+26.3] - 2026-07-31
+### Added
+- **Kinship & Pedigree API Expansion**: Added `isRelated`, `isParentOf`, `areSiblings`, and `predictInbreedingRiskPercent` helper methods to `DasikAnimalGeneticsAPI` in `DasikLibrary` v1.8.7 for family tree tracking and inbreeding risk prediction.
+
 ## [5.0.8+26.3] - 2026-07-31
 ### Added
 - **Size-Stats & Scale API Expansion**: Added universal `getScale`, `setScale`, `isRunt`, and `isGiant` helper methods to `DasikAnimalGeneticsAPI` in `DasikLibrary`. Delegated wolf scale querying in `WolfPersistentData.java` directly to `DasikAnimalGeneticsAPI.getScale(wolf)`.
