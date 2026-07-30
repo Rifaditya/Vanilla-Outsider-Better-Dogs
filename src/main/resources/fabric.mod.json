@@ -26,6 +26,9 @@
     ],
     "jade": [
       "net.vanillaoutsider.betterdogs.compat.jade.BetterDogsJadePlugin"
+    ],
+    "gametest": [
+      "net.vanillaoutsider.betterdogs.test.BetterDogsGameTests"
     ]
   },
   "mixins": [

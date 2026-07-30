@@ -1,5 +1,9 @@
 # Better Dogs History & Concept Changelog
 
+## [5.0.5+26.3] - 2026-07-31
+### Added
+- **Automated GameTest Framework Suite & Core Mandate**: Established project-wide `gradle-tester` skill and `Automated GameTest Verification Law` in Core Constitution. Implemented automated GameTest suite in `BetterDogsGameTests.java` covering wolf initialization, Guard Mode anchoring, and state cleanup verification.
+
 ## [5.0.4+26.3] - 2026-07-31
 ### Refactored
 - **Memory Leak & Entity Removal Cleanup Hooks**: Implemented `betterdogs$clearTransientState()` and injected `die` and `remove` hooks in `WolfMixin.java`. Nullifies transient `socialTarget` entity references, resets spatial targets (`soundLocationTarget`, `pathfindAvoidPos`), clears Goat Horn override timers (`passiveOverrideTicks`), and cancels running scheduler tasks when a wolf dies or is removed.
