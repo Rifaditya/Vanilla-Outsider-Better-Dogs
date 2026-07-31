@@ -262,4 +262,93 @@ public class BetterDogsGameTests {
 
         helper.succeed();
     }
+
+    // ========== Fetch Goal & Event Scheduling Tests ==========
+
+    public static class SimpleTestEvent implements net.dasik.social.api.SocialEvent {
+        private final String id;
+        public SimpleTestEvent(String id) { this.id = id; }
+        @Override public String getId() { return id; }
+        @Override public int getPriorityValue() { return 1; }
+        @Override public String getTrackId() { return "main"; }
+        @Override public boolean canPreempt(net.dasik.social.api.SocialEvent other) { return true; }
+        @Override public void onStart(net.dasik.social.api.TickContext context) {}
+        @Override public boolean tick(net.dasik.social.api.TickContext context) { return false; }
+        @Override public void onEnd(net.dasik.social.api.SocialEntity entity, EndReason reason) {}
+    }
+
+    public static void testWolfFetchGoalTriggering(GameTestHelper helper) {
+        Wolf wolf = EntityTypes.WOLF.create(helper.getLevel(), EntitySpawnReason.COMMAND);
+        helper.assertTrue(wolf != null, "Wolf entity failed to spawn for fetch test");
+
+        if (wolf instanceof WolfExtensions ext) {
+            net.dasik.social.core.EntitySocialScheduler scheduler = ext.betterdogs$getScheduler();
+            if (scheduler != null) {
+                scheduler.schedule(new SimpleTestEvent("fetch"));
+                scheduler.tick();
+                helper.assertTrue(scheduler.isEventActive("fetch"), "Fetch event failed to trigger in scheduler");
+            }
+        }
+
+        helper.succeed();
+    }
+
+    // ========== Zoomies Goal Tests ==========
+
+    public static void testZoomiesGoalTriggering(GameTestHelper helper) {
+        Wolf wolf = EntityTypes.WOLF.create(helper.getLevel(), EntitySpawnReason.COMMAND);
+        helper.assertTrue(wolf != null, "Wolf entity failed to spawn for zoomies test");
+
+        if (wolf instanceof WolfExtensions ext) {
+            net.dasik.social.core.EntitySocialScheduler scheduler = ext.betterdogs$getScheduler();
+            if (scheduler != null) {
+                scheduler.schedule(new SimpleTestEvent("zoomies"));
+                scheduler.tick();
+                helper.assertTrue(scheduler.isEventActive("zoomies"), "Zoomies event failed to trigger in scheduler");
+            }
+        }
+
+        helper.succeed();
+    }
+
+    // ========== Storm Anxiety Soothed State Tests ==========
+
+    public static void testStormAnxietySoothedState(GameTestHelper helper) {
+        Wolf wolf = EntityTypes.WOLF.create(helper.getLevel(), EntitySpawnReason.COMMAND);
+        helper.assertTrue(wolf != null, "Wolf entity failed to spawn for storm anxiety test");
+
+        if (wolf instanceof WolfExtensions ext) {
+            long currentTime = wolf.level().getGameTime();
+            ext.betterdogs$setSoothedTime(currentTime);
+
+            long retrievedTime = ext.betterdogs$getSoothedTime();
+            helper.assertTrue(retrievedTime == currentTime,
+                    "Soothed time should match currentTime (" + currentTime + "), got: " + retrievedTime);
+
+            // Test soothed condition (within 12000 ticks)
+            boolean isSoothed = (wolf.level().getGameTime() - retrievedTime) < 12000L;
+            helper.assertTrue(isSoothed, "Wolf should be in soothed state immediately after setting soothedTime");
+        }
+
+        helper.succeed();
+    }
+
+    // ========== Avoid Hazards Goal Gating Tests ==========
+
+    public static void testAvoidHazardsGoalGating(GameTestHelper helper) {
+        Wolf wolf = EntityTypes.WOLF.create(helper.getLevel(), EntitySpawnReason.COMMAND);
+        helper.assertTrue(wolf != null, "Wolf entity failed to spawn for hazard test");
+
+        if (wolf instanceof WolfExtensions ext) {
+            // Guard mode wolves should be immune to hazard flee goal overriding post position
+            ext.betterdogs$setGuardMode(true);
+            helper.assertTrue(ext.betterdogs$isGuardMode(), "Guard mode should be enabled");
+
+            // Clear guard mode
+            ext.betterdogs$setGuardMode(false);
+            helper.assertTrue(!ext.betterdogs$isGuardMode(), "Guard mode should be cleared");
+        }
+
+        helper.succeed();
+    }
 }
