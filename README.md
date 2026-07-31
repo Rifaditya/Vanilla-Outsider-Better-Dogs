@@ -1,4 +1,4 @@
-# 🐕 Better Dogs: A Social & Behavioral Overhaul (v4.15.6)
+# 🐕 Better Dogs: A Social & Behavioral Overhaul (v5.0.16+26.3)
 
 > [!IMPORTANT]
 > **Early Access & Latest Builds:** The latest versions of this mod may be delayed on public mainstream platforms (Modrinth/CurseForge). If you want immediate access to the newest updates, you can always compile the code directly from this repository, or support me on **[Ko-fi](https://ko-fi.com/dasikigaijin)** to get pre-compiled early access builds!
@@ -6,14 +6,17 @@
 > [!NOTE]
 > **🙏 I am begging you!** If you are enjoying this mod or compiling from source, please take a moment to visit and download the mod on **[Modrinth](https://modrinth.com/mod/vanilla-outsider-better-dogs)** or **[CurseForge](https://www.curseforge.com/minecraft/mc-mods/vanilla-outsider-better-dogs)**! Every single download on those pages gives me a little bit of money that helps me pay the bills and keeps this project alive. Thank you!
 
-**Better Dogs** is a comprehensive overhaul of the Minecraft Wolf, replacing robotic behaviors with a dynamic, personality-driven social system. Built for the modern "Post-Obfuscation" era of Minecraft, it enhances the taming loop with genetics, social bonding, and smart survival logic.
+**Better Dogs** is a comprehensive overhaul of the Minecraft Wolf, replacing robotic behaviors with a dynamic, personality-driven social system. Built for Minecraft 26.3+, it enhances the taming loop with universal genetics, pedigree tracking, size scaling, AI performance throttling, and smart survival logic.
 
-## 🔥 New in v4.15.5: Wide-Arc Flanking Encirclement & Treats
+## 🔥 New in v5.0.16+26.3: Universal Genetics Engine & AI Performance Optimizations
 
+- **Universal Animal Genetics Engine**: Integrated with `DasikAnimalGeneticsAPI` for size scaling (`0.5x` - `2.0x`), runts/giants, and dynamic stat trait mutation/resetting.
+- **Kinship & Pedigree Tracking**: Tracks family lineage across generations and predicts inbreeding risk (`0%`, `50%`, or `100%`) prior to breeding.
+- **Staggered AI Goal Tick Throttling**: AI goals (`FleeCreeperGoal`, `WolfNemesisTargetGoal`, `WolfGuardGoal`) use entity ID staggered modulo gating, reducing spatial search CPU overhead by up to 90% in large packs.
+- **Expanded Automated GameTest Suite**: Includes 11 automated GameTests covering scale clamping, kinship risk, trait resets, Guard Mode position anchoring, and event scheduling.
 - **Nemesis (Grudge) System**: Tamed wolves will now actively form a blood feud against hostile mobs that kill their pack-mates! Wolves with an active grudge gain `STRENGTH` and `SPEED` when attacking their nemesis.
-- **Hidden Favorite Treats**: Every dog has a hidden favorite treat! Finding and feeding them their favorite treat fully heals them, grants Regeneration II, and triggers their native Zoomies! (The specific treat can be hidden in Jade until discovered).
-- **Jade UI Overhaul**: Full Jade integration for Dynamic Max Health rendering (bypassing the 20-icon limit) and a togglable "Inbred" trait status tag.
-- **True Pack Hunting (Flanking Tactics)**: Wolves no longer charge mindlessly in a single-file line. Followers intelligently spread out to flank and encircle targets, maximizing combat effectiveness and dodging splash attacks.
+- **Hidden Favorite Treats**: Every dog has a hidden favorite treat! Finding and feeding them their favorite treat fully heals them, grants Regeneration II, and triggers their native Zoomies!
+- **True Pack Hunting (Flanking Tactics)**: Followers intelligently spread out to flank and encircle targets, maximizing combat effectiveness and dodging splash attacks.
 
 ---
 
