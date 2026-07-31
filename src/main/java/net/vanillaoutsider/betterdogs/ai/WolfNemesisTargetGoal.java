@@ -1,4 +1,5 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
+// Verified against: TargetGoal.java, LivingEntity.java (26.3+)
 package net.vanillaoutsider.betterdogs.ai;
 
 import net.minecraft.world.effect.MobEffectInstance;

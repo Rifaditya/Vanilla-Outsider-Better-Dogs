@@ -1,5 +1,9 @@
 # Better Dogs History & Concept Changelog
 
+## [5.0.13+26.3] - 2026-07-31
+### Fixed
+- **Audit Remediation & Code Quality Cleanup**: Fixed license headers to standard `// Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3` across `WolfPersistentData`, `WolfBreedingMixin`, `WolfNemesisTargetGoal`, and `WolfGuardGoal`. Added missing citation comment to `WolfNemesisTargetGoal` and removed unused `ParticleTypes` import in `WolfGuardGoal`.
+
 ## [5.0.12+26.3] - 2026-07-31
 ### Changed
 - **AI Goal Tick Throttling & Spatial Search Optimization**: Added entity ID staggered modulo gating to `FleeCreeperGoal`, `WolfNemesisTargetGoal`, and `WolfGuardGoal` to prevent all wolves from running expensive spatial bounding-box searches on the same tick frame.
