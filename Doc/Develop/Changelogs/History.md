@@ -1,5 +1,9 @@
 # Better Dogs History & Concept Changelog
 
+## [5.0.14+26.3] - 2026-07-31
+### Fixed
+- **Unused Imports Cleanup & 100% Audit Pass**: Purged unused imports in `WolfBreedingMixin` and `WolfGuardGoal` to achieve a 100% clean audit pass under Core-auditor rules.
+
 ## [5.0.13+26.3] - 2026-07-31
 ### Fixed
 - **Audit Remediation & Code Quality Cleanup**: Fixed license headers to standard `// Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3` across `WolfPersistentData`, `WolfBreedingMixin`, `WolfNemesisTargetGoal`, and `WolfGuardGoal`. Added missing citation comment to `WolfNemesisTargetGoal` and removed unused `ParticleTypes` import in `WolfGuardGoal`.

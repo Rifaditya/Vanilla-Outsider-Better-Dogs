@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`5.0.14+26.3`** (2026-07-31) - **Unused Imports Cleanup & 100% Audit Pass:** Purged unused imports in `WolfBreedingMixin` and `WolfGuardGoal`.
 - [ ] **`5.0.13+26.3`** (2026-07-31) - **Audit Remediation & Code Quality Cleanup:** Standardized license headers, added missing citation comment to `WolfNemesisTargetGoal`, and removed unused `ParticleTypes` import in `WolfGuardGoal`.
 - [ ] **`5.0.12+26.3`** (2026-07-31) - **AI Goal Tick Throttling & Spatial Search Optimization:** Added entity ID staggered modulo gating to `FleeCreeperGoal`, `WolfNemesisTargetGoal`, and `WolfGuardGoal`.
 - [ ] **`5.0.11+26.3`** (2026-07-31) - **Automated GameTest Expansion:** Added `testGeneticsScaleClamping`, `testKinshipAndInbreedingRisk`, `testTraitMutationAndReset`, and `testGuardModePosAnchoring` to `BetterDogsGameTests.java`.
