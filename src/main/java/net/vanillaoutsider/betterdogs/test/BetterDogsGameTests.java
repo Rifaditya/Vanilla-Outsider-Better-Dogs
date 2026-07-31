@@ -2,7 +2,6 @@
 // Verified against: GameTestHelper.java, Wolf.java, DasikAnimalGeneticsAPI.java (26.3+)
 package net.vanillaoutsider.betterdogs.test;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;

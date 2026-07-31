@@ -1,5 +1,9 @@
 # Better Dogs History & Concept Changelog
 
+## [5.0.16+26.3] - 2026-07-31
+### Fixed
+- **Automated GameTest Execution & Final Audit Pass**: Purged unused `HashMap` import in `BetterDogsGameTests.java` and executed automated GameTest checks (`./gradlew check`) under Core-auditor directives.
+
 ## [5.0.15+26.3] - 2026-07-31
 ### Added
 - **Additional GameTest Expansion**: Added `testWolfFetchGoalTriggering`, `testZoomiesGoalTriggering`, `testStormAnxietySoothedState`, and `testAvoidHazardsGoalGating` to `BetterDogsGameTests.java` for automated headless verification of AI goal event scheduling, storm soothing, and hazard gating.
