@@ -129,18 +129,77 @@ public class WolfFlankAttackGoal extends MeleeAttackGoal {
                         double cross = forward.x * toWolf.z - forward.z * toWolf.x;
                         boolean isRightFlank = cross > 0.0;
 
+                        double targetWidth = target.getBbWidth();
+                        double flankRadius = Math.max(3.0, targetWidth * 2.5);
+                        double rearShift = Math.max(1.0, targetWidth * 1.1);
+
                         Vec3 flankOffset;
                         if (isRightFlank) {
-                            flankOffset = new Vec3(-forward.z, 0.0, forward.x).scale(4.5); // Wide 4.5 block radius
+                            flankOffset = new Vec3(-forward.z, 0.0, forward.x).scale(flankRadius);
                         } else {
-                            flankOffset = new Vec3(forward.z, 0.0, -forward.x).scale(4.5); // Wide 4.5 block radius
+                            flankOffset = new Vec3(forward.z, 0.0, -forward.x).scale(flankRadius);
                         }
                         
-                        flankOffset = flankOffset.subtract(forward.scale(2.0)); // Rear 2.0 block shift
+                        flankOffset = flankOffset.subtract(forward.scale(rearShift));
                         Vec3 destination = targetPos.add(flankOffset);
                         
-                        // Flanking wolves move at standard combat speed
-                        this.wolf.getNavigation().moveTo(destination.x, target.getY(), destination.z, this.speedModifier);
+                        boolean pathClear = true;
+                        boolean performRaycast = net.dasik.social.api.gamerule.DynamicGameRuleManager.getBoolean(this.wolf.level(), BetterDogsGameRules.BD_FLANKING_RAYCAST_CHECK);
+                        
+                        if (performRaycast) {
+                            Vec3 start = this.wolf.position().add(0.0, 0.5, 0.0);
+                            Vec3 end = destination.add(0.0, 0.5, 0.0);
+                            net.minecraft.world.phys.BlockHitResult result = this.wolf.level().clip(
+                                new net.minecraft.world.level.ClipContext(
+                                    start,
+                                    end,
+                                    net.minecraft.world.level.ClipContext.Block.COLLIDER,
+                                    net.minecraft.world.level.ClipContext.Fluid.ANY,
+                                    this.wolf
+                                )
+                            );
+                            if (result.getType() != net.minecraft.world.phys.HitResult.Type.MISS) {
+                                pathClear = false;
+                            }
+                        }
+                        
+                        if (!pathClear) {
+                            // Try the opposite side
+                            if (isRightFlank) {
+                                flankOffset = new Vec3(forward.z, 0.0, -forward.x).scale(flankRadius);
+                            } else {
+                                flankOffset = new Vec3(-forward.z, 0.0, forward.x).scale(flankRadius);
+                            }
+                            flankOffset = flankOffset.subtract(forward.scale(rearShift));
+                            destination = targetPos.add(flankOffset);
+                            
+                            if (performRaycast) {
+                                Vec3 start = this.wolf.position().add(0.0, 0.5, 0.0);
+                                Vec3 end = destination.add(0.0, 0.5, 0.0);
+                                net.minecraft.world.phys.BlockHitResult result = this.wolf.level().clip(
+                                    new net.minecraft.world.level.ClipContext(
+                                        start,
+                                        end,
+                                        net.minecraft.world.level.ClipContext.Block.COLLIDER,
+                                        net.minecraft.world.level.ClipContext.Fluid.ANY,
+                                        this.wolf
+                                    )
+                                );
+                                if (result.getType() == net.minecraft.world.phys.HitResult.Type.MISS) {
+                                    pathClear = true;
+                                }
+                            } else {
+                                pathClear = true;
+                            }
+                        }
+                        
+                        if (pathClear) {
+                            // Flanking wolves move at standard combat speed
+                            this.wolf.getNavigation().moveTo(destination.x, target.getY(), destination.z, this.speedModifier);
+                        } else {
+                            // Both sides blocked: fall back to standard direct attack charging pathing
+                            shouldFlank = false;
+                        }
                     }
                 } else {
                     shouldFlank = false; // Slower to arrive / closer wolves: attack directly

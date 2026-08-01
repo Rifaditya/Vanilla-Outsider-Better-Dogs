@@ -1,5 +1,65 @@
 # Better Dogs History & Concept Changelog
 
+## [4.24.1+26.2] - 2026-07-30
+### ⚠️ Incompatibility Warning
+- **Minecraft 26.2 Target Only**: `4.24.1+26.2` is strictly compiled for Minecraft 26.2. Running on Minecraft 26.3 snapshot instances will crash on startup due to upstream Minecraft 26.3 API refactors (`EntityPredicate.ADVANCEMENT_CODEC` removal and `DynamicGameRuleManager` breaking changes). Upgrade to `5.0.0+26.3` for Minecraft 26.3+.
+
+### Fixed
+- **Startup Crash / GameRule Registration Fix**:
+  - Refactored `BetterDogsGameRules` registration methods to delegate through `DynamicGameRuleManager` from `dasik-library`, resolving duplicate key registry exceptions on startup.
+
+## [4.24.0+26.2] - 2026-07-30
+### ⚠️ Incompatibility & Startup Crash Warning
+- **Minecraft 26.3 Startup Crash & Dynamic GameRule Crash**: `4.24.0+26.2` crashes on Fabric 26.3 snapshot instances (`NoSuchFieldError: EntityPredicate.ADVANCEMENT_CODEC`) and can crash on MC 26.2 startup if duplicate GameRule keys are registered. Upgrade to `4.24.1+26.2` for Minecraft 26.2 or `5.0.0+26.3` for Minecraft 26.3+.
+
+### Added
+- **AI Refinement: Creeper Blast Evasion**:
+  - **Problem**: When a creeper ignites its fuse near a player or pack, vanilla wolves often stay in close proximity or attack the creeper, taking fatal explosion damage.
+  - **Solution**: Enhanced `FleeCreeperGoal.java`. When a nearby creeper begins swelling/igniting within 10 blocks, tamed wolves sprint radially away at maximum speed (`1.5x`).
+  - **Smoke Particle Trails**: Emits emergency sprint smoke trails (`ParticleTypes.SMOKE`) at the feet of the fleeing wolf.
+  - **GameRules**: Registered `betterdogs:bd_creeper_evasion_enabled` (Boolean, default `true`).
+
+## [4.23.0+26.2] - 2026-07-30
+### Added
+- **Goat Horn Command System (Stage 5: Seek Horn - Search & Track Target Command)**:
+  - **Problem**: In chaotic combat, commanding a wolf pack to focus fire on a specific dangerous mob (e.g. Evoker, Ravager, Warden) or search for hidden hostile mobs is unreliable with vanilla AI.
+  - **Solution**: Intercepted `InstrumentItem.use` on server side. Blowing the Seek Goat Horn (`seek_goat_horn`) commands active following wolves in range (governed by `betterdogs:bd_horn_command_range`, default: `64` blocks) to focus fire on a targeted entity at `1.3x` speed.
+  - **Cone-Inflated Raycasting**: Created `EntityRaycastHelper.findCrosshairTarget` to reliably select targets along player's view vector up to 32 blocks.
+  - **Fallback Area Search**: If no entity is highlighted under crosshair, wolves automatically search `bd_horn_command_range` for hostiles targeting the owner or pack. Emits smoke particles if no hostile targets exist.
+  - **Preemption**: Clears assemble pathing targets and Tactical Pacifist override timers.
+
+## [4.22.0+26.2] - 2026-07-30
+### Added
+- **Goat Horn Command System (Stage 4: Yearn Horn - Resume Follow Command)**:
+  - **Problem**: Standing up a pack of scattered sitting dogs individually across a base or field requires walking to each dog and manually right-clicking.
+  - **Solution**: Intercepted `InstrumentItem.use` on server side. Blowing the Yearn Goat Horn (`yearn_goat_horn`) orders all sitting owned wolves in range (governed by `betterdogs:bd_horn_command_range`, default: `64` blocks) to stand up (`setOrderedToSit(false)` & `setSittingManually(false)`) and resume follow mode.
+  - **Dedicated Filter**: Added `WolfTeleportHelper.isEligibleSittingWolf` to specifically target owned, non-leashed, non-guarding sitting dogs.
+  - **State Reset**: Clears assemble pathing targets and Tactical Pacifist override timers. Emits joyful musical note and green particles.
+
+## [4.21.0+26.2] - 2026-07-30
+### Added
+- **Goat Horn Command System (Stage 3: Sing Horn - Hold Command)**:
+  - **Problem**: When owner needs a large pack of active following wolves to hold position immediately across distance, manually right-clicking each dog is slow and inefficient.
+  - **Solution**: Intercepted `InstrumentItem.use` on server side. Blowing the Sing Goat Horn (`sing_goat_horn`) orders all active following wolves in range (governed by `betterdogs:bd_horn_command_range`, default: `64` blocks) to sit down in place (`setOrderedToSit(true)` & `setSittingManually(true)`).
+  - **Immediate Combat Clear**: Clears active attack targets (`setTarget(null)`, `setLastHurtByMob(null)`), resets social interactions, and halts navigation.
+  - **Preemption Handling**: Blowing Sing Horn clears active assemble pathing (`soundLocationTarget = null`) and active Tactical Pacifist overrides (`passiveOverrideTicks = 0`).
+
+## [4.20.0+26.2] - 2026-07-30
+### Added
+- **Goat Horn Command System (Stage 2: Feel Horn - Tactical Pacifist Override)**:
+  - **Problem**: In dangerous combat situations, calling wolves to disengage requires waiting for hostile mobs to die or manually calling individual dogs, risking dog casualties.
+  - **Solution**: Blowing the Feel Goat Horn (`feel_goat_horn`) triggers a 30-second (`600` ticks) Tactical Pacifist override on all active following wolves in range (governed by `betterdogs:bd_horn_command_range`, default: `64` blocks).
+  - **Immediate Combat Clear**: Wolves instantly clear target references (`setTarget(null)`, `setLastHurtByMob(null)`), halt combat navigation, and emit single-burst green happy villager particles.
+  - **Preemption Handling**: Blowing Feel Horn cancels active assemble pathing, and blowing Ponder Horn cancels active Tactical Pacifist mode.
+
+## [4.19.0+26.2] - 2026-07-30
+### Added
+- **Goat Horn Command System (Stage 1: Ponder Horn - Assemble Call)**:
+  - **Problem**: Calling and grouping a large pack of active following wolves across complex terrain requires cumbersome manual fetching or waiting for slow pathing.
+  - **Solution**: Intercepted `InstrumentItem.use` on server side. Blowing the Ponder Goat Horn (`ponder_goat_horn`) issues an Assemble Call to all active following wolves in range (governed by `betterdogs:bd_horn_command_range`, default: `64` blocks), commanding them to pathfind to the sounded location at `1.25x` speed.
+  - **Visual Confirmation**: Wolves emit single-burst musical note particles upon receiving the call without visual noise.
+  - **Strict Follow Filter**: Sitting, leashed, or guarding dogs remain stationed at their posts and ignore the call.
+
 ## [4.18.0+26.2] - 2026-07-21
 ### Added
 - **Fast Travel & Chunk-Unload Catch-Up Teleport Safety**:

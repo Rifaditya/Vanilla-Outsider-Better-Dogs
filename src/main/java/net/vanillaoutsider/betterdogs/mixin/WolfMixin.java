@@ -1,20 +1,5 @@
 // Verified against: Wolf.java (26.2+)
 // SPDX-License-Identifier: GPL-3.0-or-later
-/*
- * Copyright (c) 2026 Vanilla Outsider
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, version 3.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <https://www.gnu.org/licenses/>.
- */
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.minecraft.server.level.ServerLevel;
@@ -54,6 +39,35 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     @Unique
     private net.minecraft.core.BlockPos betterdogs$pathfindAvoidPos = null;
 
+    @Unique
+    private long betterdogs$soothedTime = -12000L;
+
+    @Unique
+    private net.minecraft.core.BlockPos betterdogs$soundLocationTarget = null;
+
+    @Unique
+    private int betterdogs$passiveOverrideTicks = 0;
+
+    @Override
+    public net.minecraft.core.BlockPos betterdogs$getSoundLocationTarget() {
+        return this.betterdogs$soundLocationTarget;
+    }
+
+    @Override
+    public void betterdogs$setSoundLocationTarget(net.minecraft.core.BlockPos pos) {
+        this.betterdogs$soundLocationTarget = pos;
+    }
+
+    @Override
+    public int betterdogs$getPassiveOverrideTicks() {
+        return this.betterdogs$passiveOverrideTicks;
+    }
+
+    @Override
+    public void betterdogs$setPassiveOverrideTicks(int ticks) {
+        this.betterdogs$passiveOverrideTicks = ticks;
+    }
+
     @Override
     public int betterdogs$getPushWaitTimer() {
         return this.betterdogs$pushWaitTimer;
@@ -72,6 +86,16 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     @Override
     public void betterdogs$setPathfindAvoidPos(net.minecraft.core.BlockPos pos) {
         this.betterdogs$pathfindAvoidPos = pos;
+    }
+
+    @Override
+    public long betterdogs$getSoothedTime() {
+        return this.betterdogs$soothedTime;
+    }
+
+    @Override
+    public void betterdogs$setSoothedTime(long time) {
+        this.betterdogs$soothedTime = time;
     }
 
     protected WolfMixin() {
@@ -207,11 +231,6 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         this.betterdogs$isBeingDisciplined = isBeingDisciplined;
     }
 
-    @Unique
-    private void betterdogs$applyPersonalityStats(WolfPersonality personality) {
-        WolfStatManager.applyPersonalityStats((Wolf) (Object) this, personality);
-    }
-
     @Inject(method = "applyTamingSideEffects", at = @At("TAIL"))
     private void betterdogs$onApplyTamingSideEffectsTail(CallbackInfo ci) {
         if (this.isTame() && !this.level().isClientSide()) {
@@ -226,7 +245,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         }
 
         if (!this.betterdogs$statsApplied && this.betterdogs$hasPersonality()) {
-            this.betterdogs$applyPersonalityStats(this.betterdogs$getPersonality());
+            WolfStatManager.applyPersonalityStats((Wolf) (Object) this, this.betterdogs$getPersonality());
             this.betterdogs$statsApplied = true;
         }
 
@@ -237,6 +256,10 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         Wolf wolf = (Wolf) (Object) this;
 
         if (!wolf.level().isClientSide()) {
+            if (this.betterdogs$passiveOverrideTicks > 0) {
+                this.betterdogs$passiveOverrideTicks--;
+            }
+
             if (this.tickCount % 20 == 0 && this.betterdogs$isGuardMode()) {
                 if (wolf.level() instanceof ServerLevel serverLevel) {
                     net.vanillaoutsider.betterdogs.util.WolfTickHelper.tickGuardMode(wolf, this, serverLevel);
@@ -264,8 +287,6 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
 
         this.betterdogs$healTimer = net.vanillaoutsider.betterdogs.util.WolfTickHelper.tickPassiveHealing(wolf, this, this.betterdogs$healTimer);
     }
-
-
 
     @Inject(method = "addAdditionalSaveData", at = @At("HEAD"))
     private void betterdogs$onAddAdditionalSaveData(net.minecraft.world.level.storage.ValueOutput output, CallbackInfo ci) {
