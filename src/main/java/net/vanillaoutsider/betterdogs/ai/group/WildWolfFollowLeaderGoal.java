@@ -1,4 +1,5 @@
 // Verified against: WildWolfFollowLeaderGoal.java (26.1.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.ai.group;
 
 import net.dasik.social.ai.goal.FollowLeaderGoal;

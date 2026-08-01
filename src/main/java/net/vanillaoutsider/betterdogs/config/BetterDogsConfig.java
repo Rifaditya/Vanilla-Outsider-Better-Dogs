@@ -1,4 +1,5 @@
-// Verified against: BetterDogsConfig.java (26.1.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Verified against: DedicatedServerProperties.java (26.2+)
 package net.vanillaoutsider.betterdogs.config;
 
 public class BetterDogsConfig {
@@ -42,6 +43,7 @@ public class BetterDogsConfig {
     public boolean enableCliffSafety = true;
     public boolean enableFleeLowHealth = true;
     public boolean enablePackFlankingTactics = true;
+    public boolean creeperAwareness = true;
     public int pacifistFleeChance = 100;
     public int normalFleeChance = 50;
     public int aggressiveFleeChance = 10;
@@ -50,16 +52,21 @@ public class BetterDogsConfig {
     public boolean enableDogsEatCookedGroundFood = true;
     public boolean enableRefuseGroundFood = true;
     public int refuseGroundFoodChance = 30;
+    public boolean enableFavoriteTreats = true;
+
+    // --- Player ---
     public boolean pacifistGuardBuffs = false;
     public boolean enableInbredCuring = true;
     public boolean showRuntParticles = false;
     public String guardParticleDensity = "medium";
+    public double wolfMinScale = 0.70;
+    public double wolfMaxScale = 1.45;
 
     // ========== Aggressive Personality ==========
     public double aggressiveHealthBonus = -10.0;
     public double aggressiveSpeedModifier = 0.15;
     public double aggressiveDetectionRange = 20.0;
-   // ...
+    // ...
     public double aggressiveChaseDistance = 50.0;
     public double aggressiveDamageModifier = 0.50;
     public float aggressiveFollowStart = 50.0f;
@@ -92,6 +99,9 @@ public class BetterDogsConfig {
     public int spawnChanceNormal = 60;
     public int spawnChanceAggressive = 20;
     public int spawnChancePacifist = 20;
+    public int spawnGroupMin = 4;
+    public int spawnGroupMax = 8;
+    public boolean enableExpandedBiomes = false;
 
     // ========== Breeding Genetics ==========
     public int breedingSameParentChance = 80;
@@ -136,8 +146,8 @@ public class BetterDogsConfig {
     public int terrMatrixPPMerge = 50;
 
     // ========== Pack Wander Scaling (v3.7.0) ==========
-    public int tamedPackSpreadMultiplier = 120;
-    public int tamedPackSpreadMax = 60;
+    public int tamedPackSpreadMultiplier = 280;
+    public int tamedPackSpreadMax = 150;
     public int wildPackSpreadMultiplier = 80;
     public int wildPackSpreadMax = 40;
     public double wolfSpawnMultiplier = 1.5;
@@ -208,6 +218,7 @@ public class BetterDogsConfig {
     public boolean getEnableCliffSafety() { return enableCliffSafety; }
     public boolean getEnableFleeLowHealth() { return enableFleeLowHealth; }
     public boolean getEnablePackFlankingTactics() { return enablePackFlankingTactics; }
+    public boolean getCreeperAwareness() { return creeperAwareness; }
     public int getPacifistFleeChance() { return pacifistFleeChance; }
     public int getNormalFleeChance() { return normalFleeChance; }
     public int getAggressiveFleeChance() { return aggressiveFleeChance; }
@@ -216,9 +227,13 @@ public class BetterDogsConfig {
     public boolean getEnableDogsEatCookedGroundFood() { return enableDogsEatCookedGroundFood; }
     public boolean getEnableRefuseGroundFood() { return enableRefuseGroundFood; }
     public int getRefuseGroundFoodChance() { return refuseGroundFoodChance; }
+    public boolean getEnableFavoriteTreats() { return enableFavoriteTreats; }
     public boolean getPacifistGuardBuffs() { return pacifistGuardBuffs; }
     public boolean getEnableInbredCuring() { return enableInbredCuring; }
     public boolean getShowRuntParticles() { return showRuntParticles; }
+    public int getSpawnGroupMin() { return spawnGroupMin; }
+    public int getSpawnGroupMax() { return spawnGroupMax; }
+    public boolean getEnableExpandedBiomes() { return enableExpandedBiomes; }
     public double getAggressiveHealthBonus() { return aggressiveHealthBonus; }
     public double getAggressiveSpeedModifier() { return aggressiveSpeedModifier; }
     public double getAggressiveDetectionRange() { return aggressiveDetectionRange; }
@@ -306,4 +321,6 @@ public class BetterDogsConfig {
     public int getGiftFeedThreshold() { return giftFeedThreshold; }
     public int getGiftInteractionCooldown() { return giftInteractionCooldown; }
     public boolean getDemeritAccidentalAttacks() { return demeritAccidentalAttacks; }
+    public double getWolfMinScale() { return wolfMinScale; }
+    public double getWolfMaxScale() { return wolfMaxScale; }
 }

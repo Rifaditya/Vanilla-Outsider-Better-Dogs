@@ -1,11 +1,12 @@
 - [x] 3.12.0: Nemesis Grudge System backported from 26.2.
 # 📋 Vanilla Outsider: Better Dogs Release Queue & Backlog
 
-This file tracks which built versions (from `/Archive/builds/`) have been manually uploaded to Modrinth/CurseForge.
+This file tracks which built versions (from the central archive folder "E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Archive Jar of all versions") have been manually uploaded to Modrinth/CurseForge.
 Open this file in your editor and change `[ ]` to `[x]` when you publish a version.
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`4.24.1+26.1.2`** (2026-08-01) - Full Parity Backport to Minecraft 26.1.2 from 26.2 (`4.24.1+26.2`). Contains all feature updates, Goat Horn Commands, Creeper Evasion, and Jade integration adapted for 26.1.2 APIs.
 - [x] **`3.1.35`** (2026-02-03) - - Detailed descriptions for all gamerules, including the previously missing `bd_howl_chance`.
 - [x] **`3.1.36`** (2026-02-16) - - Dependency conflict: Allow `DasikLibrary` >= 1.0.1 (removed < 2.0.0 cap) to support version 2.0.0.
 - [x] **`3.1.36+build.1`** (2026-02-19) - - **DasikLibrary Integration**: Switched to standalone dependency (JiJ removed). - - **Versioning**: Adopted strict Build Number policy.

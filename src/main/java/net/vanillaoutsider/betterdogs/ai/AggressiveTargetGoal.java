@@ -1,4 +1,5 @@
 // Verified against: NearestAttackableTargetGoal.java (26.1.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.ai;
 
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
@@ -104,6 +105,8 @@ public class AggressiveTargetGoal extends NearestAttackableTargetGoal<Monster> {
         }
 
         if (wolf instanceof WolfExtensions ext) {
+            if (ext.betterdogs$getPassiveOverrideTicks() > 0)
+                return false;
             if (ext.betterdogs$getPersonality() != WolfPersonality.AGGRESSIVE)
                 return false;
         } else {

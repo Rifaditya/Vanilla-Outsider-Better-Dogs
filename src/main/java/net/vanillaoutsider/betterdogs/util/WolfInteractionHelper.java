@@ -1,12 +1,17 @@
+// Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
 // Verified against: Wolf.java (26.2+)
 package net.vanillaoutsider.betterdogs.util;
 
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.player.Player;
@@ -17,17 +22,91 @@ import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityReference;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
-import net.minecraft.world.entity.Entity;
-import net.vanillaoutsider.betterdogs.util.DogCommandManager;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.vanillaoutsider.betterdogs.util.WolfDebugLogger;
 import net.vanillaoutsider.betterdogs.util.WolfStatManager;
 import net.vanillaoutsider.betterdogs.mixin.WolfAccessor;
 
+import net.minecraft.world.item.Item;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.vanillaoutsider.betterdogs.scheduler.events.ZoomiesDogEvent;
+
 public class WolfInteractionHelper {
 
+    private static final Item[] VANILLA_TREAT_POOL = new Item[]{
+        Items.COOKED_MUTTON, Items.RABBIT_STEW, Items.SPIDER_EYE, 
+        Items.GOLDEN_APPLE, Items.BAKED_POTATO, Items.PORKCHOP,
+        Items.ROTTEN_FLESH, Items.PUMPKIN_PIE, Items.GLOW_BERRIES
+    };
+
+    private static List<Item> ACTIVE_TREAT_POOL = null;
+
+    public static List<Item> getActiveTreatPool() {
+        if (ACTIVE_TREAT_POOL == null) {
+            List<Item> pool = new ArrayList<>(Arrays.asList(VANILLA_TREAT_POOL));
+            if (FabricLoader.getInstance().isModLoaded("farmersdelight")) {
+                String[] fdItems = new String[]{
+                    "dog_food", "minced_beef", "mutton_chops", "cooked_mutton_chops",
+                    "bacon", "cooked_bacon", "chicken_cuts", "cooked_chicken_cuts",
+                    "ham", "smoked_ham", "beef_stew", "chicken_soup", "vegetable_soup", "fish_stew"
+                };
+                for (String path : fdItems) {
+                    Identifier id = Identifier.fromNamespaceAndPath("farmersdelight", path);
+                    BuiltInRegistries.ITEM.getOptional(id).ifPresent(item -> {
+                        if (item != Items.AIR) {
+                            pool.add(item);
+                        }
+                    });
+                }
+            }
+            ACTIVE_TREAT_POOL = pool;
+        }
+        return ACTIVE_TREAT_POOL;
+    }
+
+    public static Item getFavoriteTreat(Wolf wolf) {
+        long seed = wolf.getUUID().getLeastSignificantBits();
+        java.util.Random random = new java.util.Random(seed);
+        List<Item> pool = getActiveTreatPool();
+        return pool.get(random.nextInt(pool.size()));
+    }
+
     public static InteractionResult handleMobInteract(Wolf wolf, Player player, InteractionHand hand, ItemStack itemStack) {
+        // Favorite Treats Logic
+        if (wolf.isTame() && wolf.isOwnedBy(player) && DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_FAVORITE_TREATS)) {
+            Item favoriteTreat = getFavoriteTreat(wolf);
+            if ((itemStack.is(favoriteTreat) && wolf.getHealth() < wolf.getMaxHealth()) || (itemStack.is(favoriteTreat) && !itemStack.is(Items.ROTTEN_FLESH))) {
+                // If it's their favorite treat, they get massive buffs and fully heal.
+                if (!wolf.level().isClientSide()) {
+                    itemStack.consume(1, player);
+                    net.vanillaoutsider.betterdogs.WolfPersistentData.setDiscoveredTreat(wolf, true);
+                    wolf.setHealth(wolf.getMaxHealth());
+                    wolf.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 900, 1));
+                    
+                    if (wolf instanceof WolfExtensions ext) {
+                        ext.betterdogs$setSoothedTime(wolf.level().getGameTime());
+                        var scheduler = ext.betterdogs$getScheduler();
+                        if (scheduler != null && !scheduler.isEventActive(ZoomiesDogEvent.ID)) {
+                            scheduler.schedule(new ZoomiesDogEvent());
+                        }
+                    }
+
+                    wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), ((WolfAccessor) wolf).betterdogs$invokeGetAmbientSound(), wolf.getSoundSource(), 1.0f, 1.5f);
+                    
+                    if (wolf.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+                        serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, wolf.getRandomX(1.0), wolf.getRandomY() + 0.5, wolf.getRandomZ(1.0), 10, 0.2, 0.2, 0.2, 0.05);
+                        serverLevel.sendParticles(ParticleTypes.HEART, wolf.getRandomX(1.0), wolf.getRandomY() + 0.5, wolf.getRandomZ(1.0), 5, 0.2, 0.2, 0.2, 0.05);
+                    }
+                }
+                return InteractionResult.SUCCESS;
+            }
+        }
+
         if (wolf.isTame() && wolf.isOwnedBy(player) && itemStack.is(Items.GOLDEN_APPLE) && hand == InteractionHand.MAIN_HAND) {
             if (wolf instanceof WolfExtensions ext && net.vanillaoutsider.betterdogs.WolfPersistentData.isPersistedInbred(wolf)) {
                 if (DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_ENABLE_INBRED_CURING)) {
@@ -77,6 +156,26 @@ public class WolfInteractionHelper {
         }
 
         if (wolf.isTame() && wolf instanceof WolfExtensions ext) {
+            // Comforting/Petting to soothe Storm Anxiety (Secondary use interaction with empty hand)
+            if (wolf.isOwnedBy(player) && player.isSecondaryUseActive() && itemStack.isEmpty() && hand == InteractionHand.MAIN_HAND && wolf.level().isThundering()) {
+                long currentTime = wolf.level().getGameTime();
+                long soothedTime = ext.betterdogs$getSoothedTime();
+                if (currentTime - soothedTime >= 12000L) { // Not recently soothed
+                    if (!wolf.level().isClientSide()) {
+                        ext.betterdogs$setSoothedTime(currentTime);
+                        
+                        // Play whimpering/happy sound mix and spawn comforting particles
+                        wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), ((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().whineSound().value(), wolf.getSoundSource(), 1.0f, 0.8f);
+                        
+                        if (wolf.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+                            serverLevel.sendParticles(ParticleTypes.HEART, wolf.getRandomX(1.0), wolf.getRandomY() + 0.5, wolf.getRandomZ(1.0), 3, 0.2, 0.1, 0.2, 0.02);
+                            serverLevel.sendParticles(ParticleTypes.NOTE, wolf.getX(), wolf.getY() + 0.5, wolf.getZ(), 5, 0.2, 0.2, 0.2, 0.05);
+                        }
+                    }
+                    return InteractionResult.SUCCESS;
+                }
+            }
+
 			// 0. Stick command: select or dismount
 			if (wolf.isOwnedBy(player) && player.isSecondaryUseActive() && itemStack.is(Items.STICK) && hand == InteractionHand.MAIN_HAND) {
 				if (!wolf.level().isClientSide()) {
@@ -111,8 +210,8 @@ public class WolfInteractionHelper {
 				return InteractionResult.SUCCESS;
 			}
 
-            // 1. Triggering / Toggling Pending Adoption
-            if (wolf.isOwnedBy(player) && player.isSecondaryUseActive() && itemStack.is(Items.PAPER) && hand == InteractionHand.MAIN_HAND) {
+			// 1. Triggering / Toggling Pending Adoption
+			if (wolf.isOwnedBy(player) && player.isSecondaryUseActive() && itemStack.is(Items.PAPER) && hand == InteractionHand.MAIN_HAND) {
                 if (!wolf.level().isClientSide()) {
                     boolean currentAdoptable = ext.betterdogs$isAdoptable();
                     boolean newAdoptable = !currentAdoptable;

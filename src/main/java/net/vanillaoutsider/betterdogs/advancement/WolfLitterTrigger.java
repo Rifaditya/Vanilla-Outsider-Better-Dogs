@@ -1,4 +1,5 @@
-// Verified against: BredAnimalsTrigger.java (26.1.2+)
+// Verified against: TameAnimalTrigger.java (26.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.advancement;
 
 import com.mojang.serialization.Codec;
@@ -22,19 +23,24 @@ public class WolfLitterTrigger extends SimpleCriterionTrigger<WolfLitterTrigger.
 
     public record TriggerInstance(
         Optional<ContextAwarePredicate> player,
-        Optional<Integer> minLitterSize
+        Optional<Integer> minSize,
+        Optional<Integer> size
     ) implements SimpleCriterionTrigger.SimpleInstance {
 
         public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(TriggerInstance::player),
-            Codec.INT.optionalFieldOf("min_litter_size").forGetter(TriggerInstance::minLitterSize)
+            Codec.INT.optionalFieldOf("min_size").forGetter(TriggerInstance::minSize),
+            Codec.INT.optionalFieldOf("size").forGetter(TriggerInstance::size)
         ).apply(instance, TriggerInstance::new));
 
         public boolean matches(int litterSize) {
-            if (this.minLitterSize.isEmpty()) {
-                return true;
+            if (this.minSize.isPresent() && litterSize < this.minSize.get()) {
+                return false;
             }
-            return litterSize >= this.minLitterSize.get();
+            if (this.size.isPresent() && litterSize != this.size.get()) {
+                return false;
+            }
+            return true;
         }
     }
 }

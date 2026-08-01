@@ -1,10 +1,10 @@
-// Verified against: WolfStatManager.java (26.1.2+)
+// Verified against: Wolf.java (26.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.util;
 
 import java.util.UUID;
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.wolf.Wolf;
@@ -99,6 +99,11 @@ public class WolfStatManager {
 
         // 2. Retrieve rolled stats for scale calculation
         float healthBonus = WolfPersistentData.getPersistedHealthBonus(wolf);
+        
+        // 2.5 Apply health modifier explicitly so it syncs to the client
+        if (healthAttr != null && healthBonus != 0) {
+            healthAttr.addPermanentModifier(new AttributeModifier(rolledHealthId, healthBonus, AttributeModifier.Operation.ADD_VALUE));
+        }
 
         // Calculate and apply dynamic scale based on health bonus
         float calculatedScale = 1.0f + (healthBonus * 0.012f);
@@ -110,11 +115,16 @@ public class WolfStatManager {
         float offset = -0.10f + (scaleRand.nextFloat() * 0.20f);
         calculatedScale += offset;
 
+        // Clamp the visual scale dynamically using config / GameRules (V3.8+)
+        float minScale = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_WOLF_MIN_SCALE_PERCENT) / 100.0f;
+        float maxScale = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_WOLF_MAX_SCALE_PERCENT) / 100.0f;
+        calculatedScale = Math.max(minScale, Math.min(maxScale, calculatedScale));
+
         if (wolf instanceof WolfExtensions ext) {
             ext.betterdogs$setSocialScale(calculatedScale);
         }
 
-        // Apply scale directly to standard SCALE attribute in 26.1.2
+        // Apply scale directly to standard SCALE attribute in 26.2
         var scaleAttr = wolf.getAttribute(Attributes.SCALE);
         if (scaleAttr != null && scaleAttr.getBaseValue() != calculatedScale) {
             scaleAttr.setBaseValue(calculatedScale);
@@ -125,6 +135,17 @@ public class WolfStatManager {
             double kbMod = DynamicGameRuleManager.getPct(wolf.level(), BetterDogsGameRules.BD_PACI_KNOCKBACK_PCT);
             knockbackAttr.addPermanentModifier(new AttributeModifier(pacifistKnockbackId, kbMod,
                     AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+        }
+
+        // 3.5 Set personality base FOLLOW_RANGE value
+        var followRangeAttr = wolf.getAttribute(Attributes.FOLLOW_RANGE);
+        if (followRangeAttr != null) {
+            double baseFollowRange = switch (personality) {
+                case AGGRESSIVE -> 32.0;
+                case PACIFIST -> 16.0;
+                case NORMAL -> 24.0;
+            };
+            followRangeAttr.setBaseValue(baseFollowRange);
         }
 
         // 4. Determine and apply Sound Variant based on genetics/stats mapping

@@ -1,4 +1,5 @@
 // Verified against: PersonalityFollowOwnerGoal.java (26.1.2+), EntityGetter.java (26.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.ai;
 
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
@@ -68,14 +69,33 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
         }
     }
 
+    private static final net.minecraft.resources.Identifier FOLLOW_RANGE_SPREAD_ID =
+        net.minecraft.resources.Identifier.fromNamespaceAndPath("betterdogs", "follow_range_spread");
+
     private void betterdogs$applyFollowerSpacing(int N) {
         if (N <= 1) {
             betterdogs$followerSpacingOffset = 0.0f;
+            var followRangeAttr = wolf.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.FOLLOW_RANGE);
+            if (followRangeAttr != null) {
+                followRangeAttr.removeModifier(FOLLOW_RANGE_SPREAD_ID);
+            }
             return;
         }
         float multiplier = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_TAMED_PACK_SPREAD_MULTIPLIER) / 100.0f;
         float maxExtra = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_TAMED_PACK_SPREAD_MAX) / 10.0f;
         betterdogs$followerSpacingOffset = Math.min((float) Math.sqrt(N - 1) * multiplier, maxExtra);
+
+        var followRangeAttr = wolf.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.FOLLOW_RANGE);
+        if (followRangeAttr != null) {
+            followRangeAttr.removeModifier(FOLLOW_RANGE_SPREAD_ID);
+            if (betterdogs$followerSpacingOffset > 0.0f) {
+                followRangeAttr.addTransientModifier(new net.minecraft.world.entity.ai.attributes.AttributeModifier(
+                    FOLLOW_RANGE_SPREAD_ID,
+                    betterdogs$followerSpacingOffset,
+                    net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE
+                ));
+            }
+        }
     }
 
     private void betterdogs$updateFollowerSpacingOffset() {

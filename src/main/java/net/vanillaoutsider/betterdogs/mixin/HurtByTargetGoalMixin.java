@@ -1,4 +1,5 @@
-// Verified against: HurtByTargetGoalMixin.java (26.1.2+)
+// Verified against: HurtByTargetGoal.java (26.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.minecraft.world.entity.LivingEntity;

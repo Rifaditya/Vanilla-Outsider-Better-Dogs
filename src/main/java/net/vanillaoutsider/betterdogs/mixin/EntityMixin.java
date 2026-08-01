@@ -1,4 +1,5 @@
-// Verified against: Entity.java (26.1.2+)
+// Verified against: Entity.java (26.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.minecraft.server.level.ServerLevel;
@@ -30,8 +31,8 @@ public abstract class EntityMixin {
             
             boolean thisSitting = thisWolf.isOrderedToSit();
             boolean thisGuarding = thisExt.betterdogs$isGuardMode();
-            double xa = entity.getX() - thisWolf.getX();
-            double za = entity.getZ() - thisWolf.getZ();
+            double xa = otherWolf.getX() - thisWolf.getX();
+            double za = otherWolf.getZ() - thisWolf.getZ();
             boolean thisNearDanger = false;
             
             if (net.dasik.social.api.gamerule.DynamicGameRuleManager.getBoolean(thisWolf.level(), BetterDogsGameRules.BD_CLIFF_SAFETY)) {

@@ -1,4 +1,5 @@
 // Verified against: BetterDogsCommand.java (26.1.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.command;
 
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
@@ -73,7 +74,7 @@ public class BetterDogsCommand {
 
     private static boolean isDebugEnabled(CommandSourceStack source) {
         if (!DynamicGameRuleManager.getBoolean(source.getLevel(), net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_DEBUGGING)) {
-            source.sendFailure(net.minecraft.network.chat.Component.literal("Better Dogs debugging is currently disabled. Enable it via GameRules: /gamerule betterdogdebugging true"));
+            source.sendFailure(net.minecraft.network.chat.Component.literal("Better Dogs debugging is currently disabled. Enable it via GameRules: /gamerule betterdogs:bd_debugging true"));
             return false;
         }
         return true;

@@ -1,5 +1,26 @@
-## [3.12.0] - Minecraft 26.1.2
+# Better Dogs - Historical Changelog
 
+## [4.24.1+26.1.2] - 2026-08-01
+### 🔄 Backport Release
+- **Full Parity Backport to Minecraft 26.1.2**: Backported all features, AI goals, Goat Horn Command systems, Creeper Evasion, Jade integration, and stability fixes from version `4.24.1+26.2`.
+- **API Mapping Adjustments**: Adapted Mojang registry and advancement APIs for Minecraft 26.1.2 compatibility (`EntityType`, `advancements.criterion`, `Gui.HeartType`).
+
+## [3.12.2-26.1.2] - 2026-06-27
+### Changed
+- **Strict Parity Sync:** Cross-pollinated minor polish and safety checks with 26.2.
+  - Added logging on Grudge expiration.
+  - Tweaked Nemesis angry particle spread.
+  - Tamed wolves will no longer form grudges against Players or other Tamed Animals to prevent infinite PvP loops.
+
+## [3.12.1-26.1.2] - 2026-06-27
+### 🛠️ Fixed
+- **Architectural Audit Fixes:** 
+  - Extracted logic out of `WolfMixin` to reduce file size under 300 LOC limit (moved to `WolfCombatHooks`).
+  - Added missing GPLv3 headers to Nemesis system files.
+  - Added missing localization keys for the Nemesis System GameRules in `en_us.json`.
+  - Synced Nemesis Grudge tick frequency to 20 ticks (1 second) for parity.
+
+## [3.12.0-26.1.2] - 2026-06-26
 ### Added
 - Backported the Nemesis Grudge System from 26.2 (v4.11.0).
 - If a non-player entity kills a tamed wolf, all nearby tamed wolves of the same owner gain a permanent grudge against that entity type.
@@ -7,13 +28,6 @@
 - The grudge expires after 3 in-game days by default.
 - New GameRules: `bd_nemesis_system` (default: true) and `bd_nemesis_duration_days` (default: 3).
 
-# Better Dogs - Historical Changelog
-
-## [3.11.1-26.1.2] - 2026-06-26
-### Fixed
-- Fixed Code Auditor violations (spacing, unused imports, citations, GPLv3 headers, God Mixin size limit).
-
-## [3.11.0-26.1.2] - 2026-06-26
 ### Summary
 The **"True Pack Hunting Tactics (Flanking)"** patch. Revolutionizes wolf pack combat by implementing dynamic flanking maneuvers for followers.
 - **Flanking Tactics**: When a pack engages a target, only the leader will attack directly. The follower wolves will perform flanking maneuvers, dynamically pathfinding around the target to strike from the sides or behind. This makes packs significantly deadlier and more visually coordinated without causing server strain.

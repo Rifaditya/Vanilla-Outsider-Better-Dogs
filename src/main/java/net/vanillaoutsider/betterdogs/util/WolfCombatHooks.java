@@ -1,5 +1,8 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 // Verified against: WolfCombatHooks.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.util;
+
+import net.minecraft.network.chat.Component;
 
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.dasik.social.core.EntitySocialScheduler;
@@ -11,9 +14,6 @@ import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.vanillaoutsider.betterdogs.scheduler.events.RetaliationDogEvent;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.vanillaoutsider.betterdogs.WolfPersistentData;
-import net.minecraft.world.entity.TamableAnimal;
 
 public class WolfCombatHooks {
 
@@ -23,6 +23,32 @@ public class WolfCombatHooks {
      * @return true if the damage should be CANCELLED, false otherwise.
      */
     public static boolean onActuallyHurt(Wolf wolf, DamageSource source, float amount) {
+        if (source.getEntity() instanceof net.minecraft.world.entity.player.Player player && wolf.isTame() && wolf.isOwnedBy(player)) {
+            boolean demeritAccidental = net.dasik.social.api.gamerule.DynamicGameRuleManager.getBoolean(wolf.level(), net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_DEMERIT_ACCIDENTAL_ATTACKS);
+            if (player.isCrouching()) {
+                net.vanillaoutsider.betterdogs.WolfPersistentData.setPersistedFeedCount(wolf, 0);
+                WolfDebugLogger.log(wolf, "Interaction", "Owner intentionally attacked dog (crouching), resetting interaction/feed count to 0");
+            } else if (demeritAccidental) {
+                int current = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedFeedCount(wolf);
+                int newValue = Math.max(0, current - 1);
+                net.vanillaoutsider.betterdogs.WolfPersistentData.setPersistedFeedCount(wolf, newValue);
+                WolfDebugLogger.log(wolf, "Interaction", "Owner accidentally attacked dog, reducing interaction/feed count by 1 (Current: " + newValue + ")");
+            }
+        }
+
+        if (wolf instanceof WolfExtensions ext) {
+            ext.betterdogs$setLastDamageTime(wolf.tickCount);
+            if (ext.betterdogs$isAdoptable()) {
+                ext.betterdogs$setAdoptable(false);
+                LivingEntity owner = wolf.getOwner();
+                if (owner instanceof net.minecraft.world.entity.player.Player player) {
+                    player.sendOverlayMessage(Component.translatable("text.betterdogs.adoption_cancelled_damage", wolf.getName()));
+                }
+            }
+        }
+        
+        WolfDebugLogger.log(wolf, "Hurt", "Source: " + source.getMsgId() + ", Amount: " + amount);
+
         if (!wolf.isTame())
             return false;
 
@@ -179,20 +205,25 @@ public class WolfCombatHooks {
         return null; // Pass to super
     }
 
+    /**
+     * Handles 'die' logic for the Nemesis (Grudge) System.
+     */
     public static void onDeath(Wolf wolf, DamageSource source) {
-        if (!wolf.isTame()) return;
-        if (!DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_NEMESIS_SYSTEM)) return;
+        if (!wolf.isTame() || wolf.level().isClientSide()) return;
         
-        if (source.getEntity() instanceof LivingEntity attacker && !(attacker instanceof Player) && !(attacker instanceof TamableAnimal)) {
-            String type = BuiltInRegistries.ENTITY_TYPE.getKey(attacker.getType()).toString();
-            int durationDays = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_NEMESIS_DURATION_DAYS);
-            long expiry = wolf.level().getGameTime() + (durationDays * 24000L);
+        if (!DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_NEMESIS_SYSTEM)) return;
+
+        if (source.getEntity() instanceof LivingEntity killer && !(killer instanceof net.minecraft.world.entity.player.Player) && !(killer instanceof net.minecraft.world.entity.TamableAnimal)) {
+            String killerType = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(killer.getType()).toString();
+            long expiry = wolf.level().getGameTime() + (DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_NEMESIS_DURATION_DAYS) * 24000L);
+
+            // Find nearby tamed wolves of the same owner (32 blocks radius)
+            java.util.List<Wolf> nearbyWolves = wolf.level().getEntitiesOfClass(Wolf.class, wolf.getBoundingBox().inflate(32.0),
+                w -> w.isTame() && w.getOwner() != null && w.getOwner().equals(wolf.getOwner()) && w != wolf);
             
-            java.util.List<Wolf> nearbyWolves = wolf.level().getEntitiesOfClass(Wolf.class, wolf.getBoundingBox().inflate(32.0D), 
-                w -> w.isTame() && wolf.getOwner() != null && w.isOwnedBy(wolf.getOwner()));
-            
-            for (Wolf w : nearbyWolves) {
-                WolfPersistentData.setPersistedNemesis(w, type, expiry);
+            for (Wolf packMate : nearbyWolves) {
+                net.vanillaoutsider.betterdogs.WolfPersistentData.setPersistedNemesis(packMate, killerType, expiry);
+                net.vanillaoutsider.betterdogs.util.WolfDebugLogger.log(packMate, "Nemesis", "Grudge against " + killerType + " formed. Expires at tick " + expiry);
             }
         }
     }

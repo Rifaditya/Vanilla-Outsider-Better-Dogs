@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 /*
  * Vanilla Outsider: Better Dogs
  * Selection and command manager for dog mounting features.

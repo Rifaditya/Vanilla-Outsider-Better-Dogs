@@ -1,4 +1,5 @@
 // Verified against: Wolf.java (26.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.util;
 
 import net.minecraft.core.BlockPos;
@@ -21,7 +22,6 @@ import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.minecraft.world.item.Items;
 
 import java.util.List;
-import net.minecraft.core.registries.BuiltInRegistries;
 
 /**
  * Helper utility to manage tick-level computations and particle spawning
@@ -31,6 +31,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 public class WolfTickHelper {
 
+    private static final DustParticleOptions AGGRESSIVE_PARTICLE = new DustParticleOptions(0xFF3333, 0.6f);
+    private static final DustParticleOptions PACIFIST_PARTICLE = new DustParticleOptions(0x00FF88, 0.6f);
+    private static final DustParticleOptions GUARD_PARTICLE = new DustParticleOptions(0xFFD700, 0.6f);
+    private static final ItemParticleOption RUNT_PARTICLE = new ItemParticleOption(ParticleTypes.ITEM, Items.ROTTEN_FLESH);
+
     public static void tickGuardMode(Wolf wolf, WolfExtensions ext, ServerLevel serverLevel) {
         WolfPersonality personality = ext.betterdogs$getPersonality();
         double px = wolf.getRandomX(0.5);
@@ -38,12 +43,12 @@ public class WolfTickHelper {
         double pz = wolf.getRandomZ(0.5);
 
         if (personality == WolfPersonality.AGGRESSIVE) {
-            serverLevel.sendParticles(new DustParticleOptions(0xFF3333, 0.6f), px, py, pz, 1, 0, 0.05, 0, 0.0);
+            serverLevel.sendParticles(AGGRESSIVE_PARTICLE, px, py, pz, 1, 0, 0.05, 0, 0.0);
         } else if (personality == WolfPersonality.PACIFIST) {
-            serverLevel.sendParticles(new DustParticleOptions(0x00FF88, 0.6f), px, py, pz, 1, 0, 0.05, 0, 0.0);
+            serverLevel.sendParticles(PACIFIST_PARTICLE, px, py, pz, 1, 0, 0.05, 0, 0.0);
 
             // Watchdog Grace Buff (Regeneration and Resistance to owner/allies within 6 blocks of wolf OR guard post)
-            if (DynamicGameRuleManager.getBoolean(serverLevel, BetterDogsGameRules.BD_PACIFIST_GUARD_BUFFS)) {
+            if (wolf.tickCount % 40 == 0 && DynamicGameRuleManager.getBoolean(serverLevel, BetterDogsGameRules.BD_PACIFIST_GUARD_BUFFS)) {
                 double buffRangeSqr = 36.0; // 6 blocks
                 Player owner = wolf.getOwner() instanceof Player ? (Player) wolf.getOwner() : null;
                 if (owner != null) {
@@ -59,15 +64,17 @@ public class WolfTickHelper {
                     }
 
                     // Buff allied wolves within 6 blocks of this wolf
-                    List<Wolf> allies = serverLevel.getEntitiesOfClass(Wolf.class, wolf.getBoundingBox().inflate(6.0), w -> w.isTame() && w.getOwner() == owner);
+                    List<Wolf> allies = serverLevel.getEntitiesOfClass(Wolf.class, wolf.getBoundingBox().inflate(6.0), w -> w.isTame());
                     for (Wolf ally : allies) {
-                        ally.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 80, 0, true, true));
-                        ally.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 80, 0, true, true));
+                        if (ally.getOwner() == owner) {
+                            ally.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 80, 0, true, true));
+                            ally.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 80, 0, true, true));
+                        }
                     }
                 }
             }
         } else {
-            serverLevel.sendParticles(new DustParticleOptions(0xFFD700, 0.6f), px, py, pz, 1, 0, 0.05, 0, 0.0);
+            serverLevel.sendParticles(GUARD_PARTICLE, px, py, pz, 1, 0, 0.05, 0, 0.0);
         }
     }
 
@@ -102,7 +109,7 @@ public class WolfTickHelper {
             double px = wolf.getRandomX(0.4);
             double py = wolf.getRandomY() + 0.2;
             double pz = wolf.getRandomZ(0.4);
-            serverLevel.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, Items.ROTTEN_FLESH), px, py, pz, 1, 0.01, 0.01, 0.01, 0.01);
+            serverLevel.sendParticles(RUNT_PARTICLE, px, py, pz, 1, 0.01, 0.01, 0.01, 0.01);
         }
     }
 
@@ -124,23 +131,28 @@ public class WolfTickHelper {
 
     public static void tickNemesisSystem(Wolf wolf, ServerLevel serverLevel) {
         if (!wolf.isTame()) return;
-        if (!DynamicGameRuleManager.getBoolean(serverLevel, BetterDogsGameRules.BD_NEMESIS_SYSTEM)) return;
+        if (!net.dasik.social.api.gamerule.DynamicGameRuleManager.getBoolean(serverLevel, net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_NEMESIS_SYSTEM)) return;
         
-        String nemesis = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedNemesisType(wolf);
-        if (nemesis.isEmpty()) return;
-        
+        String nemesisType = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedNemesisType(wolf);
+        if (nemesisType.isEmpty()) return;
+
         long expiry = net.vanillaoutsider.betterdogs.WolfPersistentData.getPersistedNemesisExpiry(wolf);
         if (serverLevel.getGameTime() > expiry) {
-            net.vanillaoutsider.betterdogs.WolfPersistentData.setPersistedNemesis(wolf, "", 0L);
+            net.vanillaoutsider.betterdogs.WolfPersistentData.clearPersistedNemesis(wolf);
+            net.vanillaoutsider.betterdogs.util.WolfDebugLogger.log(wolf, "Nemesis", "Grudge against " + nemesisType + " has expired.");
             return;
         }
-        
-        if (wolf.getTarget() != null) {
-            String targetType = BuiltInRegistries.ENTITY_TYPE.getKey(wolf.getTarget().getType()).toString();
-            if (targetType.equals(nemesis)) {
-                wolf.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 40, 0, true, false));
-                wolf.addEffect(new MobEffectInstance(MobEffects.SPEED, 40, 0, true, false));
-                serverLevel.sendParticles(ParticleTypes.ANGRY_VILLAGER, wolf.getRandomX(0.5), wolf.getRandomY() + 0.5, wolf.getRandomZ(0.5), 1, 0, 0.05, 0, 0.0);
+
+        // Buffs when attacking the nemesis
+        net.minecraft.world.entity.LivingEntity target = wolf.getTarget();
+        if (target != null && target.isAlive()) {
+            String targetType = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(target.getType()).toString();
+            if (nemesisType.equals(targetType)) {
+                // Spawn angry particles
+                double px = wolf.getRandomX(0.5);
+                double py = wolf.getRandomY() + 0.5;
+                double pz = wolf.getRandomZ(0.5);
+                serverLevel.sendParticles(ParticleTypes.ANGRY_VILLAGER, px, py, pz, 1, 0.2, 0.2, 0.2, 0.0);
             }
         }
     }

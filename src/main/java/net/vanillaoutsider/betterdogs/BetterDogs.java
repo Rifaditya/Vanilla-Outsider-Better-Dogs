@@ -1,4 +1,5 @@
-// Verified against: BetterDogs.java (26.1.2+)
+// Verified against: ModInitializer.java (Fabric)
+// SPDX-License-Identifier: GPL-3.0-or-later
 /*
  * Copyright (c) 2026 Vanilla Outsider
  *
@@ -21,17 +22,9 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.resources.Identifier;
-import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-/**
- * Better Dogs Main Entrypoint.
- * Protocol: Architectural Protocol 2.1
- */
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
 import net.vanillaoutsider.betterdogs.advancement.TameWolfPersonalityTrigger;
 import net.vanillaoutsider.betterdogs.advancement.GuardWolfPersonalityTrigger;
 import net.vanillaoutsider.betterdogs.advancement.InbredWolfTrigger;
@@ -41,6 +34,9 @@ import net.vanillaoutsider.betterdogs.advancement.WolfLitterTrigger;
 import net.vanillaoutsider.betterdogs.advancement.PutUpForAdoptionTrigger;
 import net.vanillaoutsider.betterdogs.advancement.OnPatrolTrigger;
 import net.vanillaoutsider.betterdogs.advancement.SelfServiceTrigger;
+import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Better Dogs Main Entrypoint.
@@ -130,7 +126,7 @@ public class BetterDogs implements ModInitializer {
 
         String version = FabricLoader.getInstance().getModContainer(MOD_ID)
                 .map(container -> container.getMetadata().getVersion().getFriendlyString())
-                .orElse("3.8.0+A-26.1.2");
+                .orElse("4.11.2+A-26.2");
         LOGGER.info("Vanilla Outsider: Better Dogs v{} initializing [Aligned]...", version);
 
         // Load Configuration
@@ -184,7 +180,9 @@ public class BetterDogs implements ModInitializer {
 
         net.dasik.social.api.genetics.EntityGeneticsRegistry.register(net.minecraft.world.entity.EntityType.WOLF, new net.dasik.social.api.genetics.GeneticsConfig(wolfTraits, wolfMutations));
 
+        // Register Dog Riding Command Events
         net.vanillaoutsider.betterdogs.util.DogCommandManager.registerEvents();
+
         LOGGER.info("Better Dogs initialized! Social Hive Mind active (DasikLibrary).");
     }
 }

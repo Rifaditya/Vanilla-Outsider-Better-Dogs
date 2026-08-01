@@ -1,6 +1,7 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 /*
  * Vanilla Outsider: Better Dogs
- * Verified against: BreedGoal.java (26.1.2+)
+ * Verified against: BreedGoal.java (26.2+)
  */
 package net.vanillaoutsider.betterdogs.mixin;
 

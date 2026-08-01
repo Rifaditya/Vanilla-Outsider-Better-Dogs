@@ -1,4 +1,8 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.ai;
+
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.target.TargetGoal;
@@ -51,6 +55,15 @@ public class WolfNemesisTargetGoal extends TargetGoal {
     @Override
     public void start() {
         this.wolf.setTarget(this.target);
+        this.wolf.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 1200, 0, true, false));
+        this.wolf.addEffect(new MobEffectInstance(MobEffects.SPEED, 1200, 0, true, false));
         super.start();
+    }
+
+    @Override
+    public void stop() {
+        this.wolf.removeEffect(MobEffects.STRENGTH);
+        this.wolf.removeEffect(MobEffects.SPEED);
+        super.stop();
     }
 }

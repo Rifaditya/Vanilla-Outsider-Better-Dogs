@@ -1,4 +1,5 @@
 // Verified against: DefaultRandomPos.java (26.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.ai;
 
 import net.minecraft.world.entity.LivingEntity;
@@ -82,7 +83,8 @@ public class TamedWanderNearOwnerGoal extends WaterAvoidingRandomStrollGoal {
         }
 
         // If we couldn't find a position within the radius after 10 attempts,
-        // fall back to moving towards the owner.
-        return DefaultRandomPos.getPosTowards(this.wolf, 8, 5, owner.position(), 1.5707963705062866);
+        // return null so the wolf stands still at its current spot instead of pacing back.
+        // Returning null is the vanilla API contract for "no valid destination this tick".
+        return null;
     }
 }

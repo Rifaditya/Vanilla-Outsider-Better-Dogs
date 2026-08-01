@@ -2,18 +2,16 @@
     <a href="https://www.curseforge.com/minecraft/mc-mods/fabric-api"><img src="https://img.shields.io/badge/Requires-Fabric_API-blue?style=for-the-badge&logo=fabric" alt="Requires Fabric API"></a>
     <img src="https://img.shields.io/badge/Language-Java_25-orange?style=for-the-badge&logo=java" alt="Java 25">
     <img src="https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge" alt="License">
-    <img src="https://img.shields.io/badge/Minecraft-26.1.2%20%2F%2026.2+-brightgreen?style=for-the-badge" alt="Minecraft 26.1.2 / 26.2+">
+    <img src="https://img.shields.io/badge/Minecraft-26.2+-brightgreen?style=for-the-badge" alt="Minecraft 26.2+">
 </p>
 
 # 🐕 Better Dogs
 
 ### 🎮 Version Compatibility & Parity
 
-This mod is active and fully supported across both major version streams:
-* **Minecraft 26.2+**: Current public release — **`v4.3.0`**
-* **Minecraft 26.1.2**: Current public release — **`v3.7.1`**
-
-Both versions share **complete feature parity**, offering identical AI improvements, personality dynamics, territorial systems, and configuration options.
+This mod is active and fully supported:
+* **Minecraft 26.2+**: Current public release — **`v4.24.1+26.2`**
+* **Minecraft 26.1.2**: Active Backport — **`v4.24.1+26.1.2`** *(Will be released on public platforms concurrently when `4.24.1+26.2` is released)*
 
 <blockquote><strong>Make Wolves Worthy Companions. Smarter, Safer, Livelier.</strong></blockquote>
 
@@ -117,6 +115,11 @@ Wild wolf packs are now dynamic, territorial entities led by a dominant leader:
 
 ## ⚙️ Configuration (Native Game Rules)
 
+
+> [!IMPORTANT]
+> **Config vs. In-Game GameRules:**
+> The global configuration file only defines **default values for new worlds** at creation time.
+> If you have **already created/opened a world**, changing the config file will have no effect. You must change the settings in-game using the **Edit Game Rules** UI screen or the /gamerule command.
 No messy config files. Better Dogs uses the **Native Minecraft Game Rules** system. All 50+ mod parameters are grouped into a dedicated **"Better Dogs"** category in the official UI.
 
 <blockquote>💡 <strong>Too many rules?</strong> If the game rule screen feels cluttered, we highly recommend installing <a href="https://www.curseforge.com/minecraft/mc-mods/collapsible-gamerules">Collapsible Game Rules</a>. It will automatically group the new Personality Matrix settings into clean, expandable folders!</blockquote>

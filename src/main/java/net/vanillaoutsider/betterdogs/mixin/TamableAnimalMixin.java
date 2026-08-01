@@ -1,11 +1,12 @@
-// Verified against: TamableAnimalMixin.java (26.1.2+)
+// Verified against: TamableAnimal.java (26.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.mixin;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerPlayer;
 import net.vanillaoutsider.betterdogs.BetterDogs;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
@@ -70,17 +71,17 @@ public abstract class TamableAnimalMixin {
         }
     }
 
-    @Inject(method = "tame", at = @At("TAIL"))
-    private void betterdogs$onTame(Player player, CallbackInfo ci) {
-        if ((Object) this instanceof Wolf wolf && player instanceof ServerPlayer serverPlayer) {
-            if (wolf instanceof WolfExtensions ext) {
-                WolfPersonality personality = ext.betterdogs$getPersonality();
-                if (personality != null) {
-                    BetterDogs.TAME_WOLF_PERSONALITY.trigger(serverPlayer, personality);
-                }
-            }
-        }
-    }
+	@Inject(method = "tame", at = @At("TAIL"))
+	private void betterdogs$onTame(Player player, CallbackInfo ci) {
+		if ((Object) this instanceof Wolf wolf && player instanceof ServerPlayer serverPlayer) {
+			if (wolf instanceof WolfExtensions ext) {
+				WolfPersonality personality = ext.betterdogs$getPersonality();
+				if (personality != null) {
+					BetterDogs.TAME_WOLF_PERSONALITY.trigger(serverPlayer, personality);
+				}
+			}
+		}
+	}
 
 	@Inject(method = "isInSittingPose", at = @At("HEAD"), cancellable = true)
 	private void betterdogs$forceSittingPoseWhileRiding(CallbackInfoReturnable<Boolean> cir) {

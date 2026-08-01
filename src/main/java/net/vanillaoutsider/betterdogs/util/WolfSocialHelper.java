@@ -1,4 +1,5 @@
 // Verified against: WolfSocialHelper.java (26.1.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.util;
 
 import net.dasik.social.api.group.GroupMember;

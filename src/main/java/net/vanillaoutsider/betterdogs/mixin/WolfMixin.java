@@ -1,33 +1,14 @@
-/*
- * Copyright (c) 2026 Vanilla Outsider
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, version 3.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <https://www.gnu.org/licenses/>.
- */
-// Verified against: Wolf.java (26.1.2+)
+// Verified against: Wolf.java (26.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersistentData;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
-import net.vanillaoutsider.betterdogs.util.WolfCombatHooks;
-import net.vanillaoutsider.betterdogs.util.WolfDebugLogger;
 import net.vanillaoutsider.betterdogs.util.WolfStatManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -58,6 +39,35 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     @Unique
     private net.minecraft.core.BlockPos betterdogs$pathfindAvoidPos = null;
 
+    @Unique
+    private long betterdogs$soothedTime = -12000L;
+
+    @Unique
+    private net.minecraft.core.BlockPos betterdogs$soundLocationTarget = null;
+
+    @Unique
+    private int betterdogs$passiveOverrideTicks = 0;
+
+    @Override
+    public net.minecraft.core.BlockPos betterdogs$getSoundLocationTarget() {
+        return this.betterdogs$soundLocationTarget;
+    }
+
+    @Override
+    public void betterdogs$setSoundLocationTarget(net.minecraft.core.BlockPos pos) {
+        this.betterdogs$soundLocationTarget = pos;
+    }
+
+    @Override
+    public int betterdogs$getPassiveOverrideTicks() {
+        return this.betterdogs$passiveOverrideTicks;
+    }
+
+    @Override
+    public void betterdogs$setPassiveOverrideTicks(int ticks) {
+        this.betterdogs$passiveOverrideTicks = ticks;
+    }
+
     @Override
     public int betterdogs$getPushWaitTimer() {
         return this.betterdogs$pushWaitTimer;
@@ -76,6 +86,16 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     @Override
     public void betterdogs$setPathfindAvoidPos(net.minecraft.core.BlockPos pos) {
         this.betterdogs$pathfindAvoidPos = pos;
+    }
+
+    @Override
+    public long betterdogs$getSoothedTime() {
+        return this.betterdogs$soothedTime;
+    }
+
+    @Override
+    public void betterdogs$setSoothedTime(long time) {
+        this.betterdogs$soothedTime = time;
     }
 
     protected WolfMixin() {
@@ -211,11 +231,6 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         this.betterdogs$isBeingDisciplined = isBeingDisciplined;
     }
 
-    @Unique
-    private void betterdogs$applyPersonalityStats(WolfPersonality personality) {
-        WolfStatManager.applyPersonalityStats((Wolf) (Object) this, personality);
-    }
-
     @Inject(method = "applyTamingSideEffects", at = @At("TAIL"))
     private void betterdogs$onApplyTamingSideEffectsTail(CallbackInfo ci) {
         if (this.isTame() && !this.level().isClientSide()) {
@@ -230,7 +245,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         }
 
         if (!this.betterdogs$statsApplied && this.betterdogs$hasPersonality()) {
-            this.betterdogs$applyPersonalityStats(this.betterdogs$getPersonality());
+            WolfStatManager.applyPersonalityStats((Wolf) (Object) this, this.betterdogs$getPersonality());
             this.betterdogs$statsApplied = true;
         }
 
@@ -241,6 +256,10 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         Wolf wolf = (Wolf) (Object) this;
 
         if (!wolf.level().isClientSide()) {
+            if (this.betterdogs$passiveOverrideTicks > 0) {
+                this.betterdogs$passiveOverrideTicks--;
+            }
+
             if (this.tickCount % 20 == 0 && this.betterdogs$isGuardMode()) {
                 if (wolf.level() instanceof ServerLevel serverLevel) {
                     net.vanillaoutsider.betterdogs.util.WolfTickHelper.tickGuardMode(wolf, this, serverLevel);
@@ -258,8 +277,8 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
                     net.vanillaoutsider.betterdogs.util.WolfTickHelper.tickRuntParticles(wolf, serverLevel);
                 }
             }
-            
-            if (this.tickCount % 5 == 0) {
+
+            if (this.tickCount % 20 == 0) {
                 if (wolf.level() instanceof ServerLevel serverLevel) {
                     net.vanillaoutsider.betterdogs.util.WolfTickHelper.tickNemesisSystem(wolf, serverLevel);
                 }
@@ -267,52 +286,6 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         }
 
         this.betterdogs$healTimer = net.vanillaoutsider.betterdogs.util.WolfTickHelper.tickPassiveHealing(wolf, this, this.betterdogs$healTimer);
-    }
-
-    @Inject(method = "actuallyHurt", at = @At("HEAD"), cancellable = true)
-    private void betterdogs$onActuallyHurt(ServerLevel level, DamageSource source, float amount, CallbackInfo ci) {
-        Wolf wolf = (Wolf) (Object) this;
-        if (source.getEntity() instanceof net.minecraft.world.entity.player.Player player && wolf.isTame() && wolf.isOwnedBy(player)) {
-            boolean demeritAccidental = net.dasik.social.api.gamerule.DynamicGameRuleManager.getBoolean(wolf.level(), net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_DEMERIT_ACCIDENTAL_ATTACKS);
-            if (player.isCrouching()) {
-                WolfPersistentData.setPersistedFeedCount(wolf, 0);
-                WolfDebugLogger.log(wolf, "Interaction", "Owner intentionally attacked dog (crouching), resetting interaction/feed count to 0");
-            } else if (demeritAccidental) {
-                int current = WolfPersistentData.getPersistedFeedCount(wolf);
-                int newValue = Math.max(0, current - 1);
-                WolfPersistentData.setPersistedFeedCount(wolf, newValue);
-                WolfDebugLogger.log(wolf, "Interaction", "Owner accidentally attacked dog, reducing interaction/feed count by 1 (Current: " + newValue + ")");
-            }
-        }
-
-        betterdogs$setLastDamageTime(this.tickCount);
-        WolfDebugLogger.log((Wolf)(Object)this, "Hurt", "Source: " + source.getMsgId() + ", Amount: " + amount);
-
-        if (betterdogs$isAdoptable()) {
-            betterdogs$setAdoptable(false);
-            LivingEntity owner = this.getOwner();
-            if (owner instanceof net.minecraft.world.entity.player.Player player) {
-                player.sendOverlayMessage(Component.translatable("text.betterdogs.adoption_cancelled_damage", this.getName()));
-            }
-        }
-
-        if (WolfCombatHooks.onActuallyHurt((Wolf) (Object) this, source, amount)) {
-            ci.cancel();
-        }
-    }
-
-    @Inject(method = "wantsToAttack", at = @At("HEAD"), cancellable = true)
-    private void betterdogs$onWantsToAttack(LivingEntity target, LivingEntity owner,
-            CallbackInfoReturnable<Boolean> cir) {
-        Boolean result = WolfCombatHooks.wantsToAttack((Wolf) (Object) this, target, owner);
-        if (result != null) {
-            cir.setReturnValue(result);
-        }
-    }
-
-    @Inject(method = "die", at = @At("HEAD"))
-    private void betterdogs$onDie(DamageSource source, CallbackInfo ci) {
-        WolfCombatHooks.onDeath((Wolf) (Object) this, source);
     }
 
     @Inject(method = "addAdditionalSaveData", at = @At("HEAD"))

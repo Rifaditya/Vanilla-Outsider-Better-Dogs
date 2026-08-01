@@ -1,4 +1,5 @@
-// Verified against: Wolf.java (26.1.2+)
+// Verified against: Wolf.java (26.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs;
 
 import java.util.UUID;
@@ -240,4 +241,14 @@ public interface WolfExtensions {
 
     // === GOAL SELECTOR ACCESSOR ===
     net.minecraft.world.entity.ai.goal.GoalSelector betterdogs$getGoalSelector();
+
+    // ========== Storm Shelter & Comfort Soothing (V4.15.16) ==========
+    long betterdogs$getSoothedTime();
+    void betterdogs$setSoothedTime(long time);
+
+    // ========== Goat Horn Command System (V4.19.0) ==========
+    @Nullable BlockPos betterdogs$getSoundLocationTarget();
+    void betterdogs$setSoundLocationTarget(@Nullable BlockPos pos);
+    int betterdogs$getPassiveOverrideTicks();
+    void betterdogs$setPassiveOverrideTicks(int ticks);
 }

@@ -31,6 +31,7 @@ content: |
   - **Correction System:** Aggressive adults discipline misbehaving puppies.
   - **Retaliation:** Puppies bit back if struck by owners.
   - **Affinity:** Social activities build bonding levels to suppress blood feuds.
+  - **Nemesis (Grudge) System:** If a non-player entity kills a tamed wolf, nearby tamed wolves of the same owner gain a 3-day grudge against that entity type. They will receive Strength and Speed buffs and emit angry particles when engaging their nemesis.
 
   ### Immersive Events
   - **Zoomies:** Morning/Rain hyperactivity.

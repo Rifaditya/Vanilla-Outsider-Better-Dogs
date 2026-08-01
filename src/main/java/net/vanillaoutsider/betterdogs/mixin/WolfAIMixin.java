@@ -1,4 +1,5 @@
-// Verified against: Wolf.java (26.1.2+)
+// Verified against: Wolf.java (26.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
@@ -18,7 +19,6 @@ import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.ai.AdultCorrectionGoal;
 import net.vanillaoutsider.betterdogs.ai.AggressiveTargetGoal;
-import net.vanillaoutsider.betterdogs.ai.MoveToVehicleGoal;
 import net.vanillaoutsider.betterdogs.ai.AvoidHazardsGoal;
 import net.vanillaoutsider.betterdogs.ai.BabyBiteBackGoal;
 import net.vanillaoutsider.betterdogs.ai.BabyCuriosityGoal;
@@ -43,9 +43,8 @@ import net.vanillaoutsider.betterdogs.ai.WolfFlankAttackGoal;
 import net.vanillaoutsider.betterdogs.ai.WolfFleeLowHealthGoal;
 import net.vanillaoutsider.betterdogs.ai.WolfStormAnxietyGoal;
 import net.vanillaoutsider.betterdogs.ai.ZoomiesGoal;
-import net.vanillaoutsider.betterdogs.ai.WolfNemesisTargetGoal;
 import net.vanillaoutsider.betterdogs.ai.group.WildWolfFollowLeaderGoal;
-import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
+import net.vanillaoutsider.betterdogs.ai.MoveToVehicleGoal;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -76,6 +75,7 @@ public abstract class WolfAIMixin extends TamableAnimal {
 
         this.goalSelector.addGoal(2, new WolfGuardGoal(wolf));
         this.goalSelector.addGoal(8, new WolfGiftGoal(wolf));
+        this.goalSelector.addGoal(1, new net.vanillaoutsider.betterdogs.ai.PathToSoundLocationGoal(wolf));
         this.goalSelector.addGoal(1, new FleeCreeperGoal(wolf));
         this.goalSelector.addGoal(1, new AvoidHazardsGoal(wolf));
         this.goalSelector.addGoal(1, new WolfFleeLowHealthGoal(wolf, 1.25));
@@ -87,8 +87,8 @@ public abstract class WolfAIMixin extends TamableAnimal {
         this.targetSelector.addGoal(2, new AggressiveTargetGoal(wolf));
         this.targetSelector.addGoal(2, new PacifistRevengeGoal(wolf));
 
+        this.targetSelector.addGoal(1, new net.vanillaoutsider.betterdogs.ai.WolfNemesisTargetGoal(wolf));
         this.targetSelector.addGoal(1, new BloodFeudGoal(wolf));
-        this.targetSelector.addGoal(1, new WolfNemesisTargetGoal(wolf));
         this.goalSelector.addGoal(0, new BabyBiteBackGoal(wolf));
         this.goalSelector.addGoal(4, new AdultCorrectionGoal(wolf));
         this.goalSelector.addGoal(4, new SmallFightGoal(wolf));
@@ -139,7 +139,7 @@ public abstract class WolfAIMixin extends TamableAnimal {
 
         this.goalSelector.addGoal(7, new GroupHowlGoal(wolf));
         this.goalSelector.addGoal(7, new BabyCuriosityGoal(wolf, 0.8));
-
+        
         // Remove the vanilla WaterAvoidingRandomStrollGoal for tamed wolves and register custom TamedWanderNearOwnerGoal
         Set<WrappedGoal> strollGoalsToRemove = new HashSet<>();
         for (WrappedGoal goal : this.goalSelector.getAvailableGoals()) {

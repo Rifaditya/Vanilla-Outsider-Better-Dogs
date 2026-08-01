@@ -6,7 +6,9 @@
   "compatibilityLevel": "JAVA_25",
     "mixins": [
         "BreedGoalMixin",
+        "EntityMixin",
         "WolfMixin",
+        "WolfCombatMixin",
         "WolfSocialMixin",
         "WolfGuardMixin",
         "WolfAIMixin",
@@ -21,10 +23,12 @@
         "WolfAccessor",
         "WolfMobMixin",
         "ServerLevelMixin",
+        "ServerPlayerMixin",
+        "ServerPlayerTickMixin",
         "AnimalMixin",
-        "EntityMixin",
         "WalkNodeEvaluatorMixin",
-        "NaturalSpawnerMixin"
+        "NaturalSpawnerMixin",
+        "InstrumentItemMixin"
     ],
     "injectors": {
         "defaultRequire": 1

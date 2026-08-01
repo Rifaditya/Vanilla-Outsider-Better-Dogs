@@ -1,86 +1,98 @@
-# 🐕 Better Dogs: A Social & Behavioral Overhaul (v3.7.1+A-26.1.2) (Discontinued)
+# 🐕 Better Dogs: A Social & Behavioral Overhaul (v4.24.1+26.1.2)
+
+> [!IMPORTANT]
+> **Release Availability Note:** Version `4.24.1+26.1.2` (Minecraft 26.1.2 backport) will be officially published on Modrinth and CurseForge concurrently when `4.24.1+26.2` is released! If you wish to use it prior to release, you can compile the JAR directly from this repository or access pre-compiled builds via **[Ko-fi](https://ko-fi.com/dasikigaijin)**.
+
+> [!NOTE]
+> **🙏 I am begging you!** If you are enjoying this mod or compiling from source, please take a moment to visit and download the mod on **[Modrinth](https://modrinth.com/mod/vanilla-outsider-better-dogs)** or **[CurseForge](https://www.curseforge.com/minecraft/mc-mods/vanilla-outsider-better-dogs)**! Every single download on those pages gives me a little bit of money that helps me pay the bills and keeps this project alive. Thank you!
 
 **Better Dogs** is a comprehensive overhaul of the Minecraft Wolf, replacing robotic behaviors with a dynamic, personality-driven social system. Built for the modern "Post-Obfuscation" era of Minecraft, it enhances the taming loop with genetics, social bonding, and smart survival logic.
 
-## 🔥 New in v3.7.1+A-26.1.2: Guarding Sit Lock Fix (Alpha)
+## 🔥 Backport Highlights (v4.24.1+26.1.2 - Minecraft 26.1.2 Parity)
 
-This patch resolves manual sitting issues for guarding wolves of all personalities:
-- **Normal Guarding Sit Fix**: Fixed a bug where Normal personality sentinel wolves immediately stood back up when manually ordered to sit.
-- **Guarding Sit Lock**: Manual sitting now correctly pauses the active `WolfGuardGoal` and gates custom target selectors (e.g. `AggressiveTargetGoal`), ensuring guarding wolves remain sitting and locked from movement/attack, matching vanilla behavior.
-- **Dynamic Follower Spread Scaling (v3.7.0)**: Tamed and wild wolves now space themselves out wider as the pack size $N$ increases. Spacing is calculated mathematically using the square root formula: $f(N) = \text{multiplier} \times \sqrt{N - 1}$.
-
-This update scales the follow/spread spacing of wild and tamed wolf packs dynamically based on the number of active followers:
-
-- **Dynamic Pack Spread Scaling**: Tamed and wild wolves now space themselves out wider as the pack size $N$ increases. Spacing is calculated mathematically using the square root formula: $f(N) = \text{multiplier} \times \sqrt{N - 1}$.
-- **Tamed Follow Spacing**: Tamed wolves following a player dynamically increase their follow start and stop thresholds, preventing overcrowding.
-- **Wild Flock Spacing**: Wild pack members dynamically adjust cohesion and separation radii during flocking, resulting in organic pack formations.
-- **New Spacing GameRules**: Added 4 new native GameRules to configure the spacing multipliers and limits:
-  - `bd_tamed_pack_spread_multiplier` (Default: 120 = 1.2x)
-  - `bd_tamed_pack_spread_max` (Default: 60 = 6.0 blocks max extra)
-  - `bd_wild_pack_spread_multiplier` (Default: 80 = 0.8x)
-  - `bd_wild_pack_spread_max` (Default: 40 = 4.0 blocks max extra)
-- **Subtle Colored Dust Particles (v3.6.6)**: Replaced ambient guard mode particles and debug particles with tiny, custom-colored `dust` particles at a subtle `0.5f`/`0.6f` scale.
-  - 🔴 **Aggressive**: Red particle (`0xFF3333`)
-  - 🟡 **Normal**: Gold/Yellow particle (`0xFFD700`)
-  - 🟢 **Pacifist**: Green/Teal particle (`0x00FF88`)
-- **Gated Personality Particles**: Personality particles now strictly emit only when the wolf is on active Guard Mode.
-- **Client Synchronization**: Particles tick exclusively on the server side using `serverLevel.sendParticles()`, ensuring the correct personality visuals show on clients without client-side attachment sync.
-- **ConfigHelper Migration (v3.6.4)**: Refactored `BetterDogsConfig` to delegate configuration serialization to `DasikLibrary`'s `ConfigHelper`.
+- **Goat Horn Command System**: Command your pack using Seek Goat Horns! Tamed wolves in range focus fire on highlighted target entities or sweep the area at `1.3x` speed.
+- **Creeper Blast Evasion**: Tamed wolves detect swelling/igniting creepers within 10 blocks and sprint radially away at `1.5x` speed emitting emergency smoke trails.
+- **Nemesis (Grudge) System**: Tamed wolves actively form blood feuds against hostile mob types that kill their pack-mates! Wolves with an active grudge gain `STRENGTH` and `SPEED` when attacking their nemesis.
+- **Jade UI Overhaul**: Full Jade integration for Dynamic Max Health rendering and togglable trait status tags adapted for Minecraft 26.1.2 APIs (`Gui.HeartType`).
+- **Ground Scavenging & Feeding**: Tamed wolves automatically eat dropped raw and cooked food to restore health.
+- **Guarding Sit Lock Fix**: Resolves manual sitting issues for guarding wolves of all personalities. Sentinel wolves remain sitting and locked from movement/attack, pausing the active `WolfGuardGoal`.
 
 ---
 
-- **🏰 Guard Mode Activation**: Right-clicking a tamed wolf with a bone toggles Guard Mode (consuming exactly 1 bone) and anchors the wolf to its current block position.
-- **📐 Mathematical Patrols**: Anchored guards perform patrolling patterns matching their personality (Aggressive = outer perimeter sweeps; Normal = post sentinels or radial star sweeps; Pacifist = close orbital pacing).
-- **🛡️ Auto-Targeting & Chase Caps**: Normal and Aggressive guards automatically attack hostiles within range (16/24 blocks) but are capped from chasing too far (20/32 blocks) to prevent them being lured away.
-- **🔊 Watchdog Alarms & Buffs**: Pacifist guards whine and emit notes when hostiles approach, and apply optional Regeneration and Resistance buffs to allies (gated by GameRule).
-- **🍃 Subtle Foot Particles**: Displays very subtle, non-distracting foot particles every 4 seconds (`ASH` for Aggressive, `WHITE_ASH` for Normal, `MYCELIUM` for Pacifist) to indicate guard status.
-- **⚡ Performance & Security Polish**: Heavy entity queries and effect allocations are time-sliced (running once per second). Debug stick interactions on wolves are gated behind operator permission checks.
+## ✨ Features
 
----
+### 🧠 Personality Intelligence
+When tamed, wolves develop one of three permanent personalities:
 
-## ✨ Key Features
+<p align="center">
+  <img src="https://cdn.modrinth.com/data/cached_images/bcda6a78fa3159bc710566a2cbedfa1e94a03930.png" alt="Aggressive dog particle" width="30%">
+  <img src="https://cdn.modrinth.com/data/cached_images/6d8c999c94d61346d925ecadd1f2655ef412bb0d.png" alt="Pacifist all love particle" width="30%">
+  <img src="https://cdn.modrinth.com/data/cached_images/8722821ac9f7e1b6ca653e77cf90cf83dff2c432.png" alt="Vanilla/Normal" width="30%">
+</p>
 
-### 🧠 Unique Personality System
-Every dog is assigned one of three personalities with unique traits:
-- **Aggressive**: Fierce protectors that attack hostiles on sight. Proactively **Scouts** ahead.
-- **Pacifist**: Gentle companions that avoid combat. Acts as a **Silent Alarm** for monsters.
-- **Normal**: Balanced companions with standard vanilla-plus behavior.
+- 💢 **Aggressive**: The Guardian. Proactively attacks hostile mobs, scouts ahead, and wanders in a wider outer circle far from the player to patrol the perimeter. Emits red dust particles (`0xFF3333`) on patrol.
+- ❤️ **Pacifist**: The Healer. Avoids combat unless you are hurt. High health, low damage. Emits green/teal dust particles (`0x00FF88`) on patrol.
+- ✨ **Normal**: The Classic. Balanced stats and standard vanilla-plus behavior. Emits gold/yellow dust particles (`0xFFD700`) on patrol.
 
-### 🐕 Advanced Social AI
-- **The Snitch System (Adult Correction)**: Adults intervene to discipline misbehaving puppies using the `AdultCorrectionGoal`.
-- **Wild Wolf Packs**: Powered by **DasikLibrary**, wild wolves form cohesive packs (up to 8) with leaders and follower logic.
-- **Social Events**: Morning zoomies, full-moon howling, and non-lethal social interactions.
-- **Genetics**: Puppies inherit personality traits and stats from their parents via the `WolfBreedingMixin`.
+### 🛡️ Tamed Wolf Guard Mode
 
-### 🛡️ Smart Survival & Quality of Life
-- **Cliff Safety**: Wolves detect fatal falls and stop chasing targets over voids or high drops.
-- **Hazard Avoidance**: Improved pathfinding around lava, fire, and drowning hazards.
-- **Dog Feeding**: Tamed dogs can scavenge dropped raw or cooked food from the ground to restore health via `EatGroundFoodGoal`.
+Right-click a tamed wolf with a bone while sneaking (Shift + Right Click) to toggle **Guard Mode** (consuming exactly 1 bone) and anchor the wolf to its current spot. Guard Mode is locked to the owner.
+
+- **Patrol Patterns**:
+  - **Aggressive**: Paces in a circular/polygon shape along its outer perimeter sweep (80% range), pausing to scan outward for threats.
+  - **Normal**: Sentry posture at the guard post (range = 0), or radial patrols outward and back (range > 0).
+  - **Pacifist**: Close protective orbital circular pacing around the post.
+- **Auto-Targeting & Chase Caps**: Normal and Aggressive guards automatically attack hostiles within their range but are capped from chasing targets too far to prevent them from being lured away.
+- **Watchdog Alarms & Alert Stance**: Pacifist sentinels whine, freeze in a pointing/alert stance facing the direction of detected threats, and emit warning note particles when hostiles approach, applying Regeneration and Resistance to owners/allies if enabled.
+
+### 🤝 Advanced Social AI
+- **Social Bonding (Affinity)**: Dogs form relationships within their pack. Socializing builds trust and reduces accidental infighting.
+- **Adult Correction**: Aggressive adults discipline misbehaving puppies, preventing death loops.
+
+### 🛡️ Smart Survival AI
+- **Cliff Safety**: Wolves detect fatal drops and airborne targets, stopping dangerous chases.
+- **Hazard Awareness**: Improved pathfinding around lava, fire, and drowning hazards.
+- **Creeper Awareness**: Wolves flee from hissing Creepers!
+- **Dog Feeding**: Tamed dogs scavenge dropped raw or cooked food from the ground to restore health — no manual feeding required.
+
+### 🌤️ Immersive Events
+- **Zoomies**: Dogs burst into hyperactive sprints in the morning or when it starts raining — pure joy!
+- **Group Howl**: Under a full moon, wolves trigger pack-wide howling sessions that spread to nearby pack members.
+- **Storm Anxiety**: Thunderstorms make dogs anxious — they whine, tremble, and pace nervously until the storm passes.
+
+### 🏰 Wild Wolf Territoriality
+Wild wolf packs are dynamic, territorial entities led by a dominant leader:
+- **Dynamic Outcomes**: Packs may **Merge**, engage in **War**, or peacefully **Retreat** to maintain their own borders.
+- **1v1 Leader Duels**: If a dispute escalates to War, leaders engage in a 1v1 duel to settle dominance.
+
+### 💻 Server-Side Optional & Client Gating
+- **Server-Side Optional**: Better Dogs is fully compatible with vanilla clients! Vanilla clients can connect to servers running the mod without installing it.
+- **GUI Config Integration**: Fully supports configuration GUI integrations via **ModMenu** + **Cloth Config** in singleplayer mode.
+- **Production Stable**: Fully compatible with high-performance engines like **C2ME**, ensuring safe multi-threaded AI execution.
 
 ---
 
 ## ⚙️ Native Configuration
-Better Dogs uses the **Native Minecraft Game Rules** system. All 50+ parameters are grouped into a dedicated category for zero-dependency tuning.
-
-![Native gamerule UI](Doc/Media/Gallery/native_game_rules_ui.png)
+Better Dogs uses the **Native Minecraft Game Rules** system. All 50+ mod parameters are grouped into a dedicated **"Better Dogs"** category in the official UI.
 
 ---
 
 ## 🏗️ Project Architecture
-- **Target**: Minecraft 26.1-snapshot-11+
+- **Target**: Minecraft 26.1.2
 - **Language**: Java 25
 - **Logic**: Event-Driven AI Scheduler (Dasik Social AI).
+- **Uninstall Safe**: Adheres to the "Vanilla Outsider" Non-Destructive Modding pillar. Custom data is stored as hidden NBT tags on vanilla wolves. **You can uninstall this mod from a long-term survival world at any time without causing world corruption.**
 
 ---
 
 ## 👤 Credits & Support
 - **Creator**: DasikIgaijin (Vanilla Outsider Collection)
 - **License**: GNU GPLv3
-- **Dev**: [GitHub Repository](https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs)
+- **Source Code**: [GitHub Repository](https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs)
+- **Support Me**: [Ko-fi](https://ko-fi.com/dasikigaijin)
 
-### 💖 Support the Project
-Keeping this mod open-source, up-to-date, and completely free takes a massive amount of time and dedication. If you like the mod, please support me! Even if you build and use the latest code straight from this repository, **downloading the mod on Modrinth or CurseForge** generates crucial support that keeps this project alive.
+<p align="center">
 
-You can also donate directly to help cover hosting and development costs. Every single download, share, and donation really helps me keep this mod open-source and active!
-- **Download on Modrinth**: [Modrinth Page](https://modrinth.com/mod/vanilla-outsider-better-dogs)
-- **Download on CurseForge**: [CurseForge Page](https://www.curseforge.com/minecraft/mc-mods/vanilla-outsider-better-dogs)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-Support%20Me-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/dasikigaijin/tip)
+
+</p>

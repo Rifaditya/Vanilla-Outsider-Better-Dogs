@@ -1,6 +1,9 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.ai;
 
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.phys.Vec3;
@@ -12,68 +15,225 @@ import java.util.UUID;
 
 public class WolfFlankAttackGoal extends MeleeAttackGoal {
     private final Wolf wolf;
-    private int flankPathTimer = 0;
+    private final double speedModifier;
+    private int pathRecalcTimer = 0;
+    private int ticksUntilNextAttack = 0;
 
     public WolfFlankAttackGoal(Wolf wolf, double speedModifier, boolean followingTargetEvenIfNotSeen) {
         super(wolf, speedModifier, followingTargetEvenIfNotSeen);
         this.wolf = wolf;
+        this.speedModifier = speedModifier;
+    }
+
+    @Override
+    public void start() {
+        super.start();
+        this.pathRecalcTimer = 0;
+        this.ticksUntilNextAttack = 0;
     }
 
     @Override
     public void tick() {
-        super.tick();
-
         LivingEntity target = this.wolf.getTarget();
         if (target == null) {
             return;
         }
 
-        // If the flanking GameRule is disabled, just use the standard MeleeAttackGoal logic.
-        if (!net.dasik.social.api.gamerule.DynamicGameRuleManager.getBoolean(this.wolf.level(), BetterDogsGameRules.BD_PACK_FLANKING_TACTICS)) {
-            return;
-        }
+        // Look at target
+        this.wolf.getLookControl().setLookAt(target, 30.0F, 30.0F);
 
-        // If we are close enough to strike, or almost in strike range, don't try to flank anymore.
-        // MeleeAttackRange is usually ~4.0 sqr. We use 9.0 to give them 3 blocks to charge in.
-        if (this.wolf.distanceToSqr(target) <= 9.0) {
-            return;
-        }
+        // Check if flanking is enabled and target is out of melee range
+        boolean shouldFlank = net.dasik.social.api.gamerule.DynamicGameRuleManager.getBoolean(this.wolf.level(), BetterDogsGameRules.BD_PACK_FLANKING_TACTICS)
+                && this.wolf.distanceToSqr(target) > 9.0;
 
-        // Only followers attempt to flank. The leader/lone wolf attacks directly.
-        Optional<UUID> leaderUuid = WolfPersistentData.getWolfData(this.wolf).leaderUuid();
-        if (leaderUuid.isEmpty()) {
-            return;
-        }
-
-        if (--this.flankPathTimer <= 0) {
-            this.flankPathTimer = 10 + this.wolf.getRandom().nextInt(10); // Throttle path recalculation
-
-            // Deterministic flank assignment (Left or Right) based on Entity ID
-            boolean isRightFlank = this.wolf.getId() % 2 == 0;
-            Vec3 targetPos = target.position();
-            Vec3 forward = target.getLookAngle().multiply(1.0, 0.0, 1.0).normalize();
-            
-            // Fallback if target is looking straight up/down
-            if (forward.lengthSqr() < 0.01) {
-                forward = new Vec3(1.0, 0.0, 0.0);
-            }
-
-            Vec3 flankOffset;
-            if (isRightFlank) {
-                // Cross product for right vector
-                flankOffset = new Vec3(-forward.z, 0.0, forward.x).scale(2.5);
+        if (shouldFlank) {
+            boolean hasLeader = false;
+            if (this.wolf.isTame()) {
+                hasLeader = this.wolf.getOwner() != null;
             } else {
-                // Cross product for left vector
-                flankOffset = new Vec3(forward.z, 0.0, -forward.x).scale(2.5);
+                hasLeader = WolfPersistentData.getWolfData(this.wolf).leaderUuid().isPresent();
             }
-            
-            // Move slightly behind the target
-            flankOffset = flankOffset.subtract(forward.scale(1.5));
-            
-            Vec3 destination = targetPos.add(flankOffset);
-            
-            // Overwrite the vanilla path with the flank path
-            this.wolf.getNavigation().moveTo(destination.x, target.getY(), destination.z, 1.2D);
+
+            if (hasLeader) {
+                // Determine if this wolf should flank based on Approach Time (distance / speed) in the active local pack
+                boolean isFlanker = false;
+                LivingEntity ownerEntity = this.wolf.getOwner();
+
+                if (this.wolf.isTame() && ownerEntity != null) {
+                    java.util.List<Wolf> activePack = this.wolf.level().getEntitiesOfClass(
+                            Wolf.class,
+                            this.wolf.getBoundingBox().inflate(32.0),
+                            w -> w.isTame() && w.getOwner() == ownerEntity && w.getTarget() == target && !w.isOrderedToSit()
+                    );
+                    
+                    if (activePack.size() > 1) {
+                        // Sort active pack by Approach Time (distance / speed) ascending, using ID as tie-breaker
+                        activePack.sort((w1, w2) -> {
+                            double t1 = w1.distanceTo(target) / Math.max(w1.getAttributeValue(Attributes.MOVEMENT_SPEED), 0.01);
+                            double t2 = w2.distanceTo(target) / Math.max(w2.getAttributeValue(Attributes.MOVEMENT_SPEED), 0.01);
+                            if (t1 != t2) {
+                                return Double.compare(t1, t2); // Ascending (shortest approach time first)
+                            }
+                            return Integer.compare(w1.getId(), w2.getId()); // Deterministic tie-breaker
+                        });
+                        
+                        // Slower to arrive (bottom 50%) dogs perform flanking maneuvers, while the closest 50% charge straight
+                        int flankCount = activePack.size() / 2; // Keep at least half the pack engaging directly
+                        int myIndex = activePack.indexOf(this.wolf);
+                        if (myIndex >= activePack.size() - flankCount) {
+                            isFlanker = true;
+                        }
+                    }
+                } else if (!this.wolf.isTame()) {
+                    // Wild wolves pack sorting based on approach time
+                    Optional<UUID> leaderUuid = WolfPersistentData.getWolfData(this.wolf).leaderUuid();
+                    if (leaderUuid.isPresent()) {
+                        java.util.List<Wolf> activePack = this.wolf.level().getEntitiesOfClass(
+                                Wolf.class,
+                                this.wolf.getBoundingBox().inflate(32.0),
+                                w -> !w.isTame() && WolfPersistentData.getWolfData(w).leaderUuid().equals(leaderUuid) && w.getTarget() == target
+                        );
+                        
+                        if (activePack.size() > 1) {
+                            activePack.sort((w1, w2) -> {
+                                double t1 = w1.distanceTo(target) / Math.max(w1.getAttributeValue(Attributes.MOVEMENT_SPEED), 0.01);
+                                double t2 = w2.distanceTo(target) / Math.max(w2.getAttributeValue(Attributes.MOVEMENT_SPEED), 0.01);
+                                if (t1 != t2) {
+                                    return Double.compare(t1, t2);
+                                }
+                                return Integer.compare(w1.getId(), w2.getId());
+                            });
+                            
+                            int flankCount = activePack.size() / 2;
+                            int myIndex = activePack.indexOf(this.wolf);
+                            if (myIndex >= activePack.size() - flankCount) {
+                                isFlanker = true;
+                            }
+                        }
+                    }
+                }
+
+                if (isFlanker) {
+                    if (--this.pathRecalcTimer <= 0) {
+                        this.pathRecalcTimer = 4 + this.wolf.getRandom().nextInt(5); // Staggered 4-8 tick updates
+                        
+                        Vec3 targetPos = target.position();
+                        Vec3 forward = target.getLookAngle().multiply(1.0, 0.0, 1.0).normalize();
+                        
+                        if (forward.lengthSqr() < 0.01) {
+                            forward = new Vec3(1.0, 0.0, 0.0);
+                        }
+
+                        // Determine flank side contextually based on where the wolf is physically standing relative to target
+                        Vec3 toWolf = this.wolf.position().subtract(targetPos);
+                        double cross = forward.x * toWolf.z - forward.z * toWolf.x;
+                        boolean isRightFlank = cross > 0.0;
+
+                        double targetWidth = target.getBbWidth();
+                        double flankRadius = Math.max(3.0, targetWidth * 2.5);
+                        double rearShift = Math.max(1.0, targetWidth * 1.1);
+
+                        Vec3 flankOffset;
+                        if (isRightFlank) {
+                            flankOffset = new Vec3(-forward.z, 0.0, forward.x).scale(flankRadius);
+                        } else {
+                            flankOffset = new Vec3(forward.z, 0.0, -forward.x).scale(flankRadius);
+                        }
+                        
+                        flankOffset = flankOffset.subtract(forward.scale(rearShift));
+                        Vec3 destination = targetPos.add(flankOffset);
+                        
+                        boolean pathClear = true;
+                        boolean performRaycast = net.dasik.social.api.gamerule.DynamicGameRuleManager.getBoolean(this.wolf.level(), BetterDogsGameRules.BD_FLANKING_RAYCAST_CHECK);
+                        
+                        if (performRaycast) {
+                            Vec3 start = this.wolf.position().add(0.0, 0.5, 0.0);
+                            Vec3 end = destination.add(0.0, 0.5, 0.0);
+                            net.minecraft.world.phys.BlockHitResult result = this.wolf.level().clip(
+                                new net.minecraft.world.level.ClipContext(
+                                    start,
+                                    end,
+                                    net.minecraft.world.level.ClipContext.Block.COLLIDER,
+                                    net.minecraft.world.level.ClipContext.Fluid.ANY,
+                                    this.wolf
+                                )
+                            );
+                            if (result.getType() != net.minecraft.world.phys.HitResult.Type.MISS) {
+                                pathClear = false;
+                            }
+                        }
+                        
+                        if (!pathClear) {
+                            // Try the opposite side
+                            if (isRightFlank) {
+                                flankOffset = new Vec3(forward.z, 0.0, -forward.x).scale(flankRadius);
+                            } else {
+                                flankOffset = new Vec3(-forward.z, 0.0, forward.x).scale(flankRadius);
+                            }
+                            flankOffset = flankOffset.subtract(forward.scale(rearShift));
+                            destination = targetPos.add(flankOffset);
+                            
+                            if (performRaycast) {
+                                Vec3 start = this.wolf.position().add(0.0, 0.5, 0.0);
+                                Vec3 end = destination.add(0.0, 0.5, 0.0);
+                                net.minecraft.world.phys.BlockHitResult result = this.wolf.level().clip(
+                                    new net.minecraft.world.level.ClipContext(
+                                        start,
+                                        end,
+                                        net.minecraft.world.level.ClipContext.Block.COLLIDER,
+                                        net.minecraft.world.level.ClipContext.Fluid.ANY,
+                                        this.wolf
+                                    )
+                                );
+                                if (result.getType() == net.minecraft.world.phys.HitResult.Type.MISS) {
+                                    pathClear = true;
+                                }
+                            } else {
+                                pathClear = true;
+                            }
+                        }
+                        
+                        if (pathClear) {
+                            // Flanking wolves move at standard combat speed
+                            this.wolf.getNavigation().moveTo(destination.x, target.getY(), destination.z, this.speedModifier);
+                        } else {
+                            // Both sides blocked: fall back to standard direct attack charging pathing
+                            shouldFlank = false;
+                        }
+                    }
+                } else {
+                    shouldFlank = false; // Slower to arrive / closer wolves: attack directly
+                }
+            } else {
+                shouldFlank = false; // Lone/Leader wolf: attack directly
+            }
+        }
+
+        if (!shouldFlank) {
+            // Standard direct attack movement
+            if (--this.pathRecalcTimer <= 0) {
+                this.pathRecalcTimer = 4 + this.wolf.getRandom().nextInt(7);
+                
+                // Slow down straight-charging wolves (lone/leader/closest wolves) to 50% speed during approach (distance > 3 blocks)
+                double currentSpeed = this.speedModifier;
+                if (this.wolf.distanceToSqr(target) > 9.0) {
+                    currentSpeed = this.speedModifier * 0.5D;
+                }
+                
+                this.wolf.getNavigation().moveTo(target, currentSpeed);
+            }
+        }
+
+        // Ticking attack cooldown and triggers
+        this.ticksUntilNextAttack = Math.max(this.ticksUntilNextAttack - 1, 0);
+        this.checkAndPerformAttackInternal(target);
+    }
+
+    private void checkAndPerformAttackInternal(LivingEntity target) {
+        if (this.ticksUntilNextAttack <= 0 && this.wolf.isWithinMeleeAttackRange(target) && this.wolf.getSensing().hasLineOfSight(target)) {
+            this.ticksUntilNextAttack = this.adjustedTickDelay(20);
+            this.wolf.swing(InteractionHand.MAIN_HAND);
+            this.wolf.doHurtTarget(MeleeAttackGoal.getServerLevel(this.wolf), target);
         }
     }
 }
