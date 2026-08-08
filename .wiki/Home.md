@@ -27,8 +27,12 @@ Select your target Minecraft version to view dedicated installation guides, depe
 Learn how to interact with, breed, command, and configure your wolf packs in survival gameplay:
 
 * [[Player Guide & Mechanics|Player-Guide-and-Mechanics]] — Personalities, genetics, scale genetics, storm anxiety, cliff safety, creeper evasion, guard mode, goat horn commands, dog riding, and morning gifts.
+* [[Advancements & Achievements|Advancements]] — Complete Husbandry advancement tree guide detailing all 13 custom advancements, criteria, and rewards.
+* [[Items & Interaction Mechanics|Items-and-Interactions]] — Bones (Guard Mode), Paper (Adoption), Golden Apples (Inbred Curing), Goat Horns (Tactical Commands), Ground Feeding, and Favorite Treats.
+* [[Wolf Variants, Genetics & Personalities|Wolf-Variants-and-Personalities]] — Deep dive into personality stats, genetics inheritance formulas, physical scale bounds, and wild pack territorial dispute matrices.
 * [[GameRules & Commands|GameRules-and-Commands]] — Complete namespaced GameRules reference table (`betterdogs:*`), default values, category toggles, and Brigadier command suite syntax (`/betterdogs`).
 * [[Configuration Guide|Configuration-Guide]] — Server-side GameRule authority, client GUI integration via ModMenu & YACL v3, and config precedence.
+* [[HUD & Diagnostics|HUD-and-Diagnostics]] — Jade/WTHIT HUD overlay, debug stick shortcuts, runt particles, and diagnostic administration.
 
 ---
 

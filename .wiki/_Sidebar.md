@@ -14,8 +14,12 @@
 
 #### 🎮 Player Guides
 * [[Player Guide & Mechanics|Player-Guide-and-Mechanics]]
+* [[Advancements|Advancements]]
+* [[Items & Interactions|Items-and-Interactions]]
+* [[Wolf Variants & Genetics|Wolf-Variants-and-Personalities]]
 * [[GameRules & Commands|GameRules-and-Commands]]
 * [[Configuration Guide|Configuration-Guide]]
+* [[HUD & Diagnostics|HUD-and-Diagnostics]]
 
 ---
 
