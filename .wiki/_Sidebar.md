@@ -12,13 +12,19 @@
 
 ---
 
-#### 🎮 Player Guides
-* [[Player Guide & Mechanics|Player-Guide-and-Mechanics]]
+#### 🎮 Player & Feature Guides
+* [[Wolf Personalities|Wolf-Personalities]]
+* [[Guard Mode & Sentinels|Guard-Mode-and-Sentinels]]
+* [[Breeding & Genetics|Breeding-and-Genetics]]
+* [[Goat Horns & Commands|Goat-Horns-and-Tactical-Commands]]
+* [[Adoption System|Adoption-System]]
+* [[Dog Riding & Vehicles|Dog-Riding-and-Vehicles]]
+* [[Wild Packs & Territoriality|Wild-Packs-and-Territoriality]]
+* [[Ground Feeding & Treats|Ground-Feeding-and-Favorite-Treats]]
 * [[Advancements|Advancements]]
-* [[Items & Interactions|Items-and-Interactions]]
-* [[Wolf Variants & Genetics|Wolf-Variants-and-Personalities]]
-* [[GameRules & Commands|GameRules-and-Commands]]
-* [[Configuration Guide|Configuration-Guide]]
+* [[GameRules|GameRules]]
+* [[Commands|Commands]]
+* [[Configuration|Configuration]]
 * [[HUD & Diagnostics|HUD-and-Diagnostics]]
 
 ---

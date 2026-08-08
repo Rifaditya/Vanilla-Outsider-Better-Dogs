@@ -22,16 +22,22 @@ Select your target Minecraft version to view dedicated installation guides, depe
 
 ---
 
-## 🎮 Player & Administrator Guides
+## 🎮 Player & Gameplay Mechanics Matrix
 
-Learn how to interact with, breed, command, and configure your wolf packs in survival gameplay:
+Explore detailed encyclopedic guides for every feature pillar:
 
-* [[Player Guide & Mechanics|Player-Guide-and-Mechanics]] — Personalities, genetics, scale genetics, storm anxiety, cliff safety, creeper evasion, guard mode, goat horn commands, dog riding, and morning gifts.
+* [[Wolf Personalities & Combat AI|Wolf-Personalities]] — Aggressive, Pacifist, and Normal personality traits, stat modifiers, follow distances, and storm anxiety.
+* [[Guard Mode & Sentinel Patrols|Guard-Mode-and-Sentinels]] — Sentinel patrol radiuses (12 blk Aggro, 3 blk Pacifist, 0 blk Normal), Regeneration/Resistance owner aura, and alarm particles.
+* [[Breeding, Genetics & Litter Sizes|Breeding-and-Genetics]] — Personality inheritance formulas, litters (1 to 4 puppies), inbreeding runt penalties, Golden Apple curing, and physical scale genetics (70% - 145%).
+* [[Goat Horns & Tactical Commands|Goat-Horns-and-Tactical-Commands]] — Goat Horn tactical orders (Ponder, Sing, Seek/Call), 64-block command range, and tactical override durations.
+* [[Adoption System|Adoption-System]] — Paper adoption system, pending states, ownership transfers, and damage cancellation logic.
+* [[Dog Riding & Vehicle Transport|Dog-Riding-and-Vehicles]] — Vehicle boarding (Boats, Minecarts, Horses) and riding permission rules (`bd_allow_unrestricted_dog_riding`).
+* [[Wild Packs & Territorial Rivalries|Wild-Packs-and-Territoriality]] — Pack cluster sizes (4-8 wolves), expanded biome spawning, and the Territorial Dispute Matrix (War %, Merge %, Retreat %).
+* [[Ground Feeding & Favorite Treats|Ground-Feeding-and-Favorite-Treats]] — Automatic ground meat feeding, low health fleeing, ground food refusal, UUID-seeded favorite treats, zoomies, and morning gifts.
 * [[Advancements & Achievements|Advancements]] — Complete Husbandry advancement tree guide detailing all 13 custom advancements, criteria, and rewards.
-* [[Items & Interaction Mechanics|Items-and-Interactions]] — Bones (Guard Mode), Paper (Adoption), Golden Apples (Inbred Curing), Goat Horns (Tactical Commands), Ground Feeding, and Favorite Treats.
-* [[Wolf Variants, Genetics & Personalities|Wolf-Variants-and-Personalities]] — Deep dive into personality stats, genetics inheritance formulas, physical scale bounds, and wild pack territorial dispute matrices.
-* [[GameRules & Commands|GameRules-and-Commands]] — Complete namespaced GameRules reference table (`betterdogs:*`), default values, category toggles, and Brigadier command suite syntax (`/betterdogs`).
-* [[Configuration Guide|Configuration-Guide]] — Server-side GameRule authority, client GUI integration via ModMenu & YACL v3, and config precedence.
+* [[Namespaced GameRules Reference|GameRules]] — Complete reference table of all 60+ namespaced GameRules (`betterdogs:bd_*`), data types, default values, and category toggles.
+* [[Brigadier Command Suite|Commands]] — Brigadier command tree (`/betterdogs`) and debug subtrees (`personality`, `action`, `territory`).
+* [[Configuration & GUI Integration|Configuration]] — Server-side GameRule authority, client GUI integration via ModMenu & YACL v3, and config precedence.
 * [[HUD & Diagnostics|HUD-and-Diagnostics]] — Jade/WTHIT HUD overlay, debug stick shortcuts, runt particles, and diagnostic administration.
 
 ---

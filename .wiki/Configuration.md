@@ -1,6 +1,6 @@
 # Configuration & GUI Integration Guide
 
-*[[Home]] / Configuration Guide*
+*[[Home]] / Configuration*
 
 ---
 
@@ -36,7 +36,7 @@
 Access the configuration screen directly from the Fabric ModMenu list by selecting **Vanilla Outsider: Better Dogs** and clicking **Configure**.
 
 ### 2. Category Breakdown in YACL GUI
-The YACL v3 configuration interface is organized into distinct, intuitive categories:
+The YACL v3 configuration interface is organized into distinct categories:
 
 * **General Options**: Global speed buffs, storm anxiety toggle, cliff safety toggle, and creeper avoidance.
 * **Wolf Personalities**: Per-personality health bonuses, sprint speed modifiers, attack damage tweaks, and follow start distances for Aggressive, Pacifist, and Normal traits.
