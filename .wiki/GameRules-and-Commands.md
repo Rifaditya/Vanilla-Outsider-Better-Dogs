@@ -62,30 +62,36 @@ All server options in **Vanilla Outsider: Better Dogs** are controlled dynamical
 | `betterdogs:bd_flanking_raycast_check` | Boolean | `true` | If true, performs raycasts to verify flanking paths are clear of walls/deep drops. |
 | `betterdogs:bd_nemesis_system` | Boolean | `true` | If true, wolves hold a temporary pack grudge against mob types that kill pack mates. |
 | `betterdogs:bd_nemesis_duration_days` | Integer | `3` | Number of in-game days a pack holds a grudge against a mob type (3 days). |
+| `betterdogs:bd_debugging` | Boolean | `false` | Enables detailed AI system logs and unlocks `/betterdogs debug` subcommands. |
 
 ---
 
-## 💻 Brigadier Command Suite Syntax
+## 💻 Brigadier Command Suite & In-Game Administration
 
-Server administrators can use the built-in Brigadier command suite `/betterdogs` (alias `/bd`) for full server control:
+Server operators (Permission Level 2 / `LEVEL_GAMEMASTERS`) can administer server rules and execute debug scenarios using native commands:
+
+### 1. Dynamic GameRule Administration (`/gamerule`)
+Server options can be updated dynamically at any time using Minecraft's native `/gamerule` command:
 
 ```
-/betterdogs help
-/betterdogs status
-/betterdogs get <gamerule>
-/betterdogs set <gamerule> <value>
-/betterdogs reset
-/betterdogs reload
+/gamerule betterdogs:bd_friendly_fire_protection false
+/gamerule betterdogs:bd_wolf_min_scale_percent 80
+/gamerule betterdogs:bd_debugging true
 ```
 
-### Command Subtrees
+### 2. Built-In Brigadier Debug Command Tree (`/betterdogs`)
 
-* `/betterdogs help` — Displays interactive command syntax and help descriptions.
-* `/betterdogs status` — Displays currently active mod options, version info, and server rule states.
-* `/betterdogs get <gamerule>` — Queries the exact integer or boolean value of a namespaced GameRule. Supports tab-completion for all rule keys.
-* `/betterdogs set <gamerule> <value>` — Updates a GameRule value in real time across the server. Automatically broadcasts change notifications to ops.
-* `/betterdogs reset` — Resets all `betterdogs:*` GameRules back to baseline factory defaults.
-* `/betterdogs reload` — Flushes server configuration caches and syncs client GUI screens.
+The `/betterdogs` command tree provides advanced debug tools for testing AI behaviors and scenarios. Subcommands are gated by the boolean rule `/gamerule betterdogs:bd_debugging true`:
+
+```
+/betterdogs debug personality <targets> <type>
+/betterdogs debug action <targets> <actionType> [secondaryTarget]
+/betterdogs debug territory
+```
+
+* **`/betterdogs debug personality <targets> <normal|aggressive|pacifist>`**: Dynamically forces the personality trait of selected targeted wolves.
+* **`/betterdogs debug action <targets> <actionType> [secondaryTarget]`**: Forces targeted wolves to immediately execute specific social actions (e.g. `howl`, `zoomies`, `beg`, `fetch`).
+* **`/betterdogs debug territory`**: Spawns a pre-configured wild pack territorial dispute scenario around the player to test pack war, merge, and retreat AI logic.
 
 ---
 
