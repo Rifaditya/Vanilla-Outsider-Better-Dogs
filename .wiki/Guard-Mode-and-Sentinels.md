@@ -1,6 +1,6 @@
 # Guard Mode & Sentinel Patrols
 
-*[[Home]] / [[Player Guide & Mechanics|Player-Guide-and-Mechanics]] / Guard Mode*
+*[[Home]] / Guard Mode & Sentinels*
 
 ---
 
@@ -52,4 +52,4 @@ When Guard Mode is activated, the wolf's current position is recorded as its **G
 
 ---
 
-*Back to [[Home]] | View [[Wolf-Personalities]]*
+*Back to [[Home]] | View [[Wolf Personalities|Wolf-Personalities]]*

@@ -1,6 +1,6 @@
 # Wild Packs & Territorial Rivalries
 
-*[[Home]] / [[Player Guide & Mechanics|Player-Guide-and-Mechanics]] / Wild Packs*
+*[[Home]] / Wild Packs & Territoriality*
 
 ---
 
@@ -38,4 +38,4 @@ Wild pack leaders scan for rival leaders within 96 blocks. Upon encounter, leade
 
 ---
 
-*Back to [[Home]] | View [[Wolf-Personalities]]*
+*Back to [[Home]] | View [[Wolf Personalities|Wolf-Personalities]]*

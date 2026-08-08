@@ -1,6 +1,6 @@
 # Ground Feeding & Favorite Treats
 
-*[[Home]] / [[Items & Interactions|Items-and-Interactions]] / Ground Feeding*
+*[[Home]] / Ground Feeding & Favorite Treats*
 
 ---
 
@@ -38,4 +38,4 @@ Wolves with high positive interaction counts (`bd_gift_feed_threshold`) bring mo
 
 ---
 
-*Back to [[Home]] | View [[Items-and-Interactions]]*
+*Back to [[Home]] | View [[Breeding & Genetics|Breeding-and-Genetics]]*

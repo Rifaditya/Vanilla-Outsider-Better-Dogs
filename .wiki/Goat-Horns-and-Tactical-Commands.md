@@ -1,6 +1,6 @@
 # Goat Horns & Tactical Pack Commands
 
-*[[Home]] / [[Items & Interactions|Items-and-Interactions]] / Goat Horns*
+*[[Home]] / Goat Horns & Tactical Commands*
 
 ---
 
@@ -35,4 +35,4 @@ Sounding a goat horn issues tactical orders to all owned wolves within a 64-bloc
 
 ---
 
-*Back to [[Home]] | View [[Items-and-Interactions]]*
+*Back to [[Home]] | View [[Guard Mode & Sentinels|Guard-Mode-and-Sentinels]]*

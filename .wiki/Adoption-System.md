@@ -1,6 +1,6 @@
 # Adoption System
 
-*[[Home]] / [[Items & Interactions|Items-and-Interactions]] / Adoption System*
+*[[Home]] / Adoption System*
 
 ---
 
@@ -43,4 +43,4 @@
 
 ---
 
-*Back to [[Home]] | View [[Items-and-Interactions]]*
+*Back to [[Home]] | View [[Goat Horns & Tactical Commands|Goat-Horns-and-Tactical-Commands]]*

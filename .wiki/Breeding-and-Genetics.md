@@ -1,6 +1,6 @@
 # Breeding, Genetics & Litter Sizes
 
-*[[Home]] / [[Player Guide & Mechanics|Player-Guide-and-Mechanics]] / Breeding & Genetics*
+*[[Home]] / Breeding & Genetics*
 
 ---
 
@@ -53,4 +53,4 @@ Unlike vanilla breeding (which yields 1 puppy), **Better Dogs** calculates dynam
 
 ---
 
-*Back to [[Home]] | View [[Wolf-Personalities]]*
+*Back to [[Home]] | View [[Wolf Personalities|Wolf-Personalities]]*

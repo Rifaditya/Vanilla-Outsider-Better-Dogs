@@ -1,6 +1,6 @@
 # Wolf Personalities & Combat AI
 
-*[[Home]] / [[Player Guide & Mechanics|Player-Guide-and-Mechanics]] / Wolf Personalities*
+*[[Home]] / Wolf Personalities*
 
 ---
 
@@ -77,4 +77,4 @@ Personality data is stored directly inside the custom entity attachment codec `b
 
 ---
 
-*Back to [[Home]] | View [[GameRules]]*
+*Back to [[Home]] | View [[Guard Mode & Sentinels|Guard-Mode-and-Sentinels]]*

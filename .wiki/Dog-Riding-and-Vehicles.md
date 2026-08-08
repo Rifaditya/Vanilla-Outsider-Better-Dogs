@@ -1,6 +1,6 @@
 # Dog Riding & Vehicle Transport
 
-*[[Home]] / [[Items & Interactions|Items-and-Interactions]] / Dog Riding*
+*[[Home]] / Dog Riding & Vehicles*
 
 ---
 
@@ -29,4 +29,4 @@ By default, dogs can board standard passenger vehicles (Boats, Chest Boats, Mine
 
 ---
 
-*Back to [[Home]] | View [[Items-and-Interactions]]*
+*Back to [[Home]] | View [[Adoption System|Adoption-System]]*
