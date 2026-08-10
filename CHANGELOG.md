@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.24.3+26.2] - 2026-08-10
+### Fixed & Added
+- **Litematica Compatibility & Command Item Expansion (`DogCommandManager`)**:
+  - **Litematica Tool Conflict Fix**: Resolved issue where sneaking with a stick to dismount or command mount tame wolves onto seats/vehicles failed when Litematica was installed due to Litematica intercepting `minecraft:stick` right-clicks on client side.
+  - **Data-Driven Command Item Tag (`vanilla-outsider-better-dogs:command_items`)**: Created `#vanilla-outsider-better-dogs:command_items` item tag containing `minecraft:stick`, `minecraft:blaze_rod`, `minecraft:breeze_rod`, and `#c:tools/sticks`.
+  - **Alternative Command Tools**: Players can now use **Blaze Rods** or **Breeze Rods** (or any stick-like tool) to dismount and command mount dogs seamlessly alongside standard sticks.
+  - **Bone Reservation Safeguard**: Explicitly excluded `minecraft:bone` from command items so Bone remains 100% reserved for toggling Guard Mode (`bd_guard_mode`).
+
 ## [4.24.2+26.2] - 2026-08-10
 ### Added
 - **Dynamic Climate-Aware Wolf Coat Variants (`WolfVariantHelper`)**:

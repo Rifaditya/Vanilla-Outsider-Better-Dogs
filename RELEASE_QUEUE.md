@@ -5,6 +5,8 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`4.24.3+26.2`** (2026-08-10) - **Litematica Compatibility & Command Item Expansion:** Resolved stick tool interaction collision with Litematica by introducing `#vanilla-outsider-better-dogs:command_items` item tag (Stick, Blaze Rod, Breeze Rod, `#c:tools/sticks`), enabling Blaze Rods and Breeze Rods as alternative command tools while keeping Bone 100% reserved for Guard Mode.
+- [ ] **`4.24.2+26.2`** (2026-08-10) - **Dynamic Climate-Aware Wolf Coat Variants:** Introduced dynamic climate coat variant resolution (`betterdogs:bd_dynamic_climate_variants`). Automatically assigns coat variants based on biome physical climate properties when Vanilla tag lookup defaults to Pale.
 - [ ] **`4.24.1+26.2`** (2026-07-30) - **Startup Crash / GameRule Registration Fix:** Refactored `BetterDogsGameRules` registration methods to delegate through `DynamicGameRuleManager` from `dasik-library`, resolving duplicate key registry exceptions on startup.
 - [ ] **`4.24.0+26.2`** (2026-07-30) - **AI Refinement: Creeper Blast Evasion:** Tamed wolves detect swelling creepers within 10 blocks and sprint radially away at `1.5x` speed with smoke trails. Governed by `betterdogs:bd_creeper_evasion_enabled`.
 - [ ] **`4.23.0+26.2`** (2026-07-30) - **Goat Horn Command System (Stage 5: Seek Horn):** Blowing the Seek Goat Horn commands active following wolves within range to focus fire on a crosshair-targeted entity or enter aggressive area search mode at `1.3x` speed. Emits angry villager particles. Governed by `betterdogs:bd_horn_command_range`.

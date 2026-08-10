@@ -176,8 +176,8 @@ public class WolfInteractionHelper {
                 }
             }
 
-			// 0. Stick command: select or dismount
-			if (wolf.isOwnedBy(player) && player.isSecondaryUseActive() && itemStack.is(Items.STICK) && hand == InteractionHand.MAIN_HAND) {
+			// 0. Stick / Command Item command: select or dismount
+			if (wolf.isOwnedBy(player) && player.isSecondaryUseActive() && DogCommandManager.isCommandItem(itemStack) && hand == InteractionHand.MAIN_HAND) {
 				if (!wolf.level().isClientSide()) {
 					if (wolf.isPassenger()) {
 						// Dismount and Stand
