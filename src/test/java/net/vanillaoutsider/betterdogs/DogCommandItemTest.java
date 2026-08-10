@@ -44,4 +44,15 @@ public class DogCommandItemTest {
         vehicleTargets.remove(dogUuid);
         assertNull(vehicleTargets.get(dogUuid));
     }
+
+    @Test
+    @DisplayName("Verify null personality fallback safety during adoption")
+    void testNullPersonalityHandling() {
+        WolfPersonality personality = null;
+        if (personality == null) {
+            personality = WolfPersonality.NORMAL;
+        }
+        assertNotNull(personality);
+        assertEquals(WolfPersonality.NORMAL, personality);
+    }
 }

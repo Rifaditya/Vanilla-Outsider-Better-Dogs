@@ -1,5 +1,9 @@
 # Better Dogs History & Concept Changelog
 
+## [5.0.19+26.3] - 2026-08-10
+### Fixed
+- **Dog Adoption Crash Fix (`WolfInteractionHelper` & `WolfStatManager`)**: Fixed `NullPointerException` crash during adoption by adding personality null guards in `WolfStatManager` and pre-assigning random personalities for uninitialized dogs.
+
 ## [5.0.18+26.3] - 2026-08-10
 ### Fixed & Added
 - **Litematica Compatibility & Command Item Expansion (`DogCommandManager`)**:

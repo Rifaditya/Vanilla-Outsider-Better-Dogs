@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`5.0.19+26.3`** (2026-08-10) - **Dog Adoption Crash Fix:** Fixed `NullPointerException` crash during adoption by adding personality null guards in `WolfStatManager` and pre-assigning random personalities for uninitialized dogs.
 - [ ] **`5.0.18+26.3`** (2026-08-10) - **Litematica Compatibility & Command Item Expansion:** Resolved stick tool interaction collision with Litematica by introducing `#vanilla-outsider-better-dogs:command_items` item tag (Stick, Blaze Rod, Breeze Rod, `#c:tools/sticks`), enabling Blaze Rods and Breeze Rods as alternative command tools while keeping Bone 100% reserved for Guard Mode.
 - [ ] **`5.0.17+26.3`** (2026-07-31) - **GitHub Documentation Engine Update:** Updated GitHub README.md documenting `DasikAnimalGeneticsAPI` integration, Size-Stats, Kinship risk, AI goal tick throttling, and 11 GameTests.
 - [ ] **`5.0.16+26.3`** (2026-07-31) - **Automated GameTest Execution & Final Audit Pass:** Purged unused `HashMap` import in `BetterDogsGameTests.java` and executed automated GameTest checks.

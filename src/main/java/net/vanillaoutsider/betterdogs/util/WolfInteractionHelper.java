@@ -257,8 +257,17 @@ public class WolfInteractionHelper {
                     ext.betterdogs$setGuardMode(false);
                     ext.betterdogs$setGuardPos(null);
 
+                    // Ensure dog has a personality assigned before applying stats
+                    if (!ext.betterdogs$hasPersonality()) {
+                        ext.betterdogs$setPersonality(WolfPersonality.random(wolf.level()));
+                    }
+
                     // Re-apply personality stats for the new owner relationship
                     WolfPersonality personality = ext.betterdogs$getPersonality();
+                    if (personality == null) {
+                        personality = WolfPersonality.NORMAL;
+                        ext.betterdogs$setPersonality(personality);
+                    }
                     WolfStatManager.applyPersonalityStats(wolf, personality);
 
                     // Play effects
