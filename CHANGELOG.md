@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.24.4+26.1.2] - 2026-08-10
+### Fixed
+- **Dog Adoption Crash Fix (`WolfInteractionHelper` & `WolfStatManager`)**: Fixed `NullPointerException` crash during adoption by adding personality null guards in `WolfStatManager` and pre-assigning random personalities for uninitialized dogs.
+
 ## [4.24.3+26.1.2] - 2026-08-10
 ### Fixed & Added
 - **Litematica Compatibility & Command Item Expansion (`DogCommandManager`)**:
