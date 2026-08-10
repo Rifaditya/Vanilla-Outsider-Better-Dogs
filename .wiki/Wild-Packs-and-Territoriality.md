@@ -38,4 +38,20 @@ Wild pack leaders scan for rival leaders within 96 blocks. Upon encounter, leade
 
 ---
 
+## 🎨 3. Dynamic Climate Coat Variants (`bd_dynamic_climate_variants`)
+
+When wild or spawned wolves generate in modded biomes (such as **Biomes O' Plenty**, **Terralith**, **Regions Unexplored**, etc.), **Better Dogs** executes a 3-tier priority pipeline to ensure wolves receive contextually appropriate coat textures:
+
+1. **Priority 1 (Custom Mod / Datapack Variants)**: If another mod or datapack explicitly registered a custom coat variant (e.g., `somemod:frost_wolf`), Better Dogs yields immediately and preserves the custom variant 100% untouched.
+2. **Priority 2 (Vanilla Tag Match)**: If Vanilla matched a specific specialized tag (Snowy, Ashen, Rusty, Striped, Black, Spotted), native selection is preserved.
+3. **Priority 3 (Better Dogs Dynamic Climate Engine)**: If Priorities 1 & 2 returned un-mapped default Pale/Woods fallback in modded biomes, Better Dogs evaluates the biome's actual climate physics at spawn time:
+   - **Cold / Snowy** (`temperature < 0.15` / `Precipitation.SNOW`): Assigns **Snowy Wolf** (`minecraft:snowy`).
+   - **Hot & Dry / Arid** (`temperature >= 1.0` & no rain): Assigns **Ashen Wolf** (`minecraft:ashen`) or **Striped/Red Wolf** (`minecraft:striped`).
+   - **Hot & Humid / Jungle** (`temperature >= 0.8` & high downfall): Assigns **Rusty Wolf** (`minecraft:rusty`).
+   - **Dense / Dark Taiga**: Assigns **Black Wolf** (`minecraft:black`).
+   - **Cool Taiga**: Assigns **Chestnut Wolf** (`minecraft:chestnut`).
+   - **Grove / Meadow**: Assigns **Spotted Wolf** (`minecraft:spotted`).
+
+---
+
 *Back to [[Home]] | View [[Wolf Personalities|Wolf-Personalities]]*

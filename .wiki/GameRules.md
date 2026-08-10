@@ -13,6 +13,7 @@ All server options in **Vanilla Outsider: Better Dogs** are controlled dynamical
 | GameRule Key | Data Type | Default | Description |
 | :--- | :---: | :---: | :--- |
 | `betterdogs:bd_wolf_spawn_multiplier_percent` | Integer | `150` | Multiplier for wolf spawn weight in biome spawn settings (150 = 1.5x spawn weight). |
+| `betterdogs:bd_dynamic_climate_variants` | Boolean | `true` | If true, dynamically resolves coat variants for modded biomes based on climate physics (Snowy, Ashen, Rusty, Black, Chestnut). |
 | `betterdogs:bd_wolf_min_scale_percent` | Integer | `70` | Minimum scale percentage for wolves (70%). Controls rendering and physical bounding box. |
 | `betterdogs:bd_wolf_max_scale_percent` | Integer | `145` | Maximum scale percentage for wolves (145%). Controls rendering and physical bounding box. |
 | `betterdogs:bd_storm_anxiety` | Boolean | `true` | If true, wolves whine and shake during thunderstorms based on personality. |
