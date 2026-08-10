@@ -100,7 +100,24 @@ public class DogCommandManager {
     }
 
     /**
-     * Registers Fabric interaction events to handle Stick commands.
+     * Checks if the stack is a valid command item for selecting or commanding dogs (Sticks, Blaze Rods, Breeze Rods, or #betterdogs:command_items).
+     * Explicitly excludes Bones, which are reserved for Guard Mode.
+     */
+    public static boolean isCommandItem(net.minecraft.world.item.ItemStack stack) {
+        if (stack == null || stack.isEmpty()) {
+            return false;
+        }
+        if (stack.is(Items.BONE)) {
+            return false;
+        }
+        return stack.is(net.vanillaoutsider.betterdogs.registry.BetterDogsTags.COMMAND_ITEMS)
+            || stack.is(Items.STICK)
+            || stack.is(Items.BLAZE_ROD)
+            || stack.is(Items.BREEZE_ROD);
+    }
+
+    /**
+     * Registers Fabric interaction events to handle Stick & Command Item commands.
      */
     public static void registerEvents() {
         // 1. Intercepting player clicking on an ENTITY (vehicle/seat)
@@ -108,7 +125,7 @@ public class DogCommandManager {
             if (hand != InteractionHand.MAIN_HAND || level.isClientSide()) {
                 return InteractionResult.PASS;
             }
-            if (!player.isSecondaryUseActive() || !player.getItemInHand(hand).is(Items.STICK)) {
+            if (!player.isSecondaryUseActive() || !isCommandItem(player.getItemInHand(hand))) {
                 return InteractionResult.PASS;
             }
             UUID dogUuid = getSelectedDog(player.getUUID());
@@ -150,7 +167,7 @@ public class DogCommandManager {
             if (hand != InteractionHand.MAIN_HAND || level.isClientSide()) {
                 return InteractionResult.PASS;
             }
-            if (!player.isSecondaryUseActive() || !player.getItemInHand(hand).is(Items.STICK)) {
+            if (!player.isSecondaryUseActive() || !isCommandItem(player.getItemInHand(hand))) {
                 return InteractionResult.PASS;
             }
             UUID dogUuid = getSelectedDog(player.getUUID());

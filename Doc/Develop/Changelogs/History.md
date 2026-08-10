@@ -1,5 +1,16 @@
 # Better Dogs History & Concept Changelog
 
+## [5.0.18+26.3] - 2026-08-10
+### Fixed & Added
+- **Litematica Compatibility & Command Item Expansion (`DogCommandManager`)**:
+  - **Litematica Tool Conflict Fix**: Resolved stick tool interaction collision with Litematica by introducing `#vanilla-outsider-better-dogs:command_items` item tag (Stick, Blaze Rod, Breeze Rod, `#c:tools/sticks`).
+  - **Alternative Command Tools**: Enables Blaze Rods and Breeze Rods as alternative command tools alongside standard sticks for dismounting and seat commanding.
+  - **Bone Reservation Safeguard**: Explicitly excluded `minecraft:bone` from command items so Bone remains 100% reserved for Guard Mode (`bd_guard_mode`).
+
+## [5.0.17+26.3] - 2026-08-10
+### Added
+- **Dynamic Climate-Aware Wolf Coat Variants (`WolfVariantHelper`)**: Automatically assigns coat variants based on biome physical climate properties when Vanilla tag lookup defaults to Pale.
+
 ## [5.0.16+26.3] - 2026-07-31
 ### Fixed
 - **Automated GameTest Execution & Final Audit Pass**: Purged unused `HashMap` import in `BetterDogsGameTests.java` and executed automated GameTest checks (`./gradlew check`) under Core-auditor directives.
