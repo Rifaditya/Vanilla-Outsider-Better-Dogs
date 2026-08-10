@@ -78,7 +78,7 @@ jar {
 afterEvaluate {
     publishMods {
         file = file("build/libs/${project.archives_base_name}-${project.mod_version}.jar")
-        changelog = file("Doc/Develop/Changelogs/History.md").text.split("## \\[")[1].split("(?m)^## \\[")[0].trim()
+        changelog = file("CHANGELOG.md").text.split("## \\[")[1].split("(?m)^## \\[")[0].trim()
         type = STABLE
         modLoaders.add("fabric")
 

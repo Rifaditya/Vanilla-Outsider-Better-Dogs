@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.24.2+26.2] - 2026-08-10
+### Added
+- **Dynamic Climate-Aware Wolf Coat Variants (`WolfVariantHelper`)**:
+  - **Universal Biome Compatibility**: Introduced dynamic climate coat variant resolution (`betterdogs:bd_dynamic_climate_variants`, default `true`). When wolves spawn in modded or un-mapped biomes (Biomes O' Plenty, Terralith, Regions Unexplored, etc.) and Vanilla tag lookup defaults to Pale, Better Dogs evaluates the biome's physical climate properties (temperature, precipitation, downfall) at spawn time.
+  - **Dynamic Climate Assignment**: Automatically assigns Snowy (cold/snowy), Ashen/Red (arid/hot), Rusty (jungle/humid), Black (dark taiga), or Chestnut (cool taiga) coat variants based on real climate data.
+  - **3-Tier Priority Safeguard**: Preserves third-party custom mod variants (`somemod:custom_wolf`) and native Vanilla tag matches 100% untouched, acting as a smart fallback only when default Pale/Woods fallback occurs.
+
 ## [4.24.1+26.2] - 2026-07-30
 ### ⚠️ Incompatibility Warning
 - **Minecraft 26.2 Target Only**: `4.24.1+26.2` is strictly compiled for Minecraft 26.2. Running on Minecraft 26.3 snapshot instances will crash on startup due to upstream Minecraft 26.3 API refactors (`EntityPredicate.ADVANCEMENT_CODEC` removal and `DynamicGameRuleManager` breaking changes). Upgrade to `5.0.0+26.3` for Minecraft 26.3+.
