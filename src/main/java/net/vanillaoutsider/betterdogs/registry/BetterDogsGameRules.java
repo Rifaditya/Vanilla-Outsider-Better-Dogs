@@ -117,6 +117,7 @@ public class BetterDogsGameRules {
     public static GameRule<Integer> BD_WOLF_SPAWN_GROUP_MIN;
     public static GameRule<Integer> BD_WOLF_SPAWN_GROUP_MAX;
     public static GameRule<Boolean> BD_WOLF_SPAWN_EXPANDED_BIOMES;
+    public static GameRule<Boolean> BD_DYNAMIC_CLIMATE_VARIANTS;
 
     // --- Breeding Genetics ---
     public static GameRule<Integer> BD_BREED_SAME_CHANCE;
@@ -324,6 +325,8 @@ public class BetterDogsGameRules {
                 BETTER_DOGS, config.getSpawnGroupMax());
         BD_WOLF_SPAWN_EXPANDED_BIOMES = registerBoolean("betterdogs:bd_wolf_spawn_expanded_biomes",
                 BETTER_DOGS, config.getEnableExpandedBiomes());
+        BD_DYNAMIC_CLIMATE_VARIANTS = registerBoolean("betterdogs:bd_dynamic_climate_variants",
+                BETTER_DOGS, config.getEnableDynamicClimateVariants());
 
         // Guard Mode
         BD_PACIFIST_GUARD_BUFFS = registerBoolean("betterdogs:bd_pacifist_guard_buffs", BETTER_DOGS, config.getPacifistGuardBuffs());
