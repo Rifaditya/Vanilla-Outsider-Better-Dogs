@@ -1,5 +1,12 @@
 # Better Dogs - Historical Changelog
 
+## [4.24.3+26.1.2] - 2026-08-10
+### Fixed & Added
+- **Litematica Compatibility & Command Item Expansion (`DogCommandManager`)**:
+  - **Litematica Tool Conflict Fix**: Resolved stick tool interaction collision with Litematica by introducing `#vanilla-outsider-better-dogs:command_items` item tag (Stick, Blaze Rod, Breeze Rod, `#c:tools/sticks`).
+  - **Alternative Command Tools**: Enables Blaze Rods and Breeze Rods as alternative command tools alongside standard sticks for dismounting and seat commanding.
+  - **Bone Reservation Safeguard**: Explicitly excluded `minecraft:bone` from command items so Bone remains 100% reserved for Guard Mode (`bd_guard_mode`).
+
 ## [4.24.1+26.1.2] - 2026-08-01
 ### 🔄 Backport Release
 - **Full Parity Backport to Minecraft 26.1.2**: Backported all features, AI goals, Goat Horn Command systems, Creeper Evasion, Jade integration, and stability fixes from version `4.24.1+26.2`.

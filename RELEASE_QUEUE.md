@@ -6,6 +6,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`4.24.3+26.1.2`** (2026-08-10) - **Litematica Compatibility & Command Item Expansion:** Resolved stick tool interaction collision with Litematica by introducing `#vanilla-outsider-better-dogs:command_items` item tag (Stick, Blaze Rod, Breeze Rod, `#c:tools/sticks`), enabling Blaze Rods and Breeze Rods as alternative command tools while keeping Bone 100% reserved for Guard Mode.
 - [ ] **`4.24.1+26.1.2`** (2026-08-01) - Full Parity Backport to Minecraft 26.1.2 from 26.2 (`4.24.1+26.2`). Contains all feature updates, Goat Horn Commands, Creeper Evasion, and Jade integration adapted for 26.1.2 APIs.
 - [x] **`3.1.35`** (2026-02-03) - - Detailed descriptions for all gamerules, including the previously missing `bd_howl_chance`.
 - [x] **`3.1.36`** (2026-02-16) - - Dependency conflict: Allow `DasikLibrary` >= 1.0.1 (removed < 2.0.0 cap) to support version 2.0.0.
