@@ -35,7 +35,26 @@ Following the transition to modern Minecraft 26.x:
 1. **Primary Target (MC 26.2)**: Receives all new gameplay features, AI optimizations, performance updates, and instant bug fixes.
 2. **Snapshot Tracking (MC 26.3)**: Tracks upcoming Mojang snapshot API changes to ensure zero-day readiness upon major game updates.
 3. **Maintenance Builds (MC 26.1.2)**: Receives critical bug fixes and security patches backported from the primary release line.
-4. **Legacy Deprecation**: Pre-26.x releases (such as 1.21.11) are officially retired. Users on legacy versions are encouraged to upgrade to MC 26.2 for improved AI performance, non-blocking pathing safety, and bug fixes.
+## 🌍 Existing World Compatibility & Retrofitting
+
+**Vanilla Outsider: Better Dogs** is 100% backwards-compatible and completely safe to **add or remove** mid-playthrough on existing Minecraft save files.
+
+### What Happens When Adding Mid-Game?
+* **Zero Data Loss**: Existing wolves remain tamed to their respective owners. Their custom names, current health, collar dyes, and equipment are preserved.
+* **Automatic Attachment Initialization**: As soon as pre-existing wolves load in the world, the Fabric Data Attachment API initializes default persistence records without entity resets or health loss.
+* **Default Trait Assignment**: Existing wolves default to standard `NORMAL` personality behavior and base physical scales.
+* **Immediate Feature Unlock**: Pre-existing wolves immediately gain full access to all mod features:
+  * **Guard Mode**: Shift + Right-Click with a Bone to assign sentinel guard positions.
+  * **Favorite Treats**: Feeding favorite treats fully heals and grants regeneration buffs.
+  * **Tactical Horn Commands**: Respond to Goat Horn tactical orders (Call, Attack, Guard, Follow).
+  * **Adoption System**: Shift + Right-Click with Paper to enable ownership transfer to other players.
+  * **Dismounting**: Shift + Right-Click with Stick to dismount from seats/boats/minecarts.
+* **Genetics & Breeding**: Offspring bred from pre-existing wolves will fully utilize the new genetics, litter size calculations (1-4 pups), personality inheritance, and stat variance systems.
+
+### What Happens When Removing Mid-Game (Uninstallation)?
+* **100% Safe Uninstallation**: Removing the mod from a server or singleplayer world mid-game will **never** corrupt save files or cause "missing entity/item registry" startup crashes.
+* **Zero Custom Registry Bloat**: Better Dogs introduces zero custom entity types, zero custom blocks, and zero custom items—relying entirely on vanilla `Wolf` entities and standard vanilla items (Bones, Paper, Goat Horns, Sticks).
+* **Vanilla Behavior Reversion**: Wolves seamlessly revert to standard vanilla wolf AI while retaining their tamed owner UUIDs, custom names, current health, and collar colors.
 
 ---
 
