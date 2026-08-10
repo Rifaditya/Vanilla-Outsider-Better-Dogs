@@ -36,6 +36,10 @@ public class WolfStatManager {
     private static final Identifier ROLLED_SPEED_ID = Identifier.fromNamespaceAndPath("betterdogs", "rolled_speed");
 
     public static void applyPersonalityStats(Wolf wolf, WolfPersonality personality) {
+        if (personality == null) {
+            personality = WolfPersonality.NORMAL;
+        }
+
         var speedAttr = wolf.getAttribute(Attributes.MOVEMENT_SPEED);
         var damageAttr = wolf.getAttribute(Attributes.ATTACK_DAMAGE);
         var knockbackAttr = wolf.getAttribute(Attributes.ATTACK_KNOCKBACK);

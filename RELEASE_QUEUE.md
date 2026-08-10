@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`4.24.4+26.2`** (2026-08-10) - **Dog Adoption Crash Fix:** Fixed `NullPointerException` crash during adoption by adding personality null guards in `WolfStatManager` and pre-assigning random personalities for uninitialized dogs, alongside safe `getOwnerUUID()` resolution.
 - [ ] **`4.24.3+26.2`** (2026-08-10) - **Litematica Compatibility & Command Item Expansion:** Resolved stick tool interaction collision with Litematica by introducing `#vanilla-outsider-better-dogs:command_items` item tag (Stick, Blaze Rod, Breeze Rod, `#c:tools/sticks`), enabling Blaze Rods and Breeze Rods as alternative command tools while keeping Bone 100% reserved for Guard Mode.
 - [ ] **`4.24.2+26.2`** (2026-08-10) - **Dynamic Climate-Aware Wolf Coat Variants:** Introduced dynamic climate coat variant resolution (`betterdogs:bd_dynamic_climate_variants`). Automatically assigns coat variants based on biome physical climate properties when Vanilla tag lookup defaults to Pale.
 - [ ] **`4.24.1+26.2`** (2026-07-30) - **Startup Crash / GameRule Registration Fix:** Refactored `BetterDogsGameRules` registration methods to delegate through `DynamicGameRuleManager` from `dasik-library`, resolving duplicate key registry exceptions on startup.

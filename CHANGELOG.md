@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.24.4+26.2] - 2026-08-10
+### Fixed
+- **Dog Adoption Crash Fix (`WolfInteractionHelper` & `WolfStatManager`)**:
+  - **Personality Null Guard**: Added null personality safeguards to `WolfStatManager.applyPersonalityStats` (`if (personality == null) personality = WolfPersonality.NORMAL;`), preventing `NullPointerException` crashes when adopting vanilla or unassigned wolves.
+  - **Personality Pre-Assignment**: Automatically initializes a random personality on adoption if the adoptable wolf lacks one prior to applying owner stats.
+  - **Safe Owner UUID Lookup**: Replaced unsafe `getOwnerReference()` with safe `getOwnerUUID()`, preventing null dereference exceptions when former owners are offline or unlinked.
+
 ## [4.24.3+26.2] - 2026-08-10
 ### Fixed & Added
 - **Litematica Compatibility & Command Item Expansion (`DogCommandManager`)**:
