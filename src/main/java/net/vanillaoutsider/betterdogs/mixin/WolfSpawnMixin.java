@@ -51,6 +51,9 @@ public abstract class WolfSpawnMixin extends TamableAnimal {
                 // Apply personality stats and scale immediately at spawn
                 WolfStatManager.applyPersonalityStats(wolf, personality);
 
+                // Apply dynamic climate-aware coat variant resolution
+                net.vanillaoutsider.betterdogs.util.WolfVariantHelper.applyClimateVariant(wolf, level.getLevel());
+
                 net.dasik.social.core.SocialRegistry.register((net.dasik.social.api.SocialEntity) wolf);
                 WolfDebugLogger.log(wolf, "Spawn", "Initialized with personality: " + personality.name());
 

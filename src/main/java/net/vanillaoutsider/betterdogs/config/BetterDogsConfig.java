@@ -102,6 +102,7 @@ public class BetterDogsConfig {
     public int spawnGroupMin = 4;
     public int spawnGroupMax = 8;
     public boolean enableExpandedBiomes = false;
+    public boolean enableDynamicClimateVariants = true;
 
     // ========== Breeding Genetics ==========
     public int breedingSameParentChance = 80;
@@ -234,6 +235,7 @@ public class BetterDogsConfig {
     public int getSpawnGroupMin() { return spawnGroupMin; }
     public int getSpawnGroupMax() { return spawnGroupMax; }
     public boolean getEnableExpandedBiomes() { return enableExpandedBiomes; }
+    public boolean getEnableDynamicClimateVariants() { return enableDynamicClimateVariants; }
     public double getAggressiveHealthBonus() { return aggressiveHealthBonus; }
     public double getAggressiveSpeedModifier() { return aggressiveSpeedModifier; }
     public double getAggressiveDetectionRange() { return aggressiveDetectionRange; }

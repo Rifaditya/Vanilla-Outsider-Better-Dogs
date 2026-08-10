@@ -17,4 +17,10 @@ public interface WolfAccessor {
 
     @Invoker("setSoundVariant")
     void betterdogs$invokeSetSoundVariant(net.minecraft.core.Holder<net.minecraft.world.entity.animal.wolf.WolfSoundVariant> soundVariant);
+
+    @Invoker("getVariant")
+    net.minecraft.core.Holder<net.minecraft.world.entity.animal.wolf.WolfVariant> betterdogs$invokeGetVariant();
+
+    @Invoker("setVariant")
+    void betterdogs$invokeSetVariant(net.minecraft.core.Holder<net.minecraft.world.entity.animal.wolf.WolfVariant> variant);
 }
