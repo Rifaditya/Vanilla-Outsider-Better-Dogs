@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
+## [1.0.37+1.21.11] - 2026-08-15
+### Added
+- 💖 **Personality Dynamic Stat Scaling & Attribute Modifiers**:
+  - Dynamically recalculates max health, attack damage, and base movement attributes when personalities are assigned or loaded (`WolfPersonalityStatHelper`).
+  - **Aggressive Dogs**: Enhanced attack power (`bd_aggro_damage`), speed scaling (`bd_aggro_speed_percent`), and configured health (`bd_aggro_health`).
+  - **Pacifist Dogs**: High-vitality guardians with increased max health (`bd_paci_health`) and gentle damage (`bd_paci_damage`).
+  - Added automated unit test suite `PersonalityStatScalingTest`.
+
 ## [1.0.36+1.21.11] - 2026-08-15
 ### Added
 - 🚀 **Fast-Travel Sprint Catchup & Dimension Teleport Sync**:

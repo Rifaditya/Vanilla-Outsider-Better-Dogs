@@ -74,6 +74,8 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     @Override
     public void betterdogs$setPersonality(WolfPersonality personality) {
         this.betterdogs$personality = personality != null ? personality : WolfPersonality.NORMAL;
+        Wolf wolf = (Wolf) (Object) this;
+        net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper.applyPersonalityStats(wolf, this.betterdogs$personality);
     }
 
     @Override
@@ -217,5 +219,6 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.betterdogs$soothedTime = WolfPersistentData.readSoothedTimeFromSaveData(input);
         this.betterdogs$nemesisEntityType = WolfPersistentData.readNemesisTypeFromSaveData(input);
         this.betterdogs$nemesisExpiryTime = WolfPersistentData.readNemesisExpiryFromSaveData(input);
+        net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper.applyPersonalityStats(wolf, this.betterdogs$personality);
     }
 }
