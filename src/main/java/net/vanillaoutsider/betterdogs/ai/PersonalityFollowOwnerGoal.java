@@ -86,9 +86,7 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
             if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$getPersonality() == WolfPersonality.AGGRESSIVE) {
                 speed *= 1.1;
             }
-            if (distSqr > 64.0) {
-                speed *= 1.35;
-            }
+            speed = net.vanillaoutsider.betterdogs.util.WolfCatchupHelper.calculateCatchupSpeed(this.wolf, owner, speed);
             this.wolf.getNavigation().moveTo(owner, speed);
         } else {
             this.wolf.getNavigation().stop();
