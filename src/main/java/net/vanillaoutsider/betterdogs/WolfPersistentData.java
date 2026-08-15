@@ -16,24 +16,32 @@ public class WolfPersistentData {
     public static final String NBT_KEY_PARENT_1 = "BetterDogsParent1";
     public static final String NBT_KEY_PARENT_2 = "BetterDogsParent2";
     public static final String NBT_KEY_IS_INBRED = "BetterDogsIsInbred";
+    public static final String NBT_KEY_IS_GUARDING = "BetterDogsIsGuarding";
+    public static final String NBT_KEY_GUARD_X = "BetterDogsGuardX";
+    public static final String NBT_KEY_GUARD_Y = "BetterDogsGuardY";
+    public static final String NBT_KEY_GUARD_Z = "BetterDogsGuardZ";
 
     public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed) {
-        writeToNbt(tag, personality, socialScale, dnaSeed, "", 0L, "", 0L, null, null, false);
+        writeToNbt(tag, personality, socialScale, dnaSeed, "", 0L, "", 0L, null, null, false, false, null);
     }
 
     public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat) {
-        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, 0L, "", 0L, null, null, false);
+        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, 0L, "", 0L, null, null, false, false, null);
     }
 
     public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime) {
-        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, "", 0L, null, null, false);
+        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, "", 0L, null, null, false, false, null);
     }
 
     public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry) {
-        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, nemesisType, nemesisExpiry, null, null, false);
+        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, nemesisType, nemesisExpiry, null, null, false, false, null);
     }
 
     public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry, UUID parent1, UUID parent2, boolean isInbred) {
+        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, nemesisType, nemesisExpiry, parent1, parent2, isInbred, false, null);
+    }
+
+    public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry, UUID parent1, UUID parent2, boolean isInbred, boolean isGuarding, net.minecraft.core.BlockPos guardPos) {
         if (tag != null) {
             if (personality != null) {
                 tag.putString(NBT_KEY_PERSONALITY, personality.getId());
@@ -59,6 +67,12 @@ public class WolfPersistentData {
                 tag.putUUID(NBT_KEY_PARENT_2, parent2);
             }
             tag.putBoolean(NBT_KEY_IS_INBRED, isInbred);
+            tag.putBoolean(NBT_KEY_IS_GUARDING, isGuarding);
+            if (guardPos != null) {
+                tag.putInt(NBT_KEY_GUARD_X, guardPos.getX());
+                tag.putInt(NBT_KEY_GUARD_Y, guardPos.getY());
+                tag.putInt(NBT_KEY_GUARD_Z, guardPos.getZ());
+            }
         }
     }
 
@@ -140,5 +154,19 @@ public class WolfPersistentData {
             return tag.getBoolean(NBT_KEY_IS_INBRED);
         }
         return false;
+    }
+
+    public static boolean readIsGuardingFromNbt(CompoundTag tag) {
+        if (tag != null && tag.contains(NBT_KEY_IS_GUARDING)) {
+            return tag.getBoolean(NBT_KEY_IS_GUARDING);
+        }
+        return false;
+    }
+
+    public static net.minecraft.core.BlockPos readGuardPosFromNbt(CompoundTag tag) {
+        if (tag != null && tag.contains(NBT_KEY_GUARD_X) && tag.contains(NBT_KEY_GUARD_Y) && tag.contains(NBT_KEY_GUARD_Z)) {
+            return new net.minecraft.core.BlockPos(tag.getInt(NBT_KEY_GUARD_X), tag.getInt(NBT_KEY_GUARD_Y), tag.getInt(NBT_KEY_GUARD_Z));
+        }
+        return null;
     }
 }

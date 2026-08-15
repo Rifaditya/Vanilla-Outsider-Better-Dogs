@@ -41,4 +41,10 @@ public interface WolfExtensions {
 
     boolean betterdogs$isInbred();
     void betterdogs$setInbred(boolean inbred);
+
+    boolean betterdogs$isGuarding();
+    void betterdogs$setGuarding(boolean guarding);
+
+    net.minecraft.core.BlockPos betterdogs$getGuardPos();
+    void betterdogs$setGuardPos(net.minecraft.core.BlockPos pos);
 }
