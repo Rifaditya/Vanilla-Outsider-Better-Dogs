@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.37+1.20.1] - 2026-08-15
+### Added
+- 📏 **Parental Size Inheritance & Scale Variance**:
+  - Implemented mathematical adult size inheritance from parents with natural ±10% genetic variance (`WolfScaleGeneticsHelper`).
+  - Clamped strictly between `bd_wolf_min_scale_percent` (0.70x) and `bd_wolf_max_scale_percent` (1.45x).
+  - Added natural Gaussian bell-curve generation for freshly spawned wild wolves.
+  - Added automated unit test suite `ScaleGeneticsTest`.
+
 ## [1.0.36+1.20.1] - 2026-08-15
 ### Added
 - 🧬 **Genetic Personality Inheritance**:
