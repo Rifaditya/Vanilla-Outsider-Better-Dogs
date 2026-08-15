@@ -15,22 +15,29 @@ public class WolfPersistentData {
     public static final String NBT_KEY_SOOTHED_TIME = "BetterDogsSoothedTime";
     public static final String NBT_KEY_NEMESIS_TYPE = "BetterDogsNemesisType";
     public static final String NBT_KEY_NEMESIS_EXPIRY = "BetterDogsNemesisExpiry";
+    public static final String NBT_KEY_PARENT_1 = "BetterDogsParent1";
+    public static final String NBT_KEY_PARENT_2 = "BetterDogsParent2";
+    public static final String NBT_KEY_IS_INBRED = "BetterDogsIsInbred";
 
     // ========== Modern 1.21.11 Save Data APIs (ValueOutput / ValueInput) ==========
 
     public static void writeToSaveData(ValueOutput output, WolfPersonality personality, float socialScale, long dnaSeed) {
-        writeToSaveData(output, personality, socialScale, dnaSeed, "", 0L, "", 0L);
+        writeToSaveData(output, personality, socialScale, dnaSeed, "", 0L, "", 0L, null, null, false);
     }
 
     public static void writeToSaveData(ValueOutput output, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat) {
-        writeToSaveData(output, personality, socialScale, dnaSeed, favoriteTreat, 0L, "", 0L);
+        writeToSaveData(output, personality, socialScale, dnaSeed, favoriteTreat, 0L, "", 0L, null, null, false);
     }
 
     public static void writeToSaveData(ValueOutput output, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime) {
-        writeToSaveData(output, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, "", 0L);
+        writeToSaveData(output, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, "", 0L, null, null, false);
     }
 
     public static void writeToSaveData(ValueOutput output, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry) {
+        writeToSaveData(output, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, nemesisType, nemesisExpiry, null, null, false);
+    }
+
+    public static void writeToSaveData(ValueOutput output, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry, UUID parent1, UUID parent2, boolean isInbred) {
         if (output != null) {
             if (personality != null) {
                 output.putString(NBT_KEY_PERSONALITY, personality.getId());
@@ -48,6 +55,15 @@ public class WolfPersistentData {
             }
             if (nemesisExpiry > 0L) {
                 output.putLong(NBT_KEY_NEMESIS_EXPIRY, nemesisExpiry);
+            }
+            if (parent1 != null) {
+                output.putString(NBT_KEY_PARENT_1, parent1.toString());
+            }
+            if (parent2 != null) {
+                output.putString(NBT_KEY_PARENT_2, parent2.toString());
+            }
+            if (isInbred) {
+                output.putInt(NBT_KEY_IS_INBRED, 1);
             }
         }
     }
@@ -109,21 +125,50 @@ public class WolfPersistentData {
         return 0L;
     }
 
+    public static UUID readParentUUID1FromSaveData(ValueInput input) {
+        if (input != null) {
+            return input.getString(NBT_KEY_PARENT_1).map(s -> {
+                try { return UUID.fromString(s); } catch (Exception e) { return null; }
+            }).orElse(null);
+        }
+        return null;
+    }
+
+    public static UUID readParentUUID2FromSaveData(ValueInput input) {
+        if (input != null) {
+            return input.getString(NBT_KEY_PARENT_2).map(s -> {
+                try { return UUID.fromString(s); } catch (Exception e) { return null; }
+            }).orElse(null);
+        }
+        return null;
+    }
+
+    public static boolean readIsInbredFromSaveData(ValueInput input) {
+        if (input != null) {
+            return input.getInt(NBT_KEY_IS_INBRED).map(v -> v != 0).orElse(false);
+        }
+        return false;
+    }
+
     // ========== NBT CompoundTag Helpers (Unit Testing & Legacy Compatibility) ==========
 
     public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed) {
-        writeToNbt(tag, personality, socialScale, dnaSeed, "", 0L, "", 0L);
+        writeToNbt(tag, personality, socialScale, dnaSeed, "", 0L, "", 0L, null, null, false);
     }
 
     public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat) {
-        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, 0L, "", 0L);
+        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, 0L, "", 0L, null, null, false);
     }
 
     public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime) {
-        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, "", 0L);
+        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, "", 0L, null, null, false);
     }
 
     public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry) {
+        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, nemesisType, nemesisExpiry, null, null, false);
+    }
+
+    public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry, UUID parent1, UUID parent2, boolean isInbred) {
         if (tag != null) {
             if (personality != null) {
                 tag.putString(NBT_KEY_PERSONALITY, personality.getId());
@@ -141,6 +186,15 @@ public class WolfPersistentData {
             }
             if (nemesisExpiry > 0L) {
                 tag.putLong(NBT_KEY_NEMESIS_EXPIRY, nemesisExpiry);
+            }
+            if (parent1 != null) {
+                tag.putString(NBT_KEY_PARENT_1, parent1.toString());
+            }
+            if (parent2 != null) {
+                tag.putString(NBT_KEY_PARENT_2, parent2.toString());
+            }
+            if (isInbred) {
+                tag.putBoolean(NBT_KEY_IS_INBRED, true);
             }
         }
     }
@@ -202,5 +256,30 @@ public class WolfPersistentData {
             return 0L;
         }
         return uuid.getMostSignificantBits() ^ uuid.getLeastSignificantBits() ^ 5829103L;
+    }
+
+    public static UUID readParentUUID1FromNbt(CompoundTag tag) {
+        if (tag != null && tag.contains(NBT_KEY_PARENT_1)) {
+            return tag.getString(NBT_KEY_PARENT_1).map(s -> {
+                try { return UUID.fromString(s); } catch (Exception e) { return null; }
+            }).orElse(null);
+        }
+        return null;
+    }
+
+    public static UUID readParentUUID2FromNbt(CompoundTag tag) {
+        if (tag != null && tag.contains(NBT_KEY_PARENT_2)) {
+            return tag.getString(NBT_KEY_PARENT_2).map(s -> {
+                try { return UUID.fromString(s); } catch (Exception e) { return null; }
+            }).orElse(null);
+        }
+        return null;
+    }
+
+    public static boolean readIsInbredFromNbt(CompoundTag tag) {
+        if (tag != null && tag.contains(NBT_KEY_IS_INBRED)) {
+            return tag.getBoolean(NBT_KEY_IS_INBRED).orElse(false);
+        }
+        return false;
     }
 }
