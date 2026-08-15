@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.1)
 
+## [1.0.35+1.21.1] - 2026-08-15
+### Added
+- 🧬 **Genetic Personality Inheritance**:
+  - Implemented weighted parental trait inheritance when breeding tamed wolves (`WolfGeneticsHelper`).
+  - **Same-Trait Parents**: 80% chance to inherit parent personality (`bd_breed_same_chance`), with 10% mutation chance (`bd_breed_same_other_chance`).
+  - **Mixed-Trait Parents**: 40% Parent A (`bd_breed_mixed_dominant_chance`), 40% Parent B (`bd_breed_mixed_recessive_chance`), 20% Normal dilution (`bd_breed_diluted_normal_chance`).
+  - Added automated unit test suite `GeneticsInheritanceTest`.
+
 ## [1.0.34+1.21.1] - 2026-08-15
 ### Added
 - 💖 **Personality Dynamic Stat Scaling & Attribute Modifiers**:

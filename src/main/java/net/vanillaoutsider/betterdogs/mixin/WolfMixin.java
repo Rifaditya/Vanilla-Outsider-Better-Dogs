@@ -2,7 +2,9 @@
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.animal.Wolf;
@@ -219,5 +221,17 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.betterdogs$nemesisEntityType = WolfPersistentData.readNemesisTypeFromNbt(tag);
         this.betterdogs$nemesisExpiryTime = WolfPersistentData.readNemesisExpiryFromNbt(tag);
         net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper.applyPersonalityStats(wolf, this.betterdogs$personality);
+    }
+
+    @Inject(method = "getBreedOffspring", at = @At("RETURN"))
+    private void betterdogs$onBreedOffspring(ServerLevel level, AgeableMob otherParent, CallbackInfoReturnable<Wolf> cir) {
+        Wolf child = cir.getReturnValue();
+        if (child != null && child instanceof WolfExtensions childExt) {
+            Wolf parentA = (Wolf) (Object) this;
+            WolfPersonality personalityA = parentA instanceof WolfExtensions extA ? extA.betterdogs$getPersonality() : WolfPersonality.NORMAL;
+            WolfPersonality personalityB = otherParent instanceof WolfExtensions extB ? extB.betterdogs$getPersonality() : WolfPersonality.NORMAL;
+            WolfPersonality inherited = net.vanillaoutsider.betterdogs.util.WolfGeneticsHelper.calculateOffspringPersonality(level, personalityA, personalityB, child.getRandom());
+            childExt.betterdogs$setPersonality(inherited);
+        }
     }
 }
