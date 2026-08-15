@@ -1,5 +1,14 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.39+1.20.1] - 2026-08-15
+### Added
+- 🧪 **Inbreeding Lineage Tracking & Runt Stat Penalties**:
+  - Implemented 1-generation immediate family lineage tracking storing parent UUIDs (`parentUUID1`, `parentUUID2`) on all dogs.
+  - Automatically detects parent-child and sibling (full/half) incestuous pairings upon breeding (`WolfInbreedingHelper`).
+  - Marked inbred dogs receive authentic runt debuffs: adult scale capped to 0.70x–0.80x, -25% Max Health, -25% Attack Damage, and -15% Movement Speed.
+  - Added visual smoke tell: dense smoke puff on birth and subtle ambient smoke particles while moving.
+  - Added automated unit test suite `InbreedingLineageTest`.
+
 ## [1.0.38+1.20.1] - 2026-08-15
 ### Added
 - 🐕 **Variable Multi-Puppy Litter Sizes**:

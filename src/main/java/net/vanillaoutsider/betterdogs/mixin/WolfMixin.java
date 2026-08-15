@@ -64,6 +64,45 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     @Unique
     private long betterdogs$nemesisExpiryTime = 0L;
 
+    @Unique
+    private java.util.UUID betterdogs$parentUUID1 = null;
+
+    @Unique
+    private java.util.UUID betterdogs$parentUUID2 = null;
+
+    @Unique
+    private boolean betterdogs$isInbred = false;
+
+    @Override
+    public java.util.UUID betterdogs$getParentUUID1() {
+        return this.betterdogs$parentUUID1;
+    }
+
+    @Override
+    public void betterdogs$setParentUUID1(java.util.UUID uuid) {
+        this.betterdogs$parentUUID1 = uuid;
+    }
+
+    @Override
+    public java.util.UUID betterdogs$getParentUUID2() {
+        return this.betterdogs$parentUUID2;
+    }
+
+    @Override
+    public void betterdogs$setParentUUID2(java.util.UUID uuid) {
+        this.betterdogs$parentUUID2 = uuid;
+    }
+
+    @Override
+    public boolean betterdogs$isInbred() {
+        return this.betterdogs$isInbred;
+    }
+
+    @Override
+    public void betterdogs$setInbred(boolean inbred) {
+        this.betterdogs$isInbred = inbred;
+    }
+
     @Override
     public WolfPersonality betterdogs$getPersonality() {
         if (this.betterdogs$personality == null) {
@@ -190,6 +229,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         if (!this.getCommandSenderWorld().isClientSide() && this.betterdogs$passiveOverrideTicks > 0) {
             this.betterdogs$passiveOverrideTicks--;
         }
+        net.vanillaoutsider.betterdogs.util.WolfInbreedingHelper.tickRuntAmbientParticles((Wolf) (Object) this);
     }
 
     @Inject(method = "registerGoals", at = @At("TAIL"))
@@ -199,7 +239,6 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
             var goal = wrapped.getGoal();
             return goal instanceof FollowOwnerGoal || (goal instanceof WaterAvoidingRandomStrollGoal && !(goal instanceof TamedWanderNearOwnerGoal));
         });
-
         this.goalSelector.addGoal(1, new FleeCreeperGoal(wolf));
         this.goalSelector.addGoal(2, new AvoidHazardsGoal(wolf));
         this.goalSelector.addGoal(2, new WolfFleeLowHealthGoal(wolf, 1.4));
@@ -217,7 +256,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
 
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"), require = 0)
     private void betterdogs$writeNbt(CompoundTag tag, CallbackInfo ci) {
-        WolfPersistentData.writeToNbt(tag, betterdogs$getPersonality(), betterdogs$getSocialScale(), betterdogs$getDnaSeed(), betterdogs$getFavoriteTreat(), betterdogs$getSoothedTime(), betterdogs$getNemesisEntityType(), betterdogs$getNemesisExpiryTime());
+        WolfPersistentData.writeToNbt(tag, betterdogs$getPersonality(), betterdogs$getSocialScale(), betterdogs$getDnaSeed(), betterdogs$getFavoriteTreat(), betterdogs$getSoothedTime(), betterdogs$getNemesisEntityType(), betterdogs$getNemesisExpiryTime(), betterdogs$getParentUUID1(), betterdogs$getParentUUID2(), betterdogs$isInbred());
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"), require = 0)
@@ -230,6 +269,9 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.betterdogs$soothedTime = WolfPersistentData.readSoothedTimeFromNbt(tag);
         this.betterdogs$nemesisEntityType = WolfPersistentData.readNemesisTypeFromNbt(tag);
         this.betterdogs$nemesisExpiryTime = WolfPersistentData.readNemesisExpiryFromNbt(tag);
+        this.betterdogs$parentUUID1 = WolfPersistentData.readParentUUID1FromNbt(tag);
+        this.betterdogs$parentUUID2 = WolfPersistentData.readParentUUID2FromNbt(tag);
+        this.betterdogs$isInbred = WolfPersistentData.readIsInbredFromNbt(tag);
         net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper.applyPersonalityStats(wolf, this.betterdogs$personality);
     }
 
@@ -248,6 +290,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
             float inheritedScale = net.vanillaoutsider.betterdogs.util.WolfScaleGeneticsHelper.calculateOffspringScale(level, scaleA, scaleB, child.getRandom());
             childExt.betterdogs$setSocialScale(inheritedScale);
 
+            net.vanillaoutsider.betterdogs.util.WolfInbreedingHelper.applyInbreeding(child, parentA, otherParent);
             net.vanillaoutsider.betterdogs.util.WolfLitterHelper.spawnExtraPuppies(level, parentA, otherParent, child);
         }
     }

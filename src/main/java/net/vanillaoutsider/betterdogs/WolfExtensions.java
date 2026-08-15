@@ -42,4 +42,13 @@ public interface WolfExtensions {
     void betterdogs$setNemesisExpiryTime(long time);
 
     void betterdogs$setCollarColor(net.minecraft.world.item.DyeColor color);
+
+    UUID betterdogs$getParentUUID1();
+    void betterdogs$setParentUUID1(UUID uuid);
+
+    UUID betterdogs$getParentUUID2();
+    void betterdogs$setParentUUID2(UUID uuid);
+
+    boolean betterdogs$isInbred();
+    void betterdogs$setInbred(boolean inbred);
 }

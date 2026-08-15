@@ -79,6 +79,7 @@ public class WolfLitterHelper {
                     float inheritedS = WolfScaleGeneticsHelper.calculateOffspringScale(level, scaleA, scaleB, sibling.getRandom());
                     siblingExt.betterdogs$setPersonality(inheritedP);
                     siblingExt.betterdogs$setSocialScale(inheritedS);
+                    WolfInbreedingHelper.applyInbreeding(sibling, parentA, otherParent);
                 }
 
                 level.addFreshEntity(sibling);
