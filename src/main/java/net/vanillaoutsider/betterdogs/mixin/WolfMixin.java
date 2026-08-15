@@ -87,6 +87,10 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
 
     @Override
     public float betterdogs$getSocialScale() {
+        if (this.betterdogs$socialScale <= 0.0f) {
+            Wolf wolf = (Wolf) (Object) this;
+            this.betterdogs$socialScale = net.vanillaoutsider.betterdogs.util.WolfScaleGeneticsHelper.generateWildWolfScale(wolf.level(), wolf.getRandom());
+        }
         return this.betterdogs$socialScale;
     }
 
@@ -233,6 +237,11 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
             WolfPersonality personalityB = otherParent instanceof WolfExtensions extB ? extB.betterdogs$getPersonality() : WolfPersonality.NORMAL;
             WolfPersonality inherited = net.vanillaoutsider.betterdogs.util.WolfGeneticsHelper.calculateOffspringPersonality(level, personalityA, personalityB, child.getRandom());
             childExt.betterdogs$setPersonality(inherited);
+
+            float scaleA = parentA instanceof WolfExtensions extA ? extA.betterdogs$getSocialScale() : 1.0f;
+            float scaleB = otherParent instanceof WolfExtensions extB ? extB.betterdogs$getSocialScale() : 1.0f;
+            float inheritedScale = net.vanillaoutsider.betterdogs.util.WolfScaleGeneticsHelper.calculateOffspringScale(level, scaleA, scaleB, child.getRandom());
+            childExt.betterdogs$setSocialScale(inheritedScale);
         }
     }
 }
