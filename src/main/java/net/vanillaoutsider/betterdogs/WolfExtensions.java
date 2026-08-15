@@ -30,4 +30,6 @@ public interface WolfExtensions {
 
     long betterdogs$getNemesisExpiryTime();
     void betterdogs$setNemesisExpiryTime(long time);
+
+    void betterdogs$setCollarColor(net.minecraft.world.item.DyeColor color);
 }

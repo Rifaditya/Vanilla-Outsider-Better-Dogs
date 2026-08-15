@@ -121,6 +121,7 @@ public class BetterDogsGameRules {
     public static GameRule<Integer> BD_BREED_MIXED_RECESSIVE_CHANCE;
     public static GameRule<Integer> BD_BREED_DILUTED_NORMAL_CHANCE;
     public static GameRule<Integer> BD_BREED_DILUTED_OTHER_CHANCE;
+    public static GameRule<Integer> BD_WOLF_LITTER_MAX_SIZE;
 
     public static void init() {
         // General
@@ -224,6 +225,7 @@ public class BetterDogsGameRules {
         BD_BREED_MIXED_RECESSIVE_CHANCE = registerInteger("vanilla-outsider-better-dogs:bd_breed_mixed_recessive_chance", BETTER_DOGS, 40);
         BD_BREED_DILUTED_NORMAL_CHANCE = registerInteger("vanilla-outsider-better-dogs:bd_breed_diluted_normal_chance", BETTER_DOGS, 50);
         BD_BREED_DILUTED_OTHER_CHANCE = registerInteger("vanilla-outsider-better-dogs:bd_breed_diluted_other_chance", BETTER_DOGS, 25);
+        BD_WOLF_LITTER_MAX_SIZE = registerInteger("vanilla-outsider-better-dogs:bd_wolf_litter_max_size", BETTER_DOGS, 4);
     }
 
     private static GameRule<Boolean> registerBoolean(String id, GameRuleCategory category, boolean defaultValue) {
