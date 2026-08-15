@@ -47,4 +47,7 @@ public interface WolfExtensions {
 
     net.minecraft.core.BlockPos betterdogs$getGuardPos();
     void betterdogs$setGuardPos(net.minecraft.core.BlockPos pos);
+
+    boolean betterdogs$isUpForAdoption();
+    void betterdogs$setUpForAdoption(boolean adoption);
 }
