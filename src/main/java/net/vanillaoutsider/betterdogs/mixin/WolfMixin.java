@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.animal.Wolf;
@@ -24,6 +25,7 @@ import net.vanillaoutsider.betterdogs.ai.WolfFlankAttackGoal;
 import net.vanillaoutsider.betterdogs.ai.WolfStormAnxietyGoal;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -167,6 +169,14 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.betterdogs$nemesisExpiryTime = time;
     }
 
+    @Invoker("setCollarColor")
+    public abstract void betterdogs$invokeSetCollarColor(DyeColor color);
+
+    @Override
+    public void betterdogs$setCollarColor(DyeColor color) {
+        betterdogs$invokeSetCollarColor(color);
+    }
+
     @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
     private void betterdogs$onHurt(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         if (net.vanillaoutsider.betterdogs.util.WolfFriendlyFireHelper.shouldCancelDamage((Wolf) (Object) this, source)) {
@@ -241,6 +251,8 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
             float scaleB = otherParent instanceof WolfExtensions extB ? extB.betterdogs$getSocialScale() : 1.0f;
             float inheritedScale = net.vanillaoutsider.betterdogs.util.WolfScaleGeneticsHelper.calculateOffspringScale(level, scaleA, scaleB, child.getRandom());
             childExt.betterdogs$setSocialScale(inheritedScale);
+
+            net.vanillaoutsider.betterdogs.util.WolfLitterHelper.spawnExtraPuppies(level, parentA, otherParent, child);
         }
     }
 }

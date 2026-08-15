@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.1)
 
+## [1.0.37+1.21.1] - 2026-08-15
+### Added
+- 🐕 **Variable Multi-Puppy Litter Sizes**:
+  - Implemented realistic canine litter sizes rolling 1 to 4 puppies (`bd_wolf_litter_max_size`, `WolfLitterHelper`).
+  - Sibling puppies independently roll personality and adult scale genetics from parents, inheriting owner and mother collar color.
+  - Added subtle celebration birth FX with heart particles and gentle high-pitched puppy whimpers (`SoundEvents.WOLF_AMBIENT`).
+  - Added automated unit test suite `VariableLitterTest`.
+
 ## [1.0.36+1.21.1] - 2026-08-15
 ### Added
 - 📏 **Parental Size Inheritance & Scale Variance**:

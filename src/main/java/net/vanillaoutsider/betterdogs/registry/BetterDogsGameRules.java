@@ -118,6 +118,7 @@ public class BetterDogsGameRules {
     public static GameRules.Key<GameRules.IntegerValue> BD_BREED_MIXED_RECESSIVE_CHANCE;
     public static GameRules.Key<GameRules.IntegerValue> BD_BREED_DILUTED_NORMAL_CHANCE;
     public static GameRules.Key<GameRules.IntegerValue> BD_BREED_DILUTED_OTHER_CHANCE;
+    public static GameRules.Key<GameRules.IntegerValue> BD_WOLF_LITTER_MAX_SIZE;
 
     public static void init() {
         // General
@@ -221,6 +222,7 @@ public class BetterDogsGameRules {
         BD_BREED_MIXED_RECESSIVE_CHANCE = GameRuleRegistry.register("bd_breed_mixed_recessive_chance", BETTER_DOGS, GameRuleFactory.createIntRule(40));
         BD_BREED_DILUTED_NORMAL_CHANCE = GameRuleRegistry.register("bd_breed_diluted_normal_chance", BETTER_DOGS, GameRuleFactory.createIntRule(50));
         BD_BREED_DILUTED_OTHER_CHANCE = GameRuleRegistry.register("bd_breed_diluted_other_chance", BETTER_DOGS, GameRuleFactory.createIntRule(25));
+        BD_WOLF_LITTER_MAX_SIZE = GameRuleRegistry.register("bd_wolf_litter_max_size", BETTER_DOGS, GameRuleFactory.createIntRule(4));
     }
 
     public static boolean getBoolean(Level level, GameRules.Key<GameRules.BooleanValue> key, boolean fallback) {
