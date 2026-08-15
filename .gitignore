@@ -1,0 +1,15 @@
+.gradle/
+build/
+bin/
+out/
+.idea/
+*.iml
+*.iws
+*.ipr
+Archive/
+Archive Jar of all versions/
+*.jar
+Doc/Marketing/
+*hype_*
+.DS_Store
+Thumbs.db

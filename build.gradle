@@ -1,0 +1,80 @@
+plugins {
+    id 'fabric-loom' version '1.10.2'
+    id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = "better-dogs"
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://maven.fabricmc.net/" }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.officialMojangMappings()
+    modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.10.0"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.10.0"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher:1.10.0"
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
+    it.options.release = 21
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+jar {
+    archiveBaseName = "better-dogs"
+    from("LICENSE") {
+        rename "LICENSE_${project.archives_base_name}", "LICENSE"
+    }
+}
+
+remapJar {
+    archiveBaseName = "better-dogs"
+}
+
+afterEvaluate {
+    tasks.register('archiveReleaseJar', Copy) {
+        dependsOn build
+        from remapJar.archiveFile
+        into file("../../Archive Jar of all versions/MC 1.21.1")
+        doLast {
+            println "[AUTO-ARCHIVE] Successfully copied ${remapJar.archiveFile.get().asFile.name} to outer Archive directory: ${destinationDir.absolutePath}"
+            def profileModsDir = file("C:/Users/fmrif/AppData/Roaming/ModrinthApp/profiles/Fabric 1.21.1/mods")
+            if (profileModsDir.exists()) {
+                copy {
+                    from remapJar.archiveFile
+                    into profileModsDir
+                }
+                println "[AUTO-DEPLOY] Successfully deployed ${remapJar.archiveFile.get().asFile.name} to Modrinth profile: ${profileModsDir.absolutePath}"
+            }
+        }
+    }
+    build.finalizedBy archiveReleaseJar
+}
