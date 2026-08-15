@@ -20,28 +20,33 @@ public class WolfPersistentData {
     public static final String NBT_KEY_GUARD_X = "BetterDogsGuardX";
     public static final String NBT_KEY_GUARD_Y = "BetterDogsGuardY";
     public static final String NBT_KEY_GUARD_Z = "BetterDogsGuardZ";
+    public static final String NBT_KEY_IS_UP_FOR_ADOPTION = "BetterDogsIsUpForAdoption";
 
     public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed) {
-        writeToNbt(tag, personality, socialScale, dnaSeed, "", 0L, "", 0L, null, null, false, false, null);
+        writeToNbt(tag, personality, socialScale, dnaSeed, "", 0L, "", 0L, null, null, false, false, null, false);
     }
 
     public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat) {
-        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, 0L, "", 0L, null, null, false, false, null);
+        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, 0L, "", 0L, null, null, false, false, null, false);
     }
 
     public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime) {
-        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, "", 0L, null, null, false, false, null);
+        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, "", 0L, null, null, false, false, null, false);
     }
 
     public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry) {
-        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, nemesisType, nemesisExpiry, null, null, false, false, null);
+        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, nemesisType, nemesisExpiry, null, null, false, false, null, false);
     }
 
     public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry, UUID parent1, UUID parent2, boolean isInbred) {
-        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, nemesisType, nemesisExpiry, parent1, parent2, isInbred, false, null);
+        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, nemesisType, nemesisExpiry, parent1, parent2, isInbred, false, null, false);
     }
 
     public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry, UUID parent1, UUID parent2, boolean isInbred, boolean isGuarding, net.minecraft.core.BlockPos guardPos) {
+        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, nemesisType, nemesisExpiry, parent1, parent2, isInbred, isGuarding, guardPos, false);
+    }
+
+    public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry, UUID parent1, UUID parent2, boolean isInbred, boolean isGuarding, net.minecraft.core.BlockPos guardPos, boolean isUpForAdoption) {
         if (tag != null) {
             if (personality != null) {
                 tag.putString(NBT_KEY_PERSONALITY, personality.getId());
@@ -73,6 +78,7 @@ public class WolfPersistentData {
                 tag.putInt(NBT_KEY_GUARD_Y, guardPos.getY());
                 tag.putInt(NBT_KEY_GUARD_Z, guardPos.getZ());
             }
+            tag.putBoolean(NBT_KEY_IS_UP_FOR_ADOPTION, isUpForAdoption);
         }
     }
 
@@ -168,5 +174,12 @@ public class WolfPersistentData {
             return new net.minecraft.core.BlockPos(tag.getInt(NBT_KEY_GUARD_X), tag.getInt(NBT_KEY_GUARD_Y), tag.getInt(NBT_KEY_GUARD_Z));
         }
         return null;
+    }
+
+    public static boolean readIsUpForAdoptionFromNbt(CompoundTag tag) {
+        if (tag != null && tag.contains(NBT_KEY_IS_UP_FOR_ADOPTION)) {
+            return tag.getBoolean(NBT_KEY_IS_UP_FOR_ADOPTION);
+        }
+        return false;
     }
 }
