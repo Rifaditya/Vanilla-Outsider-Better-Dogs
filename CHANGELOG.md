@@ -1,5 +1,14 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.42+1.20.1] - 2026-08-15
+### Added
+- 📄 **Paper Adoption Ownership Transfer System**:
+  - Sneak (Shift) + Right-clicking a tamed dog with `Items.PAPER` lists the dog for adoption (`WolfAdoptionHelper`).
+  - Added ambient subtle green/golden sparkles (`ParticleTypes.HAPPY_VILLAGER`) and Action Bar notification indicating the dog is up for adoption.
+  - Another player can adopt the listed dog by Sneak (Shift) + Right-clicking with an empty hand, transferring full ownership with heart explosion FX (`ParticleTypes.HEART`) and chime celebration (`SoundEvents.PLAYER_LEVELUP`).
+  - The original owner can cancel adoption listing at any time by Sneak + Right-clicking again.
+  - Added automated unit test suite `AdoptionSystemTest`.
+
 ## [1.0.41+1.20.1] - 2026-08-15
 ### Added
 - 🛡️ **Guard Mode & Sentinel Patrol AI**:
