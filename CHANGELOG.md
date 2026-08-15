@@ -1,5 +1,12 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.1)
 
+## [1.0.33+1.21.1] - 2026-08-15
+### Added
+- 🚀 **Fast-Travel Sprint Catchup & Dimension Teleport Sync**:
+  - Implemented dynamic catch-up sprint speed scaling (up to 2.0x base speed) whenever owners travel rapidly on mounts (horses, donkeys, camels), boats, minecarts, elytra, or high-speed sprinting (`bd_fast_travel_catchup`).
+  - Added interdimensional portal teleport sync helper `WolfCatchupHelper.syncOwnerDimensionTeleport` (`bd_sync_owner_teleport`).
+  - Added automated unit test suite `FastTravelCatchupTest`.
+
 ## [1.0.32+1.21.1] - 2026-08-15
 ### Added
 - 🛡️ **Friendly Fire Protection & Owner Damage Safeguards**:
