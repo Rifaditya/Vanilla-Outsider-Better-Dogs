@@ -47,6 +47,9 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
         if (owner == null || owner.isSpectator() || this.wolf.isOrderedToSit() || this.wolf.isLeashed()) {
             return false;
         }
+        if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$isGuarding()) {
+            return false;
+        }
         float startDist = getStartDistance();
         return this.wolf.distanceToSqr(owner) >= (startDist * startDist);
     }
@@ -54,6 +57,9 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
     @Override
     public boolean canContinueToUse() {
         if (this.wolf.getNavigation().isDone() || this.wolf.isOrderedToSit() || this.wolf.isLeashed()) {
+            return false;
+        }
+        if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$isGuarding()) {
             return false;
         }
         LivingEntity owner = this.wolf.getOwner();

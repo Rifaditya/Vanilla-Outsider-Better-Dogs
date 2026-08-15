@@ -34,6 +34,9 @@ public class TamedWanderNearOwnerGoal extends WaterAvoidingRandomStrollGoal {
         if (!this.wolf.isTame() || this.wolf.isOrderedToSit() || this.wolf.isLeashed()) {
             return false;
         }
+        if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$isGuarding()) {
+            return false;
+        }
         LivingEntity owner = this.wolf.getOwner();
         if (owner == null) {
             return false;

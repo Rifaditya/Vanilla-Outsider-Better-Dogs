@@ -1,5 +1,14 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.41+1.20.1] - 2026-08-15
+### Added
+- 🛡️ **Guard Mode & Sentinel Patrol AI**:
+  - Sneak (Shift) + Right-clicking a tamed dog with an empty hand toggles anchored Guard Mode on/off at its current location (`WolfGuardHelper`).
+  - Added modern Action Bar HUD feedback displaying `"Guard Mode: Active (X, Y, Z)"` or `"Guard Mode: Inactive"` with shield FX (`ParticleTypes.ENCHANT`) and armor chime.
+  - Implemented personality-scaled patrol radii: Aggressive (12-block combat patrol), Pacifist (4-block perimeter + periodic Regeneration I aura), Standard (8-block territory patrol).
+  - Dogs actively patrol between waypoints within their assigned territory and automatically leash/sprint back if pushed or lured outside (`WolfGuardGoal`).
+  - Added automated unit test suite `GuardModePatrolTest`.
+
 ## [1.0.40+1.20.1] - 2026-08-15
 ### Added
 - 🍏 **Golden Apple Inbred Curing Interaction**:
