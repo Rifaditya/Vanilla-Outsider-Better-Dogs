@@ -58,9 +58,7 @@ public class WolfPersistentData {
             if (parent2 != null) {
                 tag.putUUID(NBT_KEY_PARENT_2, parent2);
             }
-            if (isInbred) {
-                tag.putBoolean(NBT_KEY_IS_INBRED, true);
-            }
+            tag.putBoolean(NBT_KEY_IS_INBRED, isInbred);
         }
     }
 
