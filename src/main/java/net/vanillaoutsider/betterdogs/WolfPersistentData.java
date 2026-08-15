@@ -62,9 +62,7 @@ public class WolfPersistentData {
             if (parent2 != null) {
                 output.putString(NBT_KEY_PARENT_2, parent2.toString());
             }
-            if (isInbred) {
-                output.putInt(NBT_KEY_IS_INBRED, 1);
-            }
+            output.putInt(NBT_KEY_IS_INBRED, isInbred ? 1 : 0);
         }
     }
 
@@ -193,9 +191,7 @@ public class WolfPersistentData {
             if (parent2 != null) {
                 tag.putString(NBT_KEY_PARENT_2, parent2.toString());
             }
-            if (isInbred) {
-                tag.putBoolean(NBT_KEY_IS_INBRED, true);
-            }
+            tag.putBoolean(NBT_KEY_IS_INBRED, isInbred);
         }
     }
 

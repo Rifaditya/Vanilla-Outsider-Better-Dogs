@@ -1,5 +1,14 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
+## [1.0.42+1.21.11] - 2026-08-15
+### Added
+- 🍏 **Golden Apple Inbred Curing Interaction**:
+  - Feeding a Golden Apple or Enchanted Golden Apple to an inbred runt dog completely cleanses inbred status (`WolfCureHelper`).
+  - Restores full adult size scale potential ($\ge 1.0x$ scale) and full personality combat attributes (removing runt penalties).
+  - Enchanted Golden Apples grant temporary Absorption and Regeneration status buffs.
+  - Added rewarding celebration FX: green sparkle burst (`ParticleTypes.HAPPY_VILLAGER`) and uplifting level-up chime (`SoundEvents.PLAYER_LEVELUP`).
+  - Added automated unit test suite `InbredCureTest`.
+
 ## [1.0.41+1.21.11] - 2026-08-15
 ### Added
 - 🧪 **Inbreeding Lineage Tracking & Runt Stat Penalties**:
