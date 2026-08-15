@@ -31,6 +31,14 @@ public abstract class WolfInteractMixin {
 
         ItemStack itemInHand = player.getItemInHand(hand);
 
+        if (net.vanillaoutsider.betterdogs.util.WolfCureHelper.canCure(wolf, itemInHand)) {
+            InteractionResult result = net.vanillaoutsider.betterdogs.util.WolfCureHelper.tryCureInbredWolf(wolf, player, hand);
+            if (result.consumesAction()) {
+                cir.setReturnValue(result);
+                return;
+            }
+        }
+
         if (WolfPettingHelper.canPet(wolf, player, hand, itemInHand)) {
             InteractionResult result = WolfPettingHelper.petWolf(wolf, player);
             cir.setReturnValue(result);
