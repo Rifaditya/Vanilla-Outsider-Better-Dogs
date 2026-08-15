@@ -54,8 +54,13 @@ public class WolfPersonalityStatHelper {
                 int speedPct = BetterDogsGameRules.getInt(level, BetterDogsGameRules.BD_NORMAL_SPEED_PCT, 0);
                 targetHealth = Math.max(10.0D, BASE_WOLF_HEALTH + healthOffset);
                 targetDamage = Math.max(1.0D, BASE_WOLF_DAMAGE * (1.0D + (dmgPct / 100.0D)));
-                targetSpeed = Math.max(0.1D, BASE_WOLF_SPEED * (1.0D + (speedPct / 100.0D)));
             }
+        }
+
+        if (wolf instanceof net.vanillaoutsider.betterdogs.WolfExtensions ext && ext.betterdogs$isInbred()) {
+            targetHealth = Math.max(10.0D, targetHealth * 0.75D);
+            targetDamage = Math.max(1.0D, targetDamage * 0.75D);
+            targetSpeed = Math.max(0.1D, targetSpeed * 0.85D);
         }
 
         AttributeInstance healthAttr = wolf.getAttribute(Attributes.MAX_HEALTH);
