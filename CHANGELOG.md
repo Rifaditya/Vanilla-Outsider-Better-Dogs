@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.1)
 
+## [1.0.53+1.21.1] - 2026-08-16
+### Added
+- 🐺 **Desperate Low-Health Wild Wolf Hunting (`HuntWhenHurtGoal.java`, `bd_wild_hunt_health_threshold`)**:
+  - Wild wolves no longer indiscriminately massacre livestock at 100% full health.
+  - Injured wild wolves with health falling below `bd_wild_hunt_health_threshold` (default `50%`) enter desperate hunting mode, targeting small prey (Sheep, Rabbits, Chickens, Foxes) within 16 blocks.
+  - Slaying prey in low-health hunting mode directly grants `4.0 HP` (2 hearts) sustenance healing to simulate feasting on the kill.
+- Added automated test suite `WildHuntTest`.
+
 ## [1.0.52+1.21.1] - 2026-08-16
 ### Added
 - 💥 **Aggressive Puppy Retaliation & Bite Back AI (`BabyBiteBackGoal.java`, `bd_baby_retaliate_percent`)**:
