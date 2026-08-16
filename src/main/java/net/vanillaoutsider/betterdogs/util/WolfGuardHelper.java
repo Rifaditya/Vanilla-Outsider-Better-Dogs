@@ -62,15 +62,17 @@ public class WolfGuardHelper {
         if (newGuarding) {
             BlockPos guardPos = wolf.blockPosition();
             ext.betterdogs$setGuardPos(guardPos);
-            player.displayClientMessage(
-                Component.literal("§6Guard Mode: §aActive §7(" + guardPos.getX() + ", " + guardPos.getY() + ", " + guardPos.getZ() + ")"),
-                true
+            WolfFeedbackHelper.sendFeedback(
+                player,
+                level,
+                Component.literal("§6Guard Mode: §aActive §7(" + guardPos.getX() + ", " + guardPos.getY() + ", " + guardPos.getZ() + ")")
             );
         } else {
             ext.betterdogs$setGuardPos(null);
-            player.displayClientMessage(
-                Component.literal("§6Guard Mode: §7Inactive"),
-                true
+            WolfFeedbackHelper.sendFeedback(
+                player,
+                level,
+                Component.literal("§6Guard Mode: §7Inactive")
             );
         }
 

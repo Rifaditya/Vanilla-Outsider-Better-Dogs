@@ -1,8 +1,14 @@
-﻿{
+{
     "gamerule.category.betterdogs":  "Better Dogs",
     "gamerule.category.betterdogs:betterdogs":  "Better Dogs",
     "gamerule.category.vanilla-outsider-better-dogs.better_dogs":  "Vanilla Outsider: Better Dogs",
     "gamerule.category.vanilla-outsider-better-dogs:better_dogs":  "Better Dogs",
+    "gamerule.bd_actionbar_feedback": "Actionbar Feedback & Subtitles",
+    "gamerule.bd_actionbar_feedback.description": "When enabled, displays actionbar subtitle messages for dog taming, adoption, gifts, and guard mode status. (Default: false)",
+    "gamerule.betterdogs.bd_actionbar_feedback": "Actionbar Feedback & Subtitles",
+    "gamerule.betterdogs.bd_actionbar_feedback.description": "When enabled, displays actionbar subtitle messages for dog taming, adoption, gifts, and guard mode status. (Default: false)",
+    "gamerule.vanilla-outsider-better-dogs.bd_actionbar_feedback": "Actionbar Feedback & Subtitles",
+    "gamerule.vanilla-outsider-better-dogs.bd_actionbar_feedback.description": "When enabled, displays actionbar subtitle messages for dog taming, adoption, gifts, and guard mode status. (Default: false)",
     "betterdogs.jade.inbred":  "Inbred",
     "config.jade.plugin_vanilla-outsider-better-dogs.inbred_status":  "Show Inbred Status",
     "config.jade.plugin_vanilla-outsider-better-dogs.wolf_info":  "Show Wolf Info",

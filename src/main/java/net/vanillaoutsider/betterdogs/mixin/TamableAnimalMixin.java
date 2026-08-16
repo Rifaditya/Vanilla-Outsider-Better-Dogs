@@ -30,7 +30,7 @@ public abstract class TamableAnimalMixin {
                         case NORMAL -> "§e";
                     };
                     String message = String.format("%sTamed a %s Wolf!", colorCode, personality.name());
-                    player.displayClientMessage(Component.literal(message), true);
+                    net.vanillaoutsider.betterdogs.util.WolfFeedbackHelper.sendFeedback(player, wolf.getCommandSenderWorld(), Component.literal(message));
                 }
             }
         }
