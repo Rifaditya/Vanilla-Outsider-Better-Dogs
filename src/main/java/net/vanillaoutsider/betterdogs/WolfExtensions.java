@@ -60,4 +60,7 @@ public interface WolfExtensions {
 
     boolean betterdogs$isUpForAdoption();
     void betterdogs$setUpForAdoption(boolean adoption);
+
+    long betterdogs$getLastGiftDay();
+    void betterdogs$setLastGiftDay(long day);
 }

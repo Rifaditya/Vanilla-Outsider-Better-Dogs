@@ -82,6 +82,19 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     @Unique
     private boolean betterdogs$isUpForAdoption = false;
 
+    @Unique
+    private long betterdogs$lastGiftDay = -1L;
+
+    @Override
+    public long betterdogs$getLastGiftDay() {
+        return this.betterdogs$lastGiftDay;
+    }
+
+    @Override
+    public void betterdogs$setLastGiftDay(long day) {
+        this.betterdogs$lastGiftDay = day;
+    }
+
     @Override
     public boolean betterdogs$isUpForAdoption() {
         return this.betterdogs$isUpForAdoption;
@@ -286,6 +299,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.goalSelector.addGoal(2, new net.vanillaoutsider.betterdogs.ai.WolfHornGoal(wolf));
         this.goalSelector.addGoal(3, new WolfFlankAttackGoal(wolf, 1.25));
         this.goalSelector.addGoal(4, new EatGroundFoodGoal(wolf, 1.25));
+        this.goalSelector.addGoal(4, new net.vanillaoutsider.betterdogs.ai.WolfGiftGoal(wolf));
         this.goalSelector.addGoal(5, new net.vanillaoutsider.betterdogs.ai.WolfGuardGoal(wolf));
         this.goalSelector.addGoal(6, new PersonalityFollowOwnerGoal(wolf, 1.25, 2.0f, 50.0f, true));
         this.goalSelector.addGoal(7, new WolfBegGoal(wolf, 5.0F));
@@ -297,7 +311,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
 
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"), require = 0)
     private void betterdogs$writeNbt(CompoundTag tag, CallbackInfo ci) {
-        WolfPersistentData.writeToNbt(tag, betterdogs$getPersonality(), betterdogs$getSocialScale(), betterdogs$getDnaSeed(), betterdogs$favoriteTreat, betterdogs$soothedTime, betterdogs$nemesisEntityType, betterdogs$nemesisExpiryTime, betterdogs$parentUUID1, betterdogs$parentUUID2, betterdogs$isInbred, betterdogs$isGuarding, betterdogs$guardPos, betterdogs$isUpForAdoption);
+        WolfPersistentData.writeToNbt(tag, betterdogs$getPersonality(), betterdogs$getSocialScale(), betterdogs$getDnaSeed(), betterdogs$favoriteTreat, betterdogs$soothedTime, betterdogs$nemesisEntityType, betterdogs$nemesisExpiryTime, betterdogs$parentUUID1, betterdogs$parentUUID2, betterdogs$isInbred, betterdogs$isGuarding, betterdogs$guardPos, betterdogs$isUpForAdoption, betterdogs$lastGiftDay);
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"), require = 0)
@@ -316,6 +330,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.betterdogs$isGuarding = WolfPersistentData.readIsGuardingFromNbt(tag);
         this.betterdogs$guardPos = WolfPersistentData.readGuardPosFromNbt(tag);
         this.betterdogs$isUpForAdoption = WolfPersistentData.readIsUpForAdoptionFromNbt(tag);
+        this.betterdogs$lastGiftDay = WolfPersistentData.readLastGiftDayFromNbt(tag);
         net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper.applyPersonalityStats(wolf, this.betterdogs$personality);
     }
 
