@@ -14,5 +14,7 @@ public class BetterDogs {
         LOGGER.info("[Better Dogs 1.21.1] Initializing Core Personality & DNA System...");
         BetterDogsGameRules.init();
         LOGGER.info("[Better Dogs 1.21.1] Registered 80+ GameRules.");
+        net.vanillaoutsider.betterdogs.world.BetterDogsSpawning.registerSpawns();
+        LOGGER.info("[Better Dogs 1.21.1] Registered expanded biome spawns.");
     }
 }
