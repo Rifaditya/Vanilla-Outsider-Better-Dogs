@@ -446,10 +446,71 @@ public class WolfPersistentData {
         return 0;
     }
 
+    public static final String NBT_KEY_LEADER_UUID = "BetterDogsLeaderUUID";
+    public static final String NBT_KEY_IS_PACK_LEADER = "BetterDogsIsPackLeader";
+
     public static String readBloodFeudTargetFromNbt(CompoundTag tag) {
         if (tag != null && tag.contains(NBT_KEY_BLOOD_FEUD_TARGET)) {
             return tag.getString(NBT_KEY_BLOOD_FEUD_TARGET).orElse("");
         }
         return "";
+    }
+
+    public static UUID readLeaderUUIDFromSaveData(ValueInput input) {
+        if (input != null) {
+            var opt = input.getString(NBT_KEY_LEADER_UUID);
+            if (opt.isPresent() && !opt.get().isEmpty()) {
+                try {
+                    return UUID.fromString(opt.get());
+                } catch (Exception ignored) {}
+            }
+        }
+        return null;
+    }
+
+    public static boolean readIsPackLeaderFromSaveData(ValueInput input) {
+        if (input != null) {
+            return input.getInt(NBT_KEY_IS_PACK_LEADER).map(v -> v != 0).orElse(false);
+        }
+        return false;
+    }
+
+    public static void writeLeaderDataToSaveData(ValueOutput output, UUID leaderUuid, boolean isPackLeader) {
+        if (output != null) {
+            if (leaderUuid != null) {
+                output.putString(NBT_KEY_LEADER_UUID, leaderUuid.toString());
+            }
+            output.putInt(NBT_KEY_IS_PACK_LEADER, isPackLeader ? 1 : 0);
+        }
+    }
+
+    public static UUID readLeaderUUIDFromNbt(CompoundTag tag) {
+        if (tag != null && tag.contains(NBT_KEY_LEADER_UUID)) {
+            var opt = tag.getString(NBT_KEY_LEADER_UUID);
+            if (opt.isPresent() && !opt.get().isEmpty()) {
+                try {
+                    return UUID.fromString(opt.get());
+                } catch (Exception ignored) {}
+            }
+        }
+        return null;
+    }
+
+    public static boolean readIsPackLeaderFromNbt(CompoundTag tag) {
+        if (tag != null && tag.contains(NBT_KEY_IS_PACK_LEADER)) {
+            return tag.getBoolean(NBT_KEY_IS_PACK_LEADER).orElse(false);
+        }
+        return false;
+    }
+
+    public static void writeLeaderDataToNbt(CompoundTag tag, UUID leaderUuid, boolean isPackLeader) {
+        if (tag != null) {
+            if (leaderUuid != null) {
+                tag.putString(NBT_KEY_LEADER_UUID, leaderUuid.toString());
+            } else {
+                tag.remove(NBT_KEY_LEADER_UUID);
+            }
+            tag.putBoolean(NBT_KEY_IS_PACK_LEADER, isPackLeader);
+        }
     }
 }
