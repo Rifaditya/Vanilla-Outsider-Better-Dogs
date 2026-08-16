@@ -83,7 +83,7 @@ public class WolfAdoptionHelper {
                 ext.betterdogs$setUpForAdoption(false);
             }
             if (!level.isClientSide()) {
-                player.displayClientMessage(Component.literal("§6Adoption: §cListing Cancelled"), true);
+                WolfFeedbackHelper.sendFeedback(player, level, Component.literal("§6Adoption: §cListing Cancelled"));
                 level.playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), SoundEvents.VILLAGER_NO, SoundSource.NEUTRAL, 0.8f, 1.0f);
             }
             return InteractionResult.SUCCESS;
@@ -98,7 +98,7 @@ public class WolfAdoptionHelper {
                 held.shrink(1);
             }
             if (!level.isClientSide()) {
-                player.displayClientMessage(Component.literal("§6Adoption: §aDog is now listed for adoption!"), true);
+                WolfFeedbackHelper.sendFeedback(player, level, Component.literal("§6Adoption: §aDog is now listed for adoption!"));
                 level.playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), SoundEvents.BOOK_PAGE_TURN, SoundSource.PLAYERS, 1.0f, 1.0f);
                 if (level instanceof ServerLevel serverLevel) {
                     serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, wolf.getX(), wolf.getY() + 0.5, wolf.getZ(), 10, 0.3, 0.3, 0.3, 0.05);
@@ -116,7 +116,7 @@ public class WolfAdoptionHelper {
 
             if (!level.isClientSide()) {
                 String dogName = wolf.hasCustomName() ? wolf.getCustomName().getString() : "Dog";
-                player.displayClientMessage(Component.literal("§6Adoption: §aYou have adopted " + dogName + "!"), true);
+                WolfFeedbackHelper.sendFeedback(player, level, Component.literal("§6Adoption: §aYou have adopted " + dogName + "!"));
                 level.playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.8f, 1.2f);
                 level.playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), SoundEvents.WOLF_SHAKE, SoundSource.NEUTRAL, 1.0f, 1.2f);
                 if (level instanceof ServerLevel serverLevel) {

@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
+## [1.0.49+1.21.11] - 2026-08-16
+### Added
+- 💬 **Configurable Subtitle & Actionbar Feedback Options (`WolfFeedbackHelper.java`, `BetterDogsGameRules.java`)**:
+  - Added namespaced boolean GameRule `bd_actionbar_feedback` (default: `false`) to give players and server hosts full control over companion HUD notifications.
+  - When disabled (`false`), HUD/actionbar subtitle text is kept clean and unobtrusive while preserving all natural in-world particle bursts and authentic sound effects.
+  - Gated text notifications include: Taming Personality Announcements, Adoption Listing/Cancellation/Adoption alerts, Guard Mode Coordinate Status, and Morning Gift Arrivals.
+  - Added automated unit test suite `SubtitleFeedbackTest`.
+
 ## [1.0.48+1.21.11] - 2026-08-16
 ### Added
 - 🐺 **Wild Pack Dynamics & Territorial Chorus Howling (`WolfHowlHelper.java`, `GroupHowlGoal.java`, `WildWolfTerritorialGoal.java`)**:

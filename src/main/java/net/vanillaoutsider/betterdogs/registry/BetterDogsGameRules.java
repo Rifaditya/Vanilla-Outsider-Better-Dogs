@@ -22,6 +22,7 @@ public class BetterDogsGameRules {
 
     // General & Environmental Safety
     public static GameRule<Boolean> BD_STORM_ANXIETY;
+    public static GameRule<Boolean> BD_ACTIONBAR_FEEDBACK;
     public static GameRule<Boolean> BD_CREEPER_AWARENESS;
     public static GameRule<Boolean> BD_CREEPER_EVASION_ENABLED;
     public static GameRule<Boolean> BD_CLIFF_SAFETY;
@@ -126,6 +127,7 @@ public class BetterDogsGameRules {
     public static void init() {
         // General
         BD_STORM_ANXIETY = registerBoolean("vanilla-outsider-better-dogs:bd_storm_anxiety", BETTER_DOGS, true);
+        BD_ACTIONBAR_FEEDBACK = registerBoolean("vanilla-outsider-better-dogs:bd_actionbar_feedback", BETTER_DOGS, false);
         BD_CREEPER_AWARENESS = registerBoolean("vanilla-outsider-better-dogs:bd_creeper_awareness", BETTER_DOGS, true);
         BD_CREEPER_EVASION_ENABLED = registerBoolean("vanilla-outsider-better-dogs:bd_creeper_evasion_enabled", BETTER_DOGS, true);
         BD_CLIFF_SAFETY = registerBoolean("vanilla-outsider-better-dogs:bd_cliff_safety", BETTER_DOGS, true);

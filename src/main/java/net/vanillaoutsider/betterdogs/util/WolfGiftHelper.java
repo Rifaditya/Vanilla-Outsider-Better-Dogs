@@ -123,7 +123,7 @@ public class WolfGiftHelper {
         itemEntity.setDefaultPickUpDelay();
         level.addFreshEntity(itemEntity);
 
-        owner.displayClientMessage(Component.literal("§6Your dog brought you a morning gift!"), true);
+        WolfFeedbackHelper.sendFeedback(owner, level, Component.literal("§6Your dog brought you a morning gift!"));
         level.playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), SoundEvents.WOLF_SHAKE, SoundSource.NEUTRAL, 1.0f, 1.2f);
 
         if (level instanceof ServerLevel serverLevel) {
