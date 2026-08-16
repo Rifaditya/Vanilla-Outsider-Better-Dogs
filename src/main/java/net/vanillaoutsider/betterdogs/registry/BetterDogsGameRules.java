@@ -83,9 +83,10 @@ public class BetterDogsGameRules {
     public static GameRule<Integer> BD_WOLF_MIN_SCALE_PERCENT;
     public static GameRule<Integer> BD_WOLF_MAX_SCALE_PERCENT;
 
-    // Correction & Retaliation
+    // Correction & Retaliation & Hunting
     public static GameRule<Integer> BD_BLOOD_FEUD_PERCENT;
     public static GameRule<Integer> BD_BABY_RETALIATE_PERCENT;
+    public static GameRule<Integer> BD_WILD_HUNT_HEALTH_THRESHOLD;
 
     // Territorial Matrix
     public static GameRule<Boolean> BD_TERRITORIAL_RIVALRY;
@@ -191,9 +192,10 @@ public class BetterDogsGameRules {
         BD_WOLF_MIN_SCALE_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_wolf_min_scale_percent", BETTER_DOGS, 70);
         BD_WOLF_MAX_SCALE_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_wolf_max_scale_percent", BETTER_DOGS, 145);
 
-        // Correction
+        // Correction & Hunting
         BD_BLOOD_FEUD_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_blood_feud_percent", BETTER_DOGS, 5);
         BD_BABY_RETALIATE_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_baby_retaliate_percent", BETTER_DOGS, 50);
+        BD_WILD_HUNT_HEALTH_THRESHOLD = registerInteger("vanilla-outsider-better-dogs:bd_wild_hunt_health_threshold", BETTER_DOGS, 50);
 
         // Territorial
         BD_TERRITORIAL_RIVALRY = registerBoolean("vanilla-outsider-better-dogs:bd_territorial_rivalry", BETTER_DOGS, true);
