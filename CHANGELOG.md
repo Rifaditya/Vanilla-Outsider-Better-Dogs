@@ -1,5 +1,14 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.1)
 
+## [1.0.56+1.21.1] - 2026-08-16
+### Added
+- ⚔️ **Wild Wolf Pack War & Territorial Rivalry Matrix (`WildWolfPackWarGoal.java`, `WildWolfFollowLeaderGoal.java`, `WildWolfTerritorialGoal.java`)**:
+  - Implemented dynamic wild pack alpha election and follower synchronization (`WildWolfFollowLeaderGoal`).
+  - Added territorial howling standoffs between rival wild packs evaluating configured GameRule matrix chances (`bd_terr_*_war`, `bd_terr_*_merge`).
+  - During pack wars, followers fight enemy pack followers within 16 blocks while alphas duel 1v1 (`WildWolfPackWarGoal`).
+  - Upon alpha defeat/yield (health < 20%), remaining pack members submit and merge under the victorious alpha (`WolfTerritorialRivalryHelper`).
+- Added automated test suite `PackWarTest`.
+
 ## [1.0.55+1.21.1] - 2026-08-16
 ### Added
 - 🤺 **Play Fighting & Social Sparring AI (`SmallFightGoal.java`)**:

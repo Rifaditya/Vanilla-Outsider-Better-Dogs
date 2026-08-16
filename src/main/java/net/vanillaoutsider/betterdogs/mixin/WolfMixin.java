@@ -154,6 +154,31 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.betterdogs$playFightCooldown = Math.max(0, ticks);
     }
 
+    @Unique
+    private java.util.UUID betterdogs$leaderUuid = null;
+    @Unique
+    private boolean betterdogs$isPackLeader = false;
+
+    @Override
+    public java.util.UUID betterdogs$getLeaderUUID() {
+        return this.betterdogs$leaderUuid;
+    }
+
+    @Override
+    public void betterdogs$setLeaderUUID(java.util.UUID uuid) {
+        this.betterdogs$leaderUuid = uuid;
+    }
+
+    @Override
+    public boolean betterdogs$isPackLeader() {
+        return this.betterdogs$isPackLeader;
+    }
+
+    @Override
+    public void betterdogs$setPackLeader(boolean isLeader) {
+        this.betterdogs$isPackLeader = isLeader;
+    }
+
     @Override
     public int betterdogs$getFeedCount() {
         return this.betterdogs$feedCount;
@@ -467,8 +492,10 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.goalSelector.addGoal(4, new net.vanillaoutsider.betterdogs.ai.BabyCuriosityGoal(wolf, 0.9));
         this.goalSelector.addGoal(4, new net.vanillaoutsider.betterdogs.ai.BabyBiteBackGoal(wolf, 1.25));
         this.goalSelector.addGoal(4, new net.vanillaoutsider.betterdogs.ai.SmallFightGoal(wolf));
+        this.goalSelector.addGoal(4, new net.vanillaoutsider.betterdogs.ai.WildWolfPackWarGoal(wolf));
         this.goalSelector.addGoal(5, new net.vanillaoutsider.betterdogs.ai.WolfGuardGoal(wolf));
         this.goalSelector.addGoal(5, new net.vanillaoutsider.betterdogs.ai.WildWolfTerritorialGoal(wolf));
+        this.goalSelector.addGoal(5, new net.vanillaoutsider.betterdogs.ai.WildWolfFollowLeaderGoal(wolf));
         this.goalSelector.addGoal(6, new PersonalityFollowOwnerGoal(wolf, 1.25, 2.0f, 50.0f));
         this.goalSelector.addGoal(6, new net.vanillaoutsider.betterdogs.ai.GroupHowlGoal(wolf));
         this.goalSelector.addGoal(7, new WolfBegGoal(wolf, 5.0F));
@@ -491,6 +518,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"), require = 0)
     private void betterdogs$writeNbt(CompoundTag tag, CallbackInfo ci) {
         WolfPersistentData.writeToNbt(tag, betterdogs$getPersonality(), betterdogs$getSocialScale(), betterdogs$getDnaSeed(), betterdogs$favoriteTreat, betterdogs$soothedTime, betterdogs$nemesisEntityType, betterdogs$nemesisExpiryTime, betterdogs$parentUUID1, betterdogs$parentUUID2, betterdogs$isInbred, betterdogs$isGuarding, betterdogs$guardPos, betterdogs$isUpForAdoption, betterdogs$lastGiftDay, betterdogs$feedCount, betterdogs$getBloodFeudTarget());
+        WolfPersistentData.writeLeaderDataToNbt(tag, this.betterdogs$leaderUuid, this.betterdogs$isPackLeader);
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"), require = 0)
@@ -512,6 +540,8 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.betterdogs$lastGiftDay = WolfPersistentData.readLastGiftDayFromNbt(tag);
         this.betterdogs$feedCount = WolfPersistentData.readFeedCountFromNbt(tag);
         this.betterdogs$bloodFeudTarget = WolfPersistentData.readBloodFeudTargetFromNbt(tag);
+        this.betterdogs$leaderUuid = WolfPersistentData.readLeaderUUIDFromNbt(tag);
+        this.betterdogs$isPackLeader = WolfPersistentData.readIsPackLeaderFromNbt(tag);
         net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper.applyPersonalityStats(wolf, this.betterdogs$personality);
     }
 
