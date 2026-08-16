@@ -72,4 +72,8 @@ public interface WolfExtensions {
     net.minecraft.world.entity.LivingEntity betterdogs$getRetaliationTarget();
     void betterdogs$setRetaliationTarget(net.minecraft.world.entity.LivingEntity target, int ticks);
     int betterdogs$getRetaliationTicks();
+
+    String betterdogs$getBloodFeudTarget();
+    void betterdogs$setBloodFeudTarget(String targetUuid);
+    boolean betterdogs$hasBloodFeud();
 }

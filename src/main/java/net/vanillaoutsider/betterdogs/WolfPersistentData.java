@@ -23,6 +23,7 @@ public class WolfPersistentData {
     public static final String NBT_KEY_IS_UP_FOR_ADOPTION = "BetterDogsIsUpForAdoption";
     public static final String NBT_KEY_LAST_GIFT_DAY = "BetterDogsLastGiftDay";
     public static final String NBT_KEY_FEED_COUNT = "BetterDogsFeedCount";
+    public static final String NBT_KEY_BLOOD_FEUD_TARGET = "BetterDogsBloodFeudTarget";
 
     public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed) {
         writeToNbt(tag, personality, socialScale, dnaSeed, "", 0L, "", 0L, null, null, false, false, null, false, -1L);
@@ -57,6 +58,10 @@ public class WolfPersistentData {
     }
 
     public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry, UUID parent1, UUID parent2, boolean isInbred, boolean isGuarding, net.minecraft.core.BlockPos guardPos, boolean isUpForAdoption, long lastGiftDay, int feedCount) {
+        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, nemesisType, nemesisExpiry, parent1, parent2, isInbred, isGuarding, guardPos, isUpForAdoption, lastGiftDay, feedCount, "");
+    }
+
+    public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry, UUID parent1, UUID parent2, boolean isInbred, boolean isGuarding, net.minecraft.core.BlockPos guardPos, boolean isUpForAdoption, long lastGiftDay, int feedCount, String bloodFeudTarget) {
         if (tag != null) {
             if (personality != null) {
                 tag.putString(NBT_KEY_PERSONALITY, personality.getId());
@@ -94,6 +99,9 @@ public class WolfPersistentData {
             }
             if (feedCount > 0) {
                 tag.putInt(NBT_KEY_FEED_COUNT, feedCount);
+            }
+            if (bloodFeudTarget != null && !bloodFeudTarget.isEmpty()) {
+                tag.putString(NBT_KEY_BLOOD_FEUD_TARGET, bloodFeudTarget);
             }
         }
     }
@@ -211,5 +219,12 @@ public class WolfPersistentData {
             return tag.getInt(NBT_KEY_FEED_COUNT);
         }
         return 0;
+    }
+
+    public static String readBloodFeudTargetFromNbt(CompoundTag tag) {
+        if (tag != null && tag.contains(NBT_KEY_BLOOD_FEUD_TARGET)) {
+            return tag.getString(NBT_KEY_BLOOD_FEUD_TARGET);
+        }
+        return "";
     }
 }

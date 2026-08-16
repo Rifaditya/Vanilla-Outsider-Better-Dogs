@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.1)
 
+## [1.0.54+1.21.1] - 2026-08-16
+### Added
+- 🩸 **Entity-to-Entity Blood Feud AI (`BloodFeudGoal.java`, `bd_blood_feud_percent`)**:
+  - Implemented persistent wolf-to-wolf vendettas by entity UUID.
+  - Wolves form lasting blood feuds upon severe disciplinary escalation (`bd_blood_feud_percent`, default 5%) or when a packmate is harmed.
+  - Feuding wolves hunt down and duel their nemesis within 20 blocks until one perishes, bypassing standard friendly fire between rivals while respecting player sit commands.
+- Added automated test suite `BloodFeudTest`.
+
 ## [1.0.53+1.21.1] - 2026-08-16
 ### Added
 - 🐺 **Desperate Low-Health Wild Wolf Hunting (`HuntWhenHurtGoal.java`, `bd_wild_hunt_health_threshold`)**:
