@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
+## [1.0.55+1.21.11] - 2026-08-16
+### Added
+- 💥 **Aggressive Puppy Retaliation & Bite Back AI (`BabyBiteBackGoal.java`, `bd_baby_retaliate_percent`)**:
+  - Aggressive puppies no longer purely whine submissively when disciplined or attacked; they now retaliate with snap bites and growls.
+  - Gated by `bd_baby_retaliate_percent` (default `50%`) upon adult discipline or incoming damage.
+  - Delivers a 1.0 HP (0.5 heart) feisty snap nip with attack swing animation and growl sound before resuming normal behavior.
+- Added automated test suite `BabyRetaliationTest`.
+
 ## [1.0.54+1.21.11] - 2026-08-16
 ### Added
 - 🥩 **Feeding-Gated Merits & Gift System (`WolfGiftGoal.java`, `WolfGiftHelper.java`, `WolfPersistentData.java`)**:

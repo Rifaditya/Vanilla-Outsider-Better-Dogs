@@ -71,4 +71,8 @@ public interface WolfExtensions {
 
     int betterdogs$getFeedCount();
     void betterdogs$setFeedCount(int count);
+
+    net.minecraft.world.entity.LivingEntity betterdogs$getRetaliationTarget();
+    void betterdogs$setRetaliationTarget(net.minecraft.world.entity.LivingEntity target, int ticks);
+    int betterdogs$getRetaliationTicks();
 }

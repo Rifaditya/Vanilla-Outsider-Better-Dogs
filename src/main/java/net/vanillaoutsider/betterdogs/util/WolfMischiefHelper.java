@@ -58,6 +58,27 @@ public class WolfMischiefHelper {
         }
 
         if (puppy instanceof WolfExtensions ext) {
+            if (ext.betterdogs$getPersonality() == net.vanillaoutsider.betterdogs.WolfPersonality.AGGRESSIVE) {
+                int retaliateChance = net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.getInt(
+                    level,
+                    net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_BABY_RETALIATE_PERCENT,
+                    50
+                );
+                if (puppy.getRandom().nextInt(100) < retaliateChance) {
+                    ext.betterdogs$setRetaliationTarget(adult, 100);
+                    ext.betterdogs$setCalmTicks(0);
+
+                    adult.getLookControl().setLookAt(puppy, 30.0F, 30.0F);
+                    level.playSound(null, adult.getX(), adult.getY(), adult.getZ(), SoundEvents.WOLF_SHAKE, SoundSource.NEUTRAL, 0.8F, 0.8F);
+                    level.playSound(null, puppy.getX(), puppy.getY(), puppy.getZ(), SoundEvents.WOLF_SHAKE, SoundSource.NEUTRAL, 0.8F, 1.4F);
+
+                    if (level instanceof ServerLevel serverLevel) {
+                        serverLevel.sendParticles(ParticleTypes.ANGRY_VILLAGER, adult.getX(), adult.getY() + 0.5, adult.getZ(), 2, 0.1, 0.1, 0.1, 0.0);
+                        serverLevel.sendParticles(ParticleTypes.ANGRY_VILLAGER, puppy.getX(), puppy.getY() + 0.5, puppy.getZ(), 2, 0.1, 0.1, 0.1, 0.0);
+                    }
+                    return;
+                }
+            }
             ext.betterdogs$setCalmTicks(160);
         }
 
