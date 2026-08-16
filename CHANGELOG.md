@@ -1,5 +1,18 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
+## [1.0.45+1.21.11] - 2026-08-16
+### Added
+- 🎁 **Morning Gift Bringing AI (`WolfGiftHelper.java`, `WolfGiftGoal.java`)**:
+  - Healthy, full-health companion dogs sleeping near their owner wake up and deliver daily morning gifts upon the owner waking from bed.
+  - Implemented personality-themed foraging loot pools:
+    - **Aggressive**: Bone, Leather, Rotten Flesh, Rabbit Hide, Spider Eye, Arrow.
+    - **Pacifist**: Sweet Berries, Apple, Dandelion, Poppy, Honeycomb, Wheat Seeds.
+    - **Normal**: Stick, Feather, Flint, String, Clay Ball.
+    - **5% Rare Treasure Tier**: Gold Nugget, Emerald, Name Tag, Bone Meal.
+  - Companion approaches owner, drops item drop entity at player's feet, barks happily with green sparkle particles (`ParticleTypes.HAPPY_VILLAGER`), and displays Action Bar notice.
+  - Tracks `BetterDogsLastGiftDay` SaveData & NBT key ensuring exactly 1 gift delivery per in-game day.
+  - Added automated unit test suite `MorningGiftTest`.
+
 ## [1.0.44+1.21.11] - 2026-08-15
 ### Added
 - 📄 **Paper Adoption Ownership Transfer System**:

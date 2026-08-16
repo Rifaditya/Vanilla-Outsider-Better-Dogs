@@ -23,34 +23,39 @@ public class WolfPersistentData {
     public static final String NBT_KEY_GUARD_Y = "BetterDogsGuardY";
     public static final String NBT_KEY_GUARD_Z = "BetterDogsGuardZ";
     public static final String NBT_KEY_IS_UP_FOR_ADOPTION = "BetterDogsIsUpForAdoption";
+    public static final String NBT_KEY_LAST_GIFT_DAY = "BetterDogsLastGiftDay";
 
     // ========== Modern 1.21.11 Save Data APIs (ValueOutput / ValueInput) ==========
 
     public static void writeToSaveData(ValueOutput output, WolfPersonality personality, float socialScale, long dnaSeed) {
-        writeToSaveData(output, personality, socialScale, dnaSeed, "", 0L, "", 0L, null, null, false, false, null, false);
+        writeToSaveData(output, personality, socialScale, dnaSeed, "", 0L, "", 0L, null, null, false, false, null, false, -1L);
     }
 
     public static void writeToSaveData(ValueOutput output, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat) {
-        writeToSaveData(output, personality, socialScale, dnaSeed, favoriteTreat, 0L, "", 0L, null, null, false, false, null, false);
+        writeToSaveData(output, personality, socialScale, dnaSeed, favoriteTreat, 0L, "", 0L, null, null, false, false, null, false, -1L);
     }
 
     public static void writeToSaveData(ValueOutput output, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime) {
-        writeToSaveData(output, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, "", 0L, null, null, false, false, null, false);
+        writeToSaveData(output, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, "", 0L, null, null, false, false, null, false, -1L);
     }
 
     public static void writeToSaveData(ValueOutput output, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry) {
-        writeToSaveData(output, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, nemesisType, nemesisExpiry, null, null, false, false, null, false);
+        writeToSaveData(output, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, nemesisType, nemesisExpiry, null, null, false, false, null, false, -1L);
     }
 
     public static void writeToSaveData(ValueOutput output, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry, UUID parent1, UUID parent2, boolean isInbred) {
-        writeToSaveData(output, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, nemesisType, nemesisExpiry, parent1, parent2, isInbred, false, null, false);
+        writeToSaveData(output, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, nemesisType, nemesisExpiry, parent1, parent2, isInbred, false, null, false, -1L);
     }
 
     public static void writeToSaveData(ValueOutput output, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry, UUID parent1, UUID parent2, boolean isInbred, boolean isGuarding, net.minecraft.core.BlockPos guardPos) {
-        writeToSaveData(output, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, nemesisType, nemesisExpiry, parent1, parent2, isInbred, isGuarding, guardPos, false);
+        writeToSaveData(output, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, nemesisType, nemesisExpiry, parent1, parent2, isInbred, isGuarding, guardPos, false, -1L);
     }
 
     public static void writeToSaveData(ValueOutput output, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry, UUID parent1, UUID parent2, boolean isInbred, boolean isGuarding, net.minecraft.core.BlockPos guardPos, boolean isUpForAdoption) {
+        writeToSaveData(output, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, nemesisType, nemesisExpiry, parent1, parent2, isInbred, isGuarding, guardPos, isUpForAdoption, -1L);
+    }
+
+    public static void writeToSaveData(ValueOutput output, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry, UUID parent1, UUID parent2, boolean isInbred, boolean isGuarding, net.minecraft.core.BlockPos guardPos, boolean isUpForAdoption, long lastGiftDay) {
         if (output != null) {
             if (personality != null) {
                 output.putString(NBT_KEY_PERSONALITY, personality.getId());
@@ -81,6 +86,10 @@ public class WolfPersistentData {
                 output.putInt(NBT_KEY_GUARD_X, guardPos.getX());
                 output.putInt(NBT_KEY_GUARD_Y, guardPos.getY());
                 output.putInt(NBT_KEY_GUARD_Z, guardPos.getZ());
+            }
+            output.putInt(NBT_KEY_IS_UP_FOR_ADOPTION, isUpForAdoption ? 1 : 0);
+            if (lastGiftDay >= 0L) {
+                output.putLong(NBT_KEY_LAST_GIFT_DAY, lastGiftDay);
             }
         }
     }
@@ -181,6 +190,13 @@ public class WolfPersistentData {
         return false;
     }
 
+    public static long readLastGiftDayFromSaveData(ValueInput input) {
+        if (input != null) {
+            return input.getLong(NBT_KEY_LAST_GIFT_DAY).orElse(-1L);
+        }
+        return -1L;
+    }
+
     public static net.minecraft.core.BlockPos readGuardPosFromSaveData(ValueInput input) {
         if (input != null) {
             var optX = input.getInt(NBT_KEY_GUARD_X);
@@ -216,10 +232,14 @@ public class WolfPersistentData {
     }
 
     public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry, UUID parent1, UUID parent2, boolean isInbred, boolean isGuarding, net.minecraft.core.BlockPos guardPos) {
-        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, nemesisType, nemesisExpiry, parent1, parent2, isInbred, isGuarding, guardPos, false);
+        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, nemesisType, nemesisExpiry, parent1, parent2, isInbred, isGuarding, guardPos, false, -1L);
     }
 
     public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry, UUID parent1, UUID parent2, boolean isInbred, boolean isGuarding, net.minecraft.core.BlockPos guardPos, boolean isUpForAdoption) {
+        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, nemesisType, nemesisExpiry, parent1, parent2, isInbred, isGuarding, guardPos, isUpForAdoption, -1L);
+    }
+
+    public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry, UUID parent1, UUID parent2, boolean isInbred, boolean isGuarding, net.minecraft.core.BlockPos guardPos, boolean isUpForAdoption, long lastGiftDay) {
         if (tag != null) {
             if (personality != null) {
                 tag.putString(NBT_KEY_PERSONALITY, personality.getId());
@@ -252,6 +272,9 @@ public class WolfPersistentData {
                 tag.putInt(NBT_KEY_GUARD_Z, guardPos.getZ());
             }
             tag.putBoolean(NBT_KEY_IS_UP_FOR_ADOPTION, isUpForAdoption);
+            if (lastGiftDay >= 0L) {
+                tag.putLong(NBT_KEY_LAST_GIFT_DAY, lastGiftDay);
+            }
         }
     }
 
@@ -363,5 +386,12 @@ public class WolfPersistentData {
             return tag.getBoolean(NBT_KEY_IS_UP_FOR_ADOPTION).orElse(false);
         }
         return false;
+    }
+
+    public static long readLastGiftDayFromNbt(CompoundTag tag) {
+        if (tag != null && tag.contains(NBT_KEY_LAST_GIFT_DAY)) {
+            return tag.getLong(NBT_KEY_LAST_GIFT_DAY).orElse(-1L);
+        }
+        return -1L;
     }
 }
