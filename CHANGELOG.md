@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
+## [1.0.62+1.21.11] - 2026-08-16
+### Added
+- 🌍 **Expanded Biome Spawning & Dynamic Climate Variants (`BetterDogsSpawning.java`, `WolfCoatVariantHelper.java`)**:
+  - Registered wild wolf spawning across expanded biomes (Plains, Savanna, Savanna Plateau, Windswept Savanna, Badlands, Wooded Badlands, Eroded Badlands, Meadow) using Fabric Biome API (`BiomeModifications.addSpawn`).
+  - Integrated dynamic climate coat variant resolution (`WolfCoatVariantHelper`): Savanna packs spawn as Spotted, Badlands packs as Striped/Rusty, Plains/Meadow as Woods/Pale, with a 10% stray diversity roll.
+  - Implemented dynamic climate-personality trait biasing and immediate spawn-time wild pack cluster synchronization, electing dominant Alpha leaders and linking pack follower UUIDs.
+- Added automated test suite `WolfSpawnTest`.
+
 ## [1.0.61+1.21.11] - 2026-08-16
 ### Fixed
 - 🚨 **Resolved Startup Crash (Superclass Mixin Target Mismatch)**:

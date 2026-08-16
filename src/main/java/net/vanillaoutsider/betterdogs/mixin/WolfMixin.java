@@ -317,7 +317,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     public WolfPersonality betterdogs$getPersonality() {
         if (this.betterdogs$personality == null) {
             Wolf wolf = (Wolf) (Object) this;
-            this.betterdogs$personality = WolfPersonality.random(wolf.getRandom());
+            this.betterdogs$personality = net.vanillaoutsider.betterdogs.util.WolfCoatVariantHelper.calculateSpawnPersonality(wolf.level(), wolf.blockPosition(), wolf.getRandom());
         }
         return this.betterdogs$personality;
     }
@@ -469,9 +469,18 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         net.vanillaoutsider.betterdogs.util.WolfNemesisHelper.recordNemesis((Wolf) (Object) this, source);
     }
 
+    @Override
+    public int getMaxSpawnClusterSize() {
+        return net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.getInt(this.level(), net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_WOLF_SPAWN_GROUP_MAX, 8);
+    }
+
     @Inject(method = "tick", at = @At("TAIL"))
     private void betterdogs$onTick(CallbackInfo ci) {
         if (!this.level().isClientSide()) {
+            Wolf wolf = (Wolf) (Object) this;
+            if (!wolf.isTame() && this.betterdogs$leaderUuid == null && !this.betterdogs$isPackLeader) {
+                net.vanillaoutsider.betterdogs.util.WolfCoatVariantHelper.initializeWildPackCluster(this.level(), wolf);
+            }
             if (this.betterdogs$passiveOverrideTicks > 0) {
                 this.betterdogs$passiveOverrideTicks--;
             }
@@ -496,7 +505,6 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
             if (this.betterdogs$wanderlustTicks > 0) {
                 this.betterdogs$wanderlustTicks--;
             } else {
-                Wolf wolf = (Wolf) (Object) this;
                 if (wolf.isTame() && !wolf.isOrderedToSit() && !wolf.isLeashed() && wolf.getTarget() == null && !this.betterdogs$isGuarding) {
                     if (wolf.getRandom().nextInt(400) == 0) {
                         this.betterdogs$wanderlustTicks = 200;
