@@ -221,10 +221,40 @@ public class WolfPersistentData {
         return 0;
     }
 
+    public static final String NBT_KEY_LEADER_UUID = "BetterDogsLeaderUUID";
+    public static final String NBT_KEY_IS_PACK_LEADER = "BetterDogsIsPackLeader";
+
     public static String readBloodFeudTargetFromNbt(CompoundTag tag) {
         if (tag != null && tag.contains(NBT_KEY_BLOOD_FEUD_TARGET)) {
             return tag.getString(NBT_KEY_BLOOD_FEUD_TARGET);
         }
         return "";
+    }
+
+    public static UUID readLeaderUUIDFromNbt(CompoundTag tag) {
+        if (tag != null && tag.contains(NBT_KEY_LEADER_UUID)) {
+            try {
+                return UUID.fromString(tag.getString(NBT_KEY_LEADER_UUID));
+            } catch (Exception ignored) {}
+        }
+        return null;
+    }
+
+    public static boolean readIsPackLeaderFromNbt(CompoundTag tag) {
+        if (tag != null && tag.contains(NBT_KEY_IS_PACK_LEADER)) {
+            return tag.getBoolean(NBT_KEY_IS_PACK_LEADER);
+        }
+        return false;
+    }
+
+    public static void writeLeaderDataToNbt(CompoundTag tag, UUID leaderUuid, boolean isPackLeader) {
+        if (tag != null) {
+            if (leaderUuid != null) {
+                tag.putString(NBT_KEY_LEADER_UUID, leaderUuid.toString());
+            } else {
+                tag.remove(NBT_KEY_LEADER_UUID);
+            }
+            tag.putBoolean(NBT_KEY_IS_PACK_LEADER, isPackLeader);
+        }
     }
 }
