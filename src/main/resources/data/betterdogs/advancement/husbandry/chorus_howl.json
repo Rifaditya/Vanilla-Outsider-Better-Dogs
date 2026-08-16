@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:amethyst_shard"
+    },
+    "title": {
+      "translate": "advancements.betterdogs.husbandry.chorus_howl.title"
+    },
+    "description": {
+      "translate": "advancements.betterdogs.husbandry.chorus_howl.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "betterdogs:husbandry/tame_wolf",
+  "criteria": {
+    "chorus_howl": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

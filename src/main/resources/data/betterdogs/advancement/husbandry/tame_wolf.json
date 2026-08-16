@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:bone"
+    },
+    "title": {
+      "translate": "advancements.betterdogs.husbandry.tame_wolf.title"
+    },
+    "description": {
+      "translate": "advancements.betterdogs.husbandry.tame_wolf.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "minecraft:husbandry/tame_an_animal",
+  "criteria": {
+    "tame_wolf": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

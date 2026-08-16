@@ -79,6 +79,8 @@ public class WolfCureHelper {
             level.playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), SoundEvents.WOLF_SHAKE, SoundSource.NEUTRAL, 1.0f, 1.2f);
         }
 
+        WolfAdvancementHelper.grantAdvancement(player, "cure_inbred");
+
         return InteractionResult.SUCCESS;
     }
 }

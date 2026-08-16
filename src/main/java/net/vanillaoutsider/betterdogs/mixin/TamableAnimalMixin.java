@@ -31,6 +31,7 @@ public abstract class TamableAnimalMixin {
                     };
                     String message = String.format("%sTamed a %s Wolf!", colorCode, personality.name());
                     net.vanillaoutsider.betterdogs.util.WolfFeedbackHelper.sendFeedback(player, wolf.level(), Component.literal(message));
+                    net.vanillaoutsider.betterdogs.util.WolfAdvancementHelper.grantAdvancement(player, "tame_wolf");
                 }
             }
         }

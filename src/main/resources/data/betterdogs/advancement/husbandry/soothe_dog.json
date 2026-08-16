@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:feather"
+    },
+    "title": {
+      "translate": "advancements.betterdogs.husbandry.soothe_dog.title"
+    },
+    "description": {
+      "translate": "advancements.betterdogs.husbandry.soothe_dog.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "betterdogs:husbandry/pet_dog",
+  "criteria": {
+    "soothe_dog": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:paper"
+    },
+    "title": {
+      "translate": "advancements.betterdogs.husbandry.adopt_dog.title"
+    },
+    "description": {
+      "translate": "advancements.betterdogs.husbandry.adopt_dog.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "betterdogs:husbandry/tame_wolf",
+  "criteria": {
+    "adopt_dog": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}
