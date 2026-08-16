@@ -321,6 +321,22 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         betterdogs$invokeSetCollarColor(color);
     }
 
+    @Invoker("getVariant")
+    public abstract net.minecraft.core.Holder<net.minecraft.world.entity.animal.wolf.WolfVariant> betterdogs$invokeGetVariant();
+
+    @Invoker("setVariant")
+    public abstract void betterdogs$invokeSetVariant(net.minecraft.core.Holder<net.minecraft.world.entity.animal.wolf.WolfVariant> variant);
+
+    @Override
+    public net.minecraft.core.Holder<net.minecraft.world.entity.animal.wolf.WolfVariant> betterdogs$getVariant() {
+        return betterdogs$invokeGetVariant();
+    }
+
+    @Override
+    public void betterdogs$setVariant(net.minecraft.core.Holder<net.minecraft.world.entity.animal.wolf.WolfVariant> variant) {
+        betterdogs$invokeSetVariant(variant);
+    }
+
     @Inject(method = "hurtServer", at = @At("HEAD"), cancellable = true)
     private void betterdogs$onHurtServer(net.minecraft.server.level.ServerLevel serverLevel, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         if (net.vanillaoutsider.betterdogs.util.WolfFriendlyFireHelper.shouldCancelDamage((Wolf) (Object) this, source)) {
@@ -425,6 +441,9 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
             childExt.betterdogs$setSocialScale(inheritedScale);
 
             net.vanillaoutsider.betterdogs.util.WolfInbreedingHelper.applyInbreeding(child, parentA, otherParent);
+            if (otherParent instanceof Wolf wolfParentB) {
+                net.vanillaoutsider.betterdogs.util.WolfCoatVariantHelper.assignPuppyVariant(child, parentA, wolfParentB);
+            }
             net.vanillaoutsider.betterdogs.util.WolfLitterHelper.spawnExtraPuppies(level, parentA, otherParent, child);
         }
     }

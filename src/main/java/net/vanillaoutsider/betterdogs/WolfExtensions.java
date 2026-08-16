@@ -65,4 +65,7 @@ public interface WolfExtensions {
 
     int betterdogs$getHowlingTicks();
     void betterdogs$setHowlingTicks(int ticks);
+
+    net.minecraft.core.Holder<net.minecraft.world.entity.animal.wolf.WolfVariant> betterdogs$getVariant();
+    void betterdogs$setVariant(net.minecraft.core.Holder<net.minecraft.world.entity.animal.wolf.WolfVariant> variant);
 }
