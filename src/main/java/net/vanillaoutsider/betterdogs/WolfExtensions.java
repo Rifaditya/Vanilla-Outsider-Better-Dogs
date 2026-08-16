@@ -53,4 +53,10 @@ public interface WolfExtensions {
 
     long betterdogs$getLastGiftDay();
     void betterdogs$setLastGiftDay(long day);
+
+    int betterdogs$getZoomiesTicks();
+    void betterdogs$setZoomiesTicks(int ticks);
+
+    boolean betterdogs$hasFetchedStick();
+    void betterdogs$setHasFetchedStick(boolean fetched);
 }
