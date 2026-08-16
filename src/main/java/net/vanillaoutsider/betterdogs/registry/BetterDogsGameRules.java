@@ -19,6 +19,7 @@ public class BetterDogsGameRules {
 
     // General & Environmental Safety
     public static GameRules.Key<GameRules.BooleanValue> BD_STORM_ANXIETY;
+    public static GameRules.Key<GameRules.BooleanValue> BD_ACTIONBAR_FEEDBACK;
     public static GameRules.Key<GameRules.BooleanValue> BD_CREEPER_AWARENESS;
     public static GameRules.Key<GameRules.BooleanValue> BD_CREEPER_EVASION_ENABLED;
     public static GameRules.Key<GameRules.BooleanValue> BD_CLIFF_SAFETY;
@@ -123,6 +124,7 @@ public class BetterDogsGameRules {
     public static void init() {
         // General
         BD_STORM_ANXIETY = GameRuleRegistry.register("bd_storm_anxiety", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
+        BD_ACTIONBAR_FEEDBACK = GameRuleRegistry.register("bd_actionbar_feedback", BETTER_DOGS, GameRuleFactory.createBooleanRule(false));
         BD_CREEPER_AWARENESS = GameRuleRegistry.register("bd_creeper_awareness", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
         BD_CREEPER_EVASION_ENABLED = GameRuleRegistry.register("bd_creeper_evasion_enabled", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
         BD_CLIFF_SAFETY = GameRuleRegistry.register("bd_cliff_safety", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
