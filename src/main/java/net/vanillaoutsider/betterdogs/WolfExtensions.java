@@ -68,4 +68,7 @@ public interface WolfExtensions {
 
     net.minecraft.core.Holder<net.minecraft.world.entity.animal.wolf.WolfVariant> betterdogs$getVariant();
     void betterdogs$setVariant(net.minecraft.core.Holder<net.minecraft.world.entity.animal.wolf.WolfVariant> variant);
+
+    int betterdogs$getFeedCount();
+    void betterdogs$setFeedCount(int count);
 }

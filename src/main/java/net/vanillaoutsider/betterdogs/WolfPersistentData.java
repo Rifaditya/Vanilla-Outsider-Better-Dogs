@@ -24,6 +24,7 @@ public class WolfPersistentData {
     public static final String NBT_KEY_GUARD_Z = "BetterDogsGuardZ";
     public static final String NBT_KEY_IS_UP_FOR_ADOPTION = "BetterDogsIsUpForAdoption";
     public static final String NBT_KEY_LAST_GIFT_DAY = "BetterDogsLastGiftDay";
+    public static final String NBT_KEY_FEED_COUNT = "BetterDogsFeedCount";
 
     // ========== Modern 1.21.11 Save Data APIs (ValueOutput / ValueInput) ==========
 
@@ -56,6 +57,10 @@ public class WolfPersistentData {
     }
 
     public static void writeToSaveData(ValueOutput output, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry, UUID parent1, UUID parent2, boolean isInbred, boolean isGuarding, net.minecraft.core.BlockPos guardPos, boolean isUpForAdoption, long lastGiftDay) {
+        writeToSaveData(output, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, nemesisType, nemesisExpiry, parent1, parent2, isInbred, isGuarding, guardPos, isUpForAdoption, lastGiftDay, 0);
+    }
+
+    public static void writeToSaveData(ValueOutput output, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry, UUID parent1, UUID parent2, boolean isInbred, boolean isGuarding, net.minecraft.core.BlockPos guardPos, boolean isUpForAdoption, long lastGiftDay, int feedCount) {
         if (output != null) {
             if (personality != null) {
                 output.putString(NBT_KEY_PERSONALITY, personality.getId());
@@ -90,6 +95,9 @@ public class WolfPersistentData {
             output.putInt(NBT_KEY_IS_UP_FOR_ADOPTION, isUpForAdoption ? 1 : 0);
             if (lastGiftDay >= 0L) {
                 output.putLong(NBT_KEY_LAST_GIFT_DAY, lastGiftDay);
+            }
+            if (feedCount > 0) {
+                output.putInt(NBT_KEY_FEED_COUNT, feedCount);
             }
         }
     }
@@ -197,6 +205,13 @@ public class WolfPersistentData {
         return -1L;
     }
 
+    public static int readFeedCountFromSaveData(ValueInput input) {
+        if (input != null) {
+            return input.getInt(NBT_KEY_FEED_COUNT).orElse(0);
+        }
+        return 0;
+    }
+
     public static net.minecraft.core.BlockPos readGuardPosFromSaveData(ValueInput input) {
         if (input != null) {
             var optX = input.getInt(NBT_KEY_GUARD_X);
@@ -240,6 +255,10 @@ public class WolfPersistentData {
     }
 
     public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry, UUID parent1, UUID parent2, boolean isInbred, boolean isGuarding, net.minecraft.core.BlockPos guardPos, boolean isUpForAdoption, long lastGiftDay) {
+        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, nemesisType, nemesisExpiry, parent1, parent2, isInbred, isGuarding, guardPos, isUpForAdoption, lastGiftDay, 0);
+    }
+
+    public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry, UUID parent1, UUID parent2, boolean isInbred, boolean isGuarding, net.minecraft.core.BlockPos guardPos, boolean isUpForAdoption, long lastGiftDay, int feedCount) {
         if (tag != null) {
             if (personality != null) {
                 tag.putString(NBT_KEY_PERSONALITY, personality.getId());
@@ -274,6 +293,9 @@ public class WolfPersistentData {
             tag.putBoolean(NBT_KEY_IS_UP_FOR_ADOPTION, isUpForAdoption);
             if (lastGiftDay >= 0L) {
                 tag.putLong(NBT_KEY_LAST_GIFT_DAY, lastGiftDay);
+            }
+            if (feedCount > 0) {
+                tag.putInt(NBT_KEY_FEED_COUNT, feedCount);
             }
         }
     }
@@ -393,5 +415,12 @@ public class WolfPersistentData {
             return tag.getLong(NBT_KEY_LAST_GIFT_DAY).orElse(-1L);
         }
         return -1L;
+    }
+
+    public static int readFeedCountFromNbt(CompoundTag tag) {
+        if (tag != null && tag.contains(NBT_KEY_FEED_COUNT)) {
+            return tag.getInt(NBT_KEY_FEED_COUNT).orElse(0);
+        }
+        return 0;
     }
 }

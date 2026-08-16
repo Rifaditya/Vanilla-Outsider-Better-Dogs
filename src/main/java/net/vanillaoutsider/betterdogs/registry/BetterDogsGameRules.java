@@ -43,6 +43,8 @@ public class BetterDogsGameRules {
     public static GameRule<Integer> BD_HORN_PATHING_TIMEOUT;
     public static GameRule<Integer> BD_HORN_OVERRIDE_DURATION;
     public static GameRule<Boolean> BD_ALLOW_UNRESTRICTED_RIDING;
+    public static GameRule<Integer> BD_TAMED_PACK_SPREAD_MULTIPLIER;
+    public static GameRule<Integer> BD_TAMED_PACK_SPREAD_MAX;
 
     // Player Protection
     public static GameRule<Boolean> BD_FRIENDLY_FIRE;
@@ -149,6 +151,8 @@ public class BetterDogsGameRules {
         BD_HORN_PATHING_TIMEOUT = registerInteger("vanilla-outsider-better-dogs:bd_horn_pathing_timeout", BETTER_DOGS, 300);
         BD_HORN_OVERRIDE_DURATION = registerInteger("vanilla-outsider-better-dogs:bd_horn_override_duration", BETTER_DOGS, 600);
         BD_ALLOW_UNRESTRICTED_RIDING = registerBoolean("vanilla-outsider-better-dogs:bd_allow_unrestricted_dog_riding", BETTER_DOGS, false);
+        BD_TAMED_PACK_SPREAD_MULTIPLIER = registerInteger("vanilla-outsider-better-dogs:bd_tamed_pack_spread_multiplier", BETTER_DOGS, 100);
+        BD_TAMED_PACK_SPREAD_MAX = registerInteger("vanilla-outsider-better-dogs:bd_tamed_pack_spread_max", BETTER_DOGS, 50);
 
         // Player
         BD_FRIENDLY_FIRE = registerBoolean("vanilla-outsider-better-dogs:bd_friendly_fire_protection", BETTER_DOGS, true);
@@ -181,7 +185,7 @@ public class BetterDogsGameRules {
         BD_BABY_MISCHIEF_PERMILLE = registerInteger("vanilla-outsider-better-dogs:bd_baby_mischief_permille", BETTER_DOGS, 25);
         BD_HOWL_CHANCE = registerInteger("vanilla-outsider-better-dogs:bd_howl_chance", BETTER_DOGS, 10);
         BD_PACK_SPREAD = registerInteger("vanilla-outsider-better-dogs:bd_pack_spread", BETTER_DOGS, 8);
-        BD_GIFT_FEED_THRESHOLD = registerInteger("vanilla-outsider-better-dogs:bd_gift_feed_threshold", BETTER_DOGS, 3);
+        BD_GIFT_FEED_THRESHOLD = registerInteger("vanilla-outsider-better-dogs:bd_gift_feed_threshold", BETTER_DOGS, 10);
         BD_GIFT_INTERACTION_COOLDOWN = registerInteger("vanilla-outsider-better-dogs:bd_gift_interaction_cooldown", BETTER_DOGS, 6000);
         BD_DEMERIT_ACCIDENTAL_ATTACKS = registerBoolean("vanilla-outsider-better-dogs:bd_demerit_accidental_attacks", BETTER_DOGS, true);
         BD_WOLF_MIN_SCALE_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_wolf_min_scale_percent", BETTER_DOGS, 70);

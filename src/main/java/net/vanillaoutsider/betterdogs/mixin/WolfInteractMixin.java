@@ -93,6 +93,10 @@ public abstract class WolfInteractMixin {
                 return;
             }
 
+            if (wolf.isTame() && wolf instanceof WolfExtensions ext) {
+                ext.betterdogs$setFeedCount(ext.betterdogs$getFeedCount() + 1);
+            }
+
             if (DogTreatHelper.isFavoriteTreat(wolf, itemInHand)) {
                 if (wolf instanceof WolfExtensions ext) {
                     ext.betterdogs$setZoomiesTicks(120);
