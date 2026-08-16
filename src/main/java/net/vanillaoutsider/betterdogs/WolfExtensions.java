@@ -84,4 +84,7 @@ public interface WolfExtensions {
     void betterdogs$setLeaderUUID(java.util.UUID uuid);
     boolean betterdogs$isPackLeader();
     void betterdogs$setPackLeader(boolean isLeader);
+
+    int betterdogs$getWanderlustTicks();
+    void betterdogs$setWanderlustTicks(int ticks);
 }
