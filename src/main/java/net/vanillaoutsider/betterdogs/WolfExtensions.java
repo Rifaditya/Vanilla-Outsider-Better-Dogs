@@ -76,4 +76,7 @@ public interface WolfExtensions {
     String betterdogs$getBloodFeudTarget();
     void betterdogs$setBloodFeudTarget(String targetUuid);
     boolean betterdogs$hasBloodFeud();
+
+    int betterdogs$getPlayFightCooldown();
+    void betterdogs$setPlayFightCooldown(int ticks);
 }
