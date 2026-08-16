@@ -42,6 +42,7 @@ public class BetterDogsGameRules {
     public static GameRule<Integer> BD_HORN_COMMAND_RANGE;
     public static GameRule<Integer> BD_HORN_PATHING_TIMEOUT;
     public static GameRule<Integer> BD_HORN_OVERRIDE_DURATION;
+    public static GameRule<Boolean> BD_ALLOW_UNRESTRICTED_RIDING;
 
     // Player Protection
     public static GameRule<Boolean> BD_FRIENDLY_FIRE;
@@ -147,6 +148,7 @@ public class BetterDogsGameRules {
         BD_HORN_COMMAND_RANGE = registerInteger("vanilla-outsider-better-dogs:bd_horn_command_range", BETTER_DOGS, 64);
         BD_HORN_PATHING_TIMEOUT = registerInteger("vanilla-outsider-better-dogs:bd_horn_pathing_timeout", BETTER_DOGS, 300);
         BD_HORN_OVERRIDE_DURATION = registerInteger("vanilla-outsider-better-dogs:bd_horn_override_duration", BETTER_DOGS, 600);
+        BD_ALLOW_UNRESTRICTED_RIDING = registerBoolean("vanilla-outsider-better-dogs:bd_allow_unrestricted_dog_riding", BETTER_DOGS, false);
 
         // Player
         BD_FRIENDLY_FIRE = registerBoolean("vanilla-outsider-better-dogs:bd_friendly_fire_protection", BETTER_DOGS, true);

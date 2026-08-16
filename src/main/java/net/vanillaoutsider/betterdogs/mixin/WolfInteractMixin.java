@@ -33,6 +33,31 @@ public abstract class WolfInteractMixin {
 
         ItemStack itemInHand = player.getItemInHand(hand);
 
+        if (wolf.isTame() && wolf.isOwnedBy(player) && player.isSecondaryUseActive() && net.vanillaoutsider.betterdogs.util.DogCommandManager.isCommandItem(itemInHand) && hand == InteractionHand.MAIN_HAND) {
+            if (!level.isClientSide()) {
+                if (wolf.isPassenger()) {
+                    net.minecraft.world.entity.Entity vehicle = wolf.getVehicle();
+                    wolf.stopRiding();
+                    if (vehicle != null && vehicle.getTags().contains("betterdogs:seat")) {
+                        vehicle.discard();
+                    }
+                    net.vanillaoutsider.betterdogs.util.DogCommandManager.clearVehicleTarget(wolf.getUUID());
+                    net.vanillaoutsider.betterdogs.util.DogCommandManager.clearSelection(player.getUUID());
+                    wolf.playSound(net.minecraft.sounds.SoundEvents.WOLF_SHAKE, 1.0f, 1.0f);
+                    net.vanillaoutsider.betterdogs.util.WolfFeedbackHelper.sendFeedback(player, level, net.minecraft.network.chat.Component.translatable("text.betterdogs.dog_dismounted", wolf.getName()));
+                } else {
+                    net.vanillaoutsider.betterdogs.util.DogCommandManager.selectDog(player.getUUID(), wolf.getUUID());
+                    wolf.playSound(net.minecraft.sounds.SoundEvents.WOLF_SHAKE, 1.0f, 1.2f);
+                    net.vanillaoutsider.betterdogs.util.WolfFeedbackHelper.sendFeedback(player, level, net.minecraft.network.chat.Component.translatable("text.betterdogs.dog_selected", wolf.getName()));
+                    if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+                        serverLevel.sendParticles(net.minecraft.core.particles.ParticleTypes.NOTE, wolf.getX(), wolf.getY() + 0.5, wolf.getZ(), 5, 0.2, 0.2, 0.2, 0.05);
+                    }
+                }
+            }
+            cir.setReturnValue(InteractionResult.SUCCESS);
+            return;
+        }
+
         if (net.vanillaoutsider.betterdogs.util.WolfCureHelper.canCure(wolf, itemInHand)) {
             InteractionResult result = net.vanillaoutsider.betterdogs.util.WolfCureHelper.tryCureInbredWolf(wolf, player, hand);
             if (result.consumesAction()) {
