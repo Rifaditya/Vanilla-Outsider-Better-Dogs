@@ -180,6 +180,19 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.betterdogs$isPackLeader = isLeader;
     }
 
+    @Unique
+    private int betterdogs$wanderlustTicks = 0;
+
+    @Override
+    public int betterdogs$getWanderlustTicks() {
+        return this.betterdogs$wanderlustTicks;
+    }
+
+    @Override
+    public void betterdogs$setWanderlustTicks(int ticks) {
+        this.betterdogs$wanderlustTicks = Math.max(0, ticks);
+    }
+
     @Override
     public int betterdogs$getFeedCount() {
         return this.betterdogs$feedCount;
@@ -480,6 +493,16 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
                     this.betterdogs$retaliationTarget = null;
                 }
             }
+            if (this.betterdogs$wanderlustTicks > 0) {
+                this.betterdogs$wanderlustTicks--;
+            } else {
+                Wolf wolf = (Wolf) (Object) this;
+                if (wolf.isTame() && !wolf.isOrderedToSit() && !wolf.isLeashed() && wolf.getTarget() == null && !this.betterdogs$isGuarding) {
+                    if (wolf.getRandom().nextInt(400) == 0) {
+                        this.betterdogs$wanderlustTicks = 200;
+                    }
+                }
+            }
         }
         net.vanillaoutsider.betterdogs.util.WolfInbreedingHelper.tickRuntAmbientParticles((Wolf) (Object) this);
         net.vanillaoutsider.betterdogs.util.WolfAdoptionHelper.tickAdoptionAmbientParticles((Wolf) (Object) this);
@@ -517,6 +540,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.goalSelector.addGoal(6, new net.vanillaoutsider.betterdogs.ai.GroupHowlGoal(wolf));
         this.goalSelector.addGoal(7, new WolfBegGoal(wolf, 5.0F));
         this.goalSelector.addGoal(8, new TamedWanderNearOwnerGoal(wolf, 1.0));
+        this.goalSelector.addGoal(8, new net.vanillaoutsider.betterdogs.ai.WanderlustGoal(wolf, 1.0));
         this.targetSelector.addGoal(1, new net.vanillaoutsider.betterdogs.ai.BloodFeudGoal(wolf));
         this.targetSelector.addGoal(2, new net.vanillaoutsider.betterdogs.ai.WolfNemesisTargetGoal(wolf));
         this.targetSelector.addGoal(3, new PacifistRevengeGoal(wolf));

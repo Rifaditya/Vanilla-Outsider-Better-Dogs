@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
+## [1.0.60+1.21.11] - 2026-08-16
+### Added
+- 🌲 **Wanderlust Roaming AI (`WanderlustGoal.java`)**:
+  - Tamed dogs occasionally experience spontaneous exploratory wandering surges (1 in 400 calm ticks, lasting 10 seconds / 200 ticks).
+  - Explores the surrounding environment safely within an expanded 28-block perimeter from their owner.
+  - Strictly respects sit commands, leash state, guard mode, and cancels immediately if threats arise or owner moves beyond 32 blocks.
+- Added automated test suite `WanderlustTest`.
+
 ## [1.0.59+1.21.11] - 2026-08-16
 ### Added
 - ⚔️ **Wild Wolf Pack War & Territorial Rivalry Matrix (`WildWolfPackWarGoal.java`, `WildWolfFollowLeaderGoal.java`, `WildWolfTerritorialGoal.java`)**:
