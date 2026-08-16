@@ -40,6 +40,10 @@ public class BetterDogsGameRules {
     public static GameRules.Key<GameRules.IntegerValue> BD_HORN_PATHING_TIMEOUT;
     public static GameRules.Key<GameRules.IntegerValue> BD_HORN_OVERRIDE_DURATION;
     public static GameRules.Key<GameRules.BooleanValue> BD_ALLOW_UNRESTRICTED_RIDING;
+    public static GameRules.Key<GameRules.IntegerValue> BD_GIFT_FEED_THRESHOLD;
+    public static GameRules.Key<GameRules.BooleanValue> BD_DEMERIT_ACCIDENTAL_ATTACKS;
+    public static GameRules.Key<GameRules.IntegerValue> BD_TAMED_PACK_SPREAD_MULTIPLIER;
+    public static GameRules.Key<GameRules.IntegerValue> BD_TAMED_PACK_SPREAD_MAX;
 
     // Player Protection
     public static GameRules.Key<GameRules.BooleanValue> BD_FRIENDLY_FIRE;
@@ -72,9 +76,7 @@ public class BetterDogsGameRules {
     public static GameRules.Key<GameRules.IntegerValue> BD_BABY_MISCHIEF_PERMILLE;
     public static GameRules.Key<GameRules.IntegerValue> BD_HOWL_CHANCE;
     public static GameRules.Key<GameRules.IntegerValue> BD_PACK_SPREAD;
-    public static GameRules.Key<GameRules.IntegerValue> BD_GIFT_FEED_THRESHOLD;
     public static GameRules.Key<GameRules.IntegerValue> BD_GIFT_INTERACTION_COOLDOWN;
-    public static GameRules.Key<GameRules.BooleanValue> BD_DEMERIT_ACCIDENTAL_ATTACKS;
     public static GameRules.Key<GameRules.IntegerValue> BD_WOLF_MIN_SCALE_PERCENT;
     public static GameRules.Key<GameRules.IntegerValue> BD_WOLF_MAX_SCALE_PERCENT;
 
@@ -146,6 +148,10 @@ public class BetterDogsGameRules {
         BD_HORN_PATHING_TIMEOUT = GameRuleRegistry.register("bd_horn_pathing_timeout", BETTER_DOGS, GameRuleFactory.createIntRule(300));
         BD_HORN_OVERRIDE_DURATION = GameRuleRegistry.register("bd_horn_override_duration", BETTER_DOGS, GameRuleFactory.createIntRule(600));
         BD_ALLOW_UNRESTRICTED_RIDING = GameRuleRegistry.register("bd_allow_unrestricted_dog_riding", BETTER_DOGS, GameRuleFactory.createBooleanRule(false));
+        BD_GIFT_FEED_THRESHOLD = GameRuleRegistry.register("bd_gift_feed_threshold", BETTER_DOGS, GameRuleFactory.createIntRule(10));
+        BD_DEMERIT_ACCIDENTAL_ATTACKS = GameRuleRegistry.register("bd_demerit_accidental_attacks", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
+        BD_TAMED_PACK_SPREAD_MULTIPLIER = GameRuleRegistry.register("bd_tamed_pack_spread_multiplier", BETTER_DOGS, GameRuleFactory.createIntRule(100));
+        BD_TAMED_PACK_SPREAD_MAX = GameRuleRegistry.register("bd_tamed_pack_spread_max", BETTER_DOGS, GameRuleFactory.createIntRule(50));
 
         // Player
         BD_FRIENDLY_FIRE = GameRuleRegistry.register("bd_friendly_fire_protection", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
@@ -178,9 +184,7 @@ public class BetterDogsGameRules {
         BD_BABY_MISCHIEF_PERMILLE = GameRuleRegistry.register("bd_baby_mischief_permille", BETTER_DOGS, GameRuleFactory.createIntRule(25));
         BD_HOWL_CHANCE = GameRuleRegistry.register("bd_howl_chance", BETTER_DOGS, GameRuleFactory.createIntRule(10));
         BD_PACK_SPREAD = GameRuleRegistry.register("bd_pack_spread", BETTER_DOGS, GameRuleFactory.createIntRule(8));
-        BD_GIFT_FEED_THRESHOLD = GameRuleRegistry.register("bd_gift_feed_threshold", BETTER_DOGS, GameRuleFactory.createIntRule(3));
         BD_GIFT_INTERACTION_COOLDOWN = GameRuleRegistry.register("bd_gift_interaction_cooldown", BETTER_DOGS, GameRuleFactory.createIntRule(6000));
-        BD_DEMERIT_ACCIDENTAL_ATTACKS = GameRuleRegistry.register("bd_demerit_accidental_attacks", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
         BD_WOLF_MIN_SCALE_PERCENT = GameRuleRegistry.register("bd_wolf_min_scale_percent", BETTER_DOGS, GameRuleFactory.createIntRule(70));
         BD_WOLF_MAX_SCALE_PERCENT = GameRuleRegistry.register("bd_wolf_max_scale_percent", BETTER_DOGS, GameRuleFactory.createIntRule(145));
 

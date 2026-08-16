@@ -17,20 +17,87 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
         this.baseSpeedModifier = speedModifier;
     }
 
+    private float betterdogs$followerSpacingOffset = 0.0f;
+    private int spacingThrottleTimer = 0;
+
+    public static class FollowerSpacingCache {
+        private static final java.util.Map<java.util.UUID, CacheEntry> cache = new java.util.concurrent.ConcurrentHashMap<>();
+
+        public static class CacheEntry {
+            public final int followerCount;
+            public final long expiryTime;
+
+            public CacheEntry(int followerCount, long expiryTime) {
+                this.followerCount = followerCount;
+                this.expiryTime = expiryTime;
+            }
+        }
+
+        public static int getCount(java.util.UUID ownerUuid, long currentTime) {
+            CacheEntry entry = cache.get(ownerUuid);
+            if (entry != null && currentTime < entry.expiryTime) {
+                return entry.followerCount;
+            }
+            return -1;
+        }
+
+        public static void update(java.util.UUID ownerUuid, int count, long currentTime, int lifetime) {
+            cache.put(ownerUuid, new CacheEntry(count, currentTime + lifetime));
+        }
+    }
+
+    private void updateFollowerSpacing(LivingEntity owner) {
+        if (owner == null || this.wolf.getCommandSenderWorld() == null) {
+            this.betterdogs$followerSpacingOffset = 0.0f;
+            return;
+        }
+
+        java.util.UUID ownerUuid = owner.getUUID();
+        long currentTime = this.wolf.getCommandSenderWorld().getGameTime();
+        int count = FollowerSpacingCache.getCount(ownerUuid, currentTime);
+
+        if (count < 0) {
+            var nearbyWolves = this.wolf.getCommandSenderWorld().getEntitiesOfClass(
+                Wolf.class,
+                owner.getBoundingBox().inflate(16.0),
+                w -> w.isTame() && w.isOwnedBy(owner) && !w.isOrderedToSit()
+            );
+            count = nearbyWolves.size();
+            FollowerSpacingCache.update(ownerUuid, count, currentTime, 40);
+        }
+
+        if (count <= 1) {
+            this.betterdogs$followerSpacingOffset = 0.0f;
+        } else {
+            float multiplier = net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.getInt(
+                this.wolf.getCommandSenderWorld(),
+                net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_TAMED_PACK_SPREAD_MULTIPLIER,
+                100
+            ) / 100.0f;
+            float maxExtra = net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.getInt(
+                this.wolf.getCommandSenderWorld(),
+                net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_TAMED_PACK_SPREAD_MAX,
+                50
+            ) / 10.0f;
+            this.betterdogs$followerSpacingOffset = Math.min((float) Math.sqrt(count - 1) * multiplier, maxExtra);
+        }
+    }
+
     public float getStartDistance() {
+        float baseDist = 10.0f;
         if (this.wolf instanceof WolfExtensions ext) {
             WolfPersonality personality = ext.betterdogs$getPersonality();
-            return switch (personality) {
+            baseDist = switch (personality) {
                 case AGGRESSIVE -> 50.0f;
                 case PACIFIST -> 5.0f;
                 case NORMAL -> 10.0f;
             };
         }
-        return 10.0f;
+        return baseDist + this.betterdogs$followerSpacingOffset;
     }
 
     public float getStopDistance() {
-        return 2.0f;
+        return 2.0f + this.betterdogs$followerSpacingOffset;
     }
 
     public float getTeleportThreshold() {
@@ -50,6 +117,7 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
         if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$isGuarding()) {
             return false;
         }
+        updateFollowerSpacing(owner);
         float startDist = getStartDistance();
         return this.wolf.distanceToSqr(owner) >= (startDist * startDist);
     }
@@ -75,6 +143,10 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
         LivingEntity owner = this.wolf.getOwner();
         if (owner == null) {
             return;
+        }
+
+        if (++this.spacingThrottleTimer % 20 == 0) {
+            updateFollowerSpacing(owner);
         }
 
         this.wolf.getLookControl().setLookAt(owner, 10.0f, (float) this.wolf.getMaxHeadXRot());

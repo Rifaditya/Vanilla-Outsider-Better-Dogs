@@ -1,5 +1,18 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.51+1.20.1] - 2026-08-16
+### Added
+- 🥩 **Feeding-Gated Merits & Gift System (`WolfGiftGoal.java`, `WolfGiftHelper.java`, `WolfPersistentData.java`)**:
+  - Implemented persistent feeding merits tracking (`feedCount`) incremented each time the dog is fed.
+  - Dogs require $\ge 10$ feeding merits (`bd_gift_feed_threshold`) before bringing gifts, consuming 10 merits upon delivery.
+  - Added accidental player attack demerit penalty (`bd_demerit_accidental_attacks`) resetting accumulated merits upon friendly fire.
+- 🐾 **Follower Pack Spacing Offset (`PersonalityFollowOwnerGoal.java`)**:
+  - Implemented `FollowerSpacingCache` and dynamic $\sqrt{N-1}$ pack spread offset expanding follower start/stop distances, eliminating clustering and crowding at the player's feet.
+  - Added GameRules `bd_tamed_pack_spread_multiplier` (default `100`) and `bd_tamed_pack_spread_max` (default `50`).
+- 🌸 **Puppy Curiosity AI (`BabyCuriosityGoal.java`)**:
+  - Puppies explore natural vegetation and observe critters when idle.
+- Added automated test suite `WolfGiftMeritsTest` and `BabyCuriosityTest`.
+
 ## [1.0.50+1.20.1] - 2026-08-16
 ### Added
 - 🪑 **Dog Mounting & Vehicle/Seat Boarding Command Suite (`DogCommandManager.java`, `MoveToVehicleGoal.java`, `BetterDogsTags.java`)**:

@@ -38,8 +38,21 @@ public class WolfGiftHelper {
             return false;
         }
 
-        long currentDay = level.getDayTime() / 24000L;
-        if (wolf instanceof WolfExtensions ext && ext.betterdogs$getLastGiftDay() >= currentDay) {
+        int threshold = net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.getInt(
+            level,
+            net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_GIFT_FEED_THRESHOLD,
+            10
+        );
+
+        if (wolf instanceof WolfExtensions ext) {
+            if (ext.betterdogs$getFeedCount() < threshold) {
+                return false;
+            }
+            long currentDay = level.getDayTime() / 24000L;
+            if (ext.betterdogs$getLastGiftDay() >= currentDay) {
+                return false;
+            }
+        } else {
             return false;
         }
 
@@ -113,9 +126,16 @@ public class WolfGiftHelper {
             return;
         }
 
+        int threshold = net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.getInt(
+            level,
+            net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_GIFT_FEED_THRESHOLD,
+            10
+        );
+
         long currentDay = level.getDayTime() / 24000L;
         if (wolf instanceof WolfExtensions ext) {
             ext.betterdogs$setLastGiftDay(currentDay);
+            ext.betterdogs$setFeedCount(Math.max(0, ext.betterdogs$getFeedCount() - threshold));
         }
 
         ItemStack gift = rollMorningGift(wolf, wolf.getRandom());
@@ -123,7 +143,7 @@ public class WolfGiftHelper {
         itemEntity.setDefaultPickUpDelay();
         level.addFreshEntity(itemEntity);
 
-        WolfFeedbackHelper.sendFeedback(owner, level, Component.literal("§6Your dog brought you a morning gift!"));
+        WolfFeedbackHelper.sendFeedback(owner, level, Component.literal("§6Your dog brought you a gift!"));
         level.playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), SoundEvents.WOLF_AMBIENT, SoundSource.NEUTRAL, 1.0f, 1.2f);
 
         if (level instanceof ServerLevel serverLevel) {
