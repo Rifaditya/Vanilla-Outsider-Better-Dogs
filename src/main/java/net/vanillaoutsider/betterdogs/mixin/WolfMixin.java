@@ -93,7 +93,20 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     private int betterdogs$calmTicks = 0;
 
     @Unique
+    private int betterdogs$howlingTicks = 0;
+
+    @Unique
     private boolean betterdogs$hasFetchedStick = false;
+
+    @Override
+    public int betterdogs$getHowlingTicks() {
+        return this.betterdogs$howlingTicks;
+    }
+
+    @Override
+    public void betterdogs$setHowlingTicks(int ticks) {
+        this.betterdogs$howlingTicks = ticks;
+    }
 
     @Override
     public int betterdogs$getCalmTicks() {
@@ -331,6 +344,9 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
             if (this.betterdogs$calmTicks > 0) {
                 this.betterdogs$calmTicks--;
             }
+            if (this.betterdogs$howlingTicks > 0) {
+                this.betterdogs$howlingTicks--;
+            }
         }
         net.vanillaoutsider.betterdogs.util.WolfInbreedingHelper.tickRuntAmbientParticles((Wolf) (Object) this);
         net.vanillaoutsider.betterdogs.util.WolfAdoptionHelper.tickAdoptionAmbientParticles((Wolf) (Object) this);
@@ -357,7 +373,9 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.goalSelector.addGoal(4, new net.vanillaoutsider.betterdogs.ai.WolfGiftGoal(wolf));
         this.goalSelector.addGoal(4, new net.vanillaoutsider.betterdogs.ai.BabyMischiefGoal(wolf));
         this.goalSelector.addGoal(5, new net.vanillaoutsider.betterdogs.ai.WolfGuardGoal(wolf));
+        this.goalSelector.addGoal(5, new net.vanillaoutsider.betterdogs.ai.WildWolfTerritorialGoal(wolf));
         this.goalSelector.addGoal(6, new PersonalityFollowOwnerGoal(wolf, 1.25, 2.0f, 50.0f));
+        this.goalSelector.addGoal(6, new net.vanillaoutsider.betterdogs.ai.GroupHowlGoal(wolf));
         this.goalSelector.addGoal(7, new WolfBegGoal(wolf, 5.0F));
         this.goalSelector.addGoal(8, new TamedWanderNearOwnerGoal(wolf, 1.0));
         this.targetSelector.addGoal(1, new net.vanillaoutsider.betterdogs.ai.WolfNemesisTargetGoal(wolf));

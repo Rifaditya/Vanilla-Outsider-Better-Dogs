@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.1)
 
+## [1.0.45+1.21.1] - 2026-08-16
+### Added
+- 🐺 **Wild Pack Dynamics & Territorial Chorus Howling (`WolfHowlHelper.java`, `GroupHowlGoal.java`, `WildWolfTerritorialGoal.java`)**:
+  - Implemented nocturnal skyward chorus howling where wolves tilt their heads skyward (pitch $-45^\circ$) for 3 seconds (60 ticks), prompting nearby pack members within 24 blocks to join in sequential chorus with natural randomized pitch variations.
+  - Full moon phases significantly increase the frequency of nocturnal pack howling.
+  - Implemented untamed pack territorial dynamics where wild wolves encountering rival wolves within 12 blocks perform threat posturing: Aggressive wolves aggressively challenge and stalk intruders, Pacifist wolves yield and retreat, and Normal wolves hold territorial standoff boundaries.
+  - Added automated unit test suite `WildPackDynamicsTest`.
+
 ## [1.0.44+1.21.1] - 2026-08-16
 ### Added
 - 🐾 **Puppy Mischief & Adult Disciplinary Correction AI (`WolfMischiefHelper.java`, `BabyMischiefGoal.java`, `AdultCorrectionGoal.java`)**:
