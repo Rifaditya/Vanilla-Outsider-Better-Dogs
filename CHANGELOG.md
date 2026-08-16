@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.1)
 
+## [1.0.47+1.21.1] - 2026-08-16
+### Added
+- ❄️ **Dynamic Climate Coat Biome Variants (`WolfCoatVariantHelper.java`)**:
+  - Implemented dynamic climate-appropriate coat textures mapped across biome temperatures: Freezing (Snowy/Ashen), Cold Taiga (Pale/Black/Chestnut/Ashen), Temperate Forest (Woods/Pale), Warm Jungle (Rusty), and Hot Savanna/Badlands/Desert (Spotted/Striped).
+  - Implemented 50/50 puppy breeding adaptation: puppies born in new biomes have a 50% chance to inherit their parents' coat variant and a 50% chance to adapt their coat to the local biome's climate temperature.
+  - Gated under `bd_dynamic_climate_variants` GameRule (default: `true`).
+  - Added automated unit test suite `ClimateVariantTest`.
+
 ## [1.0.46+1.21.1] - 2026-08-16
 ### Added
 - 💬 **Configurable Subtitle & Actionbar Feedback Options (`WolfFeedbackHelper.java`, `BetterDogsGameRules.java`)**:

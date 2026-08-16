@@ -424,6 +424,9 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
             childExt.betterdogs$setSocialScale(inheritedScale);
 
             net.vanillaoutsider.betterdogs.util.WolfInbreedingHelper.applyInbreeding(child, parentA, otherParent);
+            if (otherParent instanceof Wolf wolfParentB) {
+                net.vanillaoutsider.betterdogs.util.WolfCoatVariantHelper.assignPuppyVariant(child, parentA, wolfParentB);
+            }
             net.vanillaoutsider.betterdogs.util.WolfLitterHelper.spawnExtraPuppies(level, parentA, otherParent, child);
         }
     }

@@ -80,6 +80,9 @@ public class WolfLitterHelper {
                     siblingExt.betterdogs$setPersonality(inheritedP);
                     siblingExt.betterdogs$setSocialScale(inheritedS);
                     WolfInbreedingHelper.applyInbreeding(sibling, parentA, otherParent);
+                    if (otherParent instanceof Wolf wolfParentB) {
+                        WolfCoatVariantHelper.assignPuppyVariant(sibling, parentA, wolfParentB);
+                    }
                 }
 
                 level.addFreshEntity(sibling);
