@@ -98,6 +98,19 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     @Unique
     private boolean betterdogs$hasFetchedStick = false;
 
+    @Unique
+    private int betterdogs$feedCount = 0;
+
+    @Override
+    public int betterdogs$getFeedCount() {
+        return this.betterdogs$feedCount;
+    }
+
+    @Override
+    public void betterdogs$setFeedCount(int count) {
+        this.betterdogs$feedCount = Math.max(0, count);
+    }
+
     @Override
     public int betterdogs$getHowlingTicks() {
         return this.betterdogs$howlingTicks;
@@ -322,8 +335,16 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
 
     @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
     private void betterdogs$onHurt(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        if (net.vanillaoutsider.betterdogs.util.WolfFriendlyFireHelper.shouldCancelDamage((Wolf) (Object) this, source)) {
+        Wolf wolf = (Wolf) (Object) this;
+        if (net.vanillaoutsider.betterdogs.util.WolfFriendlyFireHelper.shouldCancelDamage(wolf, source)) {
             cir.setReturnValue(false);
+            return;
+        }
+
+        if (source.getEntity() != null && source.getEntity() == wolf.getOwner()) {
+            if (net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.getBoolean(wolf.level(), net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_DEMERIT_ACCIDENTAL_ATTACKS, true)) {
+                this.betterdogs$feedCount = 0;
+            }
         }
     }
 
@@ -373,6 +394,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.goalSelector.addGoal(4, new EatGroundFoodGoal(wolf, 1.25));
         this.goalSelector.addGoal(4, new net.vanillaoutsider.betterdogs.ai.WolfGiftGoal(wolf));
         this.goalSelector.addGoal(4, new net.vanillaoutsider.betterdogs.ai.BabyMischiefGoal(wolf));
+        this.goalSelector.addGoal(4, new net.vanillaoutsider.betterdogs.ai.BabyCuriosityGoal(wolf, 0.9));
         this.goalSelector.addGoal(5, new net.vanillaoutsider.betterdogs.ai.WolfGuardGoal(wolf));
         this.goalSelector.addGoal(5, new net.vanillaoutsider.betterdogs.ai.WildWolfTerritorialGoal(wolf));
         this.goalSelector.addGoal(6, new PersonalityFollowOwnerGoal(wolf, 1.25, 2.0f, 50.0f));
@@ -386,7 +408,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
 
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"), require = 0)
     private void betterdogs$writeNbt(CompoundTag tag, CallbackInfo ci) {
-        WolfPersistentData.writeToNbt(tag, betterdogs$getPersonality(), betterdogs$getSocialScale(), betterdogs$getDnaSeed(), betterdogs$favoriteTreat, betterdogs$soothedTime, betterdogs$nemesisEntityType, betterdogs$nemesisExpiryTime, betterdogs$parentUUID1, betterdogs$parentUUID2, betterdogs$isInbred, betterdogs$isGuarding, betterdogs$guardPos, betterdogs$isUpForAdoption, betterdogs$lastGiftDay);
+        WolfPersistentData.writeToNbt(tag, betterdogs$getPersonality(), betterdogs$getSocialScale(), betterdogs$getDnaSeed(), betterdogs$favoriteTreat, betterdogs$soothedTime, betterdogs$nemesisEntityType, betterdogs$nemesisExpiryTime, betterdogs$parentUUID1, betterdogs$parentUUID2, betterdogs$isInbred, betterdogs$isGuarding, betterdogs$guardPos, betterdogs$isUpForAdoption, betterdogs$lastGiftDay, betterdogs$feedCount);
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"), require = 0)
@@ -406,6 +428,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.betterdogs$guardPos = WolfPersistentData.readGuardPosFromNbt(tag);
         this.betterdogs$isUpForAdoption = WolfPersistentData.readIsUpForAdoptionFromNbt(tag);
         this.betterdogs$lastGiftDay = WolfPersistentData.readLastGiftDayFromNbt(tag);
+        this.betterdogs$feedCount = WolfPersistentData.readFeedCountFromNbt(tag);
         net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper.applyPersonalityStats(wolf, this.betterdogs$personality);
     }
 
