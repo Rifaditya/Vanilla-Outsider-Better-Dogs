@@ -76,6 +76,18 @@ public class WolfMischiefHelper {
                         serverLevel.sendParticles(ParticleTypes.ANGRY_VILLAGER, adult.getX(), adult.getY() + 0.5, adult.getZ(), 2, 0.1, 0.1, 0.1, 0.0);
                         serverLevel.sendParticles(ParticleTypes.ANGRY_VILLAGER, puppy.getX(), puppy.getY() + 0.5, puppy.getZ(), 2, 0.1, 0.1, 0.1, 0.0);
                     }
+
+                    int feudChance = net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.getInt(
+                        level,
+                        net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_BLOOD_FEUD_PERCENT,
+                        5
+                    );
+                    if (puppy.getRandom().nextInt(100) < feudChance) {
+                        ext.betterdogs$setBloodFeudTarget(adult.getStringUUID());
+                        if (adult instanceof WolfExtensions adultExt) {
+                            adultExt.betterdogs$setBloodFeudTarget(puppy.getStringUUID());
+                        }
+                    }
                     return;
                 }
             }

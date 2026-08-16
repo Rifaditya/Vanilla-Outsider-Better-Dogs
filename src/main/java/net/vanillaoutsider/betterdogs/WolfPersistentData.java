@@ -25,6 +25,7 @@ public class WolfPersistentData {
     public static final String NBT_KEY_IS_UP_FOR_ADOPTION = "BetterDogsIsUpForAdoption";
     public static final String NBT_KEY_LAST_GIFT_DAY = "BetterDogsLastGiftDay";
     public static final String NBT_KEY_FEED_COUNT = "BetterDogsFeedCount";
+    public static final String NBT_KEY_BLOOD_FEUD_TARGET = "BetterDogsBloodFeudTarget";
 
     // ========== Modern 1.21.11 Save Data APIs (ValueOutput / ValueInput) ==========
 
@@ -61,6 +62,10 @@ public class WolfPersistentData {
     }
 
     public static void writeToSaveData(ValueOutput output, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry, UUID parent1, UUID parent2, boolean isInbred, boolean isGuarding, net.minecraft.core.BlockPos guardPos, boolean isUpForAdoption, long lastGiftDay, int feedCount) {
+        writeToSaveData(output, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, nemesisType, nemesisExpiry, parent1, parent2, isInbred, isGuarding, guardPos, isUpForAdoption, lastGiftDay, feedCount, "");
+    }
+
+    public static void writeToSaveData(ValueOutput output, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry, UUID parent1, UUID parent2, boolean isInbred, boolean isGuarding, net.minecraft.core.BlockPos guardPos, boolean isUpForAdoption, long lastGiftDay, int feedCount, String bloodFeudTarget) {
         if (output != null) {
             if (personality != null) {
                 output.putString(NBT_KEY_PERSONALITY, personality.getId());
@@ -99,7 +104,17 @@ public class WolfPersistentData {
             if (feedCount > 0) {
                 output.putInt(NBT_KEY_FEED_COUNT, feedCount);
             }
+            if (bloodFeudTarget != null && !bloodFeudTarget.isEmpty()) {
+                output.putString(NBT_KEY_BLOOD_FEUD_TARGET, bloodFeudTarget);
+            }
         }
+    }
+
+    public static String readBloodFeudTargetFromSaveData(ValueInput input) {
+        if (input != null) {
+            return input.getString(NBT_KEY_BLOOD_FEUD_TARGET).orElse("");
+        }
+        return "";
     }
 
     public static String readNemesisTypeFromSaveData(ValueInput input) {
@@ -259,6 +274,10 @@ public class WolfPersistentData {
     }
 
     public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry, UUID parent1, UUID parent2, boolean isInbred, boolean isGuarding, net.minecraft.core.BlockPos guardPos, boolean isUpForAdoption, long lastGiftDay, int feedCount) {
+        writeToNbt(tag, personality, socialScale, dnaSeed, favoriteTreat, soothedTime, nemesisType, nemesisExpiry, parent1, parent2, isInbred, isGuarding, guardPos, isUpForAdoption, lastGiftDay, feedCount, "");
+    }
+
+    public static void writeToNbt(CompoundTag tag, WolfPersonality personality, float socialScale, long dnaSeed, String favoriteTreat, long soothedTime, String nemesisType, long nemesisExpiry, UUID parent1, UUID parent2, boolean isInbred, boolean isGuarding, net.minecraft.core.BlockPos guardPos, boolean isUpForAdoption, long lastGiftDay, int feedCount, String bloodFeudTarget) {
         if (tag != null) {
             if (personality != null) {
                 tag.putString(NBT_KEY_PERSONALITY, personality.getId());
@@ -296,6 +315,9 @@ public class WolfPersistentData {
             }
             if (feedCount > 0) {
                 tag.putInt(NBT_KEY_FEED_COUNT, feedCount);
+            }
+            if (bloodFeudTarget != null && !bloodFeudTarget.isEmpty()) {
+                tag.putString(NBT_KEY_BLOOD_FEUD_TARGET, bloodFeudTarget);
             }
         }
     }
@@ -422,5 +444,12 @@ public class WolfPersistentData {
             return tag.getInt(NBT_KEY_FEED_COUNT).orElse(0);
         }
         return 0;
+    }
+
+    public static String readBloodFeudTargetFromNbt(CompoundTag tag) {
+        if (tag != null && tag.contains(NBT_KEY_BLOOD_FEUD_TARGET)) {
+            return tag.getString(NBT_KEY_BLOOD_FEUD_TARGET).orElse("");
+        }
+        return "";
     }
 }
