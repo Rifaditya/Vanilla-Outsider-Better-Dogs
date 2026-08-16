@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
@@ -99,6 +100,28 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
 
     @Unique
     private int betterdogs$feedCount = 0;
+
+    @Unique
+    private net.minecraft.world.entity.LivingEntity betterdogs$retaliationTarget = null;
+
+    @Unique
+    private int betterdogs$retaliationTicks = 0;
+
+    @Override
+    public net.minecraft.world.entity.LivingEntity betterdogs$getRetaliationTarget() {
+        return this.betterdogs$retaliationTarget;
+    }
+
+    @Override
+    public void betterdogs$setRetaliationTarget(net.minecraft.world.entity.LivingEntity target, int ticks) {
+        this.betterdogs$retaliationTarget = target;
+        this.betterdogs$retaliationTicks = Math.max(0, ticks);
+    }
+
+    @Override
+    public int betterdogs$getRetaliationTicks() {
+        return this.betterdogs$retaliationTicks;
+    }
 
     @Override
     public int betterdogs$getHowlingTicks() {
@@ -342,6 +365,14 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
                 this.betterdogs$feedCount = 0;
             }
         }
+
+        if (wolf.isBaby() && this.betterdogs$personality == WolfPersonality.AGGRESSIVE && source.getEntity() instanceof LivingEntity attacker && attacker != wolf) {
+            int retaliateChance = net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.getInt(wolf.getCommandSenderWorld(), net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_BABY_RETALIATE_PERCENT, 50);
+            if (wolf.getRandom().nextInt(100) < retaliateChance) {
+                this.betterdogs$retaliationTarget = attacker;
+                this.betterdogs$retaliationTicks = 100;
+            }
+        }
     }
 
     @Inject(method = "die", at = @At("HEAD"))
@@ -363,6 +394,12 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
             }
             if (this.betterdogs$howlingTicks > 0) {
                 this.betterdogs$howlingTicks--;
+            }
+            if (this.betterdogs$retaliationTicks > 0) {
+                this.betterdogs$retaliationTicks--;
+                if (this.betterdogs$retaliationTicks == 0) {
+                    this.betterdogs$retaliationTarget = null;
+                }
             }
         }
         net.vanillaoutsider.betterdogs.util.WolfInbreedingHelper.tickRuntAmbientParticles((Wolf) (Object) this);
@@ -390,6 +427,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.goalSelector.addGoal(4, new net.vanillaoutsider.betterdogs.ai.WolfGiftGoal(wolf));
         this.goalSelector.addGoal(4, new net.vanillaoutsider.betterdogs.ai.BabyMischiefGoal(wolf));
         this.goalSelector.addGoal(4, new net.vanillaoutsider.betterdogs.ai.BabyCuriosityGoal(wolf, 0.9));
+        this.goalSelector.addGoal(4, new net.vanillaoutsider.betterdogs.ai.BabyBiteBackGoal(wolf, 1.25));
         this.goalSelector.addGoal(5, new net.vanillaoutsider.betterdogs.ai.WolfGuardGoal(wolf));
         this.goalSelector.addGoal(5, new net.vanillaoutsider.betterdogs.ai.WildWolfTerritorialGoal(wolf));
         this.goalSelector.addGoal(6, new PersonalityFollowOwnerGoal(wolf, 1.25, 2.0f, 50.0f, true));
