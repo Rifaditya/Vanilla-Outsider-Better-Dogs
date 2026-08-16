@@ -85,6 +85,32 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     @Unique
     private long betterdogs$lastGiftDay = -1L;
 
+    @Unique
+    private int betterdogs$zoomiesTicks = 0;
+
+    @Unique
+    private boolean betterdogs$hasFetchedStick = false;
+
+    @Override
+    public int betterdogs$getZoomiesTicks() {
+        return this.betterdogs$zoomiesTicks;
+    }
+
+    @Override
+    public void betterdogs$setZoomiesTicks(int ticks) {
+        this.betterdogs$zoomiesTicks = ticks;
+    }
+
+    @Override
+    public boolean betterdogs$hasFetchedStick() {
+        return this.betterdogs$hasFetchedStick;
+    }
+
+    @Override
+    public void betterdogs$setHasFetchedStick(boolean fetched) {
+        this.betterdogs$hasFetchedStick = fetched;
+    }
+
     @Override
     public long betterdogs$getLastGiftDay() {
         return this.betterdogs$lastGiftDay;
@@ -278,8 +304,13 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void betterdogs$onTick(CallbackInfo ci) {
-        if (!this.getCommandSenderWorld().isClientSide() && this.betterdogs$passiveOverrideTicks > 0) {
-            this.betterdogs$passiveOverrideTicks--;
+        if (!this.getCommandSenderWorld().isClientSide()) {
+            if (this.betterdogs$passiveOverrideTicks > 0) {
+                this.betterdogs$passiveOverrideTicks--;
+            }
+            if (this.betterdogs$zoomiesTicks > 0) {
+                this.betterdogs$zoomiesTicks--;
+            }
         }
         net.vanillaoutsider.betterdogs.util.WolfInbreedingHelper.tickRuntAmbientParticles((Wolf) (Object) this);
         net.vanillaoutsider.betterdogs.util.WolfAdoptionHelper.tickAdoptionAmbientParticles((Wolf) (Object) this);
@@ -297,7 +328,9 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.goalSelector.addGoal(2, new WolfFleeLowHealthGoal(wolf, 1.4));
         this.goalSelector.addGoal(2, new WolfStormAnxietyGoal(wolf));
         this.goalSelector.addGoal(2, new net.vanillaoutsider.betterdogs.ai.WolfHornGoal(wolf));
+        this.goalSelector.addGoal(2, new net.vanillaoutsider.betterdogs.ai.ZoomiesGoal(wolf));
         this.goalSelector.addGoal(3, new WolfFlankAttackGoal(wolf, 1.25));
+        this.goalSelector.addGoal(3, new net.vanillaoutsider.betterdogs.ai.WolfFetchGoal(wolf));
         this.goalSelector.addGoal(4, new EatGroundFoodGoal(wolf, 1.25));
         this.goalSelector.addGoal(4, new net.vanillaoutsider.betterdogs.ai.WolfGiftGoal(wolf));
         this.goalSelector.addGoal(5, new net.vanillaoutsider.betterdogs.ai.WolfGuardGoal(wolf));

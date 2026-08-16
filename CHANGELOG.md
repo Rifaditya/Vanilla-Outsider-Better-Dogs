@@ -1,5 +1,12 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.44+1.20.1] - 2026-08-16
+### Added
+- 🎾 **Stick Fetching AI & Favorite Treat Zoomies (`WolfFetchHelper.java`, `WolfFetchGoal.java`, `ZoomiesGoal.java`)**:
+  - Implemented stick-throwing fetch mini-game where companion dogs actively track down dropped sticks within 16 blocks at $1.25\times$ speed, pick them up, and return them directly to the owner's feet with happy barks and green sparkles (`ParticleTypes.HAPPY_VILLAGER`).
+  - Implemented favorite treat "zoomies" behavior where dogs fed their individual favorite treat enter a 6-second (120 ticks) burst of playful $1.5\times$ sprint loops around the owner with heart/cloud/sparkle trails.
+  - Added automated unit test suite `FetchAndZoomiesTest`.
+
 ## [1.0.43+1.20.1] - 2026-08-16
 ### Added
 - 🎁 **Morning Gift Bringing AI (`WolfGiftHelper.java`, `WolfGiftGoal.java`)**:

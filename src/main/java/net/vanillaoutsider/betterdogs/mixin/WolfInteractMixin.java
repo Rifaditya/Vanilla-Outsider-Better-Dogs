@@ -7,6 +7,7 @@ import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.util.DogFoodHelper;
 import net.vanillaoutsider.betterdogs.util.DogTreatHelper;
 import net.vanillaoutsider.betterdogs.util.WolfPettingHelper;
@@ -64,6 +65,12 @@ public abstract class WolfInteractMixin {
                 DogTreatHelper.performRefusal(wolf);
                 cir.setReturnValue(InteractionResult.sidedSuccess(level.isClientSide));
                 return;
+            }
+
+            if (DogTreatHelper.isFavoriteTreat(wolf, itemInHand)) {
+                if (wolf instanceof WolfExtensions ext) {
+                    ext.betterdogs$setZoomiesTicks(120);
+                }
             }
 
             DogTreatHelper.tryRollFavoriteTreat(wolf, itemInHand);

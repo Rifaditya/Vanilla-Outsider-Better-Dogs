@@ -50,6 +50,7 @@ public class DogTreatHelper {
             if (wolf.getRandom().nextFloat() < 0.35F) {
                 String itemId = BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
                 ext.betterdogs$setFavoriteTreat(itemId);
+                ext.betterdogs$setZoomiesTicks(120);
                 wolf.playSound(SoundEvents.WOLF_AMBIENT, 1.2F, 1.3F);
             }
         }
