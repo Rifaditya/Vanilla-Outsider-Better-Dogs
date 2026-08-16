@@ -2,11 +2,14 @@
 package net.vanillaoutsider.betterdogs;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.vanillaoutsider.betterdogs.command.BetterDogsCommand;
 
 public class BetterDogsFabric implements ModInitializer {
 
     @Override
     public void onInitialize() {
         BetterDogs.init();
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> BetterDogsCommand.register(dispatcher));
     }
 }
