@@ -1,5 +1,15 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.1)
 
+## [1.0.50+1.21.1] - 2026-08-16
+### Added
+- 🪑 **Dog Mounting & Vehicle/Seat Boarding Command Suite (`DogCommandManager.java`, `MoveToVehicleGoal.java`, `BetterDogsTags.java`)**:
+  - Implemented stick/command item interaction allowing players crouching with a command item (Stick, Blaze Rod, Breeze Rod) to select an owned tamed dog and command it to board a vehicle (Boat, Minecart, Horse, Camel, Saddled Pig/Strider) or stair/chair block within 12 blocks.
+  - Added `MoveToVehicleGoal` enabling dogs to navigate at 1.25x speed directly to the targeted seat and mount smoothly.
+  - Added shift-right-click dismounting command when interacting with a seated dog using a command item.
+  - Registered `#vanilla-outsider-better-dogs:command_items` item tag.
+  - Added namespaced boolean GameRule `bd_allow_unrestricted_dog_riding` (default: `false`).
+  - Added automated unit test suite `DogCommandTest`.
+
 ## [1.0.49+1.21.1] - 2026-08-16
 ### Added
 - ⚡ **Full Brigadier `/betterdogs` & `/bd` In-Game Command Suite (`BetterDogsCommand.java`, `CommandSuggestionsHelper.java`)**:
