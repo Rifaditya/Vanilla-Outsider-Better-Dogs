@@ -1,5 +1,16 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.1)
 
+## [1.0.49+1.21.1] - 2026-08-16
+### Added
+- ⚡ **Full Brigadier `/betterdogs` & `/bd` In-Game Command Suite (`BetterDogsCommand.java`, `CommandSuggestionsHelper.java`)**:
+  - Implemented complete in-game Brigadier command tree with root `/betterdogs` and convenient short alias `/bd`.
+  - **Welcome & Help** (`/betterdogs`, `/betterdogs help`): Displays formatted syntax reference and command guides for players and administrators.
+  - **Categorized Companion Status** (`/betterdogs status`): Visual, color-coded diagnostic overview displaying active states across Personalities & Stats, Environmental Safety, Combat/Tactics, and Genetics/Breeding.
+  - **Rule Querying with Flexible Resolution** (`/betterdogs get <rule>`): Queries active GameRule values with full tab completion and shorthand matching (e.g., `cliff_safety` resolves to `bd_cliff_safety`).
+  - **Permission-Gated Rule Modification** (`/betterdogs set <rule> <val>`): Allows operators (Permission Level 2) to dynamically adjust boolean toggles and integer modifiers on the fly.
+  - **Factory Reset & State Sync** (`/betterdogs reset`, `/betterdogs reload`): Instantly restores all 80+ companion GameRules to factory defaults or confirms active state synchronization.
+  - Added automated unit test suite `CommandSuiteTest`.
+
 ## [1.0.48+1.21.1] - 2026-08-16
 ### Added
 - 🏆 **Dedicated 13 Husbandry Advancements Tree (`WolfAdvancementHelper.java`)**:
