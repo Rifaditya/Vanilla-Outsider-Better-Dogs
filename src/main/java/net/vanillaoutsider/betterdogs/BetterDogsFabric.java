@@ -10,6 +10,7 @@ public class BetterDogsFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         BetterDogs.init();
+        net.vanillaoutsider.betterdogs.util.DogCommandManager.registerEvents();
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> BetterDogsCommand.register(dispatcher));
     }
 }

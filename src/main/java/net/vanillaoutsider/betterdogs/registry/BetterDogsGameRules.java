@@ -39,6 +39,7 @@ public class BetterDogsGameRules {
     public static GameRules.Key<GameRules.IntegerValue> BD_HORN_COMMAND_RANGE;
     public static GameRules.Key<GameRules.IntegerValue> BD_HORN_PATHING_TIMEOUT;
     public static GameRules.Key<GameRules.IntegerValue> BD_HORN_OVERRIDE_DURATION;
+    public static GameRules.Key<GameRules.BooleanValue> BD_ALLOW_UNRESTRICTED_RIDING;
 
     // Player Protection
     public static GameRules.Key<GameRules.BooleanValue> BD_FRIENDLY_FIRE;
@@ -144,6 +145,7 @@ public class BetterDogsGameRules {
         BD_HORN_COMMAND_RANGE = GameRuleRegistry.register("bd_horn_command_range", BETTER_DOGS, GameRuleFactory.createIntRule(64));
         BD_HORN_PATHING_TIMEOUT = GameRuleRegistry.register("bd_horn_pathing_timeout", BETTER_DOGS, GameRuleFactory.createIntRule(300));
         BD_HORN_OVERRIDE_DURATION = GameRuleRegistry.register("bd_horn_override_duration", BETTER_DOGS, GameRuleFactory.createIntRule(600));
+        BD_ALLOW_UNRESTRICTED_RIDING = GameRuleRegistry.register("bd_allow_unrestricted_dog_riding", BETTER_DOGS, GameRuleFactory.createBooleanRule(false));
 
         // Player
         BD_FRIENDLY_FIRE = GameRuleRegistry.register("bd_friendly_fire_protection", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
