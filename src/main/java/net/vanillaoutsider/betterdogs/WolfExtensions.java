@@ -59,4 +59,7 @@ public interface WolfExtensions {
 
     boolean betterdogs$hasFetchedStick();
     void betterdogs$setHasFetchedStick(boolean fetched);
+
+    int betterdogs$getCalmTicks();
+    void betterdogs$setCalmTicks(int ticks);
 }

@@ -91,7 +91,20 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     private int betterdogs$zoomiesTicks = 0;
 
     @Unique
+    private int betterdogs$calmTicks = 0;
+
+    @Unique
     private boolean betterdogs$hasFetchedStick = false;
+
+    @Override
+    public int betterdogs$getCalmTicks() {
+        return this.betterdogs$calmTicks;
+    }
+
+    @Override
+    public void betterdogs$setCalmTicks(int ticks) {
+        this.betterdogs$calmTicks = ticks;
+    }
 
     @Override
     public int betterdogs$getZoomiesTicks() {
@@ -316,6 +329,9 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
             if (this.betterdogs$zoomiesTicks > 0) {
                 this.betterdogs$zoomiesTicks--;
             }
+            if (this.betterdogs$calmTicks > 0) {
+                this.betterdogs$calmTicks--;
+            }
         }
         net.vanillaoutsider.betterdogs.util.WolfInbreedingHelper.tickRuntAmbientParticles((Wolf) (Object) this);
         net.vanillaoutsider.betterdogs.util.WolfAdoptionHelper.tickAdoptionAmbientParticles((Wolf) (Object) this);
@@ -337,8 +353,10 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.goalSelector.addGoal(2, new net.vanillaoutsider.betterdogs.ai.ZoomiesGoal(wolf));
         this.goalSelector.addGoal(3, new WolfFlankAttackGoal(wolf, 1.25));
         this.goalSelector.addGoal(3, new net.vanillaoutsider.betterdogs.ai.WolfFetchGoal(wolf));
+        this.goalSelector.addGoal(3, new net.vanillaoutsider.betterdogs.ai.AdultCorrectionGoal(wolf));
         this.goalSelector.addGoal(4, new EatGroundFoodGoal(wolf, 1.25));
         this.goalSelector.addGoal(4, new net.vanillaoutsider.betterdogs.ai.WolfGiftGoal(wolf));
+        this.goalSelector.addGoal(4, new net.vanillaoutsider.betterdogs.ai.BabyMischiefGoal(wolf));
         this.goalSelector.addGoal(5, new net.vanillaoutsider.betterdogs.ai.WolfGuardGoal(wolf));
         this.goalSelector.addGoal(6, new PersonalityFollowOwnerGoal(wolf, 1.25, 2.0f, 50.0f));
         this.goalSelector.addGoal(7, new WolfBegGoal(wolf, 5.0F));

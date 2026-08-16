@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
+## [1.0.47+1.21.11] - 2026-08-16
+### Added
+- 🐾 **Puppy Mischief & Adult Disciplinary Correction AI (`WolfMischiefHelper.java`, `BabyMischiefGoal.java`, `AdultCorrectionGoal.java`)**:
+  - Puppies playfully bound and stalk towards nearby adult wolves (within 8 blocks) or small critters (chickens, rabbits) at $1.2\times$ speed, nipping playful tail/paw bounces.
+  - Adult dogs discipline overly hyperactive misbehaving puppies with a low warning growl (`SoundEvents.WOLF_GROWL`) and a harmless 0-damage disciplinary tap.
+  - Disciplined puppies immediately whimper softly (`SoundEvents.WOLF_WHINE`) and enter an 8-second (160 ticks) calm submissive state before resuming normal play.
+  - Added automated unit test suite `PuppyMischiefTest`.
+
 ## [1.0.46+1.21.11] - 2026-08-16
 ### Added
 - 🎾 **Stick Fetching AI & Favorite Treat Zoomies (`WolfFetchHelper.java`, `WolfFetchGoal.java`, `ZoomiesGoal.java`)**:
