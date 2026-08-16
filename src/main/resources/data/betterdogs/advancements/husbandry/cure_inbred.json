@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:golden_apple"
+    },
+    "title": {
+      "translate": "advancements.betterdogs.husbandry.cure_inbred.title"
+    },
+    "description": {
+      "translate": "advancements.betterdogs.husbandry.cure_inbred.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "betterdogs:husbandry/tame_wolf",
+  "criteria": {
+    "cure_inbred": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

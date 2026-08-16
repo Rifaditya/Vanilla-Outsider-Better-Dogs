@@ -418,6 +418,10 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
             float inheritedScale = net.vanillaoutsider.betterdogs.util.WolfScaleGeneticsHelper.calculateOffspringScale(level, scaleA, scaleB, child.getRandom());
             childExt.betterdogs$setSocialScale(inheritedScale);
 
+            if (inheritedScale >= 1.25f && parentA.getOwner() instanceof net.minecraft.world.entity.player.Player player) {
+                net.vanillaoutsider.betterdogs.util.WolfAdvancementHelper.grantAdvancement(player, "giant_lineage");
+            }
+
             net.vanillaoutsider.betterdogs.util.WolfInbreedingHelper.applyInbreeding(child, parentA, otherParent);
             net.vanillaoutsider.betterdogs.util.WolfLitterHelper.spawnExtraPuppies(level, parentA, otherParent, child);
         }

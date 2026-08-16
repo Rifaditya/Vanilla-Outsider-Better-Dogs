@@ -53,6 +53,8 @@ public class WolfHornCommandHelper {
             return;
         }
 
+        WolfAdvancementHelper.grantAdvancement(serverPlayer, "horn_command");
+
         int range = BetterDogsGameRules.getInt(serverLevel, BetterDogsGameRules.BD_HORN_COMMAND_RANGE, 64);
         double rangeD = (double) range;
 

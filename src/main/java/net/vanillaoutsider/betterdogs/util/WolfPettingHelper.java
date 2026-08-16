@@ -55,6 +55,7 @@ public class WolfPettingHelper {
         }
 
         if (!level.isClientSide()) {
+            boolean wasAnxious = WolfStormHelper.isStormAnxietyActive(wolf);
             if (wolf instanceof WolfExtensions ext) {
                 ext.betterdogs$setSoothedTime(level.getGameTime());
             }
@@ -67,6 +68,10 @@ public class WolfPettingHelper {
             if (level instanceof ServerLevel serverLevel) {
                 serverLevel.sendParticles(ParticleTypes.HEART, wolf.getRandomX(1.0), wolf.getRandomY() + 0.5, wolf.getRandomZ(1.0), 3, 0.2, 0.1, 0.2, 0.02);
                 serverLevel.sendParticles(ParticleTypes.NOTE, wolf.getX(), wolf.getY() + 0.5, wolf.getZ(), 4, 0.2, 0.2, 0.2, 0.05);
+            }
+            WolfAdvancementHelper.grantAdvancement(player, "pet_dog");
+            if (wasAnxious) {
+                WolfAdvancementHelper.grantAdvancement(player, "soothe_dog");
             }
         }
 

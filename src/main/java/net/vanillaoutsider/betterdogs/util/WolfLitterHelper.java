@@ -79,6 +79,9 @@ public class WolfLitterHelper {
                     float inheritedS = WolfScaleGeneticsHelper.calculateOffspringScale(level, scaleA, scaleB, sibling.getRandom());
                     siblingExt.betterdogs$setPersonality(inheritedP);
                     siblingExt.betterdogs$setSocialScale(inheritedS);
+                    if (inheritedS >= 1.25f && parentA.getOwner() instanceof net.minecraft.world.entity.player.Player player) {
+                        WolfAdvancementHelper.grantAdvancement(player, "giant_lineage");
+                    }
                     WolfInbreedingHelper.applyInbreeding(sibling, parentA, otherParent);
                 }
 
