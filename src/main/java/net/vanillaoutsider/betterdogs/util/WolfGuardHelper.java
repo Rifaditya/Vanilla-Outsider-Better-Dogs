@@ -67,6 +67,7 @@ public class WolfGuardHelper {
                 level,
                 Component.literal("§6Guard Mode: §aActive §7(" + guardPos.getX() + ", " + guardPos.getY() + ", " + guardPos.getZ() + ")")
             );
+            WolfAdvancementHelper.grantAdvancement(player, "guard_mode");
         } else {
             ext.betterdogs$setGuardPos(null);
             WolfFeedbackHelper.sendFeedback(

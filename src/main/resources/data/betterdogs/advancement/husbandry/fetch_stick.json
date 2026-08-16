@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:stick"
+    },
+    "title": {
+      "translate": "advancements.betterdogs.husbandry.fetch_stick.title"
+    },
+    "description": {
+      "translate": "advancements.betterdogs.husbandry.fetch_stick.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "betterdogs:husbandry/tame_wolf",
+  "criteria": {
+    "fetch_stick": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

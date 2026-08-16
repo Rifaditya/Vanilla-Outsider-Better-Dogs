@@ -37,6 +37,10 @@ public class DogTreatHelper {
     }
 
     public static void tryRollFavoriteTreat(Wolf wolf, ItemStack stack) {
+        tryRollFavoriteTreat(wolf, stack, null);
+    }
+
+    public static void tryRollFavoriteTreat(Wolf wolf, ItemStack stack, Player player) {
         if (wolf == null || stack == null || stack.isEmpty()) {
             return;
         }
@@ -52,6 +56,10 @@ public class DogTreatHelper {
                 ext.betterdogs$setFavoriteTreat(itemId);
                 ext.betterdogs$setZoomiesTicks(120);
                 wolf.playSound(SoundEvents.WOLF_AMBIENT, 1.2F, 1.3F);
+                if (player != null) {
+                    WolfAdvancementHelper.grantAdvancement(player, "favorite_treat");
+                    WolfAdvancementHelper.grantAdvancement(player, "zoomies");
+                }
             }
         }
     }

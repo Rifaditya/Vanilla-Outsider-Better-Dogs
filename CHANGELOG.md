@@ -1,5 +1,24 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.1)
 
+## [1.0.48+1.21.1] - 2026-08-16
+### Added
+- 🏆 **Dedicated 13 Husbandry Advancements Tree (`WolfAdvancementHelper.java`)**:
+  - Implemented 13 custom advancements nested under Vanilla's Husbandry tree (`minecraft:husbandry/tame_an_animal`):
+    - **Man's Best Companion** (`tame_wolf`, Task): Tame a canine companion with an authentic personality.
+    - **Who's a Good Dog?** (`pet_dog`, Task): Pet a tamed dog with an empty hand.
+    - **Safe and Sound** (`soothe_dog`, Task): Soothe a trembling or weather-panicked dog during a thunderstorm.
+    - **Gourmet Canine** (`favorite_treat`, Task): Discover and feed your companion their individual favorite treat.
+    - **The Zoomies** (`zoomies`, Task): Trigger a sprint burst by giving your dog its favorite snack.
+    - **Fetch Master** (`fetch_stick`, Task): Throw a stick and have your dog retrieve it for you.
+    - **Sentinel on Duty** (`guard_mode`, Task): Place a loyal dog on sentinel guard patrol mode.
+    - **Morning Surprise** (`morning_gift`, Task): Receive a morning gift from your sleeping companion.
+    - **Second Chance** (`adopt_dog`, Task): Successfully adopt a listed dog using an adoption paper certificate.
+    - **Pack Conductor** (`horn_command`, Task): Command a pack of dogs using a Goat Horn.
+    - **Genetic Restoration** (`cure_inbred`, Goal): Cure an inbred runt defect with a Golden Apple.
+    - **Nocturnal Symphony** (`chorus_howl`, Goal): Witness or participate in a nocturnal pack chorus howl under the moonlight.
+    - **Apex Dynasty** (`giant_lineage`, Challenge): Successfully breed a giant-scale (1.25x+) companion dog through generational lineage.
+  - Added automated unit test suite `AdvancementCriteriaTest`.
+
 ## [1.0.47+1.21.1] - 2026-08-16
 ### Added
 - ❄️ **Dynamic Climate Coat Biome Variants (`WolfCoatVariantHelper.java`)**:

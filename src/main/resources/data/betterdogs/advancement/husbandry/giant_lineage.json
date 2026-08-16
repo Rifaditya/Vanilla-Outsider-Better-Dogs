@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:diamond"
+    },
+    "title": {
+      "translate": "advancements.betterdogs.husbandry.giant_lineage.title"
+    },
+    "description": {
+      "translate": "advancements.betterdogs.husbandry.giant_lineage.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "betterdogs:husbandry/cure_inbred",
+  "criteria": {
+    "giant_lineage": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

@@ -36,6 +36,14 @@ public class WolfHowlHelper {
                 ext.betterdogs$setHowlingTicks(60 + delay);
             }
         }
+
+        List<net.minecraft.world.entity.player.Player> nearbyPlayers = level.getEntitiesOfClass(
+            net.minecraft.world.entity.player.Player.class,
+            initiator.getBoundingBox().inflate(radius)
+        );
+        for (net.minecraft.world.entity.player.Player player : nearbyPlayers) {
+            WolfAdvancementHelper.grantAdvancement(player, "chorus_howl");
+        }
     }
 
     public static void startHowl(Wolf wolf, float pitch) {

@@ -122,6 +122,7 @@ public class WolfAdoptionHelper {
                 if (level instanceof ServerLevel serverLevel) {
                     serverLevel.sendParticles(ParticleTypes.HEART, wolf.getX(), wolf.getY() + 0.6, wolf.getZ(), 12, 0.4, 0.4, 0.4, 0.1);
                 }
+                WolfAdvancementHelper.grantAdvancement(player, "adopt_dog");
             }
             return InteractionResult.sidedSuccess(level.isClientSide());
         }

@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:sugar"
+    },
+    "title": {
+      "translate": "advancements.betterdogs.husbandry.zoomies.title"
+    },
+    "description": {
+      "translate": "advancements.betterdogs.husbandry.zoomies.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "betterdogs:husbandry/favorite_treat",
+  "criteria": {
+    "zoomies": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

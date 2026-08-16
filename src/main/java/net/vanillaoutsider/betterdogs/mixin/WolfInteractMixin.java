@@ -10,6 +10,7 @@ import net.minecraft.world.level.Level;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.util.DogFoodHelper;
 import net.vanillaoutsider.betterdogs.util.DogTreatHelper;
+import net.vanillaoutsider.betterdogs.util.WolfAdvancementHelper;
 import net.vanillaoutsider.betterdogs.util.WolfPettingHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -71,9 +72,11 @@ public abstract class WolfInteractMixin {
                 if (wolf instanceof WolfExtensions ext) {
                     ext.betterdogs$setZoomiesTicks(120);
                 }
+                WolfAdvancementHelper.grantAdvancement(player, "favorite_treat");
+                WolfAdvancementHelper.grantAdvancement(player, "zoomies");
             }
 
-            DogTreatHelper.tryRollFavoriteTreat(wolf, itemInHand);
+            DogTreatHelper.tryRollFavoriteTreat(wolf, itemInHand, player);
         }
     }
 }

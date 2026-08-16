@@ -77,5 +77,6 @@ public class WolfFetchHelper {
         if (level instanceof ServerLevel serverLevel) {
             serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, wolf.getX(), wolf.getY() + 0.5, wolf.getZ(), 6, 0.2, 0.2, 0.2, 0.05);
         }
+        WolfAdvancementHelper.grantAdvancement(owner, "fetch_stick");
     }
 }

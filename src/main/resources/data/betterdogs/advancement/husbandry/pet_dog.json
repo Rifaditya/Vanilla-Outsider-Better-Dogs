@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:lead"
+    },
+    "title": {
+      "translate": "advancements.betterdogs.husbandry.pet_dog.title"
+    },
+    "description": {
+      "translate": "advancements.betterdogs.husbandry.pet_dog.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "betterdogs:husbandry/tame_wolf",
+  "criteria": {
+    "pet_dog": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

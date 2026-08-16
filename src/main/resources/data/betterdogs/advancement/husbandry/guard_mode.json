@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:iron_helmet"
+    },
+    "title": {
+      "translate": "advancements.betterdogs.husbandry.guard_mode.title"
+    },
+    "description": {
+      "translate": "advancements.betterdogs.husbandry.guard_mode.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "betterdogs:husbandry/tame_wolf",
+  "criteria": {
+    "guard_mode": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

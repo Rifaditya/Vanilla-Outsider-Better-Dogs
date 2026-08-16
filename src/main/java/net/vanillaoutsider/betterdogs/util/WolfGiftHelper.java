@@ -129,5 +129,6 @@ public class WolfGiftHelper {
         if (level instanceof ServerLevel serverLevel) {
             serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, wolf.getX(), wolf.getY() + 0.5, wolf.getZ(), 8, 0.3, 0.3, 0.3, 0.05);
         }
+        WolfAdvancementHelper.grantAdvancement(owner, "morning_gift");
     }
 }
