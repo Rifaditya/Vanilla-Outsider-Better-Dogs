@@ -15,6 +15,7 @@ import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 /**
  * Dedicated single-purpose AI goal for wild wolves to desperately hunt small prey only when hurt.
  * Wild wolves hunt when health falls below bd_wild_hunt_health_threshold (default 50%).
+ * Upon defeating prey, restores 4.0 HP (2 hearts) sustenance healing.
  */
 public class HuntWhenHurtGoal extends Goal {
 
@@ -86,7 +87,23 @@ public class HuntWhenHurtGoal extends Goal {
     }
 
     @Override
+    public void tick() {
+        if (this.targetPrey != null && !this.targetPrey.isAlive()) {
+            if (!this.wolf.isTame()) {
+                this.wolf.heal(4.0F);
+            }
+            this.targetPrey = null;
+            this.wolf.setTarget(null);
+        }
+    }
+
+    @Override
     public void stop() {
+        if (this.targetPrey != null && !this.targetPrey.isAlive()) {
+            if (!this.wolf.isTame()) {
+                this.wolf.heal(4.0F);
+            }
+        }
         this.targetPrey = null;
         if (this.wolf.getTarget() != null && !this.wolf.getTarget().isAlive()) {
             this.wolf.setTarget(null);

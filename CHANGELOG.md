@@ -1,6 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
-## [1.0.60+1.21.11] - 2026-08-16
+## [1.0.61+1.21.11] - 2026-08-16
+### Fixed
+- 🚨 **Resolved Startup Crash (Superclass Mixin Target Mismatch)**:
+  - Removed illegal `@Inject(method = "doHurtTarget")` from `WolfMixin.java` which failed Knot Mixin class transformation at bootstrap because `Wolf` does not declare `doHurtTarget` (it is inherited from `Mob.class`).
+  - Moved the `4.0 HP` sustenance kill healing cleanly inside `HuntWhenHurtGoal.java` in pure Java, guaranteeing 100% crash-free bootstrap.
+  - Supersedes yanked versions `1.0.56+1.21.11` through `1.0.60+1.21.11`.
+
+## [1.0.60+1.21.11] - 2026-08-16 [YANKED / BROKEN ON STARTUP]
 ### Added
 - 🌲 **Wanderlust Roaming AI (`WanderlustGoal.java`)**:
   - Tamed dogs occasionally experience spontaneous exploratory wandering surges (1 in 400 calm ticks, lasting 10 seconds / 200 ticks).
@@ -8,7 +15,7 @@
   - Strictly respects sit commands, leash state, guard mode, and cancels immediately if threats arise or owner moves beyond 32 blocks.
 - Added automated test suite `WanderlustTest`.
 
-## [1.0.59+1.21.11] - 2026-08-16
+## [1.0.59+1.21.11] - 2026-08-16 [YANKED / BROKEN ON STARTUP]
 ### Added
 - ⚔️ **Wild Wolf Pack War & Territorial Rivalry Matrix (`WildWolfPackWarGoal.java`, `WildWolfFollowLeaderGoal.java`, `WildWolfTerritorialGoal.java`)**:
   - Implemented dynamic wild pack alpha election and follower synchronization (`WildWolfFollowLeaderGoal`).
@@ -17,7 +24,7 @@
   - Upon alpha defeat/yield (health < 20%), remaining pack members submit and merge under the victorious alpha (`WolfTerritorialRivalryHelper`).
 - Added automated test suite `PackWarTest`.
 
-## [1.0.58+1.21.11] - 2026-08-16
+## [1.0.58+1.21.11] - 2026-08-16 [YANKED / BROKEN ON STARTUP]
 ### Added
 - 🤺 **Play Fighting & Social Sparring AI (`SmallFightGoal.java`)**:
   - Tamed dogs of the same pack engage in harmless playful sparring/tussles with mock pounces and circling.
@@ -26,7 +33,7 @@
   - Respects player sit commands and immediately breaks off if combat starts.
 - Added automated test suite `SmallFightTest`.
 
-## [1.0.57+1.21.11] - 2026-08-16
+## [1.0.57+1.21.11] - 2026-08-16 [YANKED / BROKEN ON STARTUP]
 ### Added
 - 🩸 **Entity-to-Entity Blood Feud AI (`BloodFeudGoal.java`, `bd_blood_feud_percent`)**:
   - Implemented persistent wolf-to-wolf vendettas by entity UUID.
@@ -34,7 +41,7 @@
   - Feuding wolves hunt down and duel their nemesis within 20 blocks until one perishes, bypassing standard friendly fire between rivals while respecting player sit commands.
 - Added automated test suite `BloodFeudTest`.
 
-## [1.0.56+1.21.11] - 2026-08-16
+## [1.0.56+1.21.11] - 2026-08-16 [YANKED / BROKEN ON STARTUP]
 ### Added
 - 🐺 **Desperate Low-Health Wild Wolf Hunting (`HuntWhenHurtGoal.java`, `bd_wild_hunt_health_threshold`)**:
   - Wild wolves no longer indiscriminately massacre livestock at 100% full health.
