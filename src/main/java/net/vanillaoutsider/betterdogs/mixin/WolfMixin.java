@@ -142,6 +142,19 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         return !this.betterdogs$bloodFeudTarget.isEmpty();
     }
 
+    @Unique
+    private int betterdogs$playFightCooldown = 0;
+
+    @Override
+    public int betterdogs$getPlayFightCooldown() {
+        return this.betterdogs$playFightCooldown;
+    }
+
+    @Override
+    public void betterdogs$setPlayFightCooldown(int ticks) {
+        this.betterdogs$playFightCooldown = Math.max(0, ticks);
+    }
+
     @Override
     public int betterdogs$getFeedCount() {
         return this.betterdogs$feedCount;
@@ -433,6 +446,9 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
             if (this.betterdogs$howlingTicks > 0) {
                 this.betterdogs$howlingTicks--;
             }
+            if (this.betterdogs$playFightCooldown > 0) {
+                this.betterdogs$playFightCooldown--;
+            }
             if (this.betterdogs$retaliationTicks > 0) {
                 this.betterdogs$retaliationTicks--;
                 if (this.betterdogs$retaliationTicks == 0) {
@@ -467,6 +483,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.goalSelector.addGoal(4, new net.vanillaoutsider.betterdogs.ai.BabyMischiefGoal(wolf));
         this.goalSelector.addGoal(4, new net.vanillaoutsider.betterdogs.ai.BabyCuriosityGoal(wolf, 0.9));
         this.goalSelector.addGoal(4, new net.vanillaoutsider.betterdogs.ai.BabyBiteBackGoal(wolf, 1.25));
+        this.goalSelector.addGoal(4, new net.vanillaoutsider.betterdogs.ai.SmallFightGoal(wolf));
         this.goalSelector.addGoal(5, new net.vanillaoutsider.betterdogs.ai.WolfGuardGoal(wolf));
         this.goalSelector.addGoal(5, new net.vanillaoutsider.betterdogs.ai.WildWolfTerritorialGoal(wolf));
         this.goalSelector.addGoal(6, new PersonalityFollowOwnerGoal(wolf, 1.25, 2.0f, 50.0f));

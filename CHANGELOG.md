@@ -1,5 +1,14 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
+## [1.0.58+1.21.11] - 2026-08-16
+### Added
+- 🤺 **Play Fighting & Social Sparring AI (`SmallFightGoal.java`)**:
+  - Tamed dogs of the same pack engage in harmless playful sparring/tussles with mock pounces and circling.
+  - Spawns happy villager particles, plays panting/playful shake sounds, and deals 0 damage.
+  - Concludes after ~6-7 seconds and applies a mutual 30-second cooldown (`betterdogs$setPlayFightCooldown(600)`).
+  - Respects player sit commands and immediately breaks off if combat starts.
+- Added automated test suite `SmallFightTest`.
+
 ## [1.0.57+1.21.11] - 2026-08-16
 ### Added
 - 🩸 **Entity-to-Entity Blood Feud AI (`BloodFeudGoal.java`, `bd_blood_feud_percent`)**:
