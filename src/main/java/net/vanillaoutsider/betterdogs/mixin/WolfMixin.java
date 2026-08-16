@@ -527,14 +527,6 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.targetSelector.addGoal(5, new net.vanillaoutsider.betterdogs.ai.HuntWhenHurtGoal(wolf));
     }
 
-    @Inject(method = "doHurtTarget", at = @At("RETURN"))
-    private void betterdogs$onDoHurtTarget(net.minecraft.world.entity.Entity target, CallbackInfoReturnable<Boolean> cir) {
-        Wolf wolf = (Wolf) (Object) this;
-        if (cir.getReturnValue() && !wolf.isTame() && target instanceof LivingEntity living && !living.isAlive()) {
-            wolf.heal(4.0F);
-        }
-    }
-
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"), require = 0)
     private void betterdogs$writeNbt(CompoundTag tag, CallbackInfo ci) {
         WolfPersistentData.writeToNbt(tag, betterdogs$getPersonality(), betterdogs$getSocialScale(), betterdogs$getDnaSeed(), betterdogs$favoriteTreat, betterdogs$soothedTime, betterdogs$nemesisEntityType, betterdogs$nemesisExpiryTime, betterdogs$parentUUID1, betterdogs$parentUUID2, betterdogs$isInbred, betterdogs$isGuarding, betterdogs$guardPos, betterdogs$isUpForAdoption, betterdogs$lastGiftDay, betterdogs$feedCount, betterdogs$getBloodFeudTarget());
