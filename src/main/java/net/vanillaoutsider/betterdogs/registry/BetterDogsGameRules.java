@@ -80,9 +80,10 @@ public class BetterDogsGameRules {
     public static GameRules.Key<GameRules.IntegerValue> BD_WOLF_MIN_SCALE_PERCENT;
     public static GameRules.Key<GameRules.IntegerValue> BD_WOLF_MAX_SCALE_PERCENT;
 
-    // Correction & Retaliation
+    // Correction & Retaliation & Hunting
     public static GameRules.Key<GameRules.IntegerValue> BD_BLOOD_FEUD_PERCENT;
     public static GameRules.Key<GameRules.IntegerValue> BD_BABY_RETALIATE_PERCENT;
+    public static GameRules.Key<GameRules.IntegerValue> BD_WILD_HUNT_HEALTH_THRESHOLD;
 
     // Territorial
     public static GameRules.Key<GameRules.BooleanValue> BD_TERRITORIAL_RIVALRY;
@@ -188,9 +189,10 @@ public class BetterDogsGameRules {
         BD_WOLF_MIN_SCALE_PERCENT = GameRuleRegistry.register("bd_wolf_min_scale_percent", BETTER_DOGS, GameRuleFactory.createIntRule(70));
         BD_WOLF_MAX_SCALE_PERCENT = GameRuleRegistry.register("bd_wolf_max_scale_percent", BETTER_DOGS, GameRuleFactory.createIntRule(145));
 
-        // Correction
+        // Correction & Hunting
         BD_BLOOD_FEUD_PERCENT = GameRuleRegistry.register("bd_blood_feud_percent", BETTER_DOGS, GameRuleFactory.createIntRule(5));
         BD_BABY_RETALIATE_PERCENT = GameRuleRegistry.register("bd_baby_retaliate_percent", BETTER_DOGS, GameRuleFactory.createIntRule(50));
+        BD_WILD_HUNT_HEALTH_THRESHOLD = GameRuleRegistry.register("bd_wild_hunt_health_threshold", BETTER_DOGS, GameRuleFactory.createIntRule(50));
 
         // Territorial
         BD_TERRITORIAL_RIVALRY = GameRuleRegistry.register("bd_territorial_rivalry", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
