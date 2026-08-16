@@ -72,4 +72,7 @@ public interface WolfExtensions {
 
     int betterdogs$getCalmTicks();
     void betterdogs$setCalmTicks(int ticks);
+
+    int betterdogs$getHowlingTicks();
+    void betterdogs$setHowlingTicks(int ticks);
 }
