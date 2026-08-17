@@ -134,15 +134,17 @@ afterEvaluate {
                     jarFile = file("build/libs/${project.archives_base_name}-${project.mod_version}.jar")
                 }
                 if (jarFile.exists()) {
-                    // 1. Central Outer Archive
-                    def archiveDir = file("../../Archive Jar of all versions")
-                    if (archiveDir.exists()) {
-                        copy {
-                            from jarFile
-                            into archiveDir
-                        }
-                        println "[AUTO-ARCHIVE] Successfully copied ${jarFile.name} to central Archive directory: ${archiveDir.canonicalPath}"
+                    // 1. Central Outer Archive (MC 26.3)
+                    def archiveDir = file("../../Archive Jar of all versions/MC 26.3")
+                    if (!archiveDir.exists()) {
+                        archiveDir.mkdirs()
                     }
+                    copy {
+                        from jarFile
+                        into archiveDir
+                    }
+                    println "[AUTO-ARCHIVE] Successfully copied ${jarFile.name} to central Archive directory: ${archiveDir.canonicalPath}"
+
                     
                     // 2. Modrinth Profile Sync (if directory exists)
                     def modrinthProfileMods = file("C:/Users/fmrif/AppData/Roaming/ModrinthApp/profiles/Fabric 26.3-snapshot-4/mods")
