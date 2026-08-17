@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.UUID;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.vanillaoutsider.betterdogs.util.WolfDebugLogger;
-import net.vanillaoutsider.betterdogs.util.WolfStatManager;
+import net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper;
 import net.vanillaoutsider.betterdogs.mixin.WolfAccessor;
 
 import net.minecraft.world.item.Item;
@@ -138,7 +138,7 @@ public class WolfInteractionHelper {
                         net.vanillaoutsider.betterdogs.WolfPersistentData.setPersistedParentsAndInbred(wolf, p1.orElse(null), p2.orElse(null), false);
                         
                         WolfPersonality personality = ext.betterdogs$getPersonality();
-                        WolfStatManager.applyPersonalityStats(wolf, personality);
+                        WolfPersonalityStatHelper.applyPersonalityStats(wolf, personality);
                         
                         wolf.setHealth(wolf.getMaxHealth());
                         
@@ -268,7 +268,7 @@ public class WolfInteractionHelper {
                         personality = WolfPersonality.NORMAL;
                         ext.betterdogs$setPersonality(personality);
                     }
-                    WolfStatManager.applyPersonalityStats(wolf, personality);
+                    WolfPersonalityStatHelper.applyPersonalityStats(wolf, personality);
 
                     // Play effects
                     wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), ((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().ambientSound().value(), wolf.getSoundSource(), 1.0f, 1.0f);
@@ -423,7 +423,7 @@ public class WolfInteractionHelper {
                             WolfPersonality next = current.next();
                             ext.betterdogs$setPersonality(next);
                             // Force re-apply stats
-                            WolfStatManager.applyPersonalityStats(wolf, next);
+                            WolfPersonalityStatHelper.applyPersonalityStats(wolf, next);
                             player.sendOverlayMessage(Component.literal("§b[Debug] §fPersonality: " + next.name()));
                             WolfDebugLogger.log(wolf, "DebugStick", "Personality changed to " + next.name());
                         }

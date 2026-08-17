@@ -16,7 +16,8 @@ import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.vanillaoutsider.betterdogs.util.WolfDebugLogger;
-import net.vanillaoutsider.betterdogs.util.WolfStatManager;
+import net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper;
+import net.vanillaoutsider.betterdogs.util.WolfScaleGeneticsHelper;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -48,8 +49,15 @@ public abstract class WolfSpawnMixin extends TamableAnimal {
                 long dna = this.getRandom().nextLong();
                 ext.betterdogs$setDNA(dna);
 
-                // Apply personality stats and scale immediately at spawn
-                WolfStatManager.applyPersonalityStats(wolf, personality);
+                // Apply wild scale via Gaussian distribution
+                float wildScale = WolfScaleGeneticsHelper.generateWildWolfScale(level.getLevel(), this.getRandom());
+                var scaleAttr = wolf.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.SCALE);
+                if (scaleAttr != null) {
+                    scaleAttr.setBaseValue(wildScale);
+                }
+
+                // Apply personality stats immediately at spawn
+                WolfPersonalityStatHelper.applyPersonalityStats(wolf, personality);
 
                 // Apply dynamic climate-aware coat variant resolution
                 net.vanillaoutsider.betterdogs.util.WolfVariantHelper.applyClimateVariant(wolf, level.getLevel());

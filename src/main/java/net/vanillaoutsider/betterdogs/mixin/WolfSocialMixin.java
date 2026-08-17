@@ -241,7 +241,7 @@ public abstract class WolfSocialMixin implements SocialEntity, WolfExtensions {
                     if (personality == null) {
                         personality = WolfPersonality.NORMAL;
                     }
-                    net.vanillaoutsider.betterdogs.util.WolfStatManager.applyPersonalityStats(wolf, personality);
+                    net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper.applyPersonalityStats(wolf, personality);
                 } else {
                     var scaleAttr = wolf.getAttribute(Attributes.SCALE);
                     if (scaleAttr != null && scaleAttr.getBaseValue() != betterdogs$getSocialScale()) {

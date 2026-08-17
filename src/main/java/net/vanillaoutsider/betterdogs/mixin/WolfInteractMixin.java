@@ -14,7 +14,7 @@ import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.WolfPersistentData;
 import net.vanillaoutsider.betterdogs.util.WolfDebugLogger;
 import net.vanillaoutsider.betterdogs.util.WolfParticleHandler;
-import net.vanillaoutsider.betterdogs.util.WolfStatManager;
+import net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper;
 import net.vanillaoutsider.betterdogs.util.WolfInteractionHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -60,7 +60,7 @@ public abstract class WolfInteractMixin extends TamableAnimal {
             }
 
             WolfPersonality personality = ext.betterdogs$getPersonality();
-            WolfStatManager.applyPersonalityStats(wolf, personality);
+            WolfPersonalityStatHelper.applyPersonalityStats(wolf, personality);
             // statsApplied flag will be set/re-applied in WolfMixin's tick handler if needed, 
             // but we also apply immediately here for responsiveness.
 

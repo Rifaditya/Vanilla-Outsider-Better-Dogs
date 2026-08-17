@@ -9,7 +9,7 @@ import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersistentData;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
-import net.vanillaoutsider.betterdogs.util.WolfStatManager;
+import net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -245,7 +245,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         }
 
         if (!this.betterdogs$statsApplied && this.betterdogs$hasPersonality()) {
-            WolfStatManager.applyPersonalityStats((Wolf) (Object) this, this.betterdogs$getPersonality());
+            net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper.applyPersonalityStats((Wolf) (Object) this, this.betterdogs$getPersonality());
             this.betterdogs$statsApplied = true;
         }
 

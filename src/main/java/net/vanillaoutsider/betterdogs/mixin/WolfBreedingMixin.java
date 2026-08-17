@@ -11,7 +11,8 @@ import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.WolfPersistentData;
-import net.vanillaoutsider.betterdogs.util.WolfStatManager;
+import net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper;
+import net.vanillaoutsider.betterdogs.util.WolfScaleGeneticsHelper;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -53,6 +54,24 @@ public abstract class WolfBreedingMixin {
         // Calculate baby personality based on genetics
         WolfPersonality babyPersonality = betterdogs$calculateOffspringPersonality(level, p1, p2);
         babyExt.betterdogs$setPersonality(babyPersonality);
+
+        // Inherit offspring scale with continuous variance
+        float p1Scale = 1.0f;
+        var s1 = parent1.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.SCALE);
+        if (s1 != null) {
+            p1Scale = (float) s1.getBaseValue();
+        }
+        float p2Scale = 1.0f;
+        var s2 = parent2.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.SCALE);
+        if (s2 != null) {
+            p2Scale = (float) s2.getBaseValue();
+        }
+
+        float babyScale = WolfScaleGeneticsHelper.calculateOffspringScale(level, p1Scale, p2Scale, baby.getRandom());
+        var babyScaleAttr = baby.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.SCALE);
+        if (babyScaleAttr != null) {
+            babyScaleAttr.setBaseValue(babyScale);
+        }
 
         // Inherit genetics via DasikLibrary Genetics Engine
         net.dasik.social.api.genetics.GeneticsEngine.inheritGenetics(baby, parent1, parent2, babyPersonality.name().toLowerCase(java.util.Locale.ROOT));

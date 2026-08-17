@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.24.11+26.2] - 2026-08-17
+### Added & Refactored
+- **Scale Variance, Offspring Inheritance & Personality Stat Scaling (`WolfScaleGeneticsHelper`, `WolfPersonalityStatHelper`)**:
+  - Implemented single-purpose `WolfScaleGeneticsHelper` generating wild wolf scales via Gaussian bell curve centered at $1.0\times$ (std dev $0.12$, bounded by `bd_wolf_min_scale_percent` and `bd_wolf_max_scale_percent`) and calculating offspring scale inheritance with continuous $\pm 10\%$ genetic variance.
+  - Implemented single-purpose `WolfPersonalityStatHelper` managing dynamic personality attribute modifiers (Aggressive $+20\%$ damage / $+15\%$ speed / $+10\%$ HP, Pacifist $-20\%$ damage / $+10\%$ speed / $+20\%$ HP / $+0.5$ knockback, Normal baseline speed boost) with inbreeding runt penalty scaling.
+  - Decoupled and deleted legacy monolithic `WolfStatManager.java`, redirecting all spawning, breeding, interaction, and command mixins to dedicated helpers.
+  - Added automated test suites: `ScaleGeneticsTest.java` and `PersonalityStatScalingTest.java`.
+
 ## [4.24.10+26.2] - 2026-08-17
 ### Fixed & Refactored
 - **Wolf Movement Stutter & AI Checker Velocity-Zeroing Elimination (`WolfSafetyMixin`, `WolfPushMixin`, `PersonalityFollowOwnerGoal`)**:
