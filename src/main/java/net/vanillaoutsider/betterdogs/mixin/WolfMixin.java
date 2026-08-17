@@ -267,9 +267,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
             }
 
             if (this.tickCount % 40 == 0 && this.betterdogs$isAdoptable()) {
-                if (wolf.level() instanceof ServerLevel serverLevel) {
-                    net.vanillaoutsider.betterdogs.util.WolfTickHelper.tickAdoptableParticles(wolf, serverLevel);
-                }
+                net.vanillaoutsider.betterdogs.util.WolfAdoptionHelper.tickAdoptionAmbientParticles(wolf);
             }
 
             if (this.tickCount % 40 == 0 && net.vanillaoutsider.betterdogs.WolfPersistentData.isPersistedInbred(wolf)) {

@@ -57,6 +57,12 @@ public abstract class WolfInteractMixin extends TamableAnimal {
             }
         }
 
+        InteractionResult adoptResult = net.vanillaoutsider.betterdogs.util.WolfAdoptionHelper.tryHandleAdoption(wolf, player, itemStack);
+        if (adoptResult != InteractionResult.PASS) {
+            cir.setReturnValue(adoptResult);
+            return;
+        }
+
         InteractionResult result = WolfInteractionHelper.handleMobInteract(wolf, player, hand, itemStack);
         if (result != null) {
             cir.setReturnValue(result);

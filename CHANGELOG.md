@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.24.18+26.2] - 2026-08-17
+### Added & Refactored
+- **Lost Stray Collarless Adoption (`WolfAdoptionHelper`, `WolfInteractMixin`, `WolfMixin`)**:
+  - Implemented single-purpose `WolfAdoptionHelper` managing Paper Certificate listing (consumes 1 Paper, plays page turn sound, emits sparkles), ambient sparkles every 2s, peaceful owner cancellation, and empty-hand claiming by new adopters (12 heart particles, level-up chime, ownership transfer).
+  - Integrated adoption interaction handling into `WolfInteractMixin` and ambient particle ticking into `WolfMixin`.
+  - Added automated test suite: `AdoptionSystemTest.java`.
+
 ## [4.24.17+26.2] - 2026-08-17
 ### Added & Refactored
 - **Stationary Bone Guard Mode AI (`WolfGuardHelper`, `WolfGuardGoal`, `WolfInteractMixin`)**:
