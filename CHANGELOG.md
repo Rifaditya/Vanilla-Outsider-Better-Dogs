@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.24+26.3] - 2026-08-17
+### Added & Refactored
+- **Tactical Pack Flanking Coordination AI (`WolfFlankingHelper`, `WolfFlankAttackGoal`, `BetterDogsGameRules`)**:
+  - Extracted and implemented single-purpose `WolfFlankingHelper` managing approach-time calculation ($t = \frac{\text{dist}}{\text{speed}}$), deterministic tie-breaker sorting, dynamic bounding box clearance scaling ($\max(3.0, \text{bbWidth} \times 2.5)$), and raycast line-of-sight collision checks.
+  - Refactored `WolfFlankAttackGoal` to cleanly delegate tactical pack coordination: closest 50% of the pack charges directly (at 50% approach speed until melee), while slower 50% execute multi-angle flanking arcs with opposite-side fallback if terrain is blocked.
+  - Added automated test suite: `PackFlankingTest.java` (18 total test suites).
+
 ## [5.0.23+26.3] - 2026-08-17
 ### Added & Refactored (Parity Modernization: Steps 1–15 Complete)
 - **100% Modern Sovereign Parity Sync**:
