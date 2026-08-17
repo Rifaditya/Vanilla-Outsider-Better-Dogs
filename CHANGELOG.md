@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.24.15+26.2] - 2026-08-17
+### Added & Refactored
+- **Puppy Miscellaneous Mischief & Adult Discipline (`WolfMischiefHelper`, `BabyMischiefGoal`)**:
+  - Implemented single-purpose `WolfMischiefHelper` managing multi-target playful puppy mischief (adult dogs, chickens, rabbits, players) and personality-scaled adult discipline (warning growls, 160-tick calm discipline, and aggressive puppy retaliation/blood feud chances).
+  - Modernized single-purpose `BabyMischiefGoal` managing joyful bounding movements and happy villager sparkles without causing harm.
+  - Added automated test suite: `PuppyMischiefTest.java`.
+
 ## [4.24.14+26.2] - 2026-08-17
 ### Added & Refactored
 - **Thunderstorm Fear & Shelter AI (`WolfStormHelper`, `WolfStormAnxietyGoal`)**:
