@@ -1,5 +1,5 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
-// Verified against: WolfCombatHooks.java (26.1.2+)
+// Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
+// Verified against: Minecraft 26.2
 package net.vanillaoutsider.betterdogs.util;
 
 import net.minecraft.network.chat.Component;

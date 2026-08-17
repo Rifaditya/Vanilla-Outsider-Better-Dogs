@@ -1,3 +1,5 @@
+// Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
+// Verified against: Minecraft 26.2
 package net.vanillaoutsider.betterdogs.config;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;

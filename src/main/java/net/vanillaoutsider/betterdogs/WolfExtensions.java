@@ -1,5 +1,5 @@
-// Verified against: Wolf.java (26.2+)
-// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
+// Verified against: Minecraft 26.2
 package net.vanillaoutsider.betterdogs;
 
 import java.util.UUID;
@@ -268,4 +268,12 @@ public interface WolfExtensions {
     // ========== Playful Hyperactive Zoomies (Step 15) ==========
     int betterdogs$getZoomiesTicks();
     void betterdogs$setZoomiesTicks(int ticks);
+
+    default void betterdogs$clearTransientState() {
+        betterdogs$setSoundLocationTarget(null);
+        betterdogs$setPassiveOverrideTicks(0);
+        betterdogs$setHasFetchedItem(false);
+        betterdogs$setFetchedItemStack(null);
+        betterdogs$setZoomiesTicks(0);
+    }
 }

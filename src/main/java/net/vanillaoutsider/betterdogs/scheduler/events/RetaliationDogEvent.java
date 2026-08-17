@@ -1,5 +1,5 @@
-// Verified against: RetaliationDogEvent.java (26.1.2+)
-// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
+// Verified against: Minecraft 26.2
 package net.vanillaoutsider.betterdogs.scheduler.events;
 
 import net.dasik.social.api.SocialEntity;
