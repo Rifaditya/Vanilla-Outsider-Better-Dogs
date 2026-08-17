@@ -1,5 +1,20 @@
 # Better Dogs History & Concept Changelog
 
+## [4.24.8+26.2] - 2026-08-16
+### Fixed
+- **Minecart & Vehicle Dismount Interaction Interception (`DogCommandManager.java`, `WolfInteractionHelper.java`)**:
+  - Fixed raycast hitbox interception when clicking directly on Minecarts, Boats, or Seats containing owned dogs with a command item or empty hand.
+  - Added safe lateral position offset (0.8 blocks) on dismount to prevent vanilla `AbstractMinecart` collision logic from immediately re-boarding the wolf.
+  - Cleared vehicle targets and selections on dismount with audio and particle feedback.
+
+## [4.24.7+26.2] - 2026-08-11
+### Refactored & Polished
+- **Minimal Tame Particle Polish (`WolfParticleHandler`)**: Refactored first-time tame particles into a clean ~5-6 particle Minimal Signature per personality (Aggressive: crimson dust + angry villager; Normal: golden dust + happy villager; Pacifist: mint dust + heart).
+
+## [4.24.6+26.2] - 2026-08-10
+### Fixed
+- **YACL Config Option Descriptions (`YaclScreenHelper` & Translation Sheets)**: Added missing `.description(...)` OptionDescription builders in `YaclScreenHelper` across all 6 config categories and synchronized complete `.description` keys in `en_us.json` and `id_id.json`.
+
 ## [4.24.4+26.2] - 2026-08-10
 ### Fixed
 - **Dog Adoption Crash Fix (`WolfInteractionHelper` & `WolfStatManager`)**: Fixed `NullPointerException` crash during adoption by adding personality null guards in `WolfStatManager` and pre-assigning random personalities for uninitialized dogs, alongside safe `getOwnerUUID()` resolution.

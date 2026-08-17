@@ -311,6 +311,10 @@ public class WolfInteractionHelper {
                         vehicle.discard();
                     }
                     DogCommandManager.clearVehicleTarget(wolf.getUUID());
+
+                    // Safely offset position outside vehicle/minecart collision envelope
+                    net.minecraft.world.phys.Vec3 offset = player.getLookAngle().scale(-0.8).multiply(1, 0, 1);
+                    wolf.setPos(wolf.getX() + offset.x, wolf.getY(), wolf.getZ() + offset.z);
                 }
 
                 wolf.setOrderedToSit(true);

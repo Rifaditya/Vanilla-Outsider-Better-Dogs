@@ -1,5 +1,35 @@
 # Changelog
 
+## [4.24.9+26.2] - 2026-08-17
+### Added & Polished
+- **Dynamic GameRules Null-Safe Accessors & Tag Baseline (`BetterDogsGameRules.java`, `BetterDogsTags.java`)**:
+  - Implemented static null-safe fallback accessors (`getBoolean` and `getInt`) on `BetterDogsGameRules` delegating cleanly to `DynamicGameRuleManager` from `dasik-library`.
+  - Added automated test suite `BetterDogsGameRulesTest.java` verifying fallback retrieval and null-safety across all 80+ dynamic GameRules.
+
+## [4.24.8+26.2] - 2026-08-16
+### Fixed
+- **Minecart & Vehicle Dismount Interaction Interception (`DogCommandManager.java`, `WolfInteractionHelper.java`)**:
+  - Resolved raycast hitbox interception when clicking directly on Minecarts, Boats, or Seats containing owned dogs with a command item or empty hand.
+  - Implemented anti-collision lateral offset positioning (`0.8` blocks away from vehicle bounding box) on dismount, completely preventing vanilla `AbstractMinecart` collision logic from immediately re-boarding the wolf.
+  - Ensured active vehicle navigation targets and selections are cleanly cleared on dismount, accompanied by cloud particles and dismount audio.
+
+## [4.24.7+26.2] - 2026-08-11
+### Refactored & Polished
+- **Minimal Tame Particle Polish (`WolfParticleHandler`)**: Polished first-time taming particle feedback with a clean, subtle Minimal Signature (~5-6 particles) per personality:
+  - **Aggressive**: 3 `ANGRY_VILLAGER` icons + 3 subtle crimson dust sparkles (`0xFF3333`).
+  - **Normal**: 3 `HAPPY_VILLAGER` emerald stars + 3 subtle golden dust sparkles (`0xFFD700`).
+  - **Pacifist**: 3 `HEART` icons + 3 subtle mint dust sparkles (`0x00FF88`).
+
+## [4.24.6+26.2] - 2026-08-10
+### Changed
+- **Dismount Overlay Message Translation (`en_us.json` & `id_id.json`)**: Updated `text.betterdogs.dog_dismounted` overlay text to `"%s hopped out of the seat."` (Indonesian: `"%s keluar dari tempat duduk."`) for improved clarity when commanding dogs to dismount vehicles and seats.
+
+## [4.24.5+26.2] - 2026-08-10
+### Fixed
+- **YACL Config Option Descriptions (`YaclScreenHelper` & Translation Sheets)**:
+  - **Attached Descriptions**: Added missing `.description(OptionDescription.of(...))` builders to every option across all 6 YACL config categories (General, Personalities, Breeding, Territoriality, Gifts, Visual & Performance Options).
+  - **Translation Keys**: Added complete `.description` translation keys to both `en_us.json` and `id_id.json` for all options, ensuring informative hover tooltips are displayed cleanly in the YACL v3 GUI screen.
+
 ## [4.24.4+26.2] - 2026-08-10
 ### Fixed
 - **Dog Adoption Crash Fix (`WolfInteractionHelper` & `WolfStatManager`)**:

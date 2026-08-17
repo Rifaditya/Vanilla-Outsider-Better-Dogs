@@ -362,4 +362,19 @@ public class BetterDogsGameRules {
     private static GameRule<Integer> registerInteger(String id, GameRuleCategory category, int defaultValue) {
         return DynamicGameRuleManager.integerRule(id, category, defaultValue).register();
     }
+
+    // Static Null-Safe Accessors
+    public static boolean getBoolean(net.minecraft.world.level.Level level, GameRule<Boolean> rule, boolean fallback) {
+        if (level == null || rule == null) {
+            return fallback;
+        }
+        return DynamicGameRuleManager.getBoolean(level, rule);
+    }
+
+    public static int getInt(net.minecraft.world.level.Level level, GameRule<Integer> rule, int fallback) {
+        if (level == null || rule == null) {
+            return fallback;
+        }
+        return DynamicGameRuleManager.getInt(level, rule);
+    }
 }

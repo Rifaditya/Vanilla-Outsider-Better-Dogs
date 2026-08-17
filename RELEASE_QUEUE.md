@@ -5,6 +5,10 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`4.24.8+26.2`** (2026-08-16) - **Minecart & Vehicle Dismount Interaction Interception:** Resolved raycast hitbox interception when clicking vehicles/seats containing owned dogs; added anti-collision lateral offset (0.8 blocks) on dismount preventing instant Minecart collision re-boarding.
+- [ ] **`4.24.7+26.2`** (2026-08-11) - **Minimal Tame Particle Polish:** Polished first-time taming particle feedback with a clean, subtle Minimal Signature (~5-6 particles) per personality (Aggressive: crimson dust + angry villager; Normal: golden dust + happy villager; Pacifist: mint dust + heart).
+- [ ] **`4.24.6+26.2`** (2026-08-10) - **Dismount Overlay Message Translation:** Updated overlay text to `"%s hopped out of the seat."` (Indonesian: `"%s keluar dari tempat duduk."`) for dismounting vehicles/seats.
+- [ ] **`4.24.5+26.2`** (2026-08-10) - **YACL Config Option Descriptions:** Added missing `.description(...)` OptionDescription builders in `YaclScreenHelper` across all 6 config categories and synchronized complete `.description` keys in `en_us.json` and `id_id.json`.
 - [ ] **`4.24.4+26.2`** (2026-08-10) - **Dog Adoption Crash Fix:** Fixed `NullPointerException` crash during adoption by adding personality null guards in `WolfStatManager` and pre-assigning random personalities for uninitialized dogs, alongside safe `getOwnerUUID()` resolution.
 - [ ] **`4.24.3+26.2`** (2026-08-10) - **Litematica Compatibility & Command Item Expansion:** Resolved stick tool interaction collision with Litematica by introducing `#vanilla-outsider-better-dogs:command_items` item tag (Stick, Blaze Rod, Breeze Rod, `#c:tools/sticks`), enabling Blaze Rods and Breeze Rods as alternative command tools while keeping Bone 100% reserved for Guard Mode.
 - [ ] **`4.24.2+26.2`** (2026-08-10) - **Dynamic Climate-Aware Wolf Coat Variants:** Introduced dynamic climate coat variant resolution (`betterdogs:bd_dynamic_climate_variants`). Automatically assigns coat variants based on biome physical climate properties when Vanilla tag lookup defaults to Pale.
@@ -34,18 +38,18 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 - [ ] **`4.15.2-26.2`** (2026-06-30) - **Tamed Flanking Encirclement:** Modified pack coordination tactics to slow down straight-charging leaders/lone wolves to 80% speed during target approach, allowing flanking followers at normal speed to successfully encircle the target first.
 - [ ] **`4.15.1-26.2`** (2026-06-30) - **Tamed Flanking Fix:** Rewrote flanking goal to prevent vanilla pathing overrides from forcing straight-line charges, and added a 1.35x speed boost to allow flanking dogs to sweep around targets dynamically.
 - [ ] **`4.15.0-26.2`** (2026-06-30) - **Tamed Flanking Tactics:** Tamed wolves now treat their owner (the player) as the pack leader, enabling cooperative flanking AI during combat (splitting left/right around targets rather than running in straight lines).
-- [ ] **`4.14.7-26.2`** (2026-06-28) - **Hidden Treats:** Adds a "Hidden until discovered" mode to the Jade tooltip for a tamed dog's Favorite Treat.
-- [ ] **`4.14.6-26.2`** (2026-06-28) - **Sanitary Compliance:** Migrated all GameRule keys to the `betterdogs:` namespace.
-- [ ] **`4.14.5-26.2`** (2026-06-28) - **Jade Config:** Added built-in configuration toggles to the Jade plugin.
-- [ ] **`4.14.4-26.2`** (2026-06-28) - **Jade Sync:** Fixes client-side desync for the Inbred tag display.
-- [ ] **`4.14.3-26.2`** (2026-06-28) - **Refactor:** Extracted combat hooks from `WolfMixin` to `WolfCombatMixin` to stay under the 300 LOC limit.
-- [ ] **`4.14.2-26.2`** (2026-06-28) - **Optimization:** Throttled adoptable particles and watchdog radius checks via tick modulo to fix garbage collection overhead.
-- [ ] **`4.14.1-26.2`** (2026-06-28) - **Jade Hotfix:** Resolved plugin modid registration crashes.
-- [ ] **`4.14.0-26.2`** (2026-06-28) - **Jade Inbred Tag:** Displays inbred genetic tags in Jade HUD tooltips.
-- [ ] **`4.13.1-26.2`** (2026-06-28) - **Hotfix:** Jade integration now properly displays accurate Unicode hearts (`❤` and `♡`) and exact values (`HP: X / Y`), bypassing Jade's default 10-heart scaling cap that visually misrepresented large dynamic health pools.
-- [ ] **`4.13.0-26.2`** (2026-06-28) - **Jade Mod Integration:** Added official support for the Jade HUD tooltip mod. Now correctly overrides Jade's default health renderer to display the accurate dynamic health/max health of wolves, accounting for Better Dogs' genetic scaling and personality traits. Adds a custom tooltip line for tamed dogs showing their hidden "Favorite Treat" if the feature is enabled.
-- [ ] **`4.12.1-26.2`** (2026-06-27) - **Localization & GUI Quality Polish:** Cleaned up duplicate blocks and syntax errors in `id_id.json`. Added missing config keys for Creeper Avoidance and Pack Flanking Tactics to `en_us.json`. Corrected default values for Aggressive/Pacifist HP descriptions in both language files to match active code properties.
-- [ ] **`4.12.0-26.2`** (2026-06-27) - **Favorite Treats Mechanic:** Wolves now have a hidden favorite treat (seeded by their UUID)! Finding and feeding them their favorite treat fully heals them, grants Regeneration II, and triggers their native Zoomies!
+- [x] **`4.14.7-26.2`** (2026-06-28) - **Hidden Treats:** Adds a "Hidden until discovered" mode to the Jade tooltip for a tamed dog's Favorite Treat.
+- [x] **`4.14.6-26.2`** (2026-06-28) - **Sanitary Compliance:** Migrated all GameRule keys to the `betterdogs:` namespace.
+- [x] **`4.14.5-26.2`** (2026-06-28) - **Jade Config:** Added built-in configuration toggles to the Jade plugin.
+- [x] **`4.14.4-26.2`** (2026-06-28) - **Jade Sync:** Fixes client-side desync for the Inbred tag display.
+- [x] **`4.14.3-26.2`** (2026-06-28) - **Refactor:** Extracted combat hooks from `WolfMixin` to `WolfCombatMixin` to stay under the 300 LOC limit.
+- [x] **`4.14.2-26.2`** (2026-06-28) - **Optimization:** Throttled adoptable particles and watchdog radius checks via tick modulo to fix garbage collection overhead.
+- [x] **`4.14.1-26.2`** (2026-06-28) - **Jade Hotfix:** Resolved plugin modid registration crashes.
+- [x] **`4.14.0-26.2`** (2026-06-28) - **Jade Inbred Tag:** Displays inbred genetic tags in Jade HUD tooltips.
+- [x] **`4.13.1-26.2`** (2026-06-28) - **Hotfix:** Jade integration now properly displays accurate Unicode hearts (`❤` and `♡`) and exact values (`HP: X / Y`), bypassing Jade's default 10-heart scaling cap that visually misrepresented large dynamic health pools.
+- [x] **`4.13.0-26.2`** (2026-06-28) - **Jade Mod Integration:** Added official support for the Jade HUD tooltip mod. Now correctly overrides Jade's default health renderer to display the accurate dynamic health/max health of wolves, accounting for Better Dogs' genetic scaling and personality traits. Adds a custom tooltip line for tamed dogs showing their hidden "Favorite Treat" if the feature is enabled.
+- [x] **`4.12.1-26.2`** (2026-06-27) - **Localization & GUI Quality Polish:** Cleaned up duplicate blocks and syntax errors in `id_id.json`. Added missing config keys for Creeper Avoidance and Pack Flanking Tactics to `en_us.json`. Corrected default values for Aggressive/Pacifist HP descriptions in both language files to match active code properties.
+- [x] **`4.12.0-26.2`** (2026-06-27) - **Favorite Treats Mechanic:** Wolves now have a hidden favorite treat (seeded by their UUID)! Finding and feeding them their favorite treat fully heals them, grants Regeneration II, and triggers their native Zoomies!
 - [x] **`3.1.35`** (2026-02-03) - - Detailed descriptions for all gamerules, including the previously missing `bd_howl_chance`.
 - [x] **`3.1.36`** (2026-02-16) - - Dependency conflict: Allow `DasikLibrary` >= 1.0.1 (removed < 2.0.0 cap) to support version 2.0.0.
 - [x] **`3.1.36+build.1`** (2026-02-19) - - **DasikLibrary Integration**: Switched to standalone dependency (JiJ removed). - - **Versioning**: Adopted strict Build Number policy.
