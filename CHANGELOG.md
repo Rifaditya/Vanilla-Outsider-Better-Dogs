@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.24.17+26.2] - 2026-08-17
+### Added & Refactored
+- **Stationary Bone Guard Mode AI (`WolfGuardHelper`, `WolfGuardGoal`, `WolfInteractMixin`)**:
+  - Implemented single-purpose `WolfGuardHelper` managing Bone right-click toggling, action bar feedback, sound/particles, and personality patrol radii (Aggressive 12m, Normal 8m, Pacifist 4m).
+  - Modernized single-purpose `WolfGuardGoal` providing strict territory boundary leashing ($1.25\times$ return sprint), subtle ambient paw dust, and Pacifist defensive regeneration pulses to nearby injured allies.
+  - Intercepted Bone interaction directly in `WolfInteractMixin`.
+  - Added automated test suite: `GuardModePatrolTest.java`.
+
 ## [4.24.16+26.2] - 2026-08-17
 ### Added & Refactored
 - **Acoustic Goat Horn Command Suite (`WolfHornCommandHelper`, `WolfHornGoal`, `InstrumentItemMixin`)**:
