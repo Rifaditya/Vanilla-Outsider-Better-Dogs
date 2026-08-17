@@ -47,6 +47,10 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
 
     @Unique
     private int betterdogs$passiveOverrideTicks = 0;
+    @Unique
+    private boolean betterdogs$hasFetchedItem = false;
+    @Unique
+    private net.minecraft.world.item.ItemStack betterdogs$fetchedItemStack = null;
 
     @Override
     public net.minecraft.core.BlockPos betterdogs$getSoundLocationTarget() {
@@ -329,5 +333,25 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     @Override
     public void betterdogs$setNemesisExpiryTime(long time) {
         WolfPersistentData.setPersistedNemesis((Wolf) (Object) this, this.betterdogs$getNemesisEntityType(), time);
+    }
+
+    @Override
+    public boolean betterdogs$hasFetchedItem() {
+        return this.betterdogs$hasFetchedItem;
+    }
+
+    @Override
+    public void betterdogs$setHasFetchedItem(boolean fetched) {
+        this.betterdogs$hasFetchedItem = fetched;
+    }
+
+    @Override
+    public net.minecraft.world.item.ItemStack betterdogs$getFetchedItemStack() {
+        return this.betterdogs$fetchedItemStack;
+    }
+
+    @Override
+    public void betterdogs$setFetchedItemStack(net.minecraft.world.item.ItemStack stack) {
+        this.betterdogs$fetchedItemStack = stack;
     }
 }

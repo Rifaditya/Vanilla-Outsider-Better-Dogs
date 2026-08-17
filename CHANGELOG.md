@@ -1,5 +1,15 @@
 # Changelog
 
+## [4.24.21+26.2] - 2026-08-17
+### Added & Refactored
+- **Stick & Bone Fetch Retrieval AI (`WolfFetchHelper`, `WolfFetchGoal`, `BetterDogsGameRules`, `WolfExtensions`, `WolfMixin`)**:
+  - Implemented single-purpose `WolfFetchHelper` managing autonomous detection of dropped sticks and bones (`Items.STICK`, `Items.BONE`, and `betterdogs:fetch_items` tag) within 16 blocks.
+  - Modernized `WolfFetchGoal` for rapid $1.25\times$ sprint retrieval, holding items in jaws, and returning directly to the owner's feet ($2.5\text{m}$ arrival threshold).
+  - Added ground item delivery with `setDefaultPickUpDelay()`, happy ambient bark audio, 6 `HAPPY_VILLAGER` particles, and `"fetch_stick"` advancement trigger.
+  - Added strict 6D safety: sitting dogs, guard mode sentries, and dogs in active combat will never break posture or state to fetch.
+  - Registered dynamic GameRules: `betterdogs:bd_fetch_enabled` and `betterdogs:bd_fetch_range`.
+  - Added automated test suite: `FetchRetrievalTest.java`.
+
 ## [4.24.20+26.2] - 2026-08-17
 ### Added & Refactored
 - **Revenge Grudge Nemesis AI (`WolfNemesisHelper`, `WolfNemesisTargetGoal`, `WolfAIMixin`, `WolfMixin`)**:
