@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.24.14+26.2] - 2026-08-17
+### Added & Refactored
+- **Thunderstorm Fear & Shelter AI (`WolfStormHelper`, `WolfStormAnxietyGoal`)**:
+  - Implemented single-purpose `WolfStormHelper` managing thunderstorm weather evaluation, personality fear multipliers (Pacifist $3.0\times$ fear, Normal $1.0\times$ mild anxiety, Aggressive $0.0\times$ fearless/immune), 10-minute soothed immunity, and indoor overhead shelter searching with owner huddle comfort.
+  - Implemented single-purpose `WolfStormAnxietyGoal` providing sitting whimper/tremble preservation, nervous head pitch/yaw looks, water/splash droplets, and navigation to covered shelter.
+  - Added automated test suite: `StormAnxietyTest.java`.
+
 ## [4.24.13+26.2] - 2026-08-17
 ### Added & Refactored
 - **Interactive Petting & Soothing Interaction (`WolfPettingHelper`)**:
