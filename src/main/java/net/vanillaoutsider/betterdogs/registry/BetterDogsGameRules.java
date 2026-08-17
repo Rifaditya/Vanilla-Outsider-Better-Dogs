@@ -51,6 +51,8 @@ public class BetterDogsGameRules {
     public static GameRule<Integer> BD_HORN_OVERRIDE_DURATION;
     public static GameRule<Boolean> BD_FETCH_ENABLED;
     public static GameRule<Integer> BD_FETCH_RANGE;
+    public static GameRule<Boolean> BD_ZOOMIES_ENABLED;
+    public static GameRule<Integer> BD_ZOOMIES_DURATION_TICKS;
 
     // --- Player ---
     public static GameRule<Boolean> BD_FRIENDLY_FIRE;
@@ -193,6 +195,8 @@ public class BetterDogsGameRules {
         BD_HORN_OVERRIDE_DURATION = registerInteger("betterdogs:bd_horn_override_duration", BETTER_DOGS, 600);
         BD_FETCH_ENABLED = registerBoolean("betterdogs:bd_fetch_enabled", BETTER_DOGS, true);
         BD_FETCH_RANGE = registerInteger("betterdogs:bd_fetch_range", BETTER_DOGS, 16);
+        BD_ZOOMIES_ENABLED = registerBoolean("betterdogs:bd_zoomies_enabled", BETTER_DOGS, true);
+        BD_ZOOMIES_DURATION_TICKS = registerInteger("betterdogs:bd_zoomies_duration_ticks", BETTER_DOGS, 160);
 
 
 
@@ -388,5 +392,13 @@ public class BetterDogsGameRules {
 
     public static int getFetchRange(net.minecraft.world.level.Level level) {
         return getInt(level, BD_FETCH_RANGE, 16);
+    }
+
+    public static boolean isZoomiesEnabled(net.minecraft.world.level.Level level) {
+        return getBoolean(level, BD_ZOOMIES_ENABLED, true);
+    }
+
+    public static int getZoomiesDurationTicks(net.minecraft.world.level.Level level) {
+        return getInt(level, BD_ZOOMIES_DURATION_TICKS, 160);
     }
 }

@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.24.22+26.2] - 2026-08-17
+### Added & Refactored
+- **Playful Hyperactive Zoomies AI (`WolfZoomiesHelper`, `ZoomiesGoal`, `ZoomiesDogEvent`, `BetterDogsGameRules`, `WolfExtensions`, `WolfMixin`)**:
+  - Implemented single-purpose `WolfZoomiesHelper` managing playful zoomies activation, multi-event triggers (morning dawn wakeup, post-feeding meals/treats, standing up from rest), and real-time particle dispatch.
+  - Modernized `ZoomiesGoal` for $1.5\times$ rapid arc sprinting around the owner (`DefaultRandomPos.getPosTowards`) with real-time emerald sparkles (`HAPPY_VILLAGER`) and paw dust poofs (`POOF`).
+  - Added strict 6D safety: ordering dogs to sit immediately halts zoomies, and dogs in Guard Mode or active combat never trigger zoomies.
+  - Registered dynamic GameRules: `betterdogs:bd_zoomies_enabled` and `betterdogs:bd_zoomies_duration_ticks`.
+  - Added automated test suite: `ZoomiesSprintTest.java`.
+
 ## [4.24.21+26.2] - 2026-08-17
 ### Added & Refactored
 - **Stick & Bone Fetch Retrieval AI (`WolfFetchHelper`, `WolfFetchGoal`, `BetterDogsGameRules`, `WolfExtensions`, `WolfMixin`)**:

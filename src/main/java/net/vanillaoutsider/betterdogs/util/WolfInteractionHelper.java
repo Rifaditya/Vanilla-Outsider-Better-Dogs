@@ -94,6 +94,7 @@ public class WolfInteractionHelper {
                     if (wolf instanceof WolfExtensions ext) {
                         ext.betterdogs$setSoothedTime(wolf.level().getGameTime());
                         var scheduler = ext.betterdogs$getScheduler();
+                        WolfZoomiesHelper.triggerZoomies(wolf);
                         if (scheduler != null && !scheduler.isEventActive(ZoomiesDogEvent.ID)) {
                             scheduler.schedule(new ZoomiesDogEvent());
                         }

@@ -264,4 +264,8 @@ public interface WolfExtensions {
     void betterdogs$setHasFetchedItem(boolean fetched);
     @Nullable ItemStack betterdogs$getFetchedItemStack();
     void betterdogs$setFetchedItemStack(@Nullable ItemStack stack);
+
+    // ========== Playful Hyperactive Zoomies (Step 15) ==========
+    int betterdogs$getZoomiesTicks();
+    void betterdogs$setZoomiesTicks(int ticks);
 }

@@ -51,6 +51,8 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     private boolean betterdogs$hasFetchedItem = false;
     @Unique
     private net.minecraft.world.item.ItemStack betterdogs$fetchedItemStack = null;
+    @Unique
+    private int betterdogs$zoomiesTicks = 0;
 
     @Override
     public net.minecraft.core.BlockPos betterdogs$getSoundLocationTarget() {
@@ -264,6 +266,14 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
                 this.betterdogs$passiveOverrideTicks--;
             }
 
+            if (this.betterdogs$zoomiesTicks > 0) {
+                if (wolf.isOrderedToSit() || wolf.isInSittingPose()) {
+                    this.betterdogs$zoomiesTicks = 0;
+                } else {
+                    this.betterdogs$zoomiesTicks--;
+                }
+            }
+
             if (this.tickCount % 20 == 0 && this.betterdogs$isGuardMode()) {
                 if (wolf.level() instanceof ServerLevel serverLevel) {
                     net.vanillaoutsider.betterdogs.util.WolfTickHelper.tickGuardMode(wolf, this, serverLevel);
@@ -353,5 +363,15 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     @Override
     public void betterdogs$setFetchedItemStack(net.minecraft.world.item.ItemStack stack) {
         this.betterdogs$fetchedItemStack = stack;
+    }
+
+    @Override
+    public int betterdogs$getZoomiesTicks() {
+        return this.betterdogs$zoomiesTicks;
+    }
+
+    @Override
+    public void betterdogs$setZoomiesTicks(int ticks) {
+        this.betterdogs$zoomiesTicks = ticks;
     }
 }
