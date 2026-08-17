@@ -3,7 +3,7 @@
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.minecraft.server.level.ServerPlayer;
-import net.vanillaoutsider.betterdogs.util.WolfCatchUpHelper;
+import net.vanillaoutsider.betterdogs.util.WolfCatchupHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,7 +17,7 @@ public class ServerPlayerTickMixin {
         ServerPlayer player = (ServerPlayer) (Object) this;
         // Run catch-up check once per second (20 ticks)
         if (player.tickCount % 20 == 0) {
-            WolfCatchUpHelper.checkAndPerformCatchUp(player);
+            WolfCatchupHelper.checkAndPerformCatchUp(player);
         }
     }
 }

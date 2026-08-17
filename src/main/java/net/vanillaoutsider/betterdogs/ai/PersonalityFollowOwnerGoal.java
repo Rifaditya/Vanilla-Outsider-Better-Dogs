@@ -192,6 +192,7 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
                     speed *= 1.2;
                 }
             }
+            speed = net.vanillaoutsider.betterdogs.util.WolfCatchupHelper.calculateCatchupSpeed(this.wolf, owner, speed);
             this.wolf.getNavigation().moveTo(owner, speed);
         }
     }

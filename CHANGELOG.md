@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.24.12+26.2] - 2026-08-17
+### Added & Refactored
+- **Fast Travel Catch-up & Interdimensional Teleport Sync (`WolfCatchupHelper`)**:
+  - Implemented single-purpose `WolfCatchupHelper` calculating dynamic high-speed catch-up acceleration ($1.5\times$ for $>10$m or mount riding, $2.0\times$ for $>20$m sprint) and handling interdimensional teleport synchronization across Nether/End portals and `/tp`.
+  - Integrated `WolfCatchupHelper.calculateCatchupSpeed` into `PersonalityFollowOwnerGoal` and streamlined `ServerPlayerTickMixin`.
+  - Removed duplicate/legacy `WolfCatchUpHelper.java`.
+  - Added automated test suite: `FastTravelCatchupTest.java`.
+
 ## [4.24.11+26.2] - 2026-08-17
 ### Added & Refactored
 - **Scale Variance, Offspring Inheritance & Personality Stat Scaling (`WolfScaleGeneticsHelper`, `WolfPersonalityStatHelper`)**:
