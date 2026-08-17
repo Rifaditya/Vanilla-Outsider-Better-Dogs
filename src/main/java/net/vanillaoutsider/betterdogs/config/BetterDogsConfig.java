@@ -1,5 +1,5 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
-// Verified against: DedicatedServerProperties.java (26.2+)
+// Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
+// Verified against: Minecraft 26.1.2
 package net.vanillaoutsider.betterdogs.config;
 
 public class BetterDogsConfig {
