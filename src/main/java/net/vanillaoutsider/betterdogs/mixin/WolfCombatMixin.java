@@ -1,20 +1,5 @@
+// Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
 // Verified against: Wolf.java (26.2+)
-// SPDX-License-Identifier: GPL-3.0-or-later
-/*
- * Copyright (c) 2026 Vanilla Outsider
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, version 3.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <https://www.gnu.org/licenses/>.
- */
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.minecraft.server.level.ServerLevel;
