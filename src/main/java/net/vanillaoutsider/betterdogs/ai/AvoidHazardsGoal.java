@@ -1,4 +1,5 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
+// Verified against: Minecraft 26.3
 package net.vanillaoutsider.betterdogs.ai;
 
 import java.util.EnumSet;

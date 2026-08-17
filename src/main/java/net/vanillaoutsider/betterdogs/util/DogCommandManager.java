@@ -1,8 +1,5 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
-/*
- * Vanilla Outsider: Better Dogs
- * Selection and command manager for dog mounting features.
- */
+// Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
+// Verified against: Minecraft 26.3
 package net.vanillaoutsider.betterdogs.util;
 
 import java.util.Map;

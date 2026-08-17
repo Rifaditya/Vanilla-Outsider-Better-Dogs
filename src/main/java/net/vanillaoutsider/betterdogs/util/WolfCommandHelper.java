@@ -1,5 +1,5 @@
-// Verified against: WolfCommandHelper.java (26.2-pre-1)
-// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
+// Verified against: Minecraft 26.3
 package net.vanillaoutsider.betterdogs.util;
 
 import java.util.Collection;

@@ -1,5 +1,5 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
-// Verified against: BredAnimalsTrigger.java (26.3+)
+// Verified against: Minecraft 26.3
 package net.vanillaoutsider.betterdogs.advancement;
 
 import com.mojang.serialization.Codec;
