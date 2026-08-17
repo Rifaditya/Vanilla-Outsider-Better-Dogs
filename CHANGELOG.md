@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.24.13+26.2] - 2026-08-17
+### Added & Refactored
+- **Interactive Petting & Soothing Interaction (`WolfPettingHelper`)**:
+  - Implemented dedicated single-purpose `WolfPettingHelper` handling sneak-right click empty hand petting across both sitting and standing postures without modifying sit state.
+  - Clears combat anger and hostile target instantly, plays happy whining audio (`SoundEvents.WOLF_WHINE` pitch 1.2), emits 3 Heart and 4 Note particles, triggers hand swing animation with 1-second debounce, and applies a 10-minute (12,000-tick) soothing state against thunderstorm anxiety.
+  - Intercepted petting directly at `WolfInteractMixin.mobInteract` HEAD.
+  - Added automated test suite: `PettingSootheTest.java`.
+
 ## [4.24.12+26.2] - 2026-08-17
 ### Added & Refactored
 - **Fast Travel Catch-up & Interdimensional Teleport Sync (`WolfCatchupHelper`)**:

@@ -40,6 +40,15 @@ public abstract class WolfInteractMixin extends TamableAnimal {
     private void betterdogs$onMobInteract(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
         Wolf wolf = (Wolf) (Object) this;
         ItemStack itemStack = player.getItemInHand(hand);
+
+        if (net.vanillaoutsider.betterdogs.util.WolfPettingHelper.canPet(wolf, player, hand, itemStack)) {
+            InteractionResult petResult = net.vanillaoutsider.betterdogs.util.WolfPettingHelper.petWolf(wolf, player);
+            if (petResult == InteractionResult.SUCCESS) {
+                cir.setReturnValue(petResult);
+                return;
+            }
+        }
+
         InteractionResult result = WolfInteractionHelper.handleMobInteract(wolf, player, hand, itemStack);
         if (result != null) {
             cir.setReturnValue(result);
