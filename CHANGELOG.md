@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.24.16+26.2] - 2026-08-17
+### Added & Refactored
+- **Acoustic Goat Horn Command Suite (`WolfHornCommandHelper`, `WolfHornGoal`, `InstrumentItemMixin`)**:
+  - Implemented single-purpose `WolfHornCommandHelper` managing 64-block acoustic pack command broadcasting across 5 tactical horn variants (Yearn=Stand/Follow, Sing=Sit/Stay, Ponder=Rally, Seek=32m Crosshair Raycast Attack, Feel=Pacify/Calm for 30s) with note, happy, and angry particle feedback.
+  - Implemented single-purpose `WolfHornGoal` handling wolf acoustic pathfinding towards horn sound coordinates.
+  - Refactored `InstrumentItemMixin` from a 262-line monolith into a surgical delegation mixin.
+  - Added automated test suite: `GoatHornCommandTest.java`.
+
 ## [4.24.15+26.2] - 2026-08-17
 ### Added & Refactored
 - **Puppy Miscellaneous Mischief & Adult Discipline (`WolfMischiefHelper`, `BabyMischiefGoal`)**:
