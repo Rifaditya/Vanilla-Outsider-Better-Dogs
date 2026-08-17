@@ -13,6 +13,7 @@ import net.minecraft.world.level.gamerules.GameRule;
 import net.minecraft.world.level.gamerules.GameRuleCategory;
 import net.minecraft.world.level.gamerules.GameRuleType;
 import net.minecraft.world.level.gamerules.GameRuleTypeVisitor;
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 
 public class BetterDogsGameRules {
@@ -48,6 +49,10 @@ public class BetterDogsGameRules {
     public static GameRule<Integer> BD_HORN_COMMAND_RANGE;
     public static GameRule<Integer> BD_HORN_PATHING_TIMEOUT;
     public static GameRule<Integer> BD_HORN_OVERRIDE_DURATION;
+    public static GameRule<Boolean> BD_FETCH_ENABLED;
+    public static GameRule<Integer> BD_FETCH_RANGE;
+    public static GameRule<Boolean> BD_ZOOMIES_ENABLED;
+    public static GameRule<Integer> BD_ZOOMIES_DURATION_TICKS;
 
     // --- Player ---
     public static GameRule<Boolean> BD_FRIENDLY_FIRE;
@@ -188,6 +193,10 @@ public class BetterDogsGameRules {
         BD_HORN_COMMAND_RANGE = registerInteger("betterdogs:bd_horn_command_range", BETTER_DOGS, 64);
         BD_HORN_PATHING_TIMEOUT = registerInteger("betterdogs:bd_horn_pathing_timeout", BETTER_DOGS, 400);
         BD_HORN_OVERRIDE_DURATION = registerInteger("betterdogs:bd_horn_override_duration", BETTER_DOGS, 600);
+        BD_FETCH_ENABLED = registerBoolean("betterdogs:bd_fetch_enabled", BETTER_DOGS, true);
+        BD_FETCH_RANGE = registerInteger("betterdogs:bd_fetch_range", BETTER_DOGS, 16);
+        BD_ZOOMIES_ENABLED = registerBoolean("betterdogs:bd_zoomies_enabled", BETTER_DOGS, true);
+        BD_ZOOMIES_DURATION_TICKS = registerInteger("betterdogs:bd_zoomies_duration_ticks", BETTER_DOGS, 160);
 
 
 
@@ -355,26 +364,41 @@ public class BetterDogsGameRules {
 
     // Internal Registration Helpers
     private static GameRule<Boolean> registerBoolean(String id, GameRuleCategory category, boolean defaultValue) {
-        return Registry.register(BuiltInRegistries.GAME_RULE, id, new GameRule<>(
-                category,
-                GameRuleType.BOOL,
-                BoolArgumentType.bool(),
-                GameRuleTypeVisitor::visitBoolean,
-                Codec.BOOL,
-                b -> b ? 1 : 0,
-                defaultValue,
-                FeatureFlagSet.of()));
+        return DynamicGameRuleManager.booleanRule(id, category, defaultValue).register();
     }
 
     private static GameRule<Integer> registerInteger(String id, GameRuleCategory category, int defaultValue) {
-        return Registry.register(BuiltInRegistries.GAME_RULE, id, new GameRule<>(
-                category,
-                GameRuleType.INT,
-                IntegerArgumentType.integer(),
-                GameRuleTypeVisitor::visitInteger,
-                Codec.INT,
-                i -> i,
-                defaultValue,
-                FeatureFlagSet.of()));
+        return DynamicGameRuleManager.integerRule(id, category, defaultValue).register();
+    }
+
+    // Static Null-Safe Accessors
+    public static boolean getBoolean(net.minecraft.world.level.Level level, GameRule<Boolean> rule, boolean fallback) {
+        if (level == null || rule == null) {
+            return fallback;
+        }
+        return DynamicGameRuleManager.getBoolean(level, rule);
+    }
+
+    public static int getInt(net.minecraft.world.level.Level level, GameRule<Integer> rule, int fallback) {
+        if (level == null || rule == null) {
+            return fallback;
+        }
+        return DynamicGameRuleManager.getInt(level, rule);
+    }
+
+    public static boolean isFetchEnabled(net.minecraft.world.level.Level level) {
+        return getBoolean(level, BD_FETCH_ENABLED, true);
+    }
+
+    public static int getFetchRange(net.minecraft.world.level.Level level) {
+        return getInt(level, BD_FETCH_RANGE, 16);
+    }
+
+    public static boolean isZoomiesEnabled(net.minecraft.world.level.Level level) {
+        return getBoolean(level, BD_ZOOMIES_ENABLED, true);
+    }
+
+    public static int getZoomiesDurationTicks(net.minecraft.world.level.Level level) {
+        return getInt(level, BD_ZOOMIES_DURATION_TICKS, 160);
     }
 }

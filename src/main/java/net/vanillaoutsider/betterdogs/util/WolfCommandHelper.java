@@ -47,9 +47,8 @@ public class WolfCommandHelper {
 
         for (net.minecraft.world.entity.Entity entity : targets) {
             if (entity instanceof Wolf wolf) {
-                // Modularity requirement: Use extensions
                 ((WolfExtensions) wolf).betterdogs$setPersonality(selectedPersonality);
-                WolfStatManager.applyPersonalityStats(wolf, selectedPersonality);
+                WolfPersonalityStatHelper.applyPersonalityStats(wolf, selectedPersonality);
                 count++;
             }
         }

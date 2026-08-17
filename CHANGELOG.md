@@ -1,5 +1,31 @@
 # Changelog
 
+## [5.0.23+26.3] - 2026-08-17
+### Added & Refactored (Parity Modernization: Steps 1–15 Complete)
+- **100% Modern Sovereign Parity Sync**:
+  - Synchronized all 26 single-purpose helpers (`WolfPettingHelper`, `WolfCureHelper`, `WolfAdoptionHelper`, `WolfNemesisHelper`, `WolfFetchHelper`, `WolfZoomiesHelper`, `WolfCliffSafetyHelper`, `WolfHazardHelper`, `WolfCreeperHelper`, `WolfMountHelper`, `WolfHornCommandHelper`, `WolfStormHelper`, `WolfScaleGeneticsHelper`, `WolfPersonalityStatHelper`, `WolfCatchupHelper`, etc.).
+  - Synchronized all 22 single-purpose AI goals (`WolfNemesisTargetGoal`, `WolfFetchGoal`, `ZoomiesGoal`, `AvoidHazardsGoal`, `WolfFleeLowHealthGoal`, `MoveToVehicleGoal`, `EatGroundFoodGoal`, `WildWolfTerritorialGoal`, `WildWolfPackWarGoal`, etc.).
+  - Synchronized full dynamic GameRules matrix (80+ rules including `betterdogs:bd_fetch_enabled`, `betterdogs:bd_fetch_range`, `betterdogs:bd_zoomies_enabled`, `betterdogs:bd_zoomies_duration_ticks`, `betterdogs:bd_nemesis_system`, `betterdogs:bd_nemesis_duration_days`).
+  - Added item tags (`betterdogs:fetch_items`).
+  - Integrated 17 automated multi-case test suites in `src/test/java/net/vanillaoutsider/betterdogs/`.
+
+## [5.0.22+26.3] - 2026-08-11
+### Refactored & Polished
+- **Minimal Tame Particle Polish (`WolfParticleHandler`)**: Polished first-time taming particle feedback with a clean, subtle Minimal Signature (~5-6 particles) per personality:
+  - **Aggressive**: 3 `ANGRY_VILLAGER` icons + 3 subtle crimson dust sparkles (`0xFF3333`).
+  - **Normal**: 3 `HAPPY_VILLAGER` emerald stars + 3 subtle golden dust sparkles (`0xFFD700`).
+  - **Pacifist**: 3 `HEART` icons + 3 subtle mint dust sparkles (`0x00FF88`).
+
+## [5.0.21+26.3] - 2026-08-10
+### Changed
+- **Dismount Overlay Message Translation (`en_us.json` & `id_id.json`)**: Updated `text.betterdogs.dog_dismounted` overlay text to `"%s hopped out of the seat."` (Indonesian: `"%s keluar dari tempat duduk."`) for improved clarity when commanding dogs to dismount vehicles and seats.
+
+## [5.0.20+26.3] - 2026-08-10
+### Fixed
+- **YACL Config Option Descriptions (`YaclScreenHelper` & Translation Sheets)**:
+  - **Attached Descriptions**: Added missing `.description(OptionDescription.of(...))` builders to every option across all 6 YACL config categories (General, Personalities, Breeding, Territoriality, Gifts, Visual & Performance Options).
+  - **Translation Keys**: Added complete `.description` translation keys to both `en_us.json` and `id_id.json` for all options, ensuring informative hover tooltips are displayed cleanly in the YACL v3 GUI screen.
+
 ## [5.0.19+26.3] - 2026-08-10
 ### Fixed
 - **Dog Adoption Crash Fix (`WolfInteractionHelper` & `WolfStatManager`)**: Fixed `NullPointerException` crash during adoption by adding personality null guards in `WolfStatManager` and pre-assigning random personalities for uninitialized dogs.

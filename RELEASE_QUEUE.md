@@ -5,6 +5,9 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`5.0.22+26.3`** (2026-08-11) - **Minimal Tame Particle Polish:** Polished first-time taming particle feedback with a clean, subtle Minimal Signature (~5-6 particles) per personality (Aggressive: crimson dust + angry villager; Normal: golden dust + happy villager; Pacifist: mint dust + heart).
+- [ ] **`5.0.21+26.3`** (2026-08-10) - **Dismount Overlay Message Translation:** Updated dismount overlay text in en_us and id_id.
+- [ ] **`5.0.20+26.3`** (2026-08-10) - **YACL Config Option Descriptions:** Added missing `.description(...)` OptionDescription builders in `YaclScreenHelper` across all 6 config categories and synchronized complete `.description` keys in `en_us.json` and `id_id.json`.
 - [ ] **`5.0.19+26.3`** (2026-08-10) - **Dog Adoption Crash Fix:** Fixed `NullPointerException` crash during adoption by adding personality null guards in `WolfStatManager` and pre-assigning random personalities for uninitialized dogs.
 - [ ] **`5.0.18+26.3`** (2026-08-10) - **Litematica Compatibility & Command Item Expansion:** Resolved stick tool interaction collision with Litematica by introducing `#vanilla-outsider-better-dogs:command_items` item tag (Stick, Blaze Rod, Breeze Rod, `#c:tools/sticks`), enabling Blaze Rods and Breeze Rods as alternative command tools while keeping Bone 100% reserved for Guard Mode.
 - [ ] **`5.0.17+26.3`** (2026-07-31) - **GitHub Documentation Engine Update:** Updated GitHub README.md documenting `DasikAnimalGeneticsAPI` integration, Size-Stats, Kinship risk, AI goal tick throttling, and 11 GameTests.

@@ -1,5 +1,5 @@
-// Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
 // Verified against: Wolf.java (26.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs;
 
 import com.mojang.serialization.Codec;
@@ -59,11 +59,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
     // ========== Static Helper Methods (using Fabric Attachment API) ==========
 
     public static WolfPersistentData getWolfData(Wolf wolf) {
-        if (wolf == null) {
-            return WolfPersistentData.DEFAULT;
-        }
-        WolfPersistentData data = wolf.getAttached(BetterDogs.WOLF_DATA);
-        return data != null ? data : WolfPersistentData.DEFAULT;
+        return wolf.getAttachedOrCreate(BetterDogs.WOLF_DATA, () -> WolfPersistentData.DEFAULT);
     }
 
     public static void setWolfData(Wolf wolf, WolfPersistentData data) {
@@ -169,7 +165,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
     }
 
     public static float getScale(Wolf wolf) {
-        return net.dasik.social.api.genetics.DasikAnimalGeneticsAPI.getScale(wolf);
+        return getWolfData(wolf).scale();
     }
 
     public static void setScale(int personalityId, int lastDamageTime, boolean submissive, @Nullable String bloodFeudTarget, long lastMischiefDay, long dna, Wolf wolf, float scale, Map<String, Integer> affinityMap, Optional<UUID> leaderUuid, boolean guardMode, Optional<BlockPos> guardPos, boolean adoptable) {
@@ -256,34 +252,62 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
 
     // ========== Range Stats (v4.3.1) - Migrated to DasikLibrary ==========
 
-    // ========== Range Stats & Genetics (Delegated to DasikLibrary DasikAnimalGeneticsAPI) ==========
-
     public static float getPersistedHealthBonus(Wolf wolf) {
-        return net.dasik.social.api.genetics.DasikAnimalGeneticsAPI.getHealthBonus(wolf);
+        net.dasik.social.api.genetics.EntityGenetics genetics = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf);
+        return genetics.traits().getOrDefault("max_health", 0.0f);
     }
 
     public static void setPersistedHealthBonus(Wolf wolf, float hp) {
-        net.dasik.social.api.genetics.DasikAnimalGeneticsAPI.setTrait(wolf, "max_health", hp);
+        net.dasik.social.api.genetics.EntityGenetics genetics = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf);
+        java.util.Map<String, Float> traits = new HashMap<>(genetics.traits());
+        traits.put("max_health", hp);
+        net.dasik.social.api.genetics.GeneticsEngine.setGenetics(wolf, new net.dasik.social.api.genetics.EntityGenetics(
+            genetics.parent1Uuid(),
+            genetics.parent2Uuid(),
+            genetics.inbred(),
+            genetics.traitsRolled(),
+            traits
+        ));
     }
 
     public static float getPersistedDamageMod(Wolf wolf) {
-        return net.dasik.social.api.genetics.DasikAnimalGeneticsAPI.getDamageMod(wolf);
+        net.dasik.social.api.genetics.EntityGenetics genetics = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf);
+        return genetics.traits().getOrDefault("attack_damage", 0.0f);
     }
 
     public static void setPersistedDamageMod(Wolf wolf, float dmg) {
-        net.dasik.social.api.genetics.DasikAnimalGeneticsAPI.setTrait(wolf, "attack_damage", dmg);
+        net.dasik.social.api.genetics.EntityGenetics genetics = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf);
+        java.util.Map<String, Float> traits = new HashMap<>(genetics.traits());
+        traits.put("attack_damage", dmg);
+        net.dasik.social.api.genetics.GeneticsEngine.setGenetics(wolf, new net.dasik.social.api.genetics.EntityGenetics(
+            genetics.parent1Uuid(),
+            genetics.parent2Uuid(),
+            genetics.inbred(),
+            genetics.traitsRolled(),
+            traits
+        ));
     }
 
     public static float getPersistedSpeedMod(Wolf wolf) {
-        return net.dasik.social.api.genetics.DasikAnimalGeneticsAPI.getSpeedMod(wolf);
+        net.dasik.social.api.genetics.EntityGenetics genetics = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf);
+        return genetics.traits().getOrDefault("movement_speed", 0.0f);
     }
 
     public static void setPersistedSpeedMod(Wolf wolf, float speed) {
-        net.dasik.social.api.genetics.DasikAnimalGeneticsAPI.setTrait(wolf, "movement_speed", speed);
+        net.dasik.social.api.genetics.EntityGenetics genetics = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf);
+        java.util.Map<String, Float> traits = new HashMap<>(genetics.traits());
+        traits.put("movement_speed", speed);
+        net.dasik.social.api.genetics.GeneticsEngine.setGenetics(wolf, new net.dasik.social.api.genetics.EntityGenetics(
+            genetics.parent1Uuid(),
+            genetics.parent2Uuid(),
+            genetics.inbred(),
+            genetics.traitsRolled(),
+            traits
+        ));
     }
 
     public static boolean arePersistedStatsRolled(Wolf wolf) {
-        return net.dasik.social.api.genetics.DasikAnimalGeneticsAPI.hasGenetics(wolf);
+        return net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf).traitsRolled();
     }
 
     public static void setPersistedStatsRolled(Wolf wolf, boolean rolled) {
@@ -300,15 +324,15 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
     // ========== Kinship / Parents ==========
 
     public static Optional<UUID> getPersistedParent1Uuid(Wolf wolf) {
-        return net.dasik.social.api.genetics.DasikAnimalGeneticsAPI.getParent1Uuid(wolf);
+        return net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf).parent1Uuid();
     }
 
     public static Optional<UUID> getPersistedParent2Uuid(Wolf wolf) {
-        return net.dasik.social.api.genetics.DasikAnimalGeneticsAPI.getParent2Uuid(wolf);
+        return net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf).parent2Uuid();
     }
 
     public static boolean isPersistedInbred(Wolf wolf) {
-        return net.dasik.social.api.genetics.DasikAnimalGeneticsAPI.isInbred(wolf);
+        return net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf).inbred();
     }
 
     public static void setPersistedParentsAndInbred(Wolf wolf, @Nullable UUID p1, @Nullable UUID p2, boolean inbred) {

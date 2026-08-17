@@ -31,11 +31,6 @@ public class FleeCreeperGoal extends AvoidEntityGoal<Creeper> {
 
     @Override
     public boolean canUse() {
-        // Tick Throttle: stagger spatial creeper scanning across wolves (INTERVAL=5)
-        if ((wolf.getId() + wolf.tickCount) % 5 != 0) {
-            return false;
-        }
-
         // Only for tamed wolves
         if (!wolf.isTame()) {
             return false;

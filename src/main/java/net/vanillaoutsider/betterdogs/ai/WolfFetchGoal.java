@@ -1,65 +1,115 @@
-// Verified against: WolfFetchGoal.java (26.1.2+)
-// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
+// Verified against: Minecraft 26.2
 package net.vanillaoutsider.betterdogs.ai;
 
 import java.util.EnumSet;
-import java.util.List;
-import net.dasik.social.core.EntitySocialScheduler;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
+import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
+import net.vanillaoutsider.betterdogs.util.WolfFetchHelper;
 
 /**
- * Fetch Goal.
- * Behavior: Finds a nearby dropped item and brings it to the owner.
+ * Dedicated single-purpose AI goal for fetching dropped sticks/bones and returning them to the owner.
  */
 public class WolfFetchGoal extends Goal {
+
     private final Wolf wolf;
-    private final WolfExtensions wolfExt;
     private ItemEntity targetItem;
+    private Player owner;
+    private int cooldown = 0;
 
     public WolfFetchGoal(Wolf wolf) {
         this.wolf = wolf;
-        this.wolfExt = (WolfExtensions) wolf;
-        this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
     @Override
     public boolean canUse() {
-        if (wolf.isOrderedToSit())
+        if (this.wolf == null || !this.wolf.isTame()) {
             return false;
-        EntitySocialScheduler scheduler = wolfExt.betterdogs$getScheduler();
-        if (scheduler != null && scheduler.isEventActive("fetch") && wolf.getMainHandItem().isEmpty()) {
-            List<ItemEntity> items = wolf.level().getEntitiesOfClass(ItemEntity.class,
-                    wolf.getBoundingBox().inflate(8.0D));
-            if (!items.isEmpty()) {
-                this.targetItem = items.get(0); // Take the first one for simplicity
-                return true;
-            }
         }
-        return false;
+        if (this.wolf.isOrderedToSit() || this.wolf.isInSittingPose() || this.wolf.getTarget() != null) {
+            return false;
+        }
+        if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$isGuardMode()) {
+            return false;
+        }
+        if (!BetterDogsGameRules.isFetchEnabled(this.wolf.level())) {
+            return false;
+        }
+
+        LivingEntity livingOwner = this.wolf.getOwner();
+        if (!(livingOwner instanceof Player player)) {
+            return false;
+        }
+        this.owner = player;
+
+        if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$hasFetchedItem()) {
+            return true;
+        }
+
+        int range = BetterDogsGameRules.getFetchRange(this.wolf.level());
+        this.targetItem = WolfFetchHelper.findNearbyDroppedFetchItem(this.wolf, range);
+        return this.targetItem != null;
     }
 
     @Override
     public boolean canContinueToUse() {
-        EntitySocialScheduler scheduler = wolfExt.betterdogs$getScheduler();
-        return scheduler != null && scheduler.isEventActive("fetch") && this.targetItem != null
-                && this.targetItem.isAlive() && wolf.getMainHandItem().isEmpty();
+        if (this.wolf.isOrderedToSit() || this.wolf.isInSittingPose() || this.wolf.getTarget() != null || this.owner == null || !this.owner.isAlive()) {
+            return false;
+        }
+        if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$hasFetchedItem()) {
+            return true;
+        }
+        return this.targetItem != null && this.targetItem.isAlive();
+    }
+
+    @Override
+    public void start() {
+        this.cooldown = 0;
+        if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$hasFetchedItem()) {
+            this.wolf.getNavigation().moveTo(this.owner, 1.25D);
+        } else if (this.targetItem != null) {
+            this.wolf.getNavigation().moveTo(this.targetItem, 1.25D);
+        }
+    }
+
+    @Override
+    public void stop() {
+        this.targetItem = null;
+        this.owner = null;
+        this.wolf.getNavigation().stop();
     }
 
     @Override
     public void tick() {
-        if (this.targetItem != null) {
-            this.wolf.getLookControl().setLookAt(this.targetItem, 10.0F, (float) this.wolf.getMaxHeadXRot());
-            this.wolf.getNavigation().moveTo(this.targetItem, 1.2D);
+        if (this.owner == null) {
+            return;
+        }
 
-            if (this.wolf.distanceToSqr(this.targetItem) < 1.0D) {
-                this.wolf.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, this.targetItem.getItem());
-                this.targetItem.discard();
-                // Return to owner
-                if (this.wolf.getOwner() != null) {
-                    this.wolf.getNavigation().moveTo(this.wolf.getOwner(), 1.2D);
+        if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$hasFetchedItem()) {
+            this.wolf.getLookControl().setLookAt(this.owner, 10.0F, (float) this.wolf.getMaxHeadXRot());
+            if (this.wolf.distanceToSqr(this.owner) <= 6.25D) {
+                WolfFetchHelper.dropItemToOwner(this.wolf, this.owner);
+                this.stop();
+            } else {
+                if (++this.cooldown % 10 == 0) {
+                    this.wolf.getNavigation().moveTo(this.owner, 1.25D);
+                }
+            }
+        } else if (this.targetItem != null && this.targetItem.isAlive()) {
+            this.wolf.getLookControl().setLookAt(this.targetItem, 10.0F, (float) this.wolf.getMaxHeadXRot());
+            if (this.wolf.distanceToSqr(this.targetItem) <= 2.25D) {
+                WolfFetchHelper.pickupItem(this.wolf, this.targetItem);
+                this.targetItem = null;
+                this.wolf.getNavigation().moveTo(this.owner, 1.25D);
+            } else {
+                if (++this.cooldown % 10 == 0) {
+                    this.wolf.getNavigation().moveTo(this.targetItem, 1.25D);
                 }
             }
         }

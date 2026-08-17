@@ -9,7 +9,7 @@ import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersistentData;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
-import net.vanillaoutsider.betterdogs.util.WolfStatManager;
+import net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -47,6 +47,12 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
 
     @Unique
     private int betterdogs$passiveOverrideTicks = 0;
+    @Unique
+    private boolean betterdogs$hasFetchedItem = false;
+    @Unique
+    private net.minecraft.world.item.ItemStack betterdogs$fetchedItemStack = null;
+    @Unique
+    private int betterdogs$zoomiesTicks = 0;
 
     @Override
     public net.minecraft.core.BlockPos betterdogs$getSoundLocationTarget() {
@@ -245,7 +251,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         }
 
         if (!this.betterdogs$statsApplied && this.betterdogs$hasPersonality()) {
-            WolfStatManager.applyPersonalityStats((Wolf) (Object) this, this.betterdogs$getPersonality());
+            net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper.applyPersonalityStats((Wolf) (Object) this, this.betterdogs$getPersonality());
             this.betterdogs$statsApplied = true;
         }
 
@@ -260,6 +266,14 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
                 this.betterdogs$passiveOverrideTicks--;
             }
 
+            if (this.betterdogs$zoomiesTicks > 0) {
+                if (wolf.isOrderedToSit() || wolf.isInSittingPose()) {
+                    this.betterdogs$zoomiesTicks = 0;
+                } else {
+                    this.betterdogs$zoomiesTicks--;
+                }
+            }
+
             if (this.tickCount % 20 == 0 && this.betterdogs$isGuardMode()) {
                 if (wolf.level() instanceof ServerLevel serverLevel) {
                     net.vanillaoutsider.betterdogs.util.WolfTickHelper.tickGuardMode(wolf, this, serverLevel);
@@ -267,9 +281,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
             }
 
             if (this.tickCount % 40 == 0 && this.betterdogs$isAdoptable()) {
-                if (wolf.level() instanceof ServerLevel serverLevel) {
-                    net.vanillaoutsider.betterdogs.util.WolfTickHelper.tickAdoptableParticles(wolf, serverLevel);
-                }
+                net.vanillaoutsider.betterdogs.util.WolfAdoptionHelper.tickAdoptionAmbientParticles(wolf);
             }
 
             if (this.tickCount % 40 == 0 && net.vanillaoutsider.betterdogs.WolfPersistentData.isPersistedInbred(wolf)) {
@@ -314,21 +326,52 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     }
 
     @Override
-    public void betterdogs$clearTransientState() {
-        this.betterdogs$soundLocationTarget = null;
-        this.betterdogs$pathfindAvoidPos = null;
-        this.betterdogs$passiveOverrideTicks = 0;
-        this.betterdogs$setBeingDisciplined(false);
-        this.betterdogs$setSocialState(null, SocialAction.NONE, 0);
+    public String betterdogs$getNemesisEntityType() {
+        return WolfPersistentData.getPersistedNemesisType((Wolf) (Object) this);
     }
 
-    @Inject(method = "die", at = @At("HEAD"))
-    private void betterdogs$onDie(net.minecraft.world.damagesource.DamageSource damageSource, CallbackInfo ci) {
-        this.betterdogs$clearTransientState();
+    @Override
+    public void betterdogs$setNemesisEntityType(String type) {
+        WolfPersistentData.setPersistedNemesis((Wolf) (Object) this, type, this.betterdogs$getNemesisExpiryTime());
     }
 
-    @Inject(method = "remove", at = @At("HEAD"))
-    private void betterdogs$onRemove(net.minecraft.world.entity.Entity.RemovalReason reason, CallbackInfo ci) {
-        this.betterdogs$clearTransientState();
+    @Override
+    public long betterdogs$getNemesisExpiryTime() {
+        return WolfPersistentData.getPersistedNemesisExpiry((Wolf) (Object) this);
+    }
+
+    @Override
+    public void betterdogs$setNemesisExpiryTime(long time) {
+        WolfPersistentData.setPersistedNemesis((Wolf) (Object) this, this.betterdogs$getNemesisEntityType(), time);
+    }
+
+    @Override
+    public boolean betterdogs$hasFetchedItem() {
+        return this.betterdogs$hasFetchedItem;
+    }
+
+    @Override
+    public void betterdogs$setHasFetchedItem(boolean fetched) {
+        this.betterdogs$hasFetchedItem = fetched;
+    }
+
+    @Override
+    public net.minecraft.world.item.ItemStack betterdogs$getFetchedItemStack() {
+        return this.betterdogs$fetchedItemStack;
+    }
+
+    @Override
+    public void betterdogs$setFetchedItemStack(net.minecraft.world.item.ItemStack stack) {
+        this.betterdogs$fetchedItemStack = stack;
+    }
+
+    @Override
+    public int betterdogs$getZoomiesTicks() {
+        return this.betterdogs$zoomiesTicks;
+    }
+
+    @Override
+    public void betterdogs$setZoomiesTicks(int ticks) {
+        this.betterdogs$zoomiesTicks = ticks;
     }
 }

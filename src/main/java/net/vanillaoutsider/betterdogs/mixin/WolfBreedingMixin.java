@@ -1,15 +1,18 @@
-// Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
 // Verified against: Wolf.java (26.2+)
+// SPDX-License-Identifier: GPL-3.0-or-later
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import java.util.Random;
+import java.util.UUID;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.WolfPersistentData;
+import net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper;
+import net.vanillaoutsider.betterdogs.util.WolfScaleGeneticsHelper;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -52,14 +55,33 @@ public abstract class WolfBreedingMixin {
         WolfPersonality babyPersonality = betterdogs$calculateOffspringPersonality(level, p1, p2);
         babyExt.betterdogs$setPersonality(babyPersonality);
 
-        // Inherit genetics via DasikLibrary DasikAnimalGeneticsAPI
-        net.dasik.social.api.genetics.DasikAnimalGeneticsAPI.inherit(baby, parent1, parent2, babyPersonality.name().toLowerCase(java.util.Locale.ROOT));
+        // Inherit offspring scale with continuous variance
+        float p1Scale = 1.0f;
+        var s1 = parent1.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.SCALE);
+        if (s1 != null) {
+            p1Scale = (float) s1.getBaseValue();
+        }
+        float p2Scale = 1.0f;
+        var s2 = parent2.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.SCALE);
+        if (s2 != null) {
+            p2Scale = (float) s2.getBaseValue();
+        }
 
-        boolean babyInbred = net.dasik.social.api.genetics.DasikAnimalGeneticsAPI.isInbred(baby);
-        boolean p1Inbred = net.dasik.social.api.genetics.DasikAnimalGeneticsAPI.isInbred(parent1);
-        boolean p2Inbred = net.dasik.social.api.genetics.DasikAnimalGeneticsAPI.isInbred(parent2);
+        float babyScale = WolfScaleGeneticsHelper.calculateOffspringScale(level, p1Scale, p2Scale, baby.getRandom());
+        var babyScaleAttr = baby.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.SCALE);
+        if (babyScaleAttr != null) {
+            babyScaleAttr.setBaseValue(babyScale);
+        }
 
-        if (babyInbred) {
+        // Inherit genetics via DasikLibrary Genetics Engine
+        net.dasik.social.api.genetics.GeneticsEngine.inheritGenetics(baby, parent1, parent2, babyPersonality.name().toLowerCase(java.util.Locale.ROOT));
+
+        // Get parent and baby genetics for advancement triggers
+        var babyGen = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(baby);
+        var p1Gen = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(parent1);
+        var p2Gen = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(parent2);
+
+        if (babyGen.inbred()) {
             net.minecraft.server.level.ServerPlayer player = parent1.getLoveCause();
             if (player == null) {
                 player = parent2.getLoveCause();
@@ -67,7 +89,7 @@ public abstract class WolfBreedingMixin {
             if (player != null) {
                 net.vanillaoutsider.betterdogs.BetterDogs.INBRED_WOLF.trigger(player);
             }
-        } else if (p1Inbred || p2Inbred) {
+        } else if (p1Gen.inbred() || p2Gen.inbred()) {
             net.minecraft.server.level.ServerPlayer player = parent1.getLoveCause();
             if (player == null) {
                 player = parent2.getLoveCause();

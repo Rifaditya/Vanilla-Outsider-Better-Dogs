@@ -41,9 +41,6 @@ public class EatGroundFoodGoal extends Goal {
         if (wolf.getHealth() >= wolf.getMaxHealth())
             return false;
 
-        if (!wolf.level().hasChunkAt(wolf.blockPosition()))
-            return false;
-
         // If tamed, check if sitting and gamerules
         if (wolf.isTame()) {
             if (wolf.isInSittingPose())
