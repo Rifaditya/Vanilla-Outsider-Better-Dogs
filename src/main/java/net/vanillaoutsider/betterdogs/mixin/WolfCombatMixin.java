@@ -37,7 +37,7 @@ public abstract class WolfCombatMixin {
 
     @Inject(method = "die", at = @At("HEAD"))
     private void betterdogs$onDie(DamageSource source, CallbackInfo ci) {
-        WolfCombatHooks.onDeath((Wolf) (Object) this, source);
+        net.vanillaoutsider.betterdogs.util.WolfNemesisHelper.recordNemesis((Wolf) (Object) this, source);
     }
 
     @Inject(method = "actuallyHurt", at = @At("HEAD"), cancellable = true)

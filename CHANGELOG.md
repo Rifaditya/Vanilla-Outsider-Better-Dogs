@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.24.20+26.2] - 2026-08-17
+### Added & Refactored
+- **Revenge Grudge Nemesis AI (`WolfNemesisHelper`, `WolfNemesisTargetGoal`, `WolfAIMixin`, `WolfMixin`)**:
+  - Implemented single-purpose `WolfNemesisHelper` managing pack revenge broadcasts: when a tamed dog is slain, the killer entity type ID is broadcast across a 64-block radius to all tamed pack dogs of the same owner.
+  - Avenging pack dogs enter a 3-day active revenge grudge (governed by `betterdogs:bd_nemesis_duration_days` and `betterdogs:bd_nemesis_system`), displaying angry villager particles and warning growls.
+  - Implemented single-purpose `WolfNemesisTargetGoal` providing 20m target scanning with strict sitting posture preservation (`!isInSittingPose()`) and Guard Mode boundary respect.
+  - Added multi-tier immunity safeguards protecting owners, friendly packmates, and adult disciplinary corrections.
+  - Added automated test suite: `NemesisGrudgeTest.java`.
+
 ## [4.24.19+26.2] - 2026-08-17
 ### Fixed & Remediated
 - **Registered Missing Mixin (`HurtByTargetGoalMixin`)**:

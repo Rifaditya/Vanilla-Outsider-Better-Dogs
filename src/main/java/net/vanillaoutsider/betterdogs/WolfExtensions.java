@@ -251,4 +251,10 @@ public interface WolfExtensions {
     void betterdogs$setSoundLocationTarget(@Nullable BlockPos pos);
     int betterdogs$getPassiveOverrideTicks();
     void betterdogs$setPassiveOverrideTicks(int ticks);
+
+    // ========== Revenge Grudge Nemesis System (Step 13) ==========
+    String betterdogs$getNemesisEntityType();
+    void betterdogs$setNemesisEntityType(String type);
+    long betterdogs$getNemesisExpiryTime();
+    void betterdogs$setNemesisExpiryTime(long time);
 }

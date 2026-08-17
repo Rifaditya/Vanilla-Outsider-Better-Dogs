@@ -204,27 +204,4 @@ public class WolfCombatHooks {
 
         return null; // Pass to super
     }
-
-    /**
-     * Handles 'die' logic for the Nemesis (Grudge) System.
-     */
-    public static void onDeath(Wolf wolf, DamageSource source) {
-        if (!wolf.isTame() || wolf.level().isClientSide()) return;
-        
-        if (!DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_NEMESIS_SYSTEM)) return;
-
-        if (source.getEntity() instanceof LivingEntity killer && !(killer instanceof net.minecraft.world.entity.player.Player) && !(killer instanceof net.minecraft.world.entity.TamableAnimal)) {
-            String killerType = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(killer.getType()).toString();
-            long expiry = wolf.level().getGameTime() + (DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_NEMESIS_DURATION_DAYS) * 24000L);
-
-            // Find nearby tamed wolves of the same owner (32 blocks radius)
-            java.util.List<Wolf> nearbyWolves = wolf.level().getEntitiesOfClass(Wolf.class, wolf.getBoundingBox().inflate(32.0),
-                w -> w.isTame() && w.getOwner() != null && w.getOwner().equals(wolf.getOwner()) && w != wolf);
-            
-            for (Wolf packMate : nearbyWolves) {
-                net.vanillaoutsider.betterdogs.WolfPersistentData.setPersistedNemesis(packMate, killerType, expiry);
-                net.vanillaoutsider.betterdogs.util.WolfDebugLogger.log(packMate, "Nemesis", "Grudge against " + killerType + " formed. Expires at tick " + expiry);
-            }
-        }
-    }
 }

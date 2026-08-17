@@ -310,4 +310,24 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     public net.minecraft.world.entity.ai.goal.GoalSelector betterdogs$getGoalSelector() {
         return this.goalSelector;
     }
+
+    @Override
+    public String betterdogs$getNemesisEntityType() {
+        return WolfPersistentData.getPersistedNemesisType((Wolf) (Object) this);
+    }
+
+    @Override
+    public void betterdogs$setNemesisEntityType(String type) {
+        WolfPersistentData.setPersistedNemesis((Wolf) (Object) this, type, this.betterdogs$getNemesisExpiryTime());
+    }
+
+    @Override
+    public long betterdogs$getNemesisExpiryTime() {
+        return WolfPersistentData.getPersistedNemesisExpiry((Wolf) (Object) this);
+    }
+
+    @Override
+    public void betterdogs$setNemesisExpiryTime(long time) {
+        WolfPersistentData.setPersistedNemesis((Wolf) (Object) this, this.betterdogs$getNemesisEntityType(), time);
+    }
 }
