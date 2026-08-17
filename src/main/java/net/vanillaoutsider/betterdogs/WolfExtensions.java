@@ -268,4 +268,12 @@ public interface WolfExtensions {
     // ========== Playful Hyperactive Zoomies (Step 15) ==========
     int betterdogs$getZoomiesTicks();
     void betterdogs$setZoomiesTicks(int ticks);
+
+    default void betterdogs$clearTransientState() {
+        betterdogs$setSoundLocationTarget(null);
+        betterdogs$setPassiveOverrideTicks(0);
+        betterdogs$setHasFetchedItem(false);
+        betterdogs$setFetchedItemStack(null);
+        betterdogs$setZoomiesTicks(0);
+    }
 }
