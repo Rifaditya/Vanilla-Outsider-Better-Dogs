@@ -34,10 +34,10 @@
   "accessWidener": "vanilla-outsider-better-dogs.accesswidener",
   "depends": {
     "fabricloader": ">=0.16.9",
-    "minecraft": ">=26.1.2-",
+    "minecraft": ">=26.2-",
     "java": ">=25",
     "fabric-api": "*",
-    "dasik-library": ">=1.8.0"
+    "dasik-library": ">=1.8.3"
   },
   "suggests": {
     "yet-another-config-lib": "*",

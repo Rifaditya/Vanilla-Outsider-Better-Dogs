@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:husbandry/tame_an_animal",
+  "display": {
+    "icon": {
+      "id": "minecraft:bone"
+    },
+    "title": {
+      "translate": "advancements.betterdogs.husbandry.on_guard.title"
+    },
+    "description": {
+      "translate": "advancements.betterdogs.husbandry.on_guard.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "guard_any_wolf": {
+      "trigger": "vanilla-outsider-better-dogs:guard_wolf_personality"
+    }
+  },
+  "requirements": [
+    [
+      "guard_any_wolf"
+    ]
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:husbandry/breed_an_animal",
+  "display": {
+    "icon": {
+      "id": "minecraft:wolf_spawn_egg",
+      "count": 2
+    },
+    "title": {
+      "translate": "advancements.betterdogs.husbandry.litter_two.title"
+    },
+    "description": {
+      "translate": "advancements.betterdogs.husbandry.litter_two.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "breed_litter_two": {
+      "trigger": "vanilla-outsider-better-dogs:wolf_litter",
+      "conditions": {
+        "min_size": 2
+      }
+    }
+  },
+  "requirements": [
+    [
+      "breed_litter_two"
+    ]
+  ]
+}

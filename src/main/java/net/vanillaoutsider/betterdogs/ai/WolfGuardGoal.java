@@ -14,6 +14,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.mixin.WolfAccessor;
@@ -101,8 +102,19 @@ public class WolfGuardGoal extends Goal {
             alertCooldown--;
         }
 
-        // 3. Pacifist Sentinel Watchdog Actions (Alarm)
+        // 3. Pacifist Sentinel Watchdog Actions (Alarm & Healing Pulse)
         if (personality == WolfPersonality.PACIFIST) {
+            if (wolf.tickCount % 40 == 0 && wolf.level() instanceof ServerLevel serverLevel) {
+                net.minecraft.world.phys.AABB auraBox = new net.minecraft.world.phys.AABB(post).inflate(4.0);
+                var players = serverLevel.getEntitiesOfClass(Player.class, auraBox, p -> p.isAlive() && wolf.isOwnedBy((net.minecraft.world.entity.LivingEntity) p));
+                for (Player player : players) {
+                    if (player.getHealth() < player.getMaxHealth()) {
+                        player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 60, 0, true, true));
+                        serverLevel.sendParticles(ParticleTypes.HEART, player.getX(), player.getY() + 1.0, player.getZ(), 2, 0.2, 0.2, 0.2, 0.02);
+                    }
+                }
+            }
+
             if (wolf.tickCount % 20 == 0) {
                 // Watchdog Alarm (Whining and note particles when hostiles approach within 16 blocks)
                 List<Monster> enemies = wolf.level().getEntitiesOfClass(Monster.class, wolf.getBoundingBox().inflate(16.0, 16.0, 16.0), enemy -> {

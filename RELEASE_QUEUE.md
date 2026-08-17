@@ -6,6 +6,9 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`4.24.7+26.1.2`** (2026-08-11) - **Minimal Tame Particle Polish:** Polished first-time taming particle feedback with a clean, subtle Minimal Signature (~5-6 particles) per personality (Aggressive: crimson dust + angry villager; Normal: golden dust + happy villager; Pacifist: mint dust + heart).
+- [ ] **`4.24.6+26.1.2`** (2026-08-10) - **Dismount Overlay Message Translation:** Updated dismount overlay text in en_us and id_id.
+- [ ] **`4.24.5+26.1.2`** (2026-08-10) - **YACL Config Option Descriptions:** Added missing `.description(...)` OptionDescription builders in `YaclScreenHelper` across all 6 config categories and synchronized complete `.description` keys in `en_us.json` and `id_id.json`.
 - [ ] **`4.24.4+26.1.2`** (2026-08-10) - **Dog Adoption Crash Fix:** Fixed `NullPointerException` crash during adoption by adding personality null guards in `WolfStatManager` and pre-assigning random personalities for uninitialized dogs.
 - [ ] **`4.24.3+26.1.2`** (2026-08-10) - **Litematica Compatibility & Command Item Expansion:** Resolved stick tool interaction collision with Litematica by introducing `#vanilla-outsider-better-dogs:command_items` item tag (Stick, Blaze Rod, Breeze Rod, `#c:tools/sticks`), enabling Blaze Rods and Breeze Rods as alternative command tools while keeping Bone 100% reserved for Guard Mode.
 - [ ] **`4.24.1+26.1.2`** (2026-08-01) - Full Parity Backport to Minecraft 26.1.2 from 26.2 (`4.24.1+26.2`). Contains all feature updates, Goat Horn Commands, Creeper Evasion, and Jade integration adapted for 26.1.2 APIs.

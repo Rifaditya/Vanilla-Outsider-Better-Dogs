@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:husbandry/tame_an_animal",
+  "display": {
+    "icon": {
+      "id": "minecraft:cooked_beef"
+    },
+    "title": {
+      "translate": "advancements.betterdogs.husbandry.self_service.title"
+    },
+    "description": {
+      "translate": "advancements.betterdogs.husbandry.self_service.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "eat_dropped_owner_food": {
+      "trigger": "vanilla-outsider-better-dogs:self_service"
+    }
+  },
+  "requirements": [
+    [
+      "eat_dropped_owner_food"
+    ]
+  ]
+}

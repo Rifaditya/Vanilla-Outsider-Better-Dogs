@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:husbandry/tame_an_animal",
+  "display": {
+    "icon": {
+      "id": "minecraft:paper"
+    },
+    "title": {
+      "translate": "advancements.betterdogs.husbandry.put_up_for_adoption.title"
+    },
+    "description": {
+      "translate": "advancements.betterdogs.husbandry.put_up_for_adoption.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "put_up_for_adoption": {
+      "trigger": "vanilla-outsider-better-dogs:put_up_for_adoption"
+    }
+  },
+  "requirements": [
+    [
+      "put_up_for_adoption"
+    ]
+  ]
+}

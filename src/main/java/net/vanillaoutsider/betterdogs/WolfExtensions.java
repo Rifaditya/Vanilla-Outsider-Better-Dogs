@@ -6,6 +6,7 @@ import java.util.UUID;
 import net.dasik.social.core.EntitySocialScheduler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -251,4 +252,20 @@ public interface WolfExtensions {
     void betterdogs$setSoundLocationTarget(@Nullable BlockPos pos);
     int betterdogs$getPassiveOverrideTicks();
     void betterdogs$setPassiveOverrideTicks(int ticks);
+
+    // ========== Revenge Grudge Nemesis System (Step 13) ==========
+    String betterdogs$getNemesisEntityType();
+    void betterdogs$setNemesisEntityType(String type);
+    long betterdogs$getNemesisExpiryTime();
+    void betterdogs$setNemesisExpiryTime(long time);
+
+    // ========== Stick & Bone Fetch Retrieval (Step 14) ==========
+    boolean betterdogs$hasFetchedItem();
+    void betterdogs$setHasFetchedItem(boolean fetched);
+    @Nullable ItemStack betterdogs$getFetchedItemStack();
+    void betterdogs$setFetchedItemStack(@Nullable ItemStack stack);
+
+    // ========== Playful Hyperactive Zoomies (Step 15) ==========
+    int betterdogs$getZoomiesTicks();
+    void betterdogs$setZoomiesTicks(int ticks);
 }

@@ -33,6 +33,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.vanillaoutsider.betterdogs.mixin.WolfAccessor;
 
 public class DogCommandManager {
@@ -120,16 +121,48 @@ public class DogCommandManager {
      * Registers Fabric interaction events to handle Stick & Command Item commands.
      */
     public static void registerEvents() {
-        // 1. Intercepting player clicking on an ENTITY (vehicle/seat)
+        // 1. Intercepting player clicking on an ENTITY (vehicle/seat or direct vehicle dismount)
         UseEntityCallback.EVENT.register((player, level, hand, entity, hitResult) -> {
             if (hand != InteractionHand.MAIN_HAND || level.isClientSide()) {
                 return InteractionResult.PASS;
             }
-            if (!player.isSecondaryUseActive() || !isCommandItem(player.getItemInHand(hand))) {
+            if (!player.isSecondaryUseActive()) {
                 return InteractionResult.PASS;
             }
+            net.minecraft.world.item.ItemStack held = player.getItemInHand(hand);
+            if (!isCommandItem(held) && !held.isEmpty()) {
+                return InteractionResult.PASS;
+            }
+
             UUID dogUuid = getSelectedDog(player.getUUID());
             if (dogUuid == null) {
+                // Direct click on vehicle with passenger dogs owned by the player
+                if (entity instanceof AbstractMinecart || entity instanceof Boat || isSitTarget(entity) || !entity.getPassengers().isEmpty()) {
+                    if (level instanceof ServerLevel serverLevel) {
+                        for (Entity passenger : entity.getPassengers()) {
+                            if (passenger instanceof Wolf wolf && wolf.isTame() && wolf.isOwnedBy(player) && wolf.isAlive()) {
+                                wolf.stopRiding();
+                                clearVehicleTarget(wolf.getUUID());
+                                clearSelection(player.getUUID());
+
+                                // Safely offset position outside vehicle/minecart collision envelope
+                                net.minecraft.world.phys.Vec3 offset = player.getLookAngle().scale(-0.8).multiply(1, 0, 1);
+                                wolf.setPos(wolf.getX() + offset.x, wolf.getY(), wolf.getZ() + offset.z);
+
+                                if (entity.entityTags().contains("betterdogs:seat")) {
+                                    entity.discard();
+                                }
+
+                                player.sendOverlayMessage(Component.translatable("text.betterdogs.dog_dismounted", wolf.getName()));
+                                net.minecraft.sounds.SoundEvent ambientSound = ((WolfAccessor) wolf).betterdogs$invokeGetAmbientSound();
+                                serverLevel.playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(),
+                                        ambientSound, wolf.getSoundSource(), 1.0f, 1.0f);
+                                serverLevel.sendParticles(ParticleTypes.CLOUD, wolf.getX(), wolf.getY() + 0.3, wolf.getZ(), 8, 0.2, 0.2, 0.2, 0.05);
+                                return InteractionResult.SUCCESS;
+                            }
+                        }
+                    }
+                }
                 return InteractionResult.PASS;
             }
 
@@ -147,6 +180,7 @@ public class DogCommandManager {
                         if (hasPassengerSpace(entity)) {
                             setVehicleTarget(wolf.getUUID(), entity);
                             clearSelection(player.getUUID());
+                            wolf.setOrderedToSit(false);
                             player.sendOverlayMessage(Component.translatable("text.betterdogs.dog_commanded_to_board", wolf.getName(), entity.getName()));
                             net.minecraft.sounds.SoundEvent whineSound = ((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().whineSound().value();
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), 

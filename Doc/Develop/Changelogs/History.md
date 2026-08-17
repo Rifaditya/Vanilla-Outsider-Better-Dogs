@@ -1,5 +1,13 @@
 # Better Dogs - Historical Changelog
 
+## [4.24.7+26.1.2] - 2026-08-11
+### Refactored & Polished
+- **Minimal Tame Particle Polish (`WolfParticleHandler`)**: Refactored first-time tame particles into a clean ~5-6 particle Minimal Signature per personality (Aggressive: crimson dust + angry villager; Normal: golden dust + happy villager; Pacifist: mint dust + heart).
+
+## [4.24.6+26.1.2] - 2026-08-10
+### Fixed
+- **YACL Config Option Descriptions (`YaclScreenHelper` & Translation Sheets)**: Added missing `.description(...)` OptionDescription builders in `YaclScreenHelper` across all 6 config categories and synchronized complete `.description` keys in `en_us.json` and `id_id.json`.
+
 ## [4.24.4+26.1.2] - 2026-08-10
 ### Fixed
 - **Dog Adoption Crash Fix (`WolfInteractionHelper` & `WolfStatManager`)**: Fixed `NullPointerException` crash during adoption by adding personality null guards in `WolfStatManager` and pre-assigning random personalities for uninitialized dogs.

@@ -13,7 +13,7 @@
         "WolfGuardMixin",
         "WolfAIMixin",
         "WolfInteractMixin",
-        "WolfSafetyMixin",
+        "WolfPushMixin",
         "WolfSpawnMixin",
         "WolfGroupMixin",
         "TamableAnimalMixin",
@@ -28,7 +28,8 @@
         "AnimalMixin",
         "WalkNodeEvaluatorMixin",
         "NaturalSpawnerMixin",
-        "InstrumentItemMixin"
+        "InstrumentItemMixin",
+        "HurtByTargetGoalMixin"
     ],
     "injectors": {
         "defaultRequire": 1

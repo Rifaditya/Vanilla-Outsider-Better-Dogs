@@ -14,7 +14,7 @@ import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.WolfPersistentData;
 import net.vanillaoutsider.betterdogs.util.WolfDebugLogger;
 import net.vanillaoutsider.betterdogs.util.WolfParticleHandler;
-import net.vanillaoutsider.betterdogs.util.WolfStatManager;
+import net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper;
 import net.vanillaoutsider.betterdogs.util.WolfInteractionHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -40,6 +40,29 @@ public abstract class WolfInteractMixin extends TamableAnimal {
     private void betterdogs$onMobInteract(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
         Wolf wolf = (Wolf) (Object) this;
         ItemStack itemStack = player.getItemInHand(hand);
+
+        if (net.vanillaoutsider.betterdogs.util.WolfPettingHelper.canPet(wolf, player, hand, itemStack)) {
+            InteractionResult petResult = net.vanillaoutsider.betterdogs.util.WolfPettingHelper.petWolf(wolf, player);
+            if (petResult == InteractionResult.SUCCESS) {
+                cir.setReturnValue(petResult);
+                return;
+            }
+        }
+
+        if (net.vanillaoutsider.betterdogs.util.WolfGuardHelper.canToggleGuard(wolf, player, itemStack)) {
+            InteractionResult guardResult = net.vanillaoutsider.betterdogs.util.WolfGuardHelper.toggleGuardMode(wolf, player);
+            if (guardResult == InteractionResult.SUCCESS) {
+                cir.setReturnValue(guardResult);
+                return;
+            }
+        }
+
+        InteractionResult adoptResult = net.vanillaoutsider.betterdogs.util.WolfAdoptionHelper.tryHandleAdoption(wolf, player, itemStack);
+        if (adoptResult != InteractionResult.PASS) {
+            cir.setReturnValue(adoptResult);
+            return;
+        }
+
         InteractionResult result = WolfInteractionHelper.handleMobInteract(wolf, player, hand, itemStack);
         if (result != null) {
             cir.setReturnValue(result);
@@ -60,7 +83,7 @@ public abstract class WolfInteractMixin extends TamableAnimal {
             }
 
             WolfPersonality personality = ext.betterdogs$getPersonality();
-            WolfStatManager.applyPersonalityStats(wolf, personality);
+            WolfPersonalityStatHelper.applyPersonalityStats(wolf, personality);
             // statsApplied flag will be set/re-applied in WolfMixin's tick handler if needed, 
             // but we also apply immediately here for responsiveness.
 
