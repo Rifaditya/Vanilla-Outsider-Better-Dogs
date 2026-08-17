@@ -1,5 +1,4 @@
-// Verified against: AvoidHazardsGoal.java (26.1.2+), BlockPos.java (26.2+)
-// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
 package net.vanillaoutsider.betterdogs.ai;
 
 import java.util.EnumSet;
@@ -7,21 +6,19 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.Node;
 import net.minecraft.world.level.pathfinder.Path;
-import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
+import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
+import net.vanillaoutsider.betterdogs.util.WolfHazardHelper;
 
 /**
- * AI Goal for wolves to avoid hazardous blocks.
- * Prevents wolves from walking into lava, fire, or off high ledges.
+ * AI Goal for wolves to avoid hazardous thermal blocks (Lava, Fire, Magma, Lit Campfires).
  */
 public class AvoidHazardsGoal extends Goal {
 
     private final Wolf wolf;
     private final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-    private final BlockPos.MutableBlockPos mutableCheckPos = new BlockPos.MutableBlockPos();
+    private final BlockPos.MutableBlockPos mutableBelowPos = new BlockPos.MutableBlockPos();
 
     public AvoidHazardsGoal(Wolf wolf) {
         this.wolf = wolf;
@@ -30,20 +27,32 @@ public class AvoidHazardsGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        // Check if there's a hazard in our movement path
-        if (wolf.getNavigation().isDone())
+        if (wolf.getNavigation().isDone()) {
             return false;
+        }
+
+        Level level = wolf.level();
+        if (level == null || level.isClientSide()) {
+            return false;
+        }
+
+        if (!BetterDogsGameRules.getBoolean(level, BetterDogsGameRules.BD_CLIFF_SAFETY, true)) {
+            return false;
+        }
 
         Path path = wolf.getNavigation().getPath();
-        if (path == null)
+        if (path == null) {
             return false;
+        }
 
-        int checkLimit = Math.min(path.getNodeCount(), BetterDogsConfig.get().getHazardCheckLimit());
+        int checkLimit = Math.min(path.getNodeCount(), 8);
         for (int i = 0; i < checkLimit; i++) {
             Node node = path.getNode(i);
             mutablePos.set(node.x, node.y, node.z);
+            mutableBelowPos.set(node.x, node.y - 1, node.z);
 
-            if (isHazard(mutablePos)) {
+            if (WolfHazardHelper.isThermalHazard(level.getBlockState(mutablePos)) ||
+                WolfHazardHelper.isThermalHazard(level.getBlockState(mutableBelowPos))) {
                 return true;
             }
         }
@@ -51,35 +60,13 @@ public class AvoidHazardsGoal extends Goal {
         return false;
     }
 
-    private boolean isHazard(BlockPos pos) {
-        Level level = wolf.level();
-        BlockState state = level.getBlockState(pos);
-
-        // Check for lava, magma block, or fire
-        if (state.is(Blocks.LAVA) || state.is(Blocks.MAGMA_BLOCK) || state.is(Blocks.FIRE) || state.is(Blocks.SOUL_FIRE)) {
-            return true;
-        }
-
-        // Check for high fall
-        int fallDistance = 0;
-        mutableCheckPos.set(pos.getX(), pos.getY() - 1, pos.getZ());
-        int searchLimit = BetterDogsConfig.get().getHazardFallSearchLimit();
-        while (fallDistance < searchLimit && level.getBlockState(mutableCheckPos).isAir()) {
-            fallDistance++;
-            mutableCheckPos.setY(mutableCheckPos.getY() - 1);
-        }
-
-        return fallDistance > BetterDogsConfig.get().getMaxSafeFall();
-    }
-
     @Override
     public void start() {
-        // Stop current navigation to avoid hazard
         wolf.getNavigation().stop();
     }
 
     @Override
     public boolean canContinueToUse() {
-        return false; // One-shot goal
+        return false;
     }
 }

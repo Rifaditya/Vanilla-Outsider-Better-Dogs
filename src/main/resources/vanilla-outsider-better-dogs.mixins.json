@@ -13,7 +13,7 @@
         "WolfGuardMixin",
         "WolfAIMixin",
         "WolfInteractMixin",
-        "WolfSafetyMixin",
+        "WolfPushMixin",
         "WolfSpawnMixin",
         "WolfGroupMixin",
         "TamableAnimalMixin",

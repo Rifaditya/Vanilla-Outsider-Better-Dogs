@@ -1,5 +1,15 @@
 # Changelog
 
+## [4.24.10+26.2] - 2026-08-17
+### Fixed & Refactored
+- **Wolf Movement Stutter & AI Checker Velocity-Zeroing Elimination (`WolfSafetyMixin`, `WolfPushMixin`, `PersonalityFollowOwnerGoal`)**:
+  - Completely removed legacy `WolfSafetyMixin` tick loop that was zeroing velocity (`Vec3.ZERO`) and freezing navigation when walking down slopes, hills, stairs, or mid-jump.
+  - Implemented gold-standard push interception via `WolfPushMixin` and single-purpose `WolfCliffSafetyHelper`, preventing players and entities from shoving wolves off cliffs (>3 block drop) or pushing sitting dogs with zero tick overhead on normal walking movement.
+  - Streamlined `AvoidHazardsGoal` to scan exclusively for lethal thermal hazards (lava, fire, magma, lit campfires) via dedicated `WolfHazardHelper`, eliminating erroneous navigation aborts on normal terrain slopes.
+  - Refactored `PersonalityFollowOwnerGoal` to provide smooth, uninterrupted continuous owner tracking without start/stop jitter.
+  - Removed obsolete ambient `PathToSoundLocationGoal` movement interruption from `WolfAIMixin`.
+  - Added automated test suites: `HazardDetectionTest.java`, `CliffSafetyTest.java`, and `HazardDetourTest.java`.
+
 ## [4.24.9+26.2] - 2026-08-17
 ### Added & Polished
 - **Dynamic GameRules Null-Safe Accessors & Tag Baseline (`BetterDogsGameRules.java`, `BetterDogsTags.java`)**:
