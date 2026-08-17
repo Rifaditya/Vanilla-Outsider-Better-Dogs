@@ -71,9 +71,12 @@ public class WolfInteractionHelper {
 
     public static Item getFavoriteTreat(Wolf wolf) {
         long seed = wolf.getUUID().getLeastSignificantBits();
-        java.util.Random random = new java.util.Random(seed);
+        int hash = (int) (seed ^ (seed >>> 32)) & 0x7FFFFFFF;
         List<Item> pool = getActiveTreatPool();
-        return pool.get(random.nextInt(pool.size()));
+        if (pool == null || pool.isEmpty()) {
+            return Items.COOKED_BEEF;
+        }
+        return pool.get(hash % pool.size());
     }
 
     public static InteractionResult handleMobInteract(Wolf wolf, Player player, InteractionHand hand, ItemStack itemStack) {

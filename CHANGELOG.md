@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.24.19+26.2] - 2026-08-17
+### Fixed & Remediated
+- **Registered Missing Mixin (`HurtByTargetGoalMixin`)**:
+  - Registered `HurtByTargetGoalMixin` in `vanilla-outsider-better-dogs.mixins.json` to ensure gentle adult puppy discipline target silencing ("Muzzle") loads properly at runtime.
+- **Eliminated Mixin Push Collision (`EntityMixin`)**:
+  - Removed duplicate `push` injection and obsolete detour helper in `EntityMixin.java`, delegating collision safety cleanly and exclusively to `WolfPushMixin.java` and `WolfCliffSafetyHelper.java`.
+- **Zero-Allocation Favorite Treat Hashing (`WolfInteractionHelper`)**:
+  - Replaced hot-path `new Random(seed)` instantiation in `getFavoriteTreat` with deterministic UUID bit-mixing hash.
+- **Template Clean-Up**:
+  - Purged leftover `template-mod.client.mixins.json`.
+
 ## [4.24.18+26.2] - 2026-08-17
 ### Added & Refactored
 - **Lost Stray Collarless Adoption (`WolfAdoptionHelper`, `WolfInteractMixin`, `WolfMixin`)**:

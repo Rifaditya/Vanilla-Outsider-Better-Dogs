@@ -28,7 +28,8 @@
         "AnimalMixin",
         "WalkNodeEvaluatorMixin",
         "NaturalSpawnerMixin",
-        "InstrumentItemMixin"
+        "InstrumentItemMixin",
+        "HurtByTargetGoalMixin"
     ],
     "injectors": {
         "defaultRequire": 1
