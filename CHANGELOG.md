@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.24.26+26.1.2] - 2026-08-18
+### Added & Refactored
+- **Defect Curing via Golden Apple (`WolfCureHelper`, `WolfInteractMixin`, `BetterDogs`)**:
+  - Implemented single-purpose `WolfCureHelper` managing Golden Apple and Enchanted Golden Apple curing interactions for inbred runt dogs.
+  - Curing clears inbred genetic flags, restores scale to normal stature ($\ge 1.0\times$), applies healthy personality combat stats, emits `ParticleTypes.HAPPY_VILLAGER` sparkle particles + levelup audio, and fires `CURE_INBRED` advancement trigger.
+  - Enchanted Golden Apples grant additional Regeneration II (20s) and Absorption I (2m) status effects.
+  - Added automated test suite: `InbredCureTest.java` (21 total test suites).
+
 ## [4.24.25+26.1.2] - 2026-08-18
 ### Added & Refactored
 - **Lineage Tracking & Inbreeding Defects (`WolfInbreedingHelper`, `WolfBreedingMixin`, `BetterDogs`)**:
