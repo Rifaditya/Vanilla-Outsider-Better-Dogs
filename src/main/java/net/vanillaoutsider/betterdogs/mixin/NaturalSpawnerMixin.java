@@ -27,7 +27,7 @@ public class NaturalSpawnerMixin {
     @Inject(method = "mobsAt", at = @At("RETURN"), cancellable = true)
     private static void betterdogs$modifySpawnWeights(
             ServerLevel level, StructureManager structureManager, ChunkGenerator generator,
-            MobCategory mobCategory, BlockPos pos,
+            MobCategory mobCategory, BlockPos pos, Holder<Biome> biome,
             CallbackInfoReturnable<WeightedList<MobSpawnSettings.SpawnerData>> cir) {
         
         WeightedList<MobSpawnSettings.SpawnerData> original = cir.getReturnValue();
@@ -64,7 +64,6 @@ public class NaturalSpawnerMixin {
             }
             cir.setReturnValue(builder.build());
         } else if (expandedBiomes && mobCategory == MobCategory.CREATURE) {
-            Holder<Biome> biome = level.getBiome(pos);
             String path = biome.unwrapKey().map(k -> k.identifier().getPath().toLowerCase()).orElse("");
             boolean isExpanded = path.contains("plains") || path.contains("meadow") || path.contains("forest") || path.contains("mountain") || path.contains("slope") || path.contains("grove") || path.contains("hill");
             if (isExpanded) {

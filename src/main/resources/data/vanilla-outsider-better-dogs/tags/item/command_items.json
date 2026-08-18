@@ -4,6 +4,9 @@
     "minecraft:stick",
     "minecraft:blaze_rod",
     "minecraft:breeze_rod",
-    "#c:tools/sticks"
+    {
+      "id": "#c:tools/sticks",
+      "required": false
+    }
   ]
 }

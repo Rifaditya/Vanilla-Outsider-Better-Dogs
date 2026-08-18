@@ -1,27 +1,34 @@
 # Changelog
 
-## [5.0.26+26.3] - 2026-08-18
+## [5.0.27+26.3] - 2026-08-18
+### Fixed
+- **Mixin Descriptor Crash in `NaturalSpawnerMixin`**:
+  - Resolved `InvalidInjectionException` during world chunk ticking by adding missing `Holder<Biome> biome` parameter to `NaturalSpawnerMixin#betterdogs$modifySpawnWeights`.
+- **Datapack Tag Optional Declaration**:
+  - Added `"required": false` to `#c:tools/sticks` in `tags/item/command_items.json` to prevent data loader warnings when conventional tool tags are absent.
+
+## [5.0.26+26.3] - 2026-08-18 [BROKEN / DESCRIPTOR MISMATCH - SUPERSEDED BY 5.0.27+26.3]
 ### Added & Refactored
 - **Lineage Tracking & Inbreeding Defects (`WolfInbreedingHelper`, `WolfBreedingMixin`, `BetterDogs`)**:
   - Extracted and implemented single-purpose `WolfInbreedingHelper` managing 3-generation parent UUID lineage verification, runt scale penalties ($0.7\times$ scale reduction), smoke particle effects (`ParticleTypes.SMOKE`), and advancement triggers.
   - Refactored `WolfBreedingMixin` to delegate lineage processing and runt penalty effects to `WolfInbreedingHelper`, triggering `INBRED_WOLF` and `OUTCROSS_RUNT` criteria for the breeding player.
   - Added automated test suite: `InbreedingLineageTest.java` (20 total test suites).
 
-## [5.0.25+26.3] - 2026-08-18
+## [5.0.25+26.3] - 2026-08-18 [BROKEN / DESCRIPTOR MISMATCH - SUPERSEDED BY 5.0.27+26.3]
 ### Added & Refactored
 - **Low-Health Tactical Disengagement AI (`WolfFleeHelper`, `WolfFleeLowHealthGoal`, `BetterDogsGameRules`)**:
   - Extracted and implemented single-purpose `WolfFleeHelper` managing 30% Max HP threshold evaluation, personality flee probability scaling (Pacifist 100%, Normal 50%, Aggressive 10%), escape vector calculation away from attackers (`DefaultRandomPos.getPosAway`), and server-side disengagement feedback.
   - Refactored `WolfFleeLowHealthGoal` to delegate condition checks and escape pathing to `WolfFleeHelper`, playing `SoundEvents.WOLF_WHINE_BABY` audio with pitch modulation and spawning 3 `ParticleTypes.SPLASH` sweat droplet particles upon tactical retreat.
   - Added automated test suite: `LowHealthFleeTest.java` (19 total test suites).
 
-## [5.0.24+26.3] - 2026-08-17
+## [5.0.24+26.3] - 2026-08-17 [BROKEN / DESCRIPTOR MISMATCH - SUPERSEDED BY 5.0.27+26.3]
 ### Added & Refactored
 - **Tactical Pack Flanking Coordination AI (`WolfFlankingHelper`, `WolfFlankAttackGoal`, `BetterDogsGameRules`)**:
   - Extracted and implemented single-purpose `WolfFlankingHelper` managing approach-time calculation ($t = \frac{\text{dist}}{\text{speed}}$), deterministic tie-breaker sorting, dynamic bounding box clearance scaling ($\max(3.0, \text{bbWidth} \times 2.5)$), and raycast line-of-sight collision checks.
   - Refactored `WolfFlankAttackGoal` to cleanly delegate tactical pack coordination: closest 50% of the pack charges directly (at 50% approach speed until melee), while slower 50% execute multi-angle flanking arcs with opposite-side fallback if terrain is blocked.
   - Added automated test suite: `PackFlankingTest.java` (18 total test suites).
 
-## [5.0.23+26.3] - 2026-08-17
+## [5.0.23+26.3] - 2026-08-17 [BROKEN / DESCRIPTOR MISMATCH - SUPERSEDED BY 5.0.27+26.3]
 ### Added & Refactored (Parity Modernization: Steps 1–15 Complete)
 - **100% Modern Sovereign Parity Sync**:
   - Synchronized all 26 single-purpose helpers (`WolfPettingHelper`, `WolfCureHelper`, `WolfAdoptionHelper`, `WolfNemesisHelper`, `WolfFetchHelper`, `WolfZoomiesHelper`, `WolfCliffSafetyHelper`, `WolfHazardHelper`, `WolfCreeperHelper`, `WolfMountHelper`, `WolfHornCommandHelper`, `WolfStormHelper`, `WolfScaleGeneticsHelper`, `WolfPersonalityStatHelper`, `WolfCatchupHelper`, etc.).
