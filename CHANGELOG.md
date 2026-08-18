@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.24.29+26.1.2] - 2026-08-18
+### Added & Refactored
+- **High-Value Dog Treat Buff System (`DogTreatHelper`, `WolfInteractMixin`, `WolfInteractionHelper`)**:
+  - Implemented single-purpose `DogTreatHelper` managing zero-allocation deterministic UUID bit-mixing favorite treat preference hashing, treat holding detection, and 6D-guarded treat feeding interactions.
+  - Feeding favorite treats provides potent rejuvenation: full health restoration, Regeneration II (45s), joyful Zoomies running bursts, soothed timestamp updates, Jade tooltip discovery (`discoveredTreat`), ambient audio, and `HAPPY_VILLAGER` + `HEART` particle emissions.
+  - Refactored `WolfInteractMixin` and cleaned duplicate treat logic from `WolfInteractionHelper`.
+  - Added automated test suite: `FavoriteTreatTest.java` (24 total test suites).
+
 ## [4.24.28+26.1.2] - 2026-08-18
 ### Added & Refactored
 - **Autonomous Low-Health Scavenging AI (`WolfScavengeHelper`, `EatGroundFoodGoal`, `BetterDogs`)**:
