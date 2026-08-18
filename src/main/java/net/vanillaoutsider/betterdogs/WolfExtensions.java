@@ -269,11 +269,16 @@ public interface WolfExtensions {
     int betterdogs$getZoomiesTicks();
     void betterdogs$setZoomiesTicks(int ticks);
 
+    // ========== Spontaneous Pack Howling (Step 23) ==========
+    int betterdogs$getHowlingTicks();
+    void betterdogs$setHowlingTicks(int ticks);
+
     default void betterdogs$clearTransientState() {
         betterdogs$setSoundLocationTarget(null);
         betterdogs$setPassiveOverrideTicks(0);
         betterdogs$setHasFetchedItem(false);
         betterdogs$setFetchedItemStack(null);
         betterdogs$setZoomiesTicks(0);
+        betterdogs$setHowlingTicks(0);
     }
 }

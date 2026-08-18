@@ -3,28 +3,25 @@
 package net.vanillaoutsider.betterdogs.ai;
 
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
-import java.util.EnumSet;
-import java.util.List;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
-import net.minecraft.world.phys.AABB;
+import net.minecraft.world.level.Level;
+import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
+import net.vanillaoutsider.betterdogs.util.WolfHowlHelper;
+
+import java.util.EnumSet;
 
 /**
- * AI Goal: Group Howl - Pack vocalization during night.
- * All wolves in range join the howl when one starts.
- * Concept: "Full moon pack vocalization"
- * Note: Using wolf shake/whine sounds since WOLF_HOWL was removed in MC 26.1
+ * Dedicated single-purpose AI goal for nocturnal pack chorus howling.
+ * Standing pack wolves vocalize together under night skies and full moons with harmonized pitches.
  */
 public class GroupHowlGoal extends Goal {
 
     private final Wolf wolf;
     private int howlTimer = 0;
     private int howlCooldown = 0;
-    private static final int HOWL_DURATION = 60; // 3 seconds
     private static final int HOWL_COOLDOWN = 12000; // 10 minutes
 
     public GroupHowlGoal(Wolf wolf) {
@@ -34,96 +31,87 @@ public class GroupHowlGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        // Must be tamed wolf
-        if (!wolf.isTame()) return false;
-        
-        // Must be night (use sky darken for detection)
-        if (!isNightTime()) return false;
-
-        // NEW: Full Moon check to match documentation
-        if (wolf.level().environmentAttributes().getDimensionValue(net.minecraft.world.attribute.EnvironmentAttributes.MOON_PHASE).index() != 0) return false;
-        
-        // Cooldown check
-        if (howlCooldown > 0) {
-            howlCooldown--;
+        if (!WolfHowlHelper.canJoinHowl(this.wolf)) {
             return false;
         }
 
-        // Only roll chance once every 100 ticks (5 seconds) to prevent spamming rolls per tick
-        if (wolf.tickCount % 100 != 0) return false;
-        
-        // Sitting wolves don't howl
-        if (wolf.isOrderedToSit()) return false;
-        
-        // Random chance to start howl (permille per tick during night)
-        float chance = DynamicGameRuleManager.getProb(wolf.level(), BetterDogsGameRules.BD_HOWL_CHANCE);
-        if (chance <= 0) return false;
-        
-        return wolf.getRandom().nextFloat() < chance;
+        Level level = this.wolf.level();
+        if (level == null || level.isClientSide()) {
+            return false;
+        }
+
+        // Responding to an active packmate's chorus howl signal
+        if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$getHowlingTicks() > 0) {
+            return true;
+        }
+
+        // Cooldown check for self-initiated howling
+        if (this.howlCooldown > 0) {
+            this.howlCooldown--;
+            return false;
+        }
+
+        // Night time check
+        if (!isNightTime(level)) {
+            return false;
+        }
+
+        // Throttle evaluation to once every 100 ticks
+        if (this.wolf.tickCount % 100 != 0) {
+            return false;
+        }
+
+        float chance = DynamicGameRuleManager.getProb(level, BetterDogsGameRules.BD_HOWL_CHANCE);
+        if (chance <= 0.0f) {
+            return false;
+        }
+
+        return this.wolf.getRandom().nextFloat() < chance;
     }
 
-    private boolean isNightTime() {
-        if (wolf.level().isClientSide()) return false;
-        
-        // Use sky darken level to detect night (higher = darker = night)
-        int skyDarken = wolf.level().getSkyDarken();
-        return skyDarken >= 4; // Night when sky darken is 4+
+    private boolean isNightTime(Level level) {
+        return level.getSkyDarken() >= 4;
     }
 
     @Override
     public void start() {
-        howlTimer = HOWL_DURATION;
-        
-        // Play howl-like vocalization using wolf shake at low pitch
-        playHowlSound(wolf, 1.5f, 0.5f + wolf.getRandom().nextFloat() * 0.2f);
-        
-        // Spread howl to nearby wolves
-        spreadHowl();
-    }
-    
-    private void playHowlSound(Wolf target, float volume, float pitch) {
-        target.playSound(net.vanillaoutsider.betterdogs.BetterDogs.WOLF_HOWL, volume, pitch);
-    }
+        this.howlTimer = WolfHowlHelper.BASE_HOWL_DURATION;
+        this.wolf.getNavigation().stop();
 
-    private void spreadHowl() {
-        double range = BetterDogsConfig.get().getHowlSpreadRange();
-        AABB searchBox = wolf.getBoundingBox().inflate(range);
-        
-        List<Wolf> nearbyWolves = wolf.level().getEntitiesOfClass(Wolf.class, searchBox, w -> {
-            if (w == wolf) return false;
-            if (!w.isTame()) return false;
-            if (w.isOrderedToSit()) return false;
-            return true;
-        });
-        
-        // Trigger howl sounds in nearby wolves synchronously
-        for (Wolf nearbyWolf : nearbyWolves) {
-            // Play howl sounds simultaneously with harmonized pitch
-            playHowlSound(nearbyWolf, 1.3f, 0.6f);
+        boolean isAlertedFollower = false;
+        if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$getHowlingTicks() > 0) {
+            isAlertedFollower = true;
+        }
 
-            // Set the cooldown of GroupHowlGoal on this nearby wolf as well
-            for (net.minecraft.world.entity.ai.goal.WrappedGoal wrappedGoal : ((net.vanillaoutsider.betterdogs.WolfExtensions) nearbyWolf).betterdogs$getGoalSelector().getAvailableGoals()) {
-                if (wrappedGoal.getGoal() instanceof GroupHowlGoal howlGoal) {
-                    howlGoal.betterdogs$setHowlCooldown(HOWL_COOLDOWN);
-                }
-            }
+        if (!isAlertedFollower) {
+            // Initiator howling and alerting packmates
+            WolfHowlHelper.initiateChorusHowl(this.wolf, BetterDogsConfig.get().getHowlSpreadRange());
+        } else {
+            // Responding follower with harmonic pitch
+            float pitch = WolfHowlHelper.calculateHarmonicPitch(this.wolf.getRandom().nextFloat());
+            WolfHowlHelper.startHowl(this.wolf, pitch);
         }
     }
 
     @Override
     public boolean canContinueToUse() {
-        return howlTimer > 0 && !wolf.isOrderedToSit();
+        return this.howlTimer > 0 && !this.wolf.isOrderedToSit() && this.wolf.getTarget() == null;
     }
 
     @Override
     public void tick() {
-        howlTimer--;
+        this.howlTimer--;
+        this.wolf.setXRot(-45.0F);
+        this.wolf.getLookControl().setLookAt(this.wolf.getX(), this.wolf.getY() + 5.0, this.wolf.getZ(), 30.0F, 30.0F);
     }
 
     @Override
     public void stop() {
-        howlCooldown = HOWL_COOLDOWN;
-        howlTimer = 0;
+        this.howlCooldown = HOWL_COOLDOWN;
+        this.howlTimer = 0;
+        if (this.wolf instanceof WolfExtensions ext) {
+            ext.betterdogs$setHowlingTicks(0);
+        }
     }
 
     public void betterdogs$setHowlCooldown(int cooldown) {
