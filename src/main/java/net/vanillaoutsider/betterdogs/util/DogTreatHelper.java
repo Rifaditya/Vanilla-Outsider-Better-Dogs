@@ -133,6 +133,36 @@ public final class DogTreatHelper {
     }
 
     /**
+     * Checks if an item stack is general canine food or bone.
+     */
+    public static boolean isCanineFood(ItemStack stack) {
+        if (stack == null || stack.isEmpty()) {
+            return false;
+        }
+        if (stack.is(Items.BONE)) {
+            return true;
+        }
+        try {
+            return stack.is(net.minecraft.tags.ItemTags.MEAT) || stack.has(net.minecraft.core.component.DataComponents.FOOD);
+        } catch (Throwable ignored) {
+            // Headless / test fallback
+            return stack.is(Items.BONE) || stack.is(Items.COOKED_BEEF) || stack.is(Items.BEEF) || stack.is(Items.PORKCHOP) || stack.is(Items.COOKED_PORKCHOP) || stack.is(Items.CHICKEN) || stack.is(Items.COOKED_CHICKEN) || stack.is(Items.MUTTON) || stack.is(Items.COOKED_MUTTON) || stack.is(Items.ROTTEN_FLESH);
+        }
+    }
+
+    /**
+     * Checks if the player is holding the dog's favorite treat, meat, or bones in either hand.
+     */
+    public static boolean isHoldingFoodOrTreat(Wolf wolf, Player player) {
+        if (wolf == null || player == null) {
+            return false;
+        }
+        ItemStack main = player.getMainHandItem();
+        ItemStack off = player.getOffhandItem();
+        return isFavoriteTreat(wolf, main) || isFavoriteTreat(wolf, off) || isCanineFood(main) || isCanineFood(off);
+    }
+
+    /**
      * Checks if the wolf can be fed its favorite treat.
      */
     public static boolean canFeedFavoriteTreat(Wolf wolf, Player player, InteractionHand hand, ItemStack stack) {
