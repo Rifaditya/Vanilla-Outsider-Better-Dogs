@@ -38,79 +38,11 @@ import net.vanillaoutsider.betterdogs.scheduler.events.ZoomiesDogEvent;
 
 public class WolfInteractionHelper {
 
-    private static final Item[] VANILLA_TREAT_POOL = new Item[]{
-        Items.COOKED_MUTTON, Items.RABBIT_STEW, Items.SPIDER_EYE, 
-        Items.GOLDEN_APPLE, Items.BAKED_POTATO, Items.PORKCHOP,
-        Items.ROTTEN_FLESH, Items.PUMPKIN_PIE, Items.GLOW_BERRIES
-    };
-
-    private static List<Item> ACTIVE_TREAT_POOL = null;
-
-    public static List<Item> getActiveTreatPool() {
-        if (ACTIVE_TREAT_POOL == null) {
-            List<Item> pool = new ArrayList<>(Arrays.asList(VANILLA_TREAT_POOL));
-            if (FabricLoader.getInstance().isModLoaded("farmersdelight")) {
-                String[] fdItems = new String[]{
-                    "dog_food", "minced_beef", "mutton_chops", "cooked_mutton_chops",
-                    "bacon", "cooked_bacon", "chicken_cuts", "cooked_chicken_cuts",
-                    "ham", "smoked_ham", "beef_stew", "chicken_soup", "vegetable_soup", "fish_stew"
-                };
-                for (String path : fdItems) {
-                    Identifier id = Identifier.fromNamespaceAndPath("farmersdelight", path);
-                    BuiltInRegistries.ITEM.getOptional(id).ifPresent(item -> {
-                        if (item != Items.AIR) {
-                            pool.add(item);
-                        }
-                    });
-                }
-            }
-            ACTIVE_TREAT_POOL = pool;
-        }
-        return ACTIVE_TREAT_POOL;
-    }
-
     public static Item getFavoriteTreat(Wolf wolf) {
-        long seed = wolf.getUUID().getLeastSignificantBits();
-        int hash = (int) (seed ^ (seed >>> 32)) & 0x7FFFFFFF;
-        List<Item> pool = getActiveTreatPool();
-        if (pool == null || pool.isEmpty()) {
-            return Items.COOKED_BEEF;
-        }
-        return pool.get(hash % pool.size());
+        return DogTreatHelper.getFavoriteTreat(wolf);
     }
 
     public static InteractionResult handleMobInteract(Wolf wolf, Player player, InteractionHand hand, ItemStack itemStack) {
-        // Favorite Treats Logic
-        if (wolf.isTame() && wolf.isOwnedBy(player) && DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_FAVORITE_TREATS)) {
-            Item favoriteTreat = getFavoriteTreat(wolf);
-            if ((itemStack.is(favoriteTreat) && wolf.getHealth() < wolf.getMaxHealth()) || (itemStack.is(favoriteTreat) && !itemStack.is(Items.ROTTEN_FLESH))) {
-                // If it's their favorite treat, they get massive buffs and fully heal.
-                if (!wolf.level().isClientSide()) {
-                    itemStack.consume(1, player);
-                    net.vanillaoutsider.betterdogs.WolfPersistentData.setDiscoveredTreat(wolf, true);
-                    wolf.setHealth(wolf.getMaxHealth());
-                    wolf.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 900, 1));
-                    
-                    if (wolf instanceof WolfExtensions ext) {
-                        ext.betterdogs$setSoothedTime(wolf.level().getGameTime());
-                        var scheduler = ext.betterdogs$getScheduler();
-                        WolfZoomiesHelper.triggerZoomies(wolf);
-                        if (scheduler != null && !scheduler.isEventActive(ZoomiesDogEvent.ID)) {
-                            scheduler.schedule(new ZoomiesDogEvent());
-                        }
-                    }
-
-                    wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), ((WolfAccessor) wolf).betterdogs$invokeGetAmbientSound(), wolf.getSoundSource(), 1.0f, 1.5f);
-                    
-                    if (wolf.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-                        serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, wolf.getRandomX(1.0), wolf.getRandomY() + 0.5, wolf.getRandomZ(1.0), 10, 0.2, 0.2, 0.2, 0.05);
-                        serverLevel.sendParticles(ParticleTypes.HEART, wolf.getRandomX(1.0), wolf.getRandomY() + 0.5, wolf.getRandomZ(1.0), 5, 0.2, 0.2, 0.2, 0.05);
-                    }
-                }
-                return InteractionResult.SUCCESS;
-            }
-        }
-
         if (wolf.isTame() && wolf.isOwnedBy(player) && itemStack.is(Items.GOLDEN_APPLE) && hand == InteractionHand.MAIN_HAND) {
             if (wolf instanceof WolfExtensions ext && net.vanillaoutsider.betterdogs.WolfPersistentData.isPersistedInbred(wolf)) {
                 if (DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_ENABLE_INBRED_CURING)) {
