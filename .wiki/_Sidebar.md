@@ -5,9 +5,12 @@
 ---
 
 #### 📦 Minecraft Versions
-* [[MC 26.3 Guide|Minecraft-26.3-Guide]]
+* [[MC 1.20.1 Guide|Minecraft-1.20.1-Guide]]
+* [[MC 1.21.1 Guide|Minecraft-1.21.1-Guide]]
+* [[MC 1.21.11 Guide|Minecraft-1.21.11-Guide]]
+* [[MC 26.1.2 Guide|Minecraft-26.1.2-Guide]]
 * [[MC 26.2 Guide|Minecraft-26.2-Guide]]
-* [[MC 26.1 Guide|Minecraft-26.1-Guide]]
+* [[MC 26.3 Guide|Minecraft-26.3-Guide]]
 * [[Version Compatibility|Version-Compatibility]]
 
 ---
