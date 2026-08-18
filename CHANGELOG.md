@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.0.36+26.3] - 2026-08-18
+### Added & Refactored
+- **Aggressive Autonomous Stalking AI (`AggressiveTargetGoal`, `WolfAIMixin`)**:
+  - Implemented proactive 16-block hostile monster scanning perimeter for Aggressive personality wolves and guard post sentries.
+  - Added intimidating growl audio cue and angry alert particles (`ParticleTypes.ANGRY_VILLAGER`) upon acquiring targets with line-of-sight.
+  - Enforced strict safety exemptions for Creepers (blast griefing avoidance) and Wardens (suicide charge avoidance).
+  - Added automated test suite `AggressiveTargetTest` asserting 16m detection math, guard mode perimeter, and strict null safety.
+
 ## [5.0.35+26.3] - 2026-08-18
 ### Added & Refactored
 - **Pacifist Threat Fleeing AI (`PacifistRevengeGoal`, `WolfAIMixin`)**:
