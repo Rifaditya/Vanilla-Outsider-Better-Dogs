@@ -23,7 +23,7 @@ import net.vanillaoutsider.betterdogs.ai.AvoidHazardsGoal;
 import net.vanillaoutsider.betterdogs.ai.BabyBiteBackGoal;
 import net.vanillaoutsider.betterdogs.ai.BabyCuriosityGoal;
 import net.vanillaoutsider.betterdogs.ai.BabyMischiefGoal;
-import net.vanillaoutsider.betterdogs.ai.BeggingGoal;
+import net.vanillaoutsider.betterdogs.ai.WolfBegGoal;
 import net.vanillaoutsider.betterdogs.ai.BloodFeudGoal;
 import net.vanillaoutsider.betterdogs.ai.EatGroundFoodGoal;
 import net.vanillaoutsider.betterdogs.ai.FleeCreeperGoal;
@@ -94,7 +94,7 @@ public abstract class WolfAIMixin extends TamableAnimal {
         this.goalSelector.addGoal(4, new SmallFightGoal(wolf));
         this.goalSelector.addGoal(5, new BabyMischiefGoal(wolf));
         this.goalSelector.addGoal(6, new ZoomiesGoal(wolf));
-        this.goalSelector.addGoal(7, new BeggingGoal(wolf));
+        this.goalSelector.addGoal(7, new WolfBegGoal(wolf, 5.0F));
         this.goalSelector.addGoal(7, new WolfFetchGoal(wolf));
 
         Set<WrappedGoal> goalsToRemove = new HashSet<>();

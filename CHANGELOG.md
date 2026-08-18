@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.24.32+26.2] - 2026-08-18
+### Added & Refactored
+- **Dynamic Owner Begging Proximity AI (`WolfBegGoal`, `DogTreatHelper`, `WolfAIMixin`)**:
+  - Implemented single-purpose `WolfBegGoal` replacing legacy begging code, activating vanilla interest head-tilt (`wolf.setIsInterested(true)`) when standing dogs are within 5 blocks of a player holding treats or food.
+  - Added food and treat detection helper `DogTreatHelper.isHoldingFoodOrTreat` supporting favorite treats, canine meats, and bones.
+  - Smoothly tracks player eye height (`getEyeY()`) and halts navigation to preserve natural posture.
+  - Added automated test suite `BeggingProximityTest` asserting 5-block distance threshold math and null safety.
+
 ## [4.24.31+26.2] - 2026-08-18
 ### Added & Refactored
 - **Tamed Spontaneous Pack Howling AI (`WolfHowlHelper`, `GroupHowlGoal`, `WolfExtensions`, `WolfMixin`)**:
