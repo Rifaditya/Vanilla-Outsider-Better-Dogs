@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.0.35+26.3] - 2026-08-18
+### Added & Refactored
+- **Pacifist Threat Fleeing AI (`PacifistRevengeGoal`, `WolfAIMixin`)**:
+  - Implemented dedicated non-violent threat evasion goal for Pacifist personality wolves.
+  - When harmed or threatened, Pacifist wolves emit distress audio/particles and alert nearby packmates within 16 blocks to defend them.
+  - Pacifist wolves tactically flee away from attackers at $1.25\times$ speed toward their owner or safety, preserving their gentle, non-violent nature.
+  - Added automated test suite `PacifistRevengeTest` asserting defense alert radius math ($16\text{m}$), flee speed ($1.25\times$), personality filtering, and strict null safety.
+
 ## [5.0.34+26.3] - 2026-08-18
 ### Added & Refactored
 - **Dynamic Owner Begging Proximity AI (`WolfBegGoal`, `DogTreatHelper`, `WolfAIMixin`)**:
