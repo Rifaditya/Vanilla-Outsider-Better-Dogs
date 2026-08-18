@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.24.30+26.1.2] - 2026-08-18
+### Fixed & Improved
+- **Ground-Tracing Flight Catch-Up & Zero Sky Teleportation (`WolfTeleportHelper`, `WolfCatchupHelper`, `PersonalityFollowOwnerGoal`)**:
+  - Eliminated airborne sky teleportation bug when players are flying in Creative mode (`player.getAbilities().flying`) or gliding with Elytra (`player.isFallFlying()`).
+  - Added hazard-aware downward ground scanning in `WolfTeleportHelper.findSafeGroundPosBelow` utilizing heightmaps and walkability checks, allowing dogs to continuously trace safe solid ground directly beneath flying owners without mid-air spawns.
+  - Refactored `PersonalityFollowOwnerGoal.teleportToOwner` to use `WolfTeleportHelper.findSafeTeleportPos`.
+  - Added flight speed/distance dynamic throttling ($> 32$ blocks) in `WolfCatchupHelper.checkAndPerformCatchUp`.
+
 ## [4.24.29+26.1.2] - 2026-08-18
 ### Added & Refactored
 - **High-Value Dog Treat Buff System (`DogTreatHelper`, `WolfInteractMixin`, `WolfInteractionHelper`)**:

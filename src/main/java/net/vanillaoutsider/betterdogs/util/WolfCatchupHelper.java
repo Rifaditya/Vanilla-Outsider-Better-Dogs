@@ -92,13 +92,16 @@ public final class WolfCatchupHelper {
             return;
         }
 
+        boolean isFlying = player.getAbilities().flying || player.isFallFlying();
+        double requiredDistSq = isFlying ? 1024.0D : MAX_FOLLOW_DISTANCE_SQR;
+
         BlockPos playerBlockPos = player.blockPosition();
         for (Wolf wolf : nearbyWolves) {
             if (!WolfTeleportHelper.isEligibleFollowingWolf(wolf, player)) {
                 continue;
             }
 
-            if (wolf.distanceToSqr(player) > MAX_FOLLOW_DISTANCE_SQR) {
+            if (wolf.distanceToSqr(player) > requiredDistSq) {
                 Vec3 safePos = WolfTeleportHelper.findSafeTeleportPos(wolf, level, playerBlockPos);
                 if (safePos != null) {
                     wolf.teleportTo(level, safePos.x, safePos.y, safePos.z, Set.of(), wolf.getYRot(), wolf.getXRot(), false);
