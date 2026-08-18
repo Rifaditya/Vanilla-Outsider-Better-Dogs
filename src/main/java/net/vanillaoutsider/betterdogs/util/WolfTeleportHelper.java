@@ -9,9 +9,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
-import net.minecraft.world.level.portal.TeleportTransition;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
@@ -78,7 +78,7 @@ public class WolfTeleportHelper {
         }
 
         AABB searchBox = new AABB(oldPos.x - 32.0, oldPos.y - 16.0, oldPos.z - 32.0,
-                                  oldPos.x + 32.0, oldPos.y + 16.0, oldPos.z + 32.0);
+                oldPos.x + 32.0, oldPos.y + 16.0, oldPos.z + 32.0);
 
         List<Wolf> candidateWolves = oldLevel.getEntitiesOfClass(Wolf.class, searchBox,
                 wolf -> isEligibleFollowingWolf(wolf, player));
@@ -97,7 +97,17 @@ public class WolfTeleportHelper {
         }
     }
 
+    /**
+     * Finds a safe, solid, walkable teleport position near the given center block position.
+     * If the player is airborne or flying, performs ground-tracing to land safely on solid terrain below.
+     * Returns null if no safe walkable solid block exists (strictly preventing mid-air / sky teleports).
+     */
     public static Vec3 findSafeTeleportPos(Wolf wolf, ServerLevel level, BlockPos center) {
+        if (wolf == null || level == null || center == null) {
+            return null;
+        }
+
+        // 1. Direct offset scan around target center (for grounded/near-surface players)
         for (int attempt = 0; attempt < 12; ++attempt) {
             int xOffset = wolf.getRandom().nextIntBetweenInclusive(-3, 3);
             int zOffset = wolf.getRandom().nextIntBetweenInclusive(-3, 3);
@@ -109,16 +119,63 @@ public class WolfTeleportHelper {
                 return Vec3.atBottomCenterOf(candidate);
             }
         }
-        return Vec3.atBottomCenterOf(center);
+
+        // 2. Ground-tracing fallback: If player is airborne / flying, find solid ground directly below
+        return findSafeGroundPosBelow(wolf, level, center);
+    }
+
+    /**
+     * Performs hazard-aware ground scanning below the player's coordinates using heightmaps and raycasts.
+     */
+    public static Vec3 findSafeGroundPosBelow(Wolf wolf, ServerLevel level, BlockPos center) {
+        if (wolf == null || level == null || center == null) {
+            return null;
+        }
+
+        // A. Heightmap scan for outdoor / overworld flight
+        try {
+            BlockPos heightmapPos = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, center);
+            if (heightmapPos.getY() <= center.getY() + 2 && heightmapPos.getY() > level.getMinY()) {
+                for (int attempt = 0; attempt < 10; ++attempt) {
+                    int xOffset = wolf.getRandom().nextIntBetweenInclusive(-3, 3);
+                    int zOffset = wolf.getRandom().nextIntBetweenInclusive(-3, 3);
+                    int yOffset = wolf.getRandom().nextIntBetweenInclusive(-1, 1);
+
+                    BlockPos candidate = heightmapPos.offset(xOffset, yOffset, zOffset);
+                    if (canTeleportTo(wolf, level, candidate)) {
+                        return Vec3.atBottomCenterOf(candidate);
+                    }
+                }
+            }
+        } catch (Throwable ignored) {
+            // Headless / non-standard level fallback
+        }
+
+        // B. Downward vertical scan (for caves, nether, structures)
+        for (int dy = 1; dy <= 32; dy++) {
+            BlockPos scanPos = center.below(dy);
+            if (scanPos.getY() < level.getMinY()) {
+                break;
+            }
+            if (canTeleportTo(wolf, level, scanPos)) {
+                return Vec3.atBottomCenterOf(scanPos);
+            }
+        }
+
+        // No safe walkable ground exists (e.g. high over open void, deep ocean, lava) -> suppress teleportation
+        return null;
     }
 
     private static boolean canTeleportTo(Wolf wolf, ServerLevel level, BlockPos pos) {
+        if (wolf == null || level == null || pos == null || !level.isLoaded(pos)) {
+            return false;
+        }
         PathType pathType = WalkNodeEvaluator.getPathTypeStatic(wolf, pos);
         if (pathType != PathType.WALKABLE) {
             return false;
         }
         BlockState blockStateBelow = level.getBlockState(pos.below());
-        if (blockStateBelow.getBlock() instanceof LeavesBlock) {
+        if (blockStateBelow.isAir() || blockStateBelow.getBlock() instanceof LeavesBlock) {
             return false;
         }
         BlockPos delta = pos.subtract(wolf.blockPosition());
