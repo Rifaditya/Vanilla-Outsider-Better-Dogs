@@ -199,12 +199,11 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
     }
 
     private void teleportToOwner(LivingEntity owner) {
-        for (int i = 0; i < 10; ++i) {
-            double dx = (this.wolf.getRandom().nextFloat() - 0.5) * 6.0;
-            double dy = (this.wolf.getRandom().nextFloat() - 0.5) * 2.0;
-            double dz = (this.wolf.getRandom().nextFloat() - 0.5) * 6.0;
-            if (this.wolf.randomTeleport(owner.getX() + dx, owner.getY() + dy, owner.getZ() + dz, false)) {
-                break;
+        if (this.wolf.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+            net.minecraft.world.phys.Vec3 safePos = net.vanillaoutsider.betterdogs.util.WolfTeleportHelper.findSafeTeleportPos(this.wolf, serverLevel, owner.blockPosition());
+            if (safePos != null) {
+                this.wolf.teleportTo(serverLevel, safePos.x, safePos.y, safePos.z, java.util.Set.of(), this.wolf.getYRot(), this.wolf.getXRot(), false);
+                this.wolf.getNavigation().stop();
             }
         }
     }
