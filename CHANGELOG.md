@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.24.27+26.1.2] - 2026-08-18
+### Added & Refactored
+- **Selective Litter Sizing & Allele Inheritance (`WolfLitterHelper`, `AnimalMixin`, `BetterDogsGameRules`)**:
+  - Extracted and implemented single-purpose `WolfLitterHelper` managing dynamic multi-puppy litter calculation (`calculateLitterSize`) and sibling puppy spawning (`processBreedingLitter`).
+  - Refactored `AnimalMixin` to decouple inline breeding logic, allowing each sibling puppy to be generated independently with full genetic inheritance (personality, scale variance, coat variants, inbreeding checks), heart particles, bonus XP, and `WOLF_LITTER` advancement triggers for litters $\ge 2$.
+  - Added automated test suite: `VariableLitterTest.java` (22 total test suites).
+
 ## [4.24.26+26.1.2] - 2026-08-18
 ### Added & Refactored
 - **Defect Curing via Golden Apple (`WolfCureHelper`, `WolfInteractMixin`, `BetterDogs`)**:
