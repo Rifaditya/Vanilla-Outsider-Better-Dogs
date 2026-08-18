@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.24.24+26.2] - 2026-08-18
+### Added & Refactored
+- **Low-Health Tactical Disengagement AI (`WolfFleeHelper`, `WolfFleeLowHealthGoal`, `BetterDogsGameRules`)**:
+  - Extracted and implemented single-purpose `WolfFleeHelper` managing 30% Max HP threshold evaluation, personality flee probability scaling (Pacifist 100%, Normal 50%, Aggressive 10%), escape vector calculation away from attackers (`DefaultRandomPos.getPosAway`), and server-side disengagement feedback.
+  - Refactored `WolfFleeLowHealthGoal` to delegate condition checks and escape pathing to `WolfFleeHelper`, playing `SoundEvents.WOLF_WHINE_BABY` audio with pitch modulation and spawning 3 `ParticleTypes.SPLASH` sweat droplet particles upon tactical retreat.
+  - Added automated test suite: `LowHealthFleeTest.java` (19 total test suites).
+
 ## [4.24.23+26.2] - 2026-08-17
 ### Added & Refactored
 - **Tactical Pack Flanking Coordination AI (`WolfFlankingHelper`, `WolfFlankAttackGoal`, `BetterDogsGameRules`)**:
