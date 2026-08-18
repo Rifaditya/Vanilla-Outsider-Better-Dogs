@@ -15,10 +15,13 @@ Welcome to the official GitHub Wiki for **Vanilla Outsider: Better Dogs**!
 
 Select your target Minecraft version to view dedicated installation guides, dependency bounds, and release notes:
 
-* [[Minecraft 26.3 Guide & Release Notes|Minecraft-26.3-Guide]] — *Latest Snapshot Build*
+* [[Minecraft 1.20.1 Guide & Release Notes|Minecraft-1.20.1-Guide]] — *Legacy Anchor Era*
+* [[Minecraft 1.21.1 Guide & Release Notes|Minecraft-1.21.1-Guide]] — *Transitional Early Era*
+* [[Minecraft 1.21.11 Guide & Release Notes|Minecraft-1.21.11-Guide]] — *Transitional Late / Winter Drop Era*
+* [[Minecraft 26.1.2 Guide & Release Notes|Minecraft-26.1.2-Guide]] — *Modern Sovereign Drop*
 * [[Minecraft 26.2 Guide & Release Notes|Minecraft-26.2-Guide]] — *Primary Stable Target*
-* [[Minecraft 26.1 Guide & Release Notes|Minecraft-26.1-Guide]] — *Legacy Maintenance Build*
-* [[Version Compatibility & History|Version-Compatibility]] — *Full version matrix and legacy 1.21.11 evolution*
+* [[Minecraft 26.3 Guide & Release Notes|Minecraft-26.3-Guide]] — *Latest Snapshot Build*
+* [[Version Compatibility & History|Version-Compatibility]] — *Full 6-era lifecycle matrix & API evolution*
 
 ---
 

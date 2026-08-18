@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.24.28+26.2] - 2026-08-18
+### Added & Refactored
+- **Autonomous Low-Health Scavenging AI (`WolfScavengeHelper`, `EatGroundFoodGoal`, `BetterDogs`)**:
+  - Implemented single-purpose `WolfScavengeHelper` managing food edibility filtering (`RAW_FOOD`/`COOKED_FOOD`), dynamic nutrition scaling via `DataComponents.FOOD` (`nutrition / 2.0f`, Rotten Flesh 1.0f), ground food refusal checks, eating audio/particles, and `SELF_SERVICE` advancement dispatch.
+  - Refactored `EatGroundFoodGoal` to cleanly delegate all business logic to `WolfScavengeHelper`.
+  - Added automated test suite: `GroundFeedingTest.java` (23 total test suites).
+
 ## [4.24.27+26.2] - 2026-08-18
 ### Added & Refactored
 - **Selective Litter Sizing & Allele Inheritance (`WolfLitterHelper`, `AnimalMixin`, `BetterDogsGameRules`)**:
