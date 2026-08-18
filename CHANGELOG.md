@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.24.25+26.1.2] - 2026-08-18
+### Added & Refactored
+- **Lineage Tracking & Inbreeding Defects (`WolfInbreedingHelper`, `WolfBreedingMixin`, `BetterDogs`)**:
+  - Extracted and implemented single-purpose `WolfInbreedingHelper` managing 3-generation parent UUID lineage verification, runt scale penalties ($0.7\times$ scale reduction), smoke particle effects (`ParticleTypes.SMOKE`), and advancement triggers.
+  - Refactored `WolfBreedingMixin` to delegate lineage processing and runt penalty effects to `WolfInbreedingHelper`, triggering `INBRED_WOLF` and `OUTCROSS_RUNT` criteria for the breeding player.
+  - Added automated test suite: `InbreedingLineageTest.java` (20 total test suites).
+
 ## [4.24.24+26.1.2] - 2026-08-18
 ### Added & Refactored
 - **Low-Health Tactical Disengagement AI (`WolfFleeHelper`, `WolfFleeLowHealthGoal`, `BetterDogsGameRules`)**:

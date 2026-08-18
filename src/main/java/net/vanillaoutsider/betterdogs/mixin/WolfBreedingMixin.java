@@ -76,28 +76,8 @@ public abstract class WolfBreedingMixin {
         // Inherit genetics via DasikLibrary Genetics Engine
         net.dasik.social.api.genetics.GeneticsEngine.inheritGenetics(baby, parent1, parent2, babyPersonality.name().toLowerCase(java.util.Locale.ROOT));
 
-        // Get parent and baby genetics for advancement triggers
-        var babyGen = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(baby);
-        var p1Gen = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(parent1);
-        var p2Gen = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(parent2);
-
-        if (babyGen.inbred()) {
-            net.minecraft.server.level.ServerPlayer player = parent1.getLoveCause();
-            if (player == null) {
-                player = parent2.getLoveCause();
-            }
-            if (player != null) {
-                net.vanillaoutsider.betterdogs.BetterDogs.INBRED_WOLF.trigger(player);
-            }
-        } else if (p1Gen.inbred() || p2Gen.inbred()) {
-            net.minecraft.server.level.ServerPlayer player = parent1.getLoveCause();
-            if (player == null) {
-                player = parent2.getLoveCause();
-            }
-            if (player != null) {
-                net.vanillaoutsider.betterdogs.BetterDogs.OUTCROSS_RUNT.trigger(player);
-            }
-        }
+        // Process inbreeding lineage, runt scale penalties, smoke particles, and advancement triggers
+        net.vanillaoutsider.betterdogs.util.WolfInbreedingHelper.processBreedingLineage(baby, parent1, parent2, level);
 
         // Roll chance for ground food refusal
         if (DynamicGameRuleManager.getBoolean(level, BetterDogsGameRules.BD_ENABLE_REFUSE_GROUND_FOOD)) {
