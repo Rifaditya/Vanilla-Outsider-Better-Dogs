@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.24.31+26.1.2] - 2026-08-18
+### Added & Refactored
+- **Tamed Spontaneous Pack Howling AI (`WolfHowlHelper`, `GroupHowlGoal`, `WolfExtensions`, `WolfMixin`)**:
+  - Implemented single-purpose `WolfHowlHelper` for nocturnal pack chorus propagation within 24 blocks (`BetterDogsConfig.get().getHowlSpreadRange()`).
+  - Added mathematical harmonic pitch variation calculation ($0.85\text{F} \sim 1.20\text{F}$) and staggered response delays ($10\sim34$ ticks) for responding packmates.
+  - Refactored `GroupHowlGoal` to handle skyward head orientation ($-45^\circ$), look targeting, and timer coordination.
+  - Added musical note particle emissions (`ParticleTypes.NOTE`) and howling tick tracking in `WolfExtensions`/`WolfMixin`.
+  - Added automated test suite `PackHowlTest` asserting harmonic pitch ranges, chorus delays, and null safety.
+
 ## [4.24.30+26.1.2] - 2026-08-18
 ### Fixed & Improved
 - **Ground-Tracing Flight Catch-Up & Zero Sky Teleportation (`WolfTeleportHelper`, `WolfCatchupHelper`, `PersonalityFollowOwnerGoal`)**:

@@ -53,6 +53,8 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     private net.minecraft.world.item.ItemStack betterdogs$fetchedItemStack = null;
     @Unique
     private int betterdogs$zoomiesTicks = 0;
+    @Unique
+    private int betterdogs$howlingTicks = 0;
 
     @Override
     public net.minecraft.core.BlockPos betterdogs$getSoundLocationTarget() {
@@ -274,6 +276,14 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
                 }
             }
 
+            if (this.betterdogs$howlingTicks > 0) {
+                if (wolf.isOrderedToSit() || wolf.isInSittingPose() || wolf.getTarget() != null) {
+                    this.betterdogs$howlingTicks = 0;
+                } else {
+                    this.betterdogs$howlingTicks--;
+                }
+            }
+
             if (this.tickCount % 20 == 0 && this.betterdogs$isGuardMode()) {
                 if (wolf.level() instanceof ServerLevel serverLevel) {
                     net.vanillaoutsider.betterdogs.util.WolfTickHelper.tickGuardMode(wolf, this, serverLevel);
@@ -373,5 +383,15 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     @Override
     public void betterdogs$setZoomiesTicks(int ticks) {
         this.betterdogs$zoomiesTicks = ticks;
+    }
+
+    @Override
+    public int betterdogs$getHowlingTicks() {
+        return this.betterdogs$howlingTicks;
+    }
+
+    @Override
+    public void betterdogs$setHowlingTicks(int ticks) {
+        this.betterdogs$howlingTicks = ticks;
     }
 }
