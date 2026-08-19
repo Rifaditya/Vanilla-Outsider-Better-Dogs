@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.24.38+26.2] - 2026-08-19
+### Added & Refactored
+- **Vehicle Navigation & Auto-Boarding System (`MoveToVehicleGoal`, `DogSeatHelper`, `DogCommandManager`)**:
+  - Encapsulated vehicle/seat detection, passenger vacancy validation, command item checks, and outward lateral dismount vector math into single-purpose `DogSeatHelper`.
+  - Implemented stick/rod command selection and auto-boarding AI: dogs navigate to commanded Boats, Minecarts, Saddled Mounts/Camels, modded chairs, and Stair blocks within 12 blocks (`144.0D` distance squared) at $1.25\times$ speed and board when within 1.5 blocks.
+  - Implemented safe lateral dismount pushing the dog 0.8 blocks outward along the player's horizontal look vector, preventing collision clipping or immediate re-boarding loops.
+  - Added automated test suite `VehicleBoardingTest` asserting distance constants, lateral dismount vector calculations, command selection tracking, and strict null safety.
+
+
 ## [4.24.37+26.2] - 2026-08-19
 ### Added & Refactored
 - **Morning Gift Bringing & Feeding Merits System (`WolfGiftGoal`, `WolfGiftHelper`, `WolfPersistentData`)**:
