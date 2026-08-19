@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.24.50+26.1.2] - 2026-08-19
+### Added & Refactored
+- **Expanded Spawning, Dynamic Climate Coats & Alpha Leadership (`BetterDogsSpawning`, `WolfVariantHelper`, `SpawnVariantTest`)**:
+  - Implemented single-purpose `BetterDogsSpawning` registering Fabric `BiomeModifications` for expanded biomes (Plains, Savanna, Savanna Plateau, Windswept Savanna, Badlands, Eroded Badlands, Wooded Badlands, Meadow) with cluster size 4 to 8 and spawn weight 8.
+  - Enhanced `WolfVariantHelper` with 10% stray diversity rolls, 3-tier climate physics matrix (Snowy, Ashen, Rusty, Striped, Black, Chestnut, Spotted, Pale/Woods), and third-party/custom variant safeguards.
+  - Integrated spawn registrations into `BetterDogs.init()`.
+  - Added automated test suite `SpawnVariantTest` asserting cluster size bounds (4–8, weight 8), personality distribution percentages (60% normal, 20% aggro, 20% pacifist = 100%), alpha dominance hierarchy logic, and strict null safety.
+
+
 ## [4.24.49+26.1.2] - 2026-08-19
 ### Added & Refactored
 - **Wanderlust Exploratory Roaming AI (`WanderlustGoal`, `WanderlustHelper`, `WanderlustTest`)**:
