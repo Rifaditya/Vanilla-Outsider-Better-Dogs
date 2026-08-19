@@ -6,6 +6,8 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`4.24.37+26.1.2`** (2026-08-19) - **Jade Provider Separation:** Separated client tooltip component providers from server data providers to ensure full compatibility with newer Jade releases (`Jade >= 26.2.11+`).
+- [ ] **`4.24.36+26.1.2`** (2026-08-19) - *(⚠️ Incompatible with Jade >= 26.2.11+ | Works on Jade < 26.2.10 or without Jade)* **Friendly Fire Dampening & Protection:** Added standing owner melee attack cancellation against owned dogs.
 - [ ] **`4.24.7+26.1.2`** (2026-08-11) - **Minimal Tame Particle Polish:** Polished first-time taming particle feedback with a clean, subtle Minimal Signature (~5-6 particles) per personality (Aggressive: crimson dust + angry villager; Normal: golden dust + happy villager; Pacifist: mint dust + heart).
 - [ ] **`4.24.6+26.1.2`** (2026-08-10) - **Dismount Overlay Message Translation:** Updated dismount overlay text in en_us and id_id.
 - [ ] **`4.24.5+26.1.2`** (2026-08-10) - **YACL Config Option Descriptions:** Added missing `.description(...)` OptionDescription builders in `YaclScreenHelper` across all 6 config categories and synchronized complete `.description` keys in `en_us.json` and `id_id.json`.
