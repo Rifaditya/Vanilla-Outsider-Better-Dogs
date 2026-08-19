@@ -3,128 +3,85 @@
 package net.vanillaoutsider.betterdogs.ai;
 
 import java.util.EnumSet;
-import java.util.Random;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
-import net.vanillaoutsider.betterdogs.WolfPersistentData;
-import net.vanillaoutsider.betterdogs.WolfPersonality;
-import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
-import net.dasik.social.api.gamerule.DynamicGameRuleManager;
-import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
-import net.vanillaoutsider.betterdogs.mixin.WolfAccessor;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.sounds.SoundEvent;
+import net.vanillaoutsider.betterdogs.WolfExtensions;
+import net.vanillaoutsider.betterdogs.util.WolfGiftHelper;
 
+/**
+ * Dedicated single-purpose AI goal for delivering morning gifts to the owner.
+ */
 public class WolfGiftGoal extends Goal {
 
     private final Wolf wolf;
-    private int cooldown;
-    private static final Random RANDOM = new Random();
+    private Player owner;
+    private int cooldown = 0;
 
     public WolfGiftGoal(Wolf wolf) {
         this.wolf = wolf;
-        this.cooldown = BetterDogsConfig.get().giftCooldownMin;
-        this.setFlags(EnumSet.of(Flag.LOOK));
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
     @Override
     public boolean canUse() {
-        if (!wolf.isTame() || !WolfPersistentData.hasPersistedPersonality(wolf)) return false;
-
-        int threshold = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_GIFT_FEED_THRESHOLD);
-        int currentMerits = WolfPersistentData.getPersistedFeedCount(wolf);
-        if (currentMerits < threshold) return false;
-
-        if (cooldown > 0) {
-            cooldown--;
+        if (this.wolf == null || !this.wolf.isAlive() || !this.wolf.isTame()) {
             return false;
         }
 
-        float baseChance = BetterDogsConfig.get().giftTriggerChance;
-        float maxMerits = 10000f;
-        float boundedMerits = Math.max((float) threshold, Math.min((float) currentMerits, maxMerits));
-        
-        float progress = 0f;
-        if (maxMerits > threshold) {
-            progress = (boundedMerits - threshold) / (maxMerits - threshold);
-        }
-        
-        float finalChance = baseChance + (progress * (1.0f - baseChance));
-
-        if (wolf.getRandom().nextFloat() < finalChance) {
-            return true;
-        } else {
-            resetCooldown();
+        if (this.wolf.isOrderedToSit() || this.wolf.isInSittingPose() || this.wolf.isLeashed()) {
             return false;
         }
+
+        if (this.wolf instanceof WolfExtensions ext && (ext.betterdogs$isGuardMode() || ext.betterdogs$isSittingManually())) {
+            return false;
+        }
+
+        LivingEntity livingOwner = this.wolf.getOwner();
+        if (!(livingOwner instanceof Player player)) {
+            return false;
+        }
+
+        this.owner = player;
+        return WolfGiftHelper.canDeliverGift(this.wolf, this.owner);
+    }
+
+    @Override
+    public boolean canContinueToUse() {
+        if (this.owner == null || !this.owner.isAlive() || this.wolf.isOrderedToSit() || this.wolf.isInSittingPose()) {
+            return false;
+        }
+        return WolfGiftHelper.canDeliverGift(this.wolf, this.owner);
     }
 
     @Override
     public void start() {
-        resetCooldown();
+        this.cooldown = 0;
+        this.wolf.getNavigation().moveTo(this.owner, 1.25D);
+    }
 
-        int threshold = DynamicGameRuleManager.getInt(wolf.level(), BetterDogsGameRules.BD_GIFT_FEED_THRESHOLD);
-        int currentFeeds = WolfPersistentData.getPersistedFeedCount(wolf);
-        WolfPersistentData.setPersistedFeedCount(wolf, Math.max(0, currentFeeds - threshold));
+    @Override
+    public void stop() {
+        this.owner = null;
+        this.wolf.getNavigation().stop();
+    }
 
-        try {
-            SoundEvent whineSound = ((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().whineSound().value();
-            wolf.playSound(whineSound, 1.0f, 1.0f);
-        } catch (Exception e) {
-            // Fallback just in case
+    @Override
+    public void tick() {
+        if (this.owner == null) {
+            return;
         }
 
-        LivingEntity owner = wolf.getOwner();
-        if (owner instanceof Player player) {
-            player.sendOverlayMessage(net.minecraft.network.chat.Component.translatable("text.betterdogs.gift_received", wolf.getName()));
+        this.wolf.getLookControl().setLookAt(this.owner, 10.0F, (float) this.wolf.getMaxHeadXRot());
+
+        if (this.wolf.distanceToSqr(this.owner) <= 9.0D) {
+            WolfGiftHelper.deliverGift(this.wolf, this.owner);
+            this.stop();
+        } else {
+            if (++this.cooldown % 10 == 0) {
+                this.wolf.getNavigation().moveTo(this.owner, 1.25D);
+            }
         }
-
-        WolfPersonality personality = WolfPersistentData.getPersistedPersonality(wolf);
-        switch (personality) {
-            case AGGRESSIVE -> attemptAggressiveGift();
-            case PACIFIST -> attemptPacifistGift();
-            default -> {}
-        }
-    }
-
-    private void attemptAggressiveGift() {
-        int roll = RANDOM.nextInt(100);
-        ItemStack loot;
-        BetterDogsConfig config = BetterDogsConfig.get();
-        if (roll < config.aggressiveGiftBone) loot = new ItemStack(Items.BONE);
-        else if (roll < config.aggressiveGiftBone + config.aggressiveGiftFlesh) loot = new ItemStack(Items.ROTTEN_FLESH);
-        else if (roll < config.aggressiveGiftBone + config.aggressiveGiftFlesh + config.aggressiveGiftArrow) loot = new ItemStack(Items.ARROW);
-        else loot = new ItemStack(Items.IRON_NUGGET);
-        spawnGift(loot);
-    }
-
-    private void attemptPacifistGift() {
-        int roll = RANDOM.nextInt(100);
-        ItemStack loot;
-        BetterDogsConfig config = BetterDogsConfig.get();
-        if (roll < config.pacifistGiftBerries) loot = new ItemStack(Items.SWEET_BERRIES);
-        else if (roll < config.pacifistGiftBerries + config.pacifistGiftSeeds) loot = new ItemStack(Items.WHEAT_SEEDS);
-        else if (roll < config.pacifistGiftBerries + config.pacifistGiftSeeds + config.pacifistGiftFlower) loot = new ItemStack(Items.DANDELION);
-        else if (roll < config.pacifistGiftBerries + config.pacifistGiftSeeds + config.pacifistGiftFlower + config.pacifistGiftMushroom) loot = new ItemStack(Items.RED_MUSHROOM);
-        else loot = new ItemStack(Items.GLOW_BERRIES);
-        spawnGift(loot);
-    }
-
-    private void spawnGift(ItemStack stack) {
-        Level level = wolf.level();
-        ItemEntity itemEntity = new ItemEntity(level, wolf.getX(), wolf.getY() + 0.5, wolf.getZ(), stack);
-        itemEntity.setDefaultPickUpDelay();
-        level.addFreshEntity(itemEntity);
-    }
-
-    private void resetCooldown() {
-        BetterDogsConfig config = BetterDogsConfig.get();
-        int range = config.giftCooldownMax - config.giftCooldownMin;
-        cooldown = config.giftCooldownMin + (range > 0 ? wolf.getRandom().nextInt(range) : 0);
     }
 }
