@@ -2,76 +2,81 @@
 // Verified against: Minecraft 26.2
 package net.vanillaoutsider.betterdogs.ai;
 
-import java.util.Comparator;
-import java.util.EnumSet;
-import java.util.Set;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
+import net.minecraft.world.level.Level;
+import net.vanillaoutsider.betterdogs.util.WildHuntHelper;
+
+import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.List;
 
 /**
- * AI Goal for wild wolves to hunt prey only when hurt.
- * Replaces vanilla always-hunting behavior.
+ * Dedicated single-purpose AI goal for wild wolves to desperately hunt small prey only when hurt.
+ * Wild wolves hunt when health falls below bd_wild_hunt_health_threshold (default 50%).
+ * Upon defeating prey, restores +4.0 HP (2 hearts) sustenance healing.
  */
 public class HuntWhenHurtGoal extends Goal {
 
     private final Wolf wolf;
-    private static final float HEALTH_THRESHOLD = 0.5f; // 50% health
-
-    // Prey animal types by name (safer than class references)
-    private static final Set<String> PREY_TYPES = Set.of("sheep", "rabbit", "chicken");
+    private LivingEntity targetPrey;
 
     public HuntWhenHurtGoal(Wolf wolf) {
         this.wolf = wolf;
-        this.setFlags(EnumSet.of(Flag.TARGET));
+        this.setFlags(EnumSet.of(Goal.Flag.TARGET));
     }
 
     @Override
     public boolean canUse() {
-        // Only for wild (non-tamed) wolves
-        if (wolf.isTame())
+        if (!WildHuntHelper.shouldHuntPrey(this.wolf)) {
             return false;
+        }
 
-        // Only hunt when health is low
-        float healthPercent = wolf.getHealth() / wolf.getMaxHealth();
-        if (healthPercent >= HEALTH_THRESHOLD)
+        Level level = this.wolf.level();
+        if (level == null || level.isClientSide()) {
             return false;
+        }
 
-        return true;
+        List<Animal> potentialPrey = level.getEntitiesOfClass(
+                Animal.class,
+                this.wolf.getBoundingBox().inflate(16.0),
+                WildHuntHelper::isPrey
+        );
+
+        this.targetPrey = potentialPrey.stream()
+                .min(Comparator.comparingDouble(this.wolf::distanceToSqr))
+                .orElse(null);
+
+        return this.targetPrey != null;
     }
 
     @Override
     public void start() {
-        // Find nearest prey by checking entity type name
-        Animal nearestPrey = wolf.level().getEntitiesOfClass(
-                Animal.class,
-                wolf.getBoundingBox().inflate(16.0),
-                entity -> {
-                    String typeName = entity.getType().getDescriptionId().toLowerCase();
-                    return PREY_TYPES.stream().anyMatch(typeName::contains);
-                }).stream().min(Comparator.comparingDouble(wolf::distanceTo)).orElse(null);
-
-        if (nearestPrey != null) {
-            wolf.setTarget(nearestPrey);
+        if (this.targetPrey != null) {
+            this.wolf.setTarget(this.targetPrey);
         }
     }
 
     @Override
     public boolean canContinueToUse() {
-        if (wolf.isTame())
-            return false;
+        LivingEntity currentTarget = this.wolf.getTarget();
+        return WildHuntHelper.shouldContinueHunting(this.wolf, currentTarget);
+    }
 
-        // Stop hunting if we're healed enough
-        float healthPercent = wolf.getHealth() / wolf.getMaxHealth();
-        if (healthPercent >= 0.8f)
-            return false;
-
-        // Continue if target is alive
-        return wolf.getTarget() != null && wolf.getTarget().isAlive();
+    @Override
+    public void tick() {
+        if (this.targetPrey != null && !this.targetPrey.isAlive()) {
+            WildHuntHelper.applySustenanceHealing(this.wolf);
+            this.targetPrey = null;
+            this.wolf.setTarget(null);
+        }
     }
 
     @Override
     public void stop() {
-        wolf.setTarget(null);
+        this.targetPrey = null;
+        this.wolf.setTarget(null);
     }
 }

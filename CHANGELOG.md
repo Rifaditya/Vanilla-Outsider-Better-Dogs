@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.24.45+26.2] - 2026-08-19
+### Added & Refactored
+- **Desperate Low-Health Wild Wolf Hunting (`HuntWhenHurtGoal`, `WildHuntHelper`, `WildHuntingTest`, `BetterDogsGameRules`)**:
+  - Registered `betterdogs:bd_wild_hunt_health_threshold` GameRule (default: 50%, bounds: 0..100) with English and Indonesian translations, and added to Brigadier command suggestions.
+  - Implemented single-purpose `WildHuntHelper` encapsulating prey classification (`Sheep`, `Rabbit`, `Chicken`, `Fox`), health threshold evaluation (<50%), stop threshold check (>=80%), and pure Java +4.0 HP (2 hearts) sustenance healing upon defeat.
+  - Refactored `HuntWhenHurtGoal` and registered it in `WolfAIMixin` target selector (priority 3) for selective low-health sustenance hunting.
+  - Added automated test suite `WildHuntingTest` asserting health threshold calculations (<50%), sustenance heal arithmetic (+4.0 HP), stop thresholds (>=80%), and strict null safety across helper methods.
+
+
 ## [4.24.44+26.2] - 2026-08-19
 ### Added & Refactored
 - **Feisty Puppy Retaliation AI (`BabyBiteBackGoal`, `BabyRetaliationHelper`, `BabyRetaliationTest`)**:
