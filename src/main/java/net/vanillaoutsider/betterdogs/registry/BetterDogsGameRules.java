@@ -53,6 +53,7 @@ public class BetterDogsGameRules {
     public static GameRule<Integer> BD_FETCH_RANGE;
     public static GameRule<Boolean> BD_ZOOMIES_ENABLED;
     public static GameRule<Integer> BD_ZOOMIES_DURATION_TICKS;
+    public static GameRule<Boolean> BD_ACTIONBAR_FEEDBACK;
 
     // --- Player ---
     public static GameRule<Boolean> BD_FRIENDLY_FIRE;
@@ -357,6 +358,7 @@ public class BetterDogsGameRules {
                 config.getWildPackSpreadMax());
 
         BD_ALLOW_UNRESTRICTED_RIDING = registerBoolean("betterdogs:bd_allow_unrestricted_dog_riding", BETTER_DOGS, false);
+        BD_ACTIONBAR_FEEDBACK = registerBoolean("betterdogs:bd_actionbar_feedback", BETTER_DOGS, false);
 
         BD_WOLF_MIN_SCALE_PERCENT = registerInteger("betterdogs:bd_wolf_min_scale_percent", BETTER_DOGS,
                 (int)(config.getWolfMinScale() * 100));
