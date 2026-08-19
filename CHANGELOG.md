@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.24.42+26.2] - 2026-08-19
+### Added & Refactored
+- **In-Game Brigadier Command Suite (`BetterDogsCommand`, `CommandSuggestionsHelper`, `CommandSuiteTest`)**:
+  - Registered full `/betterdogs` and `/bd` Brigadier command suite with subcommands: `help`, `status`, `get <rule>`, `set <rule> <val>`, `reset`, `reload`, and `debug`.
+  - Implemented single-purpose `CommandSuggestionsHelper` providing GameRule name normalization (handling namespace prefixes and aliases) and tab-completion for all 50+ GameRules.
+  - Implemented 2-tier permission gating: Level 0 for player queries (`help`, `status`, `get`), Level 2 (`LEVEL_GAMEMASTERS`) for admin mutators (`set`, `reset`, `reload`, `debug`).
+  - Added automated test suite `CommandSuiteTest` asserting registration of all command nodes, GameRule classification, normalization logic, and 50+ rule coverage.
+
+
 ## [4.24.41+26.2] - 2026-08-19
 ### Added & Refactored
 - **Multi-Language Localized Subtitle Audio & Actionbar Feedback (`WolfFeedbackHelper`, `BetterDogsGameRules`, Translations)**:
