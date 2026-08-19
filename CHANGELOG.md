@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.0.46+26.3] - 2026-08-19
+### Added & Refactored
+- **Feisty Puppy Retaliation AI (`BabyBiteBackGoal`, `BabyRetaliationHelper`, `BabyRetaliationTest`)**:
+  - Implemented single-purpose `BabyRetaliationHelper` encapsulating eligibility checks, probability rolls governed by `betterdogs:bd_baby_retaliate_percent` (default: 50%), and audio cues (`SoundEvents.WOLF_GROWL_BABY`).
+  - Refactored `BabyBiteBackGoal` to execute single-purpose snap retaliation: Aggressive puppies deliver a 1.0 HP nip when provoked or disciplined, subsequently prompting domestic discipline from nearby co-owned adult wolves via `CorrectionDogEvent`.
+  - Added automated test suite `BabyRetaliationTest` asserting personality gating (Aggressive only), probability rolls (50%), timer decay (100 ticks), and strict null safety across helper methods.
+
+
 ## [5.0.45+26.3] - 2026-08-19
 ### Added & Refactored
 - **Visual Advancements & Milestones (`WolfAdvancementHelper`, `AdvancementCriteriaTest`)**:
