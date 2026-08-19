@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.24.36+26.2] - 2026-08-19
+### Added & Refactored
+- **Friendly Fire Dampening & Protection (`WolfFriendlyFireHelper`, `WolfCombatHooks`)**:
+  - Implemented standing owner melee attack cancellation against owned dogs when `bd_friendly_fire_protection` is enabled, eliminating accidental friendly hits during combat.
+  - Allowed crouching owner melee attacks to bypass protection for intentional discipline and bonding demerits.
+  - Preserved owner projectile damage and enforced lethal friendly fire health clamp at 1.0 HP.
+  - Decoupled friendly fire logic from monolithic `WolfCombatHooks` into single-purpose `WolfFriendlyFireHelper`.
+  - Added automated test suite `FriendlyFireTest` asserting standing melee cancellation, crouching bypass, projectile damage, lethal clamping, and null safety.
+
 ## [4.24.35+26.2] - 2026-08-19
 ### Added & Refactored
 - **Creeper Threat Repulsion AI (`FleeCreeperGoal`, `WolfAIMixin`)**:
