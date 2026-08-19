@@ -95,6 +95,7 @@ public class BetterDogsGameRules {
     // --- Correction/Retaliation ---
     public static GameRule<Integer> BD_BLOOD_FEUD_PERCENT;
     public static GameRule<Integer> BD_BABY_RETALIATE_PERCENT;
+    public static GameRule<Integer> BD_WILD_HUNT_HEALTH_THRESHOLD;
 
     // --- Territorial ---
     public static GameRule<Boolean> BD_TERRITORIAL_RIVALRY;
@@ -259,6 +260,7 @@ public class BetterDogsGameRules {
                 config.getBloodFeudChance());
         BD_BABY_RETALIATE_PERCENT = registerInteger("betterdogs:bd_baby_retaliate_percent", BETTER_DOGS,
                 config.getBabyRetaliationChance());
+        BD_WILD_HUNT_HEALTH_THRESHOLD = registerInteger("betterdogs:bd_wild_hunt_health_threshold", BETTER_DOGS, 50);
 
 
 

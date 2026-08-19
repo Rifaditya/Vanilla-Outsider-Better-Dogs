@@ -80,6 +80,8 @@
   "gamerule.betterdogs.bd_blood_feud_percent.description": "Symmetric percentage chance for a wolf to hold a permanent grudge (Blood Feud) against a player who hits them. Default: 5.",
   "gamerule.betterdogs.bd_baby_retaliate_percent": "Baby Retaliation (%)",
   "gamerule.betterdogs.bd_baby_retaliate_percent.description": "Symmetric percentage chance for a baby wolf to retaliate and bite their owner when hit. Default: 50.",
+  "gamerule.betterdogs.bd_wild_hunt_health_threshold": "Wild Hunt Health Threshold (%)",
+  "gamerule.betterdogs.bd_wild_hunt_health_threshold.description": "Health percentage threshold below which wild wolves desperately hunt small prey to sustain and heal themselves. Default: 50.",
   "gamerule.betterdogs.bd_spawn_normal_percent": "Spawn Chance: Normal (%)",
   "gamerule.betterdogs.bd_spawn_normal_percent.description": "Weighted chance for a wild wolf to spawn with the Normal personality trait. Default: 60.",
   "gamerule.betterdogs.bd_spawn_aggro_percent": "Spawn Chance: Aggro (%)",
