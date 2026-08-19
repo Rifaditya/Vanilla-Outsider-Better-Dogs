@@ -1,5 +1,13 @@
 # Better Dogs History & Concept Changelog
 
+## [4.24.37+26.2] - 2026-08-19
+### Fixed
+- **Jade Provider Separation ("1 File, 1 Purpose")**:
+  - Separated client tooltip component providers (`InbredStatusProvider`, `WolfInfoProvider`) from server data sync providers (`InbredStatusDataProvider`, `WolfInfoDataProvider`).
+  - Restored 100% full compatibility across newer Jade releases (`Jade >= 26.2.11+`), older Jade releases, and standalone Fabric.
+
+## [4.24.36+26.2] - 2026-08-19 - ⚠️ Incompatible with Jade >= 26.2.11+ (Works on Jade < 26.2.10 or without Jade)
+
 ## [4.24.8+26.2] - 2026-08-16
 ### Fixed
 - **Minecart & Vehicle Dismount Interaction Interception (`DogCommandManager.java`, `WolfInteractionHelper.java`)**:

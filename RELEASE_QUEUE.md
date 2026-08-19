@@ -5,6 +5,8 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`4.24.37+26.2`** (2026-08-19) - **Jade Provider Separation:** Separated client tooltip component providers from server data providers to ensure full compatibility with newer Jade releases (`Jade >= 26.2.11+`).
+- [ ] **`4.24.36+26.2`** (2026-08-19) - *(⚠️ Incompatible with Jade >= 26.2.11+ | Works on Jade < 26.2.10 or without Jade)* **Friendly Fire Dampening & Protection:** Added standing owner melee attack cancellation against owned dogs.
 - [ ] **`4.24.8+26.2`** (2026-08-16) - **Minecart & Vehicle Dismount Interaction Interception:** Resolved raycast hitbox interception when clicking vehicles/seats containing owned dogs; added anti-collision lateral offset (0.8 blocks) on dismount preventing instant Minecart collision re-boarding.
 - [ ] **`4.24.7+26.2`** (2026-08-11) - **Minimal Tame Particle Polish:** Polished first-time taming particle feedback with a clean, subtle Minimal Signature (~5-6 particles) per personality (Aggressive: crimson dust + angry villager; Normal: golden dust + happy villager; Pacifist: mint dust + heart).
 - [ ] **`4.24.6+26.2`** (2026-08-10) - **Dismount Overlay Message Translation:** Updated overlay text to `"%s hopped out of the seat."` (Indonesian: `"%s keluar dari tempat duduk."`) for dismounting vehicles/seats.
