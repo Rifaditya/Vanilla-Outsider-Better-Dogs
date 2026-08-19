@@ -4,14 +4,19 @@ package net.vanillaoutsider.betterdogs.ai;
 
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
+import net.vanillaoutsider.betterdogs.util.AdultDisciplineHelper;
 import net.vanillaoutsider.betterdogs.util.WolfDebugLogger;
 
+/**
+ * AI Goal executing adult wolf correction/discipline on misbehaving puppies.
+ */
 public class AdultCorrectionGoal extends Goal {
 
     private final Wolf wolf;
@@ -24,12 +29,18 @@ public class AdultCorrectionGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (wolf.isBaby() || !wolf.isTame()) return false;
-        if (wolf.isOrderedToSit()) return false;
-        if (!(wolf instanceof WolfExtensions ext)) return false;
+        if (this.wolf == null || this.wolf.isBaby() || !this.wolf.isTame()) {
+            return false;
+        }
+        if (this.wolf.isOrderedToSit() || this.wolf.isInSittingPose()) {
+            return false;
+        }
+        if (!(this.wolf instanceof WolfExtensions ext)) {
+            return false;
+        }
         if (ext.betterdogs$isSocialModeActive() && ext.betterdogs$getSocialAction() == WolfExtensions.SocialAction.DISCIPLINE) {
             LivingEntity target = ext.betterdogs$getSocialTarget();
-            if (target instanceof Wolf baby) {
+            if (target instanceof Wolf baby && AdultDisciplineHelper.canDiscipline(this.wolf, baby)) {
                 this.offendingBaby = baby;
                 return true;
             }
@@ -44,31 +55,35 @@ public class AdultCorrectionGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        if (hasHit) return false;
-        if (offendingBaby == null || !offendingBaby.isAlive()) return false;
-        if (wolf instanceof WolfExtensions ext && !ext.betterdogs$isSocialModeActive()) return false;
-        return true;
+        if (this.hasHit) {
+            return false;
+        }
+        if (this.offendingBaby == null || !this.offendingBaby.isAlive()) {
+            return false;
+        }
+        return this.wolf instanceof WolfExtensions ext && ext.betterdogs$isSocialModeActive();
     }
 
     @Override
     public void tick() {
-        if (offendingBaby == null) return;
+        if (this.offendingBaby == null) {
+            return;
+        }
         BetterDogsConfig config = BetterDogsConfig.get();
-        this.wolf.getLookControl().setLookAt(offendingBaby, config.getCorrectionLookSpeed(), config.getCorrectionLookSpeed());
-        this.wolf.getNavigation().moveTo(offendingBaby, config.getCorrectionSpeedModifier());
-        double distSqr = this.wolf.distanceToSqr(offendingBaby);
-        double reachSqr = (double)(this.wolf.getBbWidth() * 2.0F * this.wolf.getBbWidth() * 2.0F + offendingBaby.getBbWidth());
+        this.wolf.getLookControl().setLookAt(this.offendingBaby, config.getCorrectionLookSpeed(), config.getCorrectionLookSpeed());
+        this.wolf.getNavigation().moveTo(this.offendingBaby, config.getCorrectionSpeedModifier());
+
+        double distSqr = this.wolf.distanceToSqr(this.offendingBaby);
+        double reachSqr = (double) (this.wolf.getBbWidth() * 2.0F * this.wolf.getBbWidth() * 2.0F + this.offendingBaby.getBbWidth());
         reachSqr += config.getCorrectionReachBuffer();
+
         if (distSqr <= reachSqr) {
-            this.wolf.swing(net.minecraft.world.InteractionHand.MAIN_HAND);
+            this.wolf.swing(InteractionHand.MAIN_HAND);
             if (this.wolf.level() instanceof ServerLevel serverLevel) {
-                boolean success = this.wolf.doHurtTarget(serverLevel, offendingBaby);
+                boolean success = this.wolf.doHurtTarget(serverLevel, this.offendingBaby);
                 if (success) {
-                    hasHit = true;
-                    // Visual indicators
-                    serverLevel.sendParticles(net.minecraft.core.particles.ParticleTypes.ANGRY_VILLAGER, 
-                        offendingBaby.getX(), offendingBaby.getY() + 1.0, offendingBaby.getZ(), 
-                        5, 0.2, 0.2, 0.2, 0.0);
+                    this.hasHit = true;
+                    AdultDisciplineHelper.applyDisciplineFeedback(this.wolf, this.offendingBaby, serverLevel);
                     onHitBaby();
                 }
             }
@@ -76,20 +91,13 @@ public class AdultCorrectionGoal extends Goal {
     }
 
     private void onHitBaby() {
-        float baseChance = DynamicGameRuleManager.getChance(wolf.level(), BetterDogsGameRules.BD_BLOOD_FEUD_PERCENT);
-        
-        // INTEGRATION: Bonding reduces feud chance
-        float chance = baseChance;
-        if (wolf instanceof WolfExtensions ext) {
-            int affinity = ext.betterdogs$getAffinity(offendingBaby.getStringUUID());
-            if (affinity > 0) {
-                // Reduce chance linearly up to 50% at max affinity (100)
-                chance *= (1.0f - (affinity / 200.0f));
-            } else if (affinity < 0) {
-                // Increase chance if they already dislike each other
-                chance *= (1.0f + (Math.abs(affinity) / 100.0f));
-            }
+        float baseChance = DynamicGameRuleManager.getChance(this.wolf.level(), BetterDogsGameRules.BD_BLOOD_FEUD_PERCENT);
+        int affinity = 0;
+        if (this.wolf instanceof WolfExtensions ext) {
+            affinity = ext.betterdogs$getAffinity(this.offendingBaby.getStringUUID());
         }
+
+        float chance = AdultDisciplineHelper.calculateBloodFeudChance(baseChance, affinity);
 
         if (this.wolf.getRandom().nextFloat() < chance) {
             if (this.offendingBaby instanceof WolfExtensions babyExt) {
@@ -104,14 +112,14 @@ public class AdultCorrectionGoal extends Goal {
 
     @Override
     public void stop() {
-        if (wolf instanceof WolfExtensions ext) {
+        if (this.wolf instanceof WolfExtensions ext) {
             ext.betterdogs$setSocialState(null, WolfExtensions.SocialAction.NONE, 0);
         }
-        if (offendingBaby instanceof WolfExtensions babyExt) {
-             babyExt.betterdogs$setBeingDisciplined(false);
+        if (this.offendingBaby instanceof WolfExtensions babyExt) {
+            babyExt.betterdogs$setBeingDisciplined(false);
         }
         this.offendingBaby = null;
         this.hasHit = false;
-        wolf.getNavigation().stop();
+        this.wolf.getNavigation().stop();
     }
 }
