@@ -1,10 +1,13 @@
 # Changelog
 
 ## [4.24.37+26.1.2] - 2026-08-19
-### Fixed & Refactored
-- **Jade Provider Separation ("1 File, 1 Purpose")**:
-  - Separated client tooltip component providers (`InbredStatusProvider`, `WolfInfoProvider`) from server data sync providers (`InbredStatusDataProvider`, `WolfInfoDataProvider`).
-  - Restored 100% full compatibility across newer Jade releases (`Jade >= 26.2.11+`), older Jade releases, and standalone Fabric.
+### Added & Refactored
+- **Morning Gift Bringing & Feeding Merits System (`WolfGiftGoal`, `WolfGiftHelper`, `WolfPersistentData`)**:
+  - Implemented morning approach AI where healthy, monster-free dogs approach waking owners at $1.25\times$ speed to present scavenged gifts.
+  - Enforced 10-meal feeding merit threshold (`bd_gift_feed_threshold`), consuming 10 merits upon delivery with strict 1-day cooldown tracking.
+  - Implemented personality-themed scavenged gift loot pools (Aggressive: combat drops/bones/eyes; Pacifist: berries/apples/flowers; Normal: utility/sticks/feathers) plus 5% rare treasures (gold nuggets, emeralds, name tags, bone meal).
+  - Emits happy villager celebration particles via `WolfParticleHelper` and ambient audio cues upon gift delivery.
+  - Added automated test suite `MorningGiftTest` asserting threshold gating, merit deduction, daily cooldown math, health eligibility, and null safety.
 
 ## [4.24.36+26.1.2] - 2026-08-19 - ⚠️ Incompatible with Jade >= 26.2.11+ (Works on Jade < 26.2.10 or without Jade)
 ### Added & Refactored
