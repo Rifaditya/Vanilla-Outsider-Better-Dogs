@@ -2,116 +2,88 @@
 // Verified against: Minecraft 26.1.2
 package net.vanillaoutsider.betterdogs.util;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import net.fabricmc.fabric.api.event.player.UseEntityCallback;
-import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.item.Items;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.network.chat.Component;
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
-import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.animal.wolf.Wolf;
-import net.minecraft.world.entity.animal.equine.AbstractHorse;
-import net.minecraft.world.entity.animal.camel.Camel;
-import net.minecraft.world.entity.animal.pig.Pig;
-import net.minecraft.world.entity.monster.Strider;
-import net.minecraft.world.entity.vehicle.boat.Boat;
-import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.entity.Interaction;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.tags.BlockTags;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Interaction;
+import net.minecraft.world.entity.animal.wolf.Wolf;
+import net.minecraft.world.entity.vehicle.boat.Boat;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.vanillaoutsider.betterdogs.mixin.WolfAccessor;
+import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 
+/**
+ * Event-driven manager handling player commands, dog selection, and vehicle/seat interactions.
+ */
 public class DogCommandManager {
-    // Map from Player UUID to Selected Wolf UUID
+
     private static final Map<UUID, UUID> SELECTED_DOGS = new ConcurrentHashMap<>();
-    // Map from Wolf UUID to Target Vehicle Entity
     private static final Map<UUID, Entity> VEHICLE_TARGETS = new ConcurrentHashMap<>();
 
     public static void selectDog(UUID playerUuid, UUID dogUuid) {
-        SELECTED_DOGS.put(playerUuid, dogUuid);
+        if (playerUuid != null && dogUuid != null) {
+            SELECTED_DOGS.put(playerUuid, dogUuid);
+        }
     }
 
     public static UUID getSelectedDog(UUID playerUuid) {
+        if (playerUuid == null) {
+            return null;
+        }
         return SELECTED_DOGS.get(playerUuid);
     }
 
     public static void clearSelection(UUID playerUuid) {
-        SELECTED_DOGS.remove(playerUuid);
+        if (playerUuid != null) {
+            SELECTED_DOGS.remove(playerUuid);
+        }
     }
 
     public static void setVehicleTarget(UUID dogUuid, Entity vehicle) {
-        VEHICLE_TARGETS.put(dogUuid, vehicle);
+        if (dogUuid != null && vehicle != null) {
+            VEHICLE_TARGETS.put(dogUuid, vehicle);
+        }
     }
 
     public static Entity getVehicleTarget(UUID dogUuid) {
+        if (dogUuid == null) {
+            return null;
+        }
         return VEHICLE_TARGETS.get(dogUuid);
     }
 
     public static void clearVehicleTarget(UUID dogUuid) {
-        VEHICLE_TARGETS.remove(dogUuid);
+        if (dogUuid != null) {
+            VEHICLE_TARGETS.remove(dogUuid);
+        }
     }
 
-    /**
-     * Checks if the entity is a valid player seat (or standard vehicle/mount).
-     */
     public static boolean isSitTarget(Entity entity) {
-        if (entity instanceof Boat || entity instanceof AbstractMinecart || entity instanceof AbstractHorse || entity instanceof Camel) {
-            return true;
-        }
-        if (entity instanceof Pig pig && pig.isSaddled()) {
-            return true;
-        }
-        if (entity instanceof Strider strider && strider.isSaddled()) {
-            return true;
-        }
-        
-        // Dynamic check for modded chairs, benches, stools, and seats
-        String className = entity.getClass().getSimpleName().toLowerCase();
-        String typeId = BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).toString().toLowerCase();
-        return className.contains("seat") || className.contains("chair") || className.contains("stool") || className.contains("bench") || className.contains("mount")
-            || typeId.contains("seat") || typeId.contains("chair") || typeId.contains("stool") || typeId.contains("bench") || typeId.contains("mount");
+        return DogSeatHelper.isSitTarget(entity);
     }
 
-    /**
-     * Checks if the vehicle has empty passenger slots available.
-     */
     public static boolean hasPassengerSpace(Entity vehicle) {
-        if (vehicle instanceof Boat) {
-            return vehicle.getPassengers().size() < 2;
-        }
-        if (vehicle instanceof Camel) {
-            return vehicle.getPassengers().size() < 2;
-        }
-        return vehicle.getPassengers().isEmpty();
+        return DogSeatHelper.hasPassengerSpace(vehicle);
     }
 
-    /**
-     * Checks if the stack is a valid command item for selecting or commanding dogs (Sticks, Blaze Rods, Breeze Rods, or #betterdogs:command_items).
-     * Explicitly excludes Bones, which are reserved for Guard Mode.
-     */
-    public static boolean isCommandItem(net.minecraft.world.item.ItemStack stack) {
-        if (stack == null || stack.isEmpty()) {
-            return false;
-        }
-        if (stack.is(Items.BONE)) {
-            return false;
-        }
-        return stack.is(net.vanillaoutsider.betterdogs.registry.BetterDogsTags.COMMAND_ITEMS)
-            || stack.is(Items.STICK)
-            || stack.is(Items.BLAZE_ROD)
-            || stack.is(Items.BREEZE_ROD);
+    public static boolean isCommandItem(ItemStack stack) {
+        return DogSeatHelper.isCommandItem(stack);
     }
 
     /**
@@ -126,7 +98,7 @@ public class DogCommandManager {
             if (!player.isSecondaryUseActive()) {
                 return InteractionResult.PASS;
             }
-            net.minecraft.world.item.ItemStack held = player.getItemInHand(hand);
+            ItemStack held = player.getItemInHand(hand);
             if (!isCommandItem(held) && !held.isEmpty()) {
                 return InteractionResult.PASS;
             }
@@ -143,7 +115,7 @@ public class DogCommandManager {
                                 clearSelection(player.getUUID());
 
                                 // Safely offset position outside vehicle/minecart collision envelope
-                                net.minecraft.world.phys.Vec3 offset = player.getLookAngle().scale(-0.8).multiply(1, 0, 1);
+                                Vec3 offset = DogSeatHelper.calculateDismountOffset(player.getLookAngle(), DogSeatHelper.DEFAULT_DISMOUNT_DISTANCE);
                                 wolf.setPos(wolf.getX() + offset.x, wolf.getY(), wolf.getZ() + offset.z);
 
                                 if (entity.entityTags().contains("betterdogs:seat")) {
@@ -167,7 +139,7 @@ public class DogCommandManager {
                 Entity selectedEntity = serverLevel.getEntity(dogUuid);
                 if (selectedEntity instanceof Wolf wolf && wolf.isTame() && wolf.isOwnedBy(player) && wolf.isAlive()) {
                     // Range check (12 blocks = 144.0D squared)
-                    if (wolf.distanceToSqr(entity) > 144.0D) {
+                    if (wolf.distanceToSqr(entity) > DogSeatHelper.MAX_COMMAND_DISTANCE_SQ) {
                         player.sendOverlayMessage(Component.translatable("text.betterdogs.dog_too_far", wolf.getName()));
                         return InteractionResult.SUCCESS;
                     }
@@ -180,8 +152,8 @@ public class DogCommandManager {
                             wolf.setOrderedToSit(false);
                             player.sendOverlayMessage(Component.translatable("text.betterdogs.dog_commanded_to_board", wolf.getName(), entity.getName()));
                             net.minecraft.sounds.SoundEvent whineSound = ((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().whineSound().value();
-                            serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), 
-                                                 whineSound, wolf.getSoundSource(), 1.0f, 1.2f);
+                            serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(),
+                                    whineSound, wolf.getSoundSource(), 1.0f, 1.2f);
                             return InteractionResult.SUCCESS;
                         } else {
                             player.sendOverlayMessage(Component.translatable("text.betterdogs.seat_occupied"));
@@ -208,24 +180,20 @@ public class DogCommandManager {
 
             BlockPos pos = hitResult.getBlockPos();
             BlockState state = level.getBlockState(pos);
-            String blockId = BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString().toLowerCase();
 
-            boolean isChair = blockId.contains("chair") || blockId.contains("seat") || blockId.contains("stool") || blockId.contains("bench")
-                              || state.is(BlockTags.STAIRS);
-
-            if (isChair) {
+            if (DogSeatHelper.isChairBlock(state)) {
                 if (level instanceof ServerLevel serverLevel) {
                     Entity selectedEntity = serverLevel.getEntity(dogUuid);
                     if (selectedEntity instanceof Wolf wolf && wolf.isTame() && wolf.isOwnedBy(player) && wolf.isAlive()) {
-                        if (wolf.distanceToSqr(pos.getX() + 0.5D, pos.getY() + 0.25D, pos.getZ() + 0.5D) > 144.0D) {
+                        if (wolf.distanceToSqr(pos.getX() + 0.5D, pos.getY() + 0.25D, pos.getZ() + 0.5D) > DogSeatHelper.MAX_COMMAND_DISTANCE_SQ) {
                             player.sendOverlayMessage(Component.translatable("text.betterdogs.dog_too_far", wolf.getName()));
                             return InteractionResult.SUCCESS;
                         }
 
                         // Check if seat already exists to avoid duplication
                         AABB searchArea = new AABB(pos);
-                        List<Entity> existingSeats = serverLevel.getEntities((Entity) null, searchArea, 
-                            e -> e.entityTags().contains("betterdogs:seat"));
+                        List<Entity> existingSeats = serverLevel.getEntities((Entity) null, searchArea,
+                                e -> e.entityTags().contains("betterdogs:seat"));
 
                         Entity seatEntity;
                         if (!existingSeats.isEmpty()) {
@@ -246,8 +214,8 @@ public class DogCommandManager {
                             clearSelection(player.getUUID());
                             player.sendOverlayMessage(Component.translatable("text.betterdogs.dog_commanded_to_board", wolf.getName(), state.getBlock().getName()));
                             net.minecraft.sounds.SoundEvent whineSound = ((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().whineSound().value();
-                            serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), 
-                                                 whineSound, wolf.getSoundSource(), 1.0f, 1.2f);
+                            serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(),
+                                    whineSound, wolf.getSoundSource(), 1.0f, 1.2f);
                             return InteractionResult.SUCCESS;
                         } else {
                             player.sendOverlayMessage(Component.translatable("text.betterdogs.seat_occupied"));
