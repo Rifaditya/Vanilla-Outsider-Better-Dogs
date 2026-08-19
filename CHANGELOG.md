@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.24.43+26.1.2] - 2026-08-19
+### Added & Refactored
+- **Visual Advancements & Milestones (`WolfAdvancementHelper`, `AdvancementCriteriaTest`)**:
+  - Implemented single-purpose `WolfAdvancementHelper` safely resolving and awarding canine husbandry advancement criteria across `minecraft:husbandry/` and `betterdogs:husbandry/` with server-side validation.
+  - Validated all 13 canine husbandry advancement JSON files on the classpath: `a_pack_of_guardians`, `a_pack_of_personalities`, `cure_runt`, `inbred_runt`, `litter_two`, `litter_three`, `litter_four`, `litter_legend`, `on_guard`, `on_patrol`, `outcross_runt`, `put_up_for_adoption`, and `self_service`.
+  - Added automated test suite `AdvancementCriteriaTest` asserting 100% classpath existence of advancement JSON configurations and strict null safety across helper methods.
+
+
 ## [4.24.42+26.1.2] - 2026-08-19
 ### Added & Refactored
 - **In-Game Brigadier Command Suite (`BetterDogsCommand`, `CommandSuggestionsHelper`, `CommandSuiteTest`)**:
