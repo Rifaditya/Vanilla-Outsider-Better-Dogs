@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.24.47+26.1.2] - 2026-08-19
+### Added & Refactored
+- **Harmless Social Play Sparring AI (`SmallFightGoal`, `SmallFightHelper`, `SmallFightTest`)**:
+  - Implemented single-purpose `SmallFightHelper` encapsulating packmate eligibility checks, 6-block partner searches, 6-second sparring sessions (`SPARRING_DURATION_TICKS = 120`), `HAPPY_VILLAGER` particles, playful growl/pant audio cues, +1 bilateral affinity progression, and safe session termination.
+  - Refactored `SmallFightGoal` to coordinate non-damaging mock tussles and jump pounces between co-owned packmates, disengaging immediately upon sitting commands, leashing, or combat engagement.
+  - Added automated test suite `SmallFightTest` asserting sparring duration and speed constants, partner ownership validation (same owner UUID), combat/sit posture safety checks, and strict null safety across helper methods.
+
+
 ## [4.24.46+26.1.2] - 2026-08-19
 ### Added & Refactored
 - **Persistent Wolf Vendetta Blood Feuds (`BloodFeudGoal`, `BloodFeudHelper`, `BloodFeudTest`)**:
