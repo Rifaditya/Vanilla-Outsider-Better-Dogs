@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.24.46+26.2] - 2026-08-19
+### Added & Refactored
+- **Persistent Wolf Vendetta Blood Feuds (`BloodFeudGoal`, `BloodFeudHelper`, `BloodFeudTest`)**:
+  - Implemented single-purpose `BloodFeudHelper` encapsulating UUID string parsing, 20-block vicinity entity sweeps, 5% escalation rolls via `betterdogs:bd_blood_feud_percent`, and grudge state management.
+  - Refactored `BloodFeudGoal` to duel rival wolves until one perishes, strictly respecting player sit commands (`wolf.isOrderedToSit()`) without accidental posture overrides, and clearing vendetta state upon rival defeat.
+  - Added automated test suite `BloodFeudTest` asserting Codec-based UUID serialization and deserialization, 5% escalation roll probability math, empty/unset feud validation, and strict null safety across helper methods.
+
+
 ## [4.24.45+26.2] - 2026-08-19
 ### Added & Refactored
 - **Desperate Low-Health Wild Wolf Hunting (`HuntWhenHurtGoal`, `WildHuntHelper`, `WildHuntingTest`, `BetterDogsGameRules`)**:
