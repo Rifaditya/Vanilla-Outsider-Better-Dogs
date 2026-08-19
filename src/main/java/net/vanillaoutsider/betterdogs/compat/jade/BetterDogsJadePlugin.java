@@ -15,6 +15,9 @@ public class BetterDogsJadePlugin implements IWailaPlugin {
 
     @Override
     public void registerClient(IWailaClientRegistration registration) {
+        // Register config options
+        registration.addConfig(WolfInfoProvider.HIDE_UNDISCOVERED_TREAT, true);
+
         // Register custom Wolf info provider
         registration.registerEntityComponent(WolfInfoProvider.INSTANCE, Wolf.class);
         // Register custom Wolf health provider
