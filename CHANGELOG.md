@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.0.51+26.3] - 2026-08-19
+### Added & Refactored
+- **Wanderlust Exploratory Roaming AI (`WanderlustGoal`, `WanderlustHelper`, `WanderlustTest`)**:
+  - Implemented single-purpose `WanderlustHelper` encapsulating eligibility validation (tamed, non-sitting, non-leashed, non-combat, non-guarding, owner within 32 blocks), 1-in-400 surge probability rolls, and 28m perimeter exploratory pathing calculations with >24m steering pull.
+  - Refactored `WanderlustGoal` to coordinate autonomous exploratory roaming surges delegating to `WanderlustHelper`.
+  - Added automated test suite `WanderlustTest` asserting boundary distance constants (28m roam, 24m return, 32m max), eligibility and sit/leash safety checks, 1-in-400 surge probability roll math, and strict null safety across helper methods.
+
+
 ## [5.0.50+26.3] - 2026-08-19
 ### Added & Refactored
 - **Wild Wolf Pack War & Territorial Rivalry Matrix (`WildWolfTerritorialGoal`, `WolfTerritorialRivalryHelper`, `PackWarMatrixTest`)**:
