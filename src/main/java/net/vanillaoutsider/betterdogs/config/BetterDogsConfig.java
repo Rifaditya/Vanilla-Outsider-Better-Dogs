@@ -59,6 +59,7 @@ public class BetterDogsConfig {
     public boolean enableInbredCuring = true;
     public boolean showRuntParticles = false;
     public String guardParticleDensity = "medium";
+    public String particleDensity = "medium";
     public double wolfMinScale = 0.70;
     public double wolfMaxScale = 1.45;
 
@@ -325,4 +326,8 @@ public class BetterDogsConfig {
     public boolean getDemeritAccidentalAttacks() { return demeritAccidentalAttacks; }
     public double getWolfMinScale() { return wolfMinScale; }
     public double getWolfMaxScale() { return wolfMaxScale; }
+    public String getParticleDensity() { return particleDensity; }
+    public int getParticleDensityInt() {
+        return net.vanillaoutsider.betterdogs.util.ParticleDensity.fromString(this.particleDensity).getLevel();
+    }
 }

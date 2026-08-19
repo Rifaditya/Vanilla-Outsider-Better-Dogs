@@ -1,5 +1,15 @@
 # Changelog
 
+## [4.24.35+26.2] - 2026-08-19
+### Added & Refactored
+- **Creeper Threat Repulsion AI (`FleeCreeperGoal`, `WolfAIMixin`)**:
+  - Implemented 10-block emergency evasion fleeing at $1.5\times$ sprint speed upon detecting swelling (`getSwellDir() > 0`) or ignited (`isIgnited()`) Creepers.
+  - Dispatches emergency alarm whine on start and emits sprint smoke trails at the dog's paws.
+- **Global Particle Density System (`ParticleDensity`, `WolfParticleHelper`, `BetterDogsGameRules`, `BetterDogsConfig`)**:
+  - Added 4-tier configurable particle density: `NONE` (0), `LOW` (1), `MEDIUM` (3, Default), and `HIGH` (6).
+  - Integrated `/gamerule bd_particle_density <0-3>` and `BetterDogsConfig.json` (`particleDensity: "medium"`).
+  - Added automated test suite `CreeperEvasionTest` asserting 10m evasion math, $1.5\times$ sprint speed, fuse sensitivity logic, particle density scaling, and strict null safety.
+
 ## [4.24.34+26.2] - 2026-08-18
 ### Added & Refactored
 - **Aggressive Autonomous Stalking AI (`AggressiveTargetGoal`, `WolfAIMixin`)**:
