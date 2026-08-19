@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.24.48+26.2] - 2026-08-19
+### Added & Refactored
+- **Wild Wolf Pack War & Territorial Rivalry Matrix (`WildWolfTerritorialGoal`, `WolfTerritorialRivalryHelper`, `PackWarMatrixTest`)**:
+  - Implemented single-purpose `WolfTerritorialRivalryHelper` encapsulating dominance score arithmetic (scale, personality weighting, health ratio), 6-pair matrix GameRule evaluation (`evaluateOutcome`), and pack merger execution (`mergePacks`) with `GroupMember` leader updates and `HAPPY_VILLAGER` particles.
+  - Refactored `WildWolfTerritorialGoal` to coordinate standoff behavior machines and conflict resolution through `WolfTerritorialRivalryHelper`.
+  - Added automated test suite `PackWarMatrixTest` asserting territorial constants (96-block radius, 1200-tick duration), RivalryOutcome enum states, matrix probability roll math (AA 80% war), and strict null safety across helper methods.
+
+
 ## [4.24.47+26.2] - 2026-08-19
 ### Added & Refactored
 - **Harmless Social Play Sparring AI (`SmallFightGoal`, `SmallFightHelper`, `SmallFightTest`)**:
