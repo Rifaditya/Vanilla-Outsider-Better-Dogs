@@ -153,6 +153,16 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
         setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), day, current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable(), current.refusesGroundFood(), current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat()));
     }
 
+    // ========== Last Gift Day (morning gift delivery tracking) ==========
+
+    public static long getLastGiftDay(Wolf wolf) {
+        return getPersistedLastMischiefDay(wolf);
+    }
+
+    public static void setLastGiftDay(Wolf wolf, long day) {
+        setPersistedLastMischiefDay(wolf, day);
+    }
+
     // ========== DNA & Scale (Social Core) ==========
 
     public static long getDNA(Wolf wolf) {
