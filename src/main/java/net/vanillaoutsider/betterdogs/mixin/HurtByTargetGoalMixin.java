@@ -7,6 +7,7 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.TargetGoal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
+import net.vanillaoutsider.betterdogs.util.AdultDisciplineHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -26,16 +27,10 @@ public abstract class HurtByTargetGoalMixin extends TargetGoal {
     @Inject(method = "alertOthers", at = @At("HEAD"), cancellable = true)
     protected void betterdogs$onAlertOthers(CallbackInfo ci) {
         // "The Muzzle": If this is a domestic dispute, SILENCE the victim.
-        if (this.mob instanceof Wolf baby && baby.isTame()) {
+        if (this.mob instanceof Wolf baby) {
             LivingEntity attacker = baby.getLastHurtByMob();
-            
-            // Check if attacker is an Adult Wolf with the same owner
-            if (attacker instanceof Wolf adult && adult.isTame() && !adult.isBaby()) {
-                if (baby.getOwner() != null && adult.getOwner() != null 
-                    && baby.getOwner().equals(adult.getOwner())) {
-                    // It's a family matter. Keep it quiet.
-                    ci.cancel();
-                }
+            if (AdultDisciplineHelper.shouldSilenceAlert(baby, attacker)) {
+                ci.cancel();
             }
         }
     }
