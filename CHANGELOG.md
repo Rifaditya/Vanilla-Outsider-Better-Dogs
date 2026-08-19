@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.24.52+26.2] - 2026-08-19
+### Fixed & Hardened
+- **Multi-Version Manifest & Version Guard Parity Sync**:
+  - Synchronized SemVer and multi-version integrity checks in lockstep with 26.1 and 26.3.
+  - Added **Manifest & Version Guard Integrity Law** to Core Constitution, Skills, and Developer Memory.
+
+
 ## [4.24.51+26.2] - 2026-08-19
 ### Fixed & Hardened
 - **Jade Tooltip Compatibility & NullPointerException Fix (`WolfInfoProvider`, `BetterDogsJadePlugin`, `InbredStatusProvider`)**:
