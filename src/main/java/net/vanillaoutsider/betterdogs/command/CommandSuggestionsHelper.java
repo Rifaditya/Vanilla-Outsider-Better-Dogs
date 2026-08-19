@@ -89,6 +89,7 @@ public class CommandSuggestionsHelper {
             "bd_wolf_max_scale_percent",
             "bd_blood_feud_percent",
             "bd_baby_retaliate_percent",
+            "bd_wild_hunt_health_threshold",
             "bd_terr_aa_war",
             "bd_terr_aa_merge",
             "bd_terr_an_war",

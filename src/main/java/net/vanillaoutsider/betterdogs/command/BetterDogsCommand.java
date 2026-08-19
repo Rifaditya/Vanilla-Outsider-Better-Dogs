@@ -97,6 +97,7 @@ public class BetterDogsCommand {
         registerInt("bd_wolf_max_scale_percent", BetterDogsGameRules.BD_WOLF_MAX_SCALE_PERCENT, 145);
         registerInt("bd_blood_feud_percent", BetterDogsGameRules.BD_BLOOD_FEUD_PERCENT, 5);
         registerInt("bd_baby_retaliate_percent", BetterDogsGameRules.BD_BABY_RETALIATE_PERCENT, 50);
+        registerInt("bd_wild_hunt_health_threshold", BetterDogsGameRules.BD_WILD_HUNT_HEALTH_THRESHOLD, 50);
         registerInt("bd_terr_aa_war", BetterDogsGameRules.BD_TERR_AA_WAR, 80);
         registerInt("bd_terr_aa_merge", BetterDogsGameRules.BD_TERR_AA_MERGE, 0);
         registerInt("bd_terr_an_war", BetterDogsGameRules.BD_TERR_AN_WAR, 50);

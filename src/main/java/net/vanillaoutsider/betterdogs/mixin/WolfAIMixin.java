@@ -28,6 +28,7 @@ import net.vanillaoutsider.betterdogs.ai.BloodFeudGoal;
 import net.vanillaoutsider.betterdogs.ai.EatGroundFoodGoal;
 import net.vanillaoutsider.betterdogs.ai.FleeCreeperGoal;
 import net.vanillaoutsider.betterdogs.ai.GroupHowlGoal;
+import net.vanillaoutsider.betterdogs.ai.HuntWhenHurtGoal;
 import net.vanillaoutsider.betterdogs.ai.PacifistRevengeGoal;
 import net.vanillaoutsider.betterdogs.ai.PersonalityFollowOwnerGoal;
 import net.vanillaoutsider.betterdogs.ai.SmallFightGoal;
@@ -89,6 +90,7 @@ public abstract class WolfAIMixin extends TamableAnimal {
 
         this.targetSelector.addGoal(1, new net.vanillaoutsider.betterdogs.ai.WolfNemesisTargetGoal(wolf));
         this.targetSelector.addGoal(1, new BloodFeudGoal(wolf));
+        this.targetSelector.addGoal(3, new HuntWhenHurtGoal(wolf));
         this.goalSelector.addGoal(0, new BabyBiteBackGoal(wolf));
         this.goalSelector.addGoal(4, new AdultCorrectionGoal(wolf));
         this.goalSelector.addGoal(4, new SmallFightGoal(wolf));
