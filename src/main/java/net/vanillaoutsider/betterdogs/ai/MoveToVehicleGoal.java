@@ -7,8 +7,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.util.DogCommandManager;
+import net.vanillaoutsider.betterdogs.util.DogSeatHelper;
 
+/**
+ * Dedicated single-purpose AI goal navigating tamed dogs to a commanded vehicle or seat.
+ */
 public class MoveToVehicleGoal extends Goal {
+
     private final Wolf wolf;
     private int timeElapsed;
 
@@ -27,12 +32,12 @@ public class MoveToVehicleGoal extends Goal {
             return false;
         }
         // Distance check (12 blocks limit = 144 squared)
-        if (this.wolf.distanceToSqr(target) > 144.0D) {
+        if (this.wolf.distanceToSqr(target) > DogSeatHelper.MAX_COMMAND_DISTANCE_SQ) {
             DogCommandManager.clearVehicleTarget(this.wolf.getUUID());
             return false;
         }
         // Verify target has space
-        if (!DogCommandManager.hasPassengerSpace(target)) {
+        if (!DogSeatHelper.hasPassengerSpace(target)) {
             DogCommandManager.clearVehicleTarget(this.wolf.getUUID());
             return false;
         }
@@ -46,7 +51,7 @@ public class MoveToVehicleGoal extends Goal {
             return false;
         }
         // Timeout check (5 seconds = 100 ticks) and distance check
-        return this.timeElapsed < 100 && this.wolf.distanceToSqr(target) <= 144.0D;
+        return this.timeElapsed < 100 && this.wolf.distanceToSqr(target) <= DogSeatHelper.MAX_COMMAND_DISTANCE_SQ;
     }
 
     @Override
@@ -66,7 +71,7 @@ public class MoveToVehicleGoal extends Goal {
         this.timeElapsed++;
 
         // Board vehicle when close enough (1.5 blocks = 2.25 squared)
-        if (this.wolf.distanceToSqr(target) < 2.25D) {
+        if (this.wolf.distanceToSqr(target) < DogSeatHelper.MOUNT_DISTANCE_SQ) {
             this.wolf.startRiding(target);
             DogCommandManager.clearVehicleTarget(this.wolf.getUUID());
         }
