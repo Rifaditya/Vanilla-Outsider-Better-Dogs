@@ -2,17 +2,25 @@
 // Verified against: Minecraft 26.2
 package net.vanillaoutsider.betterdogs.ai;
 
-import java.util.List;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.phys.AABB;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
-import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import net.vanillaoutsider.betterdogs.scheduler.events.CorrectionDogEvent;
+import net.vanillaoutsider.betterdogs.util.BabyRetaliationHelper;
+import net.vanillaoutsider.betterdogs.util.WolfFriendlyFireHelper;
 
+import java.util.EnumSet;
+import java.util.List;
+
+/**
+ * Dedicated single-purpose AI goal for aggressive puppy snap retaliation.
+ */
 public class BabyBiteBackGoal extends Goal {
 
     private final Wolf wolf;
@@ -22,31 +30,23 @@ public class BabyBiteBackGoal extends Goal {
 
     public BabyBiteBackGoal(Wolf wolf) {
         this.wolf = wolf;
-        this.setFlags(java.util.EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
     @Override
     public boolean canUse() {
-        if (!wolf.isBaby() || !wolf.isTame())
+        if (!BabyRetaliationHelper.isEligible(this.wolf)) {
             return false;
-        if (wolf.isOrderedToSit())
-            return false;
-        if (!(wolf instanceof WolfExtensions ext))
-            return false;
-        if (ext.betterdogs$getPersonality() != WolfPersonality.AGGRESSIVE)
-            return false;
-        if (ext.betterdogs$hasBloodFeud())
-            return false;
-        if (ext.betterdogs$isSocialModeActive()) {
-            if (ext.betterdogs$getSocialAction() != WolfExtensions.SocialAction.RETALIATION) {
-                return false;
-            }
         }
-        LivingEntity socialTarget = ext.betterdogs$getSocialTarget();
-        WolfExtensions.SocialAction socialAction = ext.betterdogs$getSocialAction();
-        LivingEntity owner = wolf.getOwner();
-        if (socialTarget != null && socialTarget == owner && socialAction == WolfExtensions.SocialAction.RETALIATION) {
-            this.retaliationTarget = owner;
+        if (!(this.wolf instanceof WolfExtensions ext)) {
+            return false;
+        }
+        if (ext.betterdogs$getSocialAction() != WolfExtensions.SocialAction.RETALIATION) {
+            return false;
+        }
+        LivingEntity target = ext.betterdogs$getSocialTarget();
+        if (target != null && target.isAlive() && target != this.wolf) {
+            this.retaliationTarget = target;
             return true;
         }
         return false;
@@ -56,61 +56,65 @@ public class BabyBiteBackGoal extends Goal {
     public void start() {
         this.hasAttacked = false;
         this.attackDelay = 0;
-        if (wolf instanceof WolfExtensions ext) {
-            ext.betterdogs$setSocialState(this.retaliationTarget, WolfExtensions.SocialAction.RETALIATION,
-                    BetterDogsConfig.get().getCorrectionDuration());
-        }
     }
 
     @Override
     public boolean canContinueToUse() {
-        if (hasAttacked)
+        if (this.hasAttacked) {
             return false;
-        if (retaliationTarget == null || !retaliationTarget.isAlive())
+        }
+        if (this.retaliationTarget == null || !this.retaliationTarget.isAlive()) {
             return false;
-        if (wolf instanceof WolfExtensions ext && !ext.betterdogs$isSocialModeActive())
+        }
+        if (this.wolf.isOrderedToSit() || this.wolf.isLeashed()) {
             return false;
-        return true;
+        }
+        if (this.wolf instanceof WolfExtensions ext) {
+            return ext.betterdogs$getSocialAction() == WolfExtensions.SocialAction.RETALIATION;
+        }
+        return false;
     }
 
     @Override
     public void tick() {
-        if (retaliationTarget == null)
+        if (this.retaliationTarget == null) {
             return;
-        BetterDogsConfig config = BetterDogsConfig.get();
-        this.wolf.getLookControl().setLookAt(retaliationTarget, config.getBiteBackLookSpeed(),
-                config.getBiteBackLookSpeed());
-        this.wolf.getNavigation().moveTo(retaliationTarget, config.getBiteBackSpeedModifier());
+        }
+
+        this.wolf.getLookControl().setLookAt(this.retaliationTarget, 30.0F, (float) this.wolf.getMaxHeadXRot());
+        this.wolf.getNavigation().moveTo(this.retaliationTarget, BabyRetaliationHelper.DEFAULT_SPEED_MODIFIER);
+
         this.attackDelay = Math.max(this.attackDelay - 1, 0);
-        double distSqr = this.wolf.distanceToSqr(retaliationTarget);
-        double reachSqr = (double) (this.wolf.getBbWidth() * 2.0F * this.wolf.getBbWidth() * 2.0F
-                + retaliationTarget.getBbWidth());
-        reachSqr += config.getBiteBackReachBuffer();
-        if (distSqr <= reachSqr) {
-            if (this.attackDelay <= 0) {
-                this.attackDelay = config.getBiteBackAttackDelay();
-                this.wolf.swing(net.minecraft.world.InteractionHand.MAIN_HAND);
-                if (this.wolf.level() instanceof ServerLevel serverLevel) {
-                    boolean success = this.wolf.doHurtTarget(serverLevel, retaliationTarget);
-                    if (success) {
-                        this.hasAttacked = true;
-                        double searchDist = config.getCorrectionSearchRange();
-                        AABB searchBox = this.wolf.getBoundingBox().inflate(searchDist);
-                        List<Wolf> nearbyWolves = this.wolf.level().getEntitiesOfClass(
-                                Wolf.class,
-                                searchBox,
-                                w -> w != this.wolf && !w.isBaby() && w.isTame()
-                                        && w.getOwner() == this.wolf.getOwner());
-                        for (Wolf adult : nearbyWolves) {
-                            if (adult instanceof WolfExtensions adultExt) {
-                                if (adultExt.betterdogs$getPersonality() == WolfPersonality.AGGRESSIVE
-                                        && !adultExt.betterdogs$isSocialModeActive()) {
-                                    // Refactored to use DasikLibrary schedule()
-                                    adultExt.betterdogs$getOrInitializeScheduler().schedule(
-                                            new CorrectionDogEvent(this.wolf));
-                                    break;
-                                }
-                            }
+        double distSq = this.wolf.distanceToSqr(this.retaliationTarget);
+        double reachSq = (double) (this.wolf.getBbWidth() * 2.0F * this.wolf.getBbWidth() * 2.0F + this.retaliationTarget.getBbWidth() + 1.0);
+
+        if (distSq <= reachSq && this.attackDelay <= 0) {
+            this.attackDelay = 20;
+            this.wolf.swing(InteractionHand.MAIN_HAND);
+            BabyRetaliationHelper.playRetaliationCues(this.wolf);
+
+            if (this.wolf.level() instanceof ServerLevel serverLevel) {
+                DamageSource source = serverLevel.damageSources().mobAttack(this.wolf);
+                if (!WolfFriendlyFireHelper.shouldCancelDamage(this.wolf, source, BabyRetaliationHelper.RETALIATION_DAMAGE)) {
+                    this.retaliationTarget.hurtServer(serverLevel, source, BabyRetaliationHelper.RETALIATION_DAMAGE);
+                }
+                this.hasAttacked = true;
+
+                // Provoke adult discipline from nearby co-owned aggressive adults
+                double searchDist = 16.0;
+                AABB searchBox = this.wolf.getBoundingBox().inflate(searchDist);
+                List<Wolf> nearbyWolves = this.wolf.level().getEntitiesOfClass(
+                        Wolf.class,
+                        searchBox,
+                        w -> w != this.wolf && !w.isBaby() && w.isTame() && w.getOwner() == this.wolf.getOwner());
+
+                for (Wolf adult : nearbyWolves) {
+                    if (adult instanceof WolfExtensions adultExt) {
+                        if (adultExt.betterdogs$getPersonality() == WolfPersonality.AGGRESSIVE
+                                && !adultExt.betterdogs$isSocialModeActive()) {
+                            adultExt.betterdogs$getOrInitializeScheduler().schedule(
+                                    new CorrectionDogEvent(this.wolf));
+                            break;
                         }
                     }
                 }
@@ -120,10 +124,10 @@ public class BabyBiteBackGoal extends Goal {
 
     @Override
     public void stop() {
-        if (wolf instanceof WolfExtensions ext) {
+        if (this.wolf instanceof WolfExtensions ext) {
             ext.betterdogs$setSocialState(null, WolfExtensions.SocialAction.NONE, 0);
         }
-        wolf.getNavigation().stop();
+        this.wolf.getNavigation().stop();
         this.retaliationTarget = null;
         this.hasAttacked = false;
     }
