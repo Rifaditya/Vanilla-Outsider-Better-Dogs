@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.0.43+26.3] - 2026-08-19
+### Added & Refactored
+- **Multi-Language Localized Subtitle Audio & Actionbar Feedback (`WolfFeedbackHelper`, `BetterDogsGameRules`, Translations)**:
+  - Registered `betterdogs:bd_actionbar_feedback` GameRule (default: `false` for organic vanilla-like immersion).
+  - Encapsulated actionbar overlay messaging and client dispatch gating into single-purpose `WolfFeedbackHelper`.
+  - Enforced 100% complete translation parity across English (`en_us.json`) and Indonesian (`id_id.json`) for all GameRules, commands, status overlays, death logs, and audio subtitles.
+  - Added automated test suite `SubtitleFeedbackTest` asserting default `false` GameRule configuration and strict null safety across helper methods.
+
+
 ## [5.0.42+26.3] - 2026-08-19
 ### Added & Refactored
 - **Adult Puppy Discipline & Target Silencing AI (`AdultCorrectionGoal`, `AdultDisciplineHelper`, `HurtByTargetGoalMixin`)**:
