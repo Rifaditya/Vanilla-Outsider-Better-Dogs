@@ -76,57 +76,24 @@ public class WolfCombatHooks {
                     return true; // Cancel the killing blow
                 }
             }
-        } else if ((isAllyWolf || isOwner) && !isSneaking) {
-            float currentHealth = wolf.getHealth();
-            if (amount >= currentHealth - 1.0f) {
-                if (currentHealth > 1.0f) {
-                    wolf.setHealth(1.0f);
-                }
-                return true; // Cancel lethal friendly fire
-            }
         }
 
-        // 2. Baby Training: If aggressive baby hit by owner (non-sneaking) → set SOCIAL
-        // target
+        // Friendly Fire & Melee Protection
+        if (WolfFriendlyFireHelper.shouldCancelDamage(wolf, source, amount)) {
+            return true;
+        }
+
+        // 2. Baby Training: If aggressive baby hit by owner (non-sneaking) → set SOCIAL target
         if (isOwner && !isSneaking && wolf.isBaby()) {
             if (wolf instanceof WolfExtensions ext && ext.betterdogs$getPersonality() == WolfPersonality.AGGRESSIVE) {
-                // COMMAND CENTER: Inject Retaliation Behavior
-                // 100 ticks = 5 seconds
-
                 EntitySocialScheduler scheduler = ext.betterdogs$getScheduler();
-                // Check Dasik Scheduler for active event
                 if (scheduler == null || !scheduler.isEventActive(RetaliationDogEvent.ID)) {
-                    // Get chance from Game Rules
                     float chance = DynamicGameRuleManager.getChance(wolf.level(),
                             BetterDogsGameRules.BD_BABY_RETALIATE_PERCENT);
                     if (wolf.getRandom().nextFloat() < chance) {
-                        // Use Dasik offer() instead of injectBehavior
                         ext.betterdogs$getOrInitializeScheduler().schedule(
                                 new RetaliationDogEvent(attacker));
                     }
-                }
-            }
-        }
-
-        // 4. Owner friendly fire protection cancellation
-        // Use GameRule BD_FRIENDLY_FIRE
-        if (isOwner && !isSneaking) {
-            boolean friendlyFireProto = DynamicGameRuleManager.getBoolean(wolf.level(),
-                    BetterDogsGameRules.BD_FRIENDLY_FIRE);
-            if (friendlyFireProto) {
-                // EXCEPTION: Allows "Provocation" taps on Aggressive Babies to trigger
-                // retaliation
-                if (wolf.isBaby() && wolf instanceof WolfExtensions ext
-                        && ext.betterdogs$getPersonality() == WolfPersonality.AGGRESSIVE) {
-                    // Allow non-lethal damage (capped at 2.0f to prevent accidental one-shots with
-                    // swords)
-                    if (amount > 2.0f) {
-                        wolf.setHealth(wolf.getHealth() + (amount - 2.0f));
-                    }
-                    // Do NOT cancel. Let the hit land.
-                    return false;
-                } else {
-                    return true; // Cancel damage
                 }
             }
         }
