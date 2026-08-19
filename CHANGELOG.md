@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.0.42+26.3] - 2026-08-19
+### Added & Refactored
+- **Adult Puppy Discipline & Target Silencing AI (`AdultCorrectionGoal`, `AdultDisciplineHelper`, `HurtByTargetGoalMixin`)**:
+  - Encapsulated adult-to-baby discipline eligibility, domestic alert silencing checks ("The Muzzle"), affinity-scaled blood feud risk math, and sensory feedback into single-purpose `AdultDisciplineHelper`.
+  - Implemented domestic dispute alert silencing in `HurtByTargetGoalMixin`: intercepts and cancels `alertOthers()` when a puppy is nipped by a co-owned adult wolf, completely preventing civil war in the pack.
+  - Implemented adult correction AI: adult wolves approach misbehaving puppies, deliver a warning nip, play an adult warning growl, and prompt a puppy submissive whine with angry villager particles.
+  - Added automated test suite `AdultDisciplineTest` asserting affinity modulation on feud chance (halved at max affinity, increased on negative affinity), domestic alert silencing rules, and strict null safety.
+
+
 ## [5.0.41+26.3] - 2026-08-19
 ### Added & Refactored
 - **Puppy Playful Exploration AI (`BabyCuriosityGoal`, `BabyCuriosityHelper`)**:
