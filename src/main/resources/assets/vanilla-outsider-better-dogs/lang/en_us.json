@@ -22,6 +22,8 @@
 
   "gamerule.betterdogs.bd_storm_anxiety": "Enable Storm Anxiety",
   "gamerule.betterdogs.bd_storm_anxiety.description": "If true, wolves will whine and shake in fear during thunderstorms depending on personality (Pacifist has 3x anxiety, Aggressive is immune). Default: true.",
+  "gamerule.betterdogs.bd_actionbar_feedback": "Enable Actionbar Feedback",
+  "gamerule.betterdogs.bd_actionbar_feedback.description": "If true, sends status and action notifications to the player's actionbar overlay. Default: false.",
   "gamerule.betterdogs.bd_cliff_safety": "Enable Cliff Safety",
   "gamerule.betterdogs.bd_cliff_safety.description": "If true, prevents wolves from pathfinding or chasing targets off high cliffs or into deep voids to avoid fall damage. Default: true.",
   "gamerule.betterdogs.bd_creeper_awareness": "Enable Creeper Avoidance",
