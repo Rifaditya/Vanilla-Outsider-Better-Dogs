@@ -17,12 +17,15 @@ public enum InbredStatusProvider implements IEntityComponentProvider {
 
     @Override
     public void appendTooltip(ITooltip tooltip, EntityAccessor accessor, IPluginConfig config) {
-        if (config.get(getUid())) {
-            if (accessor.getEntity() instanceof Wolf wolf && wolf.isTame()) {
-                if (accessor.getServerData().getBoolean("betterdogs:inbred").orElse(false)) {
-                    tooltip.add(Component.translatable("betterdogs.jade.inbred").withStyle(net.minecraft.ChatFormatting.RED));
+        try {
+            if (config != null && config.get(getUid())) {
+                if (accessor != null && accessor.getEntity() instanceof Wolf wolf && wolf.isTame()) {
+                    if (accessor.getServerData() != null && accessor.getServerData().getBoolean("betterdogs:inbred").orElse(false)) {
+                        tooltip.add(Component.translatable("betterdogs.jade.inbred").withStyle(net.minecraft.ChatFormatting.RED));
+                    }
                 }
             }
+        } catch (Exception ignored) {
         }
     }
 

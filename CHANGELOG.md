@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.0.53+26.3] - 2026-08-19
+### Fixed & Hardened
+- **Jade Tooltip Compatibility & NullPointerException Fix (`WolfInfoProvider`, `BetterDogsJadePlugin`, `InbredStatusProvider`)**:
+  - Registered `hide_undiscovered_treat` config toggle in `BetterDogsJadePlugin` using `registration.addConfig(WolfInfoProvider.HIDE_UNDISCOVERED_TREAT, true)`.
+  - Resolved `java.lang.NullPointerException` in `WolfInfoProvider.appendTooltip` by adding safe defensive try-catch error guards around Jade config queries with fallback defaults.
+  - Refactored `WolfInfoProvider` to directly delegate to single-purpose `DogTreatHelper.getFavoriteTreat(wolf)`.
+  - Hardened `InbredStatusProvider` with null guards and exception handling to guarantee tooltips never crash or break in Jade HUDs.
+
+
 ## [5.0.52+26.3] - 2026-08-19
 ### Added & Refactored
 - **Expanded Spawning, Dynamic Climate Coats & Alpha Leadership (`BetterDogsSpawning`, `WolfVariantHelper`, `SpawnVariantTest`)**:
