@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.24.52+26.1.2] - 2026-08-19
+### Fixed & Hardened
+- **Manifest Version Bounds & ModVersionGuard Knot ClassLoader Alignment (`fabric.mod.json`, `BetterDogsFabric.java`)**:
+  - Corrected `fabric.mod.json` `"minecraft"` dependency bounds to `">=26.1.2-"` (resolving Fabric Loader startup failure on Minecraft 26.1.2).
+  - Fixed `BetterDogsFabric.java` `ModVersionGuard.checkClass` to target `"net.minecraft.world.entity.animal.wolf.Wolf"` instead of plural `EntityTypes` (which only exists in 26.2+).
+  - Executed automated batch in-place repair across all 30 historical release JARs in `Archive Jar of all versions/MC 26.1/` ensuring 100% loadability.
+  - Added **Manifest & Version Guard Integrity Law** to Core Constitution, Skills, and Developer Memory to prevent version drift.
+
+
 ## [4.24.51+26.1.2] - 2026-08-19
 ### Fixed & Hardened
 - **Jade Tooltip Compatibility & NullPointerException Fix (`WolfInfoProvider`, `BetterDogsJadePlugin`, `InbredStatusProvider`)**:

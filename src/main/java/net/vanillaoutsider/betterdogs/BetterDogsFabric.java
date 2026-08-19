@@ -8,7 +8,7 @@ public class BetterDogsFabric implements ModInitializer {
     
     @Override
     public void onInitialize() {
-        net.vanillaoutsider.betterdogs.util.ModVersionGuard.checkClass("Better Dogs", "net.minecraft.world.entity.EntityTypes");
+        net.vanillaoutsider.betterdogs.util.ModVersionGuard.checkClass("Better Dogs", "net.minecraft.world.entity.animal.wolf.Wolf");
         BetterDogs.init();
     }
 }
