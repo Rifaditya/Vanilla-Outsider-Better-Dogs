@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.0.54+26.3] - 2026-08-19
+### Fixed & Hardened
+- **Manifest Version Bounds Alignment (`fabric.mod.json`)**:
+  - Corrected `fabric.mod.json` `"minecraft"` dependency bounds to `">=26.3-"`.
+  - Executed automated batch in-place repair across all historical release JARs in `Archive Jar of all versions/MC 26.3/`.
+  - Added **Manifest & Version Guard Integrity Law** to Core Constitution, Skills, and Developer Memory.
+
+
 ## [5.0.53+26.3] - 2026-08-19
 ### Fixed & Hardened
 - **Jade Tooltip Compatibility & NullPointerException Fix (`WolfInfoProvider`, `BetterDogsJadePlugin`, `InbredStatusProvider`)**:
