@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.0.41+26.3] - 2026-08-19
+### Added & Refactored
+- **Puppy Playful Exploration AI (`BabyCuriosityGoal`, `BabyCuriosityHelper`)**:
+  - Encapsulated puppy curiosity eligibility, harmless passive mob filtering (animals, players, packmates), nature foliage recognition (flowers, tall grass, crops, leaves, pumpkins, melons), and feedback cues into single-purpose `BabyCuriosityHelper`.
+  - Implemented personality-scaled curiosity frequency: Pacifist puppies explore frequently (every 2–3 seconds), Normal puppies explore periodically (every 4–6 seconds), and Aggressive puppies remain focused on combat discipline (disinterested).
+  - Puppies approach interesting targets at $0.8\times$ speed, gaze/sniff for 2–6 seconds, emit subtle happy villager particles via `WolfParticleHelper`, and play soft baby ambient audio.
+  - Added automated test suite `BabyCuriosityTest` asserting personality trigger intervals, distance bounds ($100.0\text{m}^2$, $6.25\text{m}^2$), foliage block validation, and strict null safety.
+
+
 ## [5.0.40+26.3] - 2026-08-19
 ### Added & Refactored
 - **Vehicle Navigation & Auto-Boarding System (`MoveToVehicleGoal`, `DogSeatHelper`, `DogCommandManager`)**:
