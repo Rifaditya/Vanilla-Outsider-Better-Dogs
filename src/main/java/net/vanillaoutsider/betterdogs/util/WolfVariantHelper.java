@@ -15,10 +15,30 @@ import net.minecraft.world.level.biome.Biome;
 import net.vanillaoutsider.betterdogs.mixin.WolfAccessor;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 
-public class WolfVariantHelper {
+import java.util.List;
+
+/**
+ * Dedicated single-purpose helper for dynamic climate-aware wolf coat variant resolution and stray diversity rolls.
+ */
+public final class WolfVariantHelper {
+
+    public static final List<ResourceKey<WolfVariant>> ALL_VARIANTS = List.of(
+            WolfVariants.PALE,
+            WolfVariants.WOODS,
+            WolfVariants.ASHEN,
+            WolfVariants.BLACK,
+            WolfVariants.CHESTNUT,
+            WolfVariants.RUSTY,
+            WolfVariants.SNOWY,
+            WolfVariants.SPOTTED,
+            WolfVariants.STRIPED
+    );
+
+    private WolfVariantHelper() {
+    }
 
     public static void applyClimateVariant(Wolf wolf, ServerLevel level) {
-        if (!DynamicGameRuleManager.getBoolean(level, BetterDogsGameRules.BD_DYNAMIC_CLIMATE_VARIANTS)) {
+        if (wolf == null || level == null || !DynamicGameRuleManager.getBoolean(level, BetterDogsGameRules.BD_DYNAMIC_CLIMATE_VARIANTS)) {
             return;
         }
 
@@ -35,13 +55,20 @@ public class WolfVariantHelper {
         if (currentKey != null) {
             Identifier id = currentKey.identifier();
             if (id.equals(WolfVariants.SNOWY.identifier()) ||
-                id.equals(WolfVariants.ASHEN.identifier()) ||
-                id.equals(WolfVariants.RUSTY.identifier()) ||
-                id.equals(WolfVariants.STRIPED.identifier()) ||
-                id.equals(WolfVariants.BLACK.identifier()) ||
-                id.equals(WolfVariants.SPOTTED.identifier())) {
+                    id.equals(WolfVariants.ASHEN.identifier()) ||
+                    id.equals(WolfVariants.RUSTY.identifier()) ||
+                    id.equals(WolfVariants.STRIPED.identifier()) ||
+                    id.equals(WolfVariants.BLACK.identifier()) ||
+                    id.equals(WolfVariants.SPOTTED.identifier())) {
                 return;
             }
+        }
+
+        // 10% Stray Diversity Roll: Occasional exotic coat in any biome
+        if (wolf.getRandom().nextInt(100) < 10) {
+            ResourceKey<WolfVariant> randomVariant = ALL_VARIANTS.get(wolf.getRandom().nextInt(ALL_VARIANTS.size()));
+            level.registryAccess().lookup(Registries.WOLF_VARIANT).flatMap(reg -> reg.get(randomVariant)).ifPresent(accessor::betterdogs$invokeSetVariant);
+            return;
         }
 
         // PRIORITY 3: Fallback resolution for un-mapped modded biomes or default Pale/Woods fallback.

@@ -168,6 +168,9 @@ public class BetterDogs implements ModInitializer {
         // Register Dog Riding Command Events
         net.vanillaoutsider.betterdogs.util.DogCommandManager.registerEvents();
 
+        // Register Expanded Biome Spawns (Plains, Savanna, Badlands, Meadow)
+        net.vanillaoutsider.betterdogs.world.BetterDogsSpawning.registerSpawns();
+
         LOGGER.info("Better Dogs initialized! Social Hive Mind active (DasikLibrary).");
     }
 }
