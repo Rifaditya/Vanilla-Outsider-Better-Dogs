@@ -25,7 +25,7 @@ public class BetterDogsJadePlugin implements IWailaPlugin {
 
     @Override
     public void register(IWailaCommonRegistration registration) {
-        registration.registerEntityDataProvider(InbredStatusProvider.INSTANCE, Wolf.class);
-        registration.registerEntityDataProvider(WolfInfoProvider.INSTANCE, Wolf.class);
+        registration.registerEntityDataProvider(InbredStatusDataProvider.INSTANCE, Wolf.class);
+        registration.registerEntityDataProvider(WolfInfoDataProvider.INSTANCE, Wolf.class);
     }
 }

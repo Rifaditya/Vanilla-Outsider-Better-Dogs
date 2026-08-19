@@ -1,5 +1,13 @@
 # Better Dogs History & Concept Changelog
 
+## [5.0.39+26.3] - 2026-08-19
+### Fixed
+- **Jade Provider Separation ("1 File, 1 Purpose")**:
+  - Separated client tooltip component providers (`InbredStatusProvider`, `WolfInfoProvider`) from server data sync providers (`InbredStatusDataProvider`, `WolfInfoDataProvider`).
+  - Restored 100% full compatibility across newer Jade releases (`Jade >= 26.2.11+`), older Jade releases, and standalone Fabric.
+
+## [5.0.38+26.3] - 2026-08-19 - ⚠️ Incompatible with Jade >= 26.2.11+ (Works on Jade < 26.2.10 or without Jade)
+
 ## [5.0.22+26.3] - 2026-08-11
 ### Refactored & Polished
 - **Minimal Tame Particle Polish (`WolfParticleHandler`)**: Refactored first-time tame particles into a clean ~5-6 particle Minimal Signature per personality (Aggressive: crimson dust + angry villager; Normal: golden dust + happy villager; Pacifist: mint dust + heart).

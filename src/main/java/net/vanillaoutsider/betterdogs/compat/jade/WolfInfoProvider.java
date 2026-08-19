@@ -8,13 +8,10 @@ import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.util.WolfInteractionHelper;
 import snownee.jade.api.EntityAccessor;
 import snownee.jade.api.IEntityComponentProvider;
-import snownee.jade.api.IServerDataProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
-import net.minecraft.nbt.CompoundTag;
-import net.vanillaoutsider.betterdogs.WolfPersistentData;
 
-public enum WolfInfoProvider implements IEntityComponentProvider, IServerDataProvider<EntityAccessor> {
+public enum WolfInfoProvider implements IEntityComponentProvider {
     INSTANCE;
 
     @Override
@@ -37,13 +34,6 @@ public enum WolfInfoProvider implements IEntityComponentProvider, IServerDataPro
                     }
                 }
             }
-        }
-    }
-
-    @Override
-    public void appendServerData(CompoundTag tag, EntityAccessor accessor) {
-        if (accessor.getEntity() instanceof Wolf wolf) {
-            tag.putBoolean("betterdogs:discovered_treat", WolfPersistentData.hasDiscoveredTreat(wolf));
         }
     }
 
