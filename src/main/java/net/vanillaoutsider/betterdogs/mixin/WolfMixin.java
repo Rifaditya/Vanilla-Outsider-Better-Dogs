@@ -39,6 +39,15 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     }
 
     @Unique
+    private static final net.minecraft.network.syncher.EntityDataAccessor<Float> BETTERDOGS$DATA_SOCIAL_SCALE =
+            net.minecraft.network.syncher.SynchedEntityData.defineId(Wolf.class, net.minecraft.network.syncher.EntityDataSerializers.FLOAT);
+
+    @Inject(method = "defineSynchedData", at = @At("TAIL"))
+    private void betterdogs$defineSynchedData(CallbackInfo ci) {
+        this.entityData.define(BETTERDOGS$DATA_SOCIAL_SCALE, 1.0f);
+    }
+
+    @Unique
     private WolfPersonality betterdogs$personality = null;
 
     @Unique
@@ -335,9 +344,24 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
 
     @Override
     public float betterdogs$getSocialScale() {
+        if (this.entityData != null) {
+            try {
+                float tracked = this.entityData.get(BETTERDOGS$DATA_SOCIAL_SCALE);
+                if (tracked > 0.0f) {
+                    return tracked;
+                }
+            } catch (Exception ignored) {
+            }
+        }
         if (this.betterdogs$socialScale <= 0.0f) {
             Wolf wolf = (Wolf) (Object) this;
             this.betterdogs$socialScale = net.vanillaoutsider.betterdogs.util.WolfScaleGeneticsHelper.generateWildWolfScale(wolf.getCommandSenderWorld(), wolf.getRandom());
+            if (this.entityData != null) {
+                try {
+                    this.entityData.set(BETTERDOGS$DATA_SOCIAL_SCALE, this.betterdogs$socialScale);
+                } catch (Exception ignored) {
+                }
+            }
         }
         return this.betterdogs$socialScale;
     }
@@ -345,6 +369,12 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     @Override
     public void betterdogs$setSocialScale(float scale) {
         this.betterdogs$socialScale = scale;
+        if (this.entityData != null) {
+            try {
+                this.entityData.set(BETTERDOGS$DATA_SOCIAL_SCALE, scale);
+            } catch (Exception ignored) {
+            }
+        }
     }
 
     @Override

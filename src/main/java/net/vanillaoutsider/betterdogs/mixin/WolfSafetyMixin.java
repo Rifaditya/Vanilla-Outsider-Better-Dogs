@@ -72,11 +72,9 @@ public abstract class WolfSafetyMixin {
         }
 
         Vec3 velocity = wolf.getDeltaMovement();
-        Vec3 lookaheadPos = wolf.position().add(velocity.scale(5.0));
-
-        int hazardX = Mth.floor(lookaheadPos.x);
-        int hazardY = Mth.floor(lookaheadPos.y);
-        int hazardZ = Mth.floor(lookaheadPos.z);
+        int hazardX = Mth.floor(wolf.getX() + velocity.x * 5.0);
+        int hazardY = Mth.floor(wolf.getY() + velocity.y * 5.0);
+        int hazardZ = Mth.floor(wolf.getZ() + velocity.z * 5.0);
 
         boolean solidGround = false;
         for (int i = 0; i <= 3; i++) {

@@ -1,10 +1,17 @@
 {
   "entity.wolf.howl": {
-    "category": "neutral",
+    "subtitle": "subtitles.betterdogs.entity.wolf.howl",
     "sounds": [
-      "betterdogs:entity/wolf/howl1",
-      "betterdogs:entity/wolf/howl2"
-    ],
-    "subtitle": "subtitles.betterdogs.entity.wolf.howl"
+      {
+        "name": "minecraft:mob/wolf/whine",
+        "pitch": 0.8,
+        "volume": 0.9
+      },
+      {
+        "name": "minecraft:mob/wolf/growl",
+        "pitch": 0.7,
+        "volume": 0.85
+      }
+    ]
   }
 }
