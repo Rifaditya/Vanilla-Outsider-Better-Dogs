@@ -67,4 +67,44 @@ public final class WolfParticleHelper {
             );
         }
     }
+
+    /**
+     * Calculates the scaled subtle particle count (NONE: 0, LOW: 1, MEDIUM/HIGH: 2).
+     */
+    public static int getSubtleCount(Level level) {
+        ParticleDensity current = getDensity(level);
+        return switch (current) {
+            case NONE -> 0;
+            case LOW -> 1;
+            default -> 2;
+        };
+    }
+
+    /**
+     * Spawns subtle particles at the wolf's location scaled by the density GameRule.
+     */
+    public static void spawnSubtleParticles(Wolf wolf, ParticleOptions particle, double yOffset, double xOffset, double ySpread, double zSpread, double speed) {
+        if (wolf == null || wolf.level() == null || wolf.level().isClientSide()) {
+            return;
+        }
+
+        int count = getSubtleCount(wolf.level());
+        if (count <= 0) {
+            return;
+        }
+
+        if (wolf.level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(
+                    particle,
+                    wolf.getX(),
+                    wolf.getY() + yOffset,
+                    wolf.getZ(),
+                    count,
+                    xOffset,
+                    ySpread,
+                    zSpread,
+                    speed
+            );
+        }
+    }
 }

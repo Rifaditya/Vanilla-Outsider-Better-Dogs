@@ -237,8 +237,10 @@ public final class DogTreatHelper {
 
         // 6. Visual Particles
         if (wolf.level() instanceof ServerLevel serverLevel) {
-            serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, wolf.getRandomX(1.0), wolf.getRandomY() + 0.5, wolf.getRandomZ(1.0), 10, 0.2, 0.2, 0.2, 0.05);
-            serverLevel.sendParticles(ParticleTypes.HEART, wolf.getRandomX(1.0), wolf.getRandomY() + 0.5, wolf.getRandomZ(1.0), 5, 0.2, 0.2, 0.2, 0.05);
+            WolfParticleHelper.spawnSubtleParticles(wolf, ParticleTypes.HAPPY_VILLAGER, 0.5D, 0.15D, 0.15D, 0.15D, 0.02D);
+            if (WolfParticleHelper.getDensity(wolf.level()) != ParticleDensity.NONE) {
+                serverLevel.sendParticles(ParticleTypes.HEART, wolf.getX(), wolf.getY() + 0.5D, wolf.getZ(), 1, 0.15D, 0.15D, 0.15D, 0.02D);
+            }
         }
 
         return InteractionResult.SUCCESS;

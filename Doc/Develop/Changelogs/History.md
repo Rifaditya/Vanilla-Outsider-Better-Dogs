@@ -1,5 +1,46 @@
 # Better Dogs History & Concept Changelog
 
+## [4.24.57+26.2] - 2026-08-22
+### Added
+- **Hoover / Ground Food Scavenger Quirk (`WolfDispositionHelper.java`, `WolfScavengeHelper.java`, `EatGroundFoodGoal.java`)**:
+  - Implemented the Hoover behavioral quirk where dogs eagerly scavenge dropped food items from the ground even when at $100\%$ full health.
+  - **Base Personality Rates**: Aggressive ($70\%$), Normal ($35\%$), Pacifist ($10\%$) with $[-100\%, +100\%]$ UUID variance offset.
+  - **Digestion Cooldown**: Enforced a $160\text{ ticks}$ ($8\text{ seconds}$) cooldown between ground food snacks at full health to prevent vacuuming item stacks.
+  - **Posture Safety**: Fully respects sitting commands (`isOrderedToSit()`); seated dogs will never break posture.
+
+## [4.24.56+26.2] - 2026-08-22
+### Changed
+- **Full-Spectrum [-100%, +100%] UUID Behavioral Variance (`WolfDispositionHelper.java`)**:
+  - Expanded individual dog UUID offset range to $[-100\%, +100\%]$ (clamped to $[0\%, 100\%]$).
+  - Applied base personality values:
+    - **Fetch Reluctance**: Aggressive ($10\%$), Normal ($30\%$), Pacifist ($60\%$).
+    - **Storm Fearlessness**: Aggressive ($80\%$), Normal ($40\%$), Pacifist ($10\%$).
+    - **Quiet Howling**: Aggressive ($10\%$), Normal ($25\%$), Pacifist ($60\%$).
+
+## [4.24.55+26.2] - 2026-08-22
+### Changed
+- **Additive Modifier Behavioral Quirk Model (`WolfDispositionHelper.java`)**:
+  - Implemented additive modifier variance model with wide personality spread:
+    - **Fetch Reluctance**: Aggressive ($0\text{--}5\%$), Normal ($3\text{--}18\%$), Pacifist ($15\text{--}45\%$).
+    - **Storm Fearlessness**: Aggressive ($90\text{--}100\%$), Normal ($10\text{--}35\%$), Pacifist ($0\text{--}15\%$).
+    - **Quiet Howling**: Aggressive ($0\text{--}10\%$), Normal ($5\text{--}30\%$), Pacifist ($25\text{--}65\%$).
+  - Combined personality baseline percentages with deterministic UUID offsets ($\pm 10\%$ to $\pm 20\%$).
+
+## [4.24.54+26.2] - 2026-08-22
+### Added
+- **Personality + UUID Seeded Behavioral Variance (`WolfDispositionHelper.java`)**:
+  - Deterministically seeded individual behavioral nuances using 64-bit bit-mixing hashing over `UUID` + `WolfPersonality` + behavior salt (zero NBT storage).
+  - ~5% of dogs are organically reluctant to fetch sticks; non-fetchers either curiously tilt their heads (`setIsInterested(true)`) or naturally ignore nearby thrown sticks.
+  - ~10% of dogs are naturally fearless during thunderstorms, bypassing storm panic and whimpering.
+  - ~15% of dogs are quiet observers who refrain from participating in nocturnal group howling choruses.
+
+## [4.24.53+26.2] - 2026-08-22
+### Changed
+- **Subtle Particle Feedback for Fetch, Gifts & Treat Feeding (`WolfFetchHelper`, `WolfGiftHelper`, `DogTreatHelper`, `WolfParticleHelper`)**:
+  - Integrated `WolfParticleHelper.spawnSubtleParticles` to scale subtle cues with `bd_particle_density` GameRule (`NONE`: 0, `LOW`: 1, `MEDIUM`/`HIGH`: 2).
+  - Reduced stick fetch and morning gift particles to 2 subtle emerald glints (`0.15` spread, `0.02` speed).
+  - Softened favorite treat feeding visual feedback to 2 happy villager + 1 heart particle.
+
 ## [4.24.37+26.2] - 2026-08-19
 ### Fixed
 - **Jade Provider Separation ("1 File, 1 Purpose")**:

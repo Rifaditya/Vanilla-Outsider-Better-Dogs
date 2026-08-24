@@ -7,17 +7,19 @@ import java.util.List;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.vanillaoutsider.betterdogs.util.WolfDispositionHelper;
 import net.vanillaoutsider.betterdogs.util.WolfScavengeHelper;
 
 /**
- * AI Goal for wolves to pick up and eat food items from the ground.
- * Wild wolves eat to heal. Tamed dogs also eat if enabled by gamerules.
+ * AI Goal for wolves to pick up and eat food items from the ground to heal or satisfy the Hoover quirk.
+ * Wild wolves eat to heal. Tamed dogs also eat if enabled by gamerules or possessing the Hoover quirk.
  */
 public class EatGroundFoodGoal extends Goal {
 
     private final Wolf wolf;
     private ItemEntity targetFood;
     private int checkCooldown = 0;
+    private int digestionCooldown = 0;
 
     private static final double SEARCH_RANGE = 10.0;
     private static final double PICKUP_RANGE = 1.5;
@@ -29,13 +31,24 @@ public class EatGroundFoodGoal extends Goal {
 
     @Override
     public boolean canUse() {
+        if (this.digestionCooldown > 0) {
+            this.digestionCooldown--;
+        }
+
         if (this.checkCooldown > 0) {
             this.checkCooldown--;
             return false;
         }
         this.checkCooldown = 10 + wolf.getRandom().nextInt(11); // Cooldown of 10-20 ticks
 
-        if (!WolfScavengeHelper.canScavenge(this.wolf)) {
+        boolean isHurt = wolf.getHealth() < wolf.getMaxHealth();
+        boolean isHoover = WolfDispositionHelper.isHooverScavenger(wolf);
+
+        if (!isHurt && (!isHoover || this.digestionCooldown > 0)) {
+            return false;
+        }
+
+        if (!WolfScavengeHelper.canScavenge(this.wolf, isHoover)) {
             return false;
         }
 
@@ -84,6 +97,7 @@ public class EatGroundFoodGoal extends Goal {
         // Check if close enough to eat
         if (wolf.distanceTo(targetFood) <= PICKUP_RANGE * 1.5) {
             WolfScavengeHelper.consumeGroundFood(wolf, targetFood);
+            this.digestionCooldown = 160;
             targetFood = null;
         } else {
             // Keep moving toward food
@@ -100,8 +114,8 @@ public class EatGroundFoodGoal extends Goal {
         if (!targetFood.isAlive())
             return false;
 
-        // Stop if fully healed or sitting
-        if (wolf.getHealth() >= wolf.getMaxHealth())
+        // Stop if fully healed unless dog has Hoover quirk
+        if (wolf.getHealth() >= wolf.getMaxHealth() && !WolfDispositionHelper.isHooverScavenger(wolf))
             return false;
 
         if (wolf.isTame() && wolf.isInSittingPose())
