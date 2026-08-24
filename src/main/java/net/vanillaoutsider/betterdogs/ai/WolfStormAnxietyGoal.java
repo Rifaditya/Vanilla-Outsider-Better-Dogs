@@ -10,6 +10,7 @@ import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.phys.Vec3;
 import net.vanillaoutsider.betterdogs.mixin.WolfAccessor;
+import net.vanillaoutsider.betterdogs.util.WolfDispositionHelper;
 import net.vanillaoutsider.betterdogs.util.WolfStormHelper;
 
 import java.util.EnumSet;
@@ -29,6 +30,9 @@ public class WolfStormAnxietyGoal extends Goal {
     @Override
     public boolean canUse() {
         if (!WolfStormHelper.isStormAnxietyActive(this.wolf)) {
+            return false;
+        }
+        if (WolfDispositionHelper.isStormFearless(this.wolf)) {
             return false;
         }
         float multiplier = WolfStormHelper.getPersonalityMultiplier(this.wolf);

@@ -10,6 +10,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
+import net.vanillaoutsider.betterdogs.util.WolfDispositionHelper;
 import net.vanillaoutsider.betterdogs.util.WolfFetchHelper;
 
 /**
@@ -54,7 +55,17 @@ public class WolfFetchGoal extends Goal {
 
         int range = BetterDogsGameRules.getFetchRange(this.wolf.level());
         this.targetItem = WolfFetchHelper.findNearbyDroppedFetchItem(this.wolf, range);
-        return this.targetItem != null;
+        if (this.targetItem != null) {
+            if (!WolfDispositionHelper.shouldFetch(this.wolf)) {
+                if (WolfDispositionHelper.shouldHeadTiltOnIgnoredStick(this.wolf)) {
+                    this.wolf.getLookControl().setLookAt(this.targetItem, 30.0F, 30.0F);
+                    this.wolf.setIsInterested(true);
+                }
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override

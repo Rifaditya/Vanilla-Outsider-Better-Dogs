@@ -52,6 +52,10 @@ public final class WolfHowlHelper {
             return false;
         }
 
+        if (WolfDispositionHelper.isQuietHowler(wolf)) {
+            return false;
+        }
+
         if (wolf instanceof WolfExtensions ext) {
             if (ext.betterdogs$isGuardMode() || ext.betterdogs$isSittingManually()) {
                 return false;
