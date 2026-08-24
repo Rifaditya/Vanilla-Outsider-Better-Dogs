@@ -1,4 +1,4 @@
-# Version Compatibility & Lifecycle Policy
+﻿# Version Compatibility & Lifecycle Policy
 
 *[[Home]] / Version Compatibility*
 
@@ -10,12 +10,12 @@
 
 | Minecraft Version | Mod Release Tag | Java Version | Loom & Tooling | Support Status | Target Guide |
 | :--- | :--- | :---: | :--- | :---: | :--- |
-| **MC 1.20.1** | `1.0.70+1.20.1` | Java 17 | Loom 1.10.2 / Mojang Mappings | 🟢 Active Release | [[MC 1.20.1 Guide|Minecraft-1.20.1-Guide]] |
-| **MC 1.21.1** | `1.0.70+1.21.1` | Java 21 | Loom 1.10.2 / Mojang Mappings | 🟢 Active Release | [[MC 1.21.1 Guide|Minecraft-1.21.1-Guide]] |
-| **MC 1.21.11** | `1.0.73+1.21.11` | Java 21 | Loom-Remap 1.15-SNAPSHOT | 🟢 Active Release | [[MC 1.21.11 Guide|Minecraft-1.21.11-Guide]] |
-| **MC 26.1.2** | `4.24.1+26.1.2` | Java 25 | Loom 1.15+ / Gradle 9.3+ | 🟢 Active Release | [[MC 26.1.2 Guide|Minecraft-26.1.2-Guide]] |
-| **MC 26.2** | `4.24.8+26.2` | Java 25 | Loom 1.15+ / Gradle 9.3+ | 🟢 Primary Target | [[MC 26.2 Guide|Minecraft-26.2-Guide]] |
-| **MC 26.3** | `4.24.8+26.3` | Java 25 | Loom 1.15+ / Gradle 9.3+ | 🟢 Snapshot Build | [[MC 26.3 Guide|Minecraft-26.3-Guide]] |
+| **MC 1.20.1** | `1.0.70+1.20.1` | Java 17 | Loom 1.10.2 / Mojang Mappings | 🟢 Active Release | [[MC 1.20.1 Guide\|Minecraft-1.20.1-Guide]] |
+| **MC 1.21.1** | `1.0.70+1.21.1` | Java 21 | Loom 1.10.2 / Mojang Mappings | 🟢 Active Release | [[MC 1.21.1 Guide\|Minecraft-1.21.1-Guide]] |
+| **MC 1.21.11** | `1.0.73+1.21.11` | Java 21 | Loom-Remap 1.15-SNAPSHOT | 🟢 Active Release | [[MC 1.21.11 Guide\|Minecraft-1.21.11-Guide]] |
+| **MC 26.1.2** | `4.24.1+26.1.2` | Java 25 | Loom 1.15+ / Gradle 9.3+ | 🟢 Active Release | [[MC 26.1.2 Guide\|Minecraft-26.1.2-Guide]] |
+| **MC 26.2** | `4.24.8+26.2` | Java 25 | Loom 1.15+ / Gradle 9.3+ | 🟢 Primary Target | [[MC 26.2 Guide\|Minecraft-26.2-Guide]] |
+| **MC 26.3** | `4.24.8+26.3` | Java 25 | Loom 1.15+ / Gradle 9.3+ | 🟢 Snapshot Build | [[MC 26.3 Guide\|Minecraft-26.3-Guide]] |
 
 ---
 

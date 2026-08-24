@@ -185,14 +185,14 @@ public final class WolfGiftHelper {
                     1.0F,
                     1.2F
             );
-            WolfParticleHelper.spawnParticles(
+            WolfParticleHelper.spawnSubtleParticles(
                     wolf,
                     ParticleTypes.HAPPY_VILLAGER,
                     0.5D,
-                    0.3D,
-                    0.3D,
-                    0.3D,
-                    0.05D
+                    0.15D,
+                    0.15D,
+                    0.15D,
+                    0.02D
             );
         }
     }

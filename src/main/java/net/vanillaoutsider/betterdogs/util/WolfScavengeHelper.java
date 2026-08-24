@@ -89,11 +89,18 @@ public final class WolfScavengeHelper {
      * Checks if a wolf is eligible to scavenge ground food.
      */
     public static boolean canScavenge(Wolf wolf) {
+        return canScavenge(wolf, false);
+    }
+
+    /**
+     * Checks if a wolf is eligible to scavenge ground food, taking Hoover trait into account.
+     */
+    public static boolean canScavenge(Wolf wolf, boolean isHoover) {
         if (wolf == null || !wolf.isAlive()) {
             return false;
         }
 
-        if (wolf.getHealth() >= wolf.getMaxHealth()) {
+        if (wolf.getHealth() >= wolf.getMaxHealth() && !isHoover) {
             return false;
         }
 

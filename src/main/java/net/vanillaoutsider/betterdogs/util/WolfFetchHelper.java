@@ -111,13 +111,15 @@ public final class WolfFetchHelper {
         } catch (Exception ignored) {
         }
 
-        if (level instanceof ServerLevel serverLevel) {
-            serverLevel.sendParticles(
-                    ParticleTypes.HAPPY_VILLAGER,
-                    wolf.getX(), wolf.getY() + 0.5, wolf.getZ(),
-                    6, 0.2, 0.2, 0.2, 0.05
-            );
-        }
+        WolfParticleHelper.spawnSubtleParticles(
+                wolf,
+                ParticleTypes.HAPPY_VILLAGER,
+                0.5D,
+                0.15D,
+                0.15D,
+                0.15D,
+                0.02D
+        );
 
         String dogName = wolf.hasCustomName() ? wolf.getCustomName().getString() : "Dog";
         owner.sendOverlayMessage(Component.literal("§6Fetch: §a" + dogName + " brought back your " + deliveredStack.getHoverName().getString() + "!"));
