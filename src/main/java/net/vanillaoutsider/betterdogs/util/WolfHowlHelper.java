@@ -17,7 +17,7 @@ public class WolfHowlHelper {
         if (initiator == null) {
             return;
         }
-        Level level = initiator.getCommandSenderWorld();
+        Level level = initiator.level();
         if (level == null || level.isClientSide()) {
             return;
         }
@@ -33,6 +33,7 @@ public class WolfHowlHelper {
         for (Wolf packWolf : nearbyWolves) {
             if (packWolf instanceof WolfExtensions ext && ext.betterdogs$getHowlingTicks() <= 0) {
                 int delay = 10 + packWolf.getRandom().nextInt(25);
+                float harmonicPitch = 0.85F + packWolf.getRandom().nextFloat() * 0.35F;
                 ext.betterdogs$setHowlingTicks(60 + delay);
             }
         }
@@ -50,7 +51,7 @@ public class WolfHowlHelper {
         if (wolf == null) {
             return;
         }
-        Level level = wolf.getCommandSenderWorld();
+        Level level = wolf.level();
         if (level == null || level.isClientSide()) {
             return;
         }
@@ -59,6 +60,6 @@ public class WolfHowlHelper {
             ext.betterdogs$setHowlingTicks(60);
         }
 
-        level.playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), SoundEvents.WOLF_HOWL, SoundSource.NEUTRAL, 1.2F, pitch);
+        level.playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), net.vanillaoutsider.betterdogs.registry.BetterDogsSoundEvents.WOLF_HOWL, SoundSource.NEUTRAL, 1.2F, pitch);
     }
 }

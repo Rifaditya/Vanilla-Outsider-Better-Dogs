@@ -81,5 +81,15 @@ public class WolfPersonalityStatHelper {
         if (speedAttr != null) {
             speedAttr.setBaseValue(targetSpeed);
         }
+
+        if (wolf instanceof net.vanillaoutsider.betterdogs.WolfExtensions ext) {
+            AttributeInstance scaleAttr = wolf.getAttribute(Attributes.SCALE);
+            if (scaleAttr != null) {
+                float socialScale = ext.betterdogs$getSocialScale();
+                if (socialScale > 0.0f) {
+                    scaleAttr.setBaseValue(socialScale);
+                }
+            }
+        }
     }
 }

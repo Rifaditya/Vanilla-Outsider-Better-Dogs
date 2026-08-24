@@ -1,5 +1,114 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.1)
 
+## [1.0.75+1.21.1] - 2026-08-22
+### Added
+- 🍖 **Hoover / Ground Food Scavenger Quirk (`WolfDispositionHelper.java` & `EatGroundFoodGoal.java`)**:
+  - Implemented the Hoover behavioral quirk where dogs eagerly scavenge dropped food items from the ground even when at $100\%$ full health.
+  - **Base Personality Rates**: Aggressive ($70\%$), Normal ($35\%$), Pacifist ($10\%$) with $[-100\%, +100\%]$ UUID variance offset.
+  - **Digestion Cooldown**: Enforced a $160\text{ ticks}$ ($8\text{ seconds}$) cooldown between ground food snacks at full health to prevent vacuuming item stacks.
+  - **Posture Safety**: Fully respects sitting commands (`isOrderedToSit()`); seated dogs will never break posture.
+
+## [1.0.74+1.21.1] - 2026-08-22
+### Changed
+- 🧬 **Full-Spectrum [-100%, +100%] UUID Behavioral Variance (`WolfDispositionHelper.java`)**:
+  - Expanded individual dog UUID offset range to $[-100\%, +100\%]$ (clamped to $[0\%, 100\%]$).
+  - Applied base personality values:
+    - **Fetch Reluctance**: Aggressive ($10\%$), Normal ($30\%$), Pacifist ($60\%$).
+    - **Storm Fearlessness**: Aggressive ($80\%$), Normal ($40\%$), Pacifist ($10\%$).
+    - **Quiet Howling**: Aggressive ($10\%$), Normal ($25\%$), Pacifist ($60\%$).
+
+## [1.0.73+1.21.1] - 2026-08-22
+### Changed
+- 🧬 **Additive Modifier Behavioral Quirk Model (`WolfDispositionHelper.java`)**:
+  - Implemented additive modifier variance model with wide personality spread:
+    - **Fetch Reluctance**: Aggressive ($0\text{--}5\%$), Normal ($3\text{--}18\%$), Pacifist ($15\text{--}45\%$).
+    - **Storm Fearlessness**: Aggressive ($90\text{--}100\%$), Normal ($10\text{--}35\%$), Pacifist ($0\text{--}15\%$).
+    - **Quiet Howling**: Aggressive ($0\text{--}10\%$), Normal ($5\text{--}30\%$), Pacifist ($25\text{--}65\%$).
+  - Combined personality baseline percentages with deterministic UUID offsets ($\pm 10\%$ to $\pm 20\%$).
+
+## [1.0.72+1.21.1] - 2026-08-22
+### Added
+- 🧬 **Personality + UUID Seeded Behavioral Variance (`WolfDispositionHelper.java`)**:
+  - Deterministically seeded individual behavioral nuances using 64-bit bit-mixing hashing over `UUID` + `WolfPersonality` + behavior salt (zero NBT storage).
+  - ~5% of dogs are organically reluctant to fetch sticks; non-fetchers either curiously tilt their heads (`setIsInterested(true)`) or naturally ignore nearby thrown sticks.
+  - ~10% of dogs are naturally fearless during thunderstorms, bypassing storm panic and whimpering.
+  - ~15% of dogs are quiet observers who refrain from participating in nocturnal group howling choruses.
+
+## [1.0.71+1.21.1] - 2026-08-22
+### Changed
+- ✨ **Subtle Particle Feedback for Fetch & Gift Delivery (`WolfFetchHelper.java`, `WolfGiftHelper.java`)**:
+  - Reduced excessive happy villager particle burst when dogs return fetched sticks from 6 to a subtle 2 particles with tight spread (`0.15`) and gentle velocity (`0.02`).
+  - Reduced morning scavenged gift delivery particle burst from 8 to 2 subtle particles, adhering to Vanilla Outsider aesthetic standards.
+
+## [1.0.70+1.21.1] - 2026-08-18
+### Fixed
+- 🖼️ **Mod Icon Asset Restoration**:
+  - Restored `assets/vanilla-outsider-better-dogs/icon.png` and mirrored it to `assets/betterdogs/icon.png`, resolving the blank default cube icon issue in Fabric Loader and Modrinth launcher.
+
+## [1.0.69+1.21.1] - 2026-08-18 [YANKED - MISSING MOD ICON]
+### Removed
+- 🧹 **Obsolete Asset Namespace Cleanup**:
+  - Purged legacy `assets/vanilla-outsider-better-dogs/` folder to optimize JAR distribution size and eliminate asset duplication.
+  - Normalized `assets/betterdogs/lang/en_us.json` to clean 2-space indentation.
+
+## [1.0.68+1.21.1] - 2026-08-18
+### Changed
+- ⚡ **Hot-Path Zero-Allocation Optimizations (`WolfSafetyMixin.java`, `WolfGuardGoal.java`)**:
+  - Replaced intermediate `Vec3` lookahead allocations with direct primitive coordinate math (`Mth.floor`) in cliff safety loops.
+  - Replaced `new AABB(guardPos).inflate(4.0)` with direct coordinate `AABB` instantiation in the Pacifist guard soothing aura loop.
+
+## [1.0.67+1.21.1] - 2026-08-18
+### Added
+- 🥩 **Autonomous Ground Feeding Merit Tracking & Advancement (`EatGroundFoodGoal.java`)**:
+  - Pre-filtered disliked/refused food items during ground food entity search scans.
+  - Tracked feeding count (`feedCount`) on dogs consuming dropped food from the ground.
+  - Added treat affinity rolling, zoomies trigger (120 ticks), and advancement dispatch (`favorite_treat`, `zoomies`) to the dog's online owner upon eating dropped favorite treats.
+
+## [1.0.66+1.21.1] - 2026-08-18
+### Fixed
+- 📜 **Adoption Flow Polish & 6D Interaction Guarding (`WolfAdoptionHelper.java`, `WolfInteractMixin.java`)**:
+  - Enforced strict `InteractionHand.MAIN_HAND` debounce across all adoption validation predicates and interaction handlers.
+  - Required `Shift + Right-Click` with Paper for cancelling adoption listings, preventing empty-handed shift-click petting from accidentally cancelling adoption status.
+
+## [1.0.65+1.21.1] - 2026-08-18
+### Added
+- 🐺 **Harmonic Chorus Howl Audio Polish (`WolfHowlHelper.java`)**:
+  - Implemented randomized harmonic pitch variations ($0.85\text{F}$ to $1.20\text{F}$) for cascading pack chorus howls.
+
+## [1.0.64+1.21.1] - 2026-08-17
+### Fixed
+- 🛡️ **Aggressive Target Goal Creeper Suicide Prevention (`AggressiveTargetGoal.java`)**:
+  - Bound target predicate in constructor to filter out Creepers (suicide prevention) and Ghasts (unreachable flight) before target evaluation.
+  - Tethered aggressive monster engagement within the owner's detection radius (`bd_aggro_detect_range`, default 16 blocks).
+
+## [1.0.63+1.21.1] - 2026-08-17
+### Fixed
+- 🐾 **Post-Taming Personality Stat Re-Application (`TamableAnimalMixin.java`, `WolfAdoptionHelper.java`)**:
+  - Prevented vanilla tame health reset from clobbering personality attributes (`MAX_HEALTH`, `ATTACK_DAMAGE`, `MOVEMENT_SPEED`, `SCALE`) upon taming.
+  - Fully restored newly tamed dog health to 100% of its personality max health upon successful taming.
+  - Enhanced adoption flow to re-apply personality stats and automatically un-sit the dog (`wolf.setOrderedToSit(false)`).
+
+## [1.0.62+1.21.1] - 2026-08-17
+### Added
+- 📐 **Visual Entity Scaling Synchronization (`WolfPersonalityStatHelper.java`, `WolfMixin.java`)**:
+  - Bound genetic physical scale directly to vanilla `Attributes.SCALE`, seamlessly syncing hitbox and visual model rendering on 1.21.1.
+
+## [1.0.61+1.21.1] - 2026-08-17
+### Fixed
+- 🐕 **Multi-Puppy Litter Spawning & Co-Parent Inheritance Fix (`WolfLitterHelper.java`, `CommandSuggestionsHelper.java`)**:
+  - Fixed coordinate calculation for extra litter siblings (puppies 2–4): siblings now spawn in a safe $\pm 0.4$-block cluster adjacent to `parentA` rather than $(0, 0, 0)$ in the void.
+  - Implemented 50/50 co-parent collar color inheritance: extra puppies roll a 50% chance to inherit Parent A's collar dye and 50% chance to inherit Parent B's collar dye.
+  - Linked wild puppy pack hierarchy: untamed puppies seamlessly inherit their mother's pack leader UUID upon birth.
+  - Cleaned up wildcard imports in `CommandSuggestionsHelper.java`.
+
+## [1.0.60+1.21.1] - 2026-08-17
+### Fixed
+- 🐾 **Petting & Guard Mode Interaction Disentanglement (`WolfGuardHelper.java`, `WolfPettingHelper.java`, `WolfInteractMixin.java`)**:
+  - Re-mapped Guard Mode sentinel post toggling to strictly require holding a **Bone** (`Items.BONE`) while sneaking, consuming 1 Bone per toggle (with creative bypass).
+  - Activating Guard Mode now automatically un-sits the dog (`wolf.setOrderedToSit(false)`) so it immediately begins its designated territory patrol.
+  - Shift + Right-Click with an **Empty Hand** is now exclusively reserved for intimate human-canine interactions (petting, clearing anger, soothing thunderstorm anxiety).
+  - Added a 20-tick (1-second) anti-spam debounce on petting to prevent audio and particle spam when holding right-click.
+
 ## [1.0.59+1.21.1] - 2026-08-16
 ### Added
 - 🌍 **Expanded Biome Spawning & Dynamic Climate Variants (`BetterDogsSpawning.java`, `WolfCoatVariantHelper.java`)**:

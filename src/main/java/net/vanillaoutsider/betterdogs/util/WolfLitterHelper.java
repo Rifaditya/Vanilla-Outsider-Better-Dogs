@@ -45,11 +45,12 @@ public class WolfLitterHelper {
     }
 
     public static void spawnExtraPuppies(ServerLevel level, Wolf parentA, AgeableMob otherParent, Wolf primaryChild) {
-        if (level == null || parentA == null || primaryChild == null) {
+        if (level == null || parentA == null) {
             return;
         }
 
-        int litterSize = determineLitterSize(level, primaryChild.getRandom());
+        RandomSource random = primaryChild != null ? primaryChild.getRandom() : parentA.getRandom();
+        int litterSize = determineLitterSize(level, random);
         if (litterSize <= 1) {
             return;
         }
@@ -60,21 +61,33 @@ public class WolfLitterHelper {
         float scaleA = parentA instanceof WolfExtensions extA ? extA.betterdogs$getSocialScale() : 1.0f;
         float scaleB = otherParent instanceof WolfExtensions extB ? extB.betterdogs$getSocialScale() : 1.0f;
 
+        Wolf wolfParentB = otherParent instanceof Wolf w ? w : null;
+
         for (int i = 1; i < litterSize; i++) {
             Wolf sibling = EntityType.WOLF.create(level);
             if (sibling != null) {
                 double offsetX = (sibling.getRandom().nextDouble() - 0.5) * 0.8;
                 double offsetZ = (sibling.getRandom().nextDouble() - 0.5) * 0.8;
-                sibling.moveTo(primaryChild.getX() + offsetX, primaryChild.getY(), primaryChild.getZ() + offsetZ, primaryChild.getYRot(), primaryChild.getXRot());
+                sibling.moveTo(parentA.getX() + offsetX, parentA.getY(), parentA.getZ() + offsetZ, parentA.getYRot(), parentA.getXRot());
                 sibling.setAge(-24000);
 
-                if (primaryChild.isTame()) {
+                if (parentA.isTame()) {
                     sibling.setTame(true, true);
-                    sibling.setOwnerUUID(primaryChild.getOwnerUUID());
+                    sibling.setOwnerUUID(parentA.getOwnerUUID());
+                } else if (parentA instanceof WolfExtensions pExtA) {
+                    if (sibling instanceof WolfExtensions sExt) {
+                        sExt.betterdogs$setLeaderUUID(pExtA.betterdogs$getLeaderUUID());
+                    }
                 }
 
                 if (sibling instanceof WolfExtensions siblingExt) {
-                    siblingExt.betterdogs$setCollarColor(parentA.getCollarColor());
+                    if (parentA.isTame()) {
+                        if (wolfParentB != null && wolfParentB.isTame() && sibling.getRandom().nextBoolean()) {
+                            siblingExt.betterdogs$setCollarColor(wolfParentB.getCollarColor());
+                        } else {
+                            siblingExt.betterdogs$setCollarColor(parentA.getCollarColor());
+                        }
+                    }
                     WolfPersonality inheritedP = WolfGeneticsHelper.calculateOffspringPersonality(level, personalityA, personalityB, sibling.getRandom());
                     float inheritedS = WolfScaleGeneticsHelper.calculateOffspringScale(level, scaleA, scaleB, sibling.getRandom());
                     siblingExt.betterdogs$setPersonality(inheritedP);
@@ -83,7 +96,7 @@ public class WolfLitterHelper {
                         WolfAdvancementHelper.grantAdvancement(player, "giant_lineage");
                     }
                     WolfInbreedingHelper.applyInbreeding(sibling, parentA, otherParent);
-                    if (otherParent instanceof Wolf wolfParentB) {
+                    if (wolfParentB != null) {
                         WolfCoatVariantHelper.assignPuppyVariant(sibling, parentA, wolfParentB);
                     }
                 }
