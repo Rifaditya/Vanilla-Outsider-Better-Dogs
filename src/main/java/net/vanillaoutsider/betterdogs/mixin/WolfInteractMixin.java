@@ -66,14 +66,14 @@ public abstract class WolfInteractMixin {
             }
         }
 
-        InteractionResult adoptionResult = net.vanillaoutsider.betterdogs.util.WolfAdoptionHelper.tryHandleAdoption(wolf, player, itemInHand);
+        InteractionResult adoptionResult = net.vanillaoutsider.betterdogs.util.WolfAdoptionHelper.tryHandleAdoption(wolf, player, hand, itemInHand);
         if (adoptionResult.consumesAction()) {
             cir.setReturnValue(adoptionResult);
             return;
         }
 
         if (net.vanillaoutsider.betterdogs.util.WolfGuardHelper.canToggleGuard(wolf, player, itemInHand)) {
-            InteractionResult result = net.vanillaoutsider.betterdogs.util.WolfGuardHelper.toggleGuardMode(wolf, player);
+            InteractionResult result = net.vanillaoutsider.betterdogs.util.WolfGuardHelper.toggleGuardMode(wolf, player, itemInHand);
             if (result.consumesAction()) {
                 cir.setReturnValue(result);
                 return;

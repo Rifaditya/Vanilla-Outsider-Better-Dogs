@@ -33,6 +33,7 @@ public class WolfHowlHelper {
         for (Wolf packWolf : nearbyWolves) {
             if (packWolf instanceof WolfExtensions ext && ext.betterdogs$getHowlingTicks() <= 0) {
                 int delay = 10 + packWolf.getRandom().nextInt(25);
+                float harmonicPitch = 0.85F + packWolf.getRandom().nextFloat() * 0.35F;
                 ext.betterdogs$setHowlingTicks(60 + delay);
             }
         }
@@ -59,6 +60,6 @@ public class WolfHowlHelper {
             ext.betterdogs$setHowlingTicks(60);
         }
 
-        level.playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), SoundEvents.WOLF_SHAKE, SoundSource.NEUTRAL, 1.2F, pitch * 0.8F);
+        level.playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), net.vanillaoutsider.betterdogs.registry.BetterDogsSoundEvents.WOLF_HOWL, SoundSource.NEUTRAL, 1.2F, pitch);
     }
 }

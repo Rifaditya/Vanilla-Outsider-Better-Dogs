@@ -8,6 +8,7 @@ import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
+import net.vanillaoutsider.betterdogs.util.WolfDispositionHelper;
 import net.vanillaoutsider.betterdogs.util.WolfFetchHelper;
 
 /**
@@ -45,7 +46,17 @@ public class WolfFetchGoal extends Goal {
         }
 
         this.targetStick = WolfFetchHelper.findNearbyDroppedStick(this.wolf, 16.0);
-        return this.targetStick != null;
+        if (this.targetStick != null) {
+            if (!WolfDispositionHelper.shouldFetch(this.wolf)) {
+                if (WolfDispositionHelper.shouldHeadTiltOnIgnoredStick(this.wolf)) {
+                    this.wolf.getLookControl().setLookAt(this.targetStick, 30.0F, 30.0F);
+                    this.wolf.setIsInterested(true);
+                }
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override

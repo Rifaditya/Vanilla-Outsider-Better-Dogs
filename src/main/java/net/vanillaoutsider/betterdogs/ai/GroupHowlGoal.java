@@ -6,6 +6,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.level.Level;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
+import net.vanillaoutsider.betterdogs.util.WolfDispositionHelper;
 import net.vanillaoutsider.betterdogs.util.WolfHowlHelper;
 
 /**
@@ -24,6 +25,9 @@ public class GroupHowlGoal extends Goal {
     @Override
     public boolean canUse() {
         if (this.wolf.isBaby() || this.wolf.isOrderedToSit() || this.wolf.getTarget() != null) {
+            return false;
+        }
+        if (WolfDispositionHelper.isQuietHowler(this.wolf)) {
             return false;
         }
         if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$isGuarding()) {

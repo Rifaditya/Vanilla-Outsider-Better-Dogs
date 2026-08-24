@@ -103,7 +103,8 @@ public class WolfGuardGoal extends Goal {
             return;
         }
 
-        AABB auraBox = new AABB(guardPos).inflate(4.0);
+        AABB auraBox = new AABB(guardPos.getX() - 4.0, guardPos.getY() - 4.0, guardPos.getZ() - 4.0,
+                guardPos.getX() + 5.0, guardPos.getY() + 5.0, guardPos.getZ() + 5.0);
         var players = level.getEntitiesOfClass(Player.class, auraBox, p -> p.isAlive() && this.wolf.isOwnedBy(p));
         for (Player player : players) {
             if (player.getHealth() < player.getMaxHealth()) {

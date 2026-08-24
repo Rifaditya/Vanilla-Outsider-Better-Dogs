@@ -346,6 +346,11 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     @Override
     public void betterdogs$setSocialScale(float scale) {
         this.betterdogs$socialScale = scale;
+        Wolf wolf = (Wolf) (Object) this;
+        var scaleAttr = wolf.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.SCALE);
+        if (scaleAttr != null && scale > 0.0f) {
+            scaleAttr.setBaseValue(scale);
+        }
     }
 
     @Override

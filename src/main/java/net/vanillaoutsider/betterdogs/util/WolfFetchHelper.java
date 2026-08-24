@@ -75,7 +75,7 @@ public class WolfFetchHelper {
 
         level.playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), SoundEvents.WOLF_SHAKE, SoundSource.NEUTRAL, 1.0f, 1.2f);
         if (level instanceof ServerLevel serverLevel) {
-            serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, wolf.getX(), wolf.getY() + 0.5, wolf.getZ(), 6, 0.2, 0.2, 0.2, 0.05);
+            serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, wolf.getX(), wolf.getY() + 0.5, wolf.getZ(), 2, 0.15, 0.15, 0.15, 0.02);
         }
         WolfAdvancementHelper.grantAdvancement(owner, "fetch_stick");
     }

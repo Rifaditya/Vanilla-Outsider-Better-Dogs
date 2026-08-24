@@ -21,6 +21,8 @@ public abstract class TamableAnimalMixin {
         if ((Object) this instanceof Wolf wolf) {
             if (wolf instanceof WolfExtensions ext) {
                 WolfPersonality personality = ext.betterdogs$getPersonality();
+                net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper.applyPersonalityStats(wolf, personality);
+                wolf.setHealth(wolf.getMaxHealth());
                 WolfParticleHandler.playTameParticles(wolf, personality);
 
                 if (player != null && !wolf.level().isClientSide()) {

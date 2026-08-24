@@ -41,7 +41,16 @@ public class WolfPettingHelper {
         if (hand != InteractionHand.MAIN_HAND || !itemInHand.isEmpty()) {
             return false;
         }
-        return player.isSecondaryUseActive();
+        if (!player.isSecondaryUseActive() && !player.isCrouching() && !player.isShiftKeyDown()) {
+            return false;
+        }
+        if (wolf instanceof WolfExtensions ext) {
+            Level level = wolf.level();
+            if (level != null && Math.abs(level.getGameTime() - ext.betterdogs$getSoothedTime()) < 20L) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static InteractionResult petWolf(Wolf wolf, Player player) {
