@@ -49,8 +49,8 @@ public abstract class WolfInteractMixin extends TamableAnimal {
             }
         }
 
-        if (net.vanillaoutsider.betterdogs.util.WolfGuardHelper.canToggleGuard(wolf, player, itemStack)) {
-            InteractionResult guardResult = net.vanillaoutsider.betterdogs.util.WolfGuardHelper.toggleGuardMode(wolf, player);
+        if (net.vanillaoutsider.betterdogs.util.WolfGuardHelper.canToggleGuard(wolf, player, hand, itemStack)) {
+            InteractionResult guardResult = net.vanillaoutsider.betterdogs.util.WolfGuardHelper.toggleGuardMode(wolf, player, hand, itemStack);
             if (guardResult == InteractionResult.SUCCESS) {
                 cir.setReturnValue(guardResult);
                 return;

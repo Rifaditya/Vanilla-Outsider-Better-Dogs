@@ -7,16 +7,18 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.vanillaoutsider.betterdogs.BetterDogs;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
+import net.vanillaoutsider.betterdogs.mixin.WolfAccessor;
 
 /**
  * Dedicated single-purpose helper for managing Guard Mode state, toggling, and territory patrol radii.
@@ -37,18 +39,28 @@ public final class WolfGuardHelper {
         };
     }
 
-    public static boolean canToggleGuard(Wolf wolf, Player player, ItemStack held) {
-        if (wolf == null || player == null || !wolf.isTame()) {
+    public static boolean canToggleGuard(Wolf wolf, Player player, InteractionHand hand, ItemStack held) {
+        if (wolf == null || player == null || !wolf.isTame() || hand != InteractionHand.MAIN_HAND) {
             return false;
         }
         if (held == null || !held.is(Items.BONE)) {
             return false;
         }
+        if (!player.isSecondaryUseActive()) {
+            return false;
+        }
         return wolf.isOwnedBy(player);
     }
 
-    public static InteractionResult toggleGuardMode(Wolf wolf, Player player) {
-        if (wolf == null || player == null || !(wolf instanceof WolfExtensions ext)) {
+    /**
+     * Backward-compatible 3-arg overload for testing/fallbacks.
+     */
+    public static boolean canToggleGuard(Wolf wolf, Player player, ItemStack held) {
+        return canToggleGuard(wolf, player, InteractionHand.MAIN_HAND, held);
+    }
+
+    public static InteractionResult toggleGuardMode(Wolf wolf, Player player, InteractionHand hand, ItemStack held) {
+        if (!canToggleGuard(wolf, player, hand, held) || !(wolf instanceof WolfExtensions ext)) {
             return InteractionResult.PASS;
         }
 
@@ -66,25 +78,59 @@ public final class WolfGuardHelper {
             if (newGuarding) {
                 BlockPos guardPos = wolf.blockPosition();
                 ext.betterdogs$setGuardPos(guardPos);
+
+                // Preserve posture: if sitting, maintain sitting as stationary sentry
+                if (wolf.isInSittingPose()) {
+                    ext.betterdogs$setSittingManually(true);
+                    wolf.setOrderedToSit(true);
+                }
+
                 player.sendOverlayMessage(
-                        Component.literal("§6Guard Mode: §aActive §7(" + guardPos.getX() + ", " + guardPos.getY() + ", " + guardPos.getZ() + ")")
+                        Component.translatable("text.betterdogs.guard_activated", wolf.getName(), guardPos.getX(), guardPos.getY(), guardPos.getZ())
                 );
+
+                WolfPersonality personality = ext.betterdogs$getPersonality();
                 if (player instanceof ServerPlayer serverPlayer) {
-                    net.vanillaoutsider.betterdogs.BetterDogs.GUARD_WOLF_PERSONALITY.trigger(serverPlayer, ext.betterdogs$getPersonality());
+                    BetterDogs.GUARD_WOLF_PERSONALITY.trigger(serverPlayer, personality);
+                }
+
+                float pitch = switch (personality) {
+                    case AGGRESSIVE -> 0.8f;
+                    case NORMAL -> 1.2f;
+                    case PACIFIST -> 1.5f;
+                };
+
+                SoundEvent sound = personality == WolfPersonality.PACIFIST ?
+                        ((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().whineSound().value() :
+                        ((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().ambientSound().value();
+                level.playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), sound, wolf.getSoundSource(), 1.0f, pitch);
+
+                if (level instanceof ServerLevel serverLevel) {
+                    serverLevel.sendParticles(ParticleTypes.ENCHANT, wolf.getX(), wolf.getY() + 0.5, wolf.getZ(), 10, 0.3, 0.3, 0.3, 0.05);
                 }
             } else {
                 ext.betterdogs$setGuardPos(null);
+                ext.betterdogs$setSittingManually(false);
                 player.sendOverlayMessage(
-                        Component.literal("§6Guard Mode: §7Inactive")
+                        Component.translatable("text.betterdogs.guard_deactivated", wolf.getName())
                 );
+
+                SoundEvent sound = ((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().ambientSound().value();
+                level.playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), sound, wolf.getSoundSource(), 1.0f, 1.0f);
             }
 
-            if (level instanceof ServerLevel serverLevel) {
-                serverLevel.sendParticles(ParticleTypes.ENCHANT, wolf.getX(), wolf.getY() + 0.5, wolf.getZ(), 10, 0.3, 0.3, 0.3, 0.05);
-                level.playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), SoundEvents.ARMOR_EQUIP_GENERIC, SoundSource.PLAYERS, 0.8f, 1.2f);
+            if (held != null) {
+                held.consume(1, player);
             }
         }
 
         return InteractionResult.SUCCESS;
+    }
+
+    /**
+     * Backward-compatible 2-arg overload for testing/fallbacks.
+     */
+    public static InteractionResult toggleGuardMode(Wolf wolf, Player player) {
+        return toggleGuardMode(wolf, player, InteractionHand.MAIN_HAND, player != null ? player.getMainHandItem() : ItemStack.EMPTY);
     }
 }
