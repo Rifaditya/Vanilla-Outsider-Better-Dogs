@@ -1,7 +1,7 @@
 # 🐕 Better Dogs - Active & Backlog Tracking
 
 ## Memory Read Receipt
-- **Read Timestamp**: 2026-08-16T07:39:08+07:00
+- **Read Timestamp**: 2026-08-25T19:21:00+07:00
 - **Source**: `E:\Minecraft Project\.core\logs\MEMORY.md`
 
 ---
@@ -15,22 +15,22 @@
   - [x] Clear `DogCommandManager` vehicle targets and reset `MoveToVehicleGoal` on dismount.
   - [x] Verify dismount audio, particles, and overlay notifications.
 - [ ] `[BL-BD-002]` **Bone Consumption Guarding & Taming Gating Fix**
-  - [ ] Explicitly gate bone consumption to taming untamed wolves and Shift + Right-Click Guard Mode activation.
-  - [ ] Ensure normal right-clicking on tamed wolves with a bone never consumes the bone.
-  - [ ] Verify non-owner protection against bone consumption or guard mode triggers.
+  - [ ] Require `player.isSecondaryUseActive()` and `MAIN_HAND` in `WolfGuardHelper.canToggleGuard()`.
+  - [ ] Enforce 6-Dimensional Interaction Guard (Creative mode bypass `!player.getAbilities().instabuild`, ownership check, posture safety).
+  - [ ] Purge legacy duplicate bone guard handling block in `WolfInteractionHelper.java` (lines 281–321).
+  - [ ] Ensure normal right-clicking on tamed owned wolves with a bone safely toggles sitting posture and never consumes the bone.
 
 ### Phase 2: Foundational Architecture Modularization
 - [ ] `[BL-BD-003]` **Full Codebase Audit & Migration to The Clean "1 File, 1 Purpose" Architecture Law**
-  - [ ] Modularize `WolfInteractionHelper.java` into dedicated single-purpose handlers (`WolfTreatHandler`, `WolfAdoptionHandler`, `WolfComfortHandler`, `WolfGuardInteractionHandler`).
-  - [ ] Modularize `WolfCommandHelper.java` into single-purpose goat horn handlers (`PonderHornHandler`, `FeelHornHandler`, `SingHornHandler`, `YearnHornHandler`, `SeekHornHandler`).
   - [ ] Deconstruct `WolfCombatHooks.java` into `WolfFlankingCoordinator`, `WolfNemesisCombatHelper`, and `WolfCreeperEvasionHandler`.
-  - [ ] Decouple `DogCommandManager.java` (extract `SeatEntityManager` and separate event listeners).
+  - [ ] Decouple `DogCommandManager.java` into `SeatEntityManager`, `DogCommandEntityListener`, and `DogCommandBlockListener`.
   - [ ] Modularize `WolfTickHelper.java` into `WolfShelterSeeker` and `WolfStormAnxietyManager`.
+  - [ ] Streamline `WolfInteractionHelper.java` to a lean delegation router.
 
 ### Phase 3: Advanced AI & Environmental Features
 - [ ] `[BL-BD-004]` **Wolf Fire Survival AI: Nearest Water Sprint & Fallback Panic Evasion**
   - [ ] Create `WolfSeekWaterOnFireGoal.java` (Priority 1 emergency water seeking for burning wolves).
-  - [ ] Implement `WolfSafetyHelper.isSafeWaterJump()` trajectory and fluid depth validation for safe ledge drops into water.
+  - [ ] Implement `WolfCliffSafetyHelper.isSafeWaterJump()` trajectory and fluid depth validation for safe ledge drops into water.
   - [ ] Implement fallback erratic panic running (`1.3x` speed) in safe directions when no water is nearby, with continuous water rescanning.
   - [ ] Whitelist safe water jumps in `WolfSafetyMixin` to prevent cliff drop false-positive freezing.
   - [ ] Register namespaced GameRule `betterdogs:bd_wolves_seek_water_on_fire`.
@@ -64,3 +64,4 @@
 - [x] **Dynamic Climate-Aware Wolf Coat Variants** (`4.24.2`)
 - [x] **Litematica Compatibility & Command Item Expansion** (`4.24.3`)
 - [x] **Minimal Tame Particle Polish** (`4.24.7+26.2`)
+- [x] **Minecart Dismount Collision Fix** (`4.24.8+26.2`)

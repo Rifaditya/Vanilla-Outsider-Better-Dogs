@@ -1,5 +1,13 @@
 # Better Dogs History & Concept Changelog
 
+## [4.24.58+26.2] - 2026-08-25
+### Changed
+- **Guard Mode Gating & 6D Interaction Overhaul (`WolfGuardHelper.java`, `WolfInteractMixin.java`)**:
+  - Enforced Sneak/Shift requirement (`player.isSecondaryUseActive()`) and `MAIN_HAND` check for Guard Mode bone toggling, ensuring normal non-sneak bone right-clicks safely toggle sitting posture without activating Guard Mode or consuming bones.
+  - Implemented dual-direction bone consumption: consuming 1 bone on both Guard Mode activation and deactivation (with Creative mode bypass `!player.getAbilities().instabuild`).
+  - Implemented sitting posture preservation: seated dogs maintain their sitting pose upon activating Guard Mode to act as stationary sentries at their assigned guard post.
+  - Integrated personality-specific audio pitches (Aggressive: `0.8f`, Normal: `1.2f`, Pacifist: `1.5f` whine sound) and translatable coordinate notifications (`text.betterdogs.guard_activated` / `text.betterdogs.guard_deactivated`).
+
 ## [4.24.57+26.2] - 2026-08-22
 ### Added
 - **Hoover / Ground Food Scavenger Quirk (`WolfDispositionHelper.java`, `WolfScavengeHelper.java`, `EatGroundFoodGoal.java`)**:
