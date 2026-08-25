@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`5.0.74+26.3`** (2026-08-25) - **Data-Driven Tags & Zero-Allocation Performance Test Suite:** Added JUnit 5 assertions in `DataDrivenAndPerformanceTest` verifying FastRandom distribution, tag definitions, and helper fallbacks.
 - [ ] **`5.0.73+26.3`** (2026-08-25) - **Zero-Allocation FastRandom & Loop Memory Overhaul:** Replaced static `new Random()` instances with `FastRandom.INSTANCE` and entity `RandomSource`, eliminated array allocations in breeding genetics.
 - [ ] **`5.0.72+26.3`** (2026-08-25) - **Data-Driven Datapack Tags (Foliage, Treats, Seats):** Migrated puppy curiosity foliage, favorite treats, and seat candidates to `#curiosity_blocks`, `#treats`, and `#seats`.
 - [ ] **`5.0.71+26.3`** (2026-08-25) - **Morning Gift Headless Unit Test Suite Expansion:** Added JUnit 5 assertions in `MorningGiftTest` verifying 100% full health, morning time window boundaries, and peaceful monster radius.

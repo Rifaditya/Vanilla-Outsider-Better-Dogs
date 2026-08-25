@@ -36,10 +36,10 @@
   - [x] Step 3: Headless JUnit 5 Test Suite Expansion (`MorningGiftTest`) (`4.24.69+26.2` & `5.0.71+26.3`).
 
 ### Phase 4: Data-Driven & Performance Overhaul
-- [ ] `[BL-BD-006]` **Modern Sovereign Data-Driven & Zero-Allocation Performance Overhaul**
-  - [ ] Replace hardcoded item/block string checks with vanilla datapack tags (`#betterdogs:seats`, `#betterdogs:treats`, `#c:chairs`).
-  - [ ] Eliminate hot-path object allocations (`new Random()`, transient `ArrayList` allocations) across all AI goals using `FastRandom` and static reusable buffers.
-  - [ ] Delegate generic group leader logic and genetics math cleanly to `DasikLibrary`.
+- [x] `[BL-BD-006]` **Modern Sovereign Data-Driven & Zero-Allocation Performance Overhaul** (`4.24.70-72+26.2` & `5.0.72-74+26.3`)
+  - [x] Step 1: Data-Driven Tags for Foliage, Treats & Seats (`BetterDogsTags`, `tags/block/`, `tags/item/`) (`4.24.70+26.2` & `5.0.72+26.3`).
+  - [x] Step 2: Zero-Allocation FastRandom & Loop Memory Overhaul (`WolfPersonality`, `WolfBreedingMixin`, `WolfLitterHelper`) (`4.24.71+26.2` & `5.0.73+26.3`).
+  - [x] Step 3: Headless JUnit 5 Performance & Tag Test Suite (`DataDrivenAndPerformanceTest`) (`4.24.72+26.2` & `5.0.74+26.3`).
 
 ### Phase 5: Automated Test Suite Integration
 - [ ] `[BL-BD-007]` **Automated Headless JUnit & GameTest Suite Integration**

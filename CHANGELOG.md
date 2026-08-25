@@ -1,5 +1,10 @@
 # Changelog
 
+## [5.0.74+26.3] - 2026-08-25
+### Added
+- 🧪 **Data-Driven Tags & Zero-Allocation Performance Test Suite**:
+  - Created `DataDrivenAndPerformanceTest` asserting `FastRandom.INSTANCE` integer distribution, `BetterDogsTags` registration completeness, `BabyCuriosityHelper` fallback resilience, and `DogTreatHelper` pool constancy.
+
 ## [5.0.73+26.3] - 2026-08-25
 ### Changed
 - ⚡ **Zero-Allocation FastRandom & Loop Memory Overhaul**:
