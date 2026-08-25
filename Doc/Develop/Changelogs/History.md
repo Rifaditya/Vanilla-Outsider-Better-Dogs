@@ -1,5 +1,10 @@
 # Better Dogs History & Concept Changelog
 
+## [5.0.75+26.3] - 2026-08-25
+### Added
+- **Master Full-Suite Verification & Helper Contract Audit**:
+  - Implemented `BetterDogsFullSuiteTest` running exhaustive contract assertions across all 12 modular helper classes (`WolfCliffSafetyHelper`, `WolfHazardHelper`, `WolfStormHelper`, `WolfBeggingHelper`, `WolfFetchHelper`, `WolfGuardHelper`, `WolfInbreedingHelper`, `WolfScaleGeneticsHelper`, `WolfPersonalityStatHelper`, `DogTreatHelper`, `WolfGiftHelper`, `BabyCuriosityHelper`).
+
 ## [5.0.74+26.3] - 2026-08-25
 ### Added
 - **Data-Driven Tags & Zero-Allocation Performance Test Suite**:
