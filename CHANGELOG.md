@@ -1,5 +1,10 @@
 # Changelog
 
+## [5.0.68+26.3] - 2026-08-25
+### Added
+- 🧪 **Wolf Fire Survival AI: Headless JUnit 5 Test Suite Expansion**:
+  - Implemented `WolfFireSurvivalTest` covering burning activation qualification, passenger rejection, emergency break-sit and posture restoration cycle, water search 16m proximity math, safe water drop cliff bypass, and fallback panic evasion logic.
+
 ## [5.0.67+26.3] - 2026-08-25
 ### Changed
 - 🌊 **Wolf Fire Survival AI: Safe Water Drop Cliff Bypass (`WolfCliffSafetyHelper`)**:

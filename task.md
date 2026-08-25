@@ -26,12 +26,10 @@
   - [x] Step 3: Command & Listener Modularization (`DogEntityCommandListener`, `DogBlockCommandListener`, `DogCommandManager`) (`4.24.63+26.2` & `5.0.65+26.3`).
 
 ### Phase 3: Advanced AI & Environmental Features
-- [ ] `[BL-BD-004]` **Wolf Fire Survival AI: Nearest Water Sprint & Fallback Panic Evasion**
-  - [ ] Create `WolfSeekWaterOnFireGoal.java` (Priority 1 emergency water seeking for burning wolves).
-  - [ ] Implement `WolfCliffSafetyHelper.isSafeWaterJump()` trajectory and fluid depth validation for safe ledge drops into water.
-  - [ ] Implement fallback erratic panic running (`1.3x` speed) in safe directions when no water is nearby, with continuous water rescanning.
-  - [ ] Whitelist safe water jumps in `WolfSafetyMixin` to prevent cliff drop false-positive freezing.
-  - [ ] Register namespaced GameRule `betterdogs:bd_wolves_seek_water_on_fire`.
+- [x] `[BL-BD-004]` **Wolf Fire Survival AI: Nearest Water Sprint & Fallback Panic Evasion** (`4.24.64-66+26.2` & `5.0.66-68+26.3`)
+  - [x] Step 1: Goal & Extinguishing Logic (`WolfSeekWaterOnFireGoal`, GameRules `bd_wolves_seek_water_on_fire`, `bd_wolves_break_sit_on_fire`) (`4.24.64+26.2` & `5.0.66+26.3`).
+  - [x] Step 2: Safe Water Drop Cliff Bypass (`WolfCliffSafetyHelper.isSafeWaterLanding`) (`4.24.65+26.2` & `5.0.67+26.3`).
+  - [x] Step 3: Headless JUnit 5 Test Suite Expansion (`WolfFireSurvivalTest`) (`4.24.66+26.2` & `5.0.68+26.3`).
 - [ ] `[BL-BD-005]` **Morning Gift Qualification Conditions & Personality Foraging Loot Overhaul**
   - [ ] Require proximity to sleeping owner in bed (8–10 blocks).
   - [ ] Require 100% full dog health (`wolf.getHealth() >= wolf.getMaxHealth()`).
