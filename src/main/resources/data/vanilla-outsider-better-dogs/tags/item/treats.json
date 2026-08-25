@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:cooked_mutton",
+    "minecraft:rabbit_stew",
+    "minecraft:spider_eye",
+    "minecraft:golden_apple",
+    "minecraft:baked_potato",
+    "minecraft:porkchop",
+    "minecraft:rotten_flesh",
+    "minecraft:pumpkin_pie",
+    "minecraft:glow_berries"
+  ]
+}
