@@ -14,10 +14,10 @@
   - [x] Apply safe lateral offset positioning on dismount to prevent vanilla `AbstractMinecart` collision re-boarding.
   - [x] Clear `DogCommandManager` vehicle targets and reset `MoveToVehicleGoal` on dismount.
   - [x] Verify dismount audio, particles, and overlay notifications.
-- [ ] `[BL-BD-002]` **Bone Consumption Guarding & Taming Gating Fix** (`4.24.58-60+26.2` & `5.0.60-62+26.3`)
+- [x] `[BL-BD-002]` **Bone Consumption Guarding & Taming Gating Fix** (`4.24.58-60+26.2` & `5.0.60-62+26.3`)
   - [x] Step 1: Require `player.isSecondaryUseActive()` and `MAIN_HAND` in `WolfGuardHelper.canToggleGuard()`, dual bone consumption, sitting posture preservation (`4.24.58+26.2` & `5.0.60+26.3`).
-  - [ ] Step 2: Purge legacy duplicate bone guard handling block in `WolfInteractionHelper.java` (lines 281–321) and allow non-sneak sitting (`4.24.59+26.2` & `5.0.61+26.3`).
-  - [ ] Step 3: Expand JUnit 5 test coverage in `GuardModePatrolTest.java` (`4.24.60+26.2` & `5.0.62+26.3`).
+  - [x] Step 2: Purge legacy duplicate bone guard handling block in `WolfInteractionHelper.java` (lines 281–321) and allow non-sneak sitting (`4.24.59+26.2` & `5.0.61+26.3`).
+  - [x] Step 3: Expand JUnit 5 test coverage in `GuardModePatrolTest.java` (`4.24.60+26.2` & `5.0.62+26.3`).
 
 ### Phase 2: Foundational Architecture Modularization
 - [ ] `[BL-BD-003]` **Full Codebase Audit & Migration to The Clean "1 File, 1 Purpose" Architecture Law**

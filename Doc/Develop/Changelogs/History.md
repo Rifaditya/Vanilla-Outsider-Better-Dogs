@@ -1,5 +1,10 @@
 # Better Dogs History & Concept Changelog
 
+## [4.24.60+26.2] - 2026-08-25
+### Added
+- **Guard Mode Headless Unit Test Suite Expansion (`GuardModePatrolTest.java`)**:
+  - Added JUnit 5 assertions for 4-parameter `canToggleGuard` and `toggleGuardMode` verifying Main Hand enforcement, off-hand rejection, backward-compatible overloads, and strict null safety.
+
 ## [4.24.59+26.2] - 2026-08-25
 ### Changed
 - **Legacy Bone Deduplication & Guard Sit Handler Fix (`WolfInteractionHelper.java`)**:
