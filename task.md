@@ -30,14 +30,10 @@
   - [x] Step 1: Goal & Extinguishing Logic (`WolfSeekWaterOnFireGoal`, GameRules `bd_wolves_seek_water_on_fire`, `bd_wolves_break_sit_on_fire`) (`4.24.64+26.2` & `5.0.66+26.3`).
   - [x] Step 2: Safe Water Drop Cliff Bypass (`WolfCliffSafetyHelper.isSafeWaterLanding`) (`4.24.65+26.2` & `5.0.67+26.3`).
   - [x] Step 3: Headless JUnit 5 Test Suite Expansion (`WolfFireSurvivalTest`) (`4.24.66+26.2` & `5.0.68+26.3`).
-- [ ] `[BL-BD-005]` **Morning Gift Qualification Conditions & Personality Foraging Loot Overhaul**
-  - [ ] Require proximity to sleeping owner in bed (8–10 blocks).
-  - [ ] Require 100% full dog health (`wolf.getHealth() >= wolf.getMaxHealth()`).
-  - [ ] Enforce once-per-day calendar limit via `WolfPersistentData.getLastGiftDay()`.
-  - [ ] Require peaceful environment (no hostile monsters within 16 blocks).
-  - [ ] Implement Personality-Themed Foraging loot pools (Aggressive mob trophies, Pacifist nature finds, Normal domestic foraging).
-  - [ ] Implement universal 5% Rare Treasure chance (Gold Nuggets, Name Tags, Emeralds, Leads).
-  - [ ] Implement datapack loot tables under `data/vanilla-outsider-better-dogs/loot_table/morning_gift/`.
+- [x] `[BL-BD-005]` **Morning Gift Qualification Conditions & Personality Foraging Loot Overhaul** (`4.24.67-69+26.2` & `5.0.69-71+26.3`)
+  - [x] Step 1: Qualification Conditions & Dual Wake-Up Trigger (`WolfGiftHelper`, `WolfGiftGoal`) (`4.24.67+26.2` & `5.0.69+26.3`).
+  - [x] Step 2: Data-Driven JSON Loot Tables & Rare Treasures (`loot_table/morning_gift/`, `WolfGiftHelper`) (`4.24.68+26.2` & `5.0.70+26.3`).
+  - [x] Step 3: Headless JUnit 5 Test Suite Expansion (`MorningGiftTest`) (`4.24.69+26.2` & `5.0.71+26.3`).
 
 ### Phase 4: Data-Driven & Performance Overhaul
 - [ ] `[BL-BD-006]` **Modern Sovereign Data-Driven & Zero-Allocation Performance Overhaul**

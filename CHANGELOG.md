@@ -1,5 +1,10 @@
 # Changelog
 
+## [4.24.69+26.2] - 2026-08-25
+### Added
+- 🧪 **Morning Gift Headless JUnit 5 Test Suite Expansion**:
+  - Expanded `MorningGiftTest` covering strict 100% full health requirement, morning time window boundary calculations, peaceful monster proximity rejection, calendar cooldown limits, and personality fallback item roll validity.
+
 ## [4.24.68+26.2] - 2026-08-25
 ### Added
 - 📦 **Data-Driven Morning Gift Loot Tables (`loot_table/morning_gift/`)**:
