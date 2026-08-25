@@ -5,6 +5,7 @@ package net.vanillaoutsider.betterdogs.util;
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.animal.Animal;
@@ -21,13 +22,30 @@ import java.util.Random;
  */
 public final class WolfLitterHelper {
 
-    private static final Random RANDOM = new Random();
-
     private WolfLitterHelper() {
     }
 
     /**
-     * Pure math helper to calculate total litter size using a geometric probability chain.
+     * Pure math helper to calculate total litter size using a geometric probability chain (RandomSource).
+     */
+    public static int calculateLitterSize(int maxSize, int extraChance, RandomSource random) {
+        if (maxSize <= 1 || extraChance <= 0 || random == null) {
+            return 1;
+        }
+
+        int litterSize = 1;
+        for (int i = 1; i < maxSize; i++) {
+            if (random.nextInt(100) < extraChance) {
+                litterSize++;
+            } else {
+                break;
+            }
+        }
+        return Math.min(litterSize, maxSize);
+    }
+
+    /**
+     * Pure math helper to calculate total litter size using a geometric probability chain (Random).
      */
     public static int calculateLitterSize(int maxSize, int extraChance, Random random) {
         if (maxSize <= 1 || extraChance <= 0 || random == null) {
@@ -61,7 +79,7 @@ public final class WolfLitterHelper {
         int maxSize = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_WOLF_LITTER_MAX_SIZE);
         int extraChance = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_WOLF_LITTER_EXTRA_CHANCE);
 
-        int litterSize = calculateLitterSize(maxSize, extraChance, RANDOM);
+        int litterSize = calculateLitterSize(maxSize, extraChance, wolf.getRandom());
 
         // Spawn extra puppies beyond the first vanilla offspring
         for (int i = 1; i < litterSize; i++) {
@@ -77,7 +95,7 @@ public final class WolfLitterHelper {
 
                 // Extra XP per puppy if mob drops enabled
                 if (level.getGameRules().get(GameRules.MOB_DROPS)) {
-                    level.addFreshEntity(new ExperienceOrb(level, parent1.getX(), parent1.getY(), parent1.getZ(), RANDOM.nextInt(7) + 1));
+                    level.addFreshEntity(new ExperienceOrb(level, parent1.getX(), parent1.getY(), parent1.getZ(), wolf.getRandom().nextInt(7) + 1));
                 }
 
                 WolfDebugLogger.log(wolf, "Breeding", "Extra puppy born! Litter size incremented for tamed wolf pair.");

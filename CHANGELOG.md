@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.0.73+26.3] - 2026-08-25
+### Changed
+- ⚡ **Zero-Allocation FastRandom & Loop Memory Overhaul**:
+  - Replaced static `new Random()` instances in `WolfPersonality`, `WolfBreedingMixin`, and `WolfLitterHelper` with `FastRandom.INSTANCE` and entity `RandomSource`.
+  - Replaced transient array allocations in breeding genetics calculations with zero-allocation static pattern switches.
+
 ## [5.0.72+26.3] - 2026-08-25
 ### Changed
 - 🏷️ **Data-Driven Datapack Tag Migration (Foliage, Treats, Seats)**:
