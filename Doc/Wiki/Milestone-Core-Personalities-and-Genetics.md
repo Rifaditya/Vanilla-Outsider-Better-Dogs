@@ -1,6 +1,6 @@
-# Milestone: Core Personalities & Genetics
+# Milestone: Core Personalities, Breeding & Genetics
 
-Introduced in **`v4.0.0` (MC 26.2)** and backported to **`v3.4.0` (MC 26.1.2)**, this milestone overhauls tamed wolves by adding permanent personalities, genetic DNA rolls, stat heredity, parent kinship checks (inbreeding), runts, and size scaling.
+Introduced in **`v4.0.0` (MC 26.2)** and backported across all version anchors, this milestone overhauls tamed wolves by adding permanent personalities, genetic DNA rolls, stat heredity, parent kinship checks (inbreeding), runts, dynamic size scaling, and morning gift loot foraging.
 
 ---
 
@@ -18,7 +18,7 @@ When tamed, every wolf rolls a permanent personality type. Personalities alter t
 
 ## 🧬 Individual DNA & UUID Lottery
 
-Every wolf possesses a unique genetic identity determined by its UUID. To prevent determinism from being exploited, personality traits, sound variant lottery rolls, and social behaviors are seeded via aUUID bitwise XOR formula:
+Every wolf possesses a unique genetic identity determined by its UUID. To prevent determinism from being exploited, personality traits, sound variant lottery rolls, and social behaviors are seeded via a UUID bitwise XOR formula:
 
 \[\text{Seed} = \text{UUID.getMostSignificantBits()} \oplus \text{UUID.getLeastSignificantBits()} \oplus 7381940\text{L}\]
 
@@ -51,8 +51,8 @@ Personality traits are passed down from parents. If both parents share a persona
 * **Mixed-Personality Parents**: $40\%$ chance to inherit Parent 1's personality, $40\%$ for Parent 2's, and $20\%$ for the remaining type.
 
 ### 3. Kinship NBT & Inbreeding Checks
-The mod tracks ancestry to prevent inbreeding loops. Kinship data is persisted directly to the wolf's NBT:
-* **NBT tags**: `parent1Uuid` and `parent2Uuid`.
+The mod tracks ancestry to prevent inbreeding loops. Kinship data is persisted directly to the wolf's custom data attachments / NBT:
+* **Ancestry keys**: `parent1Uuid` and `parent2Uuid`.
 * **Inbreeding check**: If Parent 1 and Parent 2 share parent UUIDs (siblings) or if one parent is the other's ancestor, the check triggers an **Inbred Runt** status.
 
 ### 4. The Inbred Runt Penalty
@@ -67,12 +67,29 @@ Inbred puppies suffer from severe genetic penalties:
 
 Breeding wolves no longer guarantees exactly one puppy. The **Litter System** rolls a probability curve allowing wolves to produce multiple puppies per breed:
 * Each puppy in the litter rolls its personality, stats, and scale **independently**.
-* The maximum litter size and frequency are fully configurable via native GameRules.
+* The maximum litter size and frequency are fully configurable via native GameRules (`bd_litter_max_size`).
 
 ---
 
-## 🤝 Quality of Life Features
+## 🎁 Morning Gifts & Data-Driven Loot Tables
 
-* **Paper Adoption**: Sneak + Right-Clicking a tamed wolf with Paper sets it into a pending adoption state with pink particle indicators. Any other player can then Right-Click to claim ownership of the dog.
-* **Calm Down**: Sneak + Right-Clicking a wolf with an empty hand forces it to sit, immediately purging its anger state and clearing its current attack target.
-* **Gifting & Rewards**: Interact positively with your dog (feeding, sitting, or calming down) to build up its merit points over time. Once the threshold is met, the dog may wake you up with a gift the next time you sleep in a bed! Accidental attacks will reset their merit progress unless `bd_demerit_accidental_attacks` is turned off.
+Tamed wolves that have formed a strong bond with their owner can bring morning gifts:
+1. **Trigger Conditions**: Occurs either upon owner waking up from a bed or naturally during early morning hours (world time $0 \le t \le 2000$ ticks).
+2. **Qualification Requirements**:
+   * Wolf must be at **100% full health** (`wolf.getHealth() >= wolf.getMaxHealth()`).
+   * No hostile monsters within a 16-block radius.
+   * Wolf must meet positive interaction merits (feeding, sitting, petting).
+   * Daily cooldown: maximum 1 gift per in-game day.
+3. **Data-Driven Personality Loot**:
+   Gifts are queried directly from datapack loot tables in `data/vanilla-outsider-better-dogs/loot_table/morning_gift/`:
+   * `aggressive.json`: Bones, rotten flesh, mob drops, arrows.
+   * `pacifist.json`: Flowers, sweet berries, apples, seeds.
+   * `normal.json`: Sticks, rabbit feet, leather, feathers.
+   * `rare_treasure.json`: 5% chance roll for enchanted books, name tags, golden apples, or music discs.
+
+---
+
+## 🍖 Favorite Treats & Puppy Curiosity
+
+* **Favorite Treats**: Each wolf deterministically calculates a preferred favorite treat from `#vanilla-outsider-better-dogs:treats` based on its UUID. Feeding a wolf its favorite treat triggers double heart particles and grants temporary speed/regeneration buffs.
+* **Puppy Curiosity**: Young puppies naturally wander towards nearby curious foliage, flowers, and crops defined in `#vanilla-outsider-better-dogs:curiosity_blocks` to sniff and inspect them with happy particles.
