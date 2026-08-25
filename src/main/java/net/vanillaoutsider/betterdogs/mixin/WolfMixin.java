@@ -286,7 +286,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
 
             if (this.tickCount % 20 == 0 && this.betterdogs$isGuardMode()) {
                 if (wolf.level() instanceof ServerLevel serverLevel) {
-                    net.vanillaoutsider.betterdogs.util.WolfTickHelper.tickGuardMode(wolf, this, serverLevel);
+                    net.vanillaoutsider.betterdogs.util.WolfGuardHelper.tickGuardMode(wolf, this, serverLevel);
                 }
             }
 
@@ -296,18 +296,18 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
 
             if (this.tickCount % 40 == 0 && net.vanillaoutsider.betterdogs.WolfPersistentData.isPersistedInbred(wolf)) {
                 if (wolf.level() instanceof ServerLevel serverLevel) {
-                    net.vanillaoutsider.betterdogs.util.WolfTickHelper.tickRuntParticles(wolf, serverLevel);
+                    net.vanillaoutsider.betterdogs.util.WolfParticleHelper.tickRuntParticles(wolf, serverLevel);
                 }
             }
 
             if (this.tickCount % 20 == 0) {
                 if (wolf.level() instanceof ServerLevel serverLevel) {
-                    net.vanillaoutsider.betterdogs.util.WolfTickHelper.tickNemesisSystem(wolf, serverLevel);
+                    net.vanillaoutsider.betterdogs.util.WolfNemesisHelper.tickNemesisSystem(wolf, serverLevel);
                 }
             }
         }
 
-        this.betterdogs$healTimer = net.vanillaoutsider.betterdogs.util.WolfTickHelper.tickPassiveHealing(wolf, this, this.betterdogs$healTimer);
+        this.betterdogs$healTimer = net.vanillaoutsider.betterdogs.util.WolfHealingHelper.tickPassiveHealing(wolf, this, this.betterdogs$healTimer);
     }
 
     @Inject(method = "addAdditionalSaveData", at = @At("HEAD"))
@@ -327,7 +327,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
 
     @Inject(method = "getAmbientSound", at = @At("HEAD"), cancellable = true)
     private void betterdogs$onGetAmbientSound(CallbackInfoReturnable<net.minecraft.sounds.SoundEvent> cir) {
-        net.vanillaoutsider.betterdogs.util.WolfTickHelper.handleAmbientSound((Wolf) (Object) this, ((WolfAccessor) this).betterdogs$invokeGetSoundSet(), cir);
+        net.vanillaoutsider.betterdogs.util.WolfSoundHelper.handleAmbientSound((Wolf) (Object) this, ((WolfAccessor) this).betterdogs$invokeGetSoundSet(), cir);
     }
 
     @Override
