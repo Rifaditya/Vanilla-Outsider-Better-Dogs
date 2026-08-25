@@ -1,5 +1,12 @@
 # Better Dogs History & Concept Changelog
 
+## [4.24.63+26.2] - 2026-08-25
+### Changed
+- **Clean "1 File, 1 Purpose" Architecture: Command & Listener Modularization**:
+  - Extracted `DogEntityCommandListener.java` for entity-targeted riding, commands, and dismounting interactions.
+  - Extracted `DogBlockCommandListener.java` for chair/stair seat interaction and invisible interaction entity management.
+  - Refactored `DogCommandManager.java` into a thread-safe repository for selection and target state management.
+
 ## [4.24.62+26.2] - 2026-08-25
 ### Changed
 - **Clean "1 File, 1 Purpose" Architecture: Tick & Health Modularization**:

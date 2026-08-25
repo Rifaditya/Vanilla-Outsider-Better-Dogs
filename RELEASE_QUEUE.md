@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`4.24.63+26.2`** (2026-08-25) - **Command & Listener Modularization:** Extracted `DogEntityCommandListener` and `DogBlockCommandListener` from `DogCommandManager` into dedicated single-purpose listeners.
 - [ ] **`4.24.62+26.2`** (2026-08-25) - **Tick & Health Modularization:** Extracted `WolfHealingHelper` and `WolfSoundHelper`, delegated guard/nemesis/particle ticks to domain helpers, and purged `WolfTickHelper`.
 - [ ] **`4.24.61+26.2`** (2026-08-25) - **Combat & Targeting Modularization:** Deconstructed composite `WolfCombatHooks` into isolated `WolfDamageHandler` and `WolfTargetingHandler` adhering strictly to Clean 1 File 1 Purpose Architecture.
 - [ ] **`4.24.60+26.2`** (2026-08-25) - **Guard Mode Headless Unit Test Suite Expansion:** Added JUnit 5 assertions in `GuardModePatrolTest` testing 4-parameter guard gating, off-hand rejection, and null safety.

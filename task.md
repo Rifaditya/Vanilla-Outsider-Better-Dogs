@@ -20,11 +20,10 @@
   - [x] Step 3: Expand JUnit 5 test coverage in `GuardModePatrolTest.java` (`4.24.60+26.2` & `5.0.62+26.3`).
 
 ### Phase 2: Foundational Architecture Modularization
-- [ ] `[BL-BD-003]` **Full Codebase Audit & Migration to The Clean "1 File, 1 Purpose" Architecture Law**
-  - [ ] Deconstruct `WolfCombatHooks.java` into `WolfFlankingCoordinator`, `WolfNemesisCombatHelper`, and `WolfCreeperEvasionHandler`.
-  - [ ] Decouple `DogCommandManager.java` into `SeatEntityManager`, `DogCommandEntityListener`, and `DogCommandBlockListener`.
-  - [ ] Modularize `WolfTickHelper.java` into `WolfShelterSeeker` and `WolfStormAnxietyManager`.
-  - [ ] Streamline `WolfInteractionHelper.java` to a lean delegation router.
+- [x] `[BL-BD-003]` **Full Codebase Audit & Migration to The Clean "1 File, 1 Purpose" Architecture Law** (`4.24.61-63+26.2` & `5.0.63-65+26.3`)
+  - [x] Step 1: Combat & Targeting Modularization (`WolfDamageHandler`, `WolfTargetingHandler`, `WolfCombatMixin`) (`4.24.61+26.2` & `5.0.63+26.3`).
+  - [x] Step 2: Tick & Health Modularization (`WolfHealingHelper`, `WolfSoundHelper`, `WolfGuardHelper`, `WolfNemesisHelper`, `WolfParticleHelper`) (`4.24.62+26.2` & `5.0.64+26.3`).
+  - [x] Step 3: Command & Listener Modularization (`DogEntityCommandListener`, `DogBlockCommandListener`, `DogCommandManager`) (`4.24.63+26.2` & `5.0.65+26.3`).
 
 ### Phase 3: Advanced AI & Environmental Features
 - [ ] `[BL-BD-004]` **Wolf Fire Survival AI: Nearest Water Sprint & Fallback Panic Evasion**
