@@ -60,7 +60,8 @@ class VariableLitterTest {
     @Test
     @DisplayName("Assert strict null and degenerate input safety")
     void testNullAndDegenerateSafety() {
-        assertEquals(1, WolfLitterHelper.calculateLitterSize(4, 20, null));
+        assertEquals(1, WolfLitterHelper.calculateLitterSize(4, 20, (Random) null));
+        assertEquals(1, WolfLitterHelper.calculateLitterSize(4, 20, (net.minecraft.util.RandomSource) null));
         assertEquals(1, WolfLitterHelper.calculateLitterSize(0, 20, new Random()));
         assertEquals(1, WolfLitterHelper.calculateLitterSize(-5, -10, new Random()));
         assertDoesNotThrow(() -> WolfLitterHelper.processBreedingLitter(null, null, null));

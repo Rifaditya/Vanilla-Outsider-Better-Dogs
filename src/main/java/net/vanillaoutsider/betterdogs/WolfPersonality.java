@@ -3,7 +3,7 @@
 package net.vanillaoutsider.betterdogs;
 
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
-import java.util.Random;
+import net.dasik.social.util.FastRandom;
 import net.minecraft.world.level.Level;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 
@@ -22,7 +22,6 @@ public enum WolfPersonality {
     PACIFIST(2);
 
     private final int id;
-    private static final Random RANDOM = new Random();
 
     WolfPersonality(int id) {
         this.id = id;
@@ -38,24 +37,17 @@ public enum WolfPersonality {
      * Defaults are pulled from Global Config if Game Rules are unset or new world.
      */
     public static WolfPersonality random(Level level) {
-        // Fetch raw integers (e.g. 60, 20, 20)
-        // We can just use the integer values as weights.
-        int normal = 0;
-        int aggressive = 0;
-        int pacifist = 0;
-
-        if (level.isClientSide()) {
-             // Client side fallback (shouldn't happen for spawning logic, but safe)
-             return NORMAL;
-        } else {
-             normal = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_SPAWN_NORMAL_PERCENT);
-             aggressive = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_SPAWN_AGGRO_PERCENT);
-             pacifist = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_SPAWN_PACI_PERCENT);
+        if (level == null || level.isClientSide()) {
+            return NORMAL;
         }
 
-        int total = normal + aggressive + pacifist;
+        int normal = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_SPAWN_NORMAL_PERCENT);
+        int aggressive = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_SPAWN_AGGRO_PERCENT);
+        int pacifist = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_SPAWN_PACI_PERCENT);
 
-        int roll = RANDOM.nextInt(total > 0 ? total : 100);
+        int total = normal + aggressive + pacifist;
+        int bound = total > 0 ? total : 100;
+        int roll = FastRandom.INSTANCE.nextInt(bound);
         
         if (DynamicGameRuleManager.getBoolean(level, BetterDogsGameRules.BD_DEBUGGING)) {
             BetterDogs.LOGGER.info("Personality Roll: {}/{} (Chances: N:{}, A:{}, P:{})", 
