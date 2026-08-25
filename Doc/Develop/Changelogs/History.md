@@ -1,5 +1,11 @@
 # Better Dogs History & Concept Changelog
 
+## [4.24.65+26.2] - 2026-08-25
+### Changed
+- **Wolf Fire Survival AI: Safe Water Drop Cliff Bypass (`WolfCliffSafetyHelper`)**:
+  - Implemented `isSafeWaterLanding` to detect water bodies below ledges, bridges, and riverbanks.
+  - Allowed wolves leaping or pushed towards water to bypass false-positive cliff drop (>3 blocks) freezes and safely extinguish themselves.
+
 ## [4.24.64+26.2] - 2026-08-25
 ### Added
 - **Wolf Fire Survival AI: Goal & Extinguishing Logic (`WolfSeekWaterOnFireGoal`)**:

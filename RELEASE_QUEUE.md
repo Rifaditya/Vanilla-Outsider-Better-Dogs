@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`4.24.65+26.2`** (2026-08-25) - **Safe Water Drop Cliff Bypass:** Added `isSafeWaterLanding` in `WolfCliffSafetyHelper` enabling wolves to safely jump into water bodies from riverbanks without cliff drop halts.
 - [ ] **`4.24.64+26.2`** (2026-08-25) - **Wolf Fire Survival AI (Goal & Extinguishing):** Implemented `WolfSeekWaterOnFireGoal` (16m water sprint at 1.4x speed, fallback panic at 1.3x, emergency break-sit toggle) and registered GameRules.
 - [ ] **`4.24.63+26.2`** (2026-08-25) - **Command & Listener Modularization:** Extracted `DogEntityCommandListener` and `DogBlockCommandListener` from `DogCommandManager` into dedicated single-purpose listeners.
 - [ ] **`4.24.62+26.2`** (2026-08-25) - **Tick & Health Modularization:** Extracted `WolfHealingHelper` and `WolfSoundHelper`, delegated guard/nemesis/particle ticks to domain helpers, and purged `WolfTickHelper`.
