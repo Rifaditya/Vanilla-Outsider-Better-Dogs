@@ -1,5 +1,13 @@
 # Better Dogs History & Concept Changelog
 
+## [5.0.72+26.3] - 2026-08-25
+### Changed
+- **Data-Driven Datapack Tag Migration (Foliage, Treats, Seats)**:
+  - Created `#vanilla-outsider-better-dogs:curiosity_blocks` replacing hardcoded curiosity block checks.
+  - Created `#vanilla-outsider-better-dogs:treats` for favorite dog treat customization.
+  - Created `#vanilla-outsider-better-dogs:seats` and `#c:chairs` for dog seat candidates.
+  - Registered tags in `BetterDogsTags` and integrated with safe in-code fallbacks.
+
 ## [5.0.71+26.3] - 2026-08-25
 ### Added
 - **Morning Gift Headless JUnit 5 Test Suite Expansion**:

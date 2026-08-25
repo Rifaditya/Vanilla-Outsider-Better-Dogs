@@ -45,6 +45,19 @@ public final class DogTreatHelper {
         if (ACTIVE_TREAT_POOL == null) {
             List<Item> pool = new ArrayList<>();
             try {
+                BuiltInRegistries.ITEM.get(net.vanillaoutsider.betterdogs.registry.BetterDogsTags.TREATS).ifPresent(named -> {
+                    named.forEach(holder -> {
+                        Item item = holder.value();
+                        if (item != null && item != Items.AIR && !pool.contains(item)) {
+                            pool.add(item);
+                        }
+                    });
+                });
+            } catch (Throwable ignored) {
+                // Headless test environment fallback
+            }
+
+            if (pool.isEmpty()) {
                 pool.add(Items.COOKED_MUTTON);
                 pool.add(Items.RABBIT_STEW);
                 pool.add(Items.SPIDER_EYE);
@@ -54,7 +67,9 @@ public final class DogTreatHelper {
                 pool.add(Items.ROTTEN_FLESH);
                 pool.add(Items.PUMPKIN_PIE);
                 pool.add(Items.GLOW_BERRIES);
+            }
 
+            try {
                 if (FabricLoader.getInstance() != null && FabricLoader.getInstance().isModLoaded("farmersdelight")) {
                     String[] fdItems = new String[]{
                             "dog_food", "minced_beef", "mutton_chops", "cooked_mutton_chops",

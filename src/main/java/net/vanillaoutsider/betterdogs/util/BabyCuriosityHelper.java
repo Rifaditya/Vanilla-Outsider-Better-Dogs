@@ -81,23 +81,18 @@ public final class BabyCuriosityHelper {
         if (state == null) {
             return false;
         }
+        try {
+            if (state.is(net.vanillaoutsider.betterdogs.registry.BetterDogsTags.CURIOSITY_BLOCKS)) {
+                return true;
+            }
+        } catch (Throwable ignored) {
+            // Fallback for uninitialized tag registries
+        }
         return state.is(Blocks.TALL_GRASS) || state.is(Blocks.SHORT_GRASS)
                 || state.is(Blocks.FERN) || state.is(Blocks.LARGE_FERN)
                 || state.is(Blocks.DANDELION) || state.is(Blocks.POPPY)
-                || state.is(Blocks.BLUE_ORCHID) || state.is(Blocks.ALLIUM)
-                || state.is(Blocks.AZURE_BLUET) || state.is(Blocks.RED_TULIP)
-                || state.is(Blocks.ORANGE_TULIP) || state.is(Blocks.WHITE_TULIP)
-                || state.is(Blocks.PINK_TULIP) || state.is(Blocks.OXEYE_DAISY)
-                || state.is(Blocks.CORNFLOWER) || state.is(Blocks.LILY_OF_THE_VALLEY)
-                || state.is(Blocks.WITHER_ROSE) || state.is(Blocks.SUNFLOWER)
-                || state.is(Blocks.LILAC) || state.is(Blocks.ROSE_BUSH)
-                || state.is(Blocks.PEONY) || state.is(Blocks.PUMPKIN)
-                || state.is(Blocks.MELON) || state.is(Blocks.SWEET_BERRY_BUSH)
-                || state.is(Blocks.OAK_LEAVES) || state.is(Blocks.BIRCH_LEAVES)
-                || state.is(Blocks.SPRUCE_LEAVES) || state.is(Blocks.JUNGLE_LEAVES)
-                || state.is(Blocks.ACACIA_LEAVES) || state.is(Blocks.DARK_OAK_LEAVES)
-                || state.is(Blocks.MANGROVE_LEAVES) || state.is(Blocks.AZALEA_LEAVES)
-                || state.is(Blocks.FLOWERING_AZALEA_LEAVES) || state.is(Blocks.CHERRY_LEAVES);
+                || state.is(Blocks.PUMPKIN) || state.is(Blocks.MELON)
+                || state.is(Blocks.SWEET_BERRY_BUSH);
     }
 
     /**
