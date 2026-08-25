@@ -1,20 +1,21 @@
 # Milestone: Guard Mode & Sentinels
 
-Introduced in **`v4.8.0` (MC 26.2)** and backported to **`v3.10.0` (MC 26.1.2)**, this milestone implements the domestic guard system, watchdog alert stances, directional trigonometry particles, and rate-limited pack howling.
+Introduced in **`v4.8.0` (MC 26.2)** and refined across modern anchors, this milestone implements the domestic guard system, watchdog alert stances, directional trigonometry particles, 6-dimensional interaction safety, and rate-limited pack howling.
 
 ---
 
 ## 🛡️ Domestic Guard Mode
 
 Tamed wolves can be configured to defend specific posts or patrol routes:
-* **Activation**: Gated strictly to the owner. Sneak (Shift) + Right-Click the wolf while holding a bone to toggle **Guard Mode** (consuming exactly 1 bone).
+* **Activation**: Gated strictly to the owner. Sneak (Shift) + Right-Click the wolf while holding a bone to toggle **Guard Mode** (consuming exactly 1 bone in survival mode).
+* **6-Dimensional Interaction Guard**: Interaction handling debounces offhand dual-firing, preserves posture without toggling sitting state accidentally, respects creative mode bypass, and validates owner UUID permissions.
 * **Line-of-Sight Gating**: Guard dogs require a clear line-of-sight to target hostiles, preventing them from trying to attack mobs through solid walls (such as cave mobs beneath a house).
 
 ### Patrol Patterns
 Each personality walks a distinct patrol route anchored to their guard post coordinates:
-* **Aggressive**: Paces in an outer perimeter circle/polygon sweep at $80\%$ of their max guard range, pausing periodically to scan outward for threats.
-* **Normal**: Sentry posture directly at the post coordinates (if range is 0) or walking radial paths outward and back (if range > 0).
-* **Pacifist**: Close protective orbital circular pacing around the post coordinates.
+* **Aggressive**: Paces in an outer perimeter circle/polygon sweep at $80\%$ of their max guard range (12-block default patrol radius), pausing periodically to scan outward for threats.
+* **Normal**: Sentry posture directly at the post coordinates (if range is 0) or walking radial paths outward and back (8-block default radius).
+* **Pacifist**: Close protective orbital circular pacing around the post coordinates (4-block default radius).
 
 ---
 
@@ -42,7 +43,7 @@ The mod projects a 3D forward-pointing cone spanning $60^\circ$ centered around 
 * Spawns particles slightly in front of the face at mouth level ($y = \text{eyeHeight} - 0.1$).
 
 ### 2. Configurable Particle Density
-A dedicated, client-side configuration setting `guardParticleDensity` inside the Cloth Config screen scales particle spawn counts to balance aesthetics and performance:
+A dedicated, client-side configuration setting `guardParticleDensity` inside the Cloth Config / YACL screen scales particle spawn counts:
 * **High**: Spawns 12 particles (spaced at $30^\circ$).
 * **Medium** (Default): Spawns 6 particles (spaced at $60^\circ$).
 * **Low**: Spawns 3 particles (spaced at $120^\circ$).

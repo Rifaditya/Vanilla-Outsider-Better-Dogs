@@ -1,6 +1,6 @@
 # Milestone: Wild Packs & Territoriality
 
-Introduced in **`v4.3.0` (MC 26.2)** and backported to **`v3.5.0` (MC 26.1.2)**, this milestone overhauls wild wolves into cohesive, territorial social groups that interact dynamically with other packs.
+Introduced in **`v4.3.0` (MC 26.2)** and backported across all version anchors, this milestone overhauls wild wolves into cohesive, territorial social groups that interact dynamically with other packs.
 
 ---
 
@@ -9,7 +9,7 @@ Introduced in **`v4.3.0` (MC 26.2)** and backported to **`v3.5.0` (MC 26.1.2)**,
 Wild wolves no longer wander aimlessly as disjointed single entities. Instead, they form persistent packs of up to 8 members anchored to a dominant leader:
 * **Leader Anchor**: Pack followers track their leader's coordinates and stay anchored within a tight perimeter.
 * **Wild Personalities**: Wild wolves exhibit unique AI goals depending on their leader's personality (e.g., Aggressive leaders trigger pack-wide hunts, Pacifist leaders lead retreats).
-* **Reinforcements**: When a wild pack is engaged or challenged, nearby wild pack members can spawn or run to defend their leader's territory.
+* **Reinforcements**: When a wild pack is engaged or challenged, nearby wild pack members can run to defend their leader's territory.
 
 ---
 
