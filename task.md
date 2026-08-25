@@ -1,7 +1,7 @@
-# 🐕 Better Dogs - Active & Backlog Tracking
+# 🐕 Better Dogs - Active & Backlog Tracking (MC 26.2 & 26.3+)
 
 ## Memory Read Receipt
-- **Read Timestamp**: 2026-08-25T19:21:00+07:00
+- **Read Timestamp**: 2026-08-25T19:33:00+07:00
 - **Source**: `E:\Minecraft Project\.core\logs\MEMORY.md`
 
 ---
@@ -9,16 +9,15 @@
 ## 📌 Backlog Tasks
 
 ### Phase 1: Targeted Bugfixes
-- [x] `[BL-BD-001]` **Minecart & Vehicle Dismount Interaction Interception + Re-boarding Collision Fix** (`4.24.8+26.2`)
+- [x] `[BL-BD-001]` **Minecart & Vehicle Dismount Interaction Interception + Re-boarding Collision Fix** (`4.24.8+26.2` & `5.0.21+26.3`)
   - [x] Add direct passenger dismount check in `DogCommandManager.registerEvents()` when clicking a vehicle containing owned dogs.
   - [x] Apply safe lateral offset positioning on dismount to prevent vanilla `AbstractMinecart` collision re-boarding.
   - [x] Clear `DogCommandManager` vehicle targets and reset `MoveToVehicleGoal` on dismount.
   - [x] Verify dismount audio, particles, and overlay notifications.
-- [ ] `[BL-BD-002]` **Bone Consumption Guarding & Taming Gating Fix**
-  - [ ] Require `player.isSecondaryUseActive()` and `MAIN_HAND` in `WolfGuardHelper.canToggleGuard()`.
-  - [ ] Enforce 6-Dimensional Interaction Guard (Creative mode bypass `!player.getAbilities().instabuild`, ownership check, posture safety).
-  - [ ] Purge legacy duplicate bone guard handling block in `WolfInteractionHelper.java` (lines 281–321).
-  - [ ] Ensure normal right-clicking on tamed owned wolves with a bone safely toggles sitting posture and never consumes the bone.
+- [ ] `[BL-BD-002]` **Bone Consumption Guarding & Taming Gating Fix** (`4.24.58-60+26.2` & `5.0.60-62+26.3`)
+  - [x] Step 1: Require `player.isSecondaryUseActive()` and `MAIN_HAND` in `WolfGuardHelper.canToggleGuard()`, dual bone consumption, sitting posture preservation (`4.24.58+26.2` & `5.0.60+26.3`).
+  - [ ] Step 2: Purge legacy duplicate bone guard handling block in `WolfInteractionHelper.java` (lines 281–321) and allow non-sneak sitting (`4.24.59+26.2` & `5.0.61+26.3`).
+  - [ ] Step 3: Expand JUnit 5 test coverage in `GuardModePatrolTest.java` (`4.24.60+26.2` & `5.0.62+26.3`).
 
 ### Phase 2: Foundational Architecture Modularization
 - [ ] `[BL-BD-003]` **Full Codebase Audit & Migration to The Clean "1 File, 1 Purpose" Architecture Law**
@@ -63,5 +62,6 @@
 - [x] **Creeper Blast Evasion** (`4.24.0`)
 - [x] **Dynamic Climate-Aware Wolf Coat Variants** (`4.24.2`)
 - [x] **Litematica Compatibility & Command Item Expansion** (`4.24.3`)
-- [x] **Minimal Tame Particle Polish** (`4.24.7+26.2`)
-- [x] **Minecart Dismount Collision Fix** (`4.24.8+26.2`)
+- [x] **Minimal Tame Particle Polish** (`4.24.7+26.2` & `5.0.22+26.3`)
+- [x] **Minecart Dismount Collision Fix** (`4.24.8+26.2` & `5.0.21+26.3`)
+- [x] **Guard Mode Gating & 6D Interaction Overhaul (Step 1)** (`4.24.58+26.2` & `5.0.60+26.3`)

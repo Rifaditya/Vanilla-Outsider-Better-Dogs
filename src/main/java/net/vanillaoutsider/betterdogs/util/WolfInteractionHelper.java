@@ -278,52 +278,9 @@ public class WolfInteractionHelper {
             return InteractionResult.SUCCESS;
         }
 
-        if (wolf.isTame() && wolf.isOwnedBy(player) && itemStack.is(Items.BONE) && player.isSecondaryUseActive()) {
-            if (wolf instanceof WolfExtensions ext) {
-                boolean currentGuard = ext.betterdogs$isGuardMode();
-                boolean newGuard = !currentGuard;
-                
-                if (!wolf.level().isClientSide()) {
-                    ext.betterdogs$setGuardMode(newGuard);
-                    if (newGuard) {
-                        ext.betterdogs$setGuardPos(wolf.blockPosition());
-                        BlockPos pos = wolf.blockPosition();
-                        player.sendOverlayMessage(Component.translatable("text.betterdogs.guard_activated", wolf.getName(), pos.getX(), pos.getY(), pos.getZ()));
-                        
-                        WolfPersonality personality = ext.betterdogs$getPersonality();
-                        
-                        if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
-                            net.vanillaoutsider.betterdogs.BetterDogs.GUARD_WOLF_PERSONALITY.trigger(serverPlayer, personality);
-                        }
-
-                        float pitch = switch (personality) {
-                            case AGGRESSIVE -> 0.8f;
-                            case NORMAL -> 1.2f;
-                            case PACIFIST -> 1.5f;
-                        };
-                        net.minecraft.sounds.SoundEvent sound = personality == WolfPersonality.PACIFIST ? 
-                            ((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().whineSound().value() : 
-                            ((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().ambientSound().value();
-                        wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), sound, wolf.getSoundSource(), 1.0f, pitch);
-                    } else {
-                        ext.betterdogs$setGuardPos(null);
-                        ext.betterdogs$setSittingManually(false);
-                        player.sendOverlayMessage(Component.translatable("text.betterdogs.guard_deactivated", wolf.getName()));
-                        wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), ((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().ambientSound().value(), wolf.getSoundSource(), 1.0f, 1.0f);
-                    }
-                    itemStack.consume(1, player);
-                }
-                
-                // Force standing pose on both client and server when toggling guard mode
-                wolf.setOrderedToSit(false);
-            }
-            return InteractionResult.SUCCESS;
-        }
-
         if (wolf.isTame() && wolf.isOwnedBy(player) && hand == InteractionHand.MAIN_HAND) {
             if (wolf instanceof WolfExtensions ext && ext.betterdogs$isGuardMode()) {
-                if (!itemStack.is(Items.BONE)
-                    && !wolf.isFood(itemStack) && !itemStack.is(net.minecraft.tags.ItemTags.WOLF_COLLAR_DYES) 
+                if (!wolf.isFood(itemStack) && !itemStack.is(net.minecraft.tags.ItemTags.WOLF_COLLAR_DYES) 
                     && !wolf.isEquippableInSlot(itemStack, net.minecraft.world.entity.EquipmentSlot.BODY)
                     && !(wolf.isInSittingPose() && wolf.isWearingBodyArmor() && wolf.getBodyArmorItem().isDamaged() && wolf.getBodyArmorItem().isValidRepairItem(itemStack))) {
                     

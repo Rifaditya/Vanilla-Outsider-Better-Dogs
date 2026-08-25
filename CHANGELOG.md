@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.24.59+26.2] - 2026-08-25
+### Changed
+- 🧹 **Legacy Bone Deduplication & Guard Sit Handler Fix (`WolfInteractionHelper.java`)**:
+  - Purged duplicate legacy bone guard handling block (lines 281–321) that bypassed `WolfGuardHelper`.
+  - Removed `!itemStack.is(Items.BONE)` exclusion from the guard dog sitting handler, allowing normal non-sneak right-clicks with bones to cleanly toggle manual sitting/standing at the guard post without consuming items.
+
 ## [4.24.58+26.2] - 2026-08-25
 ### Changed
 - 🛡️ **Guard Mode Gating & 6D Interaction Overhaul (`WolfGuardHelper.java`, `WolfInteractMixin.java`)**:
