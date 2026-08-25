@@ -42,9 +42,9 @@
   - [x] Step 3: Headless JUnit 5 Performance & Tag Test Suite (`DataDrivenAndPerformanceTest`) (`4.24.72+26.2` & `5.0.74+26.3`).
 
 ### Phase 5: Automated Test Suite Integration
-- [ ] `[BL-BD-007]` **Automated Headless JUnit & GameTest Suite Integration**
-  - [ ] Implement JUnit 5 tests under `src/test/java/` for personality math, command parsers, and interaction logic.
-  - [ ] Integrate headless Fabric Loom GameTest suites for AI goal verification per Automated GameTest Verification Law.
+- [x] `[BL-BD-007]` **Automated Headless JUnit & GameTest Suite Integration** (`4.24.73-74+26.2` & `5.0.75-76+26.3`)
+  - [x] Step 1: Master Full-Suite Verification & Contract Audit (`BetterDogsFullSuiteTest`) (`4.24.73+26.2` & `5.0.75+26.3`).
+  - [x] Step 2: Milestone Backlog Pruning & Clean State Reset (`BACKLOG.md`, `task.md`) (`4.24.74+26.2` & `5.0.76+26.3`).
 
 ---
 

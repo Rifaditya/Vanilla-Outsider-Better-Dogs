@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.0.76+26.3] - 2026-08-25
+### Changed
+- 🧹 **Milestone Backlog Pruning & Clean State Reset**:
+  - Successfully resolved and verified all backlog items (`[BL-BD-001]` through `[BL-BD-007]`).
+  - Pruned completed backlog sections adhering to the Backlog Resolution & Pruning Law, resetting the summary table to a clean ready state.
+
 ## [5.0.75+26.3] - 2026-08-25
 ### Added
 - 🧪 **Master Full-Suite Verification & Helper Contract Audit**:
