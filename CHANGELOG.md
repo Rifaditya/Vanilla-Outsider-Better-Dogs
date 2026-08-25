@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.0.63+26.3] - 2026-08-25
+### Changed
+- 🏗️ **Clean "1 File, 1 Purpose" Architecture: Combat & Targeting Modularization**:
+  - Deconstructed composite `WolfCombatHooks` into two single-responsibility handlers:
+    - `WolfDamageHandler.java`: Handles `actuallyHurt` logic (accidental/intentional feed demerits, adoption cancellation on hit, play-fight 1-HP safety clamp, friendly fire delegation, and baby retaliation scheduling).
+    - `WolfTargetingHandler.java`: Handles `wantsToAttack` target qualification overrides (social actions, 1v1 territorial war leader protection, blood feud nemesis targeting with affinity suppression, submissive pack protection, and baby attack restrictions).
+  - Updated `WolfCombatMixin.java` to route directly to `WolfDamageHandler` and `WolfTargetingHandler`.
+  - Purged obsolete `WolfCombatHooks.java` class.
+
 ## [5.0.62+26.3] - 2026-08-25
 ### Added
 - 🧪 **Guard Mode Headless Unit Test Suite Expansion (`GuardModePatrolTest.java`)**:
