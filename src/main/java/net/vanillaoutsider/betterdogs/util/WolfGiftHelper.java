@@ -42,6 +42,19 @@ public final class WolfGiftHelper {
     }
 
     /**
+     * Checks if the current time is morning (0-2000 ticks) or the owner is waking up from sleep.
+     */
+    public static boolean isMorningOrWaking(Level level, Player owner) {
+        if (level == null) {
+            return false;
+        }
+        long timeOfDay = level.getGameTime() % 24000L;
+        boolean isMorning = timeOfDay >= 0 && timeOfDay <= 2000L;
+        boolean isSleepingOrWaking = owner != null && (owner.isSleeping() || owner.getSleepTimer() > 0);
+        return isMorning || isSleepingOrWaking;
+    }
+
+    /**
      * Evaluates if a wolf is eligible to deliver a morning gift to its owner.
      */
     public static boolean canDeliverGift(Wolf wolf, Player owner) {
@@ -51,7 +64,8 @@ public final class WolfGiftHelper {
         if (!wolf.isTame() || !wolf.isOwnedBy(owner)) {
             return false;
         }
-        if (wolf.getHealth() < wolf.getMaxHealth() - 0.5f) {
+        // 1. Strict 100% full health requirement
+        if (wolf.getHealth() < wolf.getMaxHealth()) {
             return false;
         }
 
@@ -60,6 +74,12 @@ public final class WolfGiftHelper {
             return false;
         }
 
+        // 2. Dual Morning / Wake-up Trigger
+        if (!isMorningOrWaking(level, owner)) {
+            return false;
+        }
+
+        // 3. Feed merits threshold
         int threshold = DEFAULT_FEED_THRESHOLD;
         try {
             threshold = DynamicGameRuleManager.getInt(level, BetterDogsGameRules.BD_GIFT_FEED_THRESHOLD);
@@ -75,6 +95,7 @@ public final class WolfGiftHelper {
             return false;
         }
 
+        // 4. Once per calendar day limit
         long currentDay = getDayCount(level);
         long lastGiftDay = WolfPersistentData.getLastGiftDay(wolf);
         if (lastGiftDay >= currentDay) {
@@ -85,6 +106,7 @@ public final class WolfGiftHelper {
             return false;
         }
 
+        // 5. Peaceful area (zero hostile monsters within 16 blocks)
         List<Monster> monsters = level.getEntitiesOfClass(Monster.class, wolf.getBoundingBox().inflate(16.0D));
         return monsters.isEmpty();
     }

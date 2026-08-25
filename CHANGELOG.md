@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.0.69+26.3] - 2026-08-25
+### Changed
+- 🎁 **Morning Gift Qualification Conditions & Dual Wake-Up Trigger (`WolfGiftHelper`)**:
+  - Implemented dual trigger: immediately on waking up from bed, or during early morning (ticks 0–2000).
+  - Enforced strict 100% full dog health requirement (`wolf.getHealth() >= wolf.getMaxHealth()`).
+  - Enforced 1 gift per calendar day limit (`lastGiftDay < currentDay`).
+  - Enforced peaceful surrounding check (zero hostile monsters within 16 blocks).
+
 ## [5.0.68+26.3] - 2026-08-25
 ### Added
 - 🧪 **Wolf Fire Survival AI: Headless JUnit 5 Test Suite Expansion**:
