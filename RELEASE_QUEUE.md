@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`4.24.64+26.2`** (2026-08-25) - **Wolf Fire Survival AI (Goal & Extinguishing):** Implemented `WolfSeekWaterOnFireGoal` (16m water sprint at 1.4x speed, fallback panic at 1.3x, emergency break-sit toggle) and registered GameRules.
 - [ ] **`4.24.63+26.2`** (2026-08-25) - **Command & Listener Modularization:** Extracted `DogEntityCommandListener` and `DogBlockCommandListener` from `DogCommandManager` into dedicated single-purpose listeners.
 - [ ] **`4.24.62+26.2`** (2026-08-25) - **Tick & Health Modularization:** Extracted `WolfHealingHelper` and `WolfSoundHelper`, delegated guard/nemesis/particle ticks to domain helpers, and purged `WolfTickHelper`.
 - [ ] **`4.24.61+26.2`** (2026-08-25) - **Combat & Targeting Modularization:** Deconstructed composite `WolfCombatHooks` into isolated `WolfDamageHandler` and `WolfTargetingHandler` adhering strictly to Clean 1 File 1 Purpose Architecture.
