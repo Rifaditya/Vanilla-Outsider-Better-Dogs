@@ -121,4 +121,32 @@ public class WolfNemesisHelper {
             WolfPersistentData.clearPersistedNemesis(wolf);
         }
     }
+
+    public static void tickNemesisSystem(Wolf wolf, ServerLevel serverLevel) {
+        if (wolf == null || !wolf.isTame() || serverLevel == null) return;
+        if (!DynamicGameRuleManager.getBoolean(serverLevel, BetterDogsGameRules.BD_NEMESIS_SYSTEM)) return;
+        
+        String nemesisType = WolfPersistentData.getPersistedNemesisType(wolf);
+        if (nemesisType == null || nemesisType.isEmpty()) return;
+
+        long expiry = WolfPersistentData.getPersistedNemesisExpiry(wolf);
+        if (serverLevel.getGameTime() > expiry) {
+            WolfPersistentData.clearPersistedNemesis(wolf);
+            WolfDebugLogger.log(wolf, "Nemesis", "Grudge against " + nemesisType + " has expired.");
+            return;
+        }
+
+        // Buffs / angry cue when attacking the nemesis
+        LivingEntity target = wolf.getTarget();
+        if (target != null && target.isAlive()) {
+            String targetType = BuiltInRegistries.ENTITY_TYPE.getKey(target.getType()).toString();
+            if (nemesisType.equals(targetType)) {
+                // Spawn angry particles
+                double px = wolf.getRandomX(0.5);
+                double py = wolf.getRandomY() + 0.5;
+                double pz = wolf.getRandomZ(0.5);
+                serverLevel.sendParticles(ParticleTypes.ANGRY_VILLAGER, px, py, pz, 1, 0.2, 0.2, 0.2, 0.0);
+            }
+        }
+    }
 }

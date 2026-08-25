@@ -1,5 +1,14 @@
 # Better Dogs History & Concept Changelog
 
+## [5.0.64+26.3] - 2026-08-25
+### Changed
+- **Clean "1 File, 1 Purpose" Architecture: Tick & Health Modularization**:
+  - Extracted single-purpose `WolfHealingHelper.java` for passive out-of-combat regeneration timing.
+  - Extracted single-purpose `WolfSoundHelper.java` for ambient vocalizations, health-dependent whining, and sound overrides.
+  - Moved `tickGuardMode` to `WolfGuardHelper.java`, `tickNemesisSystem` to `WolfNemesisHelper.java`, and `tickRuntParticles`/`tickAdoptableParticles` to `WolfParticleHelper.java`.
+  - Updated `WolfMixin.java` to call specialized single-purpose helpers directly.
+  - Purged obsolete `WolfTickHelper.java` class.
+
 ## [5.0.63+26.3] - 2026-08-25
 ### Changed
 - **Clean "1 File, 1 Purpose" Architecture: Combat & Targeting Modularization**:
