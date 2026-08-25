@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`4.24.67+26.2`** (2026-08-25) - **Morning Gift Qualification Conditions & Wake-Up Trigger:** Updated `WolfGiftHelper` to enforce morning window (0-2000 ticks) or bed wake-up, strict 100% full health, 1 gift/day limit, and 16m monster clearance.
 - [ ] **`4.24.66+26.2`** (2026-08-25) - **Fire Survival Headless Unit Test Suite Expansion:** Added JUnit 5 assertions in `WolfFireSurvivalTest` verifying water search math, sit-break cycles, and water drop safety.
 - [ ] **`4.24.65+26.2`** (2026-08-25) - **Safe Water Drop Cliff Bypass:** Added `isSafeWaterLanding` in `WolfCliffSafetyHelper` enabling wolves to safely jump into water bodies from riverbanks without cliff drop halts.
 - [ ] **`4.24.64+26.2`** (2026-08-25) - **Wolf Fire Survival AI (Goal & Extinguishing):** Implemented `WolfSeekWaterOnFireGoal` (16m water sprint at 1.4x speed, fallback panic at 1.3x, emergency break-sit toggle) and registered GameRules.
