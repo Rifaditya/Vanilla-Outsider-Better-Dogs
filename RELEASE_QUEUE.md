@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`5.0.70+26.3`** (2026-08-25) - **Data-Driven Morning Gift Loot Tables:** Added datapack JSON tables in `loot_table/morning_gift/` for aggressive, pacifist, normal, and rare treasures with fallback generator.
 - [ ] **`5.0.69+26.3`** (2026-08-25) - **Morning Gift Qualification Conditions & Wake-Up Trigger:** Updated `WolfGiftHelper` to enforce morning window (0-2000 ticks) or bed wake-up, strict 100% full health, 1 gift/day limit, and 16m monster clearance.
 - [ ] **`5.0.68+26.3`** (2026-08-25) - **Fire Survival Headless Unit Test Suite Expansion:** Added JUnit 5 assertions in `WolfFireSurvivalTest` verifying water search math, sit-break cycles, and water drop safety.
 - [ ] **`5.0.67+26.3`** (2026-08-25) - **Safe Water Drop Cliff Bypass:** Added `isSafeWaterLanding` in `WolfCliffSafetyHelper` enabling wolves to safely jump into water bodies from riverbanks without cliff drop halts.

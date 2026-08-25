@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.0.70+26.3] - 2026-08-25
+### Added
+- 📦 **Data-Driven Morning Gift Loot Tables (`loot_table/morning_gift/`)**:
+  - Implemented datapack loot tables for `aggressive.json` (mob trophies), `pacifist.json` (nature finds), `normal.json` (domestic foraging), and `rare_treasure.json` (gold nuggets, emeralds, name tags, leads).
+  - Updated `WolfGiftHelper` to roll loot through server `LootTable` registries with 100% safe in-code fallback.
+
 ## [5.0.69+26.3] - 2026-08-25
 ### Changed
 - 🎁 **Morning Gift Qualification Conditions & Dual Wake-Up Trigger (`WolfGiftHelper`)**:

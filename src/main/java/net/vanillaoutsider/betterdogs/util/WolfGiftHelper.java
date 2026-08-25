@@ -5,7 +5,10 @@ package net.vanillaoutsider.betterdogs.util;
 import java.util.List;
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -17,16 +20,25 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.vanillaoutsider.betterdogs.WolfPersistentData;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 
 /**
- * Single-purpose helper managing morning gift eligibility, loot rolls, and delivery feedback.
+ * Single-purpose helper managing morning gift eligibility, data-driven loot rolls, and delivery feedback.
  */
 public final class WolfGiftHelper {
 
     public static final int DEFAULT_FEED_THRESHOLD = 10;
+
+    public static final ResourceKey<LootTable> AGGRESSIVE_GIFT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, Identifier.fromNamespaceAndPath("vanilla-outsider-better-dogs", "morning_gift/aggressive"));
+    public static final ResourceKey<LootTable> PACIFIST_GIFT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, Identifier.fromNamespaceAndPath("vanilla-outsider-better-dogs", "morning_gift/pacifist"));
+    public static final ResourceKey<LootTable> NORMAL_GIFT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, Identifier.fromNamespaceAndPath("vanilla-outsider-better-dogs", "morning_gift/normal"));
+    public static final ResourceKey<LootTable> RARE_TREASURE_TABLE = ResourceKey.create(Registries.LOOT_TABLE, Identifier.fromNamespaceAndPath("vanilla-outsider-better-dogs", "morning_gift/rare_treasure"));
 
     private WolfGiftHelper() {
     }
@@ -112,7 +124,43 @@ public final class WolfGiftHelper {
     }
 
     /**
-     * Rolls a personality-themed scavenged morning gift, with a 5% chance for rare treasures.
+     * Rolls a personality-themed scavenged morning gift using data-driven loot tables with in-code fallback.
+     */
+    public static ItemStack rollMorningGift(Level level, Wolf wolf, WolfPersonality personality, RandomSource random) {
+        if (personality == null) {
+            personality = WolfPersonality.NORMAL;
+        }
+
+        if (level instanceof ServerLevel serverLevel && wolf != null) {
+            try {
+                boolean isRare = random.nextFloat() < 0.05f;
+                ResourceKey<LootTable> tableKey = isRare ? RARE_TREASURE_TABLE : switch (personality) {
+                    case AGGRESSIVE -> AGGRESSIVE_GIFT_TABLE;
+                    case PACIFIST -> PACIFIST_GIFT_TABLE;
+                    case NORMAL -> NORMAL_GIFT_TABLE;
+                };
+
+                LootTable table = serverLevel.getServer().reloadableRegistries().getLootTable(tableKey);
+                if (table != null && table != LootTable.EMPTY) {
+                    LootParams params = new LootParams.Builder(serverLevel)
+                            .withParameter(LootContextParams.ORIGIN, wolf.position())
+                            .withParameter(LootContextParams.THIS_ENTITY, wolf)
+                            .create(LootContextParamSets.GIFT);
+                    List<ItemStack> items = table.getRandomItems(params);
+                    if (!items.isEmpty()) {
+                        return items.get(0).copy();
+                    }
+                }
+            } catch (Throwable ignored) {
+                // Fallback to hardcoded pool below
+            }
+        }
+
+        return rollMorningGift(personality, random);
+    }
+
+    /**
+     * Rolls a personality-themed scavenged morning gift directly from hardcoded items (headless tests & fallback).
      */
     public static ItemStack rollMorningGift(WolfPersonality personality, RandomSource random) {
         if (personality == null) {
@@ -125,7 +173,7 @@ public final class WolfGiftHelper {
                     new ItemStack(Items.GOLD_NUGGET, 1 + random.nextInt(3)),
                     new ItemStack(Items.EMERALD),
                     new ItemStack(Items.NAME_TAG),
-                    new ItemStack(Items.BONE_MEAL, 1 + random.nextInt(3))
+                    new ItemStack(Items.LEAD)
             };
             return rareItems[random.nextInt(rareItems.length)];
         }
@@ -188,7 +236,7 @@ public final class WolfGiftHelper {
         WolfPersistentData.setPersistedFeedCount(wolf, Math.max(0, currentFeeds - threshold));
 
         WolfPersonality personality = WolfPersistentData.getPersistedPersonality(wolf);
-        ItemStack gift = rollMorningGift(personality, wolf.getRandom());
+        ItemStack gift = rollMorningGift(level, wolf, personality, wolf.getRandom());
 
         ItemEntity itemEntity = new ItemEntity(level, owner.getX(), owner.getY() + 0.2D, owner.getZ(), gift);
         itemEntity.setDefaultPickUpDelay();
