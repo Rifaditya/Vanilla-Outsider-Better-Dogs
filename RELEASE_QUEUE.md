@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`5.0.62+26.3`** (2026-08-25) - **Guard Mode Headless Unit Test Suite Expansion:** Added JUnit 5 assertions in `GuardModePatrolTest` testing 4-parameter guard gating, off-hand rejection, and null safety.
 - [ ] **`5.0.61+26.3`** (2026-08-25) - **Legacy Bone Deduplication & Guard Sit Handler Fix:** Purged duplicate legacy bone block from `WolfInteractionHelper` and enabled normal non-sneak right-click sitting with bones on guard dogs.
 - [ ] **`5.0.60+26.3`** (2026-08-25) - **Guard Mode Gating & 6D Interaction Overhaul:** Enforced Shift-right-click requirement for Guard Mode bone toggling (releasing normal bone clicks for sit/stand toggling), added dual-direction bone consumption with Creative bypass, preserved seated posture on activation, and added personality sound pitch feedback.
 - [ ] **`5.0.59+26.3`** (2026-08-22) - **Hoover Ground Scavenger Quirk:** Dogs eat dropped food at full health with 160-tick digestion cooldown and personality weighting (Aggressive 70%, Normal 35%, Pacifist 10%).
