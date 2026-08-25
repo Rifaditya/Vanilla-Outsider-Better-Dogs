@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.0.66+26.3] - 2026-08-25
+### Added
+- 🚒 **Wolf Fire Survival AI: Goal & Extinguishing Logic (`WolfSeekWaterOnFireGoal`)**:
+  - Registered priority 1 AI goal activating when wolves catch fire.
+  - Implemented 16m nearest water source detection and sprint at `1.4x` movement speed.
+  - Implemented fallback erratic panic run (`1.3x` speed) with whimper vocalizations and smoke particles if no water is reachable.
+  - Implemented emergency break-sit mechanic to save sitting dogs from burning in place, restoring posture upon extinguishing.
+  - Registered GameRules `betterdogs:bd_wolves_seek_water_on_fire` and `betterdogs:bd_wolves_break_sit_on_fire`.
+
 ## [5.0.65+26.3] - 2026-08-25
 ### Changed
 - 🏗️ **Clean "1 File, 1 Purpose" Architecture: Command & Listener Modularization**:

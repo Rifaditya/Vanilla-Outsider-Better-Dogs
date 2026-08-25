@@ -54,6 +54,8 @@ public class BetterDogsGameRules {
     public static GameRule<Boolean> BD_ZOOMIES_ENABLED;
     public static GameRule<Integer> BD_ZOOMIES_DURATION_TICKS;
     public static GameRule<Boolean> BD_ACTIONBAR_FEEDBACK;
+    public static GameRule<Boolean> BD_WOLVES_SEEK_WATER_ON_FIRE;
+    public static GameRule<Boolean> BD_WOLVES_BREAK_SIT_ON_FIRE;
 
     // --- Player ---
     public static GameRule<Boolean> BD_FRIENDLY_FIRE;
@@ -200,6 +202,8 @@ public class BetterDogsGameRules {
         BD_FETCH_RANGE = registerInteger("betterdogs:bd_fetch_range", BETTER_DOGS, 16);
         BD_ZOOMIES_ENABLED = registerBoolean("betterdogs:bd_zoomies_enabled", BETTER_DOGS, true);
         BD_ZOOMIES_DURATION_TICKS = registerInteger("betterdogs:bd_zoomies_duration_ticks", BETTER_DOGS, 160);
+        BD_WOLVES_SEEK_WATER_ON_FIRE = registerBoolean("betterdogs:bd_wolves_seek_water_on_fire", BETTER_DOGS, true);
+        BD_WOLVES_BREAK_SIT_ON_FIRE = registerBoolean("betterdogs:bd_wolves_break_sit_on_fire", BETTER_DOGS, true);
 
 
 
