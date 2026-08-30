@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **1.0.76+1.21.1** - Indonesian (id_id) Full Parity Localization & Player Guide
 - [ ] **`1.0.75+1.21.1`** (2026-08-22) - 🍖 Hoover / Ground Food Scavenger Quirk (WolfDispositionHelper.java & EatGroundFoodGoal.java): Implemented the Hoover ...
 - [ ] **`1.0.74+1.21.1`** (2026-08-22) - 🧬 Full-Spectrum [-100%, +100%] UUID Behavioral Variance (WolfDispositionHelper.java): Expanded individual dog UUID of...
 - [ ] **`1.0.73+1.21.1`** (2026-08-22) - 🧬 Additive Modifier Behavioral Quirk Model (WolfDispositionHelper.java): Implemented additive modifier variance model...
@@ -77,7 +78,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 - [ ] **`1.0.6+1.21.1`** (2026-08-14) - 💥 Taming Crash Fix (NoSuchMethodError): Replaced wolf.level() with wolf.getRandom().
 - [ ] **`1.0.5+1.21.1`** (2026-08-14) - Proactive AggressiveTargetGoal (NearestAttackableTargetGoal<Monster>).
 - [ ] **`1.0.4+1.21.1`** (2026-08-13) - Entity AI Goal Registration (Wolf.registerGoals).
-- [ ] **`1.0.3+1.21.1`** (2026-08-13) - Mixin Injection Safety.
+- [x] **`1.0.3+1.21.1`** (2026-08-13) - Mixin Injection Safety.
 - [x] **`1.0.2+1.21.1`** (2026-08-13) - Personality Combat AI & Target Selection (PersonalityTargetGoal).
 - [x] **`1.0.1+1.21.1`** (2026-08-13) - Personality Follow & Teleport AI System (PersonalityFollowOwnerGoal).
 - [ ] **`1.0.0+1.21.1`** (2026-08-13) - Initial subproject setup for Minecraft 1.21.1.
