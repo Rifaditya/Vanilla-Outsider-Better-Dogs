@@ -1,5 +1,11 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
+## [1.0.83+1.21.11]
+### Added
+- 🌐 **Spanish (`es_es`, `es_mx`) Localization & Player Guide**:
+  - Added complete `assets/betterdogs/lang/es_es.json` and `es_mx.json` matching all 653 translation keys.
+  - Added localized player guide in `Doc/Players/index_es_es.md`.
+
 ## [1.0.82+1.21.11]
 ### Added
 - 🌐 **Russian (`ru_ru`) Localization & Player Guide**:
