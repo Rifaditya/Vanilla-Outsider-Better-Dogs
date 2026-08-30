@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **1.0.78+1.21.1** - Traditional Chinese (zh_tw, zh_hk) Localization & Player Guide
 - [ ] **1.0.77+1.21.1** - Simplified Chinese (zh_cn) Localization & Player Guide
 - [ ] **1.0.76+1.21.1** - Indonesian (id_id) Full Parity Localization & Player Guide
 - [ ] **`1.0.75+1.21.1`** (2026-08-22) - 🍖 Hoover / Ground Food Scavenger Quirk (WolfDispositionHelper.java & EatGroundFoodGoal.java): Implemented the Hoover ...
