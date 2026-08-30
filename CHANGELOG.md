@@ -1,5 +1,12 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
+## [1.0.79+1.21.11]
+### Added
+- 🌐 **Indonesian (id_id) Full Parity Localization & Player Guide**:
+  - Synchronized complete ssets/betterdogs/lang/id_id.json matching all 653 translation keys with zero untranslated strings.
+  - Added localized Indonesian player guide in Doc/Players/index_id_id.md.
+  - Stripped legacy UTF-8 BOM encoding for pure standard UTF-8 compliance.
+
 ## [1.0.78+1.21.11] - 2026-08-22
 ### Added
 - 🍖 **Hoover / Ground Food Scavenger Quirk (`WolfDispositionHelper.java` & `EatGroundFoodGoal.java`)**:
