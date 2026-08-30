@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.0.81+26.3]
+### Added
+- 🌐 **Spanish (`es_es`, `es_mx`) Localization & Player Guide**:
+  - Added complete `assets/vanilla-outsider-better-dogs/lang/es_es.json` and `es_mx.json` matching all 428 translation keys.
+  - Added localized player guide in `Doc/Players/index_es_es.md`.
+
 ## [5.0.80+26.3]
 ### Added
 - 🌐 **Russian (`ru_ru`) Localization & Player Guide**:

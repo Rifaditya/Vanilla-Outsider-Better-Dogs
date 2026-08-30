@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`5.0.81+26.3`** - Spanish (`es_es`, `es_mx`) Localization & Player Guide
 - [ ] **`5.0.80+26.3`** - Russian (`ru_ru`) Localization & Player Guide
 - [ ] **5.0.79+26.3** - Traditional Chinese (zh_tw, zh_hk) Localization & Player Guide
 - [ ] **5.0.78+26.3** - Simplified Chinese (zh_cn) Localization & Player Guide
