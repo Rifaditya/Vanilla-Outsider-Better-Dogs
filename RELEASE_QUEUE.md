@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **4.24.77+26.2** - Traditional Chinese (zh_tw, zh_hk) Localization & Player Guide
 - [ ] **4.24.76+26.2** - Simplified Chinese (zh_cn) Localization & Player Guide
 - [ ] **4.24.75+26.2** - Indonesian (id_id) Full Parity Localization & Player Guide
 - [ ] **`4.24.74+26.2`** (2026-08-25) - **Milestone Backlog Pruning & Clean State Reset:** Successfully resolved all backlog items [BL-BD-001] to [BL-BD-007] and reset BACKLOG.md to a clean state.
