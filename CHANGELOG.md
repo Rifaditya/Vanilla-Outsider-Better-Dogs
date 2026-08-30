@@ -1,5 +1,11 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
+## [1.0.80+1.21.11]
+### Added
+- 🌐 **Simplified Chinese (zh_cn) Localization & Player Guide**:
+  - Added complete ssets/betterdogs/lang/zh_cn.json matching all 653 translation keys.
+  - Added localized player guide in Doc/Players/index_zh_cn.md.
+
 ## [1.0.79+1.21.11]
 ### Added
 - 🌐 **Indonesian (id_id) Full Parity Localization & Player Guide**:
