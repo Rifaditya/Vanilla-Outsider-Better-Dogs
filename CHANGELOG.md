@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.0.77+26.3]
+### Added
+- 🌐 **Indonesian (id_id) Full Parity Localization & Player Guide**:
+  - Audited and synchronized ssets/vanilla-outsider-better-dogs/lang/id_id.json for 100% key parity with en_us.json.
+  - Added localized Indonesian player guide in Doc/Players/index_id_id.md.
+
 ## [5.0.76+26.3] - 2026-08-25
 ### Changed
 - 🧹 **Milestone Backlog Pruning & Clean State Reset**:

@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **5.0.77+26.3** - Indonesian (id_id) Full Parity Localization & Player Guide
 - [ ] **`5.0.76+26.3`** (2026-08-25) - **Milestone Backlog Pruning & Clean State Reset:** Successfully resolved all backlog items [BL-BD-001] to [BL-BD-007] and reset BACKLOG.md to a clean state.
 - [ ] **`5.0.75+26.3`** (2026-08-25) - **Master Full-Suite Verification & Contract Audit:** Implemented `BetterDogsFullSuiteTest` running contract assertions across all 12 modular helper classes.
 - [ ] **`5.0.74+26.3`** (2026-08-25) - **Data-Driven Tags & Zero-Allocation Performance Test Suite:** Added JUnit 5 assertions in `DataDrivenAndPerformanceTest` verifying FastRandom distribution, tag definitions, and helper fallbacks.
@@ -50,8 +51,8 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 - [ ] **`5.0.4+26.3`** (2026-07-31) - **Memory Leak Cleanup Hooks:** Added `die` and `remove` hooks in `WolfMixin` to nullify `socialTarget` entity references, clear spatial targets, reset Goat Horn timers, and cancel scheduler tasks upon entity removal.
 - [ ] **`5.0.3+26.3`** (2026-07-31) - **C2ME Multi-Threading Chunk Safety:** Added `level.hasChunkAt(pos)` guards to teleportation and AI goal block searches to prevent asynchronous chunk loading deadlocks under C2ME/Noisium.
 - [ ] **`5.0.2+26.3`** (2026-07-31) - **Mixin Security & Architecture Refactor:** Audited all 25 Mixin classes for `@Unique` annotations and `betterdogs$` member prefixing. Extracted 260-line Goat Horn command logic from `InstrumentItemMixin` into standalone `WolfHornHelper`.
-- [ ] **`5.0.1+26.3`** (2026-07-30) - **MC 26.3 Fixes:** Fixed world tick crash by aligning `NaturalSpawnerMixin.mobsAt` descriptor to MC 26.3 refactored method signature, and resolved game load crash from duplicate `betterdogs:bd_creeper_awareness` GameRule.
-- [ ] **`5.0.0+26.3`** (2026-07-30) - **Minecraft 26.3 Upgrade:** Upgraded mod target to Minecraft 26.3 and fixed advancement trigger codec compatibility (`EntityPredicate.CODEC`), resolving world loading crash.
+- [x] **`5.0.1+26.3`** (2026-07-30) - **MC 26.3 Fixes:** Fixed world tick crash by aligning `NaturalSpawnerMixin.mobsAt` descriptor to MC 26.3 refactored method signature, and resolved game load crash from duplicate `betterdogs:bd_creeper_awareness` GameRule.
+- [x] **`5.0.0+26.3`** (2026-07-30) - **Minecraft 26.3 Upgrade:** Upgraded mod target to Minecraft 26.3 and fixed advancement trigger codec compatibility (`EntityPredicate.CODEC`), resolving world loading crash.
 - [ ] **`4.24.0+26.2`** (2026-07-30) - **AI Refinement: Creeper Blast Evasion:** Tamed wolves detect swelling creepers within 10 blocks and sprint radially away at `1.5x` speed with smoke trails. Governed by `betterdogs:bd_creeper_evasion_enabled`.
 - [ ] **`4.23.0+26.2`** (2026-07-30) - **Goat Horn Command System (Stage 5: Seek Horn):** Blowing the Seek Goat Horn commands active following wolves within range to focus fire on a crosshair-targeted entity or enter aggressive area search mode at `1.3x` speed. Emits angry villager particles. Governed by `betterdogs:bd_horn_command_range`.
 - [ ] **`4.22.0+26.2`** (2026-07-30) - **Goat Horn Command System (Stage 4: Yearn Horn):** Blowing the Yearn Goat Horn orders all sitting owned wolves within range to stand up and resume active follow mode. Emits note & happy particles. Governed by `betterdogs:bd_horn_command_range`.
