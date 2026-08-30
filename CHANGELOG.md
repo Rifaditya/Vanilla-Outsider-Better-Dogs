@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.24.59+26.1.2]
+### Added
+- 🌐 **Simplified Chinese (zh_cn) Localization & Player Guide**:
+  - Added complete ssets/vanilla-outsider-better-dogs/lang/zh_cn.json matching all 428 translation keys.
+  - Added localized player guide in Doc/Players/index_zh_cn.md.
+
 ## [4.24.58+26.1.2]
 ### Added
 - 🌐 **Indonesian (id_id) Full Parity Localization & Player Guide**:
