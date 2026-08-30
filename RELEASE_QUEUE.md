@@ -6,6 +6,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **4.24.58+26.1.2** - Indonesian (id_id) Full Parity Localization & Player Guide
 - [ ] **`4.24.57+26.1.2`** (2026-08-22) - **Hoover Ground Scavenger Quirk:** Dogs eat dropped food at full health with 160-tick digestion cooldown and personality weighting (Aggressive 70%, Normal 35%, Pacifist 10%).
 - [ ] **`4.24.56+26.1.2`** (2026-08-22) - **Full-Spectrum [-100%, +100%] UUID Variance:** Full [-100%, +100%] variance offsets across Aggressive (10/80/10), Normal (30/40/25), and Pacifist (60/10/60) bases.
 - [ ] **`4.24.55+26.1.2`** (2026-08-22) - **Additive Modifier Behavioral Quirk Model:** Wide personality spread (Aggressive 0-5%, Normal 3-18%, Pacifist 15-45% fetch reluctance) with deterministic UUID variance offsets.
@@ -98,7 +99,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 - [x] **`3.10.9+A-26.1.2`** (2026-06-12) - - **Guarding Pacifist Particles**: Redesigned the alert particles for guarding Pacifist dogs to spawn a highly noticeable, expanding horizontal circular ring of 12 pure red dust particles (0xFF0000) using trigonometric direction vectors and client-side outward velocity.
 - [ ] **`3.10.10+A-26.1.2`** (2026-06-12) - - **Configurable Guard Particle Density**: Introduced a client/server configuration setting `guardParticleDensity` inside a new "Visual & Performance Options" Cloth Config screen tab to scale or toggle guard alert particles (`high` = 12, `medium` = 6 [default], `low` = 3, `off` = 0).
 - [ ] **`3.10.11+A-26.1.2`** (2026-06-12) - - **Directional Guard Alarm Particles**: Modified Pacifist watchdog alarm particles to shoot forward in a 60-degree cone aligning with the wolf's looking direction, spawned at head/mouth level.
-- [ ] **`3.10.12-26.1.2`** (2026-06-12) - - **Guard Alarm Point & Freeze**: Pacifist dogs will now stand up, freeze in place, and look directly at the closest detected hostile mob during sentinel alarms.
+- [x] **`3.10.12-26.1.2`** (2026-06-12) - - **Guard Alarm Point & Freeze**: Pacifist dogs will now stand up, freeze in place, and look directly at the closest detected hostile mob during sentinel alarms.
 - [ ] **`3.10.13-26.1.2`** (2026-06-21) - - **Tamed Wolf Wander Restriction**: Replaced the owner-unaware vanilla wandering behavior (`WaterAvoidingRandomStrollGoal`) with a personality-based `TamedWanderNearOwnerGoal`. Wolves now stay closer to their owner: Aggressive (max 14 blocks), Normal (max 8 blocks), and Pacifist (max 4 blocks), preventing them from drifting too far away.
 - [ ] **`3.10.14-26.1.2`** (2026-06-21) - - **Wolf Spawn Multiplier**: Introduced a configuration setting and game rule `bd_wolf_spawn_multiplier_percent` (default: 1.5x) to dynamically adjust wolf spawning weights in biome settings, making them spawn more commonly.
 

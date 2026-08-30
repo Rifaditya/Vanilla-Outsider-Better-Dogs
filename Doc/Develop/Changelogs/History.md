@@ -1,5 +1,11 @@
 # Better Dogs - Historical Changelog
 
+## [4.24.58+26.1.2]
+### Added
+- 🌐 **Indonesian (id_id) Full Parity Localization & Player Guide**:
+  - Audited and synchronized ssets/vanilla-outsider-better-dogs/lang/id_id.json for 100% key parity with en_us.json.
+  - Added localized Indonesian player guide in Doc/Players/index_id_id.md.
+
 ## [4.24.57+26.1.2] - 2026-08-22
 ### Added
 - **Hoover / Ground Food Scavenger Quirk (`WolfDispositionHelper.java`, `WolfScavengeHelper.java`, `EatGroundFoodGoal.java`)**:
