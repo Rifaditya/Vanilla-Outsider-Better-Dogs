@@ -1,5 +1,11 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
+## [1.0.82+1.21.11]
+### Added
+- 🌐 **Russian (`ru_ru`) Localization & Player Guide**:
+  - Added complete `assets/betterdogs/lang/ru_ru.json` matching all 653 translation keys.
+  - Added localized player guide in `Doc/Players/index_ru_ru.md`.
+
 ## [1.0.81+1.21.11]
 ### Added
 - 🌐 **Traditional Chinese (zh_tw, zh_hk) Localization & Player Guide**:
