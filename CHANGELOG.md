@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.24.78+26.2]
+### Added
+- 🌐 **Russian (`ru_ru`) Localization & Player Guide**:
+  - Added complete `assets/vanilla-outsider-better-dogs/lang/ru_ru.json` matching all 428 translation keys.
+  - Added localized player guide in `Doc/Players/index_ru_ru.md`.
+
 ## [4.24.77+26.2]
 ### Added
 - 🌐 **Traditional Chinese (zh_tw, zh_hk) Localization & Player Guide**:
