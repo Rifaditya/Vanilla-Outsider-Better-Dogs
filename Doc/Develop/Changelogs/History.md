@@ -1,5 +1,11 @@
 # Better Dogs - Historical Changelog
 
+## [4.24.60+26.1.2]
+### Added
+- 🌐 **Traditional Chinese (zh_tw, zh_hk) Localization & Player Guide**:
+  - Added complete ssets/vanilla-outsider-better-dogs/lang/zh_tw.json and zh_hk.json matching all 428 translation keys.
+  - Added localized player guide in Doc/Players/index_zh_tw.md.
+
 ## [4.24.59+26.1.2]
 ### Added
 - 🌐 **Simplified Chinese (zh_cn) Localization & Player Guide**:
