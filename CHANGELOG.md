@@ -1,5 +1,11 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
+## [1.0.89+1.21.11]
+### Added
+- 🌐 **Italian (`it_it`) Localization & Player Guide (11-Language Suite Complete)**:
+  - Added complete `assets/betterdogs/lang/it_it.json` matching all 653 translation keys.
+  - Added localized player guide in `Doc/Players/index_it_it.md`.
+
 ## [1.0.88+1.21.11]
 ### Added
 - 🌐 **Korean (`ko_kr`) Localization & Player Guide**:
