@@ -6,6 +6,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`4.24.66+26.1.2`** - French (`fr_fr`, `fr_ca`) Localization & Player Guide
 - [ ] **`4.24.65+26.1.2`** - Japanese (`ja_jp`) Localization & Player Guide
 - [ ] **`4.24.64+26.1.2`** - Portuguese (`pt_br`, `pt_pt`) Localization & Player Guide
 - [ ] **`4.24.63+26.1.2`** - German (`de_de`) Localization & Player Guide
