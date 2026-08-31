@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`1.0.85+1.20.1`** - Korean (`ko_kr`) Localization & Player Guide
 - [ ] **`1.0.84+1.20.1`** - French (`fr_fr`, `fr_ca`) Localization & Player Guide
 - [ ] **`1.0.83+1.20.1`** - Japanese (`ja_jp`) Localization & Player Guide
 - [ ] **`1.0.82+1.20.1`** - Portuguese (`pt_br`, `pt_pt`) Localization & Player Guide

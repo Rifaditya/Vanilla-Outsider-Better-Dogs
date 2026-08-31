@@ -1,5 +1,11 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.85+1.20.1]
+### Added
+- 🌐 **Korean (`ko_kr`) Localization & Player Guide**:
+  - Added complete `assets/betterdogs/lang/ko_kr.json` matching all 653 translation keys.
+  - Added localized player guide in `Doc/Players/index_ko_kr.md`.
+
 ## [1.0.84+1.20.1]
 ### Added
 - 🌐 **French (`fr_fr`, `fr_ca`) Localization & Player Guide**:
