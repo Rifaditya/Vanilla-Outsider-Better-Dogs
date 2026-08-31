@@ -1,5 +1,11 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
+## [1.0.87+1.21.11]
+### Added
+- 🌐 **French (`fr_fr`, `fr_ca`) Localization & Player Guide**:
+  - Added complete `assets/betterdogs/lang/fr_fr.json` and `fr_ca.json` matching all 653 translation keys.
+  - Added localized player guide in `Doc/Players/index_fr_fr.md`.
+
 ## [1.0.86+1.21.11]
 ### Added
 - 🌐 **Japanese (`ja_jp`) Localization & Player Guide**:
