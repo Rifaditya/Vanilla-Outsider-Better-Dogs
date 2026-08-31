@@ -1,5 +1,11 @@
 # Better Dogs History & Concept Changelog
 
+## [5.0.82+26.3]
+### Added
+- 🌐 **German (`de_de`) Localization & Player Guide**:
+  - Added complete `assets/vanilla-outsider-better-dogs/lang/de_de.json` matching all 428 translation keys.
+  - Added localized player guide in `Doc/Players/index_de_de.md`.
+
 ## [5.0.81+26.3]
 ### Added
 - 🌐 **Spanish (`es_es`, `es_mx`) Localization & Player Guide**:
