@@ -1,5 +1,11 @@
 # Better Dogs History & Concept Changelog
 
+## [5.0.85+26.3]
+### Added
+- 🌐 **French (`fr_fr`, `fr_ca`) Localization & Player Guide**:
+  - Added complete `assets/vanilla-outsider-better-dogs/lang/fr_fr.json` and `fr_ca.json` matching all 428 translation keys.
+  - Added localized player guide in `Doc/Players/index_fr_fr.md`.
+
 ## [5.0.84+26.3]
 ### Added
 - 🌐 **Japanese (`ja_jp`) Localization & Player Guide**:
