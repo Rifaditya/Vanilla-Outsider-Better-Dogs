@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.24.84+26.2]
+### Added
+- 🌐 **Korean (`ko_kr`) Localization & Player Guide**:
+  - Added complete `assets/vanilla-outsider-better-dogs/lang/ko_kr.json` matching all 428 translation keys.
+  - Added localized player guide in `Doc/Players/index_ko_kr.md`.
+
 ## [4.24.83+26.2]
 ### Added
 - 🌐 **French (`fr_fr`, `fr_ca`) Localization & Player Guide**:
