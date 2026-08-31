@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.24.83+26.2]
+### Added
+- 🌐 **French (`fr_fr`, `fr_ca`) Localization & Player Guide**:
+  - Added complete `assets/vanilla-outsider-better-dogs/lang/fr_fr.json` and `fr_ca.json` matching all 428 translation keys.
+  - Added localized player guide in `Doc/Players/index_fr_fr.md`.
+
 ## [4.24.82+26.2]
 ### Added
 - 🌐 **Japanese (`ja_jp`) Localization & Player Guide**:
