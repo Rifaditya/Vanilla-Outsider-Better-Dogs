@@ -1,5 +1,11 @@
 # Better Dogs - Historical Changelog
 
+## [4.24.68+26.1.2]
+### Added
+- 🌐 **Italian (`it_it`) Localization & Player Guide (11-Language Suite Complete)**:
+  - Added complete `assets/vanilla-outsider-better-dogs/lang/it_it.json` matching all 428 translation keys.
+  - Added localized player guide in `Doc/Players/index_it_it.md`.
+
 ## [4.24.67+26.1.2]
 ### Added
 - 🌐 **Korean (`ko_kr`) Localization & Player Guide**:
