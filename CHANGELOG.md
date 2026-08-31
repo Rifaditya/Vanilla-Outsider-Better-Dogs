@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.24.80+26.2]
+### Added
+- 🌐 **German (`de_de`) Localization & Player Guide**:
+  - Added complete `assets/vanilla-outsider-better-dogs/lang/de_de.json` matching all 428 translation keys.
+  - Added localized player guide in `Doc/Players/index_de_de.md`.
+
 ## [4.24.79+26.2]
 ### Added
 - 🌐 **Spanish (`es_es`, `es_mx`) Localization & Player Guide**:
