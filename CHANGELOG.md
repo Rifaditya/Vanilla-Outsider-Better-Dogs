@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.24.64+26.1.2]
+### Added
+- 🌐 **Portuguese (`pt_br`, `pt_pt`) Localization & Player Guide**:
+  - Added complete `assets/vanilla-outsider-better-dogs/lang/pt_br.json` and `pt_pt.json` matching all 428 translation keys.
+  - Added localized player guide in `Doc/Players/index_pt_br.md`.
+
 ## [4.24.63+26.1.2]
 ### Added
 - 🌐 **German (`de_de`) Localization & Player Guide**:
