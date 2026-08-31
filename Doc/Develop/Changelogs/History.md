@@ -1,5 +1,11 @@
 # Better Dogs History & Concept Changelog
 
+## [4.24.82+26.2]
+### Added
+- 🌐 **Japanese (`ja_jp`) Localization & Player Guide**:
+  - Added complete `assets/vanilla-outsider-better-dogs/lang/ja_jp.json` matching all 428 translation keys.
+  - Added localized player guide in `Doc/Players/index_ja_jp.md`.
+
 ## [4.24.81+26.2]
 ### Added
 - 🌐 **Portuguese (`pt_br`, `pt_pt`) Localization & Player Guide**:
