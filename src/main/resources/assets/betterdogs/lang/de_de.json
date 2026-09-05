@@ -1,4 +1,4 @@
-{
+﻿{
   "gamerule.category.betterdogs": "Bessere Hunde (Better Dogs)",
   "gamerule.category.betterdogs:betterdogs": "Bessere Hunde (Better Dogs)",
   "gamerule.category.vanilla-outsider-better-dogs.better_dogs": "Vanilla Outsider: Bessere Hunde",
@@ -358,6 +358,10 @@
   "gamerule.bd_fast_travel_catchup": "Schnellreise-Aufholsicherheit",
   "gamerule.betterdogs.bd_fast_travel_catchup.description": "Wenn true, teleportieren zurückgefallene Hunde zum Besitzer, bevor sie in ungeladenen Chunks stranden.",
   "gamerule.bd_fast_travel_catchup.description": "Wenn true, teleportieren zurückgefallene Hunde zum Besitzer, bevor sie in ungeladenen Chunks stranden.",
+  "gamerule.betterdogs.bd_horn_commands_enabled": "Ziegenhorn-Befehle",
+  "gamerule.bd_horn_commands_enabled": "Ziegenhorn-Befehle",
+  "gamerule.betterdogs.bd_horn_commands_enabled.description": "Wenn aktiviert, koordiniert das Blasen von Ziegenhörnern taktische Rudelbefehle für gezähmte Wölfe. Standard: true.",
+  "gamerule.bd_horn_commands_enabled.description": "Wenn aktiviert, koordiniert das Blasen von Ziegenhörnern taktische Rudelbefehle für gezähmte Wölfe. Standard: true.",
   "gamerule.betterdogs.bd_horn_command_range": "Horn-Befehlsreichweite",
   "gamerule.bd_horn_command_range": "Horn-Befehlsreichweite",
   "gamerule.betterdogs.bd_horn_command_range.description": "Maximale Reichweite in Blöcken für Ziegenhorn-Befehle an eigene Wölfe. Standard: 64.",

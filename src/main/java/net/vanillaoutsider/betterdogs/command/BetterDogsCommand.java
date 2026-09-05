@@ -42,6 +42,7 @@ public class BetterDogsCommand {
         registerBool("bd_flanking_raycast_check", BetterDogsGameRules.BD_FLANKING_RAYCAST_CHECK, true);
         registerBool("bd_sync_owner_teleport", BetterDogsGameRules.BD_SYNC_OWNER_TELEPORT, true);
         registerBool("bd_fast_travel_catchup", BetterDogsGameRules.BD_FAST_TRAVEL_CATCHUP, true);
+        registerBool("bd_horn_commands_enabled", BetterDogsGameRules.BD_HORN_COMMANDS_ENABLED, true);
         registerBool("bd_friendly_fire_protection", BetterDogsGameRules.BD_FRIENDLY_FIRE, true);
         registerBool("bd_demerit_accidental_attacks", BetterDogsGameRules.BD_DEMERIT_ACCIDENTAL_ATTACKS, true);
         registerBool("bd_territorial_rivalry", BetterDogsGameRules.BD_TERRITORIAL_RIVALRY, true);

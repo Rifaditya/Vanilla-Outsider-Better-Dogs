@@ -1,4 +1,4 @@
-{
+﻿{
   "gamerule.category.betterdogs": "베터 도그 (Better Dogs)",
   "gamerule.category.betterdogs:betterdogs": "베터 도그 (Better Dogs)",
   "gamerule.category.vanilla-outsider-better-dogs.better_dogs": "Vanilla Outsider: 베터 도그",
@@ -358,6 +358,10 @@
   "gamerule.bd_fast_travel_catchup": "고속 이동 추종 텔레포트 안전장치",
   "gamerule.betterdogs.bd_fast_travel_catchup.description": "true일 경우, 빠른 플레이어 이동으로 뒤처진 개가 청크 언로드 전 주인 곁으로 텔레포트합니다.",
   "gamerule.bd_fast_travel_catchup.description": "true일 경우, 빠른 플레이어 이동으로 뒤처진 개가 청크 언로드 전 주인 곁으로 텔레포트합니다.",
+  "gamerule.betterdogs.bd_horn_commands_enabled": "염소 뿔 명령",
+  "gamerule.bd_horn_commands_enabled": "염소 뿔 명령",
+  "gamerule.betterdogs.bd_horn_commands_enabled.description": "참일 경우, 염소 뿔을 불어 길들인 늑대 무리에게 전술적 명령을 내릴 수 있습니다. 기본값: true.",
+  "gamerule.bd_horn_commands_enabled.description": "참일 경우, 염소 뿔을 불어 길들인 늑대 무리에게 전술적 명령을 내릴 수 있습니다. 기본값: true.",
   "gamerule.betterdogs.bd_horn_command_range": "뿔피리 명령 유효 범위",
   "gamerule.bd_horn_command_range": "뿔피리 명령 유효 범위",
   "gamerule.betterdogs.bd_horn_command_range.description": "염소 뿔피리 명령이 개에게 전달되는 최대 거리 (블록). 기본값: 64.",

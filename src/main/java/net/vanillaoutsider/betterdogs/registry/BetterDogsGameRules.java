@@ -39,6 +39,7 @@ public class BetterDogsGameRules {
     public static GameRule<Boolean> BD_FLANKING_RAYCAST_CHECK;
     public static GameRule<Boolean> BD_SYNC_OWNER_TELEPORT;
     public static GameRule<Boolean> BD_FAST_TRAVEL_CATCHUP;
+    public static GameRule<Boolean> BD_HORN_COMMANDS_ENABLED;
     public static GameRule<Integer> BD_HORN_COMMAND_RANGE;
     public static GameRule<Integer> BD_HORN_PATHING_TIMEOUT;
     public static GameRule<Integer> BD_HORN_OVERRIDE_DURATION;
@@ -148,6 +149,7 @@ public class BetterDogsGameRules {
         BD_FLANKING_RAYCAST_CHECK = registerBoolean("vanilla-outsider-better-dogs:bd_flanking_raycast_check", BETTER_DOGS, true);
         BD_SYNC_OWNER_TELEPORT = registerBoolean("vanilla-outsider-better-dogs:bd_sync_owner_teleport", BETTER_DOGS, true);
         BD_FAST_TRAVEL_CATCHUP = registerBoolean("vanilla-outsider-better-dogs:bd_fast_travel_catchup", BETTER_DOGS, true);
+        BD_HORN_COMMANDS_ENABLED = registerBoolean("vanilla-outsider-better-dogs:bd_horn_commands_enabled", BETTER_DOGS, true);
         BD_HORN_COMMAND_RANGE = registerInteger("vanilla-outsider-better-dogs:bd_horn_command_range", BETTER_DOGS, 64);
         BD_HORN_PATHING_TIMEOUT = registerInteger("vanilla-outsider-better-dogs:bd_horn_pathing_timeout", BETTER_DOGS, 300);
         BD_HORN_OVERRIDE_DURATION = registerInteger("vanilla-outsider-better-dogs:bd_horn_override_duration", BETTER_DOGS, 600);
@@ -256,6 +258,10 @@ public class BetterDogsGameRules {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public static boolean isHornCommandsEnabled(Level level) {
+        return getBoolean(level, BD_HORN_COMMANDS_ENABLED, true);
     }
 
     public static boolean getBoolean(Level level, GameRule<Boolean> rule, boolean fallback) {

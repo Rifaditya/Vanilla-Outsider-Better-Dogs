@@ -1,4 +1,4 @@
-{
+﻿{
   "gamerule.category.betterdogs": "ベター・ドッグス (Better Dogs)",
   "gamerule.category.betterdogs:betterdogs": "ベター・ドッグス (Better Dogs)",
   "gamerule.category.vanilla-outsider-better-dogs.better_dogs": "Vanilla Outsider: ベター・ドッグス",
@@ -358,6 +358,10 @@
   "gamerule.bd_fast_travel_catchup": "高速移動時の安全追従テレポート",
   "gamerule.betterdogs.bd_fast_travel_catchup.description": "trueの場合、高速移動で取り残された犬が未ロードチャンクに入る前に飼い主の元へテレポートします。",
   "gamerule.bd_fast_travel_catchup.description": "trueの場合、高速移動で取り残された犬が未ロードチャンクに入る前に飼い主の元へテレポートします。",
+  "gamerule.betterdogs.bd_horn_commands_enabled": "ヤギの角笛コマンド",
+  "gamerule.bd_horn_commands_enabled": "ヤギの角笛コマンド",
+  "gamerule.betterdogs.bd_horn_commands_enabled.description": "trueの場合、ヤギの角笛を吹くことで飼いならされたオオカミに戦術的な群れの命令を出せます。デフォルト: true",
+  "gamerule.bd_horn_commands_enabled.description": "trueの場合、ヤギの角笛を吹くことで飼いならされたオオカミに戦術的な群れの命令を出せます。デフォルト: true",
   "gamerule.betterdogs.bd_horn_command_range": "角笛コマンド有効範囲",
   "gamerule.bd_horn_command_range": "角笛コマンド有効範囲",
   "gamerule.betterdogs.bd_horn_command_range.description": "ヤギの角笛コマンドが飼い犬に届く最大距離（ブロック）。デフォルト: 64。",
