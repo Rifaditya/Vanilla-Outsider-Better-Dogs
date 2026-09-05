@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`5.0.93+26.3`** (2026-09-05) - **In-Game Config Uniformity & Omnipresent Ko-fi Button**: Injected top-pinned `☕ Support Solo Dev on Ko-fi` creator support button across all 5 YACL category tabs, removed intrusive category warning tooltips, reframed default settings strings, and aligned DasikLibrary to `1.8.38`.
 - [ ] **`5.0.87+26.3`** - Italian (`it_it`) Localization & Player Guide (11-Language Suite Complete)
 - [ ] **`5.0.86+26.3`** - Korean (`ko_kr`) Localization & Player Guide
 - [ ] **`5.0.85+26.3`** - French (`fr_fr`, `fr_ca`) Localization & Player Guide

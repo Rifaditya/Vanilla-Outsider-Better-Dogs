@@ -158,7 +158,8 @@
   "config.betterdogs.category.performance": "Visual & Performance Options",
   "config.betterdogs.guardParticleDensity": "Guard Alarm Particle Density",
   "config.betterdogs.guardParticleDensity.description": "Visual particle density mode for guarded zones. Default: medium.",
-  "config.betterdogs.warning": "WARNING: Changes made here only affect the baseline defaults for NEW worlds. To configure your active/existing world, use the in-game /gamerule screen or command instead.",
+  "config.betterdogs.warning": "Configure global default settings. Active worlds can be adjusted in-game via Game Rules.",
+  "config.betterdogs.description": "Configure global default settings. Active worlds can be adjusted in-game via Game Rules.",
   
   "config.betterdogs.globalSpeedBuff": "Global Speed Buff",
   "config.betterdogs.globalSpeedBuff.description": "Global speed multiplier applied to all wolves. Default: 0.20 (+20% speed).",

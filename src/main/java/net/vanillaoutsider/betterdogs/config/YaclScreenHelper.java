@@ -16,6 +16,7 @@ import dev.isxander.yacl3.api.controller.FloatSliderControllerBuilder;
 import dev.isxander.yacl3.api.controller.IntegerFieldControllerBuilder;
 import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder;
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
+import net.dasik.social.api.config.DasikSupportHelper;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import java.util.List;
@@ -23,6 +24,16 @@ import java.util.List;
 public class YaclScreenHelper {
     public static ConfigScreenFactory<?> createFactory() {
         return YaclScreenHelper::createScreen;
+    }
+
+    private static ConfigCategory.Builder createCategory(String nameKey) {
+        ConfigCategory.Builder builder = ConfigCategory.createBuilder()
+                .name(Component.translatable(nameKey));
+        Option<?> btn = (Option<?>) DasikSupportHelper.createYaclButton();
+        if (btn != null) {
+            builder.option(btn);
+        }
+        return builder;
     }
 
     public static Screen createScreen(Screen parent) {
@@ -33,9 +44,7 @@ public class YaclScreenHelper {
                 .save(BetterDogsConfig::save)
                 
                 // === GENERAL CATEGORY ===
-                .category(ConfigCategory.createBuilder()
-                        .name(Component.translatable("config.betterdogs.category.general"))
-                        .tooltip(Component.translatable("config.betterdogs.warning"))
+                .category(createCategory("config.betterdogs.category.general")
                         .option(Option.<Double>createBuilder()
                                 .name(Component.translatable("config.betterdogs.globalSpeedBuff"))
                                 .description(OptionDescription.of(Component.translatable("config.betterdogs.globalSpeedBuff.description")))
@@ -159,9 +168,7 @@ public class YaclScreenHelper {
                         .build())
 
                 // === PERSONALITIES CATEGORY ===
-                .category(ConfigCategory.createBuilder()
-                        .name(Component.translatable("config.betterdogs.category.personalities"))
-                        .tooltip(Component.translatable("config.betterdogs.warning"))
+                .category(createCategory("config.betterdogs.category.personalities")
                         
                         // Aggressive Group
                         .group(OptionGroup.createBuilder()
@@ -306,9 +313,7 @@ public class YaclScreenHelper {
                         .build())
 
                 // === BREEDING & GENETICS CATEGORY ===
-                .category(ConfigCategory.createBuilder()
-                        .name(Component.translatable("config.betterdogs.category.breeding"))
-                        .tooltip(Component.translatable("config.betterdogs.warning"))
+                .category(createCategory("config.betterdogs.category.breeding")
                         .option(Option.<Integer>createBuilder()
                                 .name(Component.translatable("config.betterdogs.spawnChanceNormal"))
                                 .description(OptionDescription.of(Component.translatable("config.betterdogs.spawnChanceNormal.description")))
@@ -402,9 +407,7 @@ public class YaclScreenHelper {
                         .build())
 
                 // === TERRITORIALITY CATEGORY ===
-                .category(ConfigCategory.createBuilder()
-                        .name(Component.translatable("config.betterdogs.category.territoriality"))
-                        .tooltip(Component.translatable("config.betterdogs.warning"))
+                .category(createCategory("config.betterdogs.category.territoriality")
                         .option(Option.<Float>createBuilder()
                                 .name(Component.translatable("config.betterdogs.wildHuntHealthThreshold"))
                                 .description(OptionDescription.of(Component.translatable("config.betterdogs.wildHuntHealthThreshold.description")))
@@ -486,9 +489,7 @@ public class YaclScreenHelper {
                         .build())
 
                 // === GIFTS CATEGORY ===
-                .category(ConfigCategory.createBuilder()
-                        .name(Component.translatable("config.betterdogs.category.gifts"))
-                        .tooltip(Component.translatable("config.betterdogs.warning"))
+                .category(createCategory("config.betterdogs.category.gifts")
                         .option(Option.<Integer>createBuilder()
                                 .name(Component.translatable("config.betterdogs.giftCooldownMin"))
                                 .description(OptionDescription.of(Component.translatable("config.betterdogs.giftCooldownMin.description")))
@@ -558,9 +559,7 @@ public class YaclScreenHelper {
                         .build())
 
                 // === VISUAL & PERFORMANCE CATEGORY ===
-                .category(ConfigCategory.createBuilder()
-                        .name(Component.translatable("config.betterdogs.category.performance"))
-                        .tooltip(Component.translatable("config.betterdogs.warning"))
+                .category(createCategory("config.betterdogs.category.performance")
                         .option(Option.<String>createBuilder()
                                 .name(Component.translatable("config.betterdogs.guardParticleDensity"))
                                 .description(OptionDescription.of(Component.translatable("config.betterdogs.guardParticleDensity.description")))
