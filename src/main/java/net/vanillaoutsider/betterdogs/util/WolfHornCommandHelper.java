@@ -38,6 +38,10 @@ public final class WolfHornCommandHelper {
             return;
         }
 
+        if (!BetterDogsGameRules.isHornCommandsEnabled(serverLevel)) {
+            return;
+        }
+
         if (stack == null || stack.isEmpty() || !(stack.getItem() instanceof InstrumentItem)) {
             return;
         }

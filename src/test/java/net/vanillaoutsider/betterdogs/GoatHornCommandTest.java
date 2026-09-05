@@ -2,6 +2,7 @@
 // Verified against: Minecraft 26.1.2
 package net.vanillaoutsider.betterdogs;
 
+import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import net.vanillaoutsider.betterdogs.util.WolfHornCommandHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -12,13 +13,22 @@ public class GoatHornCommandTest {
     @Test
     @DisplayName("Verify Goat Horn Acoustic Command Defaults")
     public void testHornCommandDefaults() {
+        boolean defaultMasterToggle = true;
         int defaultRange = 64;
         int defaultPathingTimeout = 300;
         int defaultOverrideDuration = 600;
 
+        Assertions.assertTrue(defaultMasterToggle, "Horn commands master toggle must default to true");
         Assertions.assertEquals(64, defaultRange, "Horn acoustic range must default to 64 blocks");
         Assertions.assertEquals(300, defaultPathingTimeout, "Horn pathing timeout must default to 300 ticks (15s)");
         Assertions.assertEquals(600, defaultOverrideDuration, "Horn pacifist override duration must default to 600 ticks (30s)");
+    }
+
+    @Test
+    @DisplayName("Verify BetterDogsConfig Master Toggle Initial Value")
+    public void testHornConfigDefault() {
+        BetterDogsConfig config = new BetterDogsConfig();
+        Assertions.assertTrue(config.enableHornCommands, "BetterDogsConfig.enableHornCommands must default to true");
     }
 
     @Test
