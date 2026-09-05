@@ -53,6 +53,7 @@ public class BetterDogsConfig {
     public boolean enableRefuseGroundFood = true;
     public int refuseGroundFoodChance = 30;
     public boolean enableFavoriteTreats = true;
+    public boolean enableHornCommands = true;
 
     // --- Player ---
     public boolean pacifistGuardBuffs = false;
