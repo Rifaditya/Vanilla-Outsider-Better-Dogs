@@ -1,4 +1,4 @@
-{
+﻿{
   "gamerule.category.betterdogs": "Better Dogs",
   "gamerule.category.betterdogs:betterdogs": "Better Dogs",
   "gamerule.category.vanilla-outsider-better-dogs.better_dogs": "Vanilla Outsider: Better Dogs",
@@ -358,6 +358,10 @@
   "gamerule.bd_fast_travel_catchup": "Fast Travel Catch-Up Safety",
   "gamerule.betterdogs.bd_fast_travel_catchup.description": "If true, standing following wolves that fall behind due to fast player movement automatically teleport near the owner before entering unloaded chunks.",
   "gamerule.bd_fast_travel_catchup.description": "If true, standing following wolves that fall behind due to fast player movement automatically teleport near the owner before entering unloaded chunks.",
+  "gamerule.betterdogs.bd_horn_commands_enabled": "Goat Horn Commands",
+  "gamerule.bd_horn_commands_enabled": "Goat Horn Commands",
+  "gamerule.betterdogs.bd_horn_commands_enabled.description": "If true, blowing vanilla Goat Horn instruments coordinates tactical pack commands for owned wolves. Default: true.",
+  "gamerule.bd_horn_commands_enabled.description": "If true, blowing vanilla Goat Horn instruments coordinates tactical pack commands for owned wolves. Default: true.",
   "gamerule.betterdogs.bd_horn_command_range": "Horn Command Range",
   "gamerule.bd_horn_command_range": "Horn Command Range",
   "gamerule.betterdogs.bd_horn_command_range.description": "Maximum distance in blocks for goat horn commands to reach owned wolves. Default: 64.",

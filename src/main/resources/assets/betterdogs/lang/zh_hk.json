@@ -1,4 +1,4 @@
-{
+﻿{
   "gamerule.category.betterdogs": "更好的狗 (Better Dogs)",
   "gamerule.category.betterdogs:betterdogs": "更好的狗 (Better Dogs)",
   "gamerule.category.vanilla-outsider-better-dogs.better_dogs": "Vanilla Outsider: 更好的狗",
@@ -358,6 +358,10 @@
   "gamerule.bd_fast_travel_catchup": "快速移動跟進安全保護",
   "gamerule.betterdogs.bd_fast_travel_catchup.description": "若為 true，因玩家高速移動而落後的站立跟随狼会在进入未載入區塊前自动傳送至主人附近。",
   "gamerule.bd_fast_travel_catchup.description": "若為 true，因玩家高速移動而落後的站立跟随狼会在进入未載入區塊前自动傳送至主人附近。",
+  "gamerule.betterdogs.bd_horn_commands_enabled": "山羊角戰術指令",
+  "gamerule.bd_horn_commands_enabled": "山羊角戰術指令",
+  "gamerule.betterdogs.bd_horn_commands_enabled.description": "若為 true，吹響山羊角可向已馴服的狼群發出戰術指令。預設：true。",
+  "gamerule.bd_horn_commands_enabled.description": "若為 true，吹響山羊角可向已馴服的狼群發出戰術指令。預設：true。",
   "gamerule.betterdogs.bd_horn_command_range": "山羊角指令範圍",
   "gamerule.bd_horn_command_range": "山羊角指令範圍",
   "gamerule.betterdogs.bd_horn_command_range.description": "山羊角指令能够傳達给所屬狼群的最大距離（格）。預設: 64。",

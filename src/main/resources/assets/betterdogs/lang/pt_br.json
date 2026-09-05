@@ -1,4 +1,4 @@
-{
+﻿{
   "gamerule.category.betterdogs": "Melhores Cães (Better Dogs)",
   "gamerule.category.betterdogs:betterdogs": "Melhores Cães (Better Dogs)",
   "gamerule.category.vanilla-outsider-better-dogs.better_dogs": "Vanilla Outsider: Melhores Cães",
@@ -358,6 +358,10 @@
   "gamerule.bd_fast_travel_catchup": "Segurança de Alcance em Viagem Rápida",
   "gamerule.betterdogs.bd_fast_travel_catchup.description": "Se true, cães que ficarem para trás se teletransportam para o dono antes de entrarem em chunks descarregados.",
   "gamerule.bd_fast_travel_catchup.description": "Se true, cães que ficarem para trás se teletransportam para o dono antes de entrarem em chunks descarregados.",
+  "gamerule.betterdogs.bd_horn_commands_enabled": "Comandos de berrante de cabra",
+  "gamerule.bd_horn_commands_enabled": "Comandos de berrante de cabra",
+  "gamerule.betterdogs.bd_horn_commands_enabled.description": "Se verdadeiro, tocar um berrante de cabra coordena comandos táticos de matilha para lobos domesticados. Padrão: true.",
+  "gamerule.bd_horn_commands_enabled.description": "Se verdadeiro, tocar um berrante de cabra coordena comandos táticos de matilha para lobos domesticados. Padrão: true.",
   "gamerule.betterdogs.bd_horn_command_range": "Alcance dos Comandos do Berrante",
   "gamerule.bd_horn_command_range": "Alcance dos Comandos do Berrante",
   "gamerule.betterdogs.bd_horn_command_range.description": "Distância máxima em blocos para comandos de berrante de cabra alcançarem os lobos. Padrão: 64.",

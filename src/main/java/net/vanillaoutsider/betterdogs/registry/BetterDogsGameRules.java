@@ -36,6 +36,7 @@ public class BetterDogsGameRules {
     public static GameRules.Key<GameRules.BooleanValue> BD_FLANKING_RAYCAST_CHECK;
     public static GameRules.Key<GameRules.BooleanValue> BD_SYNC_OWNER_TELEPORT;
     public static GameRules.Key<GameRules.BooleanValue> BD_FAST_TRAVEL_CATCHUP;
+    public static GameRules.Key<GameRules.BooleanValue> BD_HORN_COMMANDS_ENABLED;
     public static GameRules.Key<GameRules.IntegerValue> BD_HORN_COMMAND_RANGE;
     public static GameRules.Key<GameRules.IntegerValue> BD_HORN_PATHING_TIMEOUT;
     public static GameRules.Key<GameRules.IntegerValue> BD_HORN_OVERRIDE_DURATION;
@@ -145,6 +146,7 @@ public class BetterDogsGameRules {
         BD_FLANKING_RAYCAST_CHECK = GameRuleRegistry.register("bd_flanking_raycast_check", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
         BD_SYNC_OWNER_TELEPORT = GameRuleRegistry.register("bd_sync_owner_teleport", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
         BD_FAST_TRAVEL_CATCHUP = GameRuleRegistry.register("bd_fast_travel_catchup", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
+        BD_HORN_COMMANDS_ENABLED = GameRuleRegistry.register("bd_horn_commands_enabled", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
         BD_HORN_COMMAND_RANGE = GameRuleRegistry.register("bd_horn_command_range", BETTER_DOGS, GameRuleFactory.createIntRule(64));
         BD_HORN_PATHING_TIMEOUT = GameRuleRegistry.register("bd_horn_pathing_timeout", BETTER_DOGS, GameRuleFactory.createIntRule(300));
         BD_HORN_OVERRIDE_DURATION = GameRuleRegistry.register("bd_horn_override_duration", BETTER_DOGS, GameRuleFactory.createIntRule(600));
@@ -233,6 +235,10 @@ public class BetterDogsGameRules {
         BD_BREED_DILUTED_NORMAL_CHANCE = GameRuleRegistry.register("bd_breed_diluted_normal_chance", BETTER_DOGS, GameRuleFactory.createIntRule(50));
         BD_BREED_DILUTED_OTHER_CHANCE = GameRuleRegistry.register("bd_breed_diluted_other_chance", BETTER_DOGS, GameRuleFactory.createIntRule(25));
         BD_WOLF_LITTER_MAX_SIZE = GameRuleRegistry.register("bd_wolf_litter_max_size", BETTER_DOGS, GameRuleFactory.createIntRule(4));
+    }
+
+    public static boolean isHornCommandsEnabled(Level level) {
+        return getBoolean(level, BD_HORN_COMMANDS_ENABLED, true);
     }
 
     public static boolean getBoolean(Level level, GameRules.Key<GameRules.BooleanValue> key, boolean fallback) {

@@ -81,14 +81,14 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 - [x] **`1.0.13+1.21.1`** (2026-08-14) - ⚔️ Combat AI & Target Selection Mixins: OwnerHurtTargetGoalMixin: Enforces strict Pacifist combat ethics (Pacifist do...
 - [x] **`1.0.12+1.21.1`** (2026-08-14) - 🖼️ Mod Icon Asset: Deployed official icon.png (235 KB) into assets/vanilla-outsider-better-dogs/ and registered it in...
 - [x] **`1.0.11+1.21.1`** (2026-08-14) - 💣 FleeCreeperGoal (100% 26.2 Parity): Tamed wolves detect ignited or swelling Creepers within 10 blocks and sprint aw...
-- [ ] **`1.0.10+1.21.1`** (2026-08-14) - Wolf Movement & Sprint Speed Boost: Upgraded PersonalityFollowOwnerGoal base follow speed modifier from 1.0 to 1.25 (...
-- [ ] **`1.0.9+1.21.1`** (2026-08-14) - fabric.mod.json ${version} Expansion Fix: Added processResources property expansion block into build.gradle.
-- [ ] **`1.0.8+1.21.1`** (2026-08-14) - 💥 Taming Particle Level Crash Fix (NoSuchMethodError): Replaced wolf.level() with wolf.getCommandSenderWorld().
-- [ ] **`1.0.7+1.21.1`** (2026-08-14) - 💥 TamedWanderNearOwnerGoal Crash Fix (NoSuchMethodError): Replaced owner.position() with primitive getters.
-- [ ] **`1.0.6+1.21.1`** (2026-08-14) - 💥 Taming Crash Fix (NoSuchMethodError): Replaced wolf.level() with wolf.getRandom().
+- [x] **`1.0.10+1.21.1`** (2026-08-14) - Wolf Movement & Sprint Speed Boost: Upgraded PersonalityFollowOwnerGoal base follow speed modifier from 1.0 to 1.25 (...
+- [x] **`1.0.9+1.21.1`** (2026-08-14) - fabric.mod.json ${version} Expansion Fix: Added processResources property expansion block into build.gradle.
+- [x] **`1.0.8+1.21.1`** (2026-08-14) - 💥 Taming Particle Level Crash Fix (NoSuchMethodError): Replaced wolf.level() with wolf.getCommandSenderWorld().
+- [x] **`1.0.7+1.21.1`** (2026-08-14) - 💥 TamedWanderNearOwnerGoal Crash Fix (NoSuchMethodError): Replaced owner.position() with primitive getters.
+- [x] **`1.0.6+1.21.1`** (2026-08-14) - 💥 Taming Crash Fix (NoSuchMethodError): Replaced wolf.level() with wolf.getRandom().
 - [x] **`1.0.5+1.21.1`** (2026-08-14) - Proactive AggressiveTargetGoal (NearestAttackableTargetGoal<Monster>).
-- [ ] **`1.0.4+1.21.1`** (2026-08-13) - Entity AI Goal Registration (Wolf.registerGoals).
+- [x] **`1.0.4+1.21.1`** (2026-08-13) - Entity AI Goal Registration (Wolf.registerGoals).
 - [x] **`1.0.3+1.21.1`** (2026-08-13) - Mixin Injection Safety.
 - [x] **`1.0.2+1.21.1`** (2026-08-13) - Personality Combat AI & Target Selection (PersonalityTargetGoal).
 - [x] **`1.0.1+1.21.1`** (2026-08-13) - Personality Follow & Teleport AI System (PersonalityFollowOwnerGoal).
-- [ ] **`1.0.0+1.21.1`** (2026-08-13) - Initial subproject setup for Minecraft 1.21.1.
+- [x] **`1.0.0+1.21.1`** (2026-08-13) - Initial subproject setup for Minecraft 1.21.1.

@@ -1,4 +1,4 @@
-{
+﻿{
   "gamerule.category.betterdogs": "Better Dogs",
   "gamerule.category.betterdogs:betterdogs": "Better Dogs",
   "gamerule.category.vanilla-outsider-better-dogs.better_dogs": "Vanilla Outsider: Better Dogs",
@@ -358,6 +358,10 @@
   "gamerule.bd_fast_travel_catchup": "Keamanan Kejar Perjalanan Cepat",
   "gamerule.betterdogs.bd_fast_travel_catchup.description": "Jika benar, serigala yang tertinggal karena pergerakan pemain yang sangat cepat akan otomatis berteleportasi ke dekat pemilik sebelum memasuki chunk yang tidak dimuat.",
   "gamerule.bd_fast_travel_catchup.description": "Jika benar, serigala yang tertinggal karena pergerakan pemain yang sangat cepat akan otomatis berteleportasi ke dekat pemilik sebelum memasuki chunk yang tidak dimuat.",
+  "gamerule.betterdogs.bd_horn_commands_enabled": "Perintah Terompet Kambing",
+  "gamerule.bd_horn_commands_enabled": "Perintah Terompet Kambing",
+  "gamerule.betterdogs.bd_horn_commands_enabled.description": "Jika benar, membunyikan Terompet Kambing vanilla akan mengoordinasikan perintah taktis untuk serigala peliharaan. Default: true.",
+  "gamerule.bd_horn_commands_enabled.description": "Jika benar, membunyikan Terompet Kambing vanilla akan mengoordinasikan perintah taktis untuk serigala peliharaan. Default: true.",
   "gamerule.betterdogs.bd_horn_command_range": "Jarak Perintah Tanduk",
   "gamerule.bd_horn_command_range": "Jarak Perintah Tanduk",
   "gamerule.betterdogs.bd_horn_command_range.description": "Jarak maksimum dalam blok agar perintah tanduk kambing dapat menjangkau serigala milik pemain. Default: 64.",

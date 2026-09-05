@@ -1,4 +1,4 @@
-{
+﻿{
   "gamerule.category.betterdogs": "Better Dogs",
   "gamerule.category.betterdogs:betterdogs": "Better Dogs",
   "gamerule.category.vanilla-outsider-better-dogs.better_dogs": "Vanilla Outsider: Better Dogs",
@@ -358,6 +358,10 @@
   "gamerule.bd_fast_travel_catchup": "Sécurité de téléportation rapide",
   "gamerule.betterdogs.bd_fast_travel_catchup.description": "Si activé, les chiens distancés par un joueur rapide se téléportent avant d'entrer dans des chunks déchargés.",
   "gamerule.bd_fast_travel_catchup.description": "Si activé, les chiens distancés par un joueur rapide se téléportent avant d'entrer dans des chunks déchargés.",
+  "gamerule.betterdogs.bd_horn_commands_enabled": "Ordres à la corne de chèvre",
+  "gamerule.bd_horn_commands_enabled": "Ordres à la corne de chèvre",
+  "gamerule.betterdogs.bd_horn_commands_enabled.description": "Si vrai, souffler dans une corne de chèvre coordonne des ordres tactiques de meute pour les loups apprivoisés. Par défaut : true.",
+  "gamerule.bd_horn_commands_enabled.description": "Si vrai, souffler dans une corne de chèvre coordonne des ordres tactiques de meute pour les loups apprivoisés. Par défaut : true.",
   "gamerule.betterdogs.bd_horn_command_range": "Portée des ordres à la corne",
   "gamerule.bd_horn_command_range": "Portée des ordres à la corne",
   "gamerule.betterdogs.bd_horn_command_range.description": "Portée maximale en blocs des ordres à la corne de chèvre. Par défaut : 64.",
