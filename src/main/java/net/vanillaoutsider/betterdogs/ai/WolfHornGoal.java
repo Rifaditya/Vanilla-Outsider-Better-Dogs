@@ -25,6 +25,9 @@ public class WolfHornGoal extends Goal {
 
     @Override
     public boolean canUse() {
+        if (!BetterDogsGameRules.isHornCommandsEnabled(this.wolf.level())) {
+            return false;
+        }
         if (this.wolf.isOrderedToSit() || !this.wolf.isTame()) {
             return false;
         }
@@ -36,6 +39,9 @@ public class WolfHornGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
+        if (!BetterDogsGameRules.isHornCommandsEnabled(this.wolf.level())) {
+            return false;
+        }
         if (this.wolf.isOrderedToSit()) {
             return false;
         }

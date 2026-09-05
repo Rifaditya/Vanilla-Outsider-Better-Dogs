@@ -46,6 +46,7 @@ public class BetterDogsGameRules {
     public static GameRule<Boolean> BD_FLANKING_RAYCAST_CHECK;
     public static GameRule<Boolean> BD_SYNC_OWNER_TELEPORT;
     public static GameRule<Boolean> BD_FAST_TRAVEL_CATCHUP;
+    public static GameRule<Boolean> BD_HORN_COMMANDS_ENABLED;
     public static GameRule<Integer> BD_HORN_COMMAND_RANGE;
     public static GameRule<Integer> BD_HORN_PATHING_TIMEOUT;
     public static GameRule<Integer> BD_HORN_OVERRIDE_DURATION;
@@ -195,6 +196,8 @@ public class BetterDogsGameRules {
         BD_FAVORITE_TREATS = registerBoolean("betterdogs:bd_favorite_treats", BETTER_DOGS, BetterDogsConfig.get().enableFavoriteTreats);
         BD_SYNC_OWNER_TELEPORT = registerBoolean("betterdogs:bd_sync_owner_teleport", BETTER_DOGS, true);
         BD_FAST_TRAVEL_CATCHUP = registerBoolean("betterdogs:bd_fast_travel_catchup", BETTER_DOGS, true);
+        BD_HORN_COMMANDS_ENABLED = registerBoolean("betterdogs:bd_horn_commands_enabled", BETTER_DOGS,
+                BetterDogsConfig.get().enableHornCommands);
         BD_HORN_COMMAND_RANGE = registerInteger("betterdogs:bd_horn_command_range", BETTER_DOGS, 64);
         BD_HORN_PATHING_TIMEOUT = registerInteger("betterdogs:bd_horn_pathing_timeout", BETTER_DOGS, 400);
         BD_HORN_OVERRIDE_DURATION = registerInteger("betterdogs:bd_horn_override_duration", BETTER_DOGS, 600);
@@ -394,6 +397,10 @@ public class BetterDogsGameRules {
             return fallback;
         }
         return DynamicGameRuleManager.getInt(level, rule);
+    }
+
+    public static boolean isHornCommandsEnabled(net.minecraft.world.level.Level level) {
+        return getBoolean(level, BD_HORN_COMMANDS_ENABLED, true);
     }
 
     public static boolean isFetchEnabled(net.minecraft.world.level.Level level) {

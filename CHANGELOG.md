@@ -1,5 +1,30 @@
 # Changelog
 
+## [5.0.91+26.2]
+### Added
+- 🧪 **Goat Horn Command Headless Automated Unit Test Suite Expansion**:
+  - Expanded `GoatHornCommandTest.java` with assertions for master toggle boolean defaults and config model initialization.
+  - Verified 100% headless CI test pass across all 6 version anchors (`26.2`, `26.3`, `26.1.2`, `1.21.11`, `1.21.1`, `1.20.1`).
+
+## [5.0.90+26.2]
+### Added
+- 🌐 **Goat Horn Command Master Toggle Translations (11-Language Global Suite)**:
+  - Added player-facing GameRule and Config UI translation entries for `bd_horn_commands_enabled` and `enableHornCommands`.
+  - Full natural localization across `en_us`, `id_id`, `de_de`, `es_es`, `es_mx`, `fr_fr`, `fr_ca`, `it_it`, `ja_jp`, `ko_kr`, `pt_br`, `pt_pt`, `ru_ru`, `zh_cn`, `zh_hk`, and `zh_tw`.
+
+## [5.0.89+26.2]
+### Added
+- 📯 **Goat Horn AI & Event Execution Gating**:
+  - Added fast-fail check in `WolfHornCommandHelper.onHornUsed` to suppress acoustic command handling, particles, and advancements when `bd_horn_commands_enabled` is `false`.
+  - Added dynamic execution guards in `WolfHornGoal.canUse()` and `canContinueToUse()` to immediately abort and stop wolf pathing towards horn blast locations when disabled.
+
+## [5.0.88+26.2]
+### Added
+- 📯 **Goat Horn Master Toggle GameRule & Config Model**:
+  - Registered boolean GameRule `betterdogs:bd_horn_commands_enabled` (default `true`) under the `better_dogs` category.
+  - Added global configuration field `enableHornCommands = true` in `BetterDogsConfig`.
+  - Added `/betterdogs` command support for `bd_horn_commands_enabled` (`get`, `set`, and `reset`).
+
 ## [4.24.85+26.2]
 ### Added
 - 🌐 **Italian (`it_it`) Localization & Player Guide (11-Language Suite Complete)**:
