@@ -356,6 +356,14 @@ public class BetterDogsCommand {
             int parsed;
             try {
                 parsed = Integer.parseInt(valueArg);
+                if (normalized.equals("bd_wolf_min_scale_percent") && parsed < 1) {
+                    source.sendFailure(Component.literal("§c[Better Dogs] bd_wolf_min_scale_percent must be at least 1."));
+                    return 0;
+                }
+                if (normalized.equals("bd_wolf_max_scale_percent") && parsed < 1) {
+                    source.sendFailure(Component.literal("§c[Better Dogs] bd_wolf_max_scale_percent must be at least 1."));
+                    return 0;
+                }
             } catch (NumberFormatException e) {
                 source.sendFailure(Component.literal("§c[Better Dogs] Value for " + normalized + " must be a valid integer."));
                 return 0;

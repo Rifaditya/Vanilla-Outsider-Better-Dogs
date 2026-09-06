@@ -244,6 +244,18 @@ Master every interaction in Better Dogs with this comprehensive operational play
 
 ---
 
+## 🧩 Recommended Sister Mods
+
+If you enjoy **Better Dogs**, these companion mods from the **Vanilla Outsider & Delayed Gratification Collections** plug in seamlessly:
+
+* 🐾 [**Natural Reproduction**](https://modrinth.com/mod/dg-natural-reproduction): Introduces realistic gestation, seasonal breeding cycles, and genetic trait variation across wolves, livestock, and ambient fauna.
+* 🦇 [**Better Bats**](https://modrinth.com/mod/vo-better-bats): Enhances vanilla bats with dynamic 3D Boids murmuration flocking, twilight flight behaviors, and natural cave guano crop fertilization.
+* 💤 [**True Sleep**](https://modrinth.com/mod/vanilla-outsider-true-sleep): Transforms the vanilla sleep skip into a real-time world acceleration experience where furnace smelting and mob growth proceed naturally.
+
+> 🌟 *Explore the full [**Vanilla Outsider Collection**](https://modrinth.com/collection/vanilla-outsider) for more mindful vanilla enhancements.*
+
+---
+
 ## ☕ Support
 
 <p align="center">
@@ -255,22 +267,31 @@ Master every interaction in Better Dogs with this comprehensive operational play
 > [!NOTE]
 > **🇮🇩 Indonesian Users:** SocioBuzz and Saweria support local payment methods (Gopay, OVO, Dana, etc.) if you want to support me without using PayPal/Ko-fi!
 
+
+> [!TIP]
+> **Dedicated Server Hosting Partner:**
+> Looking for a reliable server to play with friends? Check out **BisectHosting** for 1-click modpack installations, automated backups, and 24/7 dedicated customer support.
+
 ---
 
-## 📜 Credits & Permissions
+## 📜 Credits & Modpack Permissions
 
-| Role | Author |
+| Property | Information |
 | :--- | :--- |
-| **Creator** | **Dasik** (Rifaditya) |
-| **Collection** | Vanilla Outsider |
-| **License** | GNU GPLv3 |
+| **Creator / Author** | **Dasik** (Rifaditya) |
+| **Collection** | Vanilla Outsider Collection |
+| **License** | [GNU General Public License v3.0 (GPLv3)](https://www.gnu.org/licenses/gpl-3.0.html) |
+| **Source Code** | [GitHub - Rifaditya/vanilla-outsider-better-dogs](https://github.com/Rifaditya/vanilla-outsider-better-dogs) |
+| **Issue Tracker** | [GitHub Issues](https://github.com/Rifaditya/vanilla-outsider-better-dogs/issues) |
+| **Documentation / Wiki** | [GitHub Wiki](https://github.com/Rifaditya/vanilla-outsider-better-dogs/wiki) |
 
 > [!IMPORTANT]
 > **📦 Modpack Permissions & Distribution:**<br>
-> You are free to include this mod in any modpack on any platform. However, the mod itself must be downloaded from its official distribution pages on **Modrinth** or **CurseForge**. Re-uploading or redistributing the mod jar file to third-party sites is strictly prohibited unless explicitly permitted by the creator.
+> You are fully welcome to include this mod in any modpack on any platform! However, the mod file must be downloaded directly through official distribution channels (**Modrinth** or **CurseForge**). Re-uploading, mirroring, or redistributing the original mod JAR to third-party mirror sites, scraper portals, or unauthorized launchers is strictly prohibited.
 > <br><br>
-> **License & Forks:**<br>
-> Since the source code is licensed under **GNU GPLv3**, you are fully permitted to fork the repository, make modifications, build your own versions, and distribute them under the terms of the GPLv3.
+> **⚖️ License & Fork Guidelines (No Zero-Change Re-uploads):**<br>
+> This project is open-source under the **GNU GPLv3**. You are fully encouraged to inspect the code, learn from it, and fork the repository to create genuine modifications, substantial feature expansions, or community ports—provided your project remains open-source under GPLv3 with proper attribution.<br>
+> **However, straight 1:1 re-uploads, clone forks with no meaningful functional changes, or re-publishing identical builds under different project names (e.g. to farm downloads or rewards) are strictly forbidden.**
 
 ---
 

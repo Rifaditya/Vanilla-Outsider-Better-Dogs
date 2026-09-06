@@ -81,6 +81,16 @@ jar {
     from("LICENSE") {
         rename { "${it}_${project.archives_base_name}" }
     }
+    manifest {
+        attributes(
+            'Implementation-Title': project.archives_base_name,
+            'Implementation-Version': project.mod_version,
+            'Implementation-Vendor': 'Dasik (Rifaditya)',
+            'X-Origin-Author': 'Dasik (Rifaditya)',
+            'X-Origin-Repository': 'https://github.com/Rifaditya',
+            'X-Origin-License': 'GNU GPLv3'
+        )
+    }
 }
 
 afterEvaluate {

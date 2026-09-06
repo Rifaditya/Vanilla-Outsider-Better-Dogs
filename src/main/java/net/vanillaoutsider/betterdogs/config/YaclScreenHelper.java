@@ -19,8 +19,11 @@ import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
 import net.dasik.social.api.config.DasikSupportHelper;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import java.util.List;
 
+@Environment(EnvType.CLIENT)
 public class YaclScreenHelper {
     public static ConfigScreenFactory<?> createFactory() {
         return YaclScreenHelper::createScreen;
