@@ -1,5 +1,30 @@
 # Changelog
 
+## [5.0.97+26.3] - 2026-09-05
+
+### Changed
+- **DasikLibrary 1.8.39 Alignment**: Upgraded to DasikLibrary 1.8.39, adopting formal `@DasikApiStatus` / `@APIDasikStatus` API governance and client side-safety architecture.
+- **License Normalization**: Standardized single-line GPLv3 headers across all source files.
+
+## [5.0.96+26.3] - 2026-09-05
+
+### Fixed
+- **Client Side-Safety Annotations**: Annotated `YaclScreenHelper`, `ModMenuIntegration`, and `BetterDogsClientFabric` with `@Environment(EnvType.CLIENT)`, eliminating dedicated server classloading hazards and aligning with the Client Side-Safety Standard.
+
+## [5.0.95+26.3] - 2026-09-05
+
+### Changed
+- **Player Agency & True Sandbox Freedom Restoration**: Removed artificial upper caps on wolf scale (`BD_WOLF_MIN_SCALE_PERCENT` and `BD_WOLF_MAX_SCALE_PERCENT`), allowing players to scale wolves up to `Integer.MAX_VALUE` in accordance with the Player Agency & Anti-Nanny Invariant. Lower bound `1` (1%) is maintained solely to prevent negative/zero hitbox crashes in Minecraft's engine.
+- **Command Suite Range Expansion**: Relaxed `/bd set` command checks to allow values up to `Integer.MAX_VALUE`, rejecting only non-positive values (`< 1`).
+- **Config Range Expansion**: Updated `BetterDogsConfig.validate()` to allow arbitrarily large wolf scale configurations.
+
+## [5.0.94+26.3] - 2026-09-05
+
+### Fixed
+- **Wolf Physical Scale GameRule Clamping**: Added strict `.range(10, 300)` bounds to `BD_WOLF_MIN_SCALE_PERCENT` and `.range(10, 500)` to `BD_WOLF_MAX_SCALE_PERCENT`, preventing negative bounding boxes, physics glitch loops, and giant mesh rendering issues.
+- **Command Suite Range Validation**: Enforced boundary checks for `bd_wolf_min_scale_percent` and `bd_wolf_max_scale_percent` in `/bd set` command execution.
+- **Config Domain Clamping**: Added `validate()` method to `BetterDogsConfig` ensuring physical scale defaults stay within safe bounds.
+
 ## [5.0.87+26.3]
 ### Added
 - 🌐 **Italian (`it_it`) Localization & Player Guide (11-Language Suite Complete)**:

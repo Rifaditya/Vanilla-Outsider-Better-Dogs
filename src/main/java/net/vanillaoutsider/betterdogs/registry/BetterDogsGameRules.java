@@ -369,10 +369,10 @@ public class BetterDogsGameRules {
         BD_ALLOW_UNRESTRICTED_RIDING = registerBoolean("betterdogs:bd_allow_unrestricted_dog_riding", BETTER_DOGS, false);
         BD_ACTIONBAR_FEEDBACK = registerBoolean("betterdogs:bd_actionbar_feedback", BETTER_DOGS, false);
 
-        BD_WOLF_MIN_SCALE_PERCENT = registerInteger("betterdogs:bd_wolf_min_scale_percent", BETTER_DOGS,
-                (int)(config.getWolfMinScale() * 100));
-        BD_WOLF_MAX_SCALE_PERCENT = registerInteger("betterdogs:bd_wolf_max_scale_percent", BETTER_DOGS,
-                (int)(config.getWolfMaxScale() * 100));
+        BD_WOLF_MIN_SCALE_PERCENT = DynamicGameRuleManager.integerRule("betterdogs:bd_wolf_min_scale_percent", BETTER_DOGS,
+                (int)(config.getWolfMinScale() * 100)).range(1, Integer.MAX_VALUE).register();
+        BD_WOLF_MAX_SCALE_PERCENT = DynamicGameRuleManager.integerRule("betterdogs:bd_wolf_max_scale_percent", BETTER_DOGS,
+                (int)(config.getWolfMaxScale() * 100)).range(1, Integer.MAX_VALUE).register();
     }
 
     // Internal Registration Helpers
