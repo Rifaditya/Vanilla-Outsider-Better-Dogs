@@ -6,28 +6,28 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
-- [ ] **`4.24.68+26.1.2`** - Italian (`it_it`) Localization & Player Guide (11-Language Suite Complete)
-- [ ] **`4.24.67+26.1.2`** - Korean (`ko_kr`) Localization & Player Guide
-- [ ] **`4.24.66+26.1.2`** - French (`fr_fr`, `fr_ca`) Localization & Player Guide
-- [ ] **`4.24.65+26.1.2`** - Japanese (`ja_jp`) Localization & Player Guide
-- [ ] **`4.24.64+26.1.2`** - Portuguese (`pt_br`, `pt_pt`) Localization & Player Guide
-- [ ] **`4.24.63+26.1.2`** - German (`de_de`) Localization & Player Guide
-- [ ] **`4.24.62+26.1.2`** - Spanish (`es_es`, `es_mx`) Localization & Player Guide
-- [ ] **`4.24.61+26.1.2`** - Russian (`ru_ru`) Localization & Player Guide
-- [ ] **4.24.60+26.1.2** - Traditional Chinese (zh_tw, zh_hk) Localization & Player Guide
-- [ ] **4.24.59+26.1.2** - Simplified Chinese (zh_cn) Localization & Player Guide
-- [ ] **4.24.58+26.1.2** - Indonesian (id_id) Full Parity Localization & Player Guide
-- [ ] **`4.24.57+26.1.2`** (2026-08-22) - **Hoover Ground Scavenger Quirk:** Dogs eat dropped food at full health with 160-tick digestion cooldown and personality weighting (Aggressive 70%, Normal 35%, Pacifist 10%).
-- [ ] **`4.24.56+26.1.2`** (2026-08-22) - **Full-Spectrum [-100%, +100%] UUID Variance:** Full [-100%, +100%] variance offsets across Aggressive (10/80/10), Normal (30/40/25), and Pacifist (60/10/60) bases.
-- [ ] **`4.24.55+26.1.2`** (2026-08-22) - **Additive Modifier Behavioral Quirk Model:** Wide personality spread (Aggressive 0-5%, Normal 3-18%, Pacifist 15-45% fetch reluctance) with deterministic UUID variance offsets.
-- [ ] **`4.24.54+26.1.2`** (2026-08-22) - **Personality + UUID Seeded Variance:** Deterministic behavioral nuances (fetch refusal with head-tilts, storm fearlessness, quiet howling) seeded by UUID + personality hash.
-- [ ] **`4.24.53+26.1.2`** (2026-08-22) - **Subtle Particle Feedback:** Scaled stick fetch, morning gift, and favorite treat particles with `bd_particle_density` GameRule down to subtle 2-particle cues.
-- [ ] **`4.24.37+26.1.2`** (2026-08-19) - **Jade Provider Separation:** Separated client tooltip component providers from server data providers to ensure full compatibility with newer Jade releases (`Jade >= 26.2.11+`).
-- [ ] **`4.24.36+26.1.2`** (2026-08-19) - *(⚠️ Incompatible with Jade >= 26.2.11+ | Works on Jade < 26.2.10 or without Jade)* **Friendly Fire Dampening & Protection:** Added standing owner melee attack cancellation against owned dogs.
-- [ ] **`4.24.7+26.1.2`** (2026-08-11) - **Minimal Tame Particle Polish:** Polished first-time taming particle feedback with a clean, subtle Minimal Signature (~5-6 particles) per personality (Aggressive: crimson dust + angry villager; Normal: golden dust + happy villager; Pacifist: mint dust + heart).
-- [ ] **`4.24.6+26.1.2`** (2026-08-10) - **Dismount Overlay Message Translation:** Updated dismount overlay text in en_us and id_id.
-- [ ] **`4.24.5+26.1.2`** (2026-08-10) - **YACL Config Option Descriptions:** Added missing `.description(...)` OptionDescription builders in `YaclScreenHelper` across all 6 config categories and synchronized complete `.description` keys in `en_us.json` and `id_id.json`.
-- [ ] **`4.24.4+26.1.2`** (2026-08-10) - **Dog Adoption Crash Fix:** Fixed `NullPointerException` crash during adoption by adding personality null guards in `WolfStatManager` and pre-assigning random personalities for uninitialized dogs.
+- [x] **`4.24.68+26.1.2`** - Italian (`it_it`) Localization & Player Guide (11-Language Suite Complete)
+- [x] **`4.24.67+26.1.2`** - Korean (`ko_kr`) Localization & Player Guide
+- [x] **`4.24.66+26.1.2`** - French (`fr_fr`, `fr_ca`) Localization & Player Guide
+- [x] **`4.24.65+26.1.2`** - Japanese (`ja_jp`) Localization & Player Guide
+- [x] **`4.24.64+26.1.2`** - Portuguese (`pt_br`, `pt_pt`) Localization & Player Guide
+- [x] **`4.24.63+26.1.2`** - German (`de_de`) Localization & Player Guide
+- [x] **`4.24.62+26.1.2`** - Spanish (`es_es`, `es_mx`) Localization & Player Guide
+- [x] **`4.24.61+26.1.2`** - Russian (`ru_ru`) Localization & Player Guide
+- [x] **4.24.60+26.1.2** - Traditional Chinese (zh_tw, zh_hk) Localization & Player Guide
+- [x] **4.24.59+26.1.2** - Simplified Chinese (zh_cn) Localization & Player Guide
+- [x] **4.24.58+26.1.2** - Indonesian (id_id) Full Parity Localization & Player Guide
+- [x] **`4.24.57+26.1.2`** (2026-08-22) - **Hoover Ground Scavenger Quirk:** Dogs eat dropped food at full health with 160-tick digestion cooldown and personality weighting (Aggressive 70%, Normal 35%, Pacifist 10%).
+- [x] **`4.24.56+26.1.2`** (2026-08-22) - **Full-Spectrum [-100%, +100%] UUID Variance:** Full [-100%, +100%] variance offsets across Aggressive (10/80/10), Normal (30/40/25), and Pacifist (60/10/60) bases.
+- [x] **`4.24.55+26.1.2`** (2026-08-22) - **Additive Modifier Behavioral Quirk Model:** Wide personality spread (Aggressive 0-5%, Normal 3-18%, Pacifist 15-45% fetch reluctance) with deterministic UUID variance offsets.
+- [x] **`4.24.54+26.1.2`** (2026-08-22) - **Personality + UUID Seeded Variance:** Deterministic behavioral nuances (fetch refusal with head-tilts, storm fearlessness, quiet howling) seeded by UUID + personality hash.
+- [x] **`4.24.53+26.1.2`** (2026-08-22) - **Subtle Particle Feedback:** Scaled stick fetch, morning gift, and favorite treat particles with `bd_particle_density` GameRule down to subtle 2-particle cues.
+- [x] **`4.24.37+26.1.2`** (2026-08-19) - **Jade Provider Separation:** Separated client tooltip component providers from server data providers to ensure full compatibility with newer Jade releases (`Jade >= 26.2.11+`).
+- [x] **`4.24.36+26.1.2`** (2026-08-19) - *(⚠️ Incompatible with Jade >= 26.2.11+ | Works on Jade < 26.2.10 or without Jade)* **Friendly Fire Dampening & Protection:** Added standing owner melee attack cancellation against owned dogs.
+- [x] **`4.24.7+26.1.2`** (2026-08-11) - **Minimal Tame Particle Polish:** Polished first-time taming particle feedback with a clean, subtle Minimal Signature (~5-6 particles) per personality (Aggressive: crimson dust + angry villager; Normal: golden dust + happy villager; Pacifist: mint dust + heart).
+- [x] **`4.24.6+26.1.2`** (2026-08-10) - **Dismount Overlay Message Translation:** Updated dismount overlay text in en_us and id_id.
+- [x] **`4.24.5+26.1.2`** (2026-08-10) - **YACL Config Option Descriptions:** Added missing `.description(...)` OptionDescription builders in `YaclScreenHelper` across all 6 config categories and synchronized complete `.description` keys in `en_us.json` and `id_id.json`.
+- [x] **`4.24.4+26.1.2`** (2026-08-10) - **Dog Adoption Crash Fix:** Fixed `NullPointerException` crash during adoption by adding personality null guards in `WolfStatManager` and pre-assigning random personalities for uninitialized dogs.
 - [x] **`4.24.3+26.1.2`** (2026-08-10) - **Litematica Compatibility & Command Item Expansion:** Resolved stick tool interaction collision with Litematica by introducing `#vanilla-outsider-better-dogs:command_items` item tag (Stick, Blaze Rod, Breeze Rod, `#c:tools/sticks`), enabling Blaze Rods and Breeze Rods as alternative command tools while keeping Bone 100% reserved for Guard Mode.
 - [x] **`4.24.1+26.1.2`** (2026-08-01) - Full Parity Backport to Minecraft 26.1.2 from 26.2 (`4.24.1+26.2`). Contains all feature updates, Goat Horn Commands, Creeper Evasion, and Jade integration adapted for 26.1.2 APIs.
 - [x] **`3.1.35`** (2026-02-03) - - Detailed descriptions for all gamerules, including the previously missing `bd_howl_chance`.
