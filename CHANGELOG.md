@@ -1,5 +1,10 @@
 # Changelog
 
+## [5.0.99+26.3] - 2026-09-07
+
+### Fixed
+- **Wolf Attack Swing Method Compatibility ([BL-DOG-002] / [ERR-20260907-007])**: Updated `WolfFlankAttackGoal`, `AdultCorrectionGoal`, and `BabyBiteBackGoal` to call `wolf.swingForAttack(InteractionHand.MAIN_HAND)` instead of the removed `wolf.swing(InteractionHand)`, resolving a `NoSuchMethodError` crash on entity attack in Minecraft 26.3. `LivingEntity.swing(InteractionHand)` was removed in 26.3-pre-2; `Mob.swingForAttack(InteractionHand)` is the correct combat animation method matching vanilla `MeleeAttackGoal`.
+
 ## [5.0.98+26.3] - 2026-09-07
 
 ### Fixed

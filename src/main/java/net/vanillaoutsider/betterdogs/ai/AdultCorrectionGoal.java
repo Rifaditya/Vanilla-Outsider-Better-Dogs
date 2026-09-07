@@ -78,7 +78,7 @@ public class AdultCorrectionGoal extends Goal {
         reachSqr += config.getCorrectionReachBuffer();
 
         if (distSqr <= reachSqr) {
-            this.wolf.swing(InteractionHand.MAIN_HAND);
+            this.wolf.swingForAttack(InteractionHand.MAIN_HAND);
             if (this.wolf.level() instanceof ServerLevel serverLevel) {
                 boolean success = this.wolf.doHurtTarget(serverLevel, this.offendingBaby);
                 if (success) {

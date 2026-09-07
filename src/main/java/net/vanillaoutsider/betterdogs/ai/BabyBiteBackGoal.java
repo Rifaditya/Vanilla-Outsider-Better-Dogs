@@ -90,7 +90,7 @@ public class BabyBiteBackGoal extends Goal {
 
         if (distSq <= reachSq && this.attackDelay <= 0) {
             this.attackDelay = 20;
-            this.wolf.swing(InteractionHand.MAIN_HAND);
+            this.wolf.swingForAttack(InteractionHand.MAIN_HAND);
             BabyRetaliationHelper.playRetaliationCues(this.wolf);
 
             if (this.wolf.level() instanceof ServerLevel serverLevel) {

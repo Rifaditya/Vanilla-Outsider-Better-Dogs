@@ -79,7 +79,7 @@ public class WolfFlankAttackGoal extends MeleeAttackGoal {
     private void checkAndPerformAttackInternal(LivingEntity target) {
         if (this.ticksUntilNextAttack <= 0 && this.wolf.isWithinMeleeAttackRange(target) && this.wolf.getSensing().hasLineOfSight(target)) {
             this.ticksUntilNextAttack = this.adjustedTickDelay(20);
-            this.wolf.swing(InteractionHand.MAIN_HAND);
+            this.wolf.swingForAttack(InteractionHand.MAIN_HAND);
             this.wolf.doHurtTarget(MeleeAttackGoal.getServerLevel(this.wolf), target);
         }
     }
