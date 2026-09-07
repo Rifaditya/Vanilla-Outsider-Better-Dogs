@@ -1,5 +1,10 @@
 # Better Dogs History & Concept Changelog
 
+## [5.0.98+26.3] - 2026-09-07
+
+### Fixed
+- **NaturalSpawner Mixin Signature Compatibility ([BL-DOG-001] / [ERR-20260907-004])**: Updated injection descriptor for `NaturalSpawner.mobsAt` to adapt to Minecraft 26.3 dropping the `Holder<Biome>` parameter (5 arguments instead of 6). Evaluated `level.getBiome(pos)` for expanded biomes spawning.
+
 ## [5.0.87+26.3]
 ### Added
 - 🌐 **Italian (`it_it`) Localization & Player Guide (11-Language Suite Complete)**:
