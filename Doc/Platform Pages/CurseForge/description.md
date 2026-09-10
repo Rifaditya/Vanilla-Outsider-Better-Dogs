@@ -1,4 +1,5 @@
 <p align="center">
+    <a href="https://discord.gg/EV99bgAFqb" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/Discord-Join_Community-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Join Discord"></a>
   <a href="https://www.curseforge.com/minecraft/mc-mods/fabric-api"><img src="https://img.shields.io/badge/Requires-Fabric_API-blue?style=for-the-badge&logo=fabric" alt="Requires Fabric API"></a>
   <a href="https://www.curseforge.com/minecraft/mc-mods/dasik-library"><img src="https://img.shields.io/badge/Requires-Dasik_Library-purple?style=for-the-badge" alt="Requires Dasik Library"></a>
   <img src="https://img.shields.io/badge/Language-Java_25-orange?style=for-the-badge&logo=java" alt="Java 25">
@@ -486,49 +487,75 @@
 
 <h2>☕ Support</h2>
 
+<p>If you enjoy <strong>Better Dogs</strong> and the <strong>Vanilla Outsider Collection</strong>, consider fueling future updates!</p>
+
 <p align="center">
-  <a href="https://ko-fi.com/dasikigaijin/tip"><img src="https://img.shields.io/badge/Ko--fi-Support%20Me-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white" alt="Ko-fi"></a>
+  <a href="https://ko-fi.com/dasikigaijin/tip"><img src="https://img.shields.io/badge/Ko--fi-Support%20Me-FF5E5B?style=for-the-badge&amp;logo=ko-fi&amp;logoColor=white" alt="Ko-fi"></a>
   <a href="https://sociabuzz.com/dasikigaijin/tribe"><img src="https://img.shields.io/badge/SocioBuzz-Local_Support-7BB32E?style=for-the-badge" alt="SocioBuzz"></a>
   <a href="https://saweria.co/DasikIgaijinn"><img src="https://img.shields.io/badge/Saweria-Local_Support-FFA500?style=for-the-badge" alt="Saweria"></a>
 </p>
 
-<blockquote>
-  <p><strong>🇮🇩 Indonesian Users:</strong> SocioBuzz and Saweria support local payment methods (Gopay, OVO, Dana, etc.) if you want to support me without using PayPal/Ko-fi!</p>
-</blockquote>
+<blockquote><p><strong>🇮🇩 Indonesian Users:</strong> SocioBuzz and Saweria support local payment methods (Gopay, OVO, Dana, etc.) if you want to support me without using PayPal/Ko-fi!</p></blockquote>
+
+<blockquote><p><strong>Dedicated Server Hosting Partner:</strong><br>Looking for a high-performance server to host your community or play with friends? Check out <strong>BisectHosting</strong> for 1-click modpack installations, automated backups, and 24/7 dedicated customer support. Use promo code <strong><code>Dasik</code></strong> for 25% off your first month!</p></blockquote>
+
+<h3>💬 Join the Community &amp; Get Support</h3>
+<p>Looking for help, want to test early beta builds, or vote on upcoming features? Join our official Discord community!</p>
+<p align="center">
+  <a href="https://discord.gg/EV99bgAFqb" target="_blank" rel="noopener">
+    <img src="https://img.shields.io/badge/Discord-Join_Community-5865F2?style=for-the-badge&amp;logo=discord&amp;logoColor=white" alt="Join Official Discord">
+  </a>
+</p>
 
 <hr>
 
-<h2>📜 Credits &amp; Permissions</h2>
+<h2>📜 Credits &amp; Modpack Permissions</h2>
 
 <table>
   <thead>
     <tr>
-      <th>Role</th>
-      <th>Author</th>
+      <th>Property</th>
+      <th>Information</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td><strong>Creator</strong></td>
+      <td><strong>Creator / Author</strong></td>
       <td><strong>Dasik</strong> (Rifaditya)</td>
     </tr>
     <tr>
+      <td><strong>Community</strong></td>
+      <td><a href="https://discord.gg/EV99bgAFqb" target="_blank" rel="noopener">Official Discord</a></td>
+    </tr>
+    <tr>
       <td><strong>Collection</strong></td>
-      <td>Vanilla Outsider</td>
+      <td><a href="https://www.curseforge.com/members/dasikigaijin/projects">Vanilla Outsider</a></td>
     </tr>
     <tr>
       <td><strong>License</strong></td>
-      <td>GNU GPLv3</td>
+      <td><a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License v3.0 (GPLv3)</a></td>
+    </tr>
+    <tr>
+      <td><strong>Source Code</strong></td>
+      <td><a href="https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs">GitHub - Rifaditya/Vanilla-Outsider-Better-Dogs</a></td>
+    </tr>
+    <tr>
+      <td><strong>Issue Tracker</strong></td>
+      <td><a href="https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs/issues">GitHub Issues</a></td>
+    </tr>
+    <tr>
+      <td><strong>Documentation / Wiki</strong></td>
+      <td><a href="https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs/wiki">GitHub Wiki</a></td>
     </tr>
   </tbody>
 </table>
 
 <blockquote>
   <p><strong>📦 Modpack Permissions &amp; Distribution:</strong><br>
-  You are free to include this mod in any modpack on any platform. However, the mod itself must be downloaded from its official distribution pages on <strong>Modrinth</strong> or <strong>CurseForge</strong>. Re-uploading or redistributing the mod jar file to third-party sites is strictly prohibited unless explicitly permitted by the creator.
-  <br><br>
-  <strong>License &amp; Forks:</strong><br>
-  Since the source code is licensed under <strong>GNU GPLv3</strong>, you are fully permitted to fork the repository, make modifications, build your own versions, and distribute them under the terms of the GPLv3.</p>
+  You are fully welcome to include this mod in any modpack on any platform! However, the mod file must be downloaded directly through official distribution channels (<strong>CurseForge</strong> or <strong>Modrinth</strong>). Re-uploading, mirroring, or redistributing the original mod JAR to third-party mirror sites, scraper portals, or unauthorized launchers is strictly prohibited.</p>
+  <p><strong>⚖️ License &amp; Fork Guidelines (No Zero-Change Re-uploads):</strong><br>
+  This project is open-source under the <strong>GNU GPLv3</strong>. You are fully encouraged to inspect the code, learn from it, and fork the repository to create genuine modifications, substantial feature expansions, or community ports&mdash;provided your project remains open-source under GPLv3 with proper attribution.<br>
+  <strong>However, straight 1:1 re-uploads, clone forks with no meaningful functional changes, or re-publishing identical builds under different project names (e.g. to farm downloads or rewards) are strictly forbidden.</strong></p>
 </blockquote>
 
 <hr>

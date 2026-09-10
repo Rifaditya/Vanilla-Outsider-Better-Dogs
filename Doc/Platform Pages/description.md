@@ -1,4 +1,5 @@
 <p align="center">
+    <a href="https://discord.gg/EV99bgAFqb"><img src="https://img.shields.io/badge/Discord-Join_Community-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Join Discord"></a>
     <a href="https://modrinth.com/mod/fabric-api"><img src="https://img.shields.io/badge/Requires-Fabric_API-blue?style=for-the-badge&logo=fabric" alt="Requires Fabric API"></a>
     <img src="https://img.shields.io/badge/Language-Java_25-orange?style=for-the-badge&logo=java" alt="Java 25">
     <img src="https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge" alt="License">
@@ -157,7 +158,19 @@ If the game rule screen feels cluttered, we highly recommend installing [Collaps
 
 ---
 
+### 💬 Join the Community & Get Support
+Looking for help, want to test early beta builds, or vote on upcoming features? Join our official Discord community!
+<p align="center">
+  <a href="https://discord.gg/EV99bgAFqb">
+    <img src="https://img.shields.io/badge/💬_Discord-Join_Community-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Join Official Discord">
+  </a>
+</p>
+
+---
+
 ## ☕ Support
+
+If you enjoy **Better Dogs** and the **Vanilla Outsider Collection**, consider fueling future updates!
 
 <p align="center">
   <a href="https://ko-fi.com/dasikigaijin/tip"><img src="https://img.shields.io/badge/Ko--fi-Support%20Me-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white" alt="Ko-fi"></a>
@@ -165,27 +178,37 @@ If the game rule screen feels cluttered, we highly recommend installing [Collaps
   <a href="https://saweria.co/DasikIgaijinn"><img src="https://img.shields.io/badge/Saweria-Local_Support-FFA500?style=for-the-badge" alt="Saweria"></a>
 </p>
 
+> [!NOTE]
 > **🇮🇩 Indonesian Users:** SocioBuzz and Saweria support local payment methods (Gopay, OVO, Dana, etc.) if you want to support me without using PayPal/Ko-fi!
 
 ---
 
-## 📜 Credits
+## 📜 Credits & Modpack Permissions
 
-| Role | Author |
+| Role / Property | Author / Link |
 | :--- | :--- |
-| **Creator** | **Dasik** (Rifaditya) |
+| **Creator / Author** | **Dasik** (Rifaditya) |
+| **Community** | [Official Discord](https://discord.gg/EV99bgAFqb) |
 | **Collection** | Vanilla Outsider |
-| **License** | GPLv3 |
+| **License** | [GNU General Public License v3.0 (GPLv3)](https://www.gnu.org/licenses/gpl-3.0.html) |
+| **Source Code** | [GitHub - Rifaditya/Vanilla-Outsider-Better-Dogs](https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs) |
+| **Issue Tracker** | [GitHub Issues](https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs/issues) |
+| **Documentation / Wiki** | [GitHub Wiki](https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs/wiki) |
 
+> [!IMPORTANT]
 > **📦 Modpack Permissions & Distribution:**<br>
-> You are free to include this mod in any modpack on any platform. However, the mod itself must be downloaded from its official distribution pages on **Modrinth** or **CurseForge**. Re-uploading or redistributing the mod jar file to third-party sites is strictly prohibited unless explicitly permitted by the creator.
+> You are fully welcome to include this mod in any modpack on any platform! However, the mod file must be downloaded directly through official distribution channels (**Modrinth** or **CurseForge**). Re-uploading, mirroring, or redistributing the original mod JAR to third-party mirror sites, scraper portals, or unauthorized launchers is strictly prohibited.
 > <br><br>
-> **License & Forks:**<br>
-> Since the source code is licensed under **GNU GPLv3**, you are fully permitted to fork the repository, make modifications, build your own versions, and distribute them under the terms of the GPLv3.
+> **⚖️ License & Fork Guidelines (No Zero-Change Re-uploads):**<br>
+> This project is open-source under the **GNU GPLv3**. You are fully encouraged to inspect the code, learn from it, and fork the repository to create genuine modifications, substantial feature expansions, or community ports—provided your project remains open-source under GPLv3 with proper attribution.<br>
+> **However, straight 1:1 re-uploads, clone forks with no meaningful functional changes, or re-publishing identical builds under different project names (e.g. to farm downloads or rewards) are strictly forbidden.**
 
 ---
 
 <div align="center">
-  <p><strong>Made with ❤️ for the Minecraft community</strong></p>
-  <p><em>Part of the Vanilla Outsider Collection</em></p>
+
+**Made with ❤️ for the Minecraft community**
+
+*Part of the Vanilla Outsider Collection*
+
 </div>
