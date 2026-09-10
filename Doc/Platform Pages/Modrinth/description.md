@@ -1,4 +1,5 @@
 <p align="center">
+    <a href="https://discord.gg/EV99bgAFqb"><img src="https://img.shields.io/badge/Discord-Join_Community-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Join Discord"></a>
     <a href="https://modrinth.com/mod/fabric-api"><img src="https://img.shields.io/badge/Requires-Fabric_API-blue?style=for-the-badge&logo=fabric" alt="Requires Fabric API"></a>
     <a href="https://modrinth.com/mod/dasik-library"><img src="https://img.shields.io/badge/Requires-Dasik_Library-purple?style=for-the-badge" alt="Requires Dasik Library"></a>
     <img src="https://img.shields.io/badge/Language-Java_25-orange?style=for-the-badge&logo=java" alt="Java 25">
@@ -256,7 +257,19 @@ If you enjoy **Better Dogs**, these companion mods from the **Vanilla Outsider &
 
 ---
 
+### 💬 Join the Community & Get Support
+Looking for help, want to test early beta builds, or vote on upcoming features? Join our official Discord community!
+<p align="center">
+  <a href="https://discord.gg/EV99bgAFqb">
+    <img src="https://img.shields.io/badge/💬_Discord-Join_Community-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Join Official Discord">
+  </a>
+</p>
+
+---
+
 ## ☕ Support
+
+If you enjoy **Better Dogs** and the **Vanilla Outsider Collection**, consider fueling future updates!
 
 <p align="center">
   <a href="https://ko-fi.com/dasikigaijin/tip"><img src="https://img.shields.io/badge/Ko--fi-Support%20Me-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white" alt="Ko-fi"></a>
@@ -267,23 +280,19 @@ If you enjoy **Better Dogs**, these companion mods from the **Vanilla Outsider &
 > [!NOTE]
 > **🇮🇩 Indonesian Users:** SocioBuzz and Saweria support local payment methods (Gopay, OVO, Dana, etc.) if you want to support me without using PayPal/Ko-fi!
 
-
-> [!TIP]
-> **Dedicated Server Hosting Partner:**
-> Looking for a reliable server to play with friends? Check out **BisectHosting** for 1-click modpack installations, automated backups, and 24/7 dedicated customer support.
-
 ---
 
 ## 📜 Credits & Modpack Permissions
 
-| Property | Information |
+| Role / Property | Author / Link |
 | :--- | :--- |
 | **Creator / Author** | **Dasik** (Rifaditya) |
-| **Collection** | Vanilla Outsider Collection |
+| **Community** | [Official Discord](https://discord.gg/EV99bgAFqb) |
+| **Collection** | Vanilla Outsider |
 | **License** | [GNU General Public License v3.0 (GPLv3)](https://www.gnu.org/licenses/gpl-3.0.html) |
-| **Source Code** | [GitHub - Rifaditya/vanilla-outsider-better-dogs](https://github.com/Rifaditya/vanilla-outsider-better-dogs) |
-| **Issue Tracker** | [GitHub Issues](https://github.com/Rifaditya/vanilla-outsider-better-dogs/issues) |
-| **Documentation / Wiki** | [GitHub Wiki](https://github.com/Rifaditya/vanilla-outsider-better-dogs/wiki) |
+| **Source Code** | [GitHub - Rifaditya/Vanilla-Outsider-Better-Dogs](https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs) |
+| **Issue Tracker** | [GitHub Issues](https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs/issues) |
+| **Documentation / Wiki** | [GitHub Wiki](https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs/wiki) |
 
 > [!IMPORTANT]
 > **📦 Modpack Permissions & Distribution:**<br>
@@ -295,7 +304,10 @@ If you enjoy **Better Dogs**, these companion mods from the **Vanilla Outsider &
 
 ---
 
-<p align="center">
-  <strong>Made with ❤️ for the Minecraft community</strong><br>
-  <em>Part of the Vanilla Outsider Collection</em>
-</p>
+<div align="center">
+
+**Made with ❤️ for the Minecraft community**
+
+*Part of the Vanilla Outsider Collection*
+
+</div>
