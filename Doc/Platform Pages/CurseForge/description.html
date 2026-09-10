@@ -484,6 +484,20 @@
 
 <hr>
 
+<h2>🧩 Recommended Sister Mods</h2>
+
+<p>If you enjoy <strong>Better Dogs</strong>, these companion mods from the <strong>Vanilla Outsider &amp; Delayed Gratification Collections</strong> plug in seamlessly:</p>
+
+<ul>
+  <li>🐾 <a href="https://www.curseforge.com/minecraft/mc-mods/dg-natural-reproduction"><strong>Natural Reproduction</strong></a>: Introduces realistic gestation, seasonal breeding cycles, and genetic trait variation across wolves, livestock, and ambient fauna.</li>
+  <li>🦇 <a href="https://www.curseforge.com/minecraft/mc-mods/vo-better-bats"><strong>Better Bats</strong></a>: Enhances vanilla bats with dynamic 3D Boids murmuration flocking, twilight flight behaviors, and natural cave guano crop fertilization.</li>
+  <li>💤 <a href="https://www.curseforge.com/minecraft/mc-mods/vo-true-sleep"><strong>True Sleep</strong></a>: Transforms the vanilla sleep skip into a real-time world acceleration experience where furnace smelting and mob growth proceed naturally.</li>
+</ul>
+
+<p><em>Explore the full <a href="https://www.curseforge.com/members/dasikigaijin/projects"><strong>Vanilla Outsider Collection</strong></a> for more mindful vanilla enhancements.</em></p>
+
+<hr>
+
 <h2>☕ Support</h2>
 
 <p align="center">
@@ -496,39 +510,53 @@
   <p><strong>🇮🇩 Indonesian Users:</strong> SocioBuzz and Saweria support local payment methods (Gopay, OVO, Dana, etc.) if you want to support me without using PayPal/Ko-fi!</p>
 </blockquote>
 
+<blockquote><p><strong>Dedicated Server Hosting Partner:</strong><br>Looking for a reliable server to play with friends? Check out <strong>BisectHosting</strong> for 1-click modpack installations, automated backups, and 24/7 dedicated customer support.</p></blockquote>
+
 <hr>
 
-<h2>📜 Credits &amp; Permissions</h2>
+<h2>📜 Credits &amp; Modpack Permissions</h2>
 
 <table>
   <thead>
     <tr>
-      <th>Role</th>
-      <th>Author</th>
+      <th>Property</th>
+      <th>Information</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td><strong>Creator</strong></td>
+      <td><strong>Creator / Author</strong></td>
       <td><strong>Dasik</strong> (Rifaditya)</td>
     </tr>
     <tr>
       <td><strong>Collection</strong></td>
-      <td>Vanilla Outsider</td>
+      <td><a href="https://www.curseforge.com/members/dasikigaijin/projects">Vanilla Outsider Collection</a></td>
     </tr>
     <tr>
       <td><strong>License</strong></td>
-      <td>GNU GPLv3</td>
+      <td><a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License v3.0 (GPLv3)</a></td>
+    </tr>
+    <tr>
+      <td><strong>Source Code</strong></td>
+      <td><a href="https://github.com/Rifaditya/vanilla-outsider-better-dogs">GitHub - Rifaditya/vanilla-outsider-better-dogs</a></td>
+    </tr>
+    <tr>
+      <td><strong>Issue Tracker</strong></td>
+      <td><a href="https://github.com/Rifaditya/vanilla-outsider-better-dogs/issues">GitHub Issues</a></td>
+    </tr>
+    <tr>
+      <td><strong>Documentation / Wiki</strong></td>
+      <td><a href="https://github.com/Rifaditya/vanilla-outsider-better-dogs/wiki">GitHub Wiki</a></td>
     </tr>
   </tbody>
 </table>
 
 <blockquote>
   <p><strong>📦 Modpack Permissions &amp; Distribution:</strong><br>
-  You are free to include this mod in any modpack on any platform. However, the mod itself must be downloaded from its official distribution pages on <strong>Modrinth</strong> or <strong>CurseForge</strong>. Re-uploading or redistributing the mod jar file to third-party sites is strictly prohibited unless explicitly permitted by the creator.
-  <br><br>
-  <strong>License &amp; Forks:</strong><br>
-  Since the source code is licensed under <strong>GNU GPLv3</strong>, you are fully permitted to fork the repository, make modifications, build your own versions, and distribute them under the terms of the GPLv3.</p>
+  You are fully welcome to include this mod in any modpack on any platform! However, the mod file must be downloaded directly through official distribution channels (<strong>CurseForge</strong> or <strong>Modrinth</strong>). Re-uploading, mirroring, or redistributing the original mod JAR to third-party mirror sites, scraper portals, or unauthorized launchers is strictly prohibited.</p>
+  <p><strong>⚖️ License &amp; Fork Guidelines (No Zero-Change Re-uploads):</strong><br>
+  This project is open-source under the <strong>GNU GPLv3</strong>. You are fully encouraged to inspect the code, learn from it, and fork the repository to create genuine modifications, substantial feature expansions, or community ports&mdash;provided your project remains open-source under GPLv3 with proper attribution.<br>
+  <strong>However, straight 1:1 re-uploads, clone forks with no meaningful functional changes, or re-publishing identical builds under different project names (e.g. to farm downloads or rewards) are strictly forbidden.</strong></p>
 </blockquote>
 
 <hr>
