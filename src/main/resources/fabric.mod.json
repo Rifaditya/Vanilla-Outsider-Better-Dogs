@@ -17,16 +17,28 @@
     "entrypoints": {
         "main": [
             "net.vanillaoutsider.betterdogs.BetterDogsFabric"
+        ],
+        "modmenu": [
+            "net.vanillaoutsider.betterdogs.config.ModMenuIntegration"
+        ],
+        "jade": [
+            "net.vanillaoutsider.betterdogs.compat.jade.BetterDogsJadePlugin"
         ]
     },
     "mixins": [
         "vanilla-outsider-better-dogs.mixins.json"
     ],
+    "suggests": {
+        "yet-another-config-lib": "*",
+        "modmenu": "*",
+        "jade": "*"
+    },
     "depends": {
         "fabricloader": ">=0.15.0",
         "minecraft": "1.21.1",
         "java": ">=21",
-        "fabric-api": "*"
+        "fabric-api": "*",
+        "dasik-library": ">=1.1.0"
     },
     "custom": {
         "modmenu": {

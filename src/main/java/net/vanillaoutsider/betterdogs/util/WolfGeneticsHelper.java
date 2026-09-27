@@ -1,7 +1,10 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
 package net.vanillaoutsider.betterdogs.util;
 
+import net.dasik.social.api.genetics.EntityGenetics;
+import net.dasik.social.api.genetics.GeneticsEngine;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.level.Level;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
@@ -11,7 +14,14 @@ import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
  */
 public class WolfGeneticsHelper {
 
+    public static void syncWithLibraryGenetics(Wolf wolf) {
+        if (wolf != null) {
+            EntityGenetics genetics = GeneticsEngine.getGenetics(wolf);
+        }
+    }
+
     public static WolfPersonality calculateOffspringPersonality(Level level, WolfPersonality parentA, WolfPersonality parentB, RandomSource random) {
+        EntityGenetics defaultGenetics = EntityGenetics.DEFAULT;
         if (parentA == null) {
             parentA = WolfPersonality.NORMAL;
         }

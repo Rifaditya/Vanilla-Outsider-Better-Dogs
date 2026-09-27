@@ -1,0 +1,27 @@
+// Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
+// Verified against: Minecraft 1.21.1
+package net.vanillaoutsider.betterdogs.config;
+
+import com.terraformersmc.modmenu.api.ConfigScreenFactory;
+import com.terraformersmc.modmenu.api.ModMenuApi;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.api.FabricLoader;
+
+@Environment(EnvType.CLIENT)
+public class ModMenuIntegration implements ModMenuApi {
+    @Override
+    public ConfigScreenFactory<?> getModConfigScreenFactory() {
+        if (FabricLoader.getInstance().isModLoaded("yet_another_config_lib_v3") ||
+            FabricLoader.getInstance().isModLoaded("yet-another-config-lib")) {
+            try {
+                Class<?> helperClass = Class.forName("net.vanillaoutsider.betterdogs.config.YaclScreenHelper");
+                java.lang.reflect.Method method = helperClass.getMethod("createFactory");
+                return (ConfigScreenFactory<?>) method.invoke(null);
+            } catch (Exception e) {
+                // Fail gracefully
+            }
+        }
+        return parent -> null;
+    }
+}
