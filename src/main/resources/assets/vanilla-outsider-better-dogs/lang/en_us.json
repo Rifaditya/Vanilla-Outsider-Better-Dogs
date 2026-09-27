@@ -3,14 +3,11 @@
   "config.jade.plugin_vanilla-outsider-better-dogs.inbred_status": "Show Inbred Status",
   "config.jade.plugin_vanilla-outsider-better-dogs.wolf_info": "Show Wolf Info",
   "config.jade.plugin_vanilla-outsider-better-dogs.hide_undiscovered_treat": "Hide Undiscovered Treat",
-
   "config.jade.plugin_vanilla-outsider-better-dogs": "Better Dogs",
   "config.jade.plugin_vanilla-outsider-better-dogs.wolf_health": "Dynamic Wolf Health",
-
   "gamerule.category.vanilla-outsider-better-dogs.better_dogs": "Vanilla Outsider: Better Dogs",
   "gamerule.betterdogs.bd_wolf_spawn_multiplier_percent": "Wolf Spawn Multiplier (%)",
   "gamerule.betterdogs.bd_wolf_spawn_multiplier_percent.description": "Multiplier for wolf spawning weight in biome spawn settings. Default: 150 (represented as 1.5x spawn weight).",
-
   "config.betterdogs.wolfMinScale": "Wolf Min Scale",
   "config.betterdogs.wolfMinScale.description": "Minimum scale factor for wolves. Note: Changing this global configuration value only affects newly generated worlds. For existing worlds, change settings in-game via /gamerule betterdogs:bd_wolf_min_scale_percent.",
   "config.betterdogs.wolfMaxScale": "Wolf Max Scale",
@@ -19,7 +16,6 @@
   "gamerule.betterdogs.bd_wolf_min_scale_percent.description": "Minimum scale percentage for wolves. Limits genetics and rendering scale. Note: Changing the global configuration file only defines default values for newly generated worlds, and settings for existing worlds must be changed in-game via /gamerule or the GameRules edit GUI screen. Default: 70.",
   "gamerule.betterdogs.bd_wolf_max_scale_percent": "Wolf Max Scale (%)",
   "gamerule.betterdogs.bd_wolf_max_scale_percent.description": "Maximum scale percentage for wolves. Limits genetics and rendering scale. Note: Changing the global configuration file only defines default values for newly generated worlds, and settings for existing worlds must be changed in-game via /gamerule or the GameRules edit GUI screen. Default: 145.",
-
   "gamerule.betterdogs.bd_storm_anxiety": "Enable Storm Anxiety",
   "gamerule.betterdogs.bd_storm_anxiety.description": "If true, wolves will whine and shake in fear during thunderstorms depending on personality (Pacifist has 3x anxiety, Aggressive is immune). Default: true.",
   "gamerule.betterdogs.bd_actionbar_feedback": "Enable Actionbar Feedback",
@@ -148,7 +144,6 @@
   "gamerule.betterdogs.bd_wolf_litter_max_size.description": "The maximum number of puppies that can be born to a tamed wolf pair in a single breeding session. Default: 4.",
   "gamerule.betterdogs.bd_wolf_litter_extra_chance": "Wolf: Litter Extra Chance (%)",
   "gamerule.betterdogs.bd_wolf_litter_extra_chance.description": "Percentage chance for each additional puppy to spawn in the litter after the first, up to the litter max size. Default: 20.",
-  
   "config.betterdogs.title": "Vanilla Outsider: Better Dogs Configuration",
   "config.betterdogs.category.general": "General Options",
   "config.betterdogs.category.personalities": "Wolf Personalities",
@@ -237,7 +232,6 @@
   "config.betterdogs.stormAnxietyTriggerChance.description": "Symmetric percentage chance per tick for storm anxiety checks to trigger. Default: 0.01 (1% per tick).",
   "config.betterdogs.stormWhineChance": "Storm Whine Chance",
   "config.betterdogs.stormWhineChance.description": "Symmetric percentage chance per tick for a scared wolf to whine. Default: 0.02 (2% per tick).",
-  
   "config.betterdogs.aggressiveHealthBonus": "Aggressive: HP Bonus",
   "config.betterdogs.aggressiveHealthBonus.description": "Health modifier applied to Aggressive wolves. Default: -10 HP.",
   "config.betterdogs.aggressiveSpeedModifier": "Aggressive: Speed Modifier",
@@ -254,7 +248,6 @@
   "config.betterdogs.aggressiveFollowStop.description": "Distance from owner at which an Aggressive wolf stops catch-up follow. Default: 2.0 blocks.",
   "config.betterdogs.aggressiveFleeChance": "Aggressive: Flee Chance (%)",
   "config.betterdogs.aggressiveFleeChance.description": "Percentage chance an Aggressive wolf will flee when severely hurt. Default: 10%.",
-  
   "config.betterdogs.pacifistHealthBonus": "Pacifist: HP Bonus",
   "config.betterdogs.pacifistHealthBonus.description": "Health bonus applied to Pacifist wolves. Default: +20 HP.",
   "config.betterdogs.pacifistSpeedModifier": "Pacifist: Speed Modifier",
@@ -269,7 +262,6 @@
   "config.betterdogs.pacifistFollowStop.description": "Distance from owner at which a Pacifist wolf stops catch-up follow. Default: 2.0 blocks.",
   "config.betterdogs.pacifistFleeChance": "Pacifist: Flee Chance (%)",
   "config.betterdogs.pacifistFleeChance.description": "Percentage chance a Pacifist wolf will flee when threatened. Default: 100%.",
-  
   "config.betterdogs.normalHealthBonus": "Normal: HP Bonus",
   "config.betterdogs.normalHealthBonus.description": "Health modifier applied to Normal wolves. Default: 0 HP.",
   "config.betterdogs.normalSpeedModifier": "Normal: Speed Modifier",
@@ -282,7 +274,6 @@
   "config.betterdogs.normalFollowStop.description": "Distance from owner at which a Normal wolf stops catch-up follow. Default: 2.0 blocks.",
   "config.betterdogs.normalFleeChance": "Normal: Flee Chance (%)",
   "config.betterdogs.normalFleeChance.description": "Percentage chance a Normal wolf will flee when severely hurt. Default: 50%.",
-  
   "config.betterdogs.spawnChanceNormal": "Spawn Chance: Normal (%)",
   "config.betterdogs.spawnChanceNormal.description": "Wild spawn probability for Normal wolves. Default: 60%.",
   "config.betterdogs.spawnChanceAggressive": "Spawn Chance: Aggressive (%)",
@@ -301,7 +292,6 @@
   "config.betterdogs.breedingDilutedNormalChance.description": "Normal personality fallback chance in diluted breeding. Default: 50%.",
   "config.betterdogs.breedingDilutedOtherChance": "Diluted Breeding Variant (%)",
   "config.betterdogs.breedingDilutedOtherChance.description": "Variant personality inheritance chance in diluted breeding. Default: 25%.",
-  
   "config.betterdogs.wildHuntHealthThreshold": "Wild Hunt Health Threshold",
   "config.betterdogs.wildHuntHealthThreshold.description": "Health threshold percentage for wild pack hunting behaviors. Default: 50%.",
   "config.betterdogs.terrMatrixAAWar": "Matrix: Aggro vs Aggro (War) %",
@@ -328,7 +318,6 @@
   "config.betterdogs.terrMatrixPPWar.description": "War probability between two Pacifist wild pack leaders. Default: 0%.",
   "config.betterdogs.terrMatrixPPMerge": "Matrix: Pacifist vs Pacifist (Merge) %",
   "config.betterdogs.terrMatrixPPMerge.description": "Merge probability between two Pacifist wild pack leaders. Default: 50%.",
-  
   "config.betterdogs.giftCooldownMin": "Gift Cooldown Min (Ticks)",
   "config.betterdogs.giftCooldownMin.description": "Minimum cooldown ticks between morning gift deliveries. Default: 12000 (10 mins).",
   "config.betterdogs.giftCooldownMax": "Gift Cooldown Max (Ticks)",
@@ -353,7 +342,6 @@
   "config.betterdogs.giftInteractionCooldown.description": "The cooldown in ticks required between free positive interactions to count towards gift threshold. Default: 100.",
   "config.betterdogs.demeritAccidentalAttacks": "Demerit on Accidental Attacks",
   "config.betterdogs.demeritAccidentalAttacks.description": "If true, accidentally attacking your dog will reset its gifting merits. Default: true.",
-  
   "text.betterdogs.guard_activated": "Guard Mode Activated for %s at %d, %d, %d",
   "text.betterdogs.guard_deactivated": "Guard Mode Deactivated for %s. Following owner.",
   "text.betterdogs.cured_inbred": "%s has been cured of genetic inbreeding penalties!",
@@ -443,6 +431,22 @@
   "gamerule.betterdogs.bd_nemesis_system.description": "If true, tamed wolves will hold a temporary grudge against specific mob types that kill their pack mates. Default: true.",
   "gamerule.betterdogs.bd_nemesis_duration_days": "Nemesis Grudge Duration (Days)",
   "gamerule.betterdogs.bd_nemesis_duration_days.description": "The number of in-game days a pack will hold a grudge against a mob type before forgiving them. Default: 3.",
-  "betterdogs.jade.treat": "Favorite Treat: %s"
+  "betterdogs.jade.treat": "Favorite Treat: %s",
+  "gamerule.betterdogs.bd_fetch_enabled": "Enable Fetch Minigame",
+  "gamerule.betterdogs.bd_fetch_enabled.description": "If true, tamed dogs will fetch thrown sticks or toys and bring them back to their owner. Default: true.",
+  "gamerule.betterdogs.bd_fetch_range": "Fetch Search Range",
+  "gamerule.betterdogs.bd_fetch_range.description": "The maximum search distance in blocks for dogs to locate thrown fetch items. Default: 16.",
+  "gamerule.betterdogs.bd_zoomies_enabled": "Enable Dog Zoomies",
+  "gamerule.betterdogs.bd_zoomies_enabled.description": "If true, happy dogs can randomly get energetic bursts of zoomies and sprint around excitedly. Default: true.",
+  "gamerule.betterdogs.bd_zoomies_duration_ticks": "Dog Zoomies Duration (Ticks)",
+  "gamerule.betterdogs.bd_zoomies_duration_ticks.description": "The duration of playful dog zoomies sprints in ticks (20 ticks = 1 second). Default: 160 (8.0s).",
+  "gamerule.betterdogs.bd_wolves_seek_water_on_fire": "Wolf: Seek Water On Fire",
+  "gamerule.betterdogs.bd_wolves_seek_water_on_fire.description": "If true, burning wolves actively seek out and plunge into nearby water to extinguish themselves. Default: true.",
+  "gamerule.betterdogs.bd_wolves_break_sit_on_fire": "Wolf: Break Sit On Fire",
+  "gamerule.betterdogs.bd_wolves_break_sit_on_fire.description": "If true, sitting wolves will automatically stand up and break sitting posture when set on fire. Default: true.",
+  "gamerule.betterdogs.bd_dynamic_climate_variants": "Wolf: Dynamic Climate Variants",
+  "gamerule.betterdogs.bd_dynamic_climate_variants.description": "If true, wolves dynamically adapt their coat textures based on local biome temperatures and climate. Default: true.",
+  "gamerule.betterdogs.bd_particle_density": "Particle Density Level",
+  "gamerule.betterdogs.bd_particle_density.description": "Controls the visual particle density level for runt, trait, and guard indicators. Default: 2.",
+  "config.betterdogs.guardParticleDensity.description": "Visual density multiplier of smoke and glow particles emitted by stationed guard dogs. Default: 2 (Normal)."
 }
-
