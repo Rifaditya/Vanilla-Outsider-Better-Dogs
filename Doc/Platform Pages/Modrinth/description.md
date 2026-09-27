@@ -245,6 +245,18 @@ Master every interaction in Better Dogs with this comprehensive operational play
 
 ---
 
+## 🧩 Recommended Sister Mods
+
+If you enjoy **Better Dogs**, these companion mods from the **Vanilla Outsider & Delayed Gratification Collections** plug in seamlessly:
+
+* 🐾 [**Natural Reproduction**](https://modrinth.com/mod/dg-natural-reproduction): Introduces realistic gestation, seasonal breeding cycles, and genetic trait variation across wolves, livestock, and ambient fauna.
+* 🦇 [**Better Bats**](https://modrinth.com/mod/vo-better-bats): Enhances vanilla bats with dynamic 3D Boids murmuration flocking, twilight flight behaviors, and natural cave guano crop fertilization.
+* 💤 [**True Sleep**](https://modrinth.com/mod/vanilla-outsider-true-sleep): Transforms the vanilla sleep skip into a real-time world acceleration experience where furnace smelting and mob growth proceed naturally.
+
+> 🌟 *Explore the full [**Vanilla Outsider Collection**](https://modrinth.com/collection/vanilla-outsider) for more mindful vanilla enhancements.*
+
+---
+
 ### 💬 Join the Community & Get Support
 Looking for help, want to test early beta builds, or vote on upcoming features? Join our official Discord community!
 <p align="center">
@@ -289,7 +301,6 @@ If you enjoy **Better Dogs** and the **Vanilla Outsider Collection**, consider f
 > **⚖️ License & Fork Guidelines (No Zero-Change Re-uploads):**<br>
 > This project is open-source under the **GNU GPLv3**. You are fully encouraged to inspect the code, learn from it, and fork the repository to create genuine modifications, substantial feature expansions, or community ports—provided your project remains open-source under GPLv3 with proper attribution.<br>
 > **However, straight 1:1 re-uploads, clone forks with no meaningful functional changes, or re-publishing identical builds under different project names (e.g. to farm downloads or rewards) are strictly forbidden.**
-
 ---
 
 <div align="center">
