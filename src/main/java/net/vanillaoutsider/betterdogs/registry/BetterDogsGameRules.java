@@ -1,24 +1,16 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
 package net.vanillaoutsider.betterdogs.registry;
 
-import com.mojang.brigadier.arguments.BoolArgumentType;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.serialization.Codec;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.minecraft.resources.Identifier;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gamerules.GameRule;
 import net.minecraft.world.level.gamerules.GameRuleCategory;
-import net.minecraft.world.level.gamerules.GameRuleType;
-import net.minecraft.world.level.gamerules.GameRuleTypeVisitor;
 
 public class BetterDogsGameRules {
 
-    public static final GameRuleCategory BETTER_DOGS = GameRuleCategory
-            .register(Identifier.fromNamespaceAndPath("vanilla-outsider-better-dogs", "better_dogs"));
+    public static final GameRuleCategory BETTER_DOGS = DynamicGameRuleManager
+            .registerCategory(Identifier.fromNamespaceAndPath("vanilla-outsider-better-dogs", "better_dogs"));
 
     // General & Environmental Safety
     public static GameRule<Boolean> BD_STORM_ANXIETY;
@@ -43,6 +35,12 @@ public class BetterDogsGameRules {
     public static GameRule<Integer> BD_HORN_COMMAND_RANGE;
     public static GameRule<Integer> BD_HORN_PATHING_TIMEOUT;
     public static GameRule<Integer> BD_HORN_OVERRIDE_DURATION;
+    public static GameRule<Boolean> BD_FETCH_ENABLED;
+    public static GameRule<Integer> BD_FETCH_RANGE;
+    public static GameRule<Boolean> BD_ZOOMIES_ENABLED;
+    public static GameRule<Integer> BD_ZOOMIES_DURATION_TICKS;
+    public static GameRule<Boolean> BD_WOLVES_SEEK_WATER_ON_FIRE;
+    public static GameRule<Boolean> BD_WOLVES_BREAK_SIT_ON_FIRE;
     public static GameRule<Boolean> BD_ALLOW_UNRESTRICTED_RIDING;
     public static GameRule<Integer> BD_TAMED_PACK_SPREAD_MULTIPLIER;
     public static GameRule<Integer> BD_TAMED_PACK_SPREAD_MAX;
@@ -128,6 +126,20 @@ public class BetterDogsGameRules {
     public static GameRule<Integer> BD_BREED_DILUTED_NORMAL_CHANCE;
     public static GameRule<Integer> BD_BREED_DILUTED_OTHER_CHANCE;
     public static GameRule<Integer> BD_WOLF_LITTER_MAX_SIZE;
+    public static GameRule<Integer> BD_WOLF_LITTER_EXTRA_CHANCE;
+
+    // Guard Mode
+    public static GameRule<Boolean> BD_PACIFIST_GUARD_BUFFS;
+    public static GameRule<Boolean> BD_ENABLE_INBRED_CURING;
+    public static GameRule<Boolean> BD_SHOW_RUNT_PARTICLES;
+    public static GameRule<Integer> BD_PARTICLE_DENSITY;
+    public static GameRule<Integer> BD_GUARD_PATROL_RANGE_AGGRESSIVE;
+    public static GameRule<Integer> BD_GUARD_PATROL_RANGE_NORMAL;
+    public static GameRule<Integer> BD_GUARD_PATROL_RANGE_PACIFIST;
+
+    // Pack Spread Scaling
+    public static GameRule<Integer> BD_WILD_PACK_SPREAD_MULTIPLIER;
+    public static GameRule<Integer> BD_WILD_PACK_SPREAD_MAX;
 
     public static void init() {
         // General
@@ -153,6 +165,12 @@ public class BetterDogsGameRules {
         BD_HORN_COMMAND_RANGE = registerInteger("vanilla-outsider-better-dogs:bd_horn_command_range", BETTER_DOGS, 64);
         BD_HORN_PATHING_TIMEOUT = registerInteger("vanilla-outsider-better-dogs:bd_horn_pathing_timeout", BETTER_DOGS, 300);
         BD_HORN_OVERRIDE_DURATION = registerInteger("vanilla-outsider-better-dogs:bd_horn_override_duration", BETTER_DOGS, 600);
+        BD_FETCH_ENABLED = registerBoolean("vanilla-outsider-better-dogs:bd_fetch_enabled", BETTER_DOGS, true);
+        BD_FETCH_RANGE = registerInteger("vanilla-outsider-better-dogs:bd_fetch_range", BETTER_DOGS, 16);
+        BD_ZOOMIES_ENABLED = registerBoolean("vanilla-outsider-better-dogs:bd_zoomies_enabled", BETTER_DOGS, true);
+        BD_ZOOMIES_DURATION_TICKS = registerInteger("vanilla-outsider-better-dogs:bd_zoomies_duration_ticks", BETTER_DOGS, 160);
+        BD_WOLVES_SEEK_WATER_ON_FIRE = registerBoolean("vanilla-outsider-better-dogs:bd_wolves_seek_water_on_fire", BETTER_DOGS, true);
+        BD_WOLVES_BREAK_SIT_ON_FIRE = registerBoolean("vanilla-outsider-better-dogs:bd_wolves_break_sit_on_fire", BETTER_DOGS, true);
         BD_ALLOW_UNRESTRICTED_RIDING = registerBoolean("vanilla-outsider-better-dogs:bd_allow_unrestricted_dog_riding", BETTER_DOGS, false);
         BD_TAMED_PACK_SPREAD_MULTIPLIER = registerInteger("vanilla-outsider-better-dogs:bd_tamed_pack_spread_multiplier", BETTER_DOGS, 100);
         BD_TAMED_PACK_SPREAD_MAX = registerInteger("vanilla-outsider-better-dogs:bd_tamed_pack_spread_max", BETTER_DOGS, 50);
@@ -238,57 +256,61 @@ public class BetterDogsGameRules {
         BD_BREED_DILUTED_NORMAL_CHANCE = registerInteger("vanilla-outsider-better-dogs:bd_breed_diluted_normal_chance", BETTER_DOGS, 50);
         BD_BREED_DILUTED_OTHER_CHANCE = registerInteger("vanilla-outsider-better-dogs:bd_breed_diluted_other_chance", BETTER_DOGS, 25);
         BD_WOLF_LITTER_MAX_SIZE = registerInteger("vanilla-outsider-better-dogs:bd_wolf_litter_max_size", BETTER_DOGS, 4);
+        BD_WOLF_LITTER_EXTRA_CHANCE = registerInteger("vanilla-outsider-better-dogs:bd_wolf_litter_extra_chance", BETTER_DOGS, 20);
+
+        // Guard Mode
+        BD_PACIFIST_GUARD_BUFFS = registerBoolean("vanilla-outsider-better-dogs:bd_pacifist_guard_buffs", BETTER_DOGS, false);
+        BD_ENABLE_INBRED_CURING = registerBoolean("vanilla-outsider-better-dogs:bd_enable_inbred_curing", BETTER_DOGS, true);
+        BD_SHOW_RUNT_PARTICLES = registerBoolean("vanilla-outsider-better-dogs:bd_show_runt_particles", BETTER_DOGS, false);
+        BD_PARTICLE_DENSITY = registerInteger("vanilla-outsider-better-dogs:bd_particle_density", BETTER_DOGS, 2);
+        BD_GUARD_PATROL_RANGE_AGGRESSIVE = registerInteger("vanilla-outsider-better-dogs:bd_guard_patrol_range_aggressive", BETTER_DOGS, 12);
+        BD_GUARD_PATROL_RANGE_NORMAL = registerInteger("vanilla-outsider-better-dogs:bd_guard_patrol_range_normal", BETTER_DOGS, 0);
+        BD_GUARD_PATROL_RANGE_PACIFIST = registerInteger("vanilla-outsider-better-dogs:bd_guard_patrol_range_pacifist", BETTER_DOGS, 3);
+
+        // Pack Spread Scaling
+        BD_WILD_PACK_SPREAD_MULTIPLIER = registerInteger("vanilla-outsider-better-dogs:bd_wild_pack_spread_multiplier", BETTER_DOGS, 80);
+        BD_WILD_PACK_SPREAD_MAX = registerInteger("vanilla-outsider-better-dogs:bd_wild_pack_spread_max", BETTER_DOGS, 40);
     }
 
     private static GameRule<Boolean> registerBoolean(String id, GameRuleCategory category, boolean defaultValue) {
-        try {
-            return Registry.register(BuiltInRegistries.GAME_RULE, id,
-                    new GameRule<>(category, GameRuleType.BOOL, BoolArgumentType.bool(),
-                            GameRuleTypeVisitor::visitBoolean, Codec.BOOL, b -> b ? 1 : 0, defaultValue, FeatureFlagSet.of()));
-        } catch (Exception e) {
-            return null;
-        }
+        return DynamicGameRuleManager.booleanRule(id, category, defaultValue).register();
     }
 
     private static GameRule<Integer> registerInteger(String id, GameRuleCategory category, int defaultValue) {
-        try {
-            return Registry.register(BuiltInRegistries.GAME_RULE, id,
-                    new GameRule<>(category, GameRuleType.INT, IntegerArgumentType.integer(Integer.MIN_VALUE, Integer.MAX_VALUE),
-                            GameRuleTypeVisitor::visitInteger, Codec.intRange(Integer.MIN_VALUE, Integer.MAX_VALUE), i -> i, defaultValue, FeatureFlagSet.of()));
-        } catch (Exception e) {
-            return null;
-        }
+        return DynamicGameRuleManager.integerRule(id, category, defaultValue).register();
     }
 
     public static boolean isHornCommandsEnabled(Level level) {
         return getBoolean(level, BD_HORN_COMMANDS_ENABLED, true);
     }
 
+    public static boolean isFetchEnabled(Level level) {
+        return getBoolean(level, BD_FETCH_ENABLED, true);
+    }
+
+    public static int getFetchRange(Level level) {
+        return getInt(level, BD_FETCH_RANGE, 16);
+    }
+
+    public static boolean isZoomiesEnabled(Level level) {
+        return getBoolean(level, BD_ZOOMIES_ENABLED, true);
+    }
+
+    public static int getZoomiesDurationTicks(Level level) {
+        return getInt(level, BD_ZOOMIES_DURATION_TICKS, 160);
+    }
+
     public static boolean getBoolean(Level level, GameRule<Boolean> rule, boolean fallback) {
         if (level == null || rule == null) {
             return fallback;
         }
-        if (level instanceof ServerLevel serverLevel) {
-            try {
-                return serverLevel.getGameRules().get(rule);
-            } catch (Exception e) {
-                return fallback;
-            }
-        }
-        return fallback;
+        return DynamicGameRuleManager.getBoolean(level, rule);
     }
 
     public static int getInt(Level level, GameRule<Integer> rule, int fallback) {
         if (level == null || rule == null) {
             return fallback;
         }
-        if (level instanceof ServerLevel serverLevel) {
-            try {
-                return serverLevel.getGameRules().get(rule);
-            } catch (Exception e) {
-                return fallback;
-            }
-        }
-        return fallback;
+        return DynamicGameRuleManager.getInt(level, rule);
     }
 }

@@ -446,6 +446,14 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         betterdogs$invokeSetVariant(variant);
     }
 
+    @Invoker("getSoundVariant")
+    public abstract net.minecraft.core.Holder<net.minecraft.world.entity.animal.wolf.WolfSoundVariant> betterdogs$invokeGetSoundVariant();
+
+    @Override
+    public net.minecraft.core.Holder<net.minecraft.world.entity.animal.wolf.WolfSoundVariant> betterdogs$getSoundVariant() {
+        return betterdogs$invokeGetSoundVariant();
+    }
+
     @Inject(method = "hurtServer", at = @At("HEAD"), cancellable = true)
     private void betterdogs$onHurtServer(net.minecraft.server.level.ServerLevel serverLevel, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         Wolf wolf = (Wolf) (Object) this;
@@ -531,12 +539,14 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
 
         this.goalSelector.addGoal(1, new net.vanillaoutsider.betterdogs.ai.MoveToVehicleGoal(wolf));
         this.goalSelector.addGoal(1, new FleeCreeperGoal(wolf));
+        this.goalSelector.addGoal(1, new net.vanillaoutsider.betterdogs.ai.WolfSeekWaterOnFireGoal(wolf));
         this.goalSelector.addGoal(2, new AvoidHazardsGoal(wolf));
         this.goalSelector.addGoal(2, new WolfFleeLowHealthGoal(wolf, 1.4));
         this.goalSelector.addGoal(2, new WolfStormAnxietyGoal(wolf));
         this.goalSelector.addGoal(2, new net.vanillaoutsider.betterdogs.ai.WolfHornGoal(wolf));
         this.goalSelector.addGoal(2, new net.vanillaoutsider.betterdogs.ai.ZoomiesGoal(wolf));
         this.goalSelector.addGoal(3, new WolfFlankAttackGoal(wolf, 1.25));
+        this.goalSelector.addGoal(3, new net.vanillaoutsider.betterdogs.ai.PathToSoundLocationGoal(wolf));
         this.goalSelector.addGoal(3, new net.vanillaoutsider.betterdogs.ai.WolfFetchGoal(wolf));
         this.goalSelector.addGoal(3, new net.vanillaoutsider.betterdogs.ai.AdultCorrectionGoal(wolf));
         this.goalSelector.addGoal(4, new EatGroundFoodGoal(wolf, 1.25));
@@ -558,6 +568,8 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.targetSelector.addGoal(2, new net.vanillaoutsider.betterdogs.ai.WolfNemesisTargetGoal(wolf));
         this.targetSelector.addGoal(3, new PacifistRevengeGoal(wolf));
         this.targetSelector.addGoal(4, new AggressiveTargetGoal(wolf));
+        net.minecraft.world.entity.ai.targeting.TargetingConditions.Selector preySelector = (entity, level) -> entity instanceof net.minecraft.world.entity.animal.sheep.Sheep || entity instanceof net.minecraft.world.entity.animal.rabbit.Rabbit || entity instanceof net.minecraft.world.entity.animal.chicken.Chicken;
+        this.targetSelector.addGoal(4, new net.vanillaoutsider.betterdogs.ai.WildWolfHuntGoal<>(wolf, net.minecraft.world.entity.animal.Animal.class, false, preySelector));
         this.targetSelector.addGoal(5, new net.vanillaoutsider.betterdogs.ai.HuntWhenHurtGoal(wolf));
     }
 
@@ -600,6 +612,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
             WolfPersonality personalityB = otherParent instanceof WolfExtensions extB ? extB.betterdogs$getPersonality() : WolfPersonality.NORMAL;
             WolfPersonality inherited = net.vanillaoutsider.betterdogs.util.WolfGeneticsHelper.calculateOffspringPersonality(level, personalityA, personalityB, child.getRandom());
             childExt.betterdogs$setPersonality(inherited);
+            net.vanillaoutsider.betterdogs.util.WolfGeneticsHelper.syncWithLibraryGenetics(child);
 
             float scaleA = parentA instanceof WolfExtensions extA ? extA.betterdogs$getSocialScale() : 1.0f;
             float scaleB = otherParent instanceof WolfExtensions extB ? extB.betterdogs$getSocialScale() : 1.0f;

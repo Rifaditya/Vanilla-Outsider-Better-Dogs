@@ -513,4 +513,19 @@ public class WolfPersistentData {
             tag.putBoolean(NBT_KEY_IS_PACK_LEADER, isPackLeader);
         }
     }
+
+    public static boolean isPersistedInbred(net.minecraft.world.entity.animal.wolf.Wolf wolf) {
+        if (wolf instanceof WolfExtensions ext) {
+            return ext.betterdogs$isInbred();
+        }
+        return false;
+    }
+
+    public static boolean hasDiscoveredTreat(net.minecraft.world.entity.animal.wolf.Wolf wolf) {
+        if (wolf instanceof WolfExtensions ext) {
+            String fav = ext.betterdogs$getFavoriteTreat();
+            return fav != null && !fav.isEmpty();
+        }
+        return false;
+    }
 }

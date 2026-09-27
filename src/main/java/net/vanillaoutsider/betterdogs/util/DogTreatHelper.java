@@ -29,6 +29,19 @@ public class DogTreatHelper {
         return fav.equals(itemId);
     }
 
+    public static net.minecraft.world.item.Item getFavoriteTreat(Wolf wolf) {
+        if (wolf instanceof WolfExtensions ext) {
+            String fav = ext.betterdogs$getFavoriteTreat();
+            if (fav != null && !fav.isEmpty()) {
+                net.minecraft.resources.Identifier id = net.minecraft.resources.Identifier.tryParse(fav);
+                if (id != null) {
+                    return BuiltInRegistries.ITEM.getValue(id);
+                }
+            }
+        }
+        return null;
+    }
+
     public static boolean isHoldingFavoriteTreat(Wolf wolf, Player player) {
         if (wolf == null || player == null) {
             return false;

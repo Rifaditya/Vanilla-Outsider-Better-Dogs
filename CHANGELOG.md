@@ -1,6 +1,12 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
-## [1.0.89+1.21.11]
+## [1.0.94+1.21.11]
+### Added
+- 🏛️ **Dasik Library Integration (`dasik-library-1.0.0+1.21.11`)**:
+  - Wired `DynamicGameRuleManager` in `BetterDogsGameRules.java` for dynamic registration and unified access.
+  - Connected `SocialLinks` in `BetterDogsCommand.java` for support and community links.
+  - Linked `GeneticsEngine` and `EntityGenetics` in `WolfGeneticsHelper.java` for unified genetics foundation.
+
 ### Added
 - 🌐 **Italian (`it_it`) Localization & Player Guide (11-Language Suite Complete)**:
   - Added complete `assets/betterdogs/lang/it_it.json` matching all 653 translation keys.
