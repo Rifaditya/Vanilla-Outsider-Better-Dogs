@@ -88,6 +88,9 @@ public class WolfPersistentData {
             }
             tag.putBoolean(NBT_KEY_IS_INBRED, isInbred);
             tag.putBoolean(NBT_KEY_IS_GUARDING, isGuarding);
+            if (isGuarding) {
+                tag.putBoolean("Sitting", true);
+            }
             if (guardPos != null) {
                 tag.putInt(NBT_KEY_GUARD_X, guardPos.getX());
                 tag.putInt(NBT_KEY_GUARD_Y, guardPos.getY());
@@ -256,5 +259,20 @@ public class WolfPersistentData {
             }
             tag.putBoolean(NBT_KEY_IS_PACK_LEADER, isPackLeader);
         }
+    }
+
+    public static boolean isPersistedInbred(net.minecraft.world.entity.animal.Wolf wolf) {
+        if (wolf instanceof WolfExtensions ext) {
+            return ext.betterdogs$isInbred();
+        }
+        return false;
+    }
+
+    public static boolean hasDiscoveredTreat(net.minecraft.world.entity.animal.Wolf wolf) {
+        if (wolf instanceof WolfExtensions ext) {
+            String fav = ext.betterdogs$getFavoriteTreat();
+            return fav != null && !fav.isEmpty();
+        }
+        return false;
     }
 }

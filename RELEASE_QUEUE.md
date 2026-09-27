@@ -5,6 +5,12 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **1.0.98+1.20.1** - Multi-Era Parity Alignment (MC 1.20.1)
+- [ ] **1.0.91+1.20.1** - Headless Verification & Migration Test Suite (MC 1.20.1)
+- [ ] **1.0.90+1.20.1** - Transient Attribute Modifier & Base Stat Healer (MC 1.20.1)
+- [ ] **1.0.89+1.20.1** - Guard Mode NBT Sitting Overwrite on Save (MC 1.20.1)
+- [ ] **1.0.88+1.20.1** - Cliff Safety Sneak Purge & Auto-Sanitizer (MC 1.20.1)
+- [ ] **`1.0.87+1.20.1`** - Dasik Library Integration (MC 1.20.1)
 - [ ] **`1.0.86+1.20.1`** - Italian (`it_it`) Localization & Player Guide (11-Language Suite Complete)
 - [ ] **`1.0.85+1.20.1`** - Korean (`ko_kr`) Localization & Player Guide
 - [ ] **`1.0.84+1.20.1`** - French (`fr_fr`, `fr_ca`) Localization & Player Guide

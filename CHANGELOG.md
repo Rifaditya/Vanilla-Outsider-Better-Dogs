@@ -1,5 +1,27 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.91+1.20.1]
+### Added
+- 🧪 **Uninstallation & Posture Safety Test Suite**: Added automated headless unit tests (`WolfUninstallationTest.java`) verifying transient attribute modifier isolation, Guard Mode uninstallation sitting serialization, and sneak flag auto-sanitization.
+
+## [1.0.90+1.20.1]
+### Changed
+- 🧬 **Transient Attribute Modifiers**: Migrated personality health, damage, and speed scaling from persistent base attribute overrides to transient `AttributeModifier` instances (`addTransientModifier()`). Modifiers are never serialized to disk by vanilla Minecraft, completely preserving vanilla world balance if the mod is removed.
+- 🩹 **Base Stat Healer**: Automatically restores corrupted or over-inflated vanilla base attributes back to standard defaults upon loading.
+
+## [1.0.89+1.20.1]
+### Fixed
+- 🛡️ **Guard Mode Uninstallation Sitting Guard**: Ensured that dogs actively in Guard Mode serialize `"Sitting": true` to chunk save data. If Better Dogs is uninstalled, vanilla will safely station the dog at its post in a sitting posture rather than having it endlessly chase or teleport to the owner.
+
+## [1.0.88+1.20.1]
+### Fixed
+- 🛑 **Cliff Safety Sneak Purge**: Removed accidental `shiftKeyDown` flag toggling from cliff edge avoidance, preventing wolves from getting locked in a phantom crouching/sneaking state.
+- 🩹 **Entity Load Sanitizer**: Automatically cleanses any lingering sneak flags from tamed wolves upon chunk/world load.
+
+## [1.0.87+1.20.1]
+### Changed
+- 🏛️ **Dasik Library Integration**: Migrated Better Dogs to declare and consume `dasik-library` (MC 1.20.1) as a mandatory runtime dependency per the Universal Dasik Library Law.
+
 ## [1.0.86+1.20.1]
 ### Added
 - 🌐 **Italian (`it_it`) Localization & Player Guide (11-Language Suite Complete)**:

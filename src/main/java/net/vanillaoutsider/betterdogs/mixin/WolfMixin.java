@@ -535,12 +535,14 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         });
         this.goalSelector.addGoal(1, new net.vanillaoutsider.betterdogs.ai.MoveToVehicleGoal(wolf));
         this.goalSelector.addGoal(1, new FleeCreeperGoal(wolf));
+        this.goalSelector.addGoal(1, new net.vanillaoutsider.betterdogs.ai.WolfSeekWaterOnFireGoal(wolf));
         this.goalSelector.addGoal(2, new AvoidHazardsGoal(wolf));
         this.goalSelector.addGoal(2, new WolfFleeLowHealthGoal(wolf, 1.4));
         this.goalSelector.addGoal(2, new WolfStormAnxietyGoal(wolf));
         this.goalSelector.addGoal(2, new net.vanillaoutsider.betterdogs.ai.WolfHornGoal(wolf));
         this.goalSelector.addGoal(2, new net.vanillaoutsider.betterdogs.ai.ZoomiesGoal(wolf));
         this.goalSelector.addGoal(3, new WolfFlankAttackGoal(wolf, 1.25));
+        this.goalSelector.addGoal(3, new net.vanillaoutsider.betterdogs.ai.PathToSoundLocationGoal(wolf));
         this.goalSelector.addGoal(3, new net.vanillaoutsider.betterdogs.ai.WolfFetchGoal(wolf));
         this.goalSelector.addGoal(3, new net.vanillaoutsider.betterdogs.ai.AdultCorrectionGoal(wolf));
         this.goalSelector.addGoal(4, new EatGroundFoodGoal(wolf, 1.25));
@@ -562,6 +564,8 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.targetSelector.addGoal(2, new net.vanillaoutsider.betterdogs.ai.WolfNemesisTargetGoal(wolf));
         this.targetSelector.addGoal(3, new PacifistRevengeGoal(wolf));
         this.targetSelector.addGoal(4, new AggressiveTargetGoal(wolf));
+        java.util.function.Predicate<net.minecraft.world.entity.LivingEntity> preySelector = entity -> entity instanceof net.minecraft.world.entity.animal.Sheep || entity instanceof net.minecraft.world.entity.animal.Rabbit || entity instanceof net.minecraft.world.entity.animal.Chicken;
+        this.targetSelector.addGoal(4, new net.vanillaoutsider.betterdogs.ai.WildWolfHuntGoal<>(wolf, net.minecraft.world.entity.animal.Animal.class, false, preySelector));
         this.targetSelector.addGoal(5, new net.vanillaoutsider.betterdogs.ai.HuntWhenHurtGoal(wolf));
     }
 
@@ -569,6 +573,9 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     private void betterdogs$writeNbt(CompoundTag tag, CallbackInfo ci) {
         WolfPersistentData.writeToNbt(tag, betterdogs$getPersonality(), betterdogs$getSocialScale(), betterdogs$getDnaSeed(), betterdogs$favoriteTreat, betterdogs$soothedTime, betterdogs$nemesisEntityType, betterdogs$nemesisExpiryTime, betterdogs$parentUUID1, betterdogs$parentUUID2, betterdogs$isInbred, betterdogs$isGuarding, betterdogs$guardPos, betterdogs$isUpForAdoption, betterdogs$lastGiftDay, betterdogs$feedCount, betterdogs$getBloodFeudTarget());
         WolfPersistentData.writeLeaderDataToNbt(tag, this.betterdogs$leaderUuid, this.betterdogs$isPackLeader);
+        if (this.betterdogs$isGuarding) {
+            tag.putBoolean("Sitting", true);
+        }
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"), require = 0)
@@ -592,6 +599,9 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.betterdogs$bloodFeudTarget = WolfPersistentData.readBloodFeudTargetFromNbt(tag);
         this.betterdogs$leaderUuid = WolfPersistentData.readLeaderUUIDFromNbt(tag);
         this.betterdogs$isPackLeader = WolfPersistentData.readIsPackLeaderFromNbt(tag);
+        if (wolf.isShiftKeyDown()) {
+            wolf.setShiftKeyDown(false);
+        }
         net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper.applyPersonalityStats(wolf, this.betterdogs$personality);
     }
 
@@ -615,6 +625,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
             }
 
             net.vanillaoutsider.betterdogs.util.WolfInbreedingHelper.applyInbreeding(child, parentA, otherParent);
+            net.vanillaoutsider.betterdogs.util.WolfGeneticsHelper.syncWithLibraryGenetics(child);
             net.vanillaoutsider.betterdogs.util.WolfLitterHelper.spawnExtraPuppies(level, parentA, otherParent, child);
         }
     }

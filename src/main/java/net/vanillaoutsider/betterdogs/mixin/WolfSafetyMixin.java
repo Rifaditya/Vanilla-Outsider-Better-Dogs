@@ -88,7 +88,6 @@ public abstract class WolfSafetyMixin {
         if (!solidGround) {
             wolf.getNavigation().stop();
             wolf.setDeltaMovement(Vec3.ZERO);
-            wolf.setShiftKeyDown(true);
         }
     }
 
