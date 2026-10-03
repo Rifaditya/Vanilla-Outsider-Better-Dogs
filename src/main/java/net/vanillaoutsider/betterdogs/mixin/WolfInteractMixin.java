@@ -69,10 +69,22 @@ public abstract class WolfInteractMixin extends TamableAnimal {
             return;
         }
 
+        InteractionResult comfortResult = net.vanillaoutsider.betterdogs.util.DogTreatHelper.tryFeedComfortingTreat(wolf, player, hand, itemStack);
+        if (comfortResult != InteractionResult.PASS) {
+            cir.setReturnValue(comfortResult);
+            return;
+        }
+
         InteractionResult treatResult = net.vanillaoutsider.betterdogs.util.DogTreatHelper.tryFeedFavoriteTreat(wolf, player, hand, itemStack);
         if (treatResult != InteractionResult.PASS) {
             cir.setReturnValue(treatResult);
             return;
+        }
+
+        if (!wolf.level().isClientSide() && wolf.isTame() && wolf.isOwnedBy(player) && hand == InteractionHand.MAIN_HAND) {
+            if (wolf instanceof WolfExtensions ext && ext.betterdogs$isSubdued() && itemStack.isEmpty() && !player.isSecondaryUseActive()) {
+                net.vanillaoutsider.betterdogs.util.WolfPettingHelper.emitSubduedWhine(wolf);
+            }
         }
 
         InteractionResult result = WolfInteractionHelper.handleMobInteract(wolf, player, hand, itemStack);

@@ -73,5 +73,31 @@ public class WolfDispositionTest {
         Assertions.assertFalse(WolfDispositionHelper.isStormFearless(null));
         Assertions.assertFalse(WolfDispositionHelper.isQuietHowler(null));
         Assertions.assertFalse(WolfDispositionHelper.isHooverScavenger(null));
+        Assertions.assertFalse(WolfDispositionHelper.isPlayful((net.minecraft.world.entity.animal.wolf.Wolf) null));
+        Assertions.assertFalse(WolfDispositionHelper.isPlayful((UUID) null));
+        Assertions.assertTrue(WolfDispositionHelper.isPlayful((UUID) null, true));
+    }
+
+    @Test
+    @DisplayName("Verify Playful Personality Trait Determinism and Puppy Trait")
+    public void testPlayfulTrait() {
+        UUID fixedUuid = UUID.fromString("01234567-89ab-cdef-0123-456789abcdef");
+        boolean playful1 = WolfDispositionHelper.isPlayful(fixedUuid, false);
+        boolean playful2 = WolfDispositionHelper.isPlayful(fixedUuid, false);
+        Assertions.assertEquals(playful1, playful2, "Same UUID must always yield identical playful trait roll.");
+
+        Assertions.assertTrue(WolfDispositionHelper.isPlayful(fixedUuid, true), "Puppies must always be playful.");
+
+        int playfulCount = 0;
+        int trials = 1000;
+        for (int i = 0; i < trials; i++) {
+            UUID id = UUID.randomUUID();
+            Assertions.assertTrue(WolfDispositionHelper.isPlayful(id, true), "Puppy must always be playful.");
+            if (WolfDispositionHelper.isPlayful(id, false)) {
+                playfulCount++;
+            }
+        }
+        Assertions.assertTrue(playfulCount >= 330 && playfulCount <= 470,
+                "Adult playful trait roll should center around 40% (observed: " + playfulCount + "/" + trials + ")");
     }
 }

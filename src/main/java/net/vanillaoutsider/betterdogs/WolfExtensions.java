@@ -273,6 +273,45 @@ public interface WolfExtensions {
     int betterdogs$getHowlingTicks();
     void betterdogs$setHowlingTicks(int ticks);
 
+    // ========== Pack Play Sparring Cooldown (Step 1) ==========
+    default long betterdogs$getSparringCooldownUntil() {
+        return 0L;
+    }
+    default void betterdogs$setSparringCooldownUntil(long gameTime) {
+    }
+
+    // ========== Hierarchy Correction Snap (Step 3) ==========
+    default @Nullable UUID betterdogs$getLastCorrectionSnapSource() {
+        return null;
+    }
+    default void betterdogs$setLastCorrectionSnapSource(@Nullable UUID source) {
+    }
+    default long betterdogs$getLastCorrectionSnapExpiry() {
+        return 0L;
+    }
+    default void betterdogs$setLastCorrectionSnapExpiry(long expiryTime) {
+    }
+
+    // ========== 10-Minute Penalty State & Subdued Mood Posture (Step 4) ==========
+    default int betterdogs$getPlayPenaltyTicks() {
+        return 0;
+    }
+    default void betterdogs$setPlayPenaltyTicks(int ticks) {
+    }
+    default boolean betterdogs$isSubdued() {
+        return betterdogs$getPlayPenaltyTicks() > 0;
+    }
+
+    // ========== Pack Audience Spectator Wagging (Step 5) ==========
+    default int betterdogs$getSpectatorWagTicks() {
+        return 0;
+    }
+    default void betterdogs$setSpectatorWagTicks(int ticks) {
+    }
+    default boolean betterdogs$isSpectatorWagging() {
+        return betterdogs$getSpectatorWagTicks() > 0;
+    }
+
     default void betterdogs$clearTransientState() {
         betterdogs$setSoundLocationTarget(null);
         betterdogs$setPassiveOverrideTicks(0);
@@ -280,5 +319,9 @@ public interface WolfExtensions {
         betterdogs$setFetchedItemStack(null);
         betterdogs$setZoomiesTicks(0);
         betterdogs$setHowlingTicks(0);
+        betterdogs$setSparringCooldownUntil(0L);
+        betterdogs$setLastCorrectionSnapSource(null);
+        betterdogs$setLastCorrectionSnapExpiry(0L);
+        betterdogs$setSpectatorWagTicks(0);
     }
 }

@@ -58,6 +58,10 @@ public class BetterDogsGameRules {
     public static GameRule<Boolean> BD_WOLVES_SEEK_WATER_ON_FIRE;
     public static GameRule<Boolean> BD_WOLVES_BREAK_SIT_ON_FIRE;
 
+    // --- Social / Play Sparring ---
+    public static GameRule<Boolean> BD_DOG_PLAY_FIGHTING;
+    public static GameRule<Integer> BD_PLAY_PENALTY_MINUTES;
+
     // --- Player ---
     public static GameRule<Boolean> BD_FRIENDLY_FIRE;
 
@@ -207,6 +211,9 @@ public class BetterDogsGameRules {
         BD_ZOOMIES_DURATION_TICKS = registerInteger("betterdogs:bd_zoomies_duration_ticks", BETTER_DOGS, 160);
         BD_WOLVES_SEEK_WATER_ON_FIRE = registerBoolean("betterdogs:bd_wolves_seek_water_on_fire", BETTER_DOGS, true);
         BD_WOLVES_BREAK_SIT_ON_FIRE = registerBoolean("betterdogs:bd_wolves_break_sit_on_fire", BETTER_DOGS, true);
+        BD_DOG_PLAY_FIGHTING = registerBoolean("betterdogs:dogPlayFighting", BETTER_DOGS, true);
+        BD_PLAY_PENALTY_MINUTES = DynamicGameRuleManager.integerRule("betterdogs:playPenaltyMinutes", BETTER_DOGS, 10)
+                .range(0, Integer.MAX_VALUE).register();
 
 
 
@@ -417,5 +424,13 @@ public class BetterDogsGameRules {
 
     public static int getZoomiesDurationTicks(net.minecraft.world.level.Level level) {
         return getInt(level, BD_ZOOMIES_DURATION_TICKS, 160);
+    }
+
+    public static boolean isDogPlayFightingEnabled(net.minecraft.world.level.Level level) {
+        return getBoolean(level, BD_DOG_PLAY_FIGHTING, true);
+    }
+
+    public static int getPlayPenaltyMinutes(net.minecraft.world.level.Level level) {
+        return getInt(level, BD_PLAY_PENALTY_MINUTES, 10);
     }
 }

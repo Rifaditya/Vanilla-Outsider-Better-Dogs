@@ -64,7 +64,11 @@ public class BetterDogsCommand {
         registerBool("bd_pacifist_guard_buffs", BetterDogsGameRules.BD_PACIFIST_GUARD_BUFFS, false);
         registerBool("bd_enable_inbred_curing", BetterDogsGameRules.BD_ENABLE_INBRED_CURING, true);
         registerBool("bd_show_runt_particles", BetterDogsGameRules.BD_SHOW_RUNT_PARTICLES, false);
+        registerBool("bd_dog_play_fighting", BetterDogsGameRules.BD_DOG_PLAY_FIGHTING, true);
+        registerBool("dogplayfighting", BetterDogsGameRules.BD_DOG_PLAY_FIGHTING, true);
 
+        registerInt("bd_play_penalty_minutes", BetterDogsGameRules.BD_PLAY_PENALTY_MINUTES, 10);
+        registerInt("playpenaltyminutes", BetterDogsGameRules.BD_PLAY_PENALTY_MINUTES, 10);
         registerInt("bd_refuse_ground_food_chance", BetterDogsGameRules.BD_REFUSE_GROUND_FOOD_CHANCE, 30);
         registerInt("bd_nemesis_duration_days", BetterDogsGameRules.BD_NEMESIS_DURATION_DAYS, 3);
         registerInt("bd_horn_command_range", BetterDogsGameRules.BD_HORN_COMMAND_RANGE, 64);
