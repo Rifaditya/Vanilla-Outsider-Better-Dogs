@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`5.1.0+26.2`** - Pack Play Sparring & Social Dynamics AI Suite (MC 26.2)
 - [ ] **5.0.98+26.2** - Multi-Era Parity Alignment (MC 26.2)
 - [ ] **`5.0.93+26.2`** (2026-09-05) - **In-Game Config Uniformity & Omnipresent Ko-fi Button**: Injected top-pinned `☕ Support Solo Dev on Ko-fi` creator support button across all 5 YACL category tabs, removed intrusive category warning tooltips, reframed default settings strings, and aligned DasikLibrary to `1.8.38`.
 - [ ] **`4.24.85+26.2`** - Italian (`it_it`) Localization & Player Guide (11-Language Suite Complete)

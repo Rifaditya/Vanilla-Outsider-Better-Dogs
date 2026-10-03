@@ -1,10 +1,9 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
-// Verified against: Minecraft 26.2
+// Verified against: Minecraft 26.3
 package net.vanillaoutsider.betterdogs.util;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.wolf.Wolf;
@@ -41,17 +40,52 @@ public final class AdultDisciplineHelper {
     }
 
     /**
-     * "The Muzzle": Checks whether a HurtByTarget alert should be silenced during a domestic dispute.
+     * Checks whether the interaction between victim and attacker is a hierarchy play correction snap.
      */
-    public static boolean shouldSilenceAlert(Wolf baby, LivingEntity attacker) {
-        if (baby == null || !baby.isAlive() || !baby.isBaby() || !baby.isTame()) {
+    public static boolean isPlayCorrectionSnap(Wolf victim, LivingEntity attacker) {
+        if (victim == null || !victim.isAlive() || !victim.isTame()) {
             return false;
         }
-        if (attacker instanceof Wolf adult && adult.isAlive() && adult.isTame() && !adult.isBaby()) {
-            if (baby.getOwner() != null && adult.getOwner() != null && baby.getOwner().equals(adult.getOwner())) {
-                return true; // Domestic dispute: keep it quiet
-            }
+        if (!(attacker instanceof Wolf discipliner) || !discipliner.isAlive() || !discipliner.isTame()) {
+            return false;
         }
+        if (victim.getOwner() == null || discipliner.getOwner() == null || !victim.getOwner().equals(discipliner.getOwner())) {
+            return false;
+        }
+        return SmallFightHelper.isRecentCorrectionSnap(victim, discipliner);
+    }
+
+    /**
+     * Pure testable logic determining whether a domestic correction snap qualifies for the disciplinary muzzle.
+     */
+    public static boolean isPlayCorrectionSnap(boolean isVictimTame, boolean isAttackerTame, boolean sameOwner, boolean isCorrectionSnap) {
+        return isVictimTame && isAttackerTame && sameOwner && isCorrectionSnap;
+    }
+
+    /**
+     * "The Muzzle": Checks whether a HurtByTarget alert should be silenced during a domestic dispute or hierarchy correction.
+     */
+    public static boolean shouldSilenceAlert(Wolf victim, LivingEntity attacker) {
+        if (victim == null || !victim.isAlive() || !victim.isTame()) {
+            return false;
+        }
+        if (!(attacker instanceof Wolf discipliner) || !discipliner.isAlive() || !discipliner.isTame()) {
+            return false;
+        }
+        if (victim.getOwner() == null || discipliner.getOwner() == null || !victim.getOwner().equals(discipliner.getOwner())) {
+            return false;
+        }
+
+        // 1. Adult disciplining baby (legacy baby training)
+        if (victim.isBaby() && !discipliner.isBaby()) {
+            return true;
+        }
+
+        // 2. Hierarchy correction snap during sparring / play fighting
+        if (SmallFightHelper.isRecentCorrectionSnap(victim, discipliner)) {
+            return true;
+        }
+
         return false;
     }
 

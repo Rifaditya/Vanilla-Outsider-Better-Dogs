@@ -31,6 +31,9 @@
         "InstrumentItemMixin",
         "HurtByTargetGoalMixin"
     ],
+    "client": [
+        "WolfRendererMixin"
+    ],
     "injectors": {
         "defaultRequire": 1
     }

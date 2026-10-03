@@ -1,5 +1,5 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
-// Verified against: Minecraft 26.2
+// Verified against: Minecraft 26.3
 package net.vanillaoutsider.betterdogs;
 
 import net.vanillaoutsider.betterdogs.util.WolfAdvancementHelper;
@@ -46,5 +46,21 @@ class AdvancementCriteriaTest {
         assertDoesNotThrow(() -> WolfAdvancementHelper.grantAdvancement(null, null));
         assertDoesNotThrow(() -> WolfAdvancementHelper.grantAdvancement(null, "cure_runt"));
         assertDoesNotThrow(() -> WolfAdvancementHelper.grantAdvancement(null, "cure_runt", "cure_inbred_wolf"));
+        assertDoesNotThrow(() -> WolfAdvancementHelper.grantRoughhousing(null));
+        assertDoesNotThrow(() -> WolfAdvancementHelper.grantKnowYourPlace(null));
+        assertDoesNotThrow(() -> WolfAdvancementHelper.awardRoughhousingNearby((net.minecraft.server.level.ServerLevel) null, null, 16.0));
+        assertDoesNotThrow(() -> WolfAdvancementHelper.awardRoughhousingNearby((net.minecraft.world.entity.animal.wolf.Wolf) null, (net.minecraft.world.entity.animal.wolf.Wolf) null));
+        assertDoesNotThrow(() -> WolfAdvancementHelper.awardKnowYourPlaceNearby((net.minecraft.server.level.ServerLevel) null, null, 16.0));
+        assertDoesNotThrow(() -> WolfAdvancementHelper.awardKnowYourPlaceNearby((net.minecraft.world.entity.animal.wolf.Wolf) null, (net.minecraft.world.entity.animal.wolf.Wolf) null));
+    }
+
+    @Test
+    @DisplayName("Assert Step 6 roughhousing and know_your_place advancement JSON files exist on classpath")
+    void testPlayAdvancementJsonFilesExist() {
+        for (String file : List.of("roughhousing.json", "know_your_place.json")) {
+            String path = "/data/betterdogs/advancement/husbandry/" + file;
+            InputStream stream = getClass().getResourceAsStream(path);
+            assertNotNull(stream, "Advancement JSON file must exist on classpath: " + path);
+        }
     }
 }

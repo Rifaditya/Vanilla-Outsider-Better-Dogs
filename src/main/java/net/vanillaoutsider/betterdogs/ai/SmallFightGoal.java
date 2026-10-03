@@ -40,8 +40,8 @@ public class SmallFightGoal extends Goal {
             }
         }
 
-        // Idle initiator search (1 in 40 ticks)
-        if (SmallFightHelper.isEligibleForPlay(this.wolf) && this.wolf.getRandom().nextInt(40) == 0) {
+        // Idle initiator search (1 in 400 ticks, ~20s)
+        if (SmallFightHelper.isEligibleForPlay(this.wolf) && this.wolf.getRandom().nextInt(400) == 0) {
             Wolf found = SmallFightHelper.findPlayPartner(this.wolf, SmallFightHelper.DEFAULT_PARTNER_RADIUS);
             if (found != null) {
                 SmallFightHelper.startPlaySession(this.wolf, found);
@@ -61,6 +61,11 @@ public class SmallFightGoal extends Goal {
     @Override
     public boolean canContinueToUse() {
         if (this.partner == null || !this.partner.isAlive()) {
+            return false;
+        }
+
+        // Disengagement range abort (>10 blocks, >100.0 distance squared)
+        if (this.wolf.distanceToSqr(this.partner) > SmallFightHelper.MAX_SPARRING_DISTANCE_SQR) {
             return false;
         }
 
@@ -90,12 +95,23 @@ public class SmallFightGoal extends Goal {
         this.wolf.getLookControl().setLookAt(this.partner, 30.0F, 30.0F);
         this.wolf.getNavigation().moveTo(this.partner, SmallFightHelper.DEFAULT_SPEED_MODIFIER);
 
+        // Pack Audience Reactions & Spectator Wagging (evaluated every 20 ticks / 1s during active sparring)
+        if (this.wolf.tickCount % 20 == 0 && this.partner instanceof Wolf partnerWolf) {
+            if (this.wolf.getUUID() == null || partnerWolf.getUUID() == null || this.wolf.getUUID().compareTo(partnerWolf.getUUID()) <= 0) {
+                net.vanillaoutsider.betterdogs.util.PackAudienceHelper.tickAudience(this.wolf, partnerWolf);
+            }
+        }
+
         this.pounceTimer++;
         double distSqr = this.wolf.distanceToSqr(this.partner);
         if (distSqr <= 3.5 && this.pounceTimer % 25 == 0) {
             this.wolf.getJumpControl().jump();
             if (this.partner instanceof Wolf partnerWolf) {
-                SmallFightHelper.applyPlayFeedback(this.wolf, partnerWolf);
+                boolean snapped = SmallFightHelper.handlePounce(this.wolf, partnerWolf);
+                if (snapped) {
+                    this.partner = null;
+                    return;
+                }
             }
         }
     }
@@ -104,6 +120,10 @@ public class SmallFightGoal extends Goal {
     public void stop() {
         if (this.wolf instanceof WolfExtensions ext) {
             ext.betterdogs$setSocialState(null, WolfExtensions.SocialAction.NONE, 0);
+        }
+        SmallFightHelper.applyCooldown(this.wolf);
+        if (this.partner instanceof Wolf partnerWolf) {
+            SmallFightHelper.endSession(this.wolf, partnerWolf);
         }
         this.partner = null;
         this.wolf.getNavigation().stop();

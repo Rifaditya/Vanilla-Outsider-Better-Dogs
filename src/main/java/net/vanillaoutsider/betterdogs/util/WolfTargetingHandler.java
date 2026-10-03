@@ -1,5 +1,5 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
-// Verified against: Minecraft 26.2
+// Verified against: Minecraft 26.3
 package net.vanillaoutsider.betterdogs.util;
 
 import net.dasik.social.api.group.GroupMember;
@@ -14,6 +14,23 @@ import net.vanillaoutsider.betterdogs.WolfExtensions;
 public class WolfTargetingHandler {
 
     /**
+     * Checks if retaliation targeting should be suppressed for a disciplined wolf against the disciplining packmate.
+     */
+    public static boolean shouldSuppressRetaliation(Wolf wolf, LivingEntity target) {
+        if (wolf == null || !(target instanceof Wolf discipliner)) {
+            return false;
+        }
+        return SmallFightHelper.isRecentCorrectionSnap(wolf, discipliner);
+    }
+
+    /**
+     * Pure testable logic determining retaliation suppression without entity instantiation.
+     */
+    public static boolean shouldSuppressRetaliation(boolean isDisciplinedByTarget) {
+        return isDisciplinedByTarget;
+    }
+
+    /**
      * Handles 'wantsToAttack' logic.
      * 
      * @return Boolean.TRUE to allow (override), Boolean.FALSE to deny (override),
@@ -22,6 +39,11 @@ public class WolfTargetingHandler {
     public static Boolean wantsToAttack(Wolf wolf, LivingEntity target, LivingEntity owner) {
         if (!(wolf instanceof WolfExtensions ext))
             return null;
+
+        // HIERARCHY CORRECTION SNAP: Disciplined wolf cannot retaliate against disciplining packmate
+        if (shouldSuppressRetaliation(wolf, target)) {
+            return false;
+        }
 
         // RETALIATION / PLAY FIGHT / TERRITORIAL WAR OVERRIDES
         if (ext.betterdogs$getSocialAction() == WolfExtensions.SocialAction.RETALIATION ||

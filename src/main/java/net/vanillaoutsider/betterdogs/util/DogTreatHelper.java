@@ -1,5 +1,5 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
-// Verified against: Minecraft 26.2
+// Verified against: Minecraft 26.3
 package net.vanillaoutsider.betterdogs.util;
 
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
@@ -24,7 +24,6 @@ import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.vanillaoutsider.betterdogs.scheduler.events.ZoomiesDogEvent;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -256,6 +255,162 @@ public final class DogTreatHelper {
             if (WolfParticleHelper.getDensity(wolf.level()) != ParticleDensity.NONE) {
                 serverLevel.sendParticles(ParticleTypes.HEART, wolf.getX(), wolf.getY() + 0.5D, wolf.getZ(), 1, 0.15D, 0.15D, 0.15D, 0.02D);
             }
+        }
+
+        return InteractionResult.SUCCESS;
+    }
+
+    /**
+     * Checks if an item is a comforting treat (Bone, Cooked Meat, or item in the treat pool).
+     */
+    public static boolean isComfortingTreat(Item item) {
+        if (item == null) {
+            return false;
+        }
+        if (Items.BONE != null && item == Items.BONE) {
+            return true;
+        }
+        if (item == Items.COOKED_BEEF || item == Items.COOKED_PORKCHOP
+                || item == Items.COOKED_MUTTON || item == Items.COOKED_CHICKEN
+                || item == Items.COOKED_RABBIT || item == Items.COOKED_COD
+                || item == Items.COOKED_SALMON) {
+            return true;
+        }
+        List<Item> pool = getActiveTreatPool();
+        if (pool != null && pool.contains(item)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks if an item stack is a comforting treat (Bone, Cooked Meat, or items in the treat pool).
+     */
+    public static boolean isComfortingTreat(ItemStack stack) {
+        if (stack == null || stack.isEmpty()) {
+            return false;
+        }
+        try {
+            if (Items.BONE != null && stack.is(Items.BONE)) {
+                return true;
+            }
+        } catch (Throwable ignored) {
+        }
+        try {
+            if (stack.is(net.vanillaoutsider.betterdogs.registry.BetterDogsTags.COOKED_FOOD)
+                    || stack.is(net.vanillaoutsider.betterdogs.registry.BetterDogsTags.TREATS)) {
+                return true;
+            }
+        } catch (Throwable ignored) {
+        }
+        try {
+            Item item = stack.getItem();
+            if (item != null && isComfortingTreat(item)) {
+                return true;
+            }
+        } catch (Throwable ignored) {
+        }
+        try {
+            return isCanineFood(stack);
+        } catch (Throwable ignored) {
+            return false;
+        }
+    }
+
+    /**
+     * Calculates the soothing penalty tick reduction for a given penalty and random factor (bounds [0.0, 0.10]).
+     */
+    public static int calculateSoothingReduction(int currentPenalty, float randomFactor) {
+        if (currentPenalty <= 0) {
+            return 0;
+        }
+        float factor = Math.max(0.0f, Math.min(0.10f, randomFactor));
+        return (int) (currentPenalty * factor);
+    }
+
+    /**
+     * Applies the comforting soothing reduction to the dog's remaining play penalty ticks.
+     */
+    public static int applySoothingReduction(Wolf wolf, int currentPenalty) {
+        if (currentPenalty <= 0) {
+            return 0;
+        }
+        float randomFactor = (wolf != null && wolf.getRandom() != null)
+                ? wolf.getRandom().nextFloat() * 0.10f
+                : 0.05f;
+        int reduction = calculateSoothingReduction(currentPenalty, randomFactor);
+        int remaining = Math.max(0, currentPenalty - reduction);
+        if (wolf != null) {
+            SmallFightHelper.setPlayPenaltyTicks(wolf, remaining);
+        }
+        return reduction;
+    }
+
+    /**
+     * Checks if a dog can be fed a comforting treat to soothe its active play penalty.
+     */
+    public static boolean canFeedComfortingTreat(Wolf wolf, Player player, InteractionHand hand, ItemStack stack) {
+        if (wolf == null || player == null || stack == null || stack.isEmpty()) {
+            return false;
+        }
+        if (hand != InteractionHand.MAIN_HAND) {
+            return false;
+        }
+        if (!wolf.isTame() || !wolf.isOwnedBy(player)) {
+            return false;
+        }
+        if (SmallFightHelper.getPlayPenaltyTicks(wolf) <= 0) {
+            return false;
+        }
+        return isComfortingTreat(stack);
+    }
+
+    /**
+     * Feeds a comforting treat to a dog in penalty state, reducing 0% to 10% of remaining penalty ticks,
+     * restoring minor health, and emitting gentle heart particles with soft whine audio.
+     */
+    public static InteractionResult tryFeedComfortingTreat(Wolf wolf, Player player, InteractionHand hand, ItemStack stack) {
+        if (!canFeedComfortingTreat(wolf, player, hand, stack)) {
+            return InteractionResult.PASS;
+        }
+
+        if (wolf.level() != null && wolf.level().isClientSide()) {
+            return InteractionResult.SUCCESS;
+        }
+
+        // 1. Consume treat (Creative Bypass)
+        if (!player.getAbilities().instabuild) {
+            stack.shrink(1);
+        }
+
+        // 2. Heal wolf slightly if damaged
+        wolf.heal(2.0F);
+
+        // 3. Soothing reduction: randomly reduce 0% to 10% of remaining penalty ticks
+        int currentPenalty = SmallFightHelper.getPlayPenaltyTicks(wolf);
+        applySoothingReduction(wolf, currentPenalty);
+
+        // 4. Mark discovered treat if matching favorite treat
+        if (isFavoriteTreat(wolf, stack)) {
+            WolfPersistentData.setDiscoveredTreat(wolf, true);
+        }
+
+        // 5. Play soft whine audio
+        if (wolf instanceof WolfAccessor accessor) {
+            try {
+                var soundSet = accessor.betterdogs$invokeGetSoundSet();
+                if (soundSet != null && soundSet.whineSound() != null) {
+                    wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(),
+                            soundSet.whineSound().value(), wolf.getSoundSource(), 0.8F, 1.3F);
+                }
+            } catch (Throwable ignored) {
+            }
+        }
+
+        // 6. Spawn gentle heart particles
+        if (wolf.level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(ParticleTypes.HEART, wolf.getRandomX(0.8), wolf.getRandomY() + 0.4, wolf.getRandomZ(0.8),
+                    2, 0.15, 0.1, 0.15, 0.02);
         }
 
         return InteractionResult.SUCCESS;
