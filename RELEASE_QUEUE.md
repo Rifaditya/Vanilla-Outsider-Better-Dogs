@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`1.1.0+1.20.1`** - Pack Play Sparring & Social Dynamics AI Suite (MC 1.20.1)
 - [ ] **1.0.98+1.20.1** - Multi-Era Parity Alignment (MC 1.20.1)
 - [ ] **1.0.91+1.20.1** - Headless Verification & Migration Test Suite (MC 1.20.1)
 - [ ] **1.0.90+1.20.1** - Transient Attribute Modifier & Base Stat Healer (MC 1.20.1)

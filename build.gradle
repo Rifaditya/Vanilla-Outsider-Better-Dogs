@@ -89,7 +89,16 @@ afterEvaluate {
                 }
                 println "[AUTO-DEPLOY] Successfully deployed ${remapJar.archiveFile.get().asFile.name} to Modrinth profile: ${profileModsDir.absolutePath}"
             }
+            def hubArchiveDir = file("E:/Minecraft Project/minecraft-mod-release-hub/archives/Better Dogs")
+            if (hubArchiveDir.exists()) {
+                copy {
+                    from remapJar.archiveFile
+                    into hubArchiveDir
+                }
+                println "[HUB-ARCHIVE] Successfully copied ${remapJar.archiveFile.get().asFile.name} to release hub archives: ${hubArchiveDir.absolutePath}"
+            }
         }
     }
     build.finalizedBy archiveReleaseJar
 }
+

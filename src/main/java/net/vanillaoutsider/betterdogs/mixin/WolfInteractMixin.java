@@ -86,7 +86,24 @@ public abstract class WolfInteractMixin {
             return;
         }
 
+        // Comforting Treat Soothing (Hierarchy correction snap play penalty relief)
+        if (DogTreatHelper.canFeedComfortingTreat(wolf, player, hand, itemInHand)) {
+            InteractionResult treatResult = DogTreatHelper.tryFeedComfortingTreat(wolf, player, hand, itemInHand);
+            if (treatResult.consumesAction()) {
+                cir.setReturnValue(treatResult);
+                return;
+            }
+        }
+
+        // Subdued whine on interaction when in penalty state
+        if (wolf.isTame() && wolf.isOwnedBy(player) && wolf instanceof WolfExtensions ext && ext.betterdogs$isSubdued()) {
+            if (hand == InteractionHand.MAIN_HAND && itemInHand.isEmpty() && !player.isSecondaryUseActive()) {
+                WolfPettingHelper.emitSubduedWhine(wolf);
+            }
+        }
+
         if (!itemInHand.isEmpty() && DogFoodHelper.isEdibleDogFood(level, itemInHand)) {
+
             if (DogTreatHelper.shouldRefuseFood(wolf, itemInHand)) {
                 DogTreatHelper.performRefusal(wolf);
                 cir.setReturnValue(InteractionResult.sidedSuccess(level.isClientSide));

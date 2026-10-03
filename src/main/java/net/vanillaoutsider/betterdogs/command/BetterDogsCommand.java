@@ -112,7 +112,14 @@ public class BetterDogsCommand {
         registerInt("bd_breed_diluted_normal_chance", BetterDogsGameRules.BD_BREED_DILUTED_NORMAL_CHANCE, 50);
         registerInt("bd_breed_diluted_other_chance", BetterDogsGameRules.BD_BREED_DILUTED_OTHER_CHANCE, 25);
         registerInt("bd_wolf_litter_max_size", BetterDogsGameRules.BD_WOLF_LITTER_MAX_SIZE, 4);
+
+        // Pack Play Sparring & Timeout Penalty
+        registerBool("bd_dog_play_fighting", BetterDogsGameRules.BD_DOG_PLAY_FIGHTING, true);
+        registerBool("dogplayfighting", BetterDogsGameRules.BD_DOG_PLAY_FIGHTING, true);
+        registerInt("bd_play_penalty_minutes", BetterDogsGameRules.BD_PLAY_PENALTY_MINUTES, 10);
+        registerInt("playpenaltyminutes", BetterDogsGameRules.BD_PLAY_PENALTY_MINUTES, 10);
     }
+
 
     private static void registerBool(String name, GameRules.Key<GameRules.BooleanValue> key, boolean def) {
         BOOL_MAP.put(name, key);

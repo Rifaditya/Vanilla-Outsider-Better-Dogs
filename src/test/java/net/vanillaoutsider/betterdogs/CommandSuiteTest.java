@@ -74,5 +74,7 @@ public class CommandSuiteTest {
         assertTrue(CommandSuggestionsHelper.getAllRules().contains("bd_cliff_safety"));
         assertTrue(CommandSuggestionsHelper.getAllRules().contains("bd_horn_command_range"));
         assertTrue(CommandSuggestionsHelper.getAllRules().contains("bd_wolf_litter_max_size"));
+        assertTrue(CommandSuggestionsHelper.getAllRules().contains("bd_dog_play_fighting"));
+        assertTrue(CommandSuggestionsHelper.getAllRules().contains("bd_play_penalty_minutes"));
     }
 }

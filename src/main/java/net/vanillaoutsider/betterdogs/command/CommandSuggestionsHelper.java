@@ -44,8 +44,10 @@ public class CommandSuggestionsHelper {
             "bd_territorial_exclusive_disputes",
             "bd_wild_personality_behavior",
             "bd_wolf_spawn_expanded_biomes",
-            "bd_dynamic_climate_variants"
+            "bd_dynamic_climate_variants",
+            "bd_dog_play_fighting"
     ));
+
 
     private static final Set<String> INTEGER_RULES = new LinkedHashSet<>(Arrays.asList(
             "bd_refuse_ground_food_chance",
@@ -108,8 +110,10 @@ public class CommandSuggestionsHelper {
             "bd_breed_mixed_recessive_chance",
             "bd_breed_diluted_normal_chance",
             "bd_breed_diluted_other_chance",
-            "bd_wolf_litter_max_size"
+            "bd_wolf_litter_max_size",
+            "bd_play_penalty_minutes"
     ));
+
 
     private static final List<String> ALL_RULES;
 
@@ -149,7 +153,14 @@ public class CommandSuggestionsHelper {
         } else if (clean.startsWith("betterdogs:")) {
             clean = clean.substring("betterdogs:".length());
         }
+        if ("dogplayfighting".equals(clean)) {
+            return "bd_dog_play_fighting";
+        }
+        if ("playpenaltyminutes".equals(clean)) {
+            return "bd_play_penalty_minutes";
+        }
         if (!clean.startsWith("bd_") && !clean.isEmpty()) {
+
             String withPrefix = "bd_" + clean;
             if (BOOLEAN_RULES.contains(withPrefix) || INTEGER_RULES.contains(withPrefix)) {
                 return withPrefix;

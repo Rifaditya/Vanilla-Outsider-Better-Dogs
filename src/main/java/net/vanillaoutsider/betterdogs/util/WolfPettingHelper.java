@@ -72,7 +72,11 @@ public class WolfPettingHelper {
             wolf.stopBeingAngry();
             wolf.setTarget(null);
 
-            wolf.playSound(SoundEvents.WOLF_WHINE, 1.0F, 1.2F);
+            float whinePitch = 1.2F;
+            if (wolf instanceof WolfExtensions ext && ext.betterdogs$isSubdued()) {
+                whinePitch = 0.9F;
+            }
+            wolf.playSound(SoundEvents.WOLF_WHINE, 1.0F, whinePitch);
 
             if (level instanceof ServerLevel serverLevel) {
                 serverLevel.sendParticles(ParticleTypes.HEART, wolf.getRandomX(1.0), wolf.getRandomY() + 0.5, wolf.getRandomZ(1.0), 3, 0.2, 0.1, 0.2, 0.02);
@@ -86,4 +90,15 @@ public class WolfPettingHelper {
 
         return InteractionResult.sidedSuccess(level.isClientSide());
     }
+
+    /**
+     * Emits a quiet subdued whine when interacting with a dog in penalty state.
+     */
+    public static void emitSubduedWhine(Wolf wolf) {
+        if (wolf == null || wolf.level() == null || wolf.level().isClientSide()) {
+            return;
+        }
+        wolf.playSound(SoundEvents.WOLF_WHINE, 0.8F, 0.85F);
+    }
 }
+
