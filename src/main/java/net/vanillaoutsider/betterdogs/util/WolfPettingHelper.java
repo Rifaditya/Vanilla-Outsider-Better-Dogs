@@ -1,5 +1,5 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
-// Verified against: Minecraft 26.1.2
+// Verified against: Minecraft 26.3
 package net.vanillaoutsider.betterdogs.util;
 
 import net.minecraft.core.particles.ParticleTypes;
@@ -75,7 +75,8 @@ public final class WolfPettingHelper {
                 try {
                     var soundSet = ((WolfAccessor) wolf).betterdogs$invokeGetSoundSet();
                     if (soundSet != null && soundSet.whineSound() != null) {
-                        wolf.playSound(soundSet.whineSound().value(), 1.0F, 1.2F);
+                        float whinePitch = ext.betterdogs$isSubdued() ? 0.9F : 1.2F;
+                        wolf.playSound(soundSet.whineSound().value(), 1.0F, whinePitch);
                     }
                 } catch (Exception ignored) {
                 }
@@ -90,5 +91,25 @@ public final class WolfPettingHelper {
         }
 
         return InteractionResult.PASS;
+    }
+
+    /**
+     * Emits soft whine audio for dogs in the subdued mood / penalty state.
+     */
+    public static void emitSubduedWhine(Wolf wolf) {
+        if (wolf == null || wolf.level() == null) {
+            return;
+        }
+        try {
+            if (wolf instanceof WolfAccessor accessor) {
+                var soundSet = accessor.betterdogs$invokeGetSoundSet();
+                if (soundSet != null && soundSet.whineSound() != null) {
+                    float pitch = 0.85F + (wolf.getRandom() != null ? wolf.getRandom().nextFloat() * 0.15F : 0.05F);
+                    wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(),
+                            soundSet.whineSound().value(), wolf.getSoundSource(), 0.9F, pitch);
+                }
+            }
+        } catch (Throwable ignored) {
+        }
     }
 }

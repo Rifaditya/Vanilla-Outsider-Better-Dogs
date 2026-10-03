@@ -1,4 +1,3 @@
-- [x] 3.12.0: Nemesis Grudge System backported from 26.2.
 # 📋 Vanilla Outsider: Better Dogs Release Queue & Backlog
 
 This file tracks which built versions (from the central archive folder "E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Archive Jar of all versions") have been manually uploaded to Modrinth/CurseForge.
@@ -6,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`5.1.0+26.1.2`** - Pack Play Sparring & Social Dynamics AI Suite (MC 26.1.2)
 - [x] **5.0.94+26.1.2** - Multi-Era Parity Alignment (MC 26.1.2)
 - [x] **`4.24.68+26.1.2`** - Italian (`it_it`) Localization & Player Guide (11-Language Suite Complete)
 - [x] **`4.24.67+26.1.2`** - Korean (`ko_kr`) Localization & Player Guide

@@ -1,5 +1,5 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
-// Verified against: Minecraft 26.1.2
+// Verified against: Minecraft 26.3
 package net.vanillaoutsider.betterdogs.registry;
 
 import com.mojang.brigadier.arguments.BoolArgumentType;
@@ -57,6 +57,10 @@ public class BetterDogsGameRules {
     public static GameRule<Boolean> BD_ACTIONBAR_FEEDBACK;
     public static GameRule<Boolean> BD_WOLVES_SEEK_WATER_ON_FIRE;
     public static GameRule<Boolean> BD_WOLVES_BREAK_SIT_ON_FIRE;
+
+    // --- Social / Play Sparring ---
+    public static GameRule<Boolean> BD_DOG_PLAY_FIGHTING;
+    public static GameRule<Integer> BD_PLAY_PENALTY_MINUTES;
 
     // --- Player ---
     public static GameRule<Boolean> BD_FRIENDLY_FIRE;
@@ -207,6 +211,9 @@ public class BetterDogsGameRules {
         BD_ZOOMIES_DURATION_TICKS = registerInteger("betterdogs:bd_zoomies_duration_ticks", BETTER_DOGS, 160);
         BD_WOLVES_SEEK_WATER_ON_FIRE = registerBoolean("betterdogs:bd_wolves_seek_water_on_fire", BETTER_DOGS, true);
         BD_WOLVES_BREAK_SIT_ON_FIRE = registerBoolean("betterdogs:bd_wolves_break_sit_on_fire", BETTER_DOGS, true);
+        BD_DOG_PLAY_FIGHTING = registerBoolean("betterdogs:dogPlayFighting", BETTER_DOGS, true);
+        BD_PLAY_PENALTY_MINUTES = DynamicGameRuleManager.integerRule("betterdogs:playPenaltyMinutes", BETTER_DOGS, 10)
+                .range(0, Integer.MAX_VALUE).register();
 
 
 
@@ -369,10 +376,10 @@ public class BetterDogsGameRules {
         BD_ALLOW_UNRESTRICTED_RIDING = registerBoolean("betterdogs:bd_allow_unrestricted_dog_riding", BETTER_DOGS, false);
         BD_ACTIONBAR_FEEDBACK = registerBoolean("betterdogs:bd_actionbar_feedback", BETTER_DOGS, false);
 
-        BD_WOLF_MIN_SCALE_PERCENT = registerInteger("betterdogs:bd_wolf_min_scale_percent", BETTER_DOGS,
-                (int)(config.getWolfMinScale() * 100));
-        BD_WOLF_MAX_SCALE_PERCENT = registerInteger("betterdogs:bd_wolf_max_scale_percent", BETTER_DOGS,
-                (int)(config.getWolfMaxScale() * 100));
+        BD_WOLF_MIN_SCALE_PERCENT = DynamicGameRuleManager.integerRule("betterdogs:bd_wolf_min_scale_percent", BETTER_DOGS,
+                (int)(config.getWolfMinScale() * 100)).range(1, Integer.MAX_VALUE).register();
+        BD_WOLF_MAX_SCALE_PERCENT = DynamicGameRuleManager.integerRule("betterdogs:bd_wolf_max_scale_percent", BETTER_DOGS,
+                (int)(config.getWolfMaxScale() * 100)).range(1, Integer.MAX_VALUE).register();
     }
 
     // Internal Registration Helpers
@@ -417,5 +424,13 @@ public class BetterDogsGameRules {
 
     public static int getZoomiesDurationTicks(net.minecraft.world.level.Level level) {
         return getInt(level, BD_ZOOMIES_DURATION_TICKS, 160);
+    }
+
+    public static boolean isDogPlayFightingEnabled(net.minecraft.world.level.Level level) {
+        return getBoolean(level, BD_DOG_PLAY_FIGHTING, true);
+    }
+
+    public static int getPlayPenaltyMinutes(net.minecraft.world.level.Level level) {
+        return getInt(level, BD_PLAY_PENALTY_MINUTES, 10);
     }
 }

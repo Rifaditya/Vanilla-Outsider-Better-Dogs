@@ -1,5 +1,5 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
-// Verified against: Minecraft 26.1.2
+// Verified against: Minecraft 26.3
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.minecraft.world.entity.LivingEntity;
@@ -14,8 +14,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * Muzzle Logic: Prevents "Call for Help" broadcast when a baby wolf is being disciplined.
- * This ensures domestic disputes don't wake up the whole pack.
+ * Muzzle Logic: Prevents "Call for Help" broadcast when a wolf is disciplined or receiving a hierarchy correction snap.
+ * This ensures domestic disputes and play reprimands don't wake up the whole pack.
  */
 @Mixin(HurtByTargetGoal.class)
 public abstract class HurtByTargetGoalMixin extends TargetGoal {
@@ -26,10 +26,10 @@ public abstract class HurtByTargetGoalMixin extends TargetGoal {
 
     @Inject(method = "alertOthers", at = @At("HEAD"), cancellable = true)
     protected void betterdogs$onAlertOthers(CallbackInfo ci) {
-        // "The Muzzle": If this is a domestic dispute, SILENCE the victim.
-        if (this.mob instanceof Wolf baby) {
-            LivingEntity attacker = baby.getLastHurtByMob();
-            if (AdultDisciplineHelper.shouldSilenceAlert(baby, attacker)) {
+        // "The Muzzle": If this is a domestic dispute or hierarchy correction snap, SILENCE the victim.
+        if (this.mob instanceof Wolf victim) {
+            LivingEntity attacker = victim.getLastHurtByMob();
+            if (AdultDisciplineHelper.shouldSilenceAlert(victim, attacker)) {
                 ci.cancel();
             }
         }

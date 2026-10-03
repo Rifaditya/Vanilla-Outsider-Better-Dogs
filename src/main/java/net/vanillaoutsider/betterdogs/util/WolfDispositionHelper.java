@@ -1,5 +1,5 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
-// Verified against: Minecraft 26.1.2
+// Verified against: Minecraft 26.3
 package net.vanillaoutsider.betterdogs.util;
 
 import java.util.UUID;
@@ -17,6 +17,7 @@ public final class WolfDispositionHelper {
     public static final long SALT_STORM = 0x5708301L;
     public static final long SALT_HOWL = 0x4031701L;
     public static final long SALT_HOOVER = 0x800F3E1L;
+    public static final long SALT_PLAYFUL = 0x501A7F1L;
 
     private WolfDispositionHelper() {
     }
@@ -198,4 +199,38 @@ public final class WolfDispositionHelper {
         int roll = getSeededRoll(wolf.getUUID(), SALT_HOOVER);
         return roll < hooverChance;
     }
+
+    /**
+     * Evaluates if this dog has the playful trait (puppies are 100% playful, adults have a 40% natural trait).
+     */
+    public static boolean isPlayful(Wolf wolf) {
+        if (wolf == null) {
+            return false;
+        }
+        if (wolf.isBaby()) {
+            return true;
+        }
+        return isPlayful(wolf.getUUID());
+    }
+
+    /**
+     * Evaluates if a dog has the playful trait given its UUID and baby state.
+     */
+    public static boolean isPlayful(UUID uuid, boolean isBaby) {
+        if (isBaby) {
+            return true;
+        }
+        return isPlayful(uuid);
+    }
+
+    /**
+     * Evaluates if an adult wolf UUID has the playful trait (deterministic 40% natural trait).
+     */
+    public static boolean isPlayful(UUID uuid) {
+        if (uuid == null) {
+            return false;
+        }
+        return getSeededRoll(uuid, SALT_PLAYFUL) < 40;
+    }
 }
+

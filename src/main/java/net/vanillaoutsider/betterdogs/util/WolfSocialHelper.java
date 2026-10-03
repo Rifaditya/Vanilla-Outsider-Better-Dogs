@@ -1,3 +1,4 @@
+// Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
 // Verified against: WolfSocialHelper.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.util;
 

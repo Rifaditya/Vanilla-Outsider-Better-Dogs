@@ -1,5 +1,5 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
-// Verified against: Minecraft 26.1.2
+// Verified against: Minecraft 26.3
 package net.vanillaoutsider.betterdogs;
 
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
@@ -19,5 +19,10 @@ public class BetterDogsGameRulesTest {
 
         int intVal = BetterDogsGameRules.getInt(null, null, 64);
         assertEquals(64, intVal, "Null level and key should return fallback integer value");
+
+        assertTrue(BetterDogsGameRules.isDogPlayFightingEnabled(null), "Default for dogPlayFighting should be true");
+        assertEquals(10, BetterDogsGameRules.getPlayPenaltyMinutes(null), "Default for playPenaltyMinutes should be 10");
+        assertTrue(BetterDogsGameRules.getBoolean(null, BetterDogsGameRules.BD_DOG_PLAY_FIGHTING, true));
+        assertEquals(10, BetterDogsGameRules.getInt(null, BetterDogsGameRules.BD_PLAY_PENALTY_MINUTES, 10));
     }
 }
