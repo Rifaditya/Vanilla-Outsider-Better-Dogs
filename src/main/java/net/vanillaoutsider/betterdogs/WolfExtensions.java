@@ -87,4 +87,50 @@ public interface WolfExtensions {
 
     int betterdogs$getWanderlustTicks();
     void betterdogs$setWanderlustTicks(int ticks);
+
+    // ========== Pack Play Sparring Cooldown (Step 1) ==========
+    default long betterdogs$getSparringCooldownUntil() {
+        return 0L;
+    }
+    default void betterdogs$setSparringCooldownUntil(long gameTime) {
+    }
+
+    // ========== Hierarchy Correction Snap (Step 3) ==========
+    default java.util.UUID betterdogs$getLastCorrectionSnapSource() {
+        return null;
+    }
+    default void betterdogs$setLastCorrectionSnapSource(java.util.UUID source) {
+    }
+    default long betterdogs$getLastCorrectionSnapExpiry() {
+        return 0L;
+    }
+    default void betterdogs$setLastCorrectionSnapExpiry(long expiryTime) {
+    }
+
+    // ========== 10-Minute Penalty State & Subdued Mood Posture (Step 4) ==========
+    default int betterdogs$getPlayPenaltyTicks() {
+        return 0;
+    }
+    default void betterdogs$setPlayPenaltyTicks(int ticks) {
+    }
+    default boolean betterdogs$isSubdued() {
+        return betterdogs$getPlayPenaltyTicks() > 0;
+    }
+
+    // ========== Pack Audience Spectator Wagging (Step 5) ==========
+    default int betterdogs$getSpectatorWagTicks() {
+        return 0;
+    }
+    default void betterdogs$setSpectatorWagTicks(int ticks) {
+    }
+    default boolean betterdogs$isSpectatorWagging() {
+        return betterdogs$getSpectatorWagTicks() > 0;
+    }
+
+    default boolean betterdogs$isSittingManually() {
+        return false;
+    }
+    default boolean betterdogs$isSocialModeActive() {
+        return false;
+    }
 }

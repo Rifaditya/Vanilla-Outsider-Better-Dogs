@@ -24,14 +24,10 @@ public abstract class HurtByTargetGoalMixin extends TargetGoal {
 
     @Inject(method = "alertOthers", at = @At("HEAD"), cancellable = true)
     protected void betterdogs$onAlertOthers(CallbackInfo ci) {
-        if (this.mob instanceof Wolf baby && baby.isTame()) {
-            LivingEntity attacker = baby.getLastHurtByMob();
-
-            // Check if attacker is an Adult Wolf with the same owner
-            if (attacker instanceof Wolf adult && adult.isTame() && !adult.isBaby()) {
-                if (baby.getOwner() != null && adult.getOwner() != null && baby.getOwner().equals(adult.getOwner())) {
-                    ci.cancel();
-                }
+        if (this.mob instanceof Wolf victim) {
+            LivingEntity attacker = victim.getLastHurtByMob();
+            if (net.vanillaoutsider.betterdogs.util.AdultDisciplineHelper.shouldSilenceAlert(victim, attacker)) {
+                ci.cancel();
             }
         }
     }

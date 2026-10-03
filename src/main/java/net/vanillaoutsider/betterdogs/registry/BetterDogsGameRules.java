@@ -51,6 +51,10 @@ public class BetterDogsGameRules {
     public static GameRules.Key<GameRules.IntegerValue> BD_TAMED_PACK_SPREAD_MULTIPLIER;
     public static GameRules.Key<GameRules.IntegerValue> BD_TAMED_PACK_SPREAD_MAX;
 
+    // Social / Play Sparring
+    public static GameRules.Key<GameRules.BooleanValue> BD_DOG_PLAY_FIGHTING;
+    public static GameRules.Key<GameRules.IntegerValue> BD_PLAY_PENALTY_MINUTES;
+
     // Player Protection
     public static GameRules.Key<GameRules.BooleanValue> BD_FRIENDLY_FIRE;
 
@@ -180,6 +184,8 @@ public class BetterDogsGameRules {
         BD_ALLOW_UNRESTRICTED_RIDING = GameRuleRegistry.register("bd_allow_unrestricted_dog_riding", BETTER_DOGS, GameRuleFactory.createBooleanRule(false));
         BD_TAMED_PACK_SPREAD_MULTIPLIER = GameRuleRegistry.register("bd_tamed_pack_spread_multiplier", BETTER_DOGS, GameRuleFactory.createIntRule(100));
         BD_TAMED_PACK_SPREAD_MAX = GameRuleRegistry.register("bd_tamed_pack_spread_max", BETTER_DOGS, GameRuleFactory.createIntRule(50));
+        BD_DOG_PLAY_FIGHTING = GameRuleRegistry.register("bd_dog_play_fighting", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
+        BD_PLAY_PENALTY_MINUTES = GameRuleRegistry.register("bd_play_penalty_minutes", BETTER_DOGS, GameRuleFactory.createIntRule(10));
 
         // Player
         BD_FRIENDLY_FIRE = GameRuleRegistry.register("bd_friendly_fire_protection", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
@@ -296,6 +302,14 @@ public class BetterDogsGameRules {
 
     public static int getZoomiesDurationTicks(Level level) {
         return getInt(level, BD_ZOOMIES_DURATION_TICKS, 160);
+    }
+
+    public static boolean isDogPlayFightingEnabled(Level level) {
+        return getBoolean(level, BD_DOG_PLAY_FIGHTING, true);
+    }
+
+    public static int getPlayPenaltyMinutes(Level level) {
+        return getInt(level, BD_PLAY_PENALTY_MINUTES, 10);
     }
 
     public static boolean getBoolean(Level level, GameRules.Key<GameRules.BooleanValue> key, boolean fallback) {

@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:husbandry/tame_an_animal",
+  "display": {
+    "icon": {
+      "item": "minecraft:bone"
+    },
+    "title": {
+      "translate": "advancements.betterdogs.husbandry.roughhousing.title"
+    },
+    "description": {
+      "translate": "advancements.betterdogs.husbandry.roughhousing.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "roughhousing": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "roughhousing"
+    ]
+  ]
+}

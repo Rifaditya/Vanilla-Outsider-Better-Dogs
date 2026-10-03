@@ -38,5 +38,21 @@ public class AdvancementCriteriaTest {
     public void testWolfAdvancementHelperNullSafety() {
         Assertions.assertDoesNotThrow(() -> WolfAdvancementHelper.grantAdvancement(null, null));
         Assertions.assertDoesNotThrow(() -> WolfAdvancementHelper.grantAdvancement(null, "tame_wolf"));
+        Assertions.assertDoesNotThrow(() -> WolfAdvancementHelper.grantRoughhousing(null));
+        Assertions.assertDoesNotThrow(() -> WolfAdvancementHelper.grantKnowYourPlace(null));
+        Assertions.assertDoesNotThrow(() -> WolfAdvancementHelper.awardRoughhousingNearby((net.minecraft.server.level.ServerLevel) null, null, 16.0));
+        Assertions.assertDoesNotThrow(() -> WolfAdvancementHelper.awardRoughhousingNearby((net.minecraft.world.entity.animal.Wolf) null, (net.minecraft.world.entity.animal.Wolf) null));
+        Assertions.assertDoesNotThrow(() -> WolfAdvancementHelper.awardKnowYourPlaceNearby((net.minecraft.server.level.ServerLevel) null, null, 16.0));
+        Assertions.assertDoesNotThrow(() -> WolfAdvancementHelper.awardKnowYourPlaceNearby((net.minecraft.world.entity.animal.Wolf) null, (net.minecraft.world.entity.animal.Wolf) null));
+    }
+
+    @Test
+    public void testPlayAdvancementJsonFilesExist() {
+        for (String file : List.of("roughhousing.json", "know_your_place.json")) {
+            String path = "/data/betterdogs/advancement/husbandry/" + file;
+            InputStream stream = getClass().getResourceAsStream(path);
+            Assertions.assertNotNull(stream, "Advancement JSON file must exist on classpath: " + path);
+        }
     }
 }
+

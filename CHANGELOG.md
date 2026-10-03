@@ -1,5 +1,15 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.1)
 
+## [1.1.0+1.21.1] - 2026-10-03
+
+### Added
+- 🐕 **Harmless Pack Play Sparring AI Suite**: Tamed co-owned dogs of the same pack can now initiate safe, playful sparring sessions featuring playful circles, dynamic pouncing, spectator dog reactions, and tail-wagging.
+- 🐺 **Adult Discipline & Hierarchy Correction Snap**: Calm adult dogs deliver non-lethal hierarchy correction snaps (0.5 hearts to adults, 0 damage to puppies with gentle growl) when pounced upon excessively (3-5 pounces), silencing pack alerts and suppressing retaliation.
+- ⏱️ **Play Timeout Penalties & Mood Postures**: Disciplined dogs receive a 10-minute play timeout penalty, adopting a subdued tail posture and emitting gentle submissive whines when petted.
+- 🍖 **Comforting Treat Soothing**: Feeding disciplined dogs comforting treats (bones, cooked/raw meats) soothes their mood and reduces timeout penalties by up to 10% per treat.
+- 👥 **Pack Audience Reactions**: Nearby packmate dogs within 6 blocks spectate sparring matches with excited tail wags.
+- 🏆 **Advancements & GameRules**: Added `Roughhousing` and `Know Your Place` husbandry advancements, accompanied by `betterdogs:dogPlayFighting` and `betterdogs:playPenaltyMinutes` GameRules.
+
 ## [1.0.91+1.21.1]
 ### Changed
 - 🏛️ **Dasik Library Integration**: Migrated Better Dogs to declare and genuinely consume `dasik-library` (MC 1.21.1) as a mandatory runtime dependency per the Universal Dasik Library Law.

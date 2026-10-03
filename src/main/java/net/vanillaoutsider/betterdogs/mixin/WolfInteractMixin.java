@@ -80,10 +80,22 @@ public abstract class WolfInteractMixin {
             }
         }
 
+        InteractionResult comfortResult = DogTreatHelper.tryFeedComfortingTreat(wolf, player, hand, itemInHand);
+        if (comfortResult != InteractionResult.PASS) {
+            cir.setReturnValue(comfortResult);
+            return;
+        }
+
         if (WolfPettingHelper.canPet(wolf, player, hand, itemInHand)) {
             InteractionResult result = WolfPettingHelper.petWolf(wolf, player);
             cir.setReturnValue(result);
             return;
+        }
+
+        if (!level.isClientSide() && wolf.isTame() && wolf.isOwnedBy(player) && hand == InteractionHand.MAIN_HAND) {
+            if (wolf instanceof WolfExtensions ext && ext.betterdogs$isSubdued() && itemInHand.isEmpty() && !player.isSecondaryUseActive()) {
+                WolfPettingHelper.emitSubduedWhine(wolf);
+            }
         }
 
         if (!itemInHand.isEmpty() && DogFoodHelper.isEdibleDogFood(level, itemInHand)) {
