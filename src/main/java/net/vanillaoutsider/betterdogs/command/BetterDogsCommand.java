@@ -51,7 +51,11 @@ public class BetterDogsCommand {
         registerBool("bd_wild_personality_behavior", BetterDogsGameRules.BD_WILD_PERSONALITY_BEHAVIOR, true);
         registerBool("bd_wolf_spawn_expanded_biomes", BetterDogsGameRules.BD_WOLF_SPAWN_EXPANDED_BIOMES, true);
         registerBool("bd_dynamic_climate_variants", BetterDogsGameRules.BD_DYNAMIC_CLIMATE_VARIANTS, true);
+        registerBool("bd_dog_play_fighting", BetterDogsGameRules.BD_DOG_PLAY_FIGHTING, true);
+        registerBool("dogplayfighting", BetterDogsGameRules.BD_DOG_PLAY_FIGHTING, true);
 
+        registerInt("bd_play_penalty_minutes", BetterDogsGameRules.BD_PLAY_PENALTY_MINUTES, 10);
+        registerInt("playpenaltyminutes", BetterDogsGameRules.BD_PLAY_PENALTY_MINUTES, 10);
         registerInt("bd_refuse_ground_food_chance", BetterDogsGameRules.BD_REFUSE_GROUND_FOOD_CHANCE, 30);
         registerInt("bd_nemesis_duration_days", BetterDogsGameRules.BD_NEMESIS_DURATION_DAYS, 3);
         registerInt("bd_horn_command_range", BetterDogsGameRules.BD_HORN_COMMAND_RANGE, 64);

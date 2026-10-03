@@ -45,6 +45,10 @@ public class BetterDogsGameRules {
     public static GameRule<Integer> BD_TAMED_PACK_SPREAD_MULTIPLIER;
     public static GameRule<Integer> BD_TAMED_PACK_SPREAD_MAX;
 
+    // Social / Play Sparring
+    public static GameRule<Boolean> BD_DOG_PLAY_FIGHTING;
+    public static GameRule<Integer> BD_PLAY_PENALTY_MINUTES;
+
     // Player Protection
     public static GameRule<Boolean> BD_FRIENDLY_FIRE;
 
@@ -175,6 +179,11 @@ public class BetterDogsGameRules {
         BD_TAMED_PACK_SPREAD_MULTIPLIER = registerInteger("vanilla-outsider-better-dogs:bd_tamed_pack_spread_multiplier", BETTER_DOGS, 100);
         BD_TAMED_PACK_SPREAD_MAX = registerInteger("vanilla-outsider-better-dogs:bd_tamed_pack_spread_max", BETTER_DOGS, 50);
 
+        // Social / Play Sparring
+        BD_DOG_PLAY_FIGHTING = registerBoolean("vanilla-outsider-better-dogs:dogPlayFighting", BETTER_DOGS, true);
+        BD_PLAY_PENALTY_MINUTES = DynamicGameRuleManager.integerRule("vanilla-outsider-better-dogs:playPenaltyMinutes", BETTER_DOGS, 10)
+                .range(0, Integer.MAX_VALUE).register();
+
         // Player
         BD_FRIENDLY_FIRE = registerBoolean("vanilla-outsider-better-dogs:bd_friendly_fire_protection", BETTER_DOGS, true);
 
@@ -298,6 +307,14 @@ public class BetterDogsGameRules {
 
     public static int getZoomiesDurationTicks(Level level) {
         return getInt(level, BD_ZOOMIES_DURATION_TICKS, 160);
+    }
+
+    public static boolean isDogPlayFightingEnabled(Level level) {
+        return getBoolean(level, BD_DOG_PLAY_FIGHTING, true);
+    }
+
+    public static int getPlayPenaltyMinutes(Level level) {
+        return getInt(level, BD_PLAY_PENALTY_MINUTES, 10);
     }
 
     public static boolean getBoolean(Level level, GameRule<Boolean> rule, boolean fallback) {

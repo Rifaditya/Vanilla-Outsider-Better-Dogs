@@ -13,7 +13,9 @@
     "WolfInteractMixin",
     "InstrumentItemMixin"
   ],
-  "client": [],
+  "client": [
+    "WolfRendererMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

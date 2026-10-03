@@ -3,6 +3,7 @@ package net.vanillaoutsider.betterdogs.util;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -65,14 +66,18 @@ public class WolfPettingHelper {
 
         if (!level.isClientSide()) {
             boolean wasAnxious = WolfStormHelper.isStormAnxietyActive(wolf);
+            boolean isSubdued = false;
             if (wolf instanceof WolfExtensions ext) {
+                isSubdued = ext.betterdogs$isSubdued();
                 ext.betterdogs$setSoothedTime(level.getGameTime());
             }
 
             wolf.stopBeingAngry();
             wolf.setTarget(null);
 
-            wolf.playSound(SoundEvents.WOLF_SHAKE, 1.0F, 1.2F);
+            float whinePitch = isSubdued ? 0.9F : 1.2F;
+            SoundEvent petSound = SmallFightHelper.getWolfWhineSound(wolf);
+            wolf.playSound(petSound, 1.0F, whinePitch);
 
             if (level instanceof ServerLevel serverLevel) {
                 serverLevel.sendParticles(ParticleTypes.HEART, wolf.getRandomX(1.0), wolf.getRandomY() + 0.5, wolf.getRandomZ(1.0), 3, 0.2, 0.1, 0.2, 0.02);
@@ -85,5 +90,21 @@ public class WolfPettingHelper {
         }
 
         return InteractionResult.SUCCESS;
+    }
+
+    /**
+     * Emits soft whine audio for dogs in the subdued mood / penalty state.
+     */
+    public static void emitSubduedWhine(Wolf wolf) {
+        if (wolf == null || wolf.level() == null) {
+            return;
+        }
+        try {
+            float pitch = 0.85F + (wolf.getRandom() != null ? wolf.getRandom().nextFloat() * 0.15F : 0.05F);
+            SoundEvent whineSound = SmallFightHelper.getWolfWhineSound(wolf);
+            wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(),
+                    whineSound, wolf.getSoundSource(), 0.9F, pitch);
+        } catch (Throwable ignored) {
+        }
     }
 }

@@ -103,6 +103,30 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     private int betterdogs$feedCount = 0;
 
     @Unique
+    private long betterdogs$sparringCooldownUntil = 0L;
+    @Unique
+    private java.util.UUID betterdogs$lastCorrectionSnapSource = null;
+    @Unique
+    private long betterdogs$lastCorrectionSnapExpiry = 0L;
+    @Unique
+    private int betterdogs$playPenaltyTicks = 0;
+    @Unique
+    private int betterdogs$spectatorWagTicks = 0;
+
+    @Unique
+    private static final net.minecraft.network.syncher.EntityDataAccessor<Boolean> BETTERDOGS$DATA_SUBDUED =
+            net.minecraft.network.syncher.SynchedEntityData.defineId(Wolf.class, net.minecraft.network.syncher.EntityDataSerializers.BOOLEAN);
+    @Unique
+    private static final net.minecraft.network.syncher.EntityDataAccessor<Boolean> BETTERDOGS$DATA_SPECTATOR_WAGGING =
+            net.minecraft.network.syncher.SynchedEntityData.defineId(Wolf.class, net.minecraft.network.syncher.EntityDataSerializers.BOOLEAN);
+
+    @Inject(method = "defineSynchedData", at = @At("TAIL"))
+    private void betterdogs$onDefineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder, CallbackInfo ci) {
+        builder.define(BETTERDOGS$DATA_SUBDUED, false);
+        builder.define(BETTERDOGS$DATA_SPECTATOR_WAGGING, false);
+    }
+
+    @Unique
     private net.minecraft.world.entity.LivingEntity betterdogs$retaliationTarget = null;
 
     @Unique
@@ -509,6 +533,12 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
             if (this.betterdogs$playFightCooldown > 0) {
                 this.betterdogs$playFightCooldown--;
             }
+            if (this.betterdogs$playPenaltyTicks > 0) {
+                this.betterdogs$setPlayPenaltyTicks(this.betterdogs$playPenaltyTicks - 1);
+            }
+            if (this.betterdogs$spectatorWagTicks > 0) {
+                this.betterdogs$setSpectatorWagTicks(this.betterdogs$spectatorWagTicks - 1);
+            }
             if (this.betterdogs$retaliationTicks > 0) {
                 this.betterdogs$retaliationTicks--;
                 if (this.betterdogs$retaliationTicks == 0) {
@@ -577,6 +607,9 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     private void betterdogs$writeSaveData(ValueOutput output, CallbackInfo ci) {
         WolfPersistentData.writeToSaveData(output, betterdogs$getPersonality(), betterdogs$getSocialScale(), betterdogs$getDnaSeed(), betterdogs$favoriteTreat, betterdogs$soothedTime, betterdogs$nemesisEntityType, betterdogs$nemesisExpiryTime, betterdogs$parentUUID1, betterdogs$parentUUID2, betterdogs$isInbred, betterdogs$isGuarding, betterdogs$guardPos, betterdogs$isUpForAdoption, betterdogs$lastGiftDay, betterdogs$feedCount, betterdogs$getBloodFeudTarget());
         WolfPersistentData.writeLeaderDataToSaveData(output, this.betterdogs$leaderUuid, this.betterdogs$isPackLeader);
+        if (this.betterdogs$playPenaltyTicks > 0) {
+            output.putInt("BD_PlayPenaltyTicks", this.betterdogs$playPenaltyTicks);
+        }
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
@@ -600,6 +633,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.betterdogs$bloodFeudTarget = WolfPersistentData.readBloodFeudTargetFromSaveData(input);
         this.betterdogs$leaderUuid = WolfPersistentData.readLeaderUUIDFromSaveData(input);
         this.betterdogs$isPackLeader = WolfPersistentData.readIsPackLeaderFromSaveData(input);
+        this.betterdogs$setPlayPenaltyTicks(input.getIntOr("BD_PlayPenaltyTicks", 0));
         net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper.applyPersonalityStats(wolf, this.betterdogs$personality);
     }
 
@@ -629,5 +663,100 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
             }
             net.vanillaoutsider.betterdogs.util.WolfLitterHelper.spawnExtraPuppies(level, parentA, otherParent, child);
         }
+    }
+
+    @Inject(method = "getTailAngle", at = @At("HEAD"), cancellable = true)
+    private void betterdogs$onGetTailAngle(CallbackInfoReturnable<Float> cir) {
+        if (this.betterdogs$isSubdued()) {
+            cir.setReturnValue(0.10F * (float) Math.PI);
+        } else if (this.betterdogs$isSpectatorWagging()) {
+            Wolf wolf = (Wolf) (Object) this;
+            float wag = net.minecraft.util.Mth.cos(wolf.tickCount * 0.6F) * 0.08F;
+            cir.setReturnValue((0.60F + wag) * (float) Math.PI);
+        }
+    }
+
+    @Override
+    public long betterdogs$getSparringCooldownUntil() {
+        return this.betterdogs$sparringCooldownUntil;
+    }
+
+    @Override
+    public void betterdogs$setSparringCooldownUntil(long gameTime) {
+        this.betterdogs$sparringCooldownUntil = gameTime;
+    }
+
+    @Override
+    public java.util.UUID betterdogs$getLastCorrectionSnapSource() {
+        return this.betterdogs$lastCorrectionSnapSource;
+    }
+
+    @Override
+    public void betterdogs$setLastCorrectionSnapSource(java.util.UUID source) {
+        this.betterdogs$lastCorrectionSnapSource = source;
+    }
+
+    @Override
+    public long betterdogs$getLastCorrectionSnapExpiry() {
+        return this.betterdogs$lastCorrectionSnapExpiry;
+    }
+
+    @Override
+    public void betterdogs$setLastCorrectionSnapExpiry(long expiryTime) {
+        this.betterdogs$lastCorrectionSnapExpiry = expiryTime;
+    }
+
+    @Override
+    public int betterdogs$getPlayPenaltyTicks() {
+        return this.betterdogs$playPenaltyTicks;
+    }
+
+    @Override
+    public void betterdogs$setPlayPenaltyTicks(int ticks) {
+        this.betterdogs$playPenaltyTicks = Math.max(0, ticks);
+        try {
+            if (this.entityData != null) {
+                this.entityData.set(BETTERDOGS$DATA_SUBDUED, this.betterdogs$playPenaltyTicks > 0);
+            }
+        } catch (Throwable ignored) {
+        }
+    }
+
+    @Override
+    public boolean betterdogs$isSubdued() {
+        try {
+            if (this.level() != null && this.level().isClientSide() && this.entityData != null) {
+                return this.entityData.get(BETTERDOGS$DATA_SUBDUED);
+            }
+        } catch (Throwable ignored) {
+        }
+        return this.betterdogs$playPenaltyTicks > 0;
+    }
+
+    @Override
+    public int betterdogs$getSpectatorWagTicks() {
+        return this.betterdogs$spectatorWagTicks;
+    }
+
+    @Override
+    public void betterdogs$setSpectatorWagTicks(int ticks) {
+        this.betterdogs$spectatorWagTicks = Math.max(0, ticks);
+        try {
+            if (this.entityData != null) {
+                this.entityData.set(BETTERDOGS$DATA_SPECTATOR_WAGGING, this.betterdogs$spectatorWagTicks > 0);
+            }
+        } catch (Throwable ignored) {
+        }
+    }
+
+    @Override
+    public boolean betterdogs$isSpectatorWagging() {
+        try {
+            if (this.level() != null && this.level().isClientSide() && this.entityData != null) {
+                return this.entityData.get(BETTERDOGS$DATA_SPECTATOR_WAGGING);
+            }
+        } catch (Throwable ignored) {
+        }
+        return this.betterdogs$spectatorWagTicks > 0;
     }
 }

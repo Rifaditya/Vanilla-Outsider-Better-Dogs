@@ -1,0 +1,28 @@
+{
+  "parent": "betterdogs:husbandry/roughhousing",
+  "display": {
+    "icon": {
+      "id": "minecraft:wolf_armor"
+    },
+    "title": {
+      "translate": "advancements.betterdogs.husbandry.know_your_place.title"
+    },
+    "description": {
+      "translate": "advancements.betterdogs.husbandry.know_your_place.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "know_your_place": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "know_your_place"
+    ]
+  ]
+}

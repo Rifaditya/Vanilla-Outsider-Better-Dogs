@@ -44,10 +44,14 @@ public class CommandSuggestionsHelper {
             "bd_territorial_exclusive_disputes",
             "bd_wild_personality_behavior",
             "bd_wolf_spawn_expanded_biomes",
-            "bd_dynamic_climate_variants"
+            "bd_dynamic_climate_variants",
+            "bd_dog_play_fighting",
+            "dogplayfighting"
     ));
 
     private static final Set<String> INTEGER_RULES = new LinkedHashSet<>(Arrays.asList(
+            "bd_play_penalty_minutes",
+            "playpenaltyminutes",
             "bd_refuse_ground_food_chance",
             "bd_nemesis_duration_days",
             "bd_horn_command_range",

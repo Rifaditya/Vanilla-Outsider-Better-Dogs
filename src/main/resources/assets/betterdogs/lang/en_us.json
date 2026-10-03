@@ -691,5 +691,17 @@
   "gamerule.betterdogs.bd_particle_density": "Particle Density Level",
   "gamerule.bd_particle_density": "Particle Density Level",
   "gamerule.betterdogs.bd_particle_density.description": "Controls the visual particle density level for runt, trait, and guard indicators. Default: 2.",
-  "gamerule.bd_particle_density.description": "Controls the visual particle density level for runt, trait, and guard indicators. Default: 2."
+  "gamerule.bd_particle_density.description": "Controls the visual particle density level for runt, trait, and guard indicators. Default: 2.",
+  "advancements.betterdogs.husbandry.roughhousing.title": "Roughhousing",
+  "advancements.betterdogs.husbandry.roughhousing.description": "Witness two tamed dogs engaging in playful sparring",
+  "advancements.betterdogs.husbandry.know_your_place.title": "Know Your Place",
+  "advancements.betterdogs.husbandry.know_your_place.description": "Witness a pack elder deliver a hierarchy correction snap",
+  "gamerule.betterdogs:dogPlayFighting": "Dog Play Fighting",
+  "gamerule.betterdogs:dogPlayFighting.description": "If true, tamed dogs of the same pack can engage in playful sparring and roughhousing. Default: true.",
+  "gamerule.betterdogs.dogPlayFighting": "Dog Play Fighting",
+  "gamerule.betterdogs.dogPlayFighting.description": "If true, tamed dogs of the same pack can engage in playful sparring and roughhousing. Default: true.",
+  "gamerule.betterdogs:playPenaltyMinutes": "Play Penalty Duration (Minutes)",
+  "gamerule.betterdogs:playPenaltyMinutes.description": "Duration in minutes a dog is placed on play timeout penalty following a hierarchy correction snap. Default: 10.",
+  "gamerule.betterdogs.playPenaltyMinutes": "Play Penalty Duration (Minutes)",
+  "gamerule.betterdogs.playPenaltyMinutes.description": "Duration in minutes a dog is placed on play timeout penalty following a hierarchy correction snap. Default: 10."
 }
