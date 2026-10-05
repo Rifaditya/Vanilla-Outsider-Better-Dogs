@@ -83,11 +83,18 @@ afterEvaluate {
             println "[AUTO-ARCHIVE] Successfully copied ${remapJar.archiveFile.get().asFile.name} to outer Archive directory: ${destinationDir.absolutePath}"
             def profileModsDir = file("C:/Users/fmrif/AppData/Roaming/ModrinthApp/profiles/Fabric 1.21.1/mods")
             if (profileModsDir.exists()) {
+                def jarFile = remapJar.archiveFile.get().asFile
+                profileModsDir.listFiles().each { f ->
+                    if (f.name.startsWith(project.archives_base_name) && (f.name.endsWith(".jar") || f.name.endsWith(".disabled")) && f.name != jarFile.name) {
+                        f.delete()
+                        println "[AUTO-DEPLOY] Purged stale version: ${f.name}"
+                    }
+                }
                 copy {
                     from remapJar.archiveFile
                     into profileModsDir
                 }
-                println "[AUTO-DEPLOY] Successfully deployed ${remapJar.archiveFile.get().asFile.name} to Modrinth profile: ${profileModsDir.absolutePath}"
+                println "[AUTO-DEPLOY] Successfully deployed ${jarFile.name} to Modrinth profile: ${profileModsDir.absolutePath}"
             }
 
             // 3. Central Release Hub Archives Sync
