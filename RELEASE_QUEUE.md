@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`1.1.1+1.21.11`** (2026-10-12) - 🐺 Safe Teleportation & Crash Resolution (WolfTeleportHelper.java): Resolved Wolf.randomTeleport NoSuchMethodError during owner following via safe ground-tracing teleport helper (GitHub Issue #8 [BL-BD-016]).
 - [ ] **`1.1.0+1.21.11`** - Pack Play Sparring & Social Dynamics AI Suite (MC 1.21.11)
 - [ ] **1.0.101+1.21.11** - Multi-Era Parity Alignment (MC 1.21.11)
 - [ ] **`1.0.94+1.21.11`** - Dasik Library Integration (DynamicGameRuleManager, SocialLinks, GeneticsEngine)
