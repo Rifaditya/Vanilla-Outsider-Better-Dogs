@@ -87,4 +87,13 @@ class PackFlankingTest {
         assertNull(WolfFlankingHelper.calculateFlankDestination(null, null, false));
         assertNotNull(WolfFlankingHelper.calculateFlankOffset(null, true, 0.6));
     }
+
+    @Test
+    @DisplayName("Assert Wolf has swingForAttack method for attack animation without NoSuchMethodError (Issue #9)")
+    void testFlankAttackSwingMethodSafety() {
+        assertDoesNotThrow(() -> {
+            java.lang.reflect.Method method = net.minecraft.world.entity.animal.wolf.Wolf.class.getMethod("swingForAttack", net.minecraft.world.InteractionHand.class);
+            assertNotNull(method, "Wolf must have swingForAttack(InteractionHand) in MC 26.3");
+        });
+    }
 }

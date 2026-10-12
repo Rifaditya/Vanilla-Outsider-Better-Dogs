@@ -9,7 +9,8 @@
     ],
     "contact": {
         "homepage": "https://modrinth.com/mod/vanilla-outsider-better-dogs",
-        "sources": "https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs"
+        "sources": "https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs",
+        "issues": "https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs/issues"
     },
     "license": "GPL-3.0-or-later",
     "icon": "assets/vanilla-outsider-better-dogs/icon.png",
@@ -51,6 +52,10 @@
                 "modmenu.donate": "https://ko-fi.com/dasikigaijin",
                 "modmenu.kofi": "https://ko-fi.com/dasikigaijin"
             }
+        },
+        "modrinth": {
+            "projectId": "e7H8SUmG",
+            "slug": "vanilla-outsider-better-dogs"
         }
     }
 }

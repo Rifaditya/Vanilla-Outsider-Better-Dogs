@@ -10,6 +10,10 @@
 - 👥 **Pack Audience Reactions**: Nearby packmate dogs within 6 blocks spectate sparring matches with excited tail wags.
 - 🏆 **Advancements & GameRules**: Added `Roughhousing` and `Know Your Place` husbandry advancements, accompanied by `betterdogs:dogPlayFighting` and `betterdogs:playPenaltyMinutes` GameRules.
 
+### Fixed
+- **Wolf Attack Swing Animation (GitHub Issue #9)**: Ensured wolf combat goals (`WolfFlankAttackGoal`, `AdultCorrectionGoal`, `BabyBiteBackGoal`) invoke `wolf.swingForAttack(InteractionHand.MAIN_HAND)`, preventing `NoSuchMethodError` crashes during pack flanking and retaliation in Minecraft 26.3.
+- **Manifest Contact Metadata**: Added official GitHub Issues tracker URL and Modrinth project metadata to `fabric.mod.json`.
+
 ## [5.0.99+26.3] - 2026-09-07
 
 ### Fixed
