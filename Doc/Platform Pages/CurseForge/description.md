@@ -501,7 +501,7 @@
     </tr>
     <tr>
       <td><strong>Documentation / Wiki</strong></td>
-      <td><a href="https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs/wiki" target="_blank" rel="noopener">GitHub Wiki</a> <em>(Comprehensive player guides available in 11 languages)</em></td>
+      <td><a href="https://dasik-mc-studio.pages.dev/vanilla-outsider-better-dogs/" target="_blank" rel="noopener"><strong>Official Docs &amp; Wiki</strong></a> <em>(Main)</em> | <a href="https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs/wiki" target="_blank" rel="noopener">GitHub Wiki</a> <em>(Alternative / 11 Languages)</em></td>
     </tr>
   </tbody>
 </table>
