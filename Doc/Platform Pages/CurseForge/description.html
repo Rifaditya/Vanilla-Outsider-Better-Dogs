@@ -2,15 +2,22 @@
 <a href="https://discord.gg/EV99bgAFqb"><img src="https://img.shields.io/badge/Discord-Join_Community-5865F2?style=for-the-badge&amp;logo=discord&amp;logoColor=white" alt="Join Discord"></a>
 <a href="https://modrinth.com/mod/fabric-api"><img src="https://img.shields.io/badge/Requires-Fabric_API-blue?style=for-the-badge&amp;logo=fabric" alt="Requires Fabric API"></a>
 <a href="https://modrinth.com/mod/dasik-library"><img src="https://img.shields.io/badge/Requires-Dasik_Library-purple?style=for-the-badge" alt="Requires Dasik Library"></a>
-<img src="https://img.shields.io/badge/Language-Java_25-orange?style=for-the-badge&amp;logo=java" alt="Java 25">
+<img src="https://img.shields.io/badge/Language-Java-orange?style=for-the-badge&amp;logo=java" alt="Java">
 <img src="https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge" alt="License">
-<img src="https://img.shields.io/badge/Minecraft-26.2+-brightgreen?style=for-the-badge" alt="Minecraft 26.2+">
+<img src="https://img.shields.io/badge/Minecraft-1.20.1_--_26.3+-brightgreen?style=for-the-badge" alt="Minecraft 1.20.1 – 26.3+">
 </p>
 <h2>🐕 Better Dogs</h2>
 <blockquote><p><strong>"Make Wolves Worthy Companions. Smarter, Safer, Livelier."</strong></p></blockquote>
 <p>Every Minecraft player knows the pain: you spend hours finding and taming a wolf, and five minutes later it jumps into a 2-block lava pit or walks off a fatal cliff. <strong>Better Dogs</strong> overhauls vanilla wolf AI from the ground up to turn them into intelligent, durable, and highly capable companions. Powered by a high-performance <strong>Event-Driven AI Scheduler</strong>, every mechanic operates with near-zero tick overhead.</p>
 <p>Part of the <strong>Vanilla Outsider Collection</strong> — modern mods designed to refine and elevate the vanilla Minecraft experience.</p>
-<blockquote><p><strong>1 Jar 1 Version Policy:</strong> I build <strong>1 dedicated JAR for each Minecraft version</strong> (e.g. MC 26.2, MC 26.3). Please download the exact build that matches your Minecraft installation.</p></blockquote>
+<blockquote>
+<p><strong>1 Jar 1 Version Policy:</strong> I build <strong>1 dedicated JAR for each Minecraft version</strong> (e.g. MC 1.20.1, MC 1.21.1, MC 1.21.11, MC 26.1.2, MC 26.2, MC 26.3). Please download the exact build that matches your Minecraft installation.</p>
+<p><strong>Dependency Notice:</strong></p>
+<ul>
+  <li><strong>Modern Era (MC 26.x+):</strong> Requires <strong>Fabric API</strong> AND <a href="https://modrinth.com/mod/dasik-library" target="_blank" rel="noopener"><strong>Dasik Library</strong></a>.</li>
+  <li><strong>Legacy &amp; Transitional Eras (MC 1.20.1, MC 1.21.x):</strong> Self-contained builds requiring only <strong>Fabric API</strong>.</li>
+</ul>
+</blockquote>
 <hr>
 <h2>✨ Features</h2>
 <h3>🧠 Personality Intelligence</h3>
@@ -89,6 +96,16 @@
   <li><strong>Adult Disciplinary Correction</strong>: Aggressive adult pack members gently discipline mischievous puppies to prevent chaotic death loops.</li>
   <li><strong>Food Quirks</strong>: Dogs possess individual dietary traits — enthusiastic "Hoovers" eagerly scavenge dropped food from the ground, while selective lineages refuse ground scraps.</li>
   <li><strong>Social Bonding &amp; Affinity</strong>: Packmates build mutual affinity over time, preventing accidental infighting and suppressing blood feud retaliation.</li>
+</ul>
+<hr>
+<h3>🐕 Harmless Pack Play Sparring AI Suite</h3>
+<p>Tamed dogs within the same pack can now engage in natural, non-lethal play fighting and social hierarchy dynamics:</p>
+<ul>
+  <li>🤼 <strong>Playful Sparring Rounds</strong>: Co-owned dogs of the same pack initiate gentle sparring sessions featuring playful circles, dynamic pouncing, and tail wagging. Play fighting is completely non-lethal and never causes death.</li>
+  <li>🐺 <strong>Adult Hierarchy Correction Snap</strong>: Calm adult pack members deliver a gentle discipline snap (0 damage to puppies with a gentle growl, 0.5 hearts to adults) when overly energetic packmates pounce repeatedly (3–5 times). This immediately calms the room, silences alerts, and suppresses retaliation feuds.</li>
+  <li>⏱️ <strong>Play Timeout Penalties</strong>: Disciplined dogs receive a 10-minute timeout penalty (<code>betterdogs:playPenaltyMinutes</code>), adopting a subdued tail posture and emitting gentle submissive whines when petted.</li>
+  <li>🍖 <strong>Comforting Treat Soothing</strong>: Feeding a disciplined dog comforting treats (bones, cooked or raw meats) soothes their mood, reducing their timeout penalty by 10% per treat.</li>
+  <li>👥 <strong>Pack Audience Spectating</strong>: Nearby packmate dogs within 6 blocks pause to spectate sparring matches with excited tail wags.</li>
 </ul>
 <hr>
 <h3>🛡️ Smart Survival AI</h3>
@@ -375,6 +392,20 @@
       <td>Integer</td>
       <td>Maximum scale percentage (145%).</td>
     </tr>
+    <tr>
+      <td><strong>Social</strong></td>
+      <td><code>betterdogs:dogPlayFighting</code></td>
+      <td><code>true</code></td>
+      <td>Boolean</td>
+      <td>Enables playful non-lethal pack sparring between tamed dogs.</td>
+    </tr>
+    <tr>
+      <td><strong>Social</strong></td>
+      <td><code>betterdogs:playPenaltyMinutes</code></td>
+      <td><code>10</code></td>
+      <td>Integer</td>
+      <td>Duration of submissive timeout penalty after discipline snap (minutes).</td>
+    </tr>
   </tbody>
 </table>
 <hr>
@@ -394,12 +425,17 @@
 <ul>
   <li>Feed meat to two tamed wolves. Litters produce 1–4 puppies. Puppies inherit parental scale and personality with a small chance of mutation. Outcrossing prevents inbreeding debuffs.</li>
 </ul>
-<h3>4. Reading Audio Cues &amp; Whining</h3>
+<h3>4. Pack Play Sparring &amp; Discipline Dynamics</h3>
+<ul>
+  <li>Allow tamed packmates to roam freely together to watch them engage in harmless sparring rounds and playful pouncing.</li>
+  <li>Overly energetic dogs will receive a calming discipline snap from adult packmates. If disciplined, comfort them with bones or meats to accelerate their timeout recovery by 10% per treat!</li>
+</ul>
+<h3>5. Reading Audio Cues &amp; Whining</h3>
 <ul>
   <li>Whimpering only triggers when health falls below <strong>50% of the dog's maximum HP</strong>. Feed meat to restore health.</li>
   <li>Under a full moon, enjoy the ambient chorus of nocturnal pack howling.</li>
 </ul>
-<h3>5. In-Game Configuration</h3>
+<h3>6. In-Game Configuration</h3>
 <ul>
   <li>Open <strong>World Settings &rarr; Edit Game Rules</strong> to browse all Better Dogs settings in a dedicated folder, or use <code>/betterdogs set <rule> <value></code> in-game.</li>
 </ul>
@@ -465,7 +501,7 @@
     </tr>
     <tr>
       <td><strong>Documentation / Wiki</strong></td>
-      <td><a href="https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs/wiki" target="_blank" rel="noopener">GitHub Wiki</a></td>
+      <td><a href="https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs/wiki" target="_blank" rel="noopener">GitHub Wiki</a> <em>(Comprehensive player guides available in 11 languages)</em></td>
     </tr>
   </tbody>
 </table>

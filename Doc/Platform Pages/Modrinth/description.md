@@ -2,9 +2,9 @@
     <a href="https://discord.gg/EV99bgAFqb"><img src="https://img.shields.io/badge/Discord-Join_Community-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Join Discord"></a>
     <a href="https://modrinth.com/mod/fabric-api"><img src="https://img.shields.io/badge/Requires-Fabric_API-blue?style=for-the-badge&logo=fabric" alt="Requires Fabric API"></a>
     <a href="https://modrinth.com/mod/dasik-library"><img src="https://img.shields.io/badge/Requires-Dasik_Library-purple?style=for-the-badge" alt="Requires Dasik Library"></a>
-    <img src="https://img.shields.io/badge/Language-Java_25-orange?style=for-the-badge&logo=java" alt="Java 25">
+    <img src="https://img.shields.io/badge/Language-Java-orange?style=for-the-badge&logo=java" alt="Java">
     <img src="https://img.shields.io/badge/License-GPLv3-green?style=for-the-badge" alt="License">
-    <img src="https://img.shields.io/badge/Minecraft-26.2+-brightgreen?style=for-the-badge" alt="Minecraft 26.2+">
+    <img src="https://img.shields.io/badge/Minecraft-1.20.1_--_26.3+-brightgreen?style=for-the-badge" alt="Minecraft 1.20.1 – 26.3+">
 </p>
 
 # 🐕 Better Dogs
@@ -16,7 +16,11 @@ Every Minecraft player knows the pain: you spend hours finding and taming a wolf
 Part of the **Vanilla Outsider Collection** — modern mods designed to refine and elevate the vanilla Minecraft experience.
 
 > [!NOTE]
-> **1 Jar 1 Version Policy:** I build **1 dedicated JAR for each Minecraft version** (e.g. MC 26.2, MC 26.3). Please download the exact build that matches your Minecraft installation.
+> **1 Jar 1 Version Policy:** I build **1 dedicated JAR for each Minecraft version** (e.g. MC 1.20.1, MC 1.21.1, MC 1.21.11, MC 26.1.2, MC 26.2, MC 26.3). Please download the exact build that matches your Minecraft installation.
+>
+> **Dependency Notice:**
+> - **Modern Era (MC 26.x+):** Requires **Fabric API** AND [**Dasik Library**](https://modrinth.com/mod/dasik-library).
+> - **Legacy & Transitional Eras (MC 1.20.1, MC 1.21.x):** Self-contained builds requiring only **Fabric API**.
 
 ---
 
@@ -109,6 +113,17 @@ Every wolf features continuous, genetics-driven body scaling (70% to 145%) utili
 - **Adult Disciplinary Correction**: Aggressive adult pack members gently discipline mischievous puppies to prevent chaotic death loops.
 - **Food Quirks**: Dogs possess individual dietary traits — enthusiastic "Hoovers" eagerly scavenge dropped food from the ground, while selective lineages refuse ground scraps.
 - **Social Bonding & Affinity**: Packmates build mutual affinity over time, preventing accidental infighting and suppressing blood feud retaliation.
+
+---
+
+### 🐕 Harmless Pack Play Sparring AI Suite
+Tamed dogs within the same pack can now engage in natural, non-lethal play fighting and social hierarchy dynamics:
+
+- 🤼 **Playful Sparring Rounds**: Co-owned dogs of the same pack initiate gentle sparring sessions featuring playful circles, dynamic pouncing, and tail wagging. Play fighting is completely non-lethal and never causes death.
+- 🐺 **Adult Hierarchy Correction Snap**: Calm adult pack members deliver a gentle discipline snap (0 damage to puppies with a gentle growl, 0.5 hearts to adults) when overly energetic packmates pounce repeatedly (3–5 times). This immediately calms the room, silences alerts, and suppresses retaliation feuds.
+- ⏱️ **Play Timeout Penalties**: Disciplined dogs receive a 10-minute timeout penalty (`betterdogs:playPenaltyMinutes`), adopting a subdued tail posture and emitting gentle submissive whines when petted.
+- 🍖 **Comforting Treat Soothing**: Feeding a disciplined dog comforting treats (bones, cooked or raw meats) soothes their mood, reducing their timeout penalty by 10% per treat.
+- 👥 **Pack Audience Spectating**: Nearby packmate dogs within 6 blocks pause to spectate sparring matches with excited tail wags.
 
 ---
 
@@ -218,6 +233,8 @@ All commands are registered under `/betterdogs` (alias `/bd`) and support rich t
 | **Genetics** | `betterdogs:bd_wolf_litter_max_size` | `4` | Integer | Maximum puppy count in a single litter (1–4). |
 | **Scale** | `betterdogs:bd_wolf_min_scale_percent` | `70` | Integer | Minimum scale percentage (70%). |
 | **Scale** | `betterdogs:bd_wolf_max_scale_percent` | `145` | Integer | Maximum scale percentage (145%). |
+| **Social** | `betterdogs:dogPlayFighting` | `true` | Boolean | Enables playful non-lethal pack sparring between tamed dogs. |
+| **Social** | `betterdogs:playPenaltyMinutes` | `10` | Integer | Duration of submissive timeout penalty after discipline snap (minutes). |
 
 ---
 
@@ -236,11 +253,15 @@ Master every interaction in Better Dogs with this comprehensive operational play
 ### 3. Selective Breeding & Litter Genetics
 - Feed meat to two tamed wolves. Litters produce 1–4 puppies. Puppies inherit parental scale and personality with a small chance of mutation. Outcrossing prevents inbreeding debuffs.
 
-### 4. Reading Audio Cues & Whining
+### 4. Pack Play Sparring & Discipline Dynamics
+- Allow tamed packmates to roam freely together to watch them engage in harmless sparring rounds and playful pouncing.
+- Overly energetic dogs will receive a calming discipline snap from adult packmates. If disciplined, comfort them with bones or meats to accelerate their timeout recovery by 10% per treat!
+
+### 5. Reading Audio Cues & Whining
 - Whimpering only triggers when health falls below **50% of the dog's maximum HP**. Feed meat to restore health.
 - Under a full moon, enjoy the ambient chorus of nocturnal pack howling.
 
-### 5. In-Game Configuration
+### 6. In-Game Configuration
 - Open **World Settings &rarr; Edit Game Rules** to browse all Better Dogs settings in a dedicated folder, or use `/betterdogs set <rule> <value>` in-game.
 
 ---
@@ -292,7 +313,7 @@ If you enjoy **Better Dogs** and the **Vanilla Outsider Collection**, consider f
 | **License** | [GNU General Public License v3.0 (GPLv3)](https://www.gnu.org/licenses/gpl-3.0.html) |
 | **Source Code** | [GitHub - Rifaditya/Vanilla-Outsider-Better-Dogs](https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs) |
 | **Issue Tracker** | [GitHub Issues](https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs/issues) |
-| **Documentation / Wiki** | [GitHub Wiki](https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs/wiki) |
+| **Documentation / Wiki** | [GitHub Wiki](https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs/wiki) *(Comprehensive player guides available in 11 languages)* |
 
 > [!IMPORTANT]
 > **📦 Modpack Permissions & Distribution:**<br>
