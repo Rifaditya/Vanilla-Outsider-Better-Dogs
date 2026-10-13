@@ -313,7 +313,7 @@ If you enjoy **Better Dogs** and the **Vanilla Outsider Collection**, consider f
 | **License** | [GNU General Public License v3.0 (GPLv3)](https://www.gnu.org/licenses/gpl-3.0.html) |
 | **Source Code** | [GitHub - Rifaditya/Vanilla-Outsider-Better-Dogs](https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs) |
 | **Issue Tracker** | [GitHub Issues](https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs/issues) |
-| **Documentation / Wiki** | [GitHub Wiki](https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs/wiki) *(Comprehensive player guides available in 11 languages)* |
+| **Documentation / Wiki** | [**Official Docs & Wiki**](https://dasik-mc-studio.pages.dev/vanilla-outsider-better-dogs/) *(Main)* \| [GitHub Wiki](https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs/wiki) *(Alternative / 11 Languages)* |
 
 > [!IMPORTANT]
 > **📦 Modpack Permissions & Distribution:**<br>
