@@ -118,7 +118,6 @@ No messy config files. Better Dogs uses the **Native Minecraft Game Rules** syst
 
 <blockquote><p><strong>🇮🇩 Indonesian Users:</strong> SocioBuzz and Saweria support local payment methods (Gopay, OVO, Dana, etc.) if you want to support me without using PayPal/Ko-fi!</p></blockquote>
 
-<blockquote><p><strong>Dedicated Server Hosting Partner:</strong><br>Looking for a high-performance server to host your community or play with friends? Check out <strong>BisectHosting</strong> for 1-click modpack installations, automated backups, and 24/7 dedicated customer support. Use promo code <strong><code>Dasik</code></strong> for 25% off your first month!</p></blockquote>
 
 <h3>💬 Join the Community &amp; Get Support</h3>
 <p>Looking for help, want to test early beta builds, or vote on upcoming features? Join our official Discord community!</p>
