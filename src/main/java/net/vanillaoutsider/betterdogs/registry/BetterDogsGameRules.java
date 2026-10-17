@@ -211,8 +211,8 @@ public class BetterDogsGameRules {
         BD_ZOOMIES_DURATION_TICKS = registerInteger("betterdogs:bd_zoomies_duration_ticks", BETTER_DOGS, 160);
         BD_WOLVES_SEEK_WATER_ON_FIRE = registerBoolean("betterdogs:bd_wolves_seek_water_on_fire", BETTER_DOGS, true);
         BD_WOLVES_BREAK_SIT_ON_FIRE = registerBoolean("betterdogs:bd_wolves_break_sit_on_fire", BETTER_DOGS, true);
-        BD_DOG_PLAY_FIGHTING = registerBoolean("betterdogs:dogPlayFighting", BETTER_DOGS, true);
-        BD_PLAY_PENALTY_MINUTES = DynamicGameRuleManager.integerRule("betterdogs:playPenaltyMinutes", BETTER_DOGS, 10)
+        BD_DOG_PLAY_FIGHTING = registerBoolean("betterdogs:bd_dog_play_fighting", BETTER_DOGS, true);
+        BD_PLAY_PENALTY_MINUTES = DynamicGameRuleManager.integerRule("betterdogs:bd_play_penalty_minutes", BETTER_DOGS, 10)
                 .range(0, Integer.MAX_VALUE).register();
 
 

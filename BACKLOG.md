@@ -1,4 +1,7 @@
-﻿# 📌 Better Dogs Backlog
+# 📌 Better Dogs Backlog
+
+<!-- Highest Historical ID: BL-BD-025 (Next Ticket Must Start at BL-BD-026) -->
+> **Next Available Ticket ID**: `[BL-BD-026]`
 
 This file tracks planned features, technical refinements, performance optimizations, and deferred bug fixes for **Better Dogs**.
 

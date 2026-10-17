@@ -448,5 +448,13 @@
   "gamerule.betterdogs.bd_dynamic_climate_variants": "Serigala: Varian Iklim Dinamis",
   "gamerule.betterdogs.bd_dynamic_climate_variants.description": "Jika benar, serigala secara dinamis menyesuaikan tekstur bulunya berdasarkan suhu dan iklim bioma setempat. Default: true.",
   "gamerule.betterdogs.bd_particle_density": "Tingkat Kepadatan Partikel",
-  "gamerule.betterdogs.bd_particle_density.description": "Mengontrol tingkat kepadatan partikel visual untuk indikator kerdil (runt), sifat, dan penjaga. Default: 2."
+  "gamerule.betterdogs.bd_particle_density.description": "Mengontrol tingkat kepadatan partikel visual untuk indikator kerdil (runt), sifat, dan penjaga. Default: 2.",
+  "gamerule.betterdogs:bd_dog_play_fighting": "Bermain Tarung Anjing",
+  "gamerule.betterdogs:bd_dog_play_fighting.description": "Jika benar, anjing jinak dari kawanan yang sama dapat saling bermain tarung santai. Default: true.",
+  "gamerule.betterdogs.bd_dog_play_fighting": "Bermain Tarung Anjing",
+  "gamerule.betterdogs.bd_dog_play_fighting.description": "Jika benar, anjing jinak dari kawanan yang sama dapat saling bermain tarung santai. Default: true.",
+  "gamerule.betterdogs:bd_play_penalty_minutes": "Durasi Penalti Bermain (Menit)",
+  "gamerule.betterdogs:bd_play_penalty_minutes.description": "Durasi dalam menit seekor anjing diberi waktu jeda penalti bermain setelah koreksi hierarki kawanan. Default: 10.",
+  "gamerule.betterdogs.bd_play_penalty_minutes": "Durasi Penalti Bermain (Menit)",
+  "gamerule.betterdogs.bd_play_penalty_minutes.description": "Durasi dalam menit seekor anjing diberi waktu jeda penalti bermain setelah koreksi hierarki kawanan. Default: 10."
 }

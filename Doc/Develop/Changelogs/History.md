@@ -1,5 +1,29 @@
 # Better Dogs History & Concept Changelog
 
+## [5.1.7+26.3] - 2026-10-17
+
+### Fixed
+- **GameRule Identifier Crash Resolution ([BL-BD-016])**: Standardized GameRule registration identifiers to strictly valid lowercase snake_case (`betterdogs:bd_dog_play_fighting`, `betterdogs:bd_play_penalty_minutes`), preventing startup `IdentifierException` crashes on Minecraft 26.3 while maintaining full backward-compatible translation aliases.
+- **Contract Verification Harness**: Implemented `GameRuleRegistryContractTest.java` enforcing lowercase formatting, regex validation (`^[a-z0-9_.-]+:[a-z0-9/._-]+$`), and localization key parity at compile time.
+- **Dasik Library Defensive Hardening**: Hardened `DynamicGameRuleManager` with automated lowercase normalization and reflection-based headless registry unfreezing fallback in Dasik Library 1.11.2.
+- **Systemic Broken Build Quarantine**: Quarantined `5.1.6+26.3` with `- [!]` in `RELEASE_QUEUE.md` and purged broken JARs from release hub and test profiles.
+
+## [5.1.6+26.3] - 2026-10-03
+
+### Fixed
+- **Wolf Attack Swing Compatibility (GitHub Issue #9 [BL-BD-015])**: Updated wolf combat goals (`WolfFlankAttackGoal`, `AdultCorrectionGoal`, `BabyBiteBackGoal`) to call `wolf.swingForAttack(InteractionHand.MAIN_HAND)`, preventing `NoSuchMethodError` crashes during pack flanking and retaliation in Minecraft 26.3.
+- **Manifest Contact Metadata**: Added official GitHub Issues tracker URL and Modrinth project metadata to `fabric.mod.json`.
+
+## [5.1.0+26.3] - 2026-10-03
+
+### Added
+- **Harmless Pack Play Sparring AI Suite ([BL-BD-008])**: Implemented playful sparring AI with circles, dynamic pouncing, spectator dog reactions, and tail-wagging.
+- **Adult Discipline & Hierarchy Correction Snap**: Non-lethal hierarchy correction snaps (0.5 hearts to adults, 0 damage to puppies with gentle growl) upon excessive pounces (3-5 pounces), silencing pack alerts and suppressing retaliation.
+- **Play Timeout Penalties & Mood Postures**: 10-minute penalty timer, subdued tail posture, and gentle submissive whines.
+- **Comforting Treat Soothing**: Feeding comforting treats (bones, meats) soothes mood and reduces penalty by up to 10% per treat.
+- **Pack Audience Reactions**: Nearby packmate dogs spectate sparring matches with excited tail wags (`PackAudienceHelper`).
+- **Advancements & GameRules**: Added `Roughhousing` and `Know Your Place` husbandry advancements with `betterdogs:dogPlayFighting` and `betterdogs:playPenaltyMinutes`.
+
 ## [5.0.99+26.3] - 2026-09-07
 
 ### Fixed

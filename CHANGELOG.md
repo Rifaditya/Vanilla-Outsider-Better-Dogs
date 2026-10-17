@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.1.7+26.3] - 2026-10-17
+
+### Fixed
+- **GameRule Identifier Crash Resolution**: Standardized GameRule registration identifiers to strictly valid lowercase snake_case (`betterdogs:bd_dog_play_fighting`, `betterdogs:bd_play_penalty_minutes`), preventing startup `IdentifierException` crashes on Minecraft 26.3 while maintaining full backward-compatible translation aliases.
+- **GameRule Contract Verification**: Added automated contract verification tests ensuring all registered GameRules conform to strict Minecraft identifier specifications.
+
 ## [5.1.6+26.3] - 2026-10-03
 
 ### Added
