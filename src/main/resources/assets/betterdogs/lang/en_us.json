@@ -700,8 +700,20 @@
   "gamerule.betterdogs:dogPlayFighting.description": "If true, tamed dogs of the same pack can engage in playful sparring and roughhousing. Default: true.",
   "gamerule.betterdogs.dogPlayFighting": "Dog Play Fighting",
   "gamerule.betterdogs.dogPlayFighting.description": "If true, tamed dogs of the same pack can engage in playful sparring and roughhousing. Default: true.",
+  "gamerule.betterdogs:bd_dog_play_fighting": "Dog Play Fighting",
+  "gamerule.betterdogs:bd_dog_play_fighting.description": "If true, tamed dogs of the same pack can engage in playful sparring and roughhousing. Default: true.",
+  "gamerule.betterdogs.bd_dog_play_fighting": "Dog Play Fighting",
+  "gamerule.betterdogs.bd_dog_play_fighting.description": "If true, tamed dogs of the same pack can engage in playful sparring and roughhousing. Default: true.",
+  "gamerule.bd_dog_play_fighting": "Dog Play Fighting",
+  "gamerule.bd_dog_play_fighting.description": "If true, tamed dogs of the same pack can engage in playful sparring and roughhousing. Default: true.",
   "gamerule.betterdogs:playPenaltyMinutes": "Play Penalty Duration (Minutes)",
   "gamerule.betterdogs:playPenaltyMinutes.description": "Duration in minutes a dog is placed on play timeout penalty following a hierarchy correction snap. Default: 10.",
   "gamerule.betterdogs.playPenaltyMinutes": "Play Penalty Duration (Minutes)",
-  "gamerule.betterdogs.playPenaltyMinutes.description": "Duration in minutes a dog is placed on play timeout penalty following a hierarchy correction snap. Default: 10."
+  "gamerule.betterdogs.playPenaltyMinutes.description": "Duration in minutes a dog is placed on play timeout penalty following a hierarchy correction snap. Default: 10.",
+  "gamerule.betterdogs:bd_play_penalty_minutes": "Play Penalty Duration (Minutes)",
+  "gamerule.betterdogs:bd_play_penalty_minutes.description": "Duration in minutes a dog is placed on play timeout penalty following a hierarchy correction snap. Default: 10.",
+  "gamerule.betterdogs.bd_play_penalty_minutes": "Play Penalty Duration (Minutes)",
+  "gamerule.betterdogs.bd_play_penalty_minutes.description": "Duration in minutes a dog is placed on play timeout penalty following a hierarchy correction snap. Default: 10.",
+  "gamerule.bd_play_penalty_minutes": "Play Penalty Duration (Minutes)",
+  "gamerule.bd_play_penalty_minutes.description": "Duration in minutes a dog is placed on play timeout penalty following a hierarchy correction snap. Default: 10."
 }

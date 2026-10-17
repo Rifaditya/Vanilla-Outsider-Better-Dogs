@@ -283,8 +283,8 @@ public class BetterDogsGameRules {
         BD_WILD_PACK_SPREAD_MAX = GameRuleRegistry.register("bd_wild_pack_spread_max", BETTER_DOGS, GameRuleFactory.createIntRule(40));
 
         // Pack Play Sparring & Timeout Penalty
-        BD_DOG_PLAY_FIGHTING = GameRuleRegistry.register("betterdogs:dogPlayFighting", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
-        BD_PLAY_PENALTY_MINUTES = GameRuleRegistry.register("betterdogs:playPenaltyMinutes", BETTER_DOGS, GameRuleFactory.createIntRule(10));
+        BD_DOG_PLAY_FIGHTING = GameRuleRegistry.register("bd_dog_play_fighting", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
+        BD_PLAY_PENALTY_MINUTES = GameRuleRegistry.register("bd_play_penalty_minutes", BETTER_DOGS, GameRuleFactory.createIntRule(10));
     }
 
     public static boolean isDogPlayFightingEnabled(Level level) {
