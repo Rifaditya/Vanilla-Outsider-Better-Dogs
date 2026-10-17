@@ -145,6 +145,10 @@ public class BetterDogsGameRules {
     public static GameRule<Integer> BD_WILD_PACK_SPREAD_MULTIPLIER;
     public static GameRule<Integer> BD_WILD_PACK_SPREAD_MAX;
 
+    public static void register() {
+        init();
+    }
+
     public static void init() {
         // General
         BD_STORM_ANXIETY = registerBoolean("vanilla-outsider-better-dogs:bd_storm_anxiety", BETTER_DOGS, true);
@@ -180,8 +184,8 @@ public class BetterDogsGameRules {
         BD_TAMED_PACK_SPREAD_MAX = registerInteger("vanilla-outsider-better-dogs:bd_tamed_pack_spread_max", BETTER_DOGS, 50);
 
         // Social / Play Sparring
-        BD_DOG_PLAY_FIGHTING = registerBoolean("vanilla-outsider-better-dogs:dogPlayFighting", BETTER_DOGS, true);
-        BD_PLAY_PENALTY_MINUTES = DynamicGameRuleManager.integerRule("vanilla-outsider-better-dogs:playPenaltyMinutes", BETTER_DOGS, 10)
+        BD_DOG_PLAY_FIGHTING = registerBoolean("vanilla-outsider-better-dogs:bd_dog_play_fighting", BETTER_DOGS, true);
+        BD_PLAY_PENALTY_MINUTES = DynamicGameRuleManager.integerRule("vanilla-outsider-better-dogs:bd_play_penalty_minutes", BETTER_DOGS, 10)
                 .range(0, Integer.MAX_VALUE).register();
 
         // Player
