@@ -8,6 +8,8 @@ import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersistentData;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
+import net.vanillaoutsider.betterdogs.ai.play.OrbitSparringGoal;
+import net.vanillaoutsider.betterdogs.ai.play.PlayChaseGoal;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper;
 import org.spongepowered.asm.mixin.Mixin;
@@ -77,6 +79,12 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     private void betterdogs$onDefineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder, CallbackInfo ci) {
         builder.define(BETTERDOGS$DATA_SUBDUED, false);
         builder.define(BETTERDOGS$DATA_SPECTATOR_WAGGING, false);
+    }
+
+    @Inject(method = "registerGoals", at = @At("TAIL"))
+    private void betterdogs$registerPlayGoals(CallbackInfo ci) {
+        this.goalSelector.addGoal(6, new PlayChaseGoal((Wolf) (Object) this));
+        this.goalSelector.addGoal(6, new OrbitSparringGoal((Wolf) (Object) this));
     }
 
     @Override
