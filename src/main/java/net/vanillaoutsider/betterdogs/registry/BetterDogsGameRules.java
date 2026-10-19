@@ -48,6 +48,9 @@ public class BetterDogsGameRules {
     // Social / Play Sparring
     public static GameRule<Boolean> BD_DOG_PLAY_FIGHTING;
     public static GameRule<Integer> BD_PLAY_PENALTY_MINUTES;
+    public static GameRule<Boolean> BD_DOG_PLAY_CHOREOGRAPHY_ENABLED;
+    public static GameRule<Integer> BD_PLAY_CHOREOGRAPHY_FREQUENCY;
+    public static GameRule<Integer> BD_MAX_PLAY_DISTANCE;
 
     // Player Protection
     public static GameRule<Boolean> BD_FRIENDLY_FIRE;
@@ -187,6 +190,16 @@ public class BetterDogsGameRules {
         BD_DOG_PLAY_FIGHTING = registerBoolean("vanilla-outsider-better-dogs:bd_dog_play_fighting", BETTER_DOGS, true);
         BD_PLAY_PENALTY_MINUTES = DynamicGameRuleManager.integerRule("vanilla-outsider-better-dogs:bd_play_penalty_minutes", BETTER_DOGS, 10)
                 .range(0, Integer.MAX_VALUE).register();
+        BD_DOG_PLAY_CHOREOGRAPHY_ENABLED = registerBoolean("vanilla-outsider-better-dogs:bd_dog_play_choreography_enabled", BETTER_DOGS, true);
+        BD_PLAY_CHOREOGRAPHY_FREQUENCY = registerInteger("vanilla-outsider-better-dogs:bd_play_choreography_frequency", BETTER_DOGS, 2400, 20, 72000);
+        BD_MAX_PLAY_DISTANCE = registerInteger("vanilla-outsider-better-dogs:bd_max_play_distance", BETTER_DOGS, 16, 4, 128);
+
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:bd_dog_play_choreography_enabled", BD_DOG_PLAY_CHOREOGRAPHY_ENABLED);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:bd_play_choreography_frequency", BD_PLAY_CHOREOGRAPHY_FREQUENCY);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:bd_max_play_distance", BD_MAX_PLAY_DISTANCE);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:dogPlayChoreographyEnabled", BD_DOG_PLAY_CHOREOGRAPHY_ENABLED);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:playChoreographyFrequency", BD_PLAY_CHOREOGRAPHY_FREQUENCY);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:maxPlayDistance", BD_MAX_PLAY_DISTANCE);
 
         // Player
         BD_FRIENDLY_FIRE = registerBoolean("vanilla-outsider-better-dogs:bd_friendly_fire_protection", BETTER_DOGS, true);
@@ -293,6 +306,10 @@ public class BetterDogsGameRules {
         return DynamicGameRuleManager.integerRule(id, category, defaultValue).register();
     }
 
+    private static GameRule<Integer> registerInteger(String id, GameRuleCategory category, int defaultValue, int min, int max) {
+        return DynamicGameRuleManager.integerRule(id, category, defaultValue).range(min, max).register();
+    }
+
     public static boolean isHornCommandsEnabled(Level level) {
         return getBoolean(level, BD_HORN_COMMANDS_ENABLED, true);
     }
@@ -319,6 +336,18 @@ public class BetterDogsGameRules {
 
     public static int getPlayPenaltyMinutes(Level level) {
         return getInt(level, BD_PLAY_PENALTY_MINUTES, 10);
+    }
+
+    public static boolean isDogPlayChoreographyEnabled(Level level) {
+        return getBoolean(level, BD_DOG_PLAY_CHOREOGRAPHY_ENABLED, true);
+    }
+
+    public static int getPlayChoreographyFrequency(Level level) {
+        return getInt(level, BD_PLAY_CHOREOGRAPHY_FREQUENCY, 2400);
+    }
+
+    public static int getMaxPlayDistance(Level level) {
+        return getInt(level, BD_MAX_PLAY_DISTANCE, 16);
     }
 
     public static boolean getBoolean(Level level, GameRule<Boolean> rule, boolean fallback) {
