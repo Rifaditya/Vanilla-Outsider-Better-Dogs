@@ -11,6 +11,8 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import snownee.jade.JadeClient;
 import snownee.jade.api.JadeIds;
 import snownee.jade.api.config.IPluginConfig;
@@ -19,6 +21,7 @@ import snownee.jade.api.ui.Element;
 import snownee.jade.api.ui.IDisplayHelper;
 import snownee.jade.track.HealthTrackInfo;
 
+@Environment(EnvType.CLIENT)
 public class BetterDogsHealthElement extends Element {
     private Hud.HeartType heartType;
     private final float maxHealth;
