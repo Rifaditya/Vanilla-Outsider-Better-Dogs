@@ -9,6 +9,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gamerules.GameRule;
 import net.minecraft.world.level.gamerules.GameRuleCategory;
 import net.minecraft.world.level.gamerules.GameRuleType;
@@ -61,6 +62,9 @@ public class BetterDogsGameRules {
     // --- Social / Play Sparring ---
     public static GameRule<Boolean> BD_DOG_PLAY_FIGHTING;
     public static GameRule<Integer> BD_PLAY_PENALTY_MINUTES;
+    public static GameRule<Boolean> BD_DOG_PLAY_CHOREOGRAPHY_ENABLED;
+    public static GameRule<Integer> BD_PLAY_CHOREOGRAPHY_FREQUENCY;
+    public static GameRule<Integer> BD_MAX_PLAY_DISTANCE;
 
     // --- Player ---
     public static GameRule<Boolean> BD_FRIENDLY_FIRE;
@@ -214,6 +218,16 @@ public class BetterDogsGameRules {
         BD_DOG_PLAY_FIGHTING = registerBoolean("betterdogs:bd_dog_play_fighting", BETTER_DOGS, true);
         BD_PLAY_PENALTY_MINUTES = DynamicGameRuleManager.integerRule("betterdogs:bd_play_penalty_minutes", BETTER_DOGS, 10)
                 .range(0, Integer.MAX_VALUE).register();
+        BD_DOG_PLAY_CHOREOGRAPHY_ENABLED = registerBoolean("betterdogs:bd_dog_play_choreography_enabled", BETTER_DOGS,
+                config != null ? config.dogPlayChoreographyEnabled : true);
+        BD_PLAY_CHOREOGRAPHY_FREQUENCY = registerInteger("betterdogs:bd_play_choreography_frequency", BETTER_DOGS,
+                config != null ? config.playChoreographyFrequency : 2400, 20, 72000);
+        BD_MAX_PLAY_DISTANCE = registerInteger("betterdogs:bd_max_play_distance", BETTER_DOGS,
+                config != null ? config.maxPlayDistance : 16, 4, 128);
+
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:dogPlayChoreographyEnabled", BD_DOG_PLAY_CHOREOGRAPHY_ENABLED);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:playChoreographyFrequency", BD_PLAY_CHOREOGRAPHY_FREQUENCY);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:maxPlayDistance", BD_MAX_PLAY_DISTANCE);
 
 
 
@@ -391,6 +405,10 @@ public class BetterDogsGameRules {
         return DynamicGameRuleManager.integerRule(id, category, defaultValue).register();
     }
 
+    private static GameRule<Integer> registerInteger(String id, GameRuleCategory category, int defaultValue, int min, int max) {
+        return DynamicGameRuleManager.integerRule(id, category, defaultValue).range(min, max).register();
+    }
+
     // Static Null-Safe Accessors
     public static boolean getBoolean(net.minecraft.world.level.Level level, GameRule<Boolean> rule, boolean fallback) {
         if (level == null || rule == null) {
@@ -432,5 +450,17 @@ public class BetterDogsGameRules {
 
     public static int getPlayPenaltyMinutes(net.minecraft.world.level.Level level) {
         return getInt(level, BD_PLAY_PENALTY_MINUTES, 10);
+    }
+
+    public static boolean isDogPlayChoreographyEnabled(Level level) {
+        return getBoolean(level, BD_DOG_PLAY_CHOREOGRAPHY_ENABLED, true);
+    }
+
+    public static int getPlayChoreographyFrequency(Level level) {
+        return getInt(level, BD_PLAY_CHOREOGRAPHY_FREQUENCY, 2400);
+    }
+
+    public static int getMaxPlayDistance(Level level) {
+        return getInt(level, BD_MAX_PLAY_DISTANCE, 16);
     }
 }

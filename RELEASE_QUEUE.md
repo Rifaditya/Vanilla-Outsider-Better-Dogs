@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`5.2.0+26.1.2`** (2026-10-19) - Dog Play Choreography AI Suite & Orbit Sparring (MC 26.1.2)
 - [x] **`5.1.1+26.1.2`** - GameRule Identifier Crash Fix & Harmless Pack Sparring Suite (MC 26.1.2)
 - [x] **`5.1.0+26.1.2`** - Pack Play Sparring & Social Dynamics AI Suite (MC 26.1.2)
 - [x] **5.0.94+26.1.2** - Multi-Era Parity Alignment (MC 26.1.2)

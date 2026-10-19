@@ -54,6 +54,9 @@ public class BetterDogsConfig {
     public int refuseGroundFoodChance = 30;
     public boolean enableFavoriteTreats = true;
     public boolean enableHornCommands = true;
+    public boolean dogPlayChoreographyEnabled = true;
+    public int playChoreographyFrequency = 2400;
+    public int maxPlayDistance = 16;
 
     // --- Player ---
     public boolean pacifistGuardBuffs = false;
@@ -231,6 +234,9 @@ public class BetterDogsConfig {
     public boolean getEnableRefuseGroundFood() { return enableRefuseGroundFood; }
     public int getRefuseGroundFoodChance() { return refuseGroundFoodChance; }
     public boolean getEnableFavoriteTreats() { return enableFavoriteTreats; }
+    public boolean getDogPlayChoreographyEnabled() { return dogPlayChoreographyEnabled; }
+    public int getPlayChoreographyFrequency() { return playChoreographyFrequency; }
+    public int getMaxPlayDistance() { return maxPlayDistance; }
     public boolean getPacifistGuardBuffs() { return pacifistGuardBuffs; }
     public boolean getEnableInbredCuring() { return enableInbredCuring; }
     public boolean getShowRuntParticles() { return showRuntParticles; }

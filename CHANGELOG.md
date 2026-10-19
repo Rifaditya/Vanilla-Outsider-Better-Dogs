@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.2.0+26.1.2] - 2026-10-19
+
+### Added
+- 🐕 **Dog Play Choreography AI Suite**: Introduced cooperative play choreography between compatible tamed dogs, featuring dynamic follow-the-leader chase loops (`PlayChaseGoal`) and playful circular orbit sparring (`OrbitSparringGoal`).
+- 🏃 **Dynamic Chase & Orbit Navigation**: Dogs engage in synchronized chase sequences at 1.25x speed and circular orbit maneuvers with playful head tilts and happy villager particles.
+- 🛑 **Hazard & Cliff Fall Safety**: Integrated safety path evaluation preventing dogs from pathing toward cliffs or thermal hazards (fire, lava, magma) during play.
+- ⚙️ **Configurable GameRules & Settings**: Added `betterdogs:bd_dog_play_choreography_enabled`, `betterdogs:bd_play_choreography_frequency`, and `betterdogs:bd_max_play_distance` GameRules with full backward-compatible translation aliases.
+
 ## [5.1.0+26.1.2] - 2026-10-03
 
 ### Added
