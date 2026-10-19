@@ -96,6 +96,9 @@ public class BetterDogsGameRules {
     // Pack Play Sparring & Timeout Penalty (Step 1 & Step 4)
     public static GameRules.Key<GameRules.BooleanValue> BD_DOG_PLAY_FIGHTING;
     public static GameRules.Key<GameRules.IntegerValue> BD_PLAY_PENALTY_MINUTES;
+    public static GameRules.Key<GameRules.BooleanValue> BD_DOG_PLAY_CHOREOGRAPHY_ENABLED;
+    public static GameRules.Key<GameRules.IntegerValue> BD_PLAY_CHOREOGRAPHY_FREQUENCY;
+    public static GameRules.Key<GameRules.IntegerValue> BD_MAX_PLAY_DISTANCE;
 
 
     // Territorial
@@ -285,6 +288,13 @@ public class BetterDogsGameRules {
         // Pack Play Sparring & Timeout Penalty
         BD_DOG_PLAY_FIGHTING = GameRuleRegistry.register("bd_dog_play_fighting", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
         BD_PLAY_PENALTY_MINUTES = GameRuleRegistry.register("bd_play_penalty_minutes", BETTER_DOGS, GameRuleFactory.createIntRule(10));
+        BD_DOG_PLAY_CHOREOGRAPHY_ENABLED = GameRuleRegistry.register("bd_dog_play_choreography_enabled", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
+        BD_PLAY_CHOREOGRAPHY_FREQUENCY = GameRuleRegistry.register("bd_play_choreography_frequency", BETTER_DOGS, GameRuleFactory.createIntRule(2400));
+        BD_MAX_PLAY_DISTANCE = GameRuleRegistry.register("bd_max_play_distance", BETTER_DOGS, GameRuleFactory.createIntRule(16));
+    }
+
+    public static void register() {
+        init();
     }
 
     public static boolean isDogPlayFightingEnabled(Level level) {
@@ -293,6 +303,18 @@ public class BetterDogsGameRules {
 
     public static int getPlayPenaltyMinutes(Level level) {
         return getInt(level, BD_PLAY_PENALTY_MINUTES, 10);
+    }
+
+    public static boolean isDogPlayChoreographyEnabled(Level level) {
+        return getBoolean(level, BD_DOG_PLAY_CHOREOGRAPHY_ENABLED, true);
+    }
+
+    public static int getPlayChoreographyFrequency(Level level) {
+        return getInt(level, BD_PLAY_CHOREOGRAPHY_FREQUENCY, 2400);
+    }
+
+    public static int getMaxPlayDistance(Level level) {
+        return getInt(level, BD_MAX_PLAY_DISTANCE, 16);
     }
 
     public static boolean isHornCommandsEnabled(Level level) {

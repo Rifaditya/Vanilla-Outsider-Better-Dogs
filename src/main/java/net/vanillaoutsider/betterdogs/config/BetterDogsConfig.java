@@ -58,6 +58,9 @@ public class BetterDogsConfig {
     public int aggressiveFleeChance = 10;
     public boolean enableFriendlyFireProtection = true;
     public boolean enableDogsEatRawGroundFood = true;
+    public boolean dogPlayChoreographyEnabled = true;
+    public int playChoreographyFrequency = 2400;
+    public int maxPlayDistance = 16;
     public boolean enableDogsEatCookedGroundFood = true;
     public boolean enableRefuseGroundFood = true;
     public int refuseGroundFoodChance = 30;
@@ -340,4 +343,8 @@ public class BetterDogsConfig {
     public int getParticleDensityInt() {
         return net.vanillaoutsider.betterdogs.util.ParticleDensity.fromString(this.particleDensity).getLevel();
     }
+
+    public boolean getDogPlayChoreographyEnabled() { return dogPlayChoreographyEnabled; }
+    public int getPlayChoreographyFrequency() { return playChoreographyFrequency; }
+    public int getMaxPlayDistance() { return maxPlayDistance; }
 }

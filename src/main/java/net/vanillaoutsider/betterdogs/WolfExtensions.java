@@ -54,6 +54,9 @@ public interface WolfExtensions {
 
     boolean betterdogs$isGuarding();
     void betterdogs$setGuarding(boolean guarding);
+    default boolean betterdogs$isGuardMode() {
+        return betterdogs$isGuarding();
+    }
 
     net.minecraft.core.BlockPos betterdogs$getGuardPos();
     void betterdogs$setGuardPos(net.minecraft.core.BlockPos pos);
