@@ -1,6 +1,16 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.1)
 
-## [1.1.1+1.21.1] - 2026-10-12
+## [1.2.0+1.21.1] - 2026-10-19
+
+### Added
+- 🐕 **Dog Play Choreography AI Suite**: Tamed co-owned dogs of the same pack now engage in coordinated play routines including follow-the-leader chase loops, synchronized zoomies, and circular orbit sparring.
+- 🔄 **Safe Vector Navigation & Orbit Sparring**: Playful dogs calculate smooth circular orbit trajectories around their play partner with automatic cliff edge, lava, fire, and thermal hazard avoidance.
+- ⚙️ **Configurable Play Choreography Controls**: Added GameRules `betterdogs:bd_dog_play_choreography_enabled`, `betterdogs:bd_play_choreography_frequency`, and `betterdogs:bd_max_play_distance` alongside config file options.
+
+## [1.1.2+1.21.1] - 2026-10-19
+
+### Fixed
+- 🐛 **GameRule Identifier Crash Resolution**: Fixed illegal character crashes in GameRule registration by standardizing all identifiers to valid lowercase namespaced keys.
 
 ### Fixed
 - 🐺 **Safe Teleportation & Crash Resolution (GitHub Issue #8)**: Fixed a server crash (`NoSuchMethodError: Wolf.randomTeleport`) during owner-follow teleportation by introducing `WolfTeleportHelper` and replacing unsafe vanilla calls with ground-traced safe teleportation bounds.
