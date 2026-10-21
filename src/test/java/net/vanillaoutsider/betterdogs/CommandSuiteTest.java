@@ -32,6 +32,7 @@ public class CommandSuiteTest {
         // Verify subnodes under /betterdogs
         assertNotNull(root.getChild("help"), "Subcommand /betterdogs help should be present");
         assertNotNull(root.getChild("status"), "Subcommand /betterdogs status should be present");
+        assertNotNull(root.getChild("inspect"), "Subcommand /betterdogs inspect should be present");
         assertNotNull(root.getChild("get"), "Subcommand /betterdogs get should be present");
         assertNotNull(root.getChild("set"), "Subcommand /betterdogs set should be present");
         assertNotNull(root.getChild("reset"), "Subcommand /betterdogs reset should be present");
@@ -40,6 +41,7 @@ public class CommandSuiteTest {
         // Verify subnodes under /bd
         assertNotNull(alias.getChild("help"), "Subcommand /bd help should be present");
         assertNotNull(alias.getChild("status"), "Subcommand /bd status should be present");
+        assertNotNull(alias.getChild("inspect"), "Subcommand /bd inspect should be present");
         assertNotNull(alias.getChild("get"), "Subcommand /bd get should be present");
         assertNotNull(alias.getChild("set"), "Subcommand /bd set should be present");
         assertNotNull(alias.getChild("reset"), "Subcommand /bd reset should be present");

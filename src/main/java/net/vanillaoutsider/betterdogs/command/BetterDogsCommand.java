@@ -52,9 +52,13 @@ public class BetterDogsCommand {
         registerBool("bd_dynamic_climate_variants", BetterDogsGameRules.BD_DYNAMIC_CLIMATE_VARIANTS, true);
         registerBool("bd_dog_play_fighting", BetterDogsGameRules.BD_DOG_PLAY_FIGHTING, true);
         registerBool("dogplayfighting", BetterDogsGameRules.BD_DOG_PLAY_FIGHTING, true);
+        registerBool("bd_dog_genetics_enabled", BetterDogsGameRules.BD_DOG_GENETICS_ENABLED, true);
+        registerBool("doggeneticsenabled", BetterDogsGameRules.BD_DOG_GENETICS_ENABLED, true);
 
         registerInt("bd_play_penalty_minutes", BetterDogsGameRules.BD_PLAY_PENALTY_MINUTES, 10);
         registerInt("playpenaltyminutes", BetterDogsGameRules.BD_PLAY_PENALTY_MINUTES, 10);
+        registerInt("bd_max_scale_deviation", BetterDogsGameRules.BD_MAX_SCALE_DEVIATION, 30);
+        registerInt("maxscaledeviation", BetterDogsGameRules.BD_MAX_SCALE_DEVIATION, 30);
         registerInt("bd_refuse_ground_food_chance", BetterDogsGameRules.BD_REFUSE_GROUND_FOOD_CHANCE, 30);
         registerInt("bd_nemesis_duration_days", BetterDogsGameRules.BD_NEMESIS_DURATION_DAYS, 3);
         registerInt("bd_horn_command_range", BetterDogsGameRules.BD_HORN_COMMAND_RANGE, 64);
@@ -146,6 +150,12 @@ public class BetterDogsCommand {
                         .executes(context -> executeHelp(context.getSource(), literalName)))
                 .then(Commands.literal("status")
                         .executes(context -> executeStatus(context.getSource())))
+                .then(Commands.literal("inspect")
+                        .then(Commands.argument("targets", net.minecraft.commands.arguments.EntityArgument.entities())
+                                .executes(context -> net.vanillaoutsider.betterdogs.util.WolfCommandHelper.inspectTargets(
+                                        context.getSource(),
+                                        net.minecraft.commands.arguments.EntityArgument.getEntities(context, "targets")
+                                ))))
                 .then(Commands.literal("get")
                         .then(Commands.argument("rule", StringArgumentType.word())
                                 .suggests(CommandSuggestionsHelper::suggestRules)
@@ -174,6 +184,7 @@ public class BetterDogsCommand {
         source.sendSuccess(() -> Component.literal(
                 "§6--- Vanilla Outsider: Better Dogs Commands ---§r\n" +
                 "§a/" + literalName + " status§r - Display categorized summary of companion GameRules\n" +
+                "§a/" + literalName + " inspect <targets>§r - Inspect physical traits and voice pitch of targeted dogs\n" +
                 "§a/" + literalName + " get <rule>§r - Query current value of a GameRule\n" +
                 "§a/" + literalName + " set <rule> <val>§r - Modify a GameRule value (Permission 2)\n" +
                 "§a/" + literalName + " reset§r - Reset all Better Dogs GameRules to factory defaults (Permission 2)\n" +
@@ -218,6 +229,7 @@ public class BetterDogsCommand {
         sb.append(" §7Max Litter Size: §a").append(rules.getInt(BetterDogsGameRules.BD_WOLF_LITTER_MAX_SIZE))
                 .append(" §7| Scale Range: §a").append(rules.getInt(BetterDogsGameRules.BD_WOLF_MIN_SCALE_PERCENT)).append("%-")
                 .append(rules.getInt(BetterDogsGameRules.BD_WOLF_MAX_SCALE_PERCENT)).append("%§r")
+                .append(" §7| Genetics: ").append(formatBool(rules.getBoolean(BetterDogsGameRules.BD_DOG_GENETICS_ENABLED)))
                 .append(" §7| Autonomous Feeding: ").append(formatBool(rules.getBoolean(BetterDogsGameRules.BD_DOGS_EAT_RAW_FOOD)));
 
         source.sendSuccess(() -> Component.literal(sb.toString()), false);
