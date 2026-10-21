@@ -1,5 +1,5 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
-// Verified against: Minecraft 26.3
+// Verified against: Minecraft 26.2
 package net.vanillaoutsider.betterdogs;
 
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
@@ -24,6 +24,11 @@ public class BetterDogsGameRulesTest {
         assertEquals(10, BetterDogsGameRules.getPlayPenaltyMinutes(null), "Default for playPenaltyMinutes should be 10");
         assertTrue(BetterDogsGameRules.getBoolean(null, BetterDogsGameRules.BD_DOG_PLAY_FIGHTING, true));
         assertEquals(10, BetterDogsGameRules.getInt(null, BetterDogsGameRules.BD_PLAY_PENALTY_MINUTES, 10));
+
+        assertTrue(BetterDogsGameRules.isDogGeneticsEnabled(null), "Default for dogGeneticsEnabled should be true");
+        assertEquals(30, BetterDogsGameRules.getMaxScaleDeviation(null), "Default for maxScaleDeviation should be 30");
+        assertTrue(BetterDogsGameRules.getBoolean(null, BetterDogsGameRules.BD_DOG_GENETICS_ENABLED, true));
+        assertEquals(30, BetterDogsGameRules.getInt(null, BetterDogsGameRules.BD_MAX_SCALE_DEVIATION, 30));
     }
 
     @Test

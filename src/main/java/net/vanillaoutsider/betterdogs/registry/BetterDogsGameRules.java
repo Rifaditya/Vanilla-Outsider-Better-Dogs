@@ -1,5 +1,5 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
-// Verified against: Minecraft 26.3
+// Verified against: Minecraft 26.2
 package net.vanillaoutsider.betterdogs.registry;
 
 import com.mojang.brigadier.arguments.BoolArgumentType;
@@ -137,6 +137,8 @@ public class BetterDogsGameRules {
     public static GameRule<Boolean> BD_DYNAMIC_CLIMATE_VARIANTS;
 
     // --- Breeding Genetics ---
+    public static GameRule<Boolean> BD_DOG_GENETICS_ENABLED;
+    public static GameRule<Integer> BD_MAX_SCALE_DEVIATION;
     public static GameRule<Integer> BD_BREED_SAME_CHANCE;
     public static GameRule<Integer> BD_BREED_SAME_OTHER_CHANCE;
     public static GameRule<Integer> BD_BREED_MIXED_DOMINANT_CHANCE;
@@ -328,6 +330,12 @@ public class BetterDogsGameRules {
 
 
 
+        BD_DOG_GENETICS_ENABLED = registerBoolean("betterdogs:bd_dog_genetics_enabled", BETTER_DOGS, true);
+        BD_MAX_SCALE_DEVIATION = DynamicGameRuleManager.integerRule("betterdogs:bd_max_scale_deviation", BETTER_DOGS, 30).range(0, 100).register();
+
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:dogGeneticsEnabled", BD_DOG_GENETICS_ENABLED);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:maxScaleDeviation", BD_MAX_SCALE_DEVIATION);
+
         BD_BREED_SAME_CHANCE = registerInteger("betterdogs:bd_breed_same_chance", BETTER_DOGS,
                 config.getBreedingSameParentChance());
         BD_BREED_SAME_OTHER_CHANCE = registerInteger("betterdogs:bd_breed_same_other_chance", BETTER_DOGS,
@@ -462,5 +470,13 @@ public class BetterDogsGameRules {
 
     public static int getMaxPlayDistance(Level level) {
         return getInt(level, BD_MAX_PLAY_DISTANCE, 16);
+    }
+
+    public static boolean isDogGeneticsEnabled(Level level) {
+        return getBoolean(level, BD_DOG_GENETICS_ENABLED, true);
+    }
+
+    public static int getMaxScaleDeviation(Level level) {
+        return getInt(level, BD_MAX_SCALE_DEVIATION, 30);
     }
 }
