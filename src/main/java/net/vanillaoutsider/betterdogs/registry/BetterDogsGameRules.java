@@ -129,6 +129,10 @@ public class BetterDogsGameRules {
     public static GameRules.Key<GameRules.BooleanValue> BD_WOLF_SPAWN_EXPANDED_BIOMES;
     public static GameRules.Key<GameRules.BooleanValue> BD_DYNAMIC_CLIMATE_VARIANTS;
 
+    // Physical Canine Genetics
+    public static GameRules.Key<GameRules.BooleanValue> BD_DOG_GENETICS_ENABLED;
+    public static GameRules.Key<GameRules.IntegerValue> BD_MAX_SCALE_DEVIATION;
+
     // Breeding & Genetics
     public static GameRules.Key<GameRules.IntegerValue> BD_SPAWN_NORMAL_PERCENT;
     public static GameRules.Key<GameRules.IntegerValue> BD_SPAWN_AGGRO_PERCENT;
@@ -259,6 +263,10 @@ public class BetterDogsGameRules {
         BD_WOLF_SPAWN_EXPANDED_BIOMES = GameRuleRegistry.register("bd_wolf_spawn_expanded_biomes", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
         BD_DYNAMIC_CLIMATE_VARIANTS = GameRuleRegistry.register("bd_dynamic_climate_variants", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
 
+        // Physical Canine Genetics
+        BD_DOG_GENETICS_ENABLED = GameRuleRegistry.register("bd_dog_genetics_enabled", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
+        BD_MAX_SCALE_DEVIATION = GameRuleRegistry.register("bd_max_scale_deviation", BETTER_DOGS, GameRuleFactory.createIntRule(30));
+
         // Breeding & Genetics
         BD_SPAWN_NORMAL_PERCENT = GameRuleRegistry.register("bd_spawn_normal_percent", BETTER_DOGS, GameRuleFactory.createIntRule(60));
         BD_SPAWN_AGGRO_PERCENT = GameRuleRegistry.register("bd_spawn_aggro_percent", BETTER_DOGS, GameRuleFactory.createIntRule(20));
@@ -336,6 +344,14 @@ public class BetterDogsGameRules {
 
     public static int getZoomiesDurationTicks(Level level) {
         return getInt(level, BD_ZOOMIES_DURATION_TICKS, 160);
+    }
+
+    public static boolean isDogGeneticsEnabled(Level level) {
+        return getBoolean(level, BD_DOG_GENETICS_ENABLED, true);
+    }
+
+    public static int getMaxScaleDeviation(Level level) {
+        return getInt(level, BD_MAX_SCALE_DEVIATION, 30);
     }
 
     public static boolean getBoolean(Level level, GameRules.Key<GameRules.BooleanValue> key, boolean fallback) {

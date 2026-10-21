@@ -1,5 +1,14 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.3.0+1.20.1] - 2026-10-21
+
+### Added
+- 🧬 **Canine Physical Genetics Suite (BL-BD-012)**: Introduced dynamic physical breeding genetics modeled after equine inheritance. Offspring inherit movement speed, max health, and physical scale from parents via intermediate Gaussian distributions ($(\text{parent}_1 + \text{parent}_2) / 2 + \mathcal{N}(0, \sigma^2)$) with saturated bounds.
+- 📐 **Dynamic Physical & Hitbox Scaling**: Wolves feature persistent scale adjustments varying between 0.70x and 1.30x (configurable via `bd_wolf_min_scale_percent` and `bd_wolf_max_scale_percent`), with dynamic hitbox synchronization so miniature dogs fit in tight crawlspaces while giant mastiffs block wide paths.
+- 🔊 **Acoustic Scale Pitch Timbre Modulation**: Dog vocalizations (barking, whining, growling, howling) dynamically adjust pitch inversely proportional to scale ($\text{pitch} = \text{base} / \sqrt{\text{scale}}$), granting deep resonant booms to towering hounds and bright, squeaky barks to lap dogs.
+- 🔍 **Genetics Inspection Command Suite**: Added `/bd inspect` and `/betterdogs inspect` allowing players to examine their dogs' physical genetic stats (scale, movement speed, current/max health, and acoustic timbre factor).
+- ⚙️ **Configurable GameRules & Parameters**: Added `betterdogs:bd_dog_genetics_enabled` and `betterdogs:bd_max_scale_deviation` GameRules with full backward-compatible translation aliases.
+
 ## [1.2.0+1.20.1] - 2026-10-19
 
 ### Added

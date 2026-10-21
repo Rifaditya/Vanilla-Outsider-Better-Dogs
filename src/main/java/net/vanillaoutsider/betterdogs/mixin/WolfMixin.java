@@ -655,6 +655,54 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
             float inheritedScale = net.vanillaoutsider.betterdogs.util.WolfScaleGeneticsHelper.calculateOffspringScale(level, scaleA, scaleB, child.getRandom());
             childExt.betterdogs$setSocialScale(inheritedScale);
 
+            // Physical genetics inheritance (Movement Speed & Max Health)
+            if (net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.isDogGeneticsEnabled(level)) {
+                float p1Speed = 0.30f;
+                var sp1 = parentA.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED);
+                if (sp1 != null) {
+                    p1Speed = (float) sp1.getBaseValue();
+                }
+                float p2Speed = 0.30f;
+                var sp2 = (otherParent instanceof Wolf wp) ? wp.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED) : null;
+                if (sp2 != null) {
+                    p2Speed = (float) sp2.getBaseValue();
+                }
+                float childSpeed = net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper.calculateOffspringStat(
+                        p1Speed, p2Speed,
+                        net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper.SPEED_STD_DEV,
+                        net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper.MIN_SPEED,
+                        net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper.MAX_SPEED,
+                        child.getRandom()
+                );
+                var babySpeedAttr = child.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED);
+                if (babySpeedAttr != null) {
+                    babySpeedAttr.setBaseValue(childSpeed);
+                }
+
+                float p1Health = 20.0f;
+                var h1 = parentA.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH);
+                if (h1 != null) {
+                    p1Health = (float) h1.getBaseValue();
+                }
+                float p2Health = 20.0f;
+                var h2 = (otherParent instanceof Wolf wp) ? wp.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH) : null;
+                if (h2 != null) {
+                    p2Health = (float) h2.getBaseValue();
+                }
+                float childHealth = net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper.calculateOffspringStat(
+                        p1Health, p2Health,
+                        net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper.HEALTH_STD_DEV,
+                        net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper.MIN_HEALTH,
+                        net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper.MAX_HEALTH,
+                        child.getRandom()
+                );
+                var babyHealthAttr = child.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH);
+                if (babyHealthAttr != null) {
+                    babyHealthAttr.setBaseValue(childHealth);
+                    child.setHealth(childHealth);
+                }
+            }
+
             if (inheritedScale >= 1.25f && parentA.getOwner() instanceof net.minecraft.world.entity.player.Player player) {
                 net.vanillaoutsider.betterdogs.util.WolfAdvancementHelper.grantAdvancement(player, "giant_lineage");
             }
@@ -663,6 +711,41 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
             net.vanillaoutsider.betterdogs.util.WolfGeneticsHelper.syncWithLibraryGenetics(child);
             net.vanillaoutsider.betterdogs.util.WolfLitterHelper.spawnExtraPuppies(level, parentA, otherParent, child);
         }
+    }
+
+    @Override
+    public net.minecraft.world.entity.SpawnGroupData finalizeSpawn(
+            net.minecraft.world.level.ServerLevelAccessor level,
+            net.minecraft.world.DifficultyInstance difficulty,
+            net.minecraft.world.entity.MobSpawnType spawnType,
+            net.minecraft.world.entity.SpawnGroupData groupData,
+            net.minecraft.nbt.CompoundTag tag) {
+        net.minecraft.world.entity.SpawnGroupData data = super.finalizeSpawn(level, difficulty, spawnType, groupData, tag);
+        if (!level.getLevel().isClientSide()) {
+            if (net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.isDogGeneticsEnabled(level.getLevel())) {
+                float wildSpeed = net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper.clamp(
+                        0.30f + (float) this.getRandom().nextGaussian() * net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper.SPEED_STD_DEV,
+                        net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper.MIN_SPEED,
+                        net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper.MAX_SPEED
+                );
+                var speedAttr = this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED);
+                if (speedAttr != null) {
+                    speedAttr.setBaseValue(wildSpeed);
+                }
+
+                float wildHealth = net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper.clamp(
+                        20.0f + (float) this.getRandom().nextGaussian() * net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper.HEALTH_STD_DEV,
+                        net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper.MIN_HEALTH,
+                        net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper.MAX_HEALTH
+                );
+                var healthAttr = this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH);
+                if (healthAttr != null) {
+                    healthAttr.setBaseValue(wildHealth);
+                    this.setHealth(this.getMaxHealth());
+                }
+            }
+        }
+        return data;
     }
 
     @Inject(method = "getTailAngle", at = @At("HEAD"), cancellable = true)

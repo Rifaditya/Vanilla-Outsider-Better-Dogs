@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`1.3.0+1.20.1`** - Canine Physical Genetics: Horse-Like Speed, Health, Scale & Pitch Timbre (BL-BD-012)
 - [ ] **1.2.0+1.20.1** (2026-10-19) - 🐕 Dog Play Choreography AI Suite: Coordinated follow-the-leader chase routines, safe circular orbit sparring, and configurable frequency/distance controls across tamed packs [BL-BD-010]
 - [ ] **`1.1.2+1.20.1`** - GameRule Identifier Crash Fix & Harmless Pack Sparring Suite (MC 1.20.1)
 - [!] **`1.1.1+1.20.1`** (2026-10-12) - *(QUARANTINED: GameRule IdentifierException crash — superseded by 1.1.2+1.20.1)* 🐺 Safe Teleportation & Crash Resolution (WolfTeleportHelper.java): Resolved Wolf.randomTeleport NoSuchMethodError during owner following via safe ground-tracing teleport helper (GitHub Issue #8 [BL-BD-016]).
