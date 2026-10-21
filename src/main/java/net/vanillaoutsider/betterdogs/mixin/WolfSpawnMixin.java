@@ -10,10 +10,12 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
+import net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.vanillaoutsider.betterdogs.util.WolfDebugLogger;
 import net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper;
@@ -58,6 +60,30 @@ public abstract class WolfSpawnMixin extends TamableAnimal {
 
                 // Apply personality stats immediately at spawn
                 WolfPersonalityStatHelper.applyPersonalityStats(wolf, personality);
+
+                // Physical genetics (Speed & Health)
+                if (DynamicGameRuleManager.getBoolean(level.getLevel(), BetterDogsGameRules.BD_DOG_GENETICS_ENABLED)) {
+                    float wildSpeed = CanineGeneticsHelper.clamp(
+                            0.30f + (float) this.getRandom().nextGaussian() * CanineGeneticsHelper.SPEED_STD_DEV,
+                            CanineGeneticsHelper.MIN_SPEED,
+                            CanineGeneticsHelper.MAX_SPEED
+                    );
+                    var speedAttr = wolf.getAttribute(Attributes.MOVEMENT_SPEED);
+                    if (speedAttr != null) {
+                        speedAttr.setBaseValue(wildSpeed);
+                    }
+
+                    float wildHealth = CanineGeneticsHelper.clamp(
+                            20.0f + (float) this.getRandom().nextGaussian() * CanineGeneticsHelper.HEALTH_STD_DEV,
+                            CanineGeneticsHelper.MIN_HEALTH,
+                            CanineGeneticsHelper.MAX_HEALTH
+                    );
+                    var healthAttr = wolf.getAttribute(Attributes.MAX_HEALTH);
+                    if (healthAttr != null) {
+                        healthAttr.setBaseValue(wildHealth);
+                        wolf.setHealth(wolf.getMaxHealth());
+                    }
+                }
 
                 // Apply dynamic climate-aware coat variant resolution
                 net.vanillaoutsider.betterdogs.util.WolfVariantHelper.applyClimateVariant(wolf, level.getLevel());

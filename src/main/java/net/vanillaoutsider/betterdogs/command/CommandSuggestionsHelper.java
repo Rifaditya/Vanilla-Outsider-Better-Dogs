@@ -53,12 +53,16 @@ public class CommandSuggestionsHelper {
             "bd_enable_inbred_curing",
             "bd_show_runt_particles",
             "bd_dog_play_fighting",
-            "dogplayfighting"
+            "dogplayfighting",
+            "bd_dog_genetics_enabled",
+            "doggeneticsenabled"
     ));
 
     private static final Set<String> INTEGER_RULES = new LinkedHashSet<>(Arrays.asList(
             "bd_play_penalty_minutes",
             "playpenaltyminutes",
+            "bd_max_scale_deviation",
+            "maxscaledeviation",
             "bd_refuse_ground_food_chance",
             "bd_nemesis_duration_days",
             "bd_horn_command_range",

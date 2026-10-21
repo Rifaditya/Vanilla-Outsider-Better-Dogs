@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **`5.3.0+26.3`** - Canine Physical Genetics: Horse-Like Speed, Health, Scale & Pitch Timbre (BL-BD-012)
 - [ ] **`5.1.7+26.3`** - GameRule Identifier Crash Fix & Harmless Pack Sparring Suite (MC 26.3)
 - [!] **`5.1.6+26.3`** - *(QUARANTINED: GameRule IdentifierException crash — superseded by 5.1.7+26.3)* Pack Play Sparring & Attack Swing Compatibility (Issue #9) (MC 26.3)
 - [ ] **`5.0.99+26.3`** - Multi-Era Parity Lead Baseline (MC 26.3)
