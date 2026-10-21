@@ -122,6 +122,10 @@ public class BetterDogsGameRules {
     public static GameRule<Boolean> BD_WOLF_SPAWN_EXPANDED_BIOMES;
     public static GameRule<Boolean> BD_DYNAMIC_CLIMATE_VARIANTS;
 
+    // Physical Canine Genetics
+    public static GameRule<Boolean> BD_DOG_GENETICS_ENABLED;
+    public static GameRule<Integer> BD_MAX_SCALE_DEVIATION;
+
     // Breeding & Genetics
     public static GameRule<Integer> BD_SPAWN_NORMAL_PERCENT;
     public static GameRule<Integer> BD_SPAWN_AGGRO_PERCENT;
@@ -271,6 +275,15 @@ public class BetterDogsGameRules {
         BD_WOLF_SPAWN_EXPANDED_BIOMES = registerBoolean("vanilla-outsider-better-dogs:bd_wolf_spawn_expanded_biomes", BETTER_DOGS, true);
         BD_DYNAMIC_CLIMATE_VARIANTS = registerBoolean("vanilla-outsider-better-dogs:bd_dynamic_climate_variants", BETTER_DOGS, true);
 
+        // Physical Canine Genetics
+        BD_DOG_GENETICS_ENABLED = registerBoolean("vanilla-outsider-better-dogs:bd_dog_genetics_enabled", BETTER_DOGS, true);
+        BD_MAX_SCALE_DEVIATION = registerInteger("vanilla-outsider-better-dogs:bd_max_scale_deviation", BETTER_DOGS, 30, 0, 100);
+
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:bd_dog_genetics_enabled", BD_DOG_GENETICS_ENABLED);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:bd_max_scale_deviation", BD_MAX_SCALE_DEVIATION);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:dogGeneticsEnabled", BD_DOG_GENETICS_ENABLED);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:maxScaleDeviation", BD_MAX_SCALE_DEVIATION);
+
         // Breeding & Genetics
         BD_SPAWN_NORMAL_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_spawn_normal_percent", BETTER_DOGS, 60);
         BD_SPAWN_AGGRO_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_spawn_aggro_percent", BETTER_DOGS, 20);
@@ -348,6 +361,14 @@ public class BetterDogsGameRules {
 
     public static int getMaxPlayDistance(Level level) {
         return getInt(level, BD_MAX_PLAY_DISTANCE, 16);
+    }
+
+    public static boolean isDogGeneticsEnabled(Level level) {
+        return getBoolean(level, BD_DOG_GENETICS_ENABLED, true);
+    }
+
+    public static int getMaxScaleDeviation(Level level) {
+        return getInt(level, BD_MAX_SCALE_DEVIATION, 30);
     }
 
     public static boolean getBoolean(Level level, GameRule<Boolean> rule, boolean fallback) {
