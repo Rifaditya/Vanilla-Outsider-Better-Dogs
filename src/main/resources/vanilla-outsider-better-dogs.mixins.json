@@ -29,7 +29,8 @@
         "WalkNodeEvaluatorMixin",
         "NaturalSpawnerMixin",
         "InstrumentItemMixin",
-        "HurtByTargetGoalMixin"
+        "HurtByTargetGoalMixin",
+        "WolfSoundMixin"
     ],
     "client": [
         "WolfRendererMixin"

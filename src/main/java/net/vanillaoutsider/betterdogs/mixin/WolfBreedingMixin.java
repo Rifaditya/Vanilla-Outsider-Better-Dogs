@@ -3,15 +3,15 @@
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
-import java.util.Random;
-import java.util.UUID;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.WolfPersistentData;
-import net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper;
+import net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper;
 import net.vanillaoutsider.betterdogs.util.WolfScaleGeneticsHelper;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,9 +25,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
  */
 @Mixin(Wolf.class)
 public abstract class WolfBreedingMixin {
-
-    @Unique
-    private static final Random betterdogs$RANDOM = new Random();
 
     @Inject(method = "getBreedOffspring", at = @At("RETURN"))
     private void betterdogs$inheritPersonality(ServerLevel level, AgeableMob partner,
@@ -52,7 +49,7 @@ public abstract class WolfBreedingMixin {
                 : WolfPersonality.NORMAL;
 
         // Calculate baby personality based on genetics
-        WolfPersonality babyPersonality = betterdogs$calculateOffspringPersonality(level, p1, p2);
+        WolfPersonality babyPersonality = betterdogs$calculateOffspringPersonality(level, p1, p2, baby.getRandom());
         babyExt.betterdogs$setPersonality(babyPersonality);
 
         // Inherit offspring scale with continuous variance
@@ -71,6 +68,54 @@ public abstract class WolfBreedingMixin {
         var babyScaleAttr = baby.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.SCALE);
         if (babyScaleAttr != null) {
             babyScaleAttr.setBaseValue(babyScale);
+        }
+
+        // Canine Physical Genetics (Movement Speed & Max Health)
+        if (DynamicGameRuleManager.getBoolean(level, BetterDogsGameRules.BD_DOG_GENETICS_ENABLED)) {
+            float p1Speed = 0.30f;
+            var sp1 = parent1.getAttribute(Attributes.MOVEMENT_SPEED);
+            if (sp1 != null) {
+                p1Speed = (float) sp1.getBaseValue();
+            }
+            float p2Speed = 0.30f;
+            var sp2 = parent2.getAttribute(Attributes.MOVEMENT_SPEED);
+            if (sp2 != null) {
+                p2Speed = (float) sp2.getBaseValue();
+            }
+            float childSpeed = CanineGeneticsHelper.calculateOffspringStat(
+                    p1Speed, p2Speed,
+                    CanineGeneticsHelper.SPEED_STD_DEV,
+                    CanineGeneticsHelper.MIN_SPEED,
+                    CanineGeneticsHelper.MAX_SPEED,
+                    baby.getRandom()
+            );
+            var babySpeedAttr = baby.getAttribute(Attributes.MOVEMENT_SPEED);
+            if (babySpeedAttr != null) {
+                babySpeedAttr.setBaseValue(childSpeed);
+            }
+
+            float p1Health = 20.0f;
+            var h1 = parent1.getAttribute(Attributes.MAX_HEALTH);
+            if (h1 != null) {
+                p1Health = (float) h1.getBaseValue();
+            }
+            float p2Health = 20.0f;
+            var h2 = parent2.getAttribute(Attributes.MAX_HEALTH);
+            if (h2 != null) {
+                p2Health = (float) h2.getBaseValue();
+            }
+            float childHealth = CanineGeneticsHelper.calculateOffspringStat(
+                    p1Health, p2Health,
+                    CanineGeneticsHelper.HEALTH_STD_DEV,
+                    CanineGeneticsHelper.MIN_HEALTH,
+                    CanineGeneticsHelper.MAX_HEALTH,
+                    baby.getRandom()
+            );
+            var babyHealthAttr = baby.getAttribute(Attributes.MAX_HEALTH);
+            if (babyHealthAttr != null) {
+                babyHealthAttr.setBaseValue(childHealth);
+                baby.setHealth(childHealth);
+            }
         }
 
         // Inherit genetics via DasikLibrary Genetics Engine
@@ -92,8 +137,8 @@ public abstract class WolfBreedingMixin {
      * Uses configurable percentages from Game Rules.
      */
     @Unique
-    private WolfPersonality betterdogs$calculateOffspringPersonality(ServerLevel level, WolfPersonality p1, WolfPersonality p2) {
-        int roll = betterdogs$RANDOM.nextInt(100);
+    private WolfPersonality betterdogs$calculateOffspringPersonality(ServerLevel level, WolfPersonality p1, WolfPersonality p2, RandomSource random) {
+        int roll = (random != null ? random.nextInt(100) : 0);
 
         // Same personality parents: configurable same%, remaining split between others
         if (p1 == p2) {
@@ -142,29 +187,24 @@ public abstract class WolfBreedingMixin {
     }
 
     /**
-     * Get one of the other two personalities.
+     * Get one of the other two personalities (zero-allocation).
      */
     @Unique
     private WolfPersonality betterdogs$getOther(WolfPersonality exclude, int index) {
-        WolfPersonality[] others = new WolfPersonality[2];
-        int i = 0;
-        for (WolfPersonality p : WolfPersonality.values()) {
-            if (p != exclude) {
-                others[i++] = p;
-            }
-        }
-        return others[index % 2];
+        return switch (exclude) {
+            case NORMAL -> (index % 2 == 0) ? WolfPersonality.AGGRESSIVE : WolfPersonality.PACIFIST;
+            case AGGRESSIVE -> (index % 2 == 0) ? WolfPersonality.NORMAL : WolfPersonality.PACIFIST;
+            case PACIFIST -> (index % 2 == 0) ? WolfPersonality.NORMAL : WolfPersonality.AGGRESSIVE;
+        };
     }
 
     /**
-     * Get the third personality that isn't either of the two given.
+     * Get the third personality that isn't either of the two given (zero-allocation).
      */
     @Unique
     private WolfPersonality betterdogs$getThird(WolfPersonality a, WolfPersonality b) {
-        for (WolfPersonality p : WolfPersonality.values()) {
-            if (p != a && p != b)
-                return p;
-        }
-        return WolfPersonality.NORMAL;
+        if (a != WolfPersonality.NORMAL && b != WolfPersonality.NORMAL) return WolfPersonality.NORMAL;
+        if (a != WolfPersonality.AGGRESSIVE && b != WolfPersonality.AGGRESSIVE) return WolfPersonality.AGGRESSIVE;
+        return WolfPersonality.PACIFIST;
     }
 }

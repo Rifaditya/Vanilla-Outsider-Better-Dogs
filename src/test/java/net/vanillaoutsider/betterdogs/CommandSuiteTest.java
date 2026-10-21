@@ -1,5 +1,5 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
-// Verified against: Minecraft 26.3
+// Verified against: Minecraft 26.1.2
 package net.vanillaoutsider.betterdogs;
 
 import com.mojang.brigadier.CommandDispatcher;
@@ -45,6 +45,7 @@ class CommandSuiteTest {
         // Verify subnodes under /betterdogs
         assertNotNull(root.getChild("help"), "Subcommand /betterdogs help should be present");
         assertNotNull(root.getChild("status"), "Subcommand /betterdogs status should be present");
+        assertNotNull(root.getChild("inspect"), "Subcommand /betterdogs inspect should be present");
         assertNotNull(root.getChild("get"), "Subcommand /betterdogs get should be present");
         assertNotNull(root.getChild("set"), "Subcommand /betterdogs set should be present");
         assertNotNull(root.getChild("reset"), "Subcommand /betterdogs reset should be present");
@@ -54,6 +55,7 @@ class CommandSuiteTest {
         // Verify subnodes under /bd
         assertNotNull(alias.getChild("help"), "Subcommand /bd help should be present");
         assertNotNull(alias.getChild("status"), "Subcommand /bd status should be present");
+        assertNotNull(alias.getChild("inspect"), "Subcommand /bd inspect should be present");
         assertNotNull(alias.getChild("get"), "Subcommand /bd get should be present");
         assertNotNull(alias.getChild("set"), "Subcommand /bd set should be present");
         assertNotNull(alias.getChild("reset"), "Subcommand /bd reset should be present");
@@ -93,5 +95,7 @@ class CommandSuiteTest {
         assertTrue(CommandSuggestionsHelper.getAllRules().contains("bd_wolf_litter_max_size"));
         assertTrue(CommandSuggestionsHelper.getAllRules().contains("bd_dog_play_fighting"));
         assertTrue(CommandSuggestionsHelper.getAllRules().contains("bd_play_penalty_minutes"));
+        assertTrue(CommandSuggestionsHelper.getAllRules().contains("bd_dog_genetics_enabled"));
+        assertTrue(CommandSuggestionsHelper.getAllRules().contains("bd_max_scale_deviation"));
     }
 }

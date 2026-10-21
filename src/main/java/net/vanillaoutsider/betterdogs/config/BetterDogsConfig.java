@@ -23,6 +23,7 @@ public class BetterDogsConfig {
                 "/vanilla-outsider-better-dogs.json",
                 logger
         );
+        INSTANCE.validate();
     }
 
     public static synchronized void save() {
@@ -32,6 +33,14 @@ public class BetterDogsConfig {
                 INSTANCE,
                 org.slf4j.LoggerFactory.getLogger("Better Dogs")
         );
+    }
+
+    public void validate() {
+        wolfMinScale = Math.max(wolfMinScale, 0.01);
+        wolfMaxScale = Math.max(wolfMaxScale, 0.01);
+        if (wolfMinScale > wolfMaxScale) {
+            wolfMinScale = wolfMaxScale;
+        }
     }
 
     // ========== Game Rule Defaults ==========

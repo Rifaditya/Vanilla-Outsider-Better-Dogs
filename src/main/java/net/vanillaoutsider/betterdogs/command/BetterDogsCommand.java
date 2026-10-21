@@ -5,6 +5,7 @@ package net.vanillaoutsider.betterdogs.command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import net.dasik.social.api.config.DasikSupportHelper;
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandSourceStack;
@@ -65,10 +66,13 @@ public class BetterDogsCommand {
         registerBool("bd_show_runt_particles", BetterDogsGameRules.BD_SHOW_RUNT_PARTICLES, false);
         registerBool("bd_dog_play_fighting", BetterDogsGameRules.BD_DOG_PLAY_FIGHTING, true);
         registerBool("dogplayfighting", BetterDogsGameRules.BD_DOG_PLAY_FIGHTING, true);
+        registerBool("bd_dog_genetics_enabled", BetterDogsGameRules.BD_DOG_GENETICS_ENABLED, true);
+        registerBool("doggeneticsenabled", BetterDogsGameRules.BD_DOG_GENETICS_ENABLED, true);
 
         registerInt("bd_play_penalty_minutes", BetterDogsGameRules.BD_PLAY_PENALTY_MINUTES, 10);
         registerInt("playpenaltyminutes", BetterDogsGameRules.BD_PLAY_PENALTY_MINUTES, 10);
-
+        registerInt("bd_max_scale_deviation", BetterDogsGameRules.BD_MAX_SCALE_DEVIATION, 30);
+        registerInt("maxscaledeviation", BetterDogsGameRules.BD_MAX_SCALE_DEVIATION, 30);
         registerInt("bd_refuse_ground_food_chance", BetterDogsGameRules.BD_REFUSE_GROUND_FOOD_CHANCE, 30);
         registerInt("bd_nemesis_duration_days", BetterDogsGameRules.BD_NEMESIS_DURATION_DAYS, 3);
         registerInt("bd_horn_command_range", BetterDogsGameRules.BD_HORN_COMMAND_RANGE, 64);
@@ -175,13 +179,19 @@ public class BetterDogsCommand {
         return Commands.literal(literalName)
                 .executes(context -> {
                     context.getSource().sendSuccess(() -> Component.literal(
-                            "Â§6[Better Dogs]Â§r Type Â§a/" + literalName + " helpÂ§r for command reference."), false);
+                            "§6[Better Dogs]§r Type §a/" + literalName + " help§r for command reference."), false);
                     return 1;
                 })
                 .then(Commands.literal("help")
                         .executes(context -> executeHelp(context.getSource(), literalName)))
                 .then(Commands.literal("status")
                         .executes(context -> executeStatus(context.getSource())))
+                .then(Commands.literal("inspect")
+                        .then(Commands.argument("targets", EntityArgument.entities())
+                                .executes(context -> WolfCommandHelper.inspectTargets(
+                                        context.getSource(),
+                                        EntityArgument.getEntities(context, "targets")
+                                ))))
                 .then(Commands.literal("get")
                         .then(Commands.argument("rule", StringArgumentType.word())
                                 .suggests(CommandSuggestionsHelper::suggestRules)
@@ -257,64 +267,68 @@ public class BetterDogsCommand {
 
     private static int executeHelp(CommandSourceStack source, String literalName) {
         source.sendSuccess(() -> Component.literal(
-                "Â§6--- Vanilla Outsider: Better Dogs Commands ---Â§r\n" +
-                "Â§a/" + literalName + " statusÂ§r - Display categorized summary of companion GameRules\n" +
-                "Â§a/" + literalName + " get <rule>Â§r - Query current value of a GameRule\n" +
-                "Â§a/" + literalName + " set <rule> <val>Â§r - Modify a GameRule value (Gamemasters)\n" +
-                "Â§a/" + literalName + " resetÂ§r - Reset all Better Dogs GameRules to factory defaults (Gamemasters)\n" +
-                "Â§a/" + literalName + " reloadÂ§r - Validate and re-sync active GameRules (Gamemasters)"
+                "§6--- Vanilla Outsider: Better Dogs Commands ---§r\n" +
+                "§a/" + literalName + " status§r - Display categorized summary of companion GameRules\n" +
+                "§a/" + literalName + " inspect <targets>§r - Inspect physical traits and voice pitch of targeted dogs\n" +
+                "§a/" + literalName + " get <rule>§r - Query current value of a GameRule\n" +
+                "§a/" + literalName + " set <rule> <val>§r - Modify a GameRule value (Gamemasters)\n" +
+                "§a/" + literalName + " reset§r - Reset all Better Dogs GameRules to factory defaults (Gamemasters)\n" +
+                "§a/" + literalName + " reload§r - Validate and re-sync active GameRules (Gamemasters)"
         ), false);
+        source.sendSuccess(DasikSupportHelper::getCommandFooter, false);
         return 1;
     }
 
     private static int executeStatus(CommandSourceStack source) {
         MinecraftServer server = source.getServer();
         if (server == null) {
-            source.sendFailure(Component.literal("Â§c[Better Dogs] Server is unavailable."));
+            source.sendFailure(Component.literal("§c[Better Dogs] Server is unavailable."));
             return 0;
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Â§6=== Better Dogs Companion Status ===Â§r\n");
+        sb.append("§6=== Better Dogs Companion Status ===§r\n");
 
-        sb.append("Â§e[Personalities & Stats]Â§r\n");
-        sb.append(" Â§7Aggro: Â§fHP ").append(DynamicGameRuleManager.getInt(source.getLevel(), BetterDogsGameRules.BD_AGGRO_HEALTH))
+        sb.append("§e[Personalities & Stats]§r\n");
+        sb.append(" §7Aggro: §fHP ").append(DynamicGameRuleManager.getInt(source.getLevel(), BetterDogsGameRules.BD_AGGRO_HEALTH))
                 .append(", SPD +").append(DynamicGameRuleManager.getInt(source.getLevel(), BetterDogsGameRules.BD_AGGRO_SPEED_PCT))
                 .append("%, DMG +").append(DynamicGameRuleManager.getInt(source.getLevel(), BetterDogsGameRules.BD_AGGRO_DMG_PCT)).append("%\n");
-        sb.append(" Â§7Pacifist: Â§fHP +").append(DynamicGameRuleManager.getInt(source.getLevel(), BetterDogsGameRules.BD_PACI_HEALTH))
+        sb.append(" §7Pacifist: §fHP +").append(DynamicGameRuleManager.getInt(source.getLevel(), BetterDogsGameRules.BD_PACI_HEALTH))
                 .append(", SPD ").append(DynamicGameRuleManager.getInt(source.getLevel(), BetterDogsGameRules.BD_PACI_SPEED_PCT))
                 .append("%, DMG ").append(DynamicGameRuleManager.getInt(source.getLevel(), BetterDogsGameRules.BD_PACI_DMG_PCT)).append("%\n");
 
-        sb.append("Â§e[Environmental & Safety]Â§r\n");
-        sb.append(" Â§7Storm Anxiety: ").append(formatBool(DynamicGameRuleManager.getBoolean(source.getLevel(), BetterDogsGameRules.BD_STORM_ANXIETY)))
-                .append(" Â§7| Cliff Safety: ").append(formatBool(DynamicGameRuleManager.getBoolean(source.getLevel(), BetterDogsGameRules.BD_CLIFF_SAFETY)))
-                .append(" Â§7| Creeper Evasion: ").append(formatBool(DynamicGameRuleManager.getBoolean(source.getLevel(), BetterDogsGameRules.BD_CREEPER_EVASION_ENABLED))).append("\n");
-        sb.append(" Â§7Friendly Fire Protection: ").append(formatBool(DynamicGameRuleManager.getBoolean(source.getLevel(), BetterDogsGameRules.BD_FRIENDLY_FIRE)))
-                .append(" Â§7| Actionbar Subtitles: ").append(formatBool(DynamicGameRuleManager.getBoolean(source.getLevel(), BetterDogsGameRules.BD_ACTIONBAR_FEEDBACK))).append("\n");
+        sb.append("§e[Environmental & Safety]§r\n");
+        sb.append(" §7Storm Anxiety: ").append(formatBool(DynamicGameRuleManager.getBoolean(source.getLevel(), BetterDogsGameRules.BD_STORM_ANXIETY)))
+                .append(" §7| Cliff Safety: ").append(formatBool(DynamicGameRuleManager.getBoolean(source.getLevel(), BetterDogsGameRules.BD_CLIFF_SAFETY)))
+                .append(" §7| Creeper Evasion: ").append(formatBool(DynamicGameRuleManager.getBoolean(source.getLevel(), BetterDogsGameRules.BD_CREEPER_EVASION_ENABLED))).append("\n");
+        sb.append(" §7Friendly Fire Protection: ").append(formatBool(DynamicGameRuleManager.getBoolean(source.getLevel(), BetterDogsGameRules.BD_FRIENDLY_FIRE)))
+                .append(" §7| Actionbar Subtitles: ").append(formatBool(DynamicGameRuleManager.getBoolean(source.getLevel(), BetterDogsGameRules.BD_ACTIONBAR_FEEDBACK))).append("\n");
 
-        sb.append("Â§e[Tactics & Utilities]Â§r\n");
-        sb.append(" Â§7Goat Horn Range: Â§a").append(DynamicGameRuleManager.getInt(source.getLevel(), BetterDogsGameRules.BD_HORN_COMMAND_RANGE)).append(" blocksÂ§r")
-                .append(" Â§7| Flanking Tactics: ").append(formatBool(DynamicGameRuleManager.getBoolean(source.getLevel(), BetterDogsGameRules.BD_PACK_FLANKING_TACTICS)))
-                .append(" Â§7| Nemesis Memory: ").append(formatBool(DynamicGameRuleManager.getBoolean(source.getLevel(), BetterDogsGameRules.BD_NEMESIS_SYSTEM))).append("\n");
+        sb.append("§e[Tactics & Utilities]§r\n");
+        sb.append(" §7Goat Horn Range: §a").append(DynamicGameRuleManager.getInt(source.getLevel(), BetterDogsGameRules.BD_HORN_COMMAND_RANGE)).append(" blocks§r")
+                .append(" §7| Flanking Tactics: ").append(formatBool(DynamicGameRuleManager.getBoolean(source.getLevel(), BetterDogsGameRules.BD_PACK_FLANKING_TACTICS)))
+                .append(" §7| Nemesis Memory: ").append(formatBool(DynamicGameRuleManager.getBoolean(source.getLevel(), BetterDogsGameRules.BD_NEMESIS_SYSTEM))).append("\n");
 
-        sb.append("Â§e[Genetics & Breeding]Â§r\n");
-        sb.append(" Â§7Max Litter Size: Â§a").append(DynamicGameRuleManager.getInt(source.getLevel(), BetterDogsGameRules.BD_WOLF_LITTER_MAX_SIZE))
-                .append(" Â§7| Scale Range: Â§a").append(DynamicGameRuleManager.getInt(source.getLevel(), BetterDogsGameRules.BD_WOLF_MIN_SCALE_PERCENT)).append("%-")
-                .append(DynamicGameRuleManager.getInt(source.getLevel(), BetterDogsGameRules.BD_WOLF_MAX_SCALE_PERCENT)).append("%Â§r")
-                .append(" Â§7| Autonomous Feeding: ").append(formatBool(DynamicGameRuleManager.getBoolean(source.getLevel(), BetterDogsGameRules.BD_DOGS_EAT_RAW_FOOD)));
+        sb.append("§e[Genetics & Breeding]§r\n");
+        sb.append(" §7Max Litter Size: §a").append(DynamicGameRuleManager.getInt(source.getLevel(), BetterDogsGameRules.BD_WOLF_LITTER_MAX_SIZE))
+                .append(" §7| Scale Range: §a").append(DynamicGameRuleManager.getInt(source.getLevel(), BetterDogsGameRules.BD_WOLF_MIN_SCALE_PERCENT)).append("%-")
+                .append(DynamicGameRuleManager.getInt(source.getLevel(), BetterDogsGameRules.BD_WOLF_MAX_SCALE_PERCENT)).append("%§r")
+                .append(" §7| Genetics: ").append(formatBool(DynamicGameRuleManager.getBoolean(source.getLevel(), BetterDogsGameRules.BD_DOG_GENETICS_ENABLED)))
+                .append(" §7| Autonomous Feeding: ").append(formatBool(DynamicGameRuleManager.getBoolean(source.getLevel(), BetterDogsGameRules.BD_DOGS_EAT_RAW_FOOD)));
 
         source.sendSuccess(() -> Component.literal(sb.toString()), false);
+        source.sendSuccess(DasikSupportHelper::getCommandFooter, false);
         return 1;
     }
 
     private static String formatBool(boolean val) {
-        return val ? "Â§aEnabledÂ§r" : "Â§cDisabledÂ§r";
+        return val ? "§aEnabled§r" : "§cDisabled§r";
     }
 
     private static int executeGet(CommandSourceStack source, String ruleArg) {
         MinecraftServer server = source.getServer();
         if (server == null) {
-            source.sendFailure(Component.literal("Â§c[Better Dogs] Server is unavailable."));
+            source.sendFailure(Component.literal("§c[Better Dogs] Server is unavailable."));
             return 0;
         }
         String normalized = CommandSuggestionsHelper.normalizeRuleName(ruleArg);
@@ -322,23 +336,23 @@ public class BetterDogsCommand {
         if (BOOL_MAP.containsKey(normalized)) {
             GameRule<Boolean> key = BOOL_MAP.get(normalized);
             boolean val = DynamicGameRuleManager.getBoolean(source.getLevel(), key);
-            source.sendSuccess(() -> Component.literal("Â§6[Better Dogs]Â§r Rule Â§e" + normalized + "Â§r is currently: " + formatBool(val)), false);
+            source.sendSuccess(() -> Component.literal("§6[Better Dogs]§r Rule §e" + normalized + "§r is currently: " + formatBool(val)), false);
             return 1;
         } else if (INT_MAP.containsKey(normalized)) {
             GameRule<Integer> key = INT_MAP.get(normalized);
             int val = DynamicGameRuleManager.getInt(source.getLevel(), key);
-            source.sendSuccess(() -> Component.literal("Â§6[Better Dogs]Â§r Rule Â§e" + normalized + "Â§r is currently: Â§b" + val + "Â§r"), false);
+            source.sendSuccess(() -> Component.literal("§6[Better Dogs]§r Rule §e" + normalized + "§r is currently: §b" + val + "§r"), false);
             return 1;
         }
 
-        source.sendFailure(Component.literal("Â§c[Better Dogs] Unknown GameRule: " + ruleArg));
+        source.sendFailure(Component.literal("§c[Better Dogs] Unknown GameRule: " + ruleArg));
         return 0;
     }
 
     private static int executeSet(CommandSourceStack source, String ruleArg, String valueArg) {
         MinecraftServer server = source.getServer();
         if (server == null) {
-            source.sendFailure(Component.literal("Â§c[Better Dogs] Server is unavailable."));
+            source.sendFailure(Component.literal("§c[Better Dogs] Server is unavailable."));
             return 0;
         }
         String normalized = CommandSuggestionsHelper.normalizeRuleName(ruleArg);
@@ -346,35 +360,43 @@ public class BetterDogsCommand {
         if (BOOL_MAP.containsKey(normalized)) {
             GameRule<Boolean> key = BOOL_MAP.get(normalized);
             if (!valueArg.equalsIgnoreCase("true") && !valueArg.equalsIgnoreCase("false")) {
-                source.sendFailure(Component.literal("Â§c[Better Dogs] Value for " + normalized + " must be true or false."));
+                source.sendFailure(Component.literal("§c[Better Dogs] Value for " + normalized + " must be true or false."));
                 return 0;
             }
             boolean parsed = Boolean.parseBoolean(valueArg);
             server.getGameRules().set(key, parsed, server);
-            source.sendSuccess(() -> Component.literal("Â§6[Better Dogs]Â§r Rule Â§e" + normalized + "Â§r set to: " + formatBool(parsed)), true);
+            source.sendSuccess(() -> Component.literal("§6[Better Dogs]§r Rule §e" + normalized + "§r set to: " + formatBool(parsed)), true);
             return 1;
         } else if (INT_MAP.containsKey(normalized)) {
             GameRule<Integer> key = INT_MAP.get(normalized);
             int parsed;
             try {
                 parsed = Integer.parseInt(valueArg);
+                if (normalized.equals("bd_wolf_min_scale_percent") && parsed < 1) {
+                    source.sendFailure(Component.literal("§c[Better Dogs] bd_wolf_min_scale_percent must be at least 1."));
+                    return 0;
+                }
+                if (normalized.equals("bd_wolf_max_scale_percent") && parsed < 1) {
+                    source.sendFailure(Component.literal("§c[Better Dogs] bd_wolf_max_scale_percent must be at least 1."));
+                    return 0;
+                }
             } catch (NumberFormatException e) {
-                source.sendFailure(Component.literal("Â§c[Better Dogs] Value for " + normalized + " must be a valid integer."));
+                source.sendFailure(Component.literal("§c[Better Dogs] Value for " + normalized + " must be a valid integer."));
                 return 0;
             }
             server.getGameRules().set(key, parsed, server);
-            source.sendSuccess(() -> Component.literal("Â§6[Better Dogs]Â§r Rule Â§e" + normalized + "Â§r set to: Â§b" + parsed + "Â§r"), true);
+            source.sendSuccess(() -> Component.literal("§6[Better Dogs]§r Rule §e" + normalized + "§r set to: §b" + parsed + "§r"), true);
             return 1;
         }
 
-        source.sendFailure(Component.literal("Â§c[Better Dogs] Unknown GameRule: " + ruleArg));
+        source.sendFailure(Component.literal("§c[Better Dogs] Unknown GameRule: " + ruleArg));
         return 0;
     }
 
     private static int executeReset(CommandSourceStack source) {
         MinecraftServer server = source.getServer();
         if (server == null) {
-            source.sendFailure(Component.literal("Â§c[Better Dogs] Server is unavailable."));
+            source.sendFailure(Component.literal("§c[Better Dogs] Server is unavailable."));
             return 0;
         }
 
@@ -387,12 +409,12 @@ public class BetterDogsCommand {
             server.getGameRules().set(entry.getValue(), def, server);
         }
 
-        source.sendSuccess(() -> Component.literal("Â§6[Better Dogs]Â§r All Better Dogs GameRules have been reset to factory defaults."), true);
+        source.sendSuccess(() -> Component.literal("§6[Better Dogs]§r All Better Dogs GameRules have been reset to factory defaults."), true);
         return 1;
     }
 
     private static int executeReload(CommandSourceStack source) {
-        source.sendSuccess(() -> Component.literal("Â§6[Better Dogs]Â§r Active companion GameRules and settings synchronized successfully."), true);
+        source.sendSuccess(() -> Component.literal("§6[Better Dogs]§r Active companion GameRules and settings synchronized successfully."), true);
         return 1;
     }
 }
