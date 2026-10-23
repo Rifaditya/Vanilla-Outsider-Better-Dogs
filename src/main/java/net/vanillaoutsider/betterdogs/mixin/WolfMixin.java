@@ -566,6 +566,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         });
 
         this.goalSelector.addGoal(1, new net.vanillaoutsider.betterdogs.ai.MoveToVehicleGoal(wolf));
+        this.goalSelector.addGoal(1, new net.vanillaoutsider.betterdogs.ai.FleeExplodingHazardGoal(wolf));
         this.goalSelector.addGoal(1, new FleeCreeperGoal(wolf));
         this.goalSelector.addGoal(1, new net.vanillaoutsider.betterdogs.ai.WolfSeekWaterOnFireGoal(wolf));
         this.goalSelector.addGoal(2, new AvoidHazardsGoal(wolf));

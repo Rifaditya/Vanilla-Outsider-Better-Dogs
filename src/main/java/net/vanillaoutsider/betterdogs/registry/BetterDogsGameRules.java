@@ -135,6 +135,10 @@ public class BetterDogsGameRules {
     // Personality Archetypes (BL-BD-013)
     public static GameRules.Key<GameRules.BooleanValue> BD_ARCHETYPES_ENABLED;
     public static GameRules.Key<GameRules.IntegerValue> BD_ARCHETYPE_DISTRIBUTION_MODE;
+    // Canine Explosive Reflex (BL-BD-006)
+    public static GameRules.Key<GameRules.BooleanValue> BD_CANINE_EXPLOSIVE_REFLEX_ENABLED;
+    public static GameRules.Key<GameRules.IntegerValue> BD_HAZARD_FLEE_RADIUS;
+    public static GameRules.Key<GameRules.IntegerValue> BD_FLEE_SPEED_MULTIPLIER;
 
     // Breeding & Genetics
     public static GameRules.Key<GameRules.IntegerValue> BD_SPAWN_NORMAL_PERCENT;
@@ -283,6 +287,11 @@ public class BetterDogsGameRules {
         BD_ARCHETYPES_ENABLED = GameRuleRegistry.register("bd_personality_archetypes_enabled", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
         BD_ARCHETYPE_DISTRIBUTION_MODE = GameRuleRegistry.register("bd_personality_distribution_mode", BETTER_DOGS, GameRuleFactory.createIntRule(0));
 
+        // Canine Explosive Reflex (BL-BD-006)
+        BD_CANINE_EXPLOSIVE_REFLEX_ENABLED = GameRuleRegistry.register("bd_canine_explosive_reflex_enabled", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
+        BD_HAZARD_FLEE_RADIUS = GameRuleRegistry.register("bd_hazard_flee_radius", BETTER_DOGS, GameRuleFactory.createIntRule(14));
+        BD_FLEE_SPEED_MULTIPLIER = GameRuleRegistry.register("bd_flee_speed_multiplier", BETTER_DOGS, GameRuleFactory.createIntRule(170));
+
         // Breeding & Genetics
         BD_SPAWN_NORMAL_PERCENT = GameRuleRegistry.register("bd_spawn_normal_percent", BETTER_DOGS, GameRuleFactory.createIntRule(60));
         BD_SPAWN_AGGRO_PERCENT = GameRuleRegistry.register("bd_spawn_aggro_percent", BETTER_DOGS, GameRuleFactory.createIntRule(20));
@@ -364,6 +373,18 @@ public class BetterDogsGameRules {
 
     public static int getArchetypeDistributionMode(Level level) {
         return getInt(level, BD_ARCHETYPE_DISTRIBUTION_MODE, 0);
+    }
+
+    public static boolean isCanineExplosiveReflexEnabled(Level level) {
+        return getBoolean(level, BD_CANINE_EXPLOSIVE_REFLEX_ENABLED, true);
+    }
+
+    public static int getHazardFleeRadius(Level level) {
+        return getInt(level, BD_HAZARD_FLEE_RADIUS, 14);
+    }
+
+    public static int getFleeSpeedMultiplier(Level level) {
+        return getInt(level, BD_FLEE_SPEED_MULTIPLIER, 170);
     }
 
     public static boolean getBoolean(Level level, GameRules.Key<GameRules.BooleanValue> key, boolean fallback) {
