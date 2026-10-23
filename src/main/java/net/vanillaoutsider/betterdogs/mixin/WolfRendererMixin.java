@@ -1,6 +1,8 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
 package net.vanillaoutsider.betterdogs.mixin;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 /**
  * Dedicated single-purpose client Mixin for rendering dynamic physical scaling (Runts, Giants, Genetics).
  */
+@Environment(EnvType.CLIENT)
 @Mixin(LivingEntityRenderer.class)
 public abstract class WolfRendererMixin {
 
