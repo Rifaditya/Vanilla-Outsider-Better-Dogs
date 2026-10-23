@@ -1,5 +1,17 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.4.0+1.20.1] - 2026-10-23
+
+### Added
+- 🎭 **Extensible Canine Personality Archetypes Suite (BL-BD-013)**: Introduced a modular 6-archetype personality system for tamed dogs (`GUARDIAN`, `PLAYFUL`, `ADVENTURER`, `GLUTTON`, `LAZY`, `FEARLESS`).
+- ⚖️ **Dynamic Stat Modifiers**: Each archetype modifies max health (0.85x - 1.25x), attack damage (0.85x - 1.20x), and movement speed (0.85x - 1.15x) via transient attribute modifiers.
+- 🐕 **Specialized Behavioral Tendencies**:
+  - `ADVENTURER`: Broader follow radius (up to 16 blocks) and faster exploration pace.
+  - `LAZY`: Tighter follow radius (up to 4 blocks) with a 35% chance to spontaneously sit down when following ends.
+  - `FEARLESS`: Complete immunity to creeper fleeing goals, standing firm beside their owner against ignited threats.
+- ⚙️ **Configurable GameRules & Distribution Modes**: Added `betterdogs:bd_archetypes_enabled` (toggle system) and `betterdogs:bd_archetype_distribution_mode` (`0` = Uniform, `1` = Guardian Bias, `2` = Adventurer/Playful Bias).
+- 💾 **Safe NBT Persistence**: Persists archetype identity under `"betterdogs:canine_archetype"` with automatic fallback to `GUARDIAN` if missing or corrupted.
+
 ## [1.3.0+1.20.1] - 2026-10-21
 
 ### Added
