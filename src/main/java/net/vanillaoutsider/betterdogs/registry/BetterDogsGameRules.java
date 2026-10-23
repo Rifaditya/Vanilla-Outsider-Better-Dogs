@@ -132,6 +132,10 @@ public class BetterDogsGameRules {
     public static GameRules.Key<GameRules.BooleanValue> BD_DOG_GENETICS_ENABLED;
     public static GameRules.Key<GameRules.IntegerValue> BD_MAX_SCALE_DEVIATION;
 
+    // Personality Archetypes (BL-BD-013)
+    public static GameRules.Key<GameRules.BooleanValue> BD_ARCHETYPES_ENABLED;
+    public static GameRules.Key<GameRules.IntegerValue> BD_ARCHETYPE_DISTRIBUTION_MODE;
+
     // Breeding & Genetics
     public static GameRules.Key<GameRules.IntegerValue> BD_SPAWN_NORMAL_PERCENT;
     public static GameRules.Key<GameRules.IntegerValue> BD_SPAWN_AGGRO_PERCENT;
@@ -275,6 +279,10 @@ public class BetterDogsGameRules {
         BD_DOG_GENETICS_ENABLED = GameRuleRegistry.register("bd_dog_genetics_enabled", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
         BD_MAX_SCALE_DEVIATION = GameRuleRegistry.register("bd_max_scale_deviation", BETTER_DOGS, GameRuleFactory.createIntRule(30));
 
+        // Personality Archetypes (BL-BD-013)
+        BD_ARCHETYPES_ENABLED = GameRuleRegistry.register("bd_personality_archetypes_enabled", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
+        BD_ARCHETYPE_DISTRIBUTION_MODE = GameRuleRegistry.register("bd_personality_distribution_mode", BETTER_DOGS, GameRuleFactory.createIntRule(0));
+
         // Breeding & Genetics
         BD_SPAWN_NORMAL_PERCENT = GameRuleRegistry.register("bd_spawn_normal_percent", BETTER_DOGS, GameRuleFactory.createIntRule(60));
         BD_SPAWN_AGGRO_PERCENT = GameRuleRegistry.register("bd_spawn_aggro_percent", BETTER_DOGS, GameRuleFactory.createIntRule(20));
@@ -348,6 +356,14 @@ public class BetterDogsGameRules {
 
     public static int getMaxScaleDeviation(Level level) {
         return getInt(level, BD_MAX_SCALE_DEVIATION, 30);
+    }
+
+    public static boolean isArchetypesEnabled(Level level) {
+        return getBoolean(level, BD_ARCHETYPES_ENABLED, true);
+    }
+
+    public static int getArchetypeDistributionMode(Level level) {
+        return getInt(level, BD_ARCHETYPE_DISTRIBUTION_MODE, 0);
     }
 
     public static boolean getBoolean(Level level, GameRules.Key<GameRules.BooleanValue> key, boolean fallback) {

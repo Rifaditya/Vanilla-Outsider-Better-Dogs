@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **1.4.0+1.21.1** - Extensible Canine Personality Archetypes: Guardian, Playful, Adventurer, Glutton, Lazy, Fearless (BL-BD-013)
 - [ ] **`1.3.0+1.21.1`** - Canine Physical Genetics: Horse-Like Speed, Health, Scale & Pitch Timbre (BL-BD-012)
 - [ ] **1.2.0+1.21.1** (2026-10-19) - 🐕 Dog Play Choreography AI Suite: Coordinated play routines including follow-the-leader chase loops, synchronized zoomies, and circular orbit sparring (PlayChoreographyHelper.java, PlayChaseGoal.java, OrbitSparringGoal.java) [BL-BD-010]
 - [ ] **`1.1.2+1.21.1`** - GameRule Identifier Crash Fix & Harmless Pack Sparring Suite (MC 1.21.1)
