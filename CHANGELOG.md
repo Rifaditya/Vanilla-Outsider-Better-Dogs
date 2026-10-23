@@ -1,5 +1,14 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.6.0+1.20.1] - 2026-10-24
+
+### Added
+- ☄️ **Ballistic Evasion Reflex (BL-BD-020)**: Athletic canines now dynamically calculate trajectories of incoming heavy ballistic projectiles (Ghast fireballs, Blaze fireballs, Wither skulls) and perform agile lateral dodge hops before impact.
+- 🦘 **Emergency Scramble for Sitting Dogs**: Sitting dogs in direct incoming projectile trajectories ($d_{\perp} \le 1.5$m, $\tau \le 20$ ticks) break posture to perform an emergency scramble jump to safety, safely returning to their sitting pose once danger has passed.
+- 🛡️ **Intelligent Cliff & Lava Hazard Avoidance**: Lateral dodge calculations evaluate ground safety at the landing destination, automatically inverting the dodge impulse if one side is blocked by lava, fire, or sheer cliffs.
+- 💨 **Sensory Cues & Archetype Nuance**: Dodges are punctuated by crisp puff particles and vocal cues. Courageous **Fearless** dogs pant with athletic confidence rather than panic-whining.
+- ⚙️ **Dynamic GameRules**: Fully customizable via `betterdogs:bd_ballistic_evasion_enabled`, `betterdogs:bd_evasion_reaction_ticks`, and `betterdogs:bd_evasion_lateral_impulse`.
+
 ## [1.5.0+1.20.1] - 2026-10-23
 
 ### Added

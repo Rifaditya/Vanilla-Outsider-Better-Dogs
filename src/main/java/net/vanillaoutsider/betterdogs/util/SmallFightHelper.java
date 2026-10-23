@@ -668,6 +668,14 @@ public final class SmallFightHelper {
         WolfAdvancementHelper.awardRoughhousingNearby(wolf, partner);
     }
 
+    public static SoundEvent getWolfWhineSound(Wolf wolf) {
+        return SoundEvents.WOLF_WHINE;
+    }
+
+    public static SoundEvent getWolfPantSound(Wolf wolf) {
+        return SoundEvents.WOLF_PANT;
+    }
+
     public static int evaluateAudience(Wolf wolfA, Wolf wolfB) {
         return PackAudienceHelper.tickAudience(wolfA, wolfB);
     }

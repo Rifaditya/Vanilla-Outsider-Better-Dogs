@@ -142,6 +142,11 @@ public class BetterDogsGameRules {
     public static GameRules.Key<GameRules.IntegerValue> BD_HAZARD_FLEE_RADIUS;
     public static GameRules.Key<GameRules.IntegerValue> BD_FLEE_SPEED_MULTIPLIER;
 
+    // Ballistic Evasion Reflex (BL-BD-020)
+    public static GameRules.Key<GameRules.BooleanValue> BD_BALLISTIC_EVASION_ENABLED;
+    public static GameRules.Key<GameRules.IntegerValue> BD_EVASION_REACTION_TICKS;
+    public static GameRules.Key<GameRules.IntegerValue> BD_EVASION_LATERAL_IMPULSE;
+
     // Breeding & Genetics
     public static GameRules.Key<GameRules.IntegerValue> BD_SPAWN_NORMAL_PERCENT;
     public static GameRules.Key<GameRules.IntegerValue> BD_SPAWN_AGGRO_PERCENT;
@@ -285,6 +290,11 @@ public class BetterDogsGameRules {
         BD_HAZARD_FLEE_RADIUS = GameRuleRegistry.register("bd_hazard_flee_radius", BETTER_DOGS, GameRuleFactory.createIntRule(14));
         BD_FLEE_SPEED_MULTIPLIER = GameRuleRegistry.register("bd_flee_speed_multiplier", BETTER_DOGS, GameRuleFactory.createIntRule(170));
 
+        // Ballistic Evasion Reflex (BL-BD-020)
+        BD_BALLISTIC_EVASION_ENABLED = GameRuleRegistry.register("bd_ballistic_evasion_enabled", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
+        BD_EVASION_REACTION_TICKS = GameRuleRegistry.register("bd_evasion_reaction_ticks", BETTER_DOGS, GameRuleFactory.createIntRule(20));
+        BD_EVASION_LATERAL_IMPULSE = GameRuleRegistry.register("bd_evasion_lateral_impulse", BETTER_DOGS, GameRuleFactory.createIntRule(85));
+
         // Breeding & Genetics
         BD_SPAWN_NORMAL_PERCENT = GameRuleRegistry.register("bd_spawn_normal_percent", BETTER_DOGS, GameRuleFactory.createIntRule(60));
         BD_SPAWN_AGGRO_PERCENT = GameRuleRegistry.register("bd_spawn_aggro_percent", BETTER_DOGS, GameRuleFactory.createIntRule(20));
@@ -390,6 +400,18 @@ public class BetterDogsGameRules {
 
     public static int getFleeSpeedMultiplier(Level level) {
         return getInt(level, BD_FLEE_SPEED_MULTIPLIER, 170);
+    }
+
+    public static boolean isBallisticEvasionEnabled(Level level) {
+        return getBoolean(level, BD_BALLISTIC_EVASION_ENABLED, true);
+    }
+
+    public static int getEvasionReactionTicks(Level level) {
+        return getInt(level, BD_EVASION_REACTION_TICKS, 20);
+    }
+
+    public static int getEvasionLateralImpulse(Level level) {
+        return getInt(level, BD_EVASION_LATERAL_IMPULSE, 85);
     }
 
     public static boolean getBoolean(Level level, GameRules.Key<GameRules.BooleanValue> key, boolean fallback) {
