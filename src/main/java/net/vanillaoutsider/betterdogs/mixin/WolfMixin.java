@@ -8,6 +8,8 @@ import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersistentData;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
+import net.vanillaoutsider.betterdogs.personality.CanineArchetype;
+import net.vanillaoutsider.betterdogs.personality.CaninePersonalityHelper;
 import net.vanillaoutsider.betterdogs.ai.play.OrbitSparringGoal;
 import net.vanillaoutsider.betterdogs.ai.play.PlayChaseGoal;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
@@ -159,6 +161,16 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     }
 
     @Override
+    public CanineArchetype betterdogs$getCanineArchetype() {
+        return WolfPersistentData.getPersistedCanineArchetype((Wolf) (Object) this);
+    }
+
+    @Override
+    public void betterdogs$setCanineArchetype(CanineArchetype archetype) {
+        WolfPersistentData.setPersistedCanineArchetype((Wolf) (Object) this, archetype);
+    }
+
+    @Override
     public int betterdogs$getLastDamageTime() {
         return this.betterdogs$lastDamageTime;
     }
@@ -274,6 +286,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     private void betterdogs$onApplyTamingSideEffectsTail(CallbackInfo ci) {
         if (this.isTame() && !this.level().isClientSide()) {
             this.setHealth(this.getMaxHealth());
+            CaninePersonalityHelper.getOrRollArchetype((Wolf) (Object) this);
         }
     }
 
@@ -374,6 +387,10 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         if (this.betterdogs$playPenaltyTicks > 0) {
             output.putInt("BD_PlayPenaltyTicks", this.betterdogs$playPenaltyTicks);
         }
+        CanineArchetype archetype = this.betterdogs$getCanineArchetype();
+        if (archetype != null) {
+            output.putString("betterdogs:canine_archetype", archetype.getSerializedName());
+        }
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
@@ -382,6 +399,10 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         int cooldownRemaining = WolfPersistentData.getPersistedLastDamageTime(wolf);
         this.betterdogs$lastDamageTime = wolf.tickCount - (BetterDogsConfig.get().getCombatHealDelayTicks() - cooldownRemaining);
         this.betterdogs$setPlayPenaltyTicks(input.getIntOr("BD_PlayPenaltyTicks", 0));
+        String archName = input.getStringOr("betterdogs:canine_archetype", "");
+        if (!archName.isEmpty()) {
+            this.betterdogs$setCanineArchetype(CanineArchetype.fromSerializedName(archName));
+        }
     }
 
     @Inject(method = "getTailAngle", at = @At("HEAD"), cancellable = true)

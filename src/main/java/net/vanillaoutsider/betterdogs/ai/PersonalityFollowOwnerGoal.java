@@ -7,6 +7,7 @@ import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
+import net.vanillaoutsider.betterdogs.personality.CanineArchetype;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 
 public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
@@ -106,12 +107,28 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
                 case PACIFIST -> (float) BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_PACI_FOLLOW_START, 5);
                 case NORMAL -> (float) BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_NORMAL_FOLLOW_START, 10);
             };
+
+            CanineArchetype archetype = ext.betterdogs$getCanineArchetype();
+            if (archetype == CanineArchetype.ADVENTURER) {
+                baseDist = Math.max(baseDist, 16.0f);
+            } else if (archetype == CanineArchetype.LAZY) {
+                baseDist = Math.min(baseDist, 4.0f);
+            }
         }
         return baseDist + this.betterdogs$followerSpacingOffset;
     }
 
     public float getStopDistance() {
-        return 2.0f + this.betterdogs$followerSpacingOffset;
+        float stopDist = 2.0f;
+        if (this.wolf instanceof WolfExtensions ext) {
+            CanineArchetype archetype = ext.betterdogs$getCanineArchetype();
+            if (archetype == CanineArchetype.LAZY) {
+                stopDist = 1.5f;
+            } else if (archetype == CanineArchetype.ADVENTURER) {
+                stopDist = 3.0f;
+            }
+        }
+        return stopDist + this.betterdogs$followerSpacingOffset;
     }
 
     public float getTeleportThreshold() {
@@ -155,11 +172,19 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
     @Override
     public void start() {
         this.recalcTimer = 0;
+        if (this.wolf.isInSittingPose() && !this.wolf.isOrderedToSit()) {
+            this.wolf.setInSittingPose(false);
+        }
     }
 
     @Override
     public void stop() {
         this.wolf.getNavigation().stop();
+        if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$getCanineArchetype() == CanineArchetype.LAZY) {
+            if (!this.wolf.isOrderedToSit() && this.wolf.getRandom().nextFloat() < 0.35f) {
+                this.wolf.setInSittingPose(true);
+            }
+        }
         super.stop();
     }
 
@@ -191,6 +216,10 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
                 WolfPersonality personality = ext.betterdogs$getPersonality();
                 if (personality == WolfPersonality.AGGRESSIVE) {
                     speed *= 1.2;
+                }
+                CanineArchetype archetype = ext.betterdogs$getCanineArchetype();
+                if (archetype != null) {
+                    speed *= archetype.getSpeedModifier();
                 }
             }
             speed = net.vanillaoutsider.betterdogs.util.WolfCatchupHelper.calculateCatchupSpeed(this.wolf, owner, speed);

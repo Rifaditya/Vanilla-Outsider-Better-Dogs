@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.core.BlockPos;
+import net.vanillaoutsider.betterdogs.personality.CanineArchetype;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -17,9 +18,13 @@ import org.jspecify.annotations.Nullable;
  * v4.3.1: Updated for personality-based range stats.
  * v4.4.0: Genetics fields migrated to DasikLibrary.
  */
-public record WolfPersistentData(int personalityId, int lastDamageTime, boolean submissive, String bloodFeudTarget, long lastMischiefDay, long dna, float scale, Map<String, Integer> affinityMap, Optional<UUID> leaderUuid, boolean guardMode, Optional<BlockPos> guardPos, boolean adoptable, boolean refusesGroundFood, int feedCount, String nemesisType, long nemesisExpiry, boolean discoveredTreat) {
+public record WolfPersistentData(int personalityId, int lastDamageTime, boolean submissive, String bloodFeudTarget, long lastMischiefDay, long dna, float scale, Map<String, Integer> affinityMap, Optional<UUID> leaderUuid, boolean guardMode, Optional<BlockPos> guardPos, boolean adoptable, boolean refusesGroundFood, int feedCount, String nemesisType, long nemesisExpiry, boolean discoveredTreat, String canineArchetype) {
 
-    public static final WolfPersistentData DEFAULT = new WolfPersistentData(-1, 0, false, "", 0L, 0L, 1.0f, Map.of(), Optional.empty(), false, Optional.empty(), false, false, 0, "", 0L, false);
+    public static final WolfPersistentData DEFAULT = new WolfPersistentData(-1, 0, false, "", 0L, 0L, 1.0f, Map.of(), Optional.empty(), false, Optional.empty(), false, false, 0, "", 0L, false, "");
+
+    public WolfPersistentData(int personalityId, int lastDamageTime, boolean submissive, String bloodFeudTarget, long lastMischiefDay, long dna, float scale, Map<String, Integer> affinityMap, Optional<UUID> leaderUuid, boolean guardMode, Optional<BlockPos> guardPos, boolean adoptable, boolean refusesGroundFood, int feedCount, String nemesisType, long nemesisExpiry, boolean discoveredTreat) {
+        this(personalityId, lastDamageTime, submissive, bloodFeudTarget, lastMischiefDay, dna, scale, affinityMap, leaderUuid, guardMode, guardPos, adoptable, refusesGroundFood, feedCount, nemesisType, nemesisExpiry, discoveredTreat, "");
+    }
 
     private record BaseData(int personalityId, int lastDamageTime, boolean submissive, String bloodFeudTarget, long lastMischiefDay, long dna, float scale, Map<String, Integer> affinityMap, Optional<UUID> leaderUuid, boolean guardMode, String nemesisType, long nemesisExpiry) {
         static final com.mojang.serialization.MapCodec<BaseData> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -38,22 +43,23 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
         ).apply(instance, BaseData::new));
     }
 
-    private record ExtraData(Optional<BlockPos> guardPos, boolean adoptable, boolean refusesGroundFood, int feedCount, boolean discoveredTreat) {
+    private record ExtraData(Optional<BlockPos> guardPos, boolean adoptable, boolean refusesGroundFood, int feedCount, boolean discoveredTreat, String canineArchetype) {
         static final com.mojang.serialization.MapCodec<ExtraData> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 BlockPos.CODEC.optionalFieldOf("guardPos").forGetter(ExtraData::guardPos),
                 Codec.BOOL.optionalFieldOf("adoptable", false).forGetter(ExtraData::adoptable),
                 Codec.BOOL.optionalFieldOf("refusesGroundFood", false).forGetter(ExtraData::refusesGroundFood),
                 Codec.INT.optionalFieldOf("feedCount", 0).forGetter(ExtraData::feedCount),
-                Codec.BOOL.optionalFieldOf("discoveredTreat", false).forGetter(ExtraData::discoveredTreat)
+                Codec.BOOL.optionalFieldOf("discoveredTreat", false).forGetter(ExtraData::discoveredTreat),
+                Codec.STRING.optionalFieldOf("canine_archetype", "").forGetter(ExtraData::canineArchetype)
         ).apply(instance, ExtraData::new));
     }
 
     public static final Codec<WolfPersistentData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             BaseData.CODEC.forGetter(data -> new BaseData(data.personalityId(), data.lastDamageTime(), data.submissive(), data.bloodFeudTarget(), data.lastMischiefDay(), data.dna(), data.scale(), data.affinityMap(), data.leaderUuid(), data.guardMode(), data.nemesisType(), data.nemesisExpiry())),
-            ExtraData.CODEC.forGetter(data -> new ExtraData(data.guardPos(), data.adoptable(), data.refusesGroundFood(), data.feedCount(), data.discoveredTreat()))
+            ExtraData.CODEC.forGetter(data -> new ExtraData(data.guardPos(), data.adoptable(), data.refusesGroundFood(), data.feedCount(), data.discoveredTreat(), data.canineArchetype()))
     ).apply(instance, (base, extra) -> new WolfPersistentData(
             base.personalityId(), base.lastDamageTime(), base.submissive(), base.bloodFeudTarget(), base.lastMischiefDay(), base.dna(), base.scale(), base.affinityMap(), base.leaderUuid(), base.guardMode(),
-            extra.guardPos(), extra.adoptable(), extra.refusesGroundFood(), extra.feedCount(), base.nemesisType(), base.nemesisExpiry(), extra.discoveredTreat()
+            extra.guardPos(), extra.adoptable(), extra.refusesGroundFood(), extra.feedCount(), base.nemesisType(), base.nemesisExpiry(), extra.discoveredTreat(), extra.canineArchetype()
     )));
 
     // ========== Static Helper Methods (using Fabric Attachment API) ==========
@@ -78,7 +84,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
                 oldData.personalityId(), oldData.lastDamageTime(), oldData.submissive(), oldData.bloodFeudTarget(),
                 oldData.lastMischiefDay(), oldData.dna(), oldData.scale(), oldData.affinityMap(), oldData.leaderUuid(),
                 oldData.guardMode(), oldData.guardPos(), oldData.adoptable(), oldData.refusesGroundFood(),
-                oldData.feedCount(), oldData.nemesisType(), oldData.nemesisExpiry(), discovered
+                oldData.feedCount(), oldData.nemesisType(), oldData.nemesisExpiry(), discovered, oldData.canineArchetype()
         ));
     }
 
@@ -94,7 +100,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
 
     public static void setPersistedPersonalityId(Wolf wolf, int id) {
         WolfPersistentData current = getWolfData(wolf);
-        setWolfData(wolf, new WolfPersistentData(id, current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable(), current.refusesGroundFood(), current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat()));
+        setWolfData(wolf, new WolfPersistentData(id, current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable(), current.refusesGroundFood(), current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat(), current.canineArchetype()));
     }
 
     public static void setPersistedPersonality(Wolf wolf, WolfPersonality personality) {
@@ -113,7 +119,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
 
     public static void setPersistedLastDamageTime(Wolf wolf, int time) {
         WolfPersistentData current = getWolfData(wolf);
-        setWolfData(wolf, new WolfPersistentData(current.personalityId(), time, current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable(), current.refusesGroundFood(), current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat()));
+        setWolfData(wolf, new WolfPersistentData(current.personalityId(), time, current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable(), current.refusesGroundFood(), current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat(), current.canineArchetype()));
     }
 
     // ========== Submissive (baby cannot attack pack after correction) ==========
@@ -124,7 +130,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
 
     public static void setPersistedSubmissive(Wolf wolf, boolean submissive) {
         WolfPersistentData current = getWolfData(wolf);
-        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), submissive, current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable(), current.refusesGroundFood(), current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat()));
+        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), submissive, current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable(), current.refusesGroundFood(), current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat(), current.canineArchetype()));
     }
 
     // ========== Blood Feud (permanent vendetta) ==========
@@ -135,7 +141,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
 
     public static void setPersistedBloodFeudTarget(Wolf wolf, String targetUuid) {
         WolfPersistentData current = getWolfData(wolf);
-        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), targetUuid, current.lastMischiefDay(), current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable(), current.refusesGroundFood(), current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat()));
+        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), targetUuid, current.lastMischiefDay(), current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable(), current.refusesGroundFood(), current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat(), current.canineArchetype()));
     }
 
     public static boolean hasBloodFeud(Wolf wolf) {
@@ -150,7 +156,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
 
     public static void setPersistedLastMischiefDay(Wolf wolf, long day) {
         WolfPersistentData current = getWolfData(wolf);
-        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), day, current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable(), current.refusesGroundFood(), current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat()));
+        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), day, current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable(), current.refusesGroundFood(), current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat(), current.canineArchetype()));
     }
 
     // ========== Last Gift Day (morning gift delivery tracking) ==========
@@ -171,7 +177,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
 
     public static void setDNA(Wolf wolf, long dna) {
         WolfPersistentData current = getWolfData(wolf);
-        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), dna, current.scale(), current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable(), current.refusesGroundFood(), current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat()));
+        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), dna, current.scale(), current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable(), current.refusesGroundFood(), current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat(), current.canineArchetype()));
     }
 
     public static float getScale(Wolf wolf) {
@@ -179,7 +185,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
     }
 
     public static void setScale(int personalityId, int lastDamageTime, boolean submissive, @Nullable String bloodFeudTarget, long lastMischiefDay, long dna, Wolf wolf, float scale, Map<String, Integer> affinityMap, Optional<UUID> leaderUuid, boolean guardMode, Optional<BlockPos> guardPos, boolean adoptable) {
-        setWolfData(wolf, new WolfPersistentData(personalityId, lastDamageTime, submissive, bloodFeudTarget, lastMischiefDay, dna, scale, affinityMap, leaderUuid, guardMode, guardPos, adoptable, getWolfData(wolf).refusesGroundFood(), getWolfData(wolf).feedCount(), getWolfData(wolf).nemesisType(), getWolfData(wolf).nemesisExpiry(), getWolfData(wolf).discoveredTreat()));
+        setWolfData(wolf, new WolfPersistentData(personalityId, lastDamageTime, submissive, bloodFeudTarget, lastMischiefDay, dna, scale, affinityMap, leaderUuid, guardMode, guardPos, adoptable, getWolfData(wolf).refusesGroundFood(), getWolfData(wolf).feedCount(), getWolfData(wolf).nemesisType(), getWolfData(wolf).nemesisExpiry(), getWolfData(wolf).discoveredTreat(), getWolfData(wolf).canineArchetype()));
     }
 
     // ========== Social Bonding (v3.1.37) ==========
@@ -193,7 +199,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
         Map<String, Integer> newMap = new HashMap<>(current.affinityMap());
         int newValue = Math.clamp(newMap.getOrDefault(targetUuid, 0) + delta, -100, 100);
         newMap.put(targetUuid, newValue);
-        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale(), newMap, current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable(), current.refusesGroundFood(), current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat()));
+        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale(), newMap, current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable(), current.refusesGroundFood(), current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat(), current.canineArchetype()));
     }
 
     // ========== Leader UUID (v3.1.37) ==========
@@ -204,7 +210,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
 
     public static void setPersistedLeaderUuid(Wolf wolf, @Nullable UUID uuid) {
         WolfPersistentData current = getWolfData(wolf);
-        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale(), current.affinityMap(), Optional.ofNullable(uuid), current.guardMode(), current.guardPos(), current.adoptable(), current.refusesGroundFood(), current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat()));
+        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale(), current.affinityMap(), Optional.ofNullable(uuid), current.guardMode(), current.guardPos(), current.adoptable(), current.refusesGroundFood(), current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat(), current.canineArchetype()));
     }
 
     // ========== Guard Mode (v3.5.0) ==========
@@ -215,7 +221,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
 
     public static void setPersistedGuardMode(Wolf wolf, boolean guardMode) {
         WolfPersistentData current = getWolfData(wolf);
-        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(), guardMode, current.guardPos(), current.adoptable(), current.refusesGroundFood(), current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat()));
+        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(), guardMode, current.guardPos(), current.adoptable(), current.refusesGroundFood(), current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat(), current.canineArchetype()));
     }
 
     public static Optional<BlockPos> getPersistedGuardPos(Wolf wolf) {
@@ -224,7 +230,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
 
     public static void setPersistedGuardPos(Wolf wolf, @Nullable BlockPos pos) {
         WolfPersistentData current = getWolfData(wolf);
-        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(), current.guardMode(), Optional.ofNullable(pos), current.adoptable(), current.refusesGroundFood(), current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat()));
+        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(), current.guardMode(), Optional.ofNullable(pos), current.adoptable(), current.refusesGroundFood(), current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat(), current.canineArchetype()));
     }
 
     // ========== Adoption System (v4.3.0) ==========
@@ -235,7 +241,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
 
     public static void setPersistedAdoptable(Wolf wolf, boolean adoptable) {
         WolfPersistentData current = getWolfData(wolf);
-        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), adoptable, current.refusesGroundFood(), current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat()));
+        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), adoptable, current.refusesGroundFood(), current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat(), current.canineArchetype()));
     }
 
     // ========== Ground Food Refusal ==========
@@ -246,7 +252,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
 
     public static void setRefusesGroundFood(Wolf wolf, boolean refuses) {
         WolfPersistentData current = getWolfData(wolf);
-        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable(), refuses, current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat()));
+        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable(), refuses, current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat(), current.canineArchetype()));
     }
 
     // ========== Feeding-Gated Gift System ==========
@@ -257,7 +263,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
 
     public static void setPersistedFeedCount(Wolf wolf, int count) {
         WolfPersistentData current = getWolfData(wolf);
-        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable(), current.refusesGroundFood(), count, current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat()));
+        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable(), current.refusesGroundFood(), count, current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat(), current.canineArchetype()));
     }
 
     // ========== Range Stats (v4.3.1) - Migrated to DasikLibrary ==========
@@ -368,12 +374,38 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
 
     public static void setPersistedNemesis(Wolf wolf, String nemesisType, long expiryTicks) {
         WolfPersistentData current = getWolfData(wolf);
-        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable(), current.refusesGroundFood(), current.feedCount(), nemesisType, expiryTicks, current.discoveredTreat()));
+        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable(), current.refusesGroundFood(), current.feedCount(), nemesisType, expiryTicks, current.discoveredTreat(), current.canineArchetype()));
     }
 
     public static void clearPersistedNemesis(Wolf wolf) {
         WolfPersistentData current = getWolfData(wolf);
-        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable(), current.refusesGroundFood(), current.feedCount(), "", 0L, current.discoveredTreat()));
+        setWolfData(wolf, new WolfPersistentData(current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable(), current.refusesGroundFood(), current.feedCount(), "", 0L, current.discoveredTreat(), current.canineArchetype()));
+    }
+
+    // ========== Canine Archetype (BL-BD-013) ==========
+
+    public static boolean hasPersistedCanineArchetype(Wolf wolf) {
+        String archetype = getWolfData(wolf).canineArchetype();
+        return archetype != null && !archetype.isEmpty();
+    }
+
+    public static CanineArchetype getPersistedCanineArchetype(Wolf wolf) {
+        String name = getWolfData(wolf).canineArchetype();
+        if (name == null || name.isEmpty()) {
+            return CanineArchetype.GUARDIAN;
+        }
+        return CanineArchetype.fromSerializedName(name);
+    }
+
+    public static void setPersistedCanineArchetype(Wolf wolf, CanineArchetype archetype) {
+        WolfPersistentData current = getWolfData(wolf);
+        String name = archetype != null ? archetype.getSerializedName() : "guardian";
+        setWolfData(wolf, new WolfPersistentData(
+                current.personalityId(), current.lastDamageTime(), current.submissive(), current.bloodFeudTarget(),
+                current.lastMischiefDay(), current.dna(), current.scale(), current.affinityMap(), current.leaderUuid(),
+                current.guardMode(), current.guardPos(), current.adoptable(), current.refusesGroundFood(),
+                current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat(),
+                name
+        ));
     }
 }
-
