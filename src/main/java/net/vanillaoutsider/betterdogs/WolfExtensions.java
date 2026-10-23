@@ -137,6 +137,17 @@ public interface WolfExtensions {
     default boolean betterdogs$isSittingManually() {
         return false;
     }
+    default net.vanillaoutsider.betterdogs.personality.CanineArchetype betterdogs$getCanineArchetype() {
+        return net.vanillaoutsider.betterdogs.personality.CanineArchetype.GUARDIAN;
+    }
+
+    default void betterdogs$setCanineArchetype(net.vanillaoutsider.betterdogs.personality.CanineArchetype archetype) {
+    }
+
+    default boolean betterdogs$hasCanineArchetype() {
+        return false;
+    }
+
     default boolean betterdogs$isSocialModeActive() {
         return false;
     }

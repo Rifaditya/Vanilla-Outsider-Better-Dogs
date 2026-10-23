@@ -126,6 +126,10 @@ public class BetterDogsGameRules {
     public static GameRule<Boolean> BD_DOG_GENETICS_ENABLED;
     public static GameRule<Integer> BD_MAX_SCALE_DEVIATION;
 
+    // Personality Archetypes (BL-BD-013)
+    public static GameRule<Boolean> BD_ARCHETYPES_ENABLED;
+    public static GameRule<Integer> BD_ARCHETYPE_DISTRIBUTION_MODE;
+
     // Breeding & Genetics
     public static GameRule<Integer> BD_SPAWN_NORMAL_PERCENT;
     public static GameRule<Integer> BD_SPAWN_AGGRO_PERCENT;
@@ -284,6 +288,15 @@ public class BetterDogsGameRules {
         DynamicGameRuleManager.getDynamicRules().put("betterdogs:dogGeneticsEnabled", BD_DOG_GENETICS_ENABLED);
         DynamicGameRuleManager.getDynamicRules().put("betterdogs:maxScaleDeviation", BD_MAX_SCALE_DEVIATION);
 
+        // Personality Archetypes (BL-BD-013)
+        BD_ARCHETYPES_ENABLED = registerBoolean("vanilla-outsider-better-dogs:bd_personality_archetypes_enabled", BETTER_DOGS, true);
+        BD_ARCHETYPE_DISTRIBUTION_MODE = registerInteger("vanilla-outsider-better-dogs:bd_personality_distribution_mode", BETTER_DOGS, 0, 0, 1);
+
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:bd_personality_archetypes_enabled", BD_ARCHETYPES_ENABLED);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:bd_personality_distribution_mode", BD_ARCHETYPE_DISTRIBUTION_MODE);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:personalityArchetypesEnabled", BD_ARCHETYPES_ENABLED);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:personalityDistributionMode", BD_ARCHETYPE_DISTRIBUTION_MODE);
+
         // Breeding & Genetics
         BD_SPAWN_NORMAL_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_spawn_normal_percent", BETTER_DOGS, 60);
         BD_SPAWN_AGGRO_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_spawn_aggro_percent", BETTER_DOGS, 20);
@@ -369,6 +382,14 @@ public class BetterDogsGameRules {
 
     public static int getMaxScaleDeviation(Level level) {
         return getInt(level, BD_MAX_SCALE_DEVIATION, 30);
+    }
+
+    public static boolean isArchetypesEnabled(Level level) {
+        return getBoolean(level, BD_ARCHETYPES_ENABLED, true);
+    }
+
+    public static int getArchetypeDistributionMode(Level level) {
+        return getInt(level, BD_ARCHETYPE_DISTRIBUTION_MODE, 0);
     }
 
     public static boolean getBoolean(Level level, GameRule<Boolean> rule, boolean fallback) {
