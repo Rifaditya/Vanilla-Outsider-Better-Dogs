@@ -97,6 +97,11 @@ public class BetterDogsGameRules {
     public static GameRule<Boolean> BD_ARCHETYPES_ENABLED;
     public static GameRule<Integer> BD_ARCHETYPE_DISTRIBUTION_MODE;
 
+    // --- Canine Explosive Reflex (BL-BD-006) ---
+    public static GameRule<Boolean> BD_CANINE_EXPLOSIVE_REFLEX_ENABLED;
+    public static GameRule<Integer> BD_HAZARD_FLEE_RADIUS;
+    public static GameRule<Integer> BD_FLEE_SPEED_MULTIPLIER;
+
     // --- Misc ---
     public static GameRule<Integer> BD_BABY_MISCHIEF_PERMILLE;
     public static GameRule<Integer> BD_HOWL_CHANCE;
@@ -409,6 +414,15 @@ public class BetterDogsGameRules {
 
         BD_ARCHETYPES_ENABLED = registerBoolean("betterdogs:bd_personality_archetypes_enabled", BETTER_DOGS, true);
         BD_ARCHETYPE_DISTRIBUTION_MODE = registerInteger("betterdogs:bd_personality_distribution_mode", BETTER_DOGS, 0, 0, 1);
+
+        // Canine Explosive Reflex (BL-BD-006)
+        BD_CANINE_EXPLOSIVE_REFLEX_ENABLED = registerBoolean("betterdogs:bd_canine_explosive_reflex_enabled", BETTER_DOGS, true);
+        BD_HAZARD_FLEE_RADIUS = registerInteger("betterdogs:bd_hazard_flee_radius", BETTER_DOGS, 14, 4, 64);
+        BD_FLEE_SPEED_MULTIPLIER = registerInteger("betterdogs:bd_flee_speed_multiplier", BETTER_DOGS, 170, 100, 300);
+
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:canineExplosiveReflexEnabled", BD_CANINE_EXPLOSIVE_REFLEX_ENABLED);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:hazardFleeRadius", BD_HAZARD_FLEE_RADIUS);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:fleeSpeedMultiplier", BD_FLEE_SPEED_MULTIPLIER);
     }
 
     // Internal Registration Helpers
@@ -489,6 +503,18 @@ public class BetterDogsGameRules {
 
     public static boolean isArchetypesEnabled(Level level) {
         return getBoolean(level, BD_ARCHETYPES_ENABLED, true);
+    }
+
+    public static boolean isCanineExplosiveReflexEnabled(Level level) {
+        return getBoolean(level, BD_CANINE_EXPLOSIVE_REFLEX_ENABLED, true);
+    }
+
+    public static int getHazardFleeRadius(Level level) {
+        return getInt(level, BD_HAZARD_FLEE_RADIUS, 14);
+    }
+
+    public static int getFleeSpeedMultiplier(Level level) {
+        return getInt(level, BD_FLEE_SPEED_MULTIPLIER, 170);
     }
 
     public static int getArchetypeDistributionMode(Level level) {
