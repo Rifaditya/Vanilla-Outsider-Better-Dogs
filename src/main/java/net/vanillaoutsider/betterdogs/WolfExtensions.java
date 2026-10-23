@@ -7,6 +7,7 @@ import net.dasik.social.core.EntitySocialScheduler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.vanillaoutsider.betterdogs.personality.CanineArchetype;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -32,6 +33,21 @@ public interface WolfExtensions {
      * Check if this wolf has been assigned a personality
      */
     boolean betterdogs$hasPersonality();
+
+    // ========== Canine Personality Archetypes (Step 1) ==========
+
+    /**
+     * Get the wolf's canine archetype personality
+     */
+    default CanineArchetype betterdogs$getCanineArchetype() {
+        return CanineArchetype.GUARDIAN;
+    }
+
+    /**
+     * Set the wolf's canine archetype personality
+     */
+    default void betterdogs$setCanineArchetype(CanineArchetype archetype) {
+    }
 
     // ========== Last Damage Time (for passive healing) ==========
 

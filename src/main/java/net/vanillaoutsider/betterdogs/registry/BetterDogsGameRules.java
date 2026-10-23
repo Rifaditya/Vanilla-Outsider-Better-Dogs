@@ -93,6 +93,10 @@ public class BetterDogsGameRules {
     public static GameRule<Integer> BD_NORMAL_HEALTH;
     public static GameRule<Integer> BD_NORMAL_FLEE_CHANCE;
 
+    // --- Personality Archetypes (BL-BD-013) ---
+    public static GameRule<Boolean> BD_ARCHETYPES_ENABLED;
+    public static GameRule<Integer> BD_ARCHETYPE_DISTRIBUTION_MODE;
+
     // --- Misc ---
     public static GameRule<Integer> BD_BABY_MISCHIEF_PERMILLE;
     public static GameRule<Integer> BD_HOWL_CHANCE;
@@ -402,6 +406,9 @@ public class BetterDogsGameRules {
                 (int)(config.getWolfMinScale() * 100)).range(1, Integer.MAX_VALUE).register();
         BD_WOLF_MAX_SCALE_PERCENT = DynamicGameRuleManager.integerRule("betterdogs:bd_wolf_max_scale_percent", BETTER_DOGS,
                 (int)(config.getWolfMaxScale() * 100)).range(1, Integer.MAX_VALUE).register();
+
+        BD_ARCHETYPES_ENABLED = registerBoolean("betterdogs:bd_personality_archetypes_enabled", BETTER_DOGS, true);
+        BD_ARCHETYPE_DISTRIBUTION_MODE = registerInteger("betterdogs:bd_personality_distribution_mode", BETTER_DOGS, 0, 0, 1);
     }
 
     // Internal Registration Helpers
@@ -478,5 +485,13 @@ public class BetterDogsGameRules {
 
     public static int getMaxScaleDeviation(Level level) {
         return getInt(level, BD_MAX_SCALE_DEVIATION, 30);
+    }
+
+    public static boolean isArchetypesEnabled(Level level) {
+        return getBoolean(level, BD_ARCHETYPES_ENABLED, true);
+    }
+
+    public static int getArchetypeDistributionMode(Level level) {
+        return getInt(level, BD_ARCHETYPE_DISTRIBUTION_MODE, 0);
     }
 }

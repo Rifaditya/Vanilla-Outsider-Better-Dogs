@@ -12,6 +12,7 @@ import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.monster.Creeper;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
+import net.vanillaoutsider.betterdogs.personality.CanineArchetype;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.vanillaoutsider.betterdogs.util.WolfParticleHelper;
 
@@ -52,7 +53,7 @@ public class FleeCreeperGoal extends AvoidEntityGoal<Creeper> {
             return false;
         }
 
-        if (this.wolf instanceof WolfExtensions ext && (ext.betterdogs$isGuardMode() || ext.betterdogs$isSittingManually())) {
+        if (this.wolf instanceof WolfExtensions ext && (ext.betterdogs$isGuardMode() || ext.betterdogs$isSittingManually() || ext.betterdogs$getCanineArchetype() == CanineArchetype.FEARLESS)) {
             return false;
         }
 
@@ -69,6 +70,14 @@ public class FleeCreeperGoal extends AvoidEntityGoal<Creeper> {
         }
 
         return super.canUse();
+    }
+
+    @Override
+    public boolean canContinueToUse() {
+        if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$getCanineArchetype() == CanineArchetype.FEARLESS) {
+            return false;
+        }
+        return super.canContinueToUse();
     }
 
     @Override
