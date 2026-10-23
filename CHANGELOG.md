@@ -1,5 +1,12 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.5.0+1.20.1] - 2026-10-23
+
+### Added
+- Canine Explosive Reflex: dogs detect primed TNT, end crystals, and swelling creepers, sprinting away at 1.7x speed (BL-BD-006).
+- Emergency Blast Scramble: sitting dogs break posture to evade explosions within 4 blocks and safely return to sitting after danger clears.
+- Dynamic GameRules: `betterdogs:bd_canine_explosive_reflex_enabled`, `betterdogs:bd_hazard_flee_radius`, `betterdogs:bd_flee_speed_multiplier`.
+
 ## [1.4.0+1.20.1] - 2026-10-23
 
 ### Added
