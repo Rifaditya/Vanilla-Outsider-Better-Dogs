@@ -2,6 +2,8 @@
 // Verified against: Minecraft 26.1.2
 package net.vanillaoutsider.betterdogs.compat.jade;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import java.util.Objects;
 import org.jspecify.annotations.Nullable;
 import net.minecraft.client.Minecraft;
@@ -19,6 +21,7 @@ import snownee.jade.api.ui.Element;
 import snownee.jade.api.ui.IDisplayHelper;
 import snownee.jade.track.HealthTrackInfo;
 
+@Environment(EnvType.CLIENT)
 public class BetterDogsHealthElement extends Element {
     private Gui.HeartType heartType;
     private final float maxHealth;

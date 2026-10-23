@@ -2,6 +2,8 @@
 // Verified against: ClothConfigScreenHelper.java (26.1.2+)
 package net.vanillaoutsider.betterdogs.config;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
@@ -9,6 +11,7 @@ import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
+@Environment(EnvType.CLIENT)
 public class ClothConfigScreenHelper {
     public static ConfigScreenFactory<?> createFactory() {
         return ClothConfigScreenHelper::createScreen;

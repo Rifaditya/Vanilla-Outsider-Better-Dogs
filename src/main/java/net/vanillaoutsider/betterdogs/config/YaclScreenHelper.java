@@ -2,6 +2,8 @@
 // Verified against: Minecraft 26.1.2
 package net.vanillaoutsider.betterdogs.config;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import dev.isxander.yacl3.api.ConfigCategory;
 import dev.isxander.yacl3.api.Option;
@@ -20,6 +22,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import java.util.List;
 
+@Environment(EnvType.CLIENT)
 public class YaclScreenHelper {
     public static ConfigScreenFactory<?> createFactory() {
         return YaclScreenHelper::createScreen;
