@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **5.4.0+26.2** - Extensible Canine Personality Archetypes: Guardian, Playful, Adventurer, Glutton, Lazy, Fearless (BL-BD-013)
 - [ ] **`5.3.0+26.2`** - Canine Physical Genetics: Horse-Like Speed, Health, Scale & Pitch Timbre (BL-BD-012)
 - [ ] **`5.2.0+26.2`** (2026-10-19) - Dog Play Choreography AI Suite & Orbit Sparring (MC 26.2)
 - [ ] **`5.1.1+26.2`** - GameRule Identifier Crash Fix & Harmless Pack Sparring Suite (MC 26.2)

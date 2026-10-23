@@ -1,5 +1,19 @@
 # Changelog
 
+## [5.4.0+26.2] - 2026-10-23
+
+### Added
+- 🐾 **Extensible Canine Personality Archetypes (BL-BD-013)**: Implemented 6 distinct canine personality archetypes governing AI priority, roaming boundaries, threat responses, and baseline stat scaling:
+  - **Guardian**: Defensive sentinel that vigilantly guards its owner and prioritizes close-range threats.
+  - **Playful**: Highly energetic pup with extra sprint speed (+15%), enthusiastic zoomies, and frequent sparring invitations.
+  - **Adventurer**: Inquisitive scout with an extended 16-block roaming radius, high stamina, and exploration sniffing.
+  - **Glutton**: Food-focused dog that begs frequently and swiftly scarfs down dropped treats.
+  - **Lazy**: Relaxed hearth companion that stays within 4 blocks of its owner, sleeps near fires and beds, and takes its time standing up.
+  - **Fearless**: Courageous protector completely immune to creeper panic and explosion flee reflexes.
+- 🎲 **Deterministic UUID Hashing & Distribution Modes**: Dogs deterministically roll their personality archetype based on 64-bit UUID hashing with splitmix64 mixing. Controlled via dynamic GameRules d_personality_archetypes_enabled and d_personality_distribution_mode (Balanced 1/6 uniform or Guardian-heavy weighted).
+- 💾 **Dual-Layer Persistence**: Archetype data is seamlessly stored across both Fabric Data Attachments and entity save data (etterdogs:canine_archetype) with safe fallback to Guardian.
+- 🌐 **Comprehensive Localization**: Added translatable names, descriptions, and GameRule entries for all 6 canine archetypes in en_us.json.
+
 ## [5.3.0+26.2] - 2026-10-21
 
 ### Added
