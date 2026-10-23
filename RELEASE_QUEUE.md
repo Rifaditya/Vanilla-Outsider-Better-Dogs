@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 1.6.0+1.21.11** - Ballistic Evasion Reflex: Ghast Fireballs, Wither Skulls & Threat Trajectory Dodge (BL-BD-020)
 - [ ] **1.5.0+1.21.11** - Canine Explosive Reflex: Primed TNT, End Crystals & Swelling Creepers Flee Reflex (BL-BD-006)
 - [ ] **1.4.0+1.21.11** - Extensible Canine Personality Archetypes: Guardian, Playful, Adventurer, Glutton, Lazy, Fearless (BL-BD-013)
 - [ ] **`1.3.0+1.21.11`** - Canine Physical Genetics: Horse-Like Speed, Health, Scale & Pitch Timbre (BL-BD-012)

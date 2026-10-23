@@ -135,6 +135,11 @@ public class BetterDogsGameRules {
     public static GameRule<Integer> BD_HAZARD_FLEE_RADIUS;
     public static GameRule<Integer> BD_FLEE_SPEED_MULTIPLIER;
 
+    // Ballistic Evasion Reflex (BL-BD-020)
+    public static GameRule<Boolean> BD_BALLISTIC_EVASION_ENABLED;
+    public static GameRule<Integer> BD_EVASION_REACTION_TICKS;
+    public static GameRule<Integer> BD_EVASION_LATERAL_IMPULSE;
+
     // Breeding & Genetics
     public static GameRule<Integer> BD_SPAWN_NORMAL_PERCENT;
     public static GameRule<Integer> BD_SPAWN_AGGRO_PERCENT;
@@ -314,6 +319,18 @@ public class BetterDogsGameRules {
         DynamicGameRuleManager.getDynamicRules().put("betterdogs:hazardFleeRadius", BD_HAZARD_FLEE_RADIUS);
         DynamicGameRuleManager.getDynamicRules().put("betterdogs:fleeSpeedMultiplier", BD_FLEE_SPEED_MULTIPLIER);
 
+        // Ballistic Evasion Reflex (BL-BD-020)
+        BD_BALLISTIC_EVASION_ENABLED = registerBoolean("betterdogs:bd_ballistic_evasion_enabled", BETTER_DOGS, true);
+        BD_EVASION_REACTION_TICKS = registerInteger("betterdogs:bd_evasion_reaction_ticks", BETTER_DOGS, 20, 5, 60);
+        BD_EVASION_LATERAL_IMPULSE = registerInteger("betterdogs:bd_evasion_lateral_impulse", BETTER_DOGS, 85, 20, 250);
+
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:bd_ballistic_evasion_enabled", BD_BALLISTIC_EVASION_ENABLED);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:bd_evasion_reaction_ticks", BD_EVASION_REACTION_TICKS);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:bd_evasion_lateral_impulse", BD_EVASION_LATERAL_IMPULSE);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:ballisticEvasionEnabled", BD_BALLISTIC_EVASION_ENABLED);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:evasionReactionTicks", BD_EVASION_REACTION_TICKS);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:evasionLateralImpulse", BD_EVASION_LATERAL_IMPULSE);
+
         // Breeding & Genetics
         BD_SPAWN_NORMAL_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_spawn_normal_percent", BETTER_DOGS, 60);
         BD_SPAWN_AGGRO_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_spawn_aggro_percent", BETTER_DOGS, 20);
@@ -419,6 +436,18 @@ public class BetterDogsGameRules {
 
     public static int getFleeSpeedMultiplier(Level level) {
         return getInt(level, BD_FLEE_SPEED_MULTIPLIER, 170);
+    }
+
+    public static boolean isBallisticEvasionEnabled(Level level) {
+        return getBoolean(level, BD_BALLISTIC_EVASION_ENABLED, true);
+    }
+
+    public static int getEvasionReactionTicks(Level level) {
+        return getInt(level, BD_EVASION_REACTION_TICKS, 20);
+    }
+
+    public static int getEvasionLateralImpulse(Level level) {
+        return getInt(level, BD_EVASION_LATERAL_IMPULSE, 85);
     }
 
     public static boolean getBoolean(Level level, GameRule<Boolean> rule, boolean fallback) {
