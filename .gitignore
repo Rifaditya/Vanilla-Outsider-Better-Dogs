@@ -60,7 +60,12 @@ releases/
 # Build Logs
 build_log.txt
 build_log_utf8.txt
-*log*
+*.log
+logs/
+run/*.log
+!CHANGELOG.md
+!BACKLOG.md
+!History.md
 
 .gradle_home/
 Archive/
