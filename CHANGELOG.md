@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.2+26.1.2] - 2026-10-24
+
+### Added
+- 🛡️ **Ballistic Interceptor (BL-BD-021 - Step 3)**: Canine Intercept AI Goal Implementation.
+  - Implemented `WolfProjectileInterceptGoal`: Priority `1` bodyguard AI goal scanning 14m sphere around owner for incoming hostile projectiles.
+  - Emergency unseat scramble: Sitting guardian dogs dynamically break sitting posture if within 2.5m of low-health owner to execute life-saving interceptions.
+  - Sprint & Leap Maneuvre: 1.6x sprint speed navigation towards calculated intercept coordinate with explosive 3D hop impulse (`dx * 0.45`, `0.35` vertical boost) when within 3m and <= 6 ticks to impact.
+
 ## [5.7.1+26.1.2] - 2026-10-24
 
 ### Added
