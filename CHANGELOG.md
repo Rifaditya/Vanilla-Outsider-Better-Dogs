@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.7.4+26.1.2] - 2026-10-24
+
+### Added
+- 🛡️ **Ballistic Interceptor (BL-BD-021 - Step 5)**: Heroic Sacrifice Damage Routing, Anti-One-Shot Protection & Sensory Polish.
+  - Anti-One-Shot Protection: Guardian dogs absorbing fatal projectile damage intended for their low-health owner are clamped to 1.0 HP rather than dying instantly, provided their health was >= 3.0 HP.
+  - Applied 20-tick post-intercept invulnerability buffer to allow dog recovery.
+  - Wolf armor durability degradation: Intercepted projectile impact damages worn wolf armor rather than flesh.
+  - Sensory Feedback: Block sound cues (`SHIELD_BLOCK`) and critical spark particles (`CRIT`) confirm successful ballistic interception.
+
 ## [5.7.3+26.1.2] - 2026-10-24
 
 ### Added

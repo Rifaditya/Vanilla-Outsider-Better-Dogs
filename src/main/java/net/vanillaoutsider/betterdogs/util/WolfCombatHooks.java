@@ -23,6 +23,11 @@ public class WolfCombatHooks {
      * @return true if the damage should be CANCELLED, false otherwise.
      */
     public static boolean onActuallyHurt(Wolf wolf, DamageSource source, float amount) {
+        // Heroic Sacrifice Damage Routing & Anti-One-Shot Protection (BL-BD-021)
+        if (net.vanillaoutsider.betterdogs.ai.WolfProjectileInterceptHelper.handleInterceptDamage(wolf, source, amount)) {
+            return true;
+        }
+
         if (source.getEntity() instanceof net.minecraft.world.entity.player.Player player && wolf.isTame() && wolf.isOwnedBy(player)) {
             boolean demeritAccidental = net.dasik.social.api.gamerule.DynamicGameRuleManager.getBoolean(wolf.level(), net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_DEMERIT_ACCIDENTAL_ATTACKS);
             if (player.isCrouching()) {
