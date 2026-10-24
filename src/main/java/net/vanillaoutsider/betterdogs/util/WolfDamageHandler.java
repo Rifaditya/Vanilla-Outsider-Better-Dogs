@@ -31,6 +31,11 @@ public class WolfDamageHandler {
             return false;
         }
 
+        // Heroic Sacrifice Damage Routing & Anti-One-Shot Protection (BL-BD-021)
+        if (net.vanillaoutsider.betterdogs.ai.WolfProjectileInterceptHelper.handleInterceptDamage(wolf, source, amount)) {
+            return true;
+        }
+
         if (source.getEntity() instanceof Player player && wolf.isTame() && wolf.isOwnedBy(player)) {
             boolean demeritAccidental = DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_DEMERIT_ACCIDENTAL_ATTACKS);
             if (player.isCrouching()) {
