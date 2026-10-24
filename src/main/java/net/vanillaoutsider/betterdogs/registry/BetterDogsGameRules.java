@@ -107,6 +107,10 @@ public class BetterDogsGameRules {
     public static GameRule<Integer> BD_EVASION_REACTION_TICKS;
     public static GameRule<Integer> BD_EVASION_LATERAL_IMPULSE;
 
+    // --- Ballistic Interceptor (BL-BD-021) ---
+    public static GameRule<Boolean> BD_PROJECTILE_INTERCEPT;
+    public static GameRule<Integer> BD_INTERCEPTOR_OWNER_HEALTH_THRESHOLD;
+
     // --- Misc ---
     public static GameRule<Integer> BD_BABY_MISCHIEF_PERMILLE;
     public static GameRule<Integer> BD_HOWL_CHANCE;
@@ -437,6 +441,13 @@ public class BetterDogsGameRules {
         DynamicGameRuleManager.getDynamicRules().put("betterdogs:ballisticEvasionEnabled", BD_BALLISTIC_EVASION_ENABLED);
         DynamicGameRuleManager.getDynamicRules().put("betterdogs:evasionReactionTicks", BD_EVASION_REACTION_TICKS);
         DynamicGameRuleManager.getDynamicRules().put("betterdogs:evasionLateralImpulse", BD_EVASION_LATERAL_IMPULSE);
+
+        // Ballistic Interceptor (BL-BD-021)
+        BD_PROJECTILE_INTERCEPT = registerBoolean("betterdogs:bd_projectile_intercept", BETTER_DOGS, true);
+        BD_INTERCEPTOR_OWNER_HEALTH_THRESHOLD = registerInteger("betterdogs:bd_interceptor_owner_health_threshold", BETTER_DOGS, 10, 0, 1000);
+
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:projectileIntercept", BD_PROJECTILE_INTERCEPT);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:interceptorOwnerHealthThreshold", BD_INTERCEPTOR_OWNER_HEALTH_THRESHOLD);
     }
 
     // Internal Registration Helpers
@@ -545,5 +556,13 @@ public class BetterDogsGameRules {
 
     public static int getArchetypeDistributionMode(Level level) {
         return getInt(level, BD_ARCHETYPE_DISTRIBUTION_MODE, 0);
+    }
+
+    public static boolean isProjectileInterceptEnabled(Level level) {
+        return getBoolean(level, BD_PROJECTILE_INTERCEPT, true);
+    }
+
+    public static int getInterceptorOwnerHealthThreshold(Level level) {
+        return getInt(level, BD_INTERCEPTOR_OWNER_HEALTH_THRESHOLD, 10);
     }
 }

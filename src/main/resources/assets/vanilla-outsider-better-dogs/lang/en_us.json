@@ -588,5 +588,21 @@
   "gamerule.betterdogs:evasionLateralImpulse": "Ballistic Evasion Lateral Impulse (%)",
   "gamerule.betterdogs:evasionLateralImpulse.description": "Strength percentage of the lateral evasion dodge impulse applied to the dog (e.g. 85 = 0.85 horizontal velocity).",
   "gamerule.betterdogs.evasionLateralImpulse": "Ballistic Evasion Lateral Impulse (%)",
-  "gamerule.betterdogs.evasionLateralImpulse.description": "Strength percentage of the lateral evasion dodge impulse applied to the dog (e.g. 85 = 0.85 horizontal velocity)."
+  "gamerule.betterdogs.evasionLateralImpulse.description": "Strength percentage of the lateral evasion dodge impulse applied to the dog (e.g. 85 = 0.85 horizontal velocity).",
+  "gamerule.betterdogs:bd_projectile_intercept": "Canine Ballistic Interceptor",
+  "gamerule.betterdogs:bd_projectile_intercept.description": "If true, guardian and fearless dogs leap in front of incoming hostile projectiles to shield their owner.",
+  "gamerule.betterdogs.bd_projectile_intercept": "Canine Ballistic Interceptor",
+  "gamerule.betterdogs.bd_projectile_intercept.description": "If true, guardian and fearless dogs leap in front of incoming hostile projectiles to shield their owner.",
+  "gamerule.betterdogs:projectileIntercept": "Canine Ballistic Interceptor",
+  "gamerule.betterdogs:projectileIntercept.description": "If true, guardian and fearless dogs leap in front of incoming hostile projectiles to shield their owner.",
+  "gamerule.betterdogs.projectileIntercept": "Canine Ballistic Interceptor",
+  "gamerule.betterdogs.projectileIntercept.description": "If true, guardian and fearless dogs leap in front of incoming hostile projectiles to shield their owner.",
+  "gamerule.betterdogs:bd_interceptor_owner_health_threshold": "Interceptor Owner Health Threshold (HP)",
+  "gamerule.betterdogs:bd_interceptor_owner_health_threshold.description": "Owner health threshold in HP (e.g. 10 = 5 hearts) below which dogs will heroically intercept incoming projectiles.",
+  "gamerule.betterdogs.bd_interceptor_owner_health_threshold": "Interceptor Owner Health Threshold (HP)",
+  "gamerule.betterdogs.bd_interceptor_owner_health_threshold.description": "Owner health threshold in HP (e.g. 10 = 5 hearts) below which dogs will heroically intercept incoming projectiles.",
+  "gamerule.betterdogs:interceptorOwnerHealthThreshold": "Interceptor Owner Health Threshold (HP)",
+  "gamerule.betterdogs:interceptorOwnerHealthThreshold.description": "Owner health threshold in HP (e.g. 10 = 5 hearts) below which dogs will heroically intercept incoming projectiles.",
+  "gamerule.betterdogs.interceptorOwnerHealthThreshold": "Interceptor Owner Health Threshold (HP)",
+  "gamerule.betterdogs.interceptorOwnerHealthThreshold.description": "Owner health threshold in HP (e.g. 10 = 5 hearts) below which dogs will heroically intercept incoming projectiles."
 }

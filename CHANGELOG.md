@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.1+26.1.2] - 2026-10-24
+
+### Added
+- 🛡️ **Ballistic Interceptor (BL-BD-021 - Step 2)**: Dynamic GameRules, Config Synchronization & Localization.
+  - Added `betterdogs:bd_projectile_intercept` (default: `true`) to toggle canine projectile interception.
+  - Added `betterdogs:bd_interceptor_owner_health_threshold` (default: `10` HP / 5 hearts) defining owner health threshold for heroic interceptions.
+  - Omni-channel Brigadier & translation keys with aliases (`projectileIntercept`, `interceptorOwnerHealthThreshold`) across all version anchors.
+
 ## [5.7.0+26.1.2] - 2026-10-24
 
 ### Added
