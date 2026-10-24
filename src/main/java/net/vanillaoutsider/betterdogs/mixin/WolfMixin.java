@@ -345,6 +345,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     public WolfPersonality betterdogs$getPersonality() {
         if (this.betterdogs$personality == null) {
             Wolf wolf = (Wolf) (Object) this;
+
             this.betterdogs$personality = net.vanillaoutsider.betterdogs.util.WolfCoatVariantHelper.calculateSpawnPersonality(wolf.level(), wolf.blockPosition(), wolf.getRandom());
         }
         return this.betterdogs$personality;
@@ -504,6 +505,11 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     @Inject(method = "hurtServer", at = @At("HEAD"), cancellable = true)
     private void betterdogs$onHurtServer(net.minecraft.server.level.ServerLevel serverLevel, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         Wolf wolf = (Wolf) (Object) this;
+        // Heroic Sacrifice Damage Routing & Anti-One-Shot Protection (BL-BD-021)
+        if (net.vanillaoutsider.betterdogs.ai.WolfProjectileInterceptHelper.handleInterceptDamage(wolf, source, amount)) {
+            cir.setReturnValue(false);
+            return;
+        }
         if (net.vanillaoutsider.betterdogs.util.WolfFriendlyFireHelper.shouldCancelDamage(wolf, source)) {
             cir.setReturnValue(false);
             return;
