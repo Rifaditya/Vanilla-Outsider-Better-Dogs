@@ -479,6 +479,11 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
     private void betterdogs$onHurt(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         Wolf wolf = (Wolf) (Object) this;
+        // Heroic Sacrifice Damage Routing & Anti-One-Shot Protection (BL-BD-021)
+        if (net.vanillaoutsider.betterdogs.ai.WolfProjectileInterceptHelper.handleInterceptDamage(wolf, source, amount)) {
+            cir.setReturnValue(false);
+            return;
+        }
         if (net.vanillaoutsider.betterdogs.util.WolfFriendlyFireHelper.shouldCancelDamage(wolf, source)) {
             cir.setReturnValue(false);
             return;

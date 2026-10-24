@@ -192,6 +192,7 @@ public class WolfProjectileInterceptGoal extends Goal {
         }
         this.hasLeaped = false;
         this.activeTicks = MAX_ACTIVE_TICKS;
+        WolfProjectileInterceptHelper.recordIntercept(this.wolf);
 
         if (this.cachedInterceptPos != null && !Vec3.ZERO.equals(this.cachedInterceptPos)) {
             this.wolf.getNavigation().moveTo(
@@ -252,6 +253,7 @@ public class WolfProjectileInterceptGoal extends Goal {
             this.wolf.hasImpulse = true;
             this.wolf.getJumpControl().jump();
             this.hasLeaped = true;
+            WolfProjectileInterceptHelper.recordIntercept(this.wolf);
         }
     }
 
