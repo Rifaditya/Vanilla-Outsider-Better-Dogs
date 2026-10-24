@@ -145,6 +145,10 @@ public class BetterDogsGameRules {
     public static GameRules.Key<GameRules.IntegerValue> BD_EVASION_REACTION_TICKS;
     public static GameRules.Key<GameRules.IntegerValue> BD_EVASION_LATERAL_IMPULSE;
 
+    // Ballistic Interceptor (BL-BD-021)
+    public static GameRules.Key<GameRules.BooleanValue> BD_PROJECTILE_INTERCEPT;
+    public static GameRules.Key<GameRules.IntegerValue> BD_INTERCEPTOR_OWNER_HEALTH_THRESHOLD;
+
     // Breeding & Genetics
     public static GameRules.Key<GameRules.IntegerValue> BD_SPAWN_NORMAL_PERCENT;
     public static GameRules.Key<GameRules.IntegerValue> BD_SPAWN_AGGRO_PERCENT;
@@ -302,6 +306,10 @@ public class BetterDogsGameRules {
         BD_EVASION_REACTION_TICKS = GameRuleRegistry.register("bd_evasion_reaction_ticks", BETTER_DOGS, GameRuleFactory.createIntRule(20));
         BD_EVASION_LATERAL_IMPULSE = GameRuleRegistry.register("bd_evasion_lateral_impulse", BETTER_DOGS, GameRuleFactory.createIntRule(85));
 
+        // Ballistic Interceptor (BL-BD-021)
+        BD_PROJECTILE_INTERCEPT = GameRuleRegistry.register("bd_projectile_intercept", BETTER_DOGS, GameRuleFactory.createBooleanRule(true));
+        BD_INTERCEPTOR_OWNER_HEALTH_THRESHOLD = GameRuleRegistry.register("bd_interceptor_owner_health_threshold", BETTER_DOGS, GameRuleFactory.createIntRule(10));
+
         // Breeding & Genetics
         BD_SPAWN_NORMAL_PERCENT = GameRuleRegistry.register("bd_spawn_normal_percent", BETTER_DOGS, GameRuleFactory.createIntRule(60));
         BD_SPAWN_AGGRO_PERCENT = GameRuleRegistry.register("bd_spawn_aggro_percent", BETTER_DOGS, GameRuleFactory.createIntRule(20));
@@ -407,6 +415,14 @@ public class BetterDogsGameRules {
 
     public static int getEvasionLateralImpulse(Level level) {
         return getInt(level, BD_EVASION_LATERAL_IMPULSE, 85);
+    }
+
+    public static boolean isProjectileInterceptEnabled(Level level) {
+        return getBoolean(level, BD_PROJECTILE_INTERCEPT, true);
+    }
+
+    public static int getInterceptorOwnerHealthThreshold(Level level) {
+        return getInt(level, BD_INTERCEPTOR_OWNER_HEALTH_THRESHOLD, 10);
     }
 
     public static boolean getBoolean(Level level, GameRules.Key<GameRules.BooleanValue> key, boolean fallback) {
