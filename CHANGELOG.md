@@ -1,5 +1,14 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.7.0+1.20.1] - 2026-10-24
+
+### Added
+- 🎯 **Ballistic Interceptor (BL-BD-021 - Step 1)**: Trajectory Intercept Mathematical Solver & Disposition Affinity.
+  - Closed-form Time of Closest Approach (TCA) 3D raycast solver calculating incoming projectile threats targeting the owner.
+  - Cylinder collision detection against owner bounding box ($r \le 1.25$m, $\Delta y \in [-0.5, 2.0]$m) with bounded reaction lookahead.
+  - Pre-impact interception waypoint calculation ($\vec{P}_{\text{intercept}} = \vec{P}_{\text{proj}} + \max(0.0, \tau - 1.0) \cdot \vec{V}$).
+  - Deterministic canine archetype defense affinities: Guardian (85%), Fearless (75%), Adventurer (40%), Playful (20%), Glutton (15%), Lazy (5%).
+
 ## [1.6.0+1.20.1] - 2026-10-24
 
 ### Added

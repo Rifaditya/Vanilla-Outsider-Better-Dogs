@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 1.7.0+1.20.1** - Ballistic Interceptor: Trajectory Intercept Solver & Disposition Affinity (BL-BD-021)
 - [ ] **Better Dogs 1.6.0+1.20.1** - Ballistic Evasion Reflex: Ghast Fireballs, Wither Skulls & Threat Trajectory Dodge (BL-BD-020)
 - [ ] **1.5.0+1.20.1** - Canine Explosive Reflex: Primed TNT, End Crystals & Swelling Creepers Flee Reflex (BL-BD-006)
 - [ ] **1.4.0+1.20.1** (2026-10-23) - 🎭 Extensible Canine Personality Archetypes Suite: 6 distinct archetypes, dynamic stat modifiers, specialized follow/flee behaviors, and configurable GameRule distribution modes [BL-BD-013]
