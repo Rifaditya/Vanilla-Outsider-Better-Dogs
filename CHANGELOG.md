@@ -1,5 +1,12 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.7.5+1.20.1] - 2026-10-24
+
+### Added
+- 🛡️ **Ballistic Interceptor (BL-BD-021 - Step 6)**: Multi-Era Parity Verification & Full Production Release.
+  - Verified 5-Pillar testing suite: mathematical intercept fuzzing, concurrency load, dynamic GameRule AST bindings, and Knot runtime sidedness.
+  - Full multi-era parity across all 6 version anchors (1.20.1, 1.21.1, 1.21.11, 26.1.2, 26.2, 26.3).
+
 ## [1.7.4+1.20.1] - 2026-10-24
 
 ### Added
