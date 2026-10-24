@@ -2,9 +2,21 @@
 // Verified against: Minecraft 26.2
 package net.vanillaoutsider.betterdogs.ai;
 
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.wolf.Wolf;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Closed-form 3D raycast time-to-closest-approach trajectory math and owner ballistic defense solver.
@@ -179,5 +191,147 @@ public final class WolfProjectileInterceptHelper {
             return InterceptPrediction.NONE;
         }
         return computeOwnerIntercept(owner.position(), projPos, projVel, lookaheadTicks, DEFAULT_OWNER_COLLISION_RADIUS);
+    }
+
+    private static final Map<UUID, Long> RECENT_INTERCEPTS = new ConcurrentHashMap<>();
+    public static final long INTERCEPT_WINDOW_TICKS = 30L;
+
+    /**
+     * Marks the given wolf as actively intercepting a projectile for the next window of ticks.
+     */
+    public static void recordIntercept(Wolf wolf) {
+        if (wolf == null) return;
+        long currentTick = getTick(wolf);
+        UUID id = getWolfId(wolf);
+        RECENT_INTERCEPTS.put(id, currentTick + INTERCEPT_WINDOW_TICKS);
+    }
+
+    /**
+     * Evaluates if the wolf has recently initiated or executed a ballistic interception leap.
+     */
+    public static boolean isRecentlyIntercepting(Wolf wolf) {
+        if (wolf == null) return false;
+        UUID id = getWolfId(wolf);
+        Long expiry = RECENT_INTERCEPTS.get(id);
+        if (expiry == null) return false;
+        long currentTick = getTick(wolf);
+        if (currentTick <= expiry) {
+            return true;
+        }
+        RECENT_INTERCEPTS.remove(id);
+        return false;
+    }
+
+    /**
+     * Clears intercept tracking for the wolf (e.g. on death or state reset).
+     */
+    public static void clearIntercept(Wolf wolf) {
+        if (wolf == null) return;
+        RECENT_INTERCEPTS.remove(getWolfId(wolf));
+    }
+
+    private static UUID getWolfId(Wolf wolf) {
+        try {
+            UUID id = wolf.getUUID();
+            if (id != null) return id;
+        } catch (Throwable ignored) {}
+        return new UUID(0L, System.identityHashCode(wolf));
+    }
+
+    private static long getTick(Wolf wolf) {
+        try {
+            if (wolf.level() != null) {
+                return wolf.level().getGameTime();
+            }
+        } catch (Throwable ignored) {}
+        return wolf.tickCount;
+    }
+
+    /**
+     * Pure testable logic determining whether anti-one-shot protection should mitigate damage.
+     *
+     * @param isDirectProjectile Whether the damage was dealt by a direct projectile
+     * @param isIntercepting     Whether the wolf is in an active intercept window
+     * @param currentHealth      Current health of the wolf
+     * @param incomingDamage     Damage amount being dealt
+     * @return true if damage qualifies for anti-one-shot protection and clamping to 1.0f
+     */
+    public static boolean shouldMitigateInterceptDamage(
+            boolean isDirectProjectile,
+            boolean isIntercepting,
+            float currentHealth,
+            float incomingDamage
+    ) {
+        if (!isDirectProjectile || !isIntercepting) {
+            return false;
+        }
+        // Anti-One-Shot Protection: If amount >= wolf.getHealth() and wolf health >= 3.0f:
+        // Clamp health to 1.0f and cancel killing blow / absorb lethal excess.
+        return incomingDamage >= currentHealth && currentHealth >= 3.0f;
+    }
+
+    /**
+     * Computes the post-mitigation health. If anti-one-shot is triggered, clamped to 1.0f.
+     */
+    public static float calculateMitigatedHealth(float currentHealth, float incomingDamage, boolean qualifies) {
+        if (qualifies) {
+            return 1.0f;
+        }
+        return Math.max(0.0f, currentHealth - incomingDamage);
+    }
+
+    /**
+     * Handles damage routing, anti-one-shot protection, armor absorption, and sensory polish
+     * when a wolf intercepts a projectile targeting its owner (BL-BD-021).
+     *
+     * @param wolf   Target wolf taking damage
+     * @param source DamageSource being applied
+     * @param amount Damage amount
+     * @return true if damage was mitigated / absorbed, cancelling killing blow; false otherwise
+     */
+    public static boolean handleInterceptDamage(Wolf wolf, DamageSource source, float amount) {
+        if (wolf == null || source == null) {
+            return false;
+        }
+
+        boolean isDirectProjectile = source.getDirectEntity() instanceof Projectile;
+        boolean isIntercepting = isRecentlyIntercepting(wolf);
+        float currentHealth = wolf.getHealth();
+
+        if (shouldMitigateInterceptDamage(isDirectProjectile, isIntercepting, currentHealth, amount)) {
+            wolf.setHealth(1.0f);
+            applyInvulnerability(wolf, 20);
+            applyArmorAbsorption(wolf, amount);
+            triggerSensoryPolish(wolf);
+            return true;
+        }
+
+        return false;
+    }
+
+    private static void applyInvulnerability(Wolf wolf, int ticks) {
+        wolf.invulnerableTime = ticks;
+    }
+
+    private static void applyArmorAbsorption(Wolf wolf, float amount) {
+        try {
+            ItemStack armor = wolf.getBodyArmorItem();
+            if (armor != null && !armor.isEmpty()) {
+                armor.hurtAndBreak((int) Math.max(1.0f, amount), wolf, EquipmentSlot.BODY);
+            }
+        } catch (Throwable ignored) {
+            // Gracefully ignore in headless or mock test environments
+        }
+    }
+
+    private static void triggerSensoryPolish(Wolf wolf) {
+        try {
+            if (wolf.level() instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(ParticleTypes.CRIT, wolf.getX(), wolf.getY() + 0.5, wolf.getZ(), 10, 0.2, 0.2, 0.2, 0.1);
+                serverLevel.playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), SoundEvents.SHIELD_BLOCK.value(), wolf.getSoundSource(), 1.0F, 1.0F);
+            }
+        } catch (Throwable ignored) {
+            // Gracefully ignore in headless or mock test environments
+        }
     }
 }
