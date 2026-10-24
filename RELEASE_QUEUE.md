@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 5.7.3+26.1.2** - Ballistic Interceptor: AI Goal Registration in WolfAIMixin (BL-BD-021)
 - [ ] **Better Dogs 5.7.2+26.1.2** - Ballistic Interceptor: Canine Intercept AI Goal Implementation (BL-BD-021)
 - [ ] **Better Dogs 5.7.1+26.1.2** - Ballistic Interceptor: Dynamic GameRules, Config Synchronization & Localization (BL-BD-021)
 
