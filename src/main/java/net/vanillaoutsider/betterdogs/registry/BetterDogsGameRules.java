@@ -140,6 +140,10 @@ public class BetterDogsGameRules {
     public static GameRule<Integer> BD_EVASION_REACTION_TICKS;
     public static GameRule<Integer> BD_EVASION_LATERAL_IMPULSE;
 
+    // Ballistic Interceptor (BL-BD-021)
+    public static GameRule<Boolean> BD_PROJECTILE_INTERCEPT;
+    public static GameRule<Integer> BD_INTERCEPTOR_OWNER_HEALTH_THRESHOLD;
+
     // Breeding & Genetics
     public static GameRule<Integer> BD_SPAWN_NORMAL_PERCENT;
     public static GameRule<Integer> BD_SPAWN_AGGRO_PERCENT;
@@ -331,6 +335,15 @@ public class BetterDogsGameRules {
         DynamicGameRuleManager.getDynamicRules().put("betterdogs:evasionReactionTicks", BD_EVASION_REACTION_TICKS);
         DynamicGameRuleManager.getDynamicRules().put("betterdogs:evasionLateralImpulse", BD_EVASION_LATERAL_IMPULSE);
 
+        // Ballistic Interceptor (BL-BD-021)
+        BD_PROJECTILE_INTERCEPT = registerBoolean("betterdogs:bd_projectile_intercept", BETTER_DOGS, true);
+        BD_INTERCEPTOR_OWNER_HEALTH_THRESHOLD = registerInteger("betterdogs:bd_interceptor_owner_health_threshold", BETTER_DOGS, 10, 0, 1000);
+
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:bd_projectile_intercept", BD_PROJECTILE_INTERCEPT);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:bd_interceptor_owner_health_threshold", BD_INTERCEPTOR_OWNER_HEALTH_THRESHOLD);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:projectileIntercept", BD_PROJECTILE_INTERCEPT);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:interceptorOwnerHealthThreshold", BD_INTERCEPTOR_OWNER_HEALTH_THRESHOLD);
+
         // Breeding & Genetics
         BD_SPAWN_NORMAL_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_spawn_normal_percent", BETTER_DOGS, 60);
         BD_SPAWN_AGGRO_PERCENT = registerInteger("vanilla-outsider-better-dogs:bd_spawn_aggro_percent", BETTER_DOGS, 20);
@@ -448,6 +461,14 @@ public class BetterDogsGameRules {
 
     public static int getEvasionLateralImpulse(Level level) {
         return getInt(level, BD_EVASION_LATERAL_IMPULSE, 85);
+    }
+
+    public static boolean isProjectileInterceptEnabled(Level level) {
+        return getBoolean(level, BD_PROJECTILE_INTERCEPT, true);
+    }
+
+    public static int getInterceptorOwnerHealthThreshold(Level level) {
+        return getInt(level, BD_INTERCEPTOR_OWNER_HEALTH_THRESHOLD, 10);
     }
 
     public static boolean getBoolean(Level level, GameRule<Boolean> rule, boolean fallback) {

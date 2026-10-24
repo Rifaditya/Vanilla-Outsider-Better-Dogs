@@ -23,5 +23,10 @@ public class BetterDogsGameRulesTest {
         assertEquals(10, BetterDogsGameRules.getPlayPenaltyMinutes(null), "Default for playPenaltyMinutes should be 10");
         assertTrue(BetterDogsGameRules.getBoolean(null, BetterDogsGameRules.BD_DOG_PLAY_FIGHTING, true));
         assertEquals(10, BetterDogsGameRules.getInt(null, BetterDogsGameRules.BD_PLAY_PENALTY_MINUTES, 10));
+
+        assertTrue(BetterDogsGameRules.isProjectileInterceptEnabled(null), "Default for projectileIntercept should be true");
+        assertEquals(10, BetterDogsGameRules.getInterceptorOwnerHealthThreshold(null), "Default for interceptorOwnerHealthThreshold should be 10");
+        assertTrue(BetterDogsGameRules.getBoolean(null, BetterDogsGameRules.BD_PROJECTILE_INTERCEPT, true));
+        assertEquals(10, BetterDogsGameRules.getInt(null, BetterDogsGameRules.BD_INTERCEPTOR_OWNER_HEALTH_THRESHOLD, 10));
     }
 }
