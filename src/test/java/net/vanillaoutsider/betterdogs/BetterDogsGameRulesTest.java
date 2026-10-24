@@ -29,6 +29,11 @@ public class BetterDogsGameRulesTest {
         assertEquals(30, BetterDogsGameRules.getMaxScaleDeviation(null), "Default for maxScaleDeviation should be 30");
         assertTrue(BetterDogsGameRules.getBoolean(null, BetterDogsGameRules.BD_DOG_GENETICS_ENABLED, true));
         assertEquals(30, BetterDogsGameRules.getInt(null, BetterDogsGameRules.BD_MAX_SCALE_DEVIATION, 30));
+
+        assertTrue(BetterDogsGameRules.isProjectileInterceptEnabled(null), "Default for projectileIntercept should be true");
+        assertEquals(10, BetterDogsGameRules.getInterceptorOwnerHealthThreshold(null), "Default for interceptorOwnerHealthThreshold should be 10");
+        assertTrue(BetterDogsGameRules.getBoolean(null, BetterDogsGameRules.BD_PROJECTILE_INTERCEPT, true));
+        assertEquals(10, BetterDogsGameRules.getInt(null, BetterDogsGameRules.BD_INTERCEPTOR_OWNER_HEALTH_THRESHOLD, 10));
     }
 
     @Test
