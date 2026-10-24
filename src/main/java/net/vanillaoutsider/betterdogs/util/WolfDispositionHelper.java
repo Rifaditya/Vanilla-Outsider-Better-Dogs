@@ -5,6 +5,8 @@ import java.util.UUID;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
+import net.vanillaoutsider.betterdogs.personality.CanineArchetype;
+import net.vanillaoutsider.betterdogs.personality.CaninePersonalityHelper;
 
 /**
  * Dedicated single-purpose helper for additive personality + full-spectrum deterministic UUID-seeded behavioral variance.
@@ -17,6 +19,7 @@ public final class WolfDispositionHelper {
     public static final long SALT_HOWL = 0x4031701L;
     public static final long SALT_HOOVER = 0x800F3E1L;
     public static final long SALT_PLAYFUL = 0x501A7F1L;
+    public static final long SALT_INTERCEPT = 0x494E5452L;
 
     private WolfDispositionHelper() {
     }
@@ -230,5 +233,45 @@ public final class WolfDispositionHelper {
             return false;
         }
         return getSeededRoll(uuid, SALT_PLAYFUL) < 40;
+    }
+
+    /**
+     * Resolves the base ballistic interceptor affinity percentage for a given canine personality archetype.
+     */
+    public static int getBallisticInterceptorAffinity(CanineArchetype archetype) {
+        if (archetype == null) {
+            return 30;
+        }
+        return switch (archetype) {
+            case GUARDIAN -> 85;
+            case FEARLESS -> 75;
+            case ADVENTURER -> 40;
+            case PLAYFUL -> 20;
+            case GLUTTON -> 15;
+            case LAZY -> 5;
+        };
+    }
+
+    /**
+     * Evaluates if this dog has the disposition affinity to intercept projectiles aimed at its owner.
+     */
+    public static boolean isBallisticInterceptor(Wolf wolf) {
+        if (wolf == null || wolf.getUUID() == null) {
+            return false;
+        }
+        CanineArchetype archetype = CaninePersonalityHelper.getOrRollArchetype(wolf);
+        int affinity = getBallisticInterceptorAffinity(archetype);
+        return getSeededRoll(wolf.getUUID(), SALT_INTERCEPT) < affinity;
+    }
+
+    /**
+     * Evaluates if a given UUID with specific archetype is a ballistic interceptor.
+     */
+    public static boolean isBallisticInterceptor(UUID uuid, CanineArchetype archetype) {
+        if (uuid == null) {
+            return false;
+        }
+        int affinity = getBallisticInterceptorAffinity(archetype);
+        return getSeededRoll(uuid, SALT_INTERCEPT) < affinity;
     }
 }
