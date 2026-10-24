@@ -1,5 +1,12 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.1)
 
+## [1.7.3+1.21.1] - 2026-10-24
+
+### Added
+- 🛡️ **Ballistic Interceptor (BL-BD-021 - Step 4)**: AI Goal Registration in WolfMixin.
+  - Registered `WolfProjectileInterceptGoal` at Priority 1 in custom wolf goals.
+  - Intercept routine seamlessly co-exists with existing high-priority avoidance and protective survival goals.
+
 ## [1.7.2+1.21.1] - 2026-10-24
 
 ### Added
