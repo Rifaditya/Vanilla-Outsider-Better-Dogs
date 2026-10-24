@@ -47,6 +47,11 @@ public class GameRuleRegistryContractTest {
         assertNotNull(BetterDogsGameRules.BD_PLAY_PENALTY_MINUTES, "BD_PLAY_PENALTY_MINUTES must be registered and non-null");
         assertTrue(BetterDogsGameRules.isDogPlayFightingEnabled(null), "Default dogPlayFighting must be true");
         assertEquals(10, BetterDogsGameRules.getPlayPenaltyMinutes(null), "Default playPenaltyMinutes must be 10");
+
+        assertNotNull(BetterDogsGameRules.BD_PROJECTILE_INTERCEPT, "BD_PROJECTILE_INTERCEPT must be registered and non-null");
+        assertNotNull(BetterDogsGameRules.BD_INTERCEPTOR_OWNER_HEALTH_THRESHOLD, "BD_INTERCEPTOR_OWNER_HEALTH_THRESHOLD must be registered and non-null");
+        assertTrue(BetterDogsGameRules.isProjectileInterceptEnabled(null), "Default projectileIntercept must be true");
+        assertEquals(10, BetterDogsGameRules.getInterceptorOwnerHealthThreshold(null), "Default interceptorOwnerHealthThreshold must be 10");
     }
 
     @Test
