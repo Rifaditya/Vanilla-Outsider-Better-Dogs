@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.7.3+26.3] - 2026-10-24
+
+### Added
+- 🛡️ **Ballistic Interceptor (BL-BD-021 - Step 4)**: AI Goal Registration in WolfAIMixin.
+  - Registered `WolfProjectileInterceptGoal` at Priority 1 in custom wolf goals.
+  - Intercept routine seamlessly co-exists with existing high-priority avoidance and protective survival goals.
+
 ## [5.7.2+26.3] - 2026-10-24
 
 ### Added
