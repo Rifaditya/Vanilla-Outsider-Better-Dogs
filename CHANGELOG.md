@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.7.4+1.20.1] - 2026-10-24
+
+### Added
+- 🛡️ **Ballistic Interceptor (BL-BD-021 - Step 5)**: Heroic Sacrifice Damage Routing, Anti-One-Shot Protection & Sensory Polish.
+  - Anti-One-Shot Protection: Guardian dogs absorbing fatal projectile damage intended for their low-health owner are clamped to 1.0 HP rather than dying instantly, provided their health was >= 3.0 HP.
+  - Applied 20-tick post-intercept invulnerability buffer to allow dog recovery.
+  - Sensory Feedback: Block sound cues (`SHIELD_BLOCK`) and critical spark particles (`CRIT`) confirm successful ballistic interception.
+
 ## [1.7.3+1.20.1] - 2026-10-24
 
 ### Added
