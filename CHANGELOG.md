@@ -44,15 +44,15 @@
 ### Added
 - 🎯 **Ballistic Interceptor (BL-BD-021 - Step 1)**: Trajectory Intercept Mathematical Solver & Disposition Affinity.
   - Closed-form Time of Closest Approach (TCA) 3D raycast solver calculating incoming projectile threats targeting the owner.
-  - Cylinder collision detection against owner bounding box ($r \le 1.25$m, $\Delta y \in [-0.5, 2.0]$m) with bounded reaction lookahead.
-  - Pre-impact interception waypoint calculation ($\vec{P}_{\text{intercept}} = \vec{P}_{\text{proj}} + \max(0.0, \tau - 1.0) \cdot \vec{V}$).
+  - Cylinder collision detection against owner bounding box (r ≤ 1.25m, Δy in [-0.5, 2.0]m) with bounded reaction lookahead.
+  - Pre-impact interception waypoint calculation (P_intercept = P_proj + max(0.0, τ - 1.0) · V).
   - Deterministic canine archetype defense affinities: Guardian (85%), Fearless (75%), Adventurer (40%), Playful (20%), Glutton (15%), Lazy (5%).
 
 ## [5.6.0+26.1.2] - 2026-10-24
 
 ### Added
 - ☄️ **Ballistic Evasion Reflex (BL-BD-020)**: Athletic canines now dynamically calculate trajectories of incoming heavy ballistic projectiles (Ghast fireballs, Blaze fireballs, Wither skulls) and perform agile lateral dodge hops before impact.
-- 🦘 **Emergency Scramble for Sitting Dogs**: Sitting dogs in direct incoming projectile trajectories ($d_{\perp} \le 1.5$m, $\tau \le 20$ ticks) break posture to perform an emergency scramble jump to safety, safely returning to their sitting pose once danger has passed.
+- 🦘 **Emergency Scramble for Sitting Dogs**: Sitting dogs in direct incoming projectile trajectories (d_⟂ ≤ 1.5m, τ ≤ 20 ticks) break posture to perform an emergency scramble jump to safety, safely returning to their sitting pose once danger has passed.
 - 🛡️ **Intelligent Cliff & Lava Hazard Avoidance**: Lateral dodge calculations evaluate ground safety at the landing destination, automatically inverting the dodge impulse if one side is blocked by lava, fire, or sheer cliffs.
 - 💨 **Sensory Cues & Archetype Nuance**: Dodges are punctuated by crisp puff particles and vocal cues. Courageous **Fearless** dogs pant with athletic confidence rather than panic-whining.
 - ⚙️ **Dynamic GameRules**: Fully customizable via `betterdogs:bd_ballistic_evasion_enabled`, `betterdogs:bd_evasion_reaction_ticks`, and `betterdogs:bd_evasion_lateral_impulse`.
@@ -81,9 +81,9 @@
 ## [5.3.0+26.1.2] - 2026-10-21
 
 ### Added
-- 🧬 **Canine Physical Genetics Suite (BL-BD-012)**: Introduced dynamic physical breeding genetics modeled after equine inheritance. Offspring inherit movement speed, max health, and physical scale from parents via intermediate Gaussian distributions ($(\text{parent}_1 + \text{parent}_2) / 2 + \mathcal{N}(0, \sigma^2)$) with saturated bounds.
+- 🧬 **Canine Physical Genetics Suite (BL-BD-012)**: Introduced dynamic physical breeding genetics modeled after equine inheritance. Offspring inherit movement speed, max health, and physical scale from parents via intermediate Gaussian distributions ((parent_1 + parent_2) / 2 + N(0, σ²)) with saturated bounds.
 - 📐 **Dynamic Physical & Hitbox Scaling**: Wolves feature persistent `generic.scale` attributes varying between 0.70x and 1.30x (configurable via `bd_wolf_min_scale_percent` and `bd_wolf_max_scale_percent`), with dynamic hitbox synchronization so miniature dogs fit in tight crawlspaces while giant mastiffs block wide paths.
-- 🔊 **Acoustic Scale Pitch Timbre Modulation**: Dog vocalizations (barking, whining, growling, howling) dynamically adjust pitch inversely proportional to scale ($\text{pitch} = \text{base} / \sqrt{\text{scale}}$), granting deep resonant booms to towering hounds and bright, squeaky barks to lap dogs.
+- 🔊 **Acoustic Scale Pitch Timbre Modulation**: Dog vocalizations (barking, whining, growling, howling) dynamically adjust pitch inversely proportional to scale (pitch = base / √(scale)), granting deep resonant booms to towering hounds and bright, squeaky barks to lap dogs.
 - 🔍 **Genetics Inspection Command Suite**: Added `/bd inspect` and `/betterdogs inspect` allowing players to examine their dogs' physical genetic stats (scale, movement speed, current/max health, and acoustic timbre factor).
 - ⚙️ **Configurable GameRules & Parameters**: Added `betterdogs:bd_dog_genetics_enabled` and `betterdogs:bd_max_scale_deviation` GameRules with full backward-compatible translation aliases.
 
@@ -174,32 +174,32 @@
 ## [4.24.57+26.1.2] - 2026-08-22
 ### Added
 - 🍖 **Hoover / Ground Food Scavenger Quirk (`WolfDispositionHelper.java`, `WolfScavengeHelper.java`, `EatGroundFoodGoal.java`)**:
-  - Implemented the Hoover behavioral quirk where dogs eagerly scavenge dropped food items from the ground even when at $100\%$ full health.
-  - **Base Personality Rates**: Aggressive ($70\%$), Normal ($35\%$), Pacifist ($10\%$) with $[-100\%, +100\%]$ UUID variance offset.
-  - **Digestion Cooldown**: Enforced a $160\text{ ticks}$ ($8\text{ seconds}$) cooldown between ground food snacks at full health to prevent vacuuming item stacks.
+  - Implemented the Hoover behavioral quirk where dogs eagerly scavenge dropped food items from the ground even when at 100% full health.
+  - **Base Personality Rates**: Aggressive (70%), Normal (35%), Pacifist (10%) with [-100%, +100%] UUID variance offset.
+  - **Digestion Cooldown**: Enforced a 160 ticks (8 seconds) cooldown between ground food snacks at full health to prevent vacuuming item stacks.
   - **Posture Safety**: Fully respects sitting commands (`isOrderedToSit()`); seated dogs will never break posture.
 
 ## [4.24.56+26.1.2] - 2026-08-22
 ### Changed
-- 🧬 **Full-Spectrum [-100%, +100%] UUID Behavioral Variance (`WolfDispositionHelper.java`)**:
-  - Expanded individual dog UUID offset range to $[-100\%, +100\%]$ (clamped to $[0\%, 100\%]$).
+- 🧬 **Full-Spectrum [-100%, +100%] UUID Behavioral Variance** (`WolfDispositionHelper.java`):
+  - Expanded individual dog UUID offset range to [-100%, +100%] (clamped to [0%, 100%]).
   - Applied base personality values:
-    - **Fetch Reluctance**: Aggressive ($10\%$), Normal ($30\%$), Pacifist ($60\%$).
-    - **Storm Fearlessness**: Aggressive ($80\%$), Normal ($40\%$), Pacifist ($10\%$).
-    - **Quiet Howling**: Aggressive ($10\%$), Normal ($25\%$), Pacifist ($60\%$).
+    - **Fetch Reluctance**: Aggressive (10%), Normal (30%), Pacifist (60%).
+    - **Storm Fearlessness**: Aggressive (80%), Normal (40%), Pacifist (10%).
+    - **Quiet Howling**: Aggressive (10%), Normal (25%), Pacifist (60%).
 
 ## [4.24.55+26.1.2] - 2026-08-22
 ### Changed
-- 🧬 **Additive Modifier Behavioral Quirk Model (`WolfDispositionHelper.java`)**:
+- 🧬 **Additive Modifier Behavioral Quirk Model** (`WolfDispositionHelper.java`):
   - Implemented additive modifier variance model with wide personality spread:
-    - **Fetch Reluctance**: Aggressive ($0\text{--}5\%$), Normal ($3\text{--}18\%$), Pacifist ($15\text{--}45\%$).
-    - **Storm Fearlessness**: Aggressive ($90\text{--}100\%$), Normal ($10\text{--}35\%$), Pacifist ($0\text{--}15\%$).
-    - **Quiet Howling**: Aggressive ($0\text{--}10\%$), Normal ($5\text{--}30\%$), Pacifist ($25\text{--}65\%$).
-  - Combined personality baseline percentages with deterministic UUID offsets ($\pm 10\%$ to $\pm 20\%$).
+    - **Fetch Reluctance**: Aggressive (0–5%), Normal (3–18%), Pacifist (15–45%).
+    - **Storm Fearlessness**: Aggressive (90–100%), Normal (10–35%), Pacifist (0–15%).
+    - **Quiet Howling**: Aggressive (0–10%), Normal (5–30%), Pacifist (25–65%).
+  - Combined personality baseline percentages with deterministic UUID offsets (±10% to ±20%).
 
 ## [4.24.54+26.1.2] - 2026-08-22
 ### Added
-- 🧬 **Personality + UUID Seeded Behavioral Variance (`WolfDispositionHelper.java`)**:
+- 🧬 **Personality + UUID Seeded Behavioral Variance** (`WolfDispositionHelper.java`):
   - Deterministically seeded individual behavioral nuances using 64-bit bit-mixing hashing over `UUID` + `WolfPersonality` + behavior salt (zero NBT storage).
   - ~5% of dogs are organically reluctant to fetch sticks; non-fetchers either curiously tilt their heads (`setIsInterested(true)`) or naturally ignore nearby thrown sticks.
   - ~10% of dogs are naturally fearless during thunderstorms, bypassing storm panic and whimpering.
@@ -328,15 +328,15 @@
 - **Puppy Playful Exploration AI (`BabyCuriosityGoal`, `BabyCuriosityHelper`)**:
   - Encapsulated puppy curiosity eligibility, harmless passive mob filtering (animals, players, packmates), nature foliage recognition (flowers, tall grass, crops, leaves, pumpkins, melons), and feedback cues into single-purpose `BabyCuriosityHelper`.
   - Implemented personality-scaled curiosity frequency: Pacifist puppies explore frequently (every 2–3 seconds), Normal puppies explore periodically (every 4–6 seconds), and Aggressive puppies remain focused on combat discipline (disinterested).
-  - Puppies approach interesting targets at $0.8\times$ speed, gaze/sniff for 2–6 seconds, emit subtle happy villager particles via `WolfParticleHelper`, and play soft baby ambient audio.
-  - Added automated test suite `BabyCuriosityTest` asserting personality trigger intervals, distance bounds ($100.0\text{m}^2$, $6.25\text{m}^2$), foliage block validation, and strict null safety.
+  - Puppies approach interesting targets at 0.8× speed, gaze/sniff for 2–6 seconds, emit subtle happy villager particles via `WolfParticleHelper`, and play soft baby ambient audio.
+  - Added automated test suite `BabyCuriosityTest` asserting personality trigger intervals, distance bounds (100.0m², 6.25m²), foliage block validation, and strict null safety.
 
 
 ## [4.24.38+26.1.2] - 2026-08-19
 ### Added & Refactored
 - **Vehicle Navigation & Auto-Boarding System (`MoveToVehicleGoal`, `DogSeatHelper`, `DogCommandManager`)**:
   - Encapsulated vehicle/seat detection, passenger vacancy validation, command item checks, and outward lateral dismount vector math into single-purpose `DogSeatHelper`.
-  - Implemented stick/rod command selection and auto-boarding AI: dogs navigate to commanded Boats, Minecarts, Saddled Mounts/Camels, modded chairs, and Stair blocks within 12 blocks (`144.0D` distance squared) at $1.25\times$ speed and board when within 1.5 blocks.
+  - Implemented stick/rod command selection and auto-boarding AI: dogs navigate to commanded Boats, Minecarts, Saddled Mounts/Camels, modded chairs, and Stair blocks within 12 blocks (`144.0D` distance squared) at 1.25× speed and board when within 1.5 blocks.
   - Implemented safe lateral dismount pushing the dog 0.8 blocks outward along the player's horizontal look vector, preventing collision clipping or immediate re-boarding loops.
   - Added automated test suite `VehicleBoardingTest` asserting distance constants, lateral dismount vector calculations, command selection tracking, and strict null safety.
 
@@ -344,7 +344,7 @@
 ## [4.24.37+26.1.2] - 2026-08-19
 ### Added & Refactored
 - **Morning Gift Bringing & Feeding Merits System (`WolfGiftGoal`, `WolfGiftHelper`, `WolfPersistentData`)**:
-  - Implemented morning approach AI where healthy, monster-free dogs approach waking owners at $1.25\times$ speed to present scavenged gifts.
+  - Implemented morning approach AI where healthy, monster-free dogs approach waking owners at 1.25× speed to present scavenged gifts.
   - Enforced 10-meal feeding merit threshold (`bd_gift_feed_threshold`), consuming 10 merits upon delivery with strict 1-day cooldown tracking.
   - Implemented personality-themed scavenged gift loot pools (Aggressive: combat drops/bones/eyes; Pacifist: berries/apples/flowers; Normal: utility/sticks/feathers) plus 5% rare treasures (gold nuggets, emeralds, name tags, bone meal).
   - Emits happy villager celebration particles via `WolfParticleHelper` and ambient audio cues upon gift delivery.
@@ -362,12 +362,12 @@
 ## [4.24.35+26.1.2] - 2026-08-19
 ### Added & Refactored
 - **Creeper Threat Repulsion AI (`FleeCreeperGoal`, `WolfAIMixin`)**:
-  - Implemented 10-block emergency evasion fleeing at $1.5\times$ sprint speed upon detecting swelling (`getSwellDir() > 0`) or ignited (`isIgnited()`) Creepers.
+  - Implemented 10-block emergency evasion fleeing at 1.5× sprint speed upon detecting swelling (`getSwellDir() > 0`) or ignited (`isIgnited()`) Creepers.
   - Dispatches emergency alarm whine on start and emits sprint smoke trails at the dog's paws.
 - **Global Particle Density System (`ParticleDensity`, `WolfParticleHelper`, `BetterDogsGameRules`, `BetterDogsConfig`)**:
   - Added 4-tier configurable particle density: `NONE` (0), `LOW` (1), `MEDIUM` (3, Default), and `HIGH` (6).
   - Integrated `/gamerule bd_particle_density <0-3>` and `BetterDogsConfig.json` (`particleDensity: "medium"`).
-  - Added automated test suite `CreeperEvasionTest` asserting 10m evasion math, $1.5\times$ sprint speed, fuse sensitivity logic, particle density scaling, and strict null safety.
+  - Added automated test suite `CreeperEvasionTest` asserting 10m evasion math, 1.5× sprint speed, fuse sensitivity logic, particle density scaling, and strict null safety.
 
 ## [4.24.34+26.1.2] - 2026-08-18
 ### Added & Refactored
@@ -382,8 +382,8 @@
 - **Pacifist Threat Fleeing AI (`PacifistRevengeGoal`, `WolfAIMixin`)**:
   - Implemented dedicated non-violent threat evasion goal for Pacifist personality wolves.
   - When harmed or threatened, Pacifist wolves emit distress audio/particles and alert nearby packmates within 16 blocks to defend them.
-  - Pacifist wolves tactically flee away from attackers at $1.25\times$ speed toward their owner or safety, preserving their gentle, non-violent nature.
-  - Added automated test suite `PacifistRevengeTest` asserting defense alert radius math ($16\text{m}$), flee speed ($1.25\times$), personality filtering, and strict null safety.
+  - Pacifist wolves tactically flee away from attackers at 1.25× speed toward their owner or safety, preserving their gentle, non-violent nature.
+  - Added automated test suite `PacifistRevengeTest` asserting defense alert radius math (16m), flee speed (1.25×), personality filtering, and strict null safety.
 
 ## [4.24.32+26.1.2] - 2026-08-18
 ### Added & Refactored
@@ -397,8 +397,8 @@
 ### Added & Refactored
 - **Tamed Spontaneous Pack Howling AI (`WolfHowlHelper`, `GroupHowlGoal`, `WolfExtensions`, `WolfMixin`)**:
   - Implemented single-purpose `WolfHowlHelper` for nocturnal pack chorus propagation within 24 blocks (`BetterDogsConfig.get().getHowlSpreadRange()`).
-  - Added mathematical harmonic pitch variation calculation ($0.85\text{F} \sim 1.20\text{F}$) and staggered response delays ($10\sim34$ ticks) for responding packmates.
-  - Refactored `GroupHowlGoal` to handle skyward head orientation ($-45^\circ$), look targeting, and timer coordination.
+  - Added mathematical harmonic pitch variation calculation (0.85F 1.20F) and staggered response delays (1034 ticks) for responding packmates.
+  - Refactored `GroupHowlGoal` to handle skyward head orientation (-45°), look targeting, and timer coordination.
   - Added musical note particle emissions (`ParticleTypes.NOTE`) and howling tick tracking in `WolfExtensions`/`WolfMixin`.
   - Added automated test suite `PackHowlTest` asserting harmonic pitch ranges, chorus delays, and null safety.
 
@@ -408,7 +408,7 @@
   - Eliminated airborne sky teleportation bug when players are flying in Creative mode (`player.getAbilities().flying`) or gliding with Elytra (`player.isFallFlying()`).
   - Added hazard-aware downward ground scanning in `WolfTeleportHelper.findSafeGroundPosBelow` utilizing heightmaps and walkability checks, allowing dogs to continuously trace safe solid ground directly beneath flying owners without mid-air spawns.
   - Refactored `PersonalityFollowOwnerGoal.teleportToOwner` to use `WolfTeleportHelper.findSafeTeleportPos`.
-  - Added flight speed/distance dynamic throttling ($> 32$ blocks) in `WolfCatchupHelper.checkAndPerformCatchUp`.
+  - Added flight speed/distance dynamic throttling (> 32 blocks) in `WolfCatchupHelper.checkAndPerformCatchUp`.
 
 ## [4.24.29+26.1.2] - 2026-08-18
 ### Added & Refactored
@@ -429,21 +429,21 @@
 ### Added & Refactored
 - **Selective Litter Sizing & Allele Inheritance (`WolfLitterHelper`, `AnimalMixin`, `BetterDogsGameRules`)**:
   - Extracted and implemented single-purpose `WolfLitterHelper` managing dynamic multi-puppy litter calculation (`calculateLitterSize`) and sibling puppy spawning (`processBreedingLitter`).
-  - Refactored `AnimalMixin` to decouple inline breeding logic, allowing each sibling puppy to be generated independently with full genetic inheritance (personality, scale variance, coat variants, inbreeding checks), heart particles, bonus XP, and `WOLF_LITTER` advancement triggers for litters $\ge 2$.
+  - Refactored `AnimalMixin` to decouple inline breeding logic, allowing each sibling puppy to be generated independently with full genetic inheritance (personality, scale variance, coat variants, inbreeding checks), heart particles, bonus XP, and `WOLF_LITTER` advancement triggers for litters ≥ 2.
   - Added automated test suite: `VariableLitterTest.java` (22 total test suites).
 
 ## [4.24.26+26.1.2] - 2026-08-18
 ### Added & Refactored
 - **Defect Curing via Golden Apple (`WolfCureHelper`, `WolfInteractMixin`, `BetterDogs`)**:
   - Implemented single-purpose `WolfCureHelper` managing Golden Apple and Enchanted Golden Apple curing interactions for inbred runt dogs.
-  - Curing clears inbred genetic flags, restores scale to normal stature ($\ge 1.0\times$), applies healthy personality combat stats, emits `ParticleTypes.HAPPY_VILLAGER` sparkle particles + levelup audio, and fires `CURE_INBRED` advancement trigger.
+  - Curing clears inbred genetic flags, restores scale to normal stature (≥ 1.0×), applies healthy personality combat stats, emits `ParticleTypes.HAPPY_VILLAGER` sparkle particles + levelup audio, and fires `CURE_INBRED` advancement trigger.
   - Enchanted Golden Apples grant additional Regeneration II (20s) and Absorption I (2m) status effects.
   - Added automated test suite: `InbredCureTest.java` (21 total test suites).
 
 ## [4.24.25+26.1.2] - 2026-08-18
 ### Added & Refactored
 - **Lineage Tracking & Inbreeding Defects (`WolfInbreedingHelper`, `WolfBreedingMixin`, `BetterDogs`)**:
-  - Extracted and implemented single-purpose `WolfInbreedingHelper` managing 3-generation parent UUID lineage verification, runt scale penalties ($0.7\times$ scale reduction), smoke particle effects (`ParticleTypes.SMOKE`), and advancement triggers.
+  - Extracted and implemented single-purpose `WolfInbreedingHelper` managing 3-generation parent UUID lineage verification, runt scale penalties (0.7× scale reduction), smoke particle effects (`ParticleTypes.SMOKE`), and advancement triggers.
   - Refactored `WolfBreedingMixin` to delegate lineage processing and runt penalty effects to `WolfInbreedingHelper`, triggering `INBRED_WOLF` and `OUTCROSS_RUNT` criteria for the breeding player.
   - Added automated test suite: `InbreedingLineageTest.java` (20 total test suites).
 
@@ -457,7 +457,7 @@
 ## [4.24.23+26.1.2] - 2026-08-17
 ### Added & Refactored
 - **Tactical Pack Flanking Coordination AI (`WolfFlankingHelper`, `WolfFlankAttackGoal`, `BetterDogsGameRules`)**:
-  - Extracted and implemented single-purpose `WolfFlankingHelper` managing approach-time calculation ($t = \frac{\text{dist}}{\text{speed}}$), deterministic tie-breaker sorting, dynamic bounding box clearance scaling ($\max(3.0, \text{bbWidth} \times 2.5)$), and raycast line-of-sight collision checks.
+  - Extracted and implemented single-purpose `WolfFlankingHelper` managing approach-time calculation (t = {dist}{speed}), deterministic tie-breaker sorting, dynamic bounding box clearance scaling (max(3.0, bbWidth × 2.5)), and raycast line-of-sight collision checks.
   - Refactored `WolfFlankAttackGoal` to cleanly delegate tactical pack coordination: closest 50% of the pack charges directly (at 50% approach speed until melee), while slower 50% execute multi-angle flanking arcs with opposite-side fallback if terrain is blocked.
   - Added automated test suite: `PackFlankingTest.java` (18 total test suites).
 
@@ -472,7 +472,7 @@
 
 ## [4.24.7+26.1.2] - 2026-08-11
 ### Refactored & Polished
-- **Minimal Tame Particle Polish (`WolfParticleHandler`)**: Polished first-time taming particle feedback with a clean, subtle Minimal Signature (~5-6 particles) per personality:
+- **Minimal Tame Particle Polish** (`WolfParticleHandler`): Polished first-time taming particle feedback with a clean, subtle Minimal Signature (~5-6 particles) per personality:
   - **Aggressive**: 3 `ANGRY_VILLAGER` icons + 3 subtle crimson dust sparkles (`0xFF3333`).
   - **Normal**: 3 `HAPPY_VILLAGER` emerald stars + 3 subtle golden dust sparkles (`0xFFD700`).
   - **Pacifist**: 3 `HEART` icons + 3 subtle mint dust sparkles (`0x00FF88`).
@@ -493,15 +493,15 @@
 
 ## [4.24.3+26.1.2] - 2026-08-10
 ### Fixed & Added
-- **Litematica Compatibility & Command Item Expansion (`DogCommandManager`)**:
+- **Litematica Compatibility & Command Item Expansion** (`DogCommandManager`):
   - **Litematica Tool Conflict Fix**: Resolved issue where sneaking with a stick to dismount or command mount tame wolves onto seats/vehicles failed when Litematica was installed due to Litematica intercepting `minecraft:stick` right-clicks on client side.
-  - **Data-Driven Command Item Tag (`vanilla-outsider-better-dogs:command_items`)**: Created `#vanilla-outsider-better-dogs:command_items` item tag containing `minecraft:stick`, `minecraft:blaze_rod`, `minecraft:breeze_rod`, and `#c:tools/sticks`.
+  - **Data-Driven Command Item Tag** (`vanilla-outsider-better-dogs:command_items`): Created `#vanilla-outsider-better-dogs:command_items` item tag containing `minecraft:stick`, `minecraft:blaze_rod`, `minecraft:breeze_rod`, and `#c:tools/sticks`.
   - **Alternative Command Tools**: Players can now use **Blaze Rods** or **Breeze Rods** (or any stick-like tool) to dismount and command mount dogs seamlessly alongside standard sticks.
   - **Bone Reservation Safeguard**: Explicitly excluded `minecraft:bone` from command items so Bone remains 100% reserved for toggling Guard Mode (`bd_guard_mode`).
 
 ## [4.24.2+26.1.2] - 2026-08-10
 ### Added
-- **Dynamic Climate-Aware Wolf Coat Variants (`WolfVariantHelper`)**:
+- **Dynamic Climate-Aware Wolf Coat Variants** (`WolfVariantHelper`):
   - **Universal Biome Compatibility**: Introduced dynamic climate coat variant resolution (`betterdogs:bd_dynamic_climate_variants`, default `true`). When wolves spawn in modded or un-mapped biomes (Biomes O' Plenty, Terralith, Regions Unexplored, etc.) and Vanilla tag lookup defaults to Pale, Better Dogs evaluates the biome's physical climate properties (temperature, precipitation, downfall) at spawn time.
   - **Dynamic Climate Assignment**: Automatically assigns Snowy (cold/snowy), Ashen/Red (arid/hot), Rusty (jungle/humid), Black (dark taiga), or Chestnut (cool taiga) coat variants based on real climate data.
   - **3-Tier Priority Safeguard**: Preserves third-party custom mod variants (`somemod:custom_wolf`) and native Vanilla tag matches 100% untouched, acting as a smart fallback only when default Pale/Woods fallback occurs.
@@ -688,7 +688,7 @@ The **"Guarding Sit Lock Fix"** patch. Resolves sit command issues for guarding 
 ## [3.7.0+A-26.1.2] - 2026-05-26
 ### Summary
 The **"Dynamic Follower Spread Scaling"** update. Scales the follow/spread spacing of wild and tamed wolf packs dynamically based on the number of active followers.
-- **Dynamic Pack Spread Scaling**: Tamed and wild wolves now space themselves out wider as the pack size $N$ increases. Spacing is calculated mathematically using the square root formula: $f(N) = \text{multiplier} \times \sqrt{N - 1}$.
+- **Dynamic Pack Spread Scaling**: Tamed and wild wolves now space themselves out wider as the pack size N increases. Spacing is calculated mathematically using the square root formula: f(N) = multiplier × √(N - 1).
 - **Tamed Follow Spacing**: Tamed wolves following a player dynamically increase their follow start and stop thresholds, preventing overcrowding.
 - **Wild Flock Spacing**: Wild pack members dynamically adjust cohesion and separation radii during flocking, resulting in organic pack formations.
 - **New Spacing GameRules**: Added 4 new native GameRules to configure the spacing multipliers and limits:
@@ -1045,7 +1045,7 @@ The **"Wolf Litters"** update. Tamed wolves can now have multiple puppies in one
 ## [3.1.37+build.6] - 2026-04-15
 
 ### Added
-- **DasikLibrary Build 16 Sync**: Integrated the **Cached Boids Pattern**. Wolf packs now utilize $O(N)$ aggregated state computation, resolving performance leaks during large pack gatherings.
+- **DasikLibrary Build 16 Sync**: Integrated the **Cached Boids Pattern**. Wolf packs now utilize O(N) aggregated state computation, resolving performance leaks during large pack gatherings.
 - **Biomechanical Smoothing**: Leverages the new library-side Lerp interpolation for smoother pack following without visual jitter.
 
 ### Changed

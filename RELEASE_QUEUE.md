@@ -17,35 +17,35 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 - [ ] **5.4.0+26.1.2** - Extensible Canine Personality Archetypes: Guardian, Playful, Adventurer, Glutton, Lazy, Fearless (BL-BD-013)
 - [ ] **`5.3.0+26.1.2`** - Canine Physical Genetics: Horse-Like Speed, Health, Scale & Pitch Timbre (BL-BD-012)
 - [ ] **`5.2.0+26.1.2`** (2026-10-19) - Dog Play Choreography AI Suite & Orbit Sparring (MC 26.1.2)
-- [x] **`5.1.1+26.1.2`** - GameRule Identifier Crash Fix & Harmless Pack Sparring Suite (MC 26.1.2)
-- [x] **`5.1.0+26.1.2`** - Pack Play Sparring & Social Dynamics AI Suite (MC 26.1.2)
-- [x] **5.0.94+26.1.2** - Multi-Era Parity Alignment (MC 26.1.2)
-- [x] **`4.24.68+26.1.2`** - Italian (`it_it`) Localization & Player Guide (11-Language Suite Complete)
-- [x] **`4.24.67+26.1.2`** - Korean (`ko_kr`) Localization & Player Guide
-- [x] **`4.24.66+26.1.2`** - French (`fr_fr`, `fr_ca`) Localization & Player Guide
-- [x] **`4.24.65+26.1.2`** - Japanese (`ja_jp`) Localization & Player Guide
-- [x] **`4.24.64+26.1.2`** - Portuguese (`pt_br`, `pt_pt`) Localization & Player Guide
-- [x] **`4.24.63+26.1.2`** - German (`de_de`) Localization & Player Guide
-- [x] **`4.24.62+26.1.2`** - Spanish (`es_es`, `es_mx`) Localization & Player Guide
-- [x] **`4.24.61+26.1.2`** - Russian (`ru_ru`) Localization & Player Guide
-- [x] **4.24.60+26.1.2** - Traditional Chinese (zh_tw, zh_hk) Localization & Player Guide
-- [x] **4.24.59+26.1.2** - Simplified Chinese (zh_cn) Localization & Player Guide
-- [x] **4.24.58+26.1.2** - Indonesian (id_id) Full Parity Localization & Player Guide
-- [x] **`4.24.57+26.1.2`** (2026-08-22) - **Hoover Ground Scavenger Quirk:** Dogs eat dropped food at full health with 160-tick digestion cooldown and personality weighting (Aggressive 70%, Normal 35%, Pacifist 10%).
-- [x] **`4.24.56+26.1.2`** (2026-08-22) - **Full-Spectrum [-100%, +100%] UUID Variance:** Full [-100%, +100%] variance offsets across Aggressive (10/80/10), Normal (30/40/25), and Pacifist (60/10/60) bases.
-- [x] **`4.24.55+26.1.2`** (2026-08-22) - **Additive Modifier Behavioral Quirk Model:** Wide personality spread (Aggressive 0-5%, Normal 3-18%, Pacifist 15-45% fetch reluctance) with deterministic UUID variance offsets.
-- [x] **`4.24.54+26.1.2`** (2026-08-22) - **Personality + UUID Seeded Variance:** Deterministic behavioral nuances (fetch refusal with head-tilts, storm fearlessness, quiet howling) seeded by UUID + personality hash.
-- [x] **`4.24.53+26.1.2`** (2026-08-22) - **Subtle Particle Feedback:** Scaled stick fetch, morning gift, and favorite treat particles with `bd_particle_density` GameRule down to subtle 2-particle cues.
-- [x] **`4.24.37+26.1.2`** (2026-08-19) - **Jade Provider Separation:** Separated client tooltip component providers from server data providers to ensure full compatibility with newer Jade releases (`Jade >= 26.2.11+`).
-- [x] **`4.24.36+26.1.2`** (2026-08-19) - *(⚠️ Incompatible with Jade >= 26.2.11+ | Works on Jade < 26.2.10 or without Jade)* **Friendly Fire Dampening & Protection:** Added standing owner melee attack cancellation against owned dogs.
-- [x] **`4.24.7+26.1.2`** (2026-08-11) - **Minimal Tame Particle Polish:** Polished first-time taming particle feedback with a clean, subtle Minimal Signature (~5-6 particles) per personality (Aggressive: crimson dust + angry villager; Normal: golden dust + happy villager; Pacifist: mint dust + heart).
-- [x] **`4.24.6+26.1.2`** (2026-08-10) - **Dismount Overlay Message Translation:** Updated dismount overlay text in en_us and id_id.
-- [x] **`4.24.5+26.1.2`** (2026-08-10) - **YACL Config Option Descriptions:** Added missing `.description(...)` OptionDescription builders in `YaclScreenHelper` across all 6 config categories and synchronized complete `.description` keys in `en_us.json` and `id_id.json`.
-- [x] **`4.24.4+26.1.2`** (2026-08-10) - **Dog Adoption Crash Fix:** Fixed `NullPointerException` crash during adoption by adding personality null guards in `WolfStatManager` and pre-assigning random personalities for uninitialized dogs.
-- [x] **`4.24.3+26.1.2`** (2026-08-10) - **Litematica Compatibility & Command Item Expansion:** Resolved stick tool interaction collision with Litematica by introducing `#vanilla-outsider-better-dogs:command_items` item tag (Stick, Blaze Rod, Breeze Rod, `#c:tools/sticks`), enabling Blaze Rods and Breeze Rods as alternative command tools while keeping Bone 100% reserved for Guard Mode.
-- [x] **`4.24.1+26.1.2`** (2026-08-01) - Full Parity Backport to Minecraft 26.1.2 from 26.2 (`4.24.1+26.2`). Contains all feature updates, Goat Horn Commands, Creeper Evasion, and Jade integration adapted for 26.1.2 APIs.
-- [x] **`3.1.35`** (2026-02-03) - - Detailed descriptions for all gamerules, including the previously missing `bd_howl_chance`.
-- [x] **`3.1.36`** (2026-02-16) - - Dependency conflict: Allow `DasikLibrary` >= 1.0.1 (removed < 2.0.0 cap) to support version 2.0.0.
+- [ ] **`5.1.1+26.1.2`** - GameRule Identifier Crash Fix & Harmless Pack Sparring Suite (MC 26.1.2)
+- [ ] **`5.1.0+26.1.2`** - Pack Play Sparring & Social Dynamics AI Suite (MC 26.1.2)
+- [ ] **5.0.94+26.1.2** - Multi-Era Parity Alignment (MC 26.1.2)
+- [ ] **`4.24.68+26.1.2`** - Italian (`it_it`) Localization & Player Guide (11-Language Suite Complete)
+- [ ] **`4.24.67+26.1.2`** - Korean (`ko_kr`) Localization & Player Guide
+- [ ] **`4.24.66+26.1.2`** - French (`fr_fr`, `fr_ca`) Localization & Player Guide
+- [ ] **`4.24.65+26.1.2`** - Japanese (`ja_jp`) Localization & Player Guide
+- [ ] **`4.24.64+26.1.2`** - Portuguese (`pt_br`, `pt_pt`) Localization & Player Guide
+- [ ] **`4.24.63+26.1.2`** - German (`de_de`) Localization & Player Guide
+- [ ] **`4.24.62+26.1.2`** - Spanish (`es_es`, `es_mx`) Localization & Player Guide
+- [ ] **`4.24.61+26.1.2`** - Russian (`ru_ru`) Localization & Player Guide
+- [ ] **4.24.60+26.1.2** - Traditional Chinese (zh_tw, zh_hk) Localization & Player Guide
+- [ ] **4.24.59+26.1.2** - Simplified Chinese (zh_cn) Localization & Player Guide
+- [ ] **4.24.58+26.1.2** - Indonesian (id_id) Full Parity Localization & Player Guide
+- [ ] **`4.24.57+26.1.2`** (2026-08-22) - **Hoover Ground Scavenger Quirk:** Dogs eat dropped food at full health with 160-tick digestion cooldown and personality weighting (Aggressive 70%, Normal 35%, Pacifist 10%).
+- [ ] **`4.24.56+26.1.2`** (2026-08-22) - **Full-Spectrum [-100%, +100%] UUID Variance:** Full [-100%, +100%] variance offsets across Aggressive (10/80/10), Normal (30/40/25), and Pacifist (60/10/60) bases.
+- [ ] **`4.24.55+26.1.2`** (2026-08-22) - **Additive Modifier Behavioral Quirk Model:** Wide personality spread (Aggressive 0-5%, Normal 3-18%, Pacifist 15-45% fetch reluctance) with deterministic UUID variance offsets.
+- [ ] **`4.24.54+26.1.2`** (2026-08-22) - **Personality + UUID Seeded Variance:** Deterministic behavioral nuances (fetch refusal with head-tilts, storm fearlessness, quiet howling) seeded by UUID + personality hash.
+- [ ] **`4.24.53+26.1.2`** (2026-08-22) - **Subtle Particle Feedback:** Scaled stick fetch, morning gift, and favorite treat particles with `bd_particle_density` GameRule down to subtle 2-particle cues.
+- [ ] **`4.24.37+26.1.2`** (2026-08-19) - **Jade Provider Separation:** Separated client tooltip component providers from server data providers to ensure full compatibility with newer Jade releases (`Jade >= 26.2.11+`).
+- [ ] **`4.24.36+26.1.2`** (2026-08-19) - *(⚠️ Incompatible with Jade >= 26.2.11+ | Works on Jade < 26.2.10 or without Jade)* **Friendly Fire Dampening & Protection:** Added standing owner melee attack cancellation against owned dogs.
+- [ ] **`4.24.7+26.1.2`** (2026-08-11) - **Minimal Tame Particle Polish:** Polished first-time taming particle feedback with a clean, subtle Minimal Signature (~5-6 particles) per personality (Aggressive: crimson dust + angry villager; Normal: golden dust + happy villager; Pacifist: mint dust + heart).
+- [ ] **`4.24.6+26.1.2`** (2026-08-10) - **Dismount Overlay Message Translation:** Updated dismount overlay text in en_us and id_id.
+- [ ] **`4.24.5+26.1.2`** (2026-08-10) - **YACL Config Option Descriptions:** Added missing `.description(...)` OptionDescription builders in `YaclScreenHelper` across all 6 config categories and synchronized complete `.description` keys in `en_us.json` and `id_id.json`.
+- [ ] **`4.24.4+26.1.2`** (2026-08-10) - **Dog Adoption Crash Fix:** Fixed `NullPointerException` crash during adoption by adding personality null guards in `WolfStatManager` and pre-assigning random personalities for uninitialized dogs.
+- [ ] **`4.24.3+26.1.2`** (2026-08-10) - **Litematica Compatibility & Command Item Expansion:** Resolved stick tool interaction collision with Litematica by introducing `#vanilla-outsider-better-dogs:command_items` item tag (Stick, Blaze Rod, Breeze Rod, `#c:tools/sticks`), enabling Blaze Rods and Breeze Rods as alternative command tools while keeping Bone 100% reserved for Guard Mode.
+- [ ] **`4.24.1+26.1.2`** (2026-08-01) - Full Parity Backport to Minecraft 26.1.2 from 26.2 (`4.24.1+26.2`). Contains all feature updates, Goat Horn Commands, Creeper Evasion, and Jade integration adapted for 26.1.2 APIs.
+- [ ] **`3.1.35`** (2026-02-03) - - Detailed descriptions for all gamerules, including the previously missing `bd_howl_chance`.
+- [ ] **`3.1.36`** (2026-02-16) - - Dependency conflict: Allow `DasikLibrary` >= 1.0.1 (removed < 2.0.0 cap) to support version 2.0.0.
 - [x] **`3.1.36+build.1`** (SUPERSEDED) (2026-02-19) - - **DasikLibrary Integration**: Switched to standalone dependency (JiJ removed). - - **Versioning**: Adopted strict Build Number policy.
 - [x] **`3.1.36+build.2`** (SUPERSEDED) (2026-02-19) - - **Leader-Follower Integration**: Wild wolves now naturally form packs using DasikLibrary's Leader-Follower API, with a deterministic max pack size of 8. - - **Ambient Event Spam**: Restored proper cooldown logic for ambient behaviors (like begging), preventing them from executing every tick.
 - [x] **`3.1.36+build.3`** (2026-02-21) - - **Compatibility**: Reverted Mixin compatibility level from `JAVA_25` to `JAVA_22` to resolve warning.
@@ -61,13 +61,13 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 - [x] **`3.1.37+build.8`** (2026-04-16) - - **Pack Spread Control**: New GameRule `bd_pack_spread` (default: 20 = 2.0 blocks) sets the minimum separation distance between wild wolves in a pack. - - Each integer unit = 0.1 blocks. Example: `/gamerule bd_pack_spread 50` = 5.0 block spacing.
 - [x] **`3.1.37+build.9`** (SUPERSEDED) (2026-05-11) - - **Debugging Mode**: Introduced the `betterdogdebugging` GameRule. - - Enables detailed AI logging in the server console.
 - [x] **`3.1.37+build.10`** (SUPERSEDED) (2026-05-12) - - **AI Refactor: Stable Wild Pack Leadership**: - - **Refactored `WildWolfFollowLeaderGoal`**: Wild wolves now follow their pack leader with logic mirroring vanilla `FollowOwnerGoal` (teleportation and consistent movement).
-- [x] **`3.2.0`** (2026-05-11) - - **🏰 Territorial Handshake**: New negotiation logic for wild pack leaders. - - If both leaders want war -> Cinematic 1v1 Duel.
+- [ ] **`3.2.0`** (2026-05-11) - - **🏰 Territorial Handshake**: New negotiation logic for wild pack leaders. - - If both leaders want war -> Cinematic 1v1 Duel.
 - [ ] **`3.3.0`** (2026-05-11) - - **🌍 Territorial Scaling**: New GameRule `bd_territorial_search_radius` to control the distance at which pack leaders engage in disputes. - - **🐺 Pack Dynamics**:
-- [x] **`3.3.1`** (2026-05-11) - - **🤝 Social Politeness**: New GameRule `bd_territorial_exclusive_disputes` (Default: true) ensures territorial disputes are strictly 1v1. - - **Queuing Logic**: Leaders will now wait for a rival to be "free" before initiating a challenge, preventing chaotic crowd disputes in dense areas.
-- [x] **`3.4.0`** (2026-05-12) - The **"Wolf Litters"** update. Tamed wolves can now have multiple puppies in one breed, mirroring real-world dog litters. - - Added `bd_wolf_litter_max_size` and `bd_wolf_litter_extra_chance` GameRules. - - Puppies in a litter inherit parent traits independently.
+- [ ] **`3.3.1`** (2026-05-11) - - **🤝 Social Politeness**: New GameRule `bd_territorial_exclusive_disputes` (Default: true) ensures territorial disputes are strictly 1v1. - - **Queuing Logic**: Leaders will now wait for a rival to be "free" before initiating a challenge, preventing chaotic crowd disputes in dense areas.
+- [ ] **`3.4.0`** (2026-05-12) - The **"Wolf Litters"** update. Tamed wolves can now have multiple puppies in one breed, mirroring real-world dog litters. - - Added `bd_wolf_litter_max_size` and `bd_wolf_litter_extra_chance` GameRules. - - Puppies in a litter inherit parent traits independently.
 - [ ] **`3.4.1`** (2026-05-16) - The **"Technical Patching"** update. Focused on asset cleanup and debug command stability for territorial testing. - - **Asset Purge**: Removed unimplemented "Play Bow" animation references from the codebase to maintain architectural integrity. - - **Debug Stability**: Refactored the `/betterdogs debug territory` command to anchor wolf spawning to the surface level using the Heightmap API, ensuring reliable test scenarios in varying terrain.
 - [x] **`3.4.2+build.1`** (SUPERSEDED) (2026-05-16) - The **"Debug Expansion"** update. Significantly enhanced the wolf interaction testing suite and improved production stability. - - **Debug Action Expansion**: Expanded `/betterdogs debug action` with secondary target support and automatic neighbor detection. - - **New Actions**: Added support for `play_fight`, `retaliation`, `discipline`, `territorial_dispute`, and `territorial_war`. - - **GameRule Protection**: Gated the `/betterdogs` command tree behind the `betterdogdebugging` GameRule for safer production use. - - **Stability Fix**: Added missing `refmap` to Mixin configuration to ensure compatibility in remapped/production environments.
-- [x] **`3.4.2`** (2026-05-16) - The **"C2ME Compatibility"** update. Resolved critical multi-threading crashes and production stability issues. - - **Performance**: Fully compatible with multi-threaded chunk generation (C2ME). - - **Dependency Hardening**: Enforced `dasik-library >= 1.7.0` to prevent binary mismatch crashes. - - **Refmap Fix**: Resolved production Mixin errors by standardizing internal refmap naming.
+- [ ] **`3.4.2`** (2026-05-16) - The **"C2ME Compatibility"** update. Resolved critical multi-threading crashes and production stability issues. - - **Performance**: Fully compatible with multi-threaded chunk generation (C2ME). - - **Dependency Hardening**: Enforced `dasik-library >= 1.7.0` to prevent binary mismatch crashes. - - **Refmap Fix**: Resolved production Mixin errors by standardizing internal refmap naming.
 - [ ] **`3.4.3`** (2026-05-16) - The **"Command UX"** update. Fixed visibility issues with the debug command suite. - - **UX Fix**: Resolved "Red Text" (Unknown command) issues for OPs. Commands are now always visible and logically gated behind the debugging GameRule.
 - [ ] **`3.4.4`** (2026-05-16) - The **"Dominance Hierarchy"** update. Implemented a strict personality-based ranking for pack disputes. - - **Leadership Hierarchy**: Aggressive > Normal > Pacifist. Higher-ranked leaders now automatically win disputes against lower-ranked rivals unless a duel is triggered.
 - [ ] **`3.4.5`** (2026-05-16) - The **"Nuanced Leadership"** update. Refined pack interactions to respect personality instincts and autonomy. - - **Pacifist Autonomy**: Pacifist leaders now prioritize their pack's independence, choosing to **Retreat** rather than merge into rival packs. - - **Hierarchy Polish**: Aggressive leaders only force automatic merges against Normal leaders who don't want to fight. - - **Combat Logic**: If a leader (regardless of rank) chooses to fight, they will engage in a standard duel.
@@ -123,7 +123,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 - [x] **`3.10.9+A-26.1.2`** (2026-06-12) - - **Guarding Pacifist Particles**: Redesigned the alert particles for guarding Pacifist dogs to spawn a highly noticeable, expanding horizontal circular ring of 12 pure red dust particles (0xFF0000) using trigonometric direction vectors and client-side outward velocity.
 - [x] **`3.10.10+A-26.1.2`** (SUPERSEDED) (2026-06-12) - - **Configurable Guard Particle Density**: Introduced a client/server configuration setting `guardParticleDensity` inside a new "Visual & Performance Options" Cloth Config screen tab to scale or toggle guard alert particles (`high` = 12, `medium` = 6 [default], `low` = 3, `off` = 0).
 - [x] **`3.10.11+A-26.1.2`** (SUPERSEDED) (2026-06-12) - - **Directional Guard Alarm Particles**: Modified Pacifist watchdog alarm particles to shoot forward in a 60-degree cone aligning with the wolf's looking direction, spawned at head/mouth level.
-- [x] **`3.10.12-26.1.2`** (2026-06-12) - - **Guard Alarm Point & Freeze**: Pacifist dogs will now stand up, freeze in place, and look directly at the closest detected hostile mob during sentinel alarms.
+- [ ] **`3.10.12-26.1.2`** (2026-06-12) - - **Guard Alarm Point & Freeze**: Pacifist dogs will now stand up, freeze in place, and look directly at the closest detected hostile mob during sentinel alarms.
 - [ ] **`3.10.13-26.1.2`** (2026-06-21) - - **Tamed Wolf Wander Restriction**: Replaced the owner-unaware vanilla wandering behavior (`WaterAvoidingRandomStrollGoal`) with a personality-based `TamedWanderNearOwnerGoal`. Wolves now stay closer to their owner: Aggressive (max 14 blocks), Normal (max 8 blocks), and Pacifist (max 4 blocks), preventing them from drifting too far away.
 - [ ] **`3.10.14-26.1.2`** (2026-06-21) - - **Wolf Spawn Multiplier**: Introduced a configuration setting and game rule `bd_wolf_spawn_multiplier_percent` (default: 1.5x) to dynamically adjust wolf spawning weights in biome settings, making them spawn more commonly.
 
