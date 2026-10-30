@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.6+26.1.2] - 2026-10-30
+
+### Added
+- 🛡️ **5-Pillar Testing & Runtime Verification (BL-BD-018 - Step 2)**: Pillars 2, 3 & 4 Verification Harness.
+  - Pillar 2 Concurrency Load Harness: Verified lock-free thread safety under 50,000 concurrent operations across personality UUID rolling, ballistic intercept trajectory prediction, Brigadier command suggestions, and genetics stat inheritance.
+  - Pillar 3 Brigadier AST & Permission Contract: Headless validation of root /betterdogs and alias /bd command trees, full subcommand routing, and operator permission guards.
+  - Pillar 4 Headless Simulation GameTests: Verified GameRule registration lifecycle, null-level fallback getters, anti-one-shot damage mitigation clamping, and 10-generation genetics bounds.
+
 ## [5.7.5+26.1.2] - 2026-10-24
 
 ### Added
