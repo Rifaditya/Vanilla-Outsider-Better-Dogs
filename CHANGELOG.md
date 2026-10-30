@@ -43,15 +43,15 @@
 ### Added
 - 🎯 **Ballistic Interceptor (BL-BD-021 - Step 1)**: Trajectory Intercept Mathematical Solver & Disposition Affinity.
   - Closed-form Time of Closest Approach (TCA) 3D raycast solver calculating incoming projectile threats targeting the owner.
-  - Cylinder collision detection against owner bounding box ($r \le 1.25$m, $\Delta y \in [-0.5, 2.0]$m) with bounded reaction lookahead.
-  - Pre-impact interception waypoint calculation ($\vec{P}_{\text{intercept}} = \vec{P}_{\text{proj}} + \max(0.0, \tau - 1.0) \cdot \vec{V}$).
+  - Cylinder collision detection against owner bounding box (r ≤ 1.25m, Δy in [-0.5, 2.0]m) with bounded reaction lookahead.
+  - Pre-impact interception waypoint calculation (P_intercept = P_proj + max(0.0, τ - 1.0) · V).
   - Deterministic canine archetype defense affinities: Guardian (85%), Fearless (75%), Adventurer (40%), Playful (20%), Glutton (15%), Lazy (5%).
 
 ## [1.6.0+1.20.1] - 2026-10-24
 
 ### Added
 - ☄️ **Ballistic Evasion Reflex (BL-BD-020)**: Athletic canines now dynamically calculate trajectories of incoming heavy ballistic projectiles (Ghast fireballs, Blaze fireballs, Wither skulls) and perform agile lateral dodge hops before impact.
-- 🦘 **Emergency Scramble for Sitting Dogs**: Sitting dogs in direct incoming projectile trajectories ($d_{\perp} \le 1.5$m, $\tau \le 20$ ticks) break posture to perform an emergency scramble jump to safety, safely returning to their sitting pose once danger has passed.
+- 🦘 **Emergency Scramble for Sitting Dogs**: Sitting dogs in direct incoming projectile trajectories (d_⟂ ≤ 1.5m, τ ≤ 20 ticks) break posture to perform an emergency scramble jump to safety, safely returning to their sitting pose once danger has passed.
 - 🛡️ **Intelligent Cliff & Lava Hazard Avoidance**: Lateral dodge calculations evaluate ground safety at the landing destination, automatically inverting the dodge impulse if one side is blocked by lava, fire, or sheer cliffs.
 - 💨 **Sensory Cues & Archetype Nuance**: Dodges are punctuated by crisp puff particles and vocal cues. Courageous **Fearless** dogs pant with athletic confidence rather than panic-whining.
 - ⚙️ **Dynamic GameRules**: Fully customizable via `betterdogs:bd_ballistic_evasion_enabled`, `betterdogs:bd_evasion_reaction_ticks`, and `betterdogs:bd_evasion_lateral_impulse`.
@@ -78,9 +78,9 @@
 ## [1.3.0+1.20.1] - 2026-10-21
 
 ### Added
-- 🧬 **Canine Physical Genetics Suite (BL-BD-012)**: Introduced dynamic physical breeding genetics modeled after equine inheritance. Offspring inherit movement speed, max health, and physical scale from parents via intermediate Gaussian distributions ($(\text{parent}_1 + \text{parent}_2) / 2 + \mathcal{N}(0, \sigma^2)$) with saturated bounds.
+- 🧬 **Canine Physical Genetics Suite (BL-BD-012)**: Introduced dynamic physical breeding genetics modeled after equine inheritance. Offspring inherit movement speed, max health, and physical scale from parents via intermediate Gaussian distributions ((parent_1 + parent_2) / 2 + N(0, σ²)) with saturated bounds.
 - 📐 **Dynamic Physical & Hitbox Scaling**: Wolves feature persistent scale adjustments varying between 0.70x and 1.30x (configurable via `bd_wolf_min_scale_percent` and `bd_wolf_max_scale_percent`), with dynamic hitbox synchronization so miniature dogs fit in tight crawlspaces while giant mastiffs block wide paths.
-- 🔊 **Acoustic Scale Pitch Timbre Modulation**: Dog vocalizations (barking, whining, growling, howling) dynamically adjust pitch inversely proportional to scale ($\text{pitch} = \text{base} / \sqrt{\text{scale}}$), granting deep resonant booms to towering hounds and bright, squeaky barks to lap dogs.
+- 🔊 **Acoustic Scale Pitch Timbre Modulation**: Dog vocalizations (barking, whining, growling, howling) dynamically adjust pitch inversely proportional to scale (pitch = base / √(scale)), granting deep resonant booms to towering hounds and bright, squeaky barks to lap dogs.
 - 🔍 **Genetics Inspection Command Suite**: Added `/bd inspect` and `/betterdogs inspect` allowing players to examine their dogs' physical genetic stats (scale, movement speed, current/max health, and acoustic timbre factor).
 - ⚙️ **Configurable GameRules & Parameters**: Added `betterdogs:bd_dog_genetics_enabled` and `betterdogs:bd_max_scale_deviation` GameRules with full backward-compatible translation aliases.
 
@@ -203,32 +203,32 @@
 ## [1.0.75+1.20.1] - 2026-08-22
 ### Added
 - 🍖 **Hoover / Ground Food Scavenger Quirk (`WolfDispositionHelper.java` & `EatGroundFoodGoal.java`)**:
-  - Implemented the Hoover behavioral quirk where dogs eagerly scavenge dropped food items from the ground even when at $100\%$ full health.
-  - **Base Personality Rates**: Aggressive ($70\%$), Normal ($35\%$), Pacifist ($10\%$) with $[-100\%, +100\%]$ UUID variance offset.
-  - **Digestion Cooldown**: Enforced a $160\text{ ticks}$ ($8\text{ seconds}$) cooldown between ground food snacks at full health to prevent vacuuming item stacks.
+  - Implemented the Hoover behavioral quirk where dogs eagerly scavenge dropped food items from the ground even when at 100% full health.
+  - **Base Personality Rates**: Aggressive (70%), Normal (35%), Pacifist (10%) with [-100%, +100%] UUID variance offset.
+  - **Digestion Cooldown**: Enforced a 160 ticks (8 seconds) cooldown between ground food snacks at full health to prevent vacuuming item stacks.
   - **Posture Safety**: Fully respects sitting commands (`isOrderedToSit()`); seated dogs will never break posture.
 
 ## [1.0.74+1.20.1] - 2026-08-22
 ### Changed
-- 🧬 **Full-Spectrum [-100%, +100%] UUID Behavioral Variance (`WolfDispositionHelper.java`)**:
-  - Expanded individual dog UUID offset range to $[-100\%, +100\%]$ (clamped to $[0\%, 100\%]$).
+- 🧬 **Full-Spectrum [-100%, +100%] UUID Behavioral Variance** (`WolfDispositionHelper.java`):
+  - Expanded individual dog UUID offset range to [-100%, +100%] (clamped to [0%, 100%]).
   - Applied base personality values:
-    - **Fetch Reluctance**: Aggressive ($10\%$), Normal ($30\%$), Pacifist ($60\%$).
-    - **Storm Fearlessness**: Aggressive ($80\%$), Normal ($40\%$), Pacifist ($10\%$).
-    - **Quiet Howling**: Aggressive ($10\%$), Normal ($25\%$), Pacifist ($60\%$).
+    - **Fetch Reluctance**: Aggressive (10%), Normal (30%), Pacifist (60%).
+    - **Storm Fearlessness**: Aggressive (80%), Normal (40%), Pacifist (10%).
+    - **Quiet Howling**: Aggressive (10%), Normal (25%), Pacifist (60%).
 
 ## [1.0.73+1.20.1] - 2026-08-22
 ### Changed
-- 🧬 **Additive Modifier Behavioral Quirk Model (`WolfDispositionHelper.java`)**:
+- 🧬 **Additive Modifier Behavioral Quirk Model** (`WolfDispositionHelper.java`):
   - Implemented additive modifier variance model with wide personality spread:
-    - **Fetch Reluctance**: Aggressive ($0\text{--}5\%$), Normal ($3\text{--}18\%$), Pacifist ($15\text{--}45\%$).
-    - **Storm Fearlessness**: Aggressive ($90\text{--}100\%$), Normal ($10\text{--}35\%$), Pacifist ($0\text{--}15\%$).
-    - **Quiet Howling**: Aggressive ($0\text{--}10\%$), Normal ($5\text{--}30\%$), Pacifist ($25\text{--}65\%$).
-  - Combined personality baseline percentages with deterministic UUID offsets ($\pm 10\%$ to $\pm 20\%$).
+    - **Fetch Reluctance**: Aggressive (0–5%), Normal (3–18%), Pacifist (15–45%).
+    - **Storm Fearlessness**: Aggressive (90–100%), Normal (10–35%), Pacifist (0–15%).
+    - **Quiet Howling**: Aggressive (0–10%), Normal (5–30%), Pacifist (25–65%).
+  - Combined personality baseline percentages with deterministic UUID offsets (±10% to ±20%).
 
 ## [1.0.72+1.20.1] - 2026-08-22
 ### Added
-- 🧬 **Personality + UUID Seeded Behavioral Variance (`WolfDispositionHelper.java`)**:
+- 🧬 **Personality + UUID Seeded Behavioral Variance** (`WolfDispositionHelper.java`):
   - Deterministically seeded individual behavioral nuances using 64-bit bit-mixing hashing over `UUID` + `WolfPersonality` + behavior salt (zero NBT storage).
   - ~5% of dogs are organically reluctant to fetch sticks; non-fetchers either curiously tilt their heads (`setIsInterested(true)`) or naturally ignore nearby thrown sticks.
   - ~10% of dogs are naturally fearless during thunderstorms, bypassing storm panic and whimpering.
@@ -259,7 +259,7 @@
 
 ## [1.0.67+1.20.1] - 2026-08-18
 ### Added
-- 🥩 **Autonomous Ground Feeding Merit Tracking & Advancement (`EatGroundFoodGoal.java`)**:
+- 🥩 **Autonomous Ground Feeding Merit Tracking & Advancement** (`EatGroundFoodGoal.java`):
   - Pre-filtered disliked/refused food items during ground food entity search scans.
   - Tracked feeding count (`feedCount`) on dogs consuming dropped food from the ground.
   - Added treat affinity rolling, zoomies trigger (120 ticks), and advancement dispatch (`favorite_treat`, `zoomies`) to the dog's online owner upon eating dropped favorite treats.
@@ -275,11 +275,11 @@
 - 🐺 **Custom Chorus Howl SoundEvent Registration (`BetterDogsSoundEvents.java`, `sounds.json`, `WolfHowlHelper.java`)**:
   - Registered `betterdogs:entity.wolf.howl` in `BuiltInRegistries.SOUND_EVENT` to provide authentic wolf howling for Minecraft 1.20.1.
   - Defined `sounds.json` mapping pitch-modulated canine vocalizations (`minecraft:mob/wolf/whine`, `minecraft:mob/wolf/growl`) with subtitle support.
-  - Implemented natural harmonic pitch spread ($0.85\text{F}$ to $1.20\text{F}$) for cascading pack chorus howls.
+  - Implemented natural harmonic pitch spread (0.85F to 1.20F) for cascading pack chorus howls.
 
 ## [1.0.64+1.20.1] - 2026-08-17
 ### Fixed
-- 🛡️ **Aggressive Target Goal Creeper Suicide Prevention (`AggressiveTargetGoal.java`)**:
+- 🛡️ **Aggressive Target Goal Creeper Suicide Prevention** (`AggressiveTargetGoal.java`):
   - Bound target predicate in constructor to filter out Creepers (suicide prevention) and Ghasts (unreachable flight) before target evaluation.
   - Tethered aggressive monster engagement within the owner's detection radius (`bd_aggro_detect_range`, default 16 blocks).
 
@@ -294,13 +294,13 @@
 ### Added
 - 📐 **Visual Entity Scaling Engine (`WolfRendererMixin.java`, `WolfMixin.java`)**:
   - Implemented network-synchronized physical scaling using `SynchedEntityData` (`DATA_SOCIAL_SCALE`).
-  - Added client-side `WolfRendererMixin` scaling dog models with `poseStack.scale(s, s, s)`, ensuring runt puppies ($0.35\text{x}$) and giant dire wolves ($1.45\text{x}$) render with distinct visual stature.
+  - Added client-side `WolfRendererMixin` scaling dog models with `poseStack.scale(s, s, s)`, ensuring runt puppies (0.35x) and giant dire wolves (1.45x) render with distinct visual stature.
   - Isolated client render mixin in `vanilla-outsider-better-dogs.mixins.json` `"client"` array for 100% headless server classloader safety.
 
 ## [1.0.61+1.20.1] - 2026-08-17
 ### Fixed
 - 🐕 **Multi-Puppy Litter Spawning & Co-Parent Inheritance Fix (`WolfLitterHelper.java`, `CommandSuggestionsHelper.java`)**:
-  - Fixed coordinate calculation for extra litter siblings (puppies 2–4): siblings now spawn in a safe $\pm 0.4$-block cluster adjacent to `parentA` rather than $(0, 0, 0)$ in the void.
+  - Fixed coordinate calculation for extra litter siblings (puppies 2–4): siblings now spawn in a safe ±0.4-block cluster adjacent to `parentA` rather than (0, 0, 0) in the void.
   - Implemented 50/50 co-parent collar color inheritance: extra puppies roll a 50% chance to inherit Parent A's collar dye and 50% chance to inherit Parent B's collar dye.
   - Linked wild puppy pack hierarchy: untamed puppies seamlessly inherit their mother's pack leader UUID upon birth.
   - Cleaned up wildcard imports in `CommandSuggestionsHelper.java`.
@@ -330,7 +330,7 @@
 
 ## [1.0.57+1.20.1] - 2026-08-16 [YANKED / BROKEN ON STARTUP]
 ### Added
-- 🌲 **Wanderlust Roaming AI (`WanderlustGoal.java`)**:
+- 🌲 **Wanderlust Roaming AI** (`WanderlustGoal.java`):
   - Tamed dogs occasionally experience spontaneous exploratory wandering surges (1 in 400 calm ticks, lasting 10 seconds / 200 ticks).
   - Explores the surrounding environment safely within an expanded 28-block perimeter from their owner.
   - Strictly respects sit commands, leash state, guard mode, and cancels immediately if threats arise or owner moves beyond 32 blocks.
@@ -347,7 +347,7 @@
 
 ## [1.0.55+1.20.1] - 2026-08-16 [YANKED / BROKEN ON STARTUP]
 ### Added
-- 🤺 **Play Fighting & Social Sparring AI (`SmallFightGoal.java`)**:
+- 🤺 **Play Fighting & Social Sparring AI** (`SmallFightGoal.java`):
   - Tamed dogs of the same pack engage in harmless playful sparring/tussles with mock pounces and circling.
   - Spawns happy villager particles, plays panting/playful growl sounds, and deals 0 damage.
   - Concludes after ~6-7 seconds and applies a mutual 30-second cooldown (`betterdogs$setPlayFightCooldown(600)`).
@@ -382,12 +382,12 @@
 ### Added
 - 🥩 **Feeding-Gated Merits & Gift System (`WolfGiftGoal.java`, `WolfGiftHelper.java`, `WolfPersistentData.java`)**:
   - Implemented persistent feeding merits tracking (`feedCount`) incremented each time the dog is fed.
-  - Dogs require $\ge 10$ feeding merits (`bd_gift_feed_threshold`) before bringing gifts, consuming 10 merits upon delivery.
+  - Dogs require ≥ 10 feeding merits (`bd_gift_feed_threshold`) before bringing gifts, consuming 10 merits upon delivery.
   - Added accidental player attack demerit penalty (`bd_demerit_accidental_attacks`) resetting accumulated merits upon friendly fire.
-- 🐾 **Follower Pack Spacing Offset (`PersonalityFollowOwnerGoal.java`)**:
-  - Implemented `FollowerSpacingCache` and dynamic $\sqrt{N-1}$ pack spread offset expanding follower start/stop distances, eliminating clustering and crowding at the player's feet.
+- 🐾 **Follower Pack Spacing Offset** (`PersonalityFollowOwnerGoal.java`):
+  - Implemented `FollowerSpacingCache` and dynamic √(N-1) pack spread offset expanding follower start/stop distances, eliminating clustering and crowding at the player's feet.
   - Added GameRules `bd_tamed_pack_spread_multiplier` (default `100`) and `bd_tamed_pack_spread_max` (default `50`).
-- 🌸 **Puppy Curiosity AI (`BabyCuriosityGoal.java`)**:
+- 🌸 **Puppy Curiosity AI** (`BabyCuriosityGoal.java`):
   - Puppies explore natural vegetation and observe critters when idle.
 - Added automated test suite `WolfGiftMeritsTest` and `BabyCuriosityTest`.
 
@@ -414,7 +414,7 @@
 
 ## [1.0.48+1.20.1] - 2026-08-16
 ### Added
-- 🏆 **Dedicated 13 Husbandry Advancements Tree (`WolfAdvancementHelper.java`)**:
+- 🏆 **Dedicated 13 Husbandry Advancements Tree** (`WolfAdvancementHelper.java`):
   - Implemented 13 custom advancements nested under Vanilla's Husbandry tree (`minecraft:husbandry/tame_an_animal`):
     - **Man's Best Companion** (`tame_wolf`, Task): Tame a canine companion with an authentic personality.
     - **Who's a Good Dog?** (`pet_dog`, Task): Pet a tamed dog with an empty hand.
@@ -442,7 +442,7 @@
 ## [1.0.46+1.20.1] - 2026-08-16
 ### Added
 - 🐺 **Wild Pack Dynamics & Territorial Chorus Howling (`WolfHowlHelper.java`, `GroupHowlGoal.java`, `WildWolfTerritorialGoal.java`)**:
-  - Implemented nocturnal skyward chorus howling where wolves tilt their heads skyward (pitch $-45^\circ$) for 3 seconds (60 ticks), prompting nearby pack members within 24 blocks to join in sequential chorus with natural randomized pitch variations.
+  - Implemented nocturnal skyward chorus howling where wolves tilt their heads skyward (pitch -45°) for 3 seconds (60 ticks), prompting nearby pack members within 24 blocks to join in sequential chorus with natural randomized pitch variations.
   - Full moon phases significantly increase the frequency of nocturnal pack howling.
   - Implemented untamed pack territorial dynamics where wild wolves encountering rival wolves within 12 blocks perform threat posturing: Aggressive wolves aggressively challenge and stalk intruders, Pacifist wolves yield and retreat, and Normal wolves hold territorial standoff boundaries.
   - Added automated unit test suite `WildPackDynamicsTest`.
@@ -450,7 +450,7 @@
 ## [1.0.45+1.20.1] - 2026-08-16
 ### Added
 - 🐾 **Puppy Mischief & Adult Disciplinary Correction AI (`WolfMischiefHelper.java`, `BabyMischiefGoal.java`, `AdultCorrectionGoal.java`)**:
-  - Puppies playfully bound and stalk towards nearby adult wolves (within 8 blocks) or small critters (chickens, rabbits) at $1.2\times$ speed, nipping playful tail/paw bounces.
+  - Puppies playfully bound and stalk towards nearby adult wolves (within 8 blocks) or small critters (chickens, rabbits) at 1.2× speed, nipping playful tail/paw bounces.
   - Adult dogs discipline overly hyperactive misbehaving puppies with a low warning growl (`SoundEvents.WOLF_GROWL`) and a harmless 0-damage disciplinary tap.
   - Disciplined puppies immediately whimper softly (`SoundEvents.WOLF_WHINE`) and enter an 8-second (160 ticks) calm submissive state before resuming normal play.
   - Added automated unit test suite `PuppyMischiefTest`.
@@ -458,8 +458,8 @@
 ## [1.0.44+1.20.1] - 2026-08-16
 ### Added
 - 🎾 **Stick Fetching AI & Favorite Treat Zoomies (`WolfFetchHelper.java`, `WolfFetchGoal.java`, `ZoomiesGoal.java`)**:
-  - Implemented stick-throwing fetch mini-game where companion dogs actively track down dropped sticks within 16 blocks at $1.25\times$ speed, pick them up, and return them directly to the owner's feet with happy barks and green sparkles (`ParticleTypes.HAPPY_VILLAGER`).
-  - Implemented favorite treat "zoomies" behavior where dogs fed their individual favorite treat enter a 6-second (120 ticks) burst of playful $1.5\times$ sprint loops around the owner with heart/cloud/sparkle trails.
+  - Implemented stick-throwing fetch mini-game where companion dogs actively track down dropped sticks within 16 blocks at 1.25× speed, pick them up, and return them directly to the owner's feet with happy barks and green sparkles (`ParticleTypes.HAPPY_VILLAGER`).
+  - Implemented favorite treat "zoomies" behavior where dogs fed their individual favorite treat enter a 6-second (120 ticks) burst of playful 1.5× sprint loops around the owner with heart/cloud/sparkle trails.
   - Added automated unit test suite `FetchAndZoomiesTest`.
 
 ## [1.0.43+1.20.1] - 2026-08-16
@@ -497,7 +497,7 @@
 ### Added
 - 🍏 **Golden Apple Inbred Curing Interaction**:
   - Feeding a Golden Apple or Enchanted Golden Apple to an inbred runt dog completely cleanses inbred status (`WolfCureHelper`).
-  - Restores full adult size scale potential ($\ge 1.0x$ scale) and full personality combat attributes (removing runt penalties).
+  - Restores full adult size scale potential (≥ 1.0x scale) and full personality combat attributes (removing runt penalties).
   - Enchanted Golden Apples grant temporary Absorption and Regeneration status buffs.
   - Added rewarding celebration FX: green sparkle burst (`ParticleTypes.HAPPY_VILLAGER`) and uplifting level-up chime (`SoundEvents.PLAYER_LEVELUP`).
   - Added automated unit test suite `InbredCureTest`.
@@ -643,7 +643,7 @@
 ## [1.0.20+1.20.1] - 2026-08-14
 ### Added
 - 🏔️ **Cliff Edge Fall Safety Navigation**:
-  - Implemented dynamic drop height probing (`WolfSafetyMixin` and `WolfSafetyHelper`) that halts forward navigation, zeroes horizontal momentum, and triggers sneak stance when approaching lethal ledge drops ($>3$ blocks down).
+  - Implemented dynamic drop height probing (`WolfSafetyMixin` and `WolfSafetyHelper`) that halts forward navigation, zeroes horizontal momentum, and triggers sneak stance when approaching lethal ledge drops (>3 blocks down).
   - Implemented push collision protection (`WolfPushMixin`) preventing entities and mobs from shoving sitting or standing dogs over cliff edges or into hazards.
   - Implemented combat ledge retreat: wolves break pursuit if their combat target plunges over a cliff.
   - Controlled by GameRule `bd_cliff_safety` (default: `true`).
@@ -660,7 +660,7 @@
 
 ## [1.0.17+1.20.1] - 2026-08-14
 ### Added
-- 🤺 **Pacifist Defensive Retaliation AI (`PacifistRevengeGoal`)**:
+- 🤺 **Pacifist Defensive Retaliation AI** (`PacifistRevengeGoal`):
   - Pacifist wolves now defensively counter-attack hostiles that deal damage directly to the wolf or its owner (`getLastHurtByMob()`).
   - Strict non-aggression: Pacifist wolves will not assist offensive owner attacks and will never target friendly puppies or creepers.
 
@@ -704,31 +704,31 @@
 
 ## [1.0.9+1.20.1] - 2026-08-14
 ### Fixed
-- 💥 **Taming Particle Level Crash Fix (`NoSuchMethodError`)**: Replaced `wolf.level()` with `wolf.getCommandSenderWorld()`.
+- 💥 **Taming Particle Level Crash Fix** (`NoSuchMethodError`): Replaced `wolf.level()` with `wolf.getCommandSenderWorld()`.
 
 ## [1.0.8+1.20.1] - 2026-08-14
 ### Fixed
-- 💥 **`TamedWanderNearOwnerGoal` Crash Fix (`NoSuchMethodError`)**: Replaced `owner.position()` with primitive getters.
+- 💥 **`TamedWanderNearOwnerGoal` Crash Fix** (`NoSuchMethodError`): Replaced `owner.position()` with primitive getters.
 
 ## [1.0.7+1.20.1] - 2026-08-14
 ### Fixed
-- 💥 **Taming Crash Fix (`NoSuchMethodError`)**: Replaced `wolf.level()` with `wolf.getRandom()`.
+- 💥 **Taming Crash Fix** (`NoSuchMethodError`): Replaced `wolf.level()` with `wolf.getRandom()`.
 
 ## [1.0.6+1.20.1] - 2026-08-14
 ### Added
-- **Proactive `AggressiveTargetGoal` (`NearestAttackableTargetGoal<Monster>`)**.
+- **Proactive `AggressiveTargetGoal`** (`NearestAttackableTargetGoal<Monster>`).
 
 ## [1.0.5+1.20.1] - 2026-08-13
 ### Fixed
-- **Entity AI Goal Registration (`Wolf.registerGoals`)**.
+- **Entity AI Goal Registration** (`Wolf.registerGoals`).
 
 ## [1.0.4+1.20.1] - 2026-08-13
 ### Added
-- **Personality Combat AI & Target Selection Rules (`PersonalityTargetGoal`)**.
+- **Personality Combat AI & Target Selection Rules** (`PersonalityTargetGoal`).
 
 ## [1.0.3+1.20.1] - 2026-08-13
 ### Added
-- **Personality Follow & Teleport AI System (`PersonalityFollowOwnerGoal`)**.
+- **Personality Follow & Teleport AI System** (`PersonalityFollowOwnerGoal`).
 
 ## [1.0.2+1.20.1] - 2026-08-11
 ### Fixed
