@@ -49,6 +49,12 @@ public final class CanineGeneticsHelper {
      * Clamped between MIN_PITCH and MAX_PITCH.
      */
     public static float calculateVoicePitch(float basePitch, float scale) {
+        if (Float.isNaN(scale) || scale < 0.1f) {
+            scale = 0.1f;
+        }
+        if (Float.isNaN(basePitch) || basePitch < 0.0f) {
+            basePitch = 1.0f;
+        }
         float safeScale = Math.max(0.1f, scale);
         float pitch = basePitch / (float) Math.sqrt(safeScale);
         return clamp(pitch, MIN_PITCH, MAX_PITCH);
@@ -70,7 +76,7 @@ public final class CanineGeneticsHelper {
      * Saturating clamp utility between min and max.
      */
     public static float clamp(float value, float min, float max) {
-        if (value < min) {
+        if (Float.isNaN(value) || value < min) {
             return min;
         }
         return Math.min(value, max);

@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 1.7.6+1.21.11** - 5-Pillar Testing Harness: Concurrency, Brigadier AST & Headless Simulation (BL-BD-018)
 - [ ] **Better Dogs 1.7.5+1.21.11** - Ballistic Interceptor: Multi-Era Parity Verification & Full Production Release (BL-BD-021)
 - [ ] **Better Dogs 1.7.4+1.21.11** - Ballistic Interceptor: Heroic Sacrifice Damage Routing, Anti-One-Shot Protection & Sensory Polish (BL-BD-021)
 - [ ] **Better Dogs 1.7.3+1.21.11** - Ballistic Interceptor: AI Goal Registration in WolfMixin (BL-BD-021)
@@ -60,55 +61,55 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 - [ ] **`1.0.54+1.21.11`** (2026-08-16) - 🥩 Feeding-Gated Merits & Gift System (WolfGiftGoal.java, WolfGiftHelper.java, WolfPersistentData.java): Implemented p...
 - [ ] **`1.0.53+1.21.11`** (2026-08-16) - 🪑 Dog Mounting & Vehicle/Seat Boarding Command Suite (DogCommandManager.java, MoveToVehicleGoal.java, BetterDogsTags....
 - [ ] **`1.0.52+1.21.11`** (2026-08-16) - ⚡ Full Brigadier /betterdogs & /bd In-Game Command Suite (BetterDogsCommand.java, CommandSuggestionsHelper.java): Imp...
-- [x] **`1.0.51+1.21.11`** (2026-08-16) - 🏆 Dedicated 13 Husbandry Advancements Tree (WolfAdvancementHelper.java): Implemented 13 custom advancements nested un...
-- [x] **`1.0.50+1.21.11`** (2026-08-16) - ❄️ Dynamic Climate Coat Biome Variants (WolfCoatVariantHelper.java): Implemented dynamic climate-appropriate coat textures based on local biome temperature and snowfall.
-- [x] **`1.0.49+1.21.11`** (2026-08-16) - 💬 Configurable Subtitle & Actionbar Feedback Options (WolfFeedbackHelper.java, BetterDogsGameRules.java): Added namespaced gamerules for subtitles and action bar messages.
-- [x] **`1.0.48+1.21.11`** (2026-08-16) - 🐺 Wild Pack Dynamics & Territorial Chorus Howling (WolfHowlHelper.java, GroupHowlGoal.java, WildWolfTerritorialGoal.java): Full multi-era howling chorus parity.
-- [x] **`1.0.47+1.21.11`** (2026-08-16) - 🐾 Puppy Mischief & Adult Disciplinary Correction AI (WolfMischiefHelper.java, BabyMischiefGoal.java, AdultCorrectionGoal.java): Playful puppy harassment and adult patience.
-- [x] **`1.0.46+1.21.11`** (2026-08-16) - 🎾 Stick Fetching AI & Favorite Treat Zoomies (WolfFetchHelper.java, WolfFetchGoal.java, ZoomiesGoal.java): Implemented interactive stick fetching and treat zoomies.
-- [x] **`1.0.45+1.21.11`** (2026-08-16) - 🎁 Morning Gift Bringing AI (WolfGiftHelper.java, WolfGiftGoal.java): Healthy, full-health companion dogs sleeping near owner beds bring foraging gifts.
-- [x] **`1.0.44+1.21.11`** (2026-08-15) - 📄 Paper Adoption Ownership Transfer System: Sneak (Shift) + Right-clicking a tamed dog with Items.PAPER lists the dog for adoption.
-- [x] **`1.0.43+1.21.11`** (2026-08-15) - 🛡️ Guard Mode & Sentinel Patrol AI: Sneak (Shift) + Right-clicking a tamed dog with an empty hand toggles anchored Guard Mode.
-- [x] **`1.0.42+1.21.11`** (2026-08-15) - 🍏 Golden Apple Inbred Curing Interaction: Feeding a Golden Apple or Enchanted Golden Apple to an inbred runt dog completely cures physical defects.
-- [x] **`1.0.41+1.21.11`** (2026-08-15) - 🧪 Inbreeding Lineage Tracking & Runt Stat Penalties: Implemented 1-generation immediate family lineage tracking storing parent UUIDs.
-- [x] **`1.0.40+1.21.11`** (2026-08-15) - 🐕 Variable Multi-Puppy Litter Sizes: Implemented realistic canine litter sizes rolling 1 to 4 puppies (bd_wolf_litter_max_size).
-- [x] **`1.0.39+1.21.11`** (2026-08-15) - 📏 Parental Size Inheritance & Scale Variance: Implemented mathematical adult size inheritance from parents with natural gaussian variance.
-- [x] **`1.0.38+1.21.11`** (2026-08-15) - 🧬 Genetic Personality Inheritance: Implemented weighted parental trait inheritance when breeding tamed wolves (WolfGeneticsHelper.java).
-- [x] **`1.0.37+1.21.11`** (2026-08-15) - 💖 Personality Dynamic Stat Scaling & Attribute Modifiers: Dynamically recalculates max health, attack damage, and base speed based on personality traits.
-- [x] **`1.0.36+1.21.11`** (2026-08-15) - 🚀 Fast-Travel Sprint Catchup & Dimension Teleport Sync: Implemented dynamic catch-up sprint speed scaling (up to 2.0x) and dimension teleportation parity.
-- [x] **`1.0.35+1.21.11`** (2026-08-15) - 🛡️ Friendly Fire Protection & Owner Damage Safeguards: Intercepts and completely cancels accidental player weapon sweeps and direct attacks.
-- [x] **`1.0.34+1.21.11`** (2026-08-15) - 😡 3-Day Nemesis Memory & Pack Vendetta Combat AI: Tamed wolves now remember and avenge fallen pack mates or owners killed in combat.
-- [x] **`1.0.33+1.21.11`** (2026-08-15) - 🥩 Full-HP Wolf Breeding & Food Refusal Fix: Corrected DogTreatHelper.shouldRefuseFood logic so tamed wolves at full health accept breeding foods.
-- [x] **`1.0.32+1.21.11`** (2026-08-15) - 💥 Startup Crash Fix: Fixed InvalidInjectionException: Invalid descriptor on WolfMixin->@Inject::betterdogs$writeNbt on MC 1.21.11.
-- [x] **`1.0.31+1.21.11`** (2026-08-15) - 📯 Acoustic Goat Horn Commands & Pack Horn Overrides: Implemented tactical acoustic pack commanding via Goat Horn variants (Ponder, Sing, Feel, Yearn, Seek).
-- [x] **`1.0.30+1.21.11`** (2026-08-15) - 🖐️ Shift + Right-Click Petting & Soothe Calming Mechanic: Owners can now crouch and right-click their tamed dogs with an empty hand to soothe them.
-- [x] **`1.0.29+1.21.11`** (2026-08-15) - ⚡ Thunderstorm Anxiety & Shelter Seeking AI: Tamed dogs exhibit realistic anxiety during thunderstorms, whimpering and seeking roofed shelter blocks.
-- [x] **`1.0.28+1.21.11`** (2026-08-15) - 🥩 Food Refusal & Favorite Treats Begging AI: Tamed dogs now refuse player-fed food when at full health with a head-tilt refusal animation.
-- [x] **`1.0.27+1.21.11`** (2026-08-15) - 🍖 Autonomous Ground Food Foraging & Healing: Injured tamed dogs automatically detect and seek dropped meat items within 12 blocks.
-- [x] **`1.0.26+1.21.11`** (2026-08-15) - 🐺 Tactical Pack Flanking Encirclement AI: Implemented multi-angle pack encirclement AI allowing dogs targeting the same hostile to spread out.
-- [x] **`1.0.25+1.21.11`** (2026-08-15) - 🛡️ Single-Purpose Architecture Alignment: Decoupled cliff edge safety and thermal hazard helpers into dedicated single-purpose classes.
-- [x] **`1.0.24+1.21.11`** (2026-08-15) - 🔥 Emergency Thermal Safety & Hazard Evasion: Implemented automatic evasive backstep when standing within 1 block of Lava/Fire hazards.
-- [x] **`1.0.23+1.21.11`** (2026-08-15) - 🔥 Active Hazard Detour Navigation: Implemented AvoidHazardsGoal inspecting forward path nodes and intercepting navigation towards heat hazards.
-- [x] **`1.0.22+1.21.11`** (2026-08-15) - 🔥 Thermal Hazard Identification Utility: Implemented WolfHazardHelper providing centralized thermal scanning and classification.
-- [x] **`1.0.21+1.21.11`** (2026-08-14) - 🏔️ Cliff Edge Fall Safety Navigation: Implemented dynamic drop height probing (WolfSafetyMixin and WolfSafetyHelper) preventing fatal cliff drops.
-- [x] **`1.0.20+1.21.11`** (2026-08-14) - 💥 Startup Crash Fix: Fixed InvalidInjectionException: Invalid descriptor on WolfMixin->@Inject::betterdogs$writeNbt on 1.21.11 runtime.
-- [x] **`1.0.19+1.21.11`** (2026-08-14) - 🎨 Bold Yellow Category Header: Styled the BETTER_DOGS GameRules category name with bold yellow formatting (ChatFormatting.YELLOW.toString() + ChatFormatting.BOLD.toString()).
-- [x] **`1.0.18+1.21.11`** (2026-08-14) - 🏷️ Dedicated 'Better Dogs' GameRules Category: Registered custom BETTER_DOGS category so all 80+ mod GameRules appear under their own tab in the UI.
-- [x] **`1.0.17+1.21.11`** (2026-08-14) - 🤺 Pacifist Defensive Retaliation AI (PacifistRevengeGoal): Pacifist wolves now defensively counter-attack hostiles that inflict damage upon them or their owner.
-- [x] **`1.0.16+1.21.11`** (2026-08-14) - 💥 Startup Crash Fix: Fixed NoClassDefFoundError: net/minecraft/class_1928$class_5198 (GameRules.Category) on Minecraft 1.21.11 Fabric.
-- [x] **`1.0.15+1.21.11`** (2026-08-14) - ⚙️ 80+ GameRules Registry Foundation: Implemented BetterDogsGameRules registering all 80+ namespaced GameRules via Fabric's GameRuleRegistry.
-- [x] **`1.0.14+1.21.11`** (2026-08-14) - NBT & DNA Determinism Alignment: Harmonized WolfPersistentData constants and deterministic DNA seed salt (^ 5829103L) with 26.2 lead.
-- [x] **`1.0.13+1.21.11`** (2026-08-14) - ⚔️ Combat AI & Target Selection Mixins: OwnerHurtTargetGoalMixin: Enforces strict Pacifist combat ethics (Pacifist dogs refuse to initiate attacks).
-- [x] **`1.0.12+1.21.11`** (2026-08-14) - 🖼️ Mod Icon Asset: Deployed official icon.png (235 KB) into assets/vanilla-outsider-better-dogs/ and registered it in fabric.mod.json.
-- [x] **`1.0.11+1.21.11`** (2026-08-14) - 💣 FleeCreeperGoal (100% 26.2 Parity): Tamed wolves detect ignited or swelling Creepers within 10 blocks and sprint away at 1.5x speed with smoke trail particles.
-- [x] **`1.0.10+1.21.11`** (2026-08-14) - Wolf Movement & Sprint Speed Boost: Upgraded PersonalityFollowOwnerGoal base follow speed modifier from 1.0 to 1.25 (matching 26.2 lead).
-- [x] **`1.0.9+1.21.11`** (2026-08-14) - fabric.mod.json ${version} Expansion Fix: Added processResources property expansion block into build.gradle.
-- [x] **`1.0.8+1.21.11`** (2026-08-14) - 💥 Taming Particle Level Crash Fix (NoSuchMethodError): Replaced wolf.level() with wolf.getCommandSenderWorld().
-- [x] **`1.0.7+1.21.11`** (2026-08-14) - 💥 TamedWanderNearOwnerGoal Crash Fix (NoSuchMethodError): Replaced owner.position() with primitive getters.
-- [x] **`1.0.6+1.21.11`** (2026-08-14) - 💥 Taming Crash Fix (NoSuchMethodError): Replaced wolf.level() with wolf.getRandom().
-- [x] **`1.0.5+1.21.11`** (2026-08-14) - Proactive AggressiveTargetGoal (NearestAttackableTargetGoal<Monster>).
-- [x] **`1.0.4+1.21.11`** (2026-08-13) - Entity AI Goal Registration (Wolf.registerGoals).
-- [x] **`1.0.3+1.21.11`** (2026-08-13) - 💥 1.21.11 Launch Crash Resolution (MixinTransformerError).
-- [x] **`1.0.2+1.21.11`** (2026-08-13) - Personality Combat AI & Target Selection (PersonalityTargetGoal).
-- [x] **`1.0.1+1.21.11`** (2026-08-13) - Personality Follow & Teleport AI System (PersonalityFollowOwnerGoal).
-- [x] **`1.0.0+1.21.11`** (2026-08-13) - Initial subproject setup for Minecraft 1.21.11.
+- [ ] **`1.0.51+1.21.11`** (2026-08-16) - 🏆 Dedicated 13 Husbandry Advancements Tree (WolfAdvancementHelper.java): Implemented 13 custom advancements nested un...
+- [ ] **`1.0.50+1.21.11`** (2026-08-16) - ❄️ Dynamic Climate Coat Biome Variants (WolfCoatVariantHelper.java): Implemented dynamic climate-appropriate coat textures based on local biome temperature and snowfall.
+- [ ] **`1.0.49+1.21.11`** (2026-08-16) - 💬 Configurable Subtitle & Actionbar Feedback Options (WolfFeedbackHelper.java, BetterDogsGameRules.java): Added namespaced gamerules for subtitles and action bar messages.
+- [ ] **`1.0.48+1.21.11`** (2026-08-16) - 🐺 Wild Pack Dynamics & Territorial Chorus Howling (WolfHowlHelper.java, GroupHowlGoal.java, WildWolfTerritorialGoal.java): Full multi-era howling chorus parity.
+- [ ] **`1.0.47+1.21.11`** (2026-08-16) - 🐾 Puppy Mischief & Adult Disciplinary Correction AI (WolfMischiefHelper.java, BabyMischiefGoal.java, AdultCorrectionGoal.java): Playful puppy harassment and adult patience.
+- [ ] **`1.0.46+1.21.11`** (2026-08-16) - 🎾 Stick Fetching AI & Favorite Treat Zoomies (WolfFetchHelper.java, WolfFetchGoal.java, ZoomiesGoal.java): Implemented interactive stick fetching and treat zoomies.
+- [ ] **`1.0.45+1.21.11`** (2026-08-16) - 🎁 Morning Gift Bringing AI (WolfGiftHelper.java, WolfGiftGoal.java): Healthy, full-health companion dogs sleeping near owner beds bring foraging gifts.
+- [ ] **`1.0.44+1.21.11`** (2026-08-15) - 📄 Paper Adoption Ownership Transfer System: Sneak (Shift) + Right-clicking a tamed dog with Items.PAPER lists the dog for adoption.
+- [ ] **`1.0.43+1.21.11`** (2026-08-15) - 🛡️ Guard Mode & Sentinel Patrol AI: Sneak (Shift) + Right-clicking a tamed dog with an empty hand toggles anchored Guard Mode.
+- [ ] **`1.0.42+1.21.11`** (2026-08-15) - 🍏 Golden Apple Inbred Curing Interaction: Feeding a Golden Apple or Enchanted Golden Apple to an inbred runt dog completely cures physical defects.
+- [ ] **`1.0.41+1.21.11`** (2026-08-15) - 🧪 Inbreeding Lineage Tracking & Runt Stat Penalties: Implemented 1-generation immediate family lineage tracking storing parent UUIDs.
+- [ ] **`1.0.40+1.21.11`** (2026-08-15) - 🐕 Variable Multi-Puppy Litter Sizes: Implemented realistic canine litter sizes rolling 1 to 4 puppies (bd_wolf_litter_max_size).
+- [ ] **`1.0.39+1.21.11`** (2026-08-15) - 📏 Parental Size Inheritance & Scale Variance: Implemented mathematical adult size inheritance from parents with natural gaussian variance.
+- [ ] **`1.0.38+1.21.11`** (2026-08-15) - 🧬 Genetic Personality Inheritance: Implemented weighted parental trait inheritance when breeding tamed wolves (WolfGeneticsHelper.java).
+- [ ] **`1.0.37+1.21.11`** (2026-08-15) - 💖 Personality Dynamic Stat Scaling & Attribute Modifiers: Dynamically recalculates max health, attack damage, and base speed based on personality traits.
+- [ ] **`1.0.36+1.21.11`** (2026-08-15) - 🚀 Fast-Travel Sprint Catchup & Dimension Teleport Sync: Implemented dynamic catch-up sprint speed scaling (up to 2.0x) and dimension teleportation parity.
+- [ ] **`1.0.35+1.21.11`** (2026-08-15) - 🛡️ Friendly Fire Protection & Owner Damage Safeguards: Intercepts and completely cancels accidental player weapon sweeps and direct attacks.
+- [ ] **`1.0.34+1.21.11`** (2026-08-15) - 😡 3-Day Nemesis Memory & Pack Vendetta Combat AI: Tamed wolves now remember and avenge fallen pack mates or owners killed in combat.
+- [ ] **`1.0.33+1.21.11`** (2026-08-15) - 🥩 Full-HP Wolf Breeding & Food Refusal Fix: Corrected DogTreatHelper.shouldRefuseFood logic so tamed wolves at full health accept breeding foods.
+- [ ] **`1.0.32+1.21.11`** (2026-08-15) - 💥 Startup Crash Fix: Fixed InvalidInjectionException: Invalid descriptor on WolfMixin->@Inject::betterdogs$writeNbt on MC 1.21.11.
+- [ ] **`1.0.31+1.21.11`** (2026-08-15) - 📯 Acoustic Goat Horn Commands & Pack Horn Overrides: Implemented tactical acoustic pack commanding via Goat Horn variants (Ponder, Sing, Feel, Yearn, Seek).
+- [ ] **`1.0.30+1.21.11`** (2026-08-15) - 🖐️ Shift + Right-Click Petting & Soothe Calming Mechanic: Owners can now crouch and right-click their tamed dogs with an empty hand to soothe them.
+- [ ] **`1.0.29+1.21.11`** (2026-08-15) - ⚡ Thunderstorm Anxiety & Shelter Seeking AI: Tamed dogs exhibit realistic anxiety during thunderstorms, whimpering and seeking roofed shelter blocks.
+- [ ] **`1.0.28+1.21.11`** (2026-08-15) - 🥩 Food Refusal & Favorite Treats Begging AI: Tamed dogs now refuse player-fed food when at full health with a head-tilt refusal animation.
+- [ ] **`1.0.27+1.21.11`** (2026-08-15) - 🍖 Autonomous Ground Food Foraging & Healing: Injured tamed dogs automatically detect and seek dropped meat items within 12 blocks.
+- [ ] **`1.0.26+1.21.11`** (2026-08-15) - 🐺 Tactical Pack Flanking Encirclement AI: Implemented multi-angle pack encirclement AI allowing dogs targeting the same hostile to spread out.
+- [ ] **`1.0.25+1.21.11`** (2026-08-15) - 🛡️ Single-Purpose Architecture Alignment: Decoupled cliff edge safety and thermal hazard helpers into dedicated single-purpose classes.
+- [ ] **`1.0.24+1.21.11`** (2026-08-15) - 🔥 Emergency Thermal Safety & Hazard Evasion: Implemented automatic evasive backstep when standing within 1 block of Lava/Fire hazards.
+- [ ] **`1.0.23+1.21.11`** (2026-08-15) - 🔥 Active Hazard Detour Navigation: Implemented AvoidHazardsGoal inspecting forward path nodes and intercepting navigation towards heat hazards.
+- [ ] **`1.0.22+1.21.11`** (2026-08-15) - 🔥 Thermal Hazard Identification Utility: Implemented WolfHazardHelper providing centralized thermal scanning and classification.
+- [ ] **`1.0.21+1.21.11`** (2026-08-14) - 🏔️ Cliff Edge Fall Safety Navigation: Implemented dynamic drop height probing (WolfSafetyMixin and WolfSafetyHelper) preventing fatal cliff drops.
+- [ ] **`1.0.20+1.21.11`** (2026-08-14) - 💥 Startup Crash Fix: Fixed InvalidInjectionException: Invalid descriptor on WolfMixin->@Inject::betterdogs$writeNbt on 1.21.11 runtime.
+- [ ] **`1.0.19+1.21.11`** (2026-08-14) - 🎨 Bold Yellow Category Header: Styled the BETTER_DOGS GameRules category name with bold yellow formatting (ChatFormatting.YELLOW.toString() + ChatFormatting.BOLD.toString()).
+- [ ] **`1.0.18+1.21.11`** (2026-08-14) - 🏷️ Dedicated 'Better Dogs' GameRules Category: Registered custom BETTER_DOGS category so all 80+ mod GameRules appear under their own tab in the UI.
+- [ ] **`1.0.17+1.21.11`** (2026-08-14) - 🤺 Pacifist Defensive Retaliation AI (PacifistRevengeGoal): Pacifist wolves now defensively counter-attack hostiles that inflict damage upon them or their owner.
+- [ ] **`1.0.16+1.21.11`** (2026-08-14) - 💥 Startup Crash Fix: Fixed NoClassDefFoundError: net/minecraft/class_1928$class_5198 (GameRules.Category) on Minecraft 1.21.11 Fabric.
+- [ ] **`1.0.15+1.21.11`** (2026-08-14) - ⚙️ 80+ GameRules Registry Foundation: Implemented BetterDogsGameRules registering all 80+ namespaced GameRules via Fabric's GameRuleRegistry.
+- [ ] **`1.0.14+1.21.11`** (2026-08-14) - NBT & DNA Determinism Alignment: Harmonized WolfPersistentData constants and deterministic DNA seed salt (^ 5829103L) with 26.2 lead.
+- [ ] **`1.0.13+1.21.11`** (2026-08-14) - ⚔️ Combat AI & Target Selection Mixins: OwnerHurtTargetGoalMixin: Enforces strict Pacifist combat ethics (Pacifist dogs refuse to initiate attacks).
+- [ ] **`1.0.12+1.21.11`** (2026-08-14) - 🖼️ Mod Icon Asset: Deployed official icon.png (235 KB) into assets/vanilla-outsider-better-dogs/ and registered it in fabric.mod.json.
+- [ ] **`1.0.11+1.21.11`** (2026-08-14) - 💣 FleeCreeperGoal (100% 26.2 Parity): Tamed wolves detect ignited or swelling Creepers within 10 blocks and sprint away at 1.5x speed with smoke trail particles.
+- [ ] **`1.0.10+1.21.11`** (2026-08-14) - Wolf Movement & Sprint Speed Boost: Upgraded PersonalityFollowOwnerGoal base follow speed modifier from 1.0 to 1.25 (matching 26.2 lead).
+- [ ] **`1.0.9+1.21.11`** (2026-08-14) - fabric.mod.json ${version} Expansion Fix: Added processResources property expansion block into build.gradle.
+- [ ] **`1.0.8+1.21.11`** (2026-08-14) - 💥 Taming Particle Level Crash Fix (NoSuchMethodError): Replaced wolf.level() with wolf.getCommandSenderWorld().
+- [ ] **`1.0.7+1.21.11`** (2026-08-14) - 💥 TamedWanderNearOwnerGoal Crash Fix (NoSuchMethodError): Replaced owner.position() with primitive getters.
+- [ ] **`1.0.6+1.21.11`** (2026-08-14) - 💥 Taming Crash Fix (NoSuchMethodError): Replaced wolf.level() with wolf.getRandom().
+- [ ] **`1.0.5+1.21.11`** (2026-08-14) - Proactive AggressiveTargetGoal (NearestAttackableTargetGoal<Monster>).
+- [ ] **`1.0.4+1.21.11`** (2026-08-13) - Entity AI Goal Registration (Wolf.registerGoals).
+- [ ] **`1.0.3+1.21.11`** (2026-08-13) - 💥 1.21.11 Launch Crash Resolution (MixinTransformerError).
+- [ ] **`1.0.2+1.21.11`** (2026-08-13) - Personality Combat AI & Target Selection (PersonalityTargetGoal).
+- [ ] **`1.0.1+1.21.11`** (2026-08-13) - Personality Follow & Teleport AI System (PersonalityFollowOwnerGoal).
+- [ ] **`1.0.0+1.21.11`** (2026-08-13) - Initial subproject setup for Minecraft 1.21.11.
