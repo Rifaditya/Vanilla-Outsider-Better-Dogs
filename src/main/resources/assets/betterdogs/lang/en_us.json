@@ -855,5 +855,17 @@
   "gamerule.betterdogs:interceptorOwnerHealthThreshold": "Interceptor Owner Health Threshold (HP)",
   "gamerule.betterdogs:interceptorOwnerHealthThreshold.description": "Owner health threshold in HP (e.g. 10 = 5 hearts) below which dogs will heroically intercept incoming projectiles.",
   "gamerule.betterdogs.interceptorOwnerHealthThreshold": "Interceptor Owner Health Threshold (HP)",
-  "gamerule.betterdogs.interceptorOwnerHealthThreshold.description": "Owner health threshold in HP (e.g. 10 = 5 hearts) below which dogs will heroically intercept incoming projectiles."
+  "gamerule.betterdogs.interceptorOwnerHealthThreshold.description": "Owner health threshold in HP (e.g. 10 = 5 hearts) below which dogs will heroically intercept incoming projectiles.",
+  "gamerule.bd_personality_archetypes_enabled": "Canine Personality Archetypes",
+  "gamerule.bd_personality_archetypes_enabled.description": "If true, wolves roll one of 10 personality archetypes affecting their behavior and combat stats.",
+  "gamerule.betterdogs:bd_personality_archetypes_enabled": "Canine Personality Archetypes",
+  "gamerule.betterdogs:bd_personality_archetypes_enabled.description": "If true, wolves roll one of 10 personality archetypes affecting their behavior and combat stats.",
+  "gamerule.betterdogs.bd_personality_archetypes_enabled": "Canine Personality Archetypes",
+  "gamerule.betterdogs.bd_personality_archetypes_enabled.description": "If true, wolves roll one of 10 personality archetypes affecting their behavior and combat stats.",
+  "gamerule.bd_personality_distribution_mode": "Personality Distribution Mode",
+  "gamerule.bd_personality_distribution_mode.description": "0 = Uniform distribution, 1 = Guardian heavy distribution.",
+  "gamerule.betterdogs:bd_personality_distribution_mode": "Personality Distribution Mode",
+  "gamerule.betterdogs:bd_personality_distribution_mode.description": "0 = Uniform distribution, 1 = Guardian heavy distribution.",
+  "gamerule.betterdogs.bd_personality_distribution_mode": "Personality Distribution Mode",
+  "gamerule.betterdogs.bd_personality_distribution_mode.description": "0 = Uniform distribution, 1 = Guardian heavy distribution."
 }

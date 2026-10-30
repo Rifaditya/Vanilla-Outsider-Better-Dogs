@@ -113,7 +113,7 @@ public final class WolfProjectileInterceptHelper {
 
         // Time of closest approach: tau = (delta . V) / ||V||^2
         double tau = (dx * vx + dy * vy + dz * vz) / vSq;
-        if (tau < minLookaheadTicks || tau > maxLookaheadTicks) {
+        if (Double.isNaN(tau) || Double.isInfinite(tau) || tau < minLookaheadTicks || tau > maxLookaheadTicks) {
             return InterceptPrediction.NONE; // Moving away, past closest point, or outside reaction window
         }
 
@@ -121,6 +121,10 @@ public final class WolfProjectileInterceptHelper {
         double closestX = px + vx * tau;
         double closestY = py + vy * tau;
         double closestZ = pz + vz * tau;
+        if (Double.isNaN(closestX) || Double.isNaN(closestY) || Double.isNaN(closestZ) ||
+            Double.isInfinite(closestX) || Double.isInfinite(closestY) || Double.isInfinite(closestZ)) {
+            return InterceptPrediction.NONE;
+        }
 
         // Displacement from owner at closest approach
         double relX = closestX - ox;
@@ -130,6 +134,9 @@ public final class WolfProjectileInterceptHelper {
         double horizDistSq = relX * relX + relZ * relZ;
         double radiusSq = ownerCollisionRadius * ownerCollisionRadius;
         double perpDist = Math.sqrt(relX * relX + relY * relY + relZ * relZ);
+        if (Double.isNaN(perpDist) || Double.isInfinite(perpDist)) {
+            perpDist = Double.MAX_VALUE;
+        }
 
         // Cylinder check: horizontal radius <= ownerCollisionRadius and delta y in [-0.5, 2.0]
         boolean inCylinder = horizDistSq <= radiusSq && relY >= OWNER_CYLINDER_MIN_Y && relY <= OWNER_CYLINDER_MAX_Y;
@@ -139,11 +146,14 @@ public final class WolfProjectileInterceptHelper {
 
         // Intercept coordinate: P_proj + max(0.0, tau - 1.0) * V
         double interceptTime = Math.max(0.0, tau - 1.0);
-        Vec3 interceptPos = new Vec3(
-                px + vx * interceptTime,
-                py + vy * interceptTime,
-                pz + vz * interceptTime
-        );
+        double ix = px + vx * interceptTime;
+        double iy = py + vy * interceptTime;
+        double iz = pz + vz * interceptTime;
+        if (Double.isNaN(ix) || Double.isNaN(iy) || Double.isNaN(iz) ||
+            Double.isInfinite(ix) || Double.isInfinite(iy) || Double.isInfinite(iz)) {
+            return InterceptPrediction.NONE;
+        }
+        Vec3 interceptPos = new Vec3(ix, iy, iz);
 
         return new InterceptPrediction(true, tau, perpDist, interceptPos);
     }
