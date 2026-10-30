@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 5.7.6+26.2** - 5-Pillar Testing Harness: Concurrency, Brigadier AST & Headless Simulation (BL-BD-018)
 - [ ] **Better Dogs 5.7.5+26.2** - Ballistic Interceptor: Multi-Era Parity Verification & Full Production Release (BL-BD-021)
 - [ ] **Better Dogs 5.7.4+26.2** - Ballistic Interceptor: Heroic Sacrifice Damage Routing, Anti-One-Shot Protection & Sensory Polish (BL-BD-021)
 - [ ] **Better Dogs 5.7.3+26.2** - Ballistic Interceptor: AI Goal Registration in WolfAIMixin (BL-BD-021)
