@@ -1,5 +1,16 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.1.0+1.20.1] - 2026-10-03
+
+### Added
+- 🐾 **Pack Play Sparring & Social Dynamics AI Suite ([BL-BD-001])**:
+  - Implemented `SmallFightGoal` harmless play sparring between co-owned companion dogs.
+  - Added hierarchy correction dynamics and `AdultDisciplineHelper` alert silencing.
+  - Added `PackAudienceHelper` for nearby packmate spectator cheering and tail-wagging.
+  - Added comforting treat feeding soothing interaction in `DogTreatHelper`.
+  - Added new Husbandry advancements: Roughhousing & Know Your Place.
+  - Added dynamic game rules `bd_dog_play_fighting` and `bd_play_penalty_minutes`.
+
 ## [1.0.98+1.20.1]
 ### Added
 - 🐾 **Multi-Era Parity Alignment**:

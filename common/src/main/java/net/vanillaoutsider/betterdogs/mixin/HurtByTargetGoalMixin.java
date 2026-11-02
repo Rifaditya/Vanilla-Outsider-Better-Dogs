@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * Muzzle Logic: Prevents "Call for Help" broadcast when a baby wolf is being disciplined.
+ * Muzzle Logic: Prevents "Call for Help" broadcast when a baby wolf or play-disciplined packmate is being corrected.
  * This ensures domestic disputes don't wake up the whole pack.
  */
 @Mixin(HurtByTargetGoal.class)
@@ -24,14 +24,10 @@ public abstract class HurtByTargetGoalMixin extends TargetGoal {
 
     @Inject(method = "alertOthers", at = @At("HEAD"), cancellable = true)
     protected void betterdogs$onAlertOthers(CallbackInfo ci) {
-        if (this.mob instanceof Wolf baby && baby.isTame()) {
-            LivingEntity attacker = baby.getLastHurtByMob();
-
-            // Check if attacker is an Adult Wolf with the same owner
-            if (attacker instanceof Wolf adult && adult.isTame() && !adult.isBaby()) {
-                if (baby.getOwner() != null && adult.getOwner() != null && baby.getOwner().equals(adult.getOwner())) {
-                    ci.cancel();
-                }
+        if (this.mob instanceof Wolf victim && victim.isTame()) {
+            LivingEntity attacker = victim.getLastHurtByMob();
+            if (net.vanillaoutsider.betterdogs.util.AdultDisciplineHelper.shouldSilenceAlert(victim, attacker)) {
+                ci.cancel();
             }
         }
     }

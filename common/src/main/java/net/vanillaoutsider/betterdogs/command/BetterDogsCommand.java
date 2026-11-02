@@ -4,6 +4,7 @@ package net.vanillaoutsider.betterdogs.command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import net.dasik.social.api.SocialLinks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -111,7 +112,14 @@ public class BetterDogsCommand {
         registerInt("bd_breed_diluted_normal_chance", BetterDogsGameRules.BD_BREED_DILUTED_NORMAL_CHANCE, 50);
         registerInt("bd_breed_diluted_other_chance", BetterDogsGameRules.BD_BREED_DILUTED_OTHER_CHANCE, 25);
         registerInt("bd_wolf_litter_max_size", BetterDogsGameRules.BD_WOLF_LITTER_MAX_SIZE, 4);
+
+        // Pack Play Sparring & Timeout Penalty
+        registerBool("bd_dog_play_fighting", BetterDogsGameRules.BD_DOG_PLAY_FIGHTING, true);
+        registerBool("dogplayfighting", BetterDogsGameRules.BD_DOG_PLAY_FIGHTING, true);
+        registerInt("bd_play_penalty_minutes", BetterDogsGameRules.BD_PLAY_PENALTY_MINUTES, 10);
+        registerInt("playpenaltyminutes", BetterDogsGameRules.BD_PLAY_PENALTY_MINUTES, 10);
     }
+
 
     private static void registerBool(String name, GameRules.Key<GameRules.BooleanValue> key, boolean def) {
         BOOL_MAP.put(name, key);
@@ -165,13 +173,15 @@ public class BetterDogsCommand {
     }
 
     private static int executeHelp(CommandSourceStack source, String literalName) {
+        String kofi = SocialLinks.getKofiUri() != null ? SocialLinks.KOFI_URL : SocialLinks.KOFI_URL;
         source.sendSuccess(() -> Component.literal(
                 "§6--- Vanilla Outsider: Better Dogs Commands ---§r\n" +
                 "§a/" + literalName + " status§r - Display categorized summary of companion GameRules\n" +
                 "§a/" + literalName + " get <rule>§r - Query current value of a GameRule\n" +
                 "§a/" + literalName + " set <rule> <val>§r - Modify a GameRule value (Permission 2)\n" +
                 "§a/" + literalName + " reset§r - Reset all Better Dogs GameRules to factory defaults (Permission 2)\n" +
-                "§a/" + literalName + " reload§r - Validate and re-sync active GameRules (Permission 2)"
+                "§a/" + literalName + " reload§r - Validate and re-sync active GameRules (Permission 2)\n" +
+                "§6Support & Community: §e" + kofi + " §7| §e" + SocialLinks.DISCORD_INVITE_URL
         ), false);
         return 1;
     }

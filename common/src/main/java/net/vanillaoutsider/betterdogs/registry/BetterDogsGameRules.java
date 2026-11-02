@@ -76,6 +76,10 @@ public class BetterDogsGameRules {
     public static GameRules.Key<GameRules.IntegerValue> BD_BABY_RETALIATE_PERCENT;
     public static GameRules.Key<GameRules.IntegerValue> BD_WILD_HUNT_HEALTH_THRESHOLD;
 
+    // Pack Play Sparring & Timeout Penalty (Step 1 & Step 4)
+    public static GameRules.Key<GameRules.BooleanValue> BD_DOG_PLAY_FIGHTING;
+    public static GameRules.Key<GameRules.IntegerValue> BD_PLAY_PENALTY_MINUTES;
+
     // Territorial
     public static GameRules.Key<GameRules.BooleanValue> BD_TERRITORIAL_RIVALRY;
     public static GameRules.Key<GameRules.IntegerValue> BD_TERR_AA_WAR;
@@ -268,6 +272,14 @@ public class BetterDogsGameRules {
         // Pack Spread Scaling
         BD_WILD_PACK_SPREAD_MULTIPLIER = Services.GAMERULES.registerInt("bd_wild_pack_spread_multiplier", GameRules.Category.MISC, 80);
         BD_WILD_PACK_SPREAD_MAX = Services.GAMERULES.registerInt("bd_wild_pack_spread_max", GameRules.Category.MISC, 40);
+    }
+
+    public static boolean isDogPlayFightingEnabled(Level level) {
+        return getBoolean(level, BD_DOG_PLAY_FIGHTING, true);
+    }
+
+    public static int getPlayPenaltyMinutes(Level level) {
+        return getInt(level, BD_PLAY_PENALTY_MINUTES, 10);
     }
 
     public static boolean isHornCommandsEnabled(Level level) {

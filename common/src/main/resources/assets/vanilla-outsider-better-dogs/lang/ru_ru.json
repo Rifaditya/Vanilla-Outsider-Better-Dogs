@@ -1,4 +1,4 @@
-﻿{
+{
   "gamerule.category.betterdogs": "╨¢╤â╤ç╤ê╨╕╨╡ ╤ü╨╛╨▒╨░╨║╨╕ (Better Dogs)",
   "gamerule.category.betterdogs:betterdogs": "╨¢╤â╤ç╤ê╨╕╨╡ ╤ü╨╛╨▒╨░╨║╨╕ (Better Dogs)",
   "gamerule.category.vanilla-outsider-better-dogs.better_dogs": "Vanilla Outsider: ╨¢╤â╤ç╤ê╨╕╨╡ ╤ü╨╛╨▒╨░╨║╨╕",
@@ -651,5 +651,29 @@
   "gamerule.bd_nemesis_duration_days": "╨ö╨╗╨╕╤é╨╡╨╗╤î╨╜╨╛╤ü╤é╤î ╨╝╨╡╤ü╤é╨╕ (╨┤╨╜╨╕)",
   "gamerule.betterdogs.bd_nemesis_duration_days.description": "╨Ü╨╛╨╗╨╕╤ç╨╡╤ü╤é╨▓╨╛ ╨╕╨│╤Ç╨╛╨▓╤ï╤à ╨┤╨╜╨╡╨╣ ╨┤╨╡╨╣╤ü╤é╨▓╨╕╤Å ╨║╤Ç╨╛╨▓╨╜╨╛╨╣ ╨╝╨╡╤ü╤é╨╕ ╨╜╨░ ╨▓╨╕╨┤ ╨╝╨╛╨▒╨░. ╨ƒ╨╛ ╤â╨╝╨╛╨╗╤ç╨░╨╜╨╕╤Ä: 3.",
   "gamerule.bd_nemesis_duration_days.description": "╨Ü╨╛╨╗╨╕╤ç╨╡╤ü╤é╨▓╨╛ ╨╕╨│╤Ç╨╛╨▓╤ï╤à ╨┤╨╜╨╡╨╣ ╨┤╨╡╨╣╤ü╤é╨▓╨╕╤Å ╨║╤Ç╨╛╨▓╨╜╨╛╨╣ ╨╝╨╡╤ü╤é╨╕ ╨╜╨░ ╨▓╨╕╨┤ ╨╝╨╛╨▒╨░. ╨ƒ╨╛ ╤â╨╝╨╛╨╗╤ç╨░╨╜╨╕╤Ä: 3.",
-  "betterdogs.jade.treat": "╨¢╤Ä╨▒╨╕╨╝╨╛╨╡ ╨╗╨░╨║╨╛╨╝╤ü╤é╨▓╨╛: %s"
+  "betterdogs.jade.treat": "╨¢╤Ä╨▒╨╕╨╝╨╛╨╡ ╨╗╨░╨║╨╛╨╝╤ü╤é╨▓╨╛: %s",
+  "advancements.betterdogs.husbandry.roughhousing.title": "Roughhousing",
+  "advancements.betterdogs.husbandry.roughhousing.description": "Witness two tamed dogs engaging in playful sparring",
+  "advancements.betterdogs.husbandry.know_your_place.title": "Know Your Place",
+  "advancements.betterdogs.husbandry.know_your_place.description": "Witness a pack elder deliver a hierarchy correction snap",
+  "gamerule.betterdogs:dogPlayFighting": "Dog Play Fighting",
+  "gamerule.betterdogs:dogPlayFighting.description": "If true, tamed dogs of the same pack can engage in playful sparring and roughhousing. Default: true.",
+  "gamerule.betterdogs.dogPlayFighting": "Dog Play Fighting",
+  "gamerule.betterdogs.dogPlayFighting.description": "If true, tamed dogs of the same pack can engage in playful sparring and roughhousing. Default: true.",
+  "gamerule.betterdogs:bd_dog_play_fighting": "Dog Play Fighting",
+  "gamerule.betterdogs:bd_dog_play_fighting.description": "If true, tamed dogs of the same pack can engage in playful sparring and roughhousing. Default: true.",
+  "gamerule.betterdogs.bd_dog_play_fighting": "Dog Play Fighting",
+  "gamerule.betterdogs.bd_dog_play_fighting.description": "If true, tamed dogs of the same pack can engage in playful sparring and roughhousing. Default: true.",
+  "gamerule.bd_dog_play_fighting": "Dog Play Fighting",
+  "gamerule.bd_dog_play_fighting.description": "If true, tamed dogs of the same pack can engage in playful sparring and roughhousing. Default: true.",
+  "gamerule.betterdogs:playPenaltyMinutes": "Play Penalty Duration (Minutes)",
+  "gamerule.betterdogs:playPenaltyMinutes.description": "Duration in minutes a dog is placed on play timeout penalty following a hierarchy correction snap. Default: 10.",
+  "gamerule.betterdogs.playPenaltyMinutes": "Play Penalty Duration (Minutes)",
+  "gamerule.betterdogs.playPenaltyMinutes.description": "Duration in minutes a dog is placed on play timeout penalty following a hierarchy correction snap. Default: 10.",
+  "gamerule.betterdogs:bd_play_penalty_minutes": "Play Penalty Duration (Minutes)",
+  "gamerule.betterdogs:bd_play_penalty_minutes.description": "Duration in minutes a dog is placed on play timeout penalty following a hierarchy correction snap. Default: 10.",
+  "gamerule.betterdogs.bd_play_penalty_minutes": "Play Penalty Duration (Minutes)",
+  "gamerule.betterdogs.bd_play_penalty_minutes.description": "Duration in minutes a dog is placed on play timeout penalty following a hierarchy correction snap. Default: 10.",
+  "gamerule.bd_play_penalty_minutes": "Play Penalty Duration (Minutes)",
+  "gamerule.bd_play_penalty_minutes.description": "Duration in minutes a dog is placed on play timeout penalty following a hierarchy correction snap. Default: 10."
 }
