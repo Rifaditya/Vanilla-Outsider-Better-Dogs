@@ -1,5 +1,11 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.68+1.20.1] - 2026-08-18
+### Changed
+- ⚡ **Hot-Path Zero-Allocation Optimizations (`WolfSafetyMixin.java`, `WolfGuardGoal.java`)**:
+  - Replaced intermediate `Vec3` lookahead allocations with direct primitive coordinate math (`Mth.floor`) in cliff safety loops.
+  - Replaced `new AABB(guardPos).inflate(4.0)` with direct coordinate `AABB` instantiation in the Pacifist guard soothing aura loop.
+
 ## [1.0.67+1.20.1] - 2026-08-18
 ### Added
 - 🥩 **Autonomous Ground Feeding Merit Tracking & Advancement (`EatGroundFoodGoal.java`)**:
