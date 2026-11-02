@@ -11,7 +11,8 @@
     "WolfSafetyMixin",
     "WolfPushMixin",
     "WolfInteractMixin",
-    "InstrumentItemMixin"
+    "InstrumentItemMixin",
+    "WolfSoundMixin"
   ],
   "client": [
     "WolfRendererMixin"

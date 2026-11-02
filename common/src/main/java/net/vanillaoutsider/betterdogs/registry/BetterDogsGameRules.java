@@ -83,6 +83,10 @@ public class BetterDogsGameRules {
     public static GameRules.Key<GameRules.IntegerValue> BD_PLAY_CHOREOGRAPHY_FREQUENCY;
     public static GameRules.Key<GameRules.IntegerValue> BD_MAX_PLAY_DISTANCE;
 
+    // Physical Canine Genetics
+    public static GameRules.Key<GameRules.BooleanValue> BD_DOG_GENETICS_ENABLED;
+    public static GameRules.Key<GameRules.IntegerValue> BD_MAX_SCALE_DEVIATION;
+
     // Territorial
     public static GameRules.Key<GameRules.BooleanValue> BD_TERRITORIAL_RIVALRY;
     public static GameRules.Key<GameRules.IntegerValue> BD_TERR_AA_WAR;
@@ -299,6 +303,14 @@ public class BetterDogsGameRules {
 
     public static int getMaxPlayDistance(Level level) {
         return getInt(level, BD_MAX_PLAY_DISTANCE, 16);
+    }
+
+    public static boolean isDogGeneticsEnabled(Level level) {
+        return getBoolean(level, BD_DOG_GENETICS_ENABLED, true);
+    }
+
+    public static int getMaxScaleDeviation(Level level) {
+        return getInt(level, BD_MAX_SCALE_DEVIATION, 30);
     }
 
     public static boolean isHornCommandsEnabled(Level level) {

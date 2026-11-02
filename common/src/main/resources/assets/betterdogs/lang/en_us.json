@@ -715,5 +715,17 @@
   "config.betterdogs.playChoreographyFrequency": "Dog Play Choreography Frequency (Ticks)",
   "config.betterdogs.playChoreographyFrequency.description": "Frequency in game ticks between spontaneous play invitations (default: 2400 ticks / 2 minutes).",
   "config.betterdogs.maxPlayDistance": "Max Dog Play Distance",
-  "config.betterdogs.maxPlayDistance.description": "Maximum distance in blocks dogs can stray from owner or partner during play."
+  "config.betterdogs.maxPlayDistance.description": "Maximum distance in blocks dogs can stray from owner or partner during play.",
+  "gamerule.bd_dog_genetics_enabled": "Enable Dog Genetics",
+  "gamerule.bd_dog_genetics_enabled.description": "If true, wolf offspring inherit physical attributes (movement speed and max health) from parents with Gaussian variance. Default: true.",
+  "gamerule.betterdogs.bd_dog_genetics_enabled": "Enable Dog Genetics",
+  "gamerule.betterdogs.bd_dog_genetics_enabled.description": "If true, wolf offspring inherit physical attributes (movement speed and max health) from parents with Gaussian variance. Default: true.",
+  "gamerule.vanilla-outsider-better-dogs.bd_dog_genetics_enabled": "Enable Dog Genetics",
+  "gamerule.vanilla-outsider-better-dogs.bd_dog_genetics_enabled.description": "If true, wolf offspring inherit physical attributes (movement speed and max health) from parents with Gaussian variance. Default: true.",
+  "gamerule.bd_max_scale_deviation": "Max Scale Deviation (%)",
+  "gamerule.bd_max_scale_deviation.description": "Maximum percentage deviation allowed during canine scale inheritance and generation. Default: 30.",
+  "gamerule.betterdogs.bd_max_scale_deviation": "Max Scale Deviation (%)",
+  "gamerule.betterdogs.bd_max_scale_deviation.description": "Maximum percentage deviation allowed during canine scale inheritance and generation. Default: 30.",
+  "gamerule.vanilla-outsider-better-dogs.bd_max_scale_deviation": "Max Scale Deviation (%)",
+  "gamerule.vanilla-outsider-better-dogs.bd_max_scale_deviation.description": "Maximum percentage deviation allowed during canine scale inheritance and generation. Default: 30."
 }

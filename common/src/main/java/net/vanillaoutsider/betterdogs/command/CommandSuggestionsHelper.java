@@ -45,7 +45,10 @@ public class CommandSuggestionsHelper {
             "bd_wild_personality_behavior",
             "bd_wolf_spawn_expanded_biomes",
             "bd_dynamic_climate_variants",
-            "bd_dog_play_fighting"
+            "bd_dog_play_fighting",
+            "dogplayfighting",
+            "bd_dog_genetics_enabled",
+            "doggeneticsenabled"
     ));
 
 
@@ -111,7 +114,10 @@ public class CommandSuggestionsHelper {
             "bd_breed_diluted_normal_chance",
             "bd_breed_diluted_other_chance",
             "bd_wolf_litter_max_size",
-            "bd_play_penalty_minutes"
+            "bd_play_penalty_minutes",
+            "playpenaltyminutes",
+            "bd_max_scale_deviation",
+            "maxscaledeviation"
     ));
 
 

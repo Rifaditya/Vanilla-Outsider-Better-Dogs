@@ -1,5 +1,14 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.3.0+1.20.1] - 2026-10-21
+
+### Added
+- 🧬 **Canine Physical Genetics & Acoustic Voice Pitch Timbre ([BL-BD-012])**:
+  - Implemented continuous Gaussian genetic inheritance for movement speed, maximum health, and physical body scaling.
+  - Added acoustic voice pitch modulation inversely proportional to body scale via `WolfSoundMixin`.
+  - Added `/betterdogs inspect <targets>` command to inspect real-time traits and acoustic timbre.
+  - Added dynamic game rules `bd_dog_genetics_enabled` and `bd_max_scale_deviation`.
+
 ## [1.2.0+1.20.1] - 2026-10-19
 
 ### Added
