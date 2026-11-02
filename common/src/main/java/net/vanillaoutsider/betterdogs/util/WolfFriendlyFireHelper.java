@@ -41,6 +41,18 @@ public class WolfFriendlyFireHelper {
             return true;
         }
 
+        // Blood Feud bypasses pack friendly fire between rival wolves
+        if (attacker instanceof net.vanillaoutsider.betterdogs.WolfExtensions ext && ext.betterdogs$hasBloodFeud()) {
+            if (ext.betterdogs$getBloodFeudTarget().equals(wolf.getStringUUID())) {
+                return false;
+            }
+        }
+        if (directAttacker instanceof net.vanillaoutsider.betterdogs.WolfExtensions directExt && directExt.betterdogs$hasBloodFeud()) {
+            if (directExt.betterdogs$getBloodFeudTarget().equals(wolf.getStringUUID())) {
+                return false;
+            }
+        }
+
         // Check if attacker is another friendly dog of the same owner
         if (attacker instanceof Wolf attackerWolf && attackerWolf.isTame() && attackerWolf.isOwnedBy(owner)) {
             return true;
