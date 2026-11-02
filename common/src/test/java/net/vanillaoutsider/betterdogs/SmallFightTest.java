@@ -641,6 +641,8 @@ class SmallFightTest {
             // GameRule keys
             assertTrue(lang.has("gamerule.betterdogs:dogPlayFighting"), "gamerule.betterdogs:dogPlayFighting must be present");
             assertTrue(lang.has("gamerule.betterdogs:playPenaltyMinutes"), "gamerule.betterdogs:playPenaltyMinutes must be present");
+            assertTrue(lang.has("gamerule.betterdogs:bd_dog_play_fighting"), "gamerule.betterdogs:bd_dog_play_fighting must be present");
+            assertTrue(lang.has("gamerule.betterdogs:bd_play_penalty_minutes"), "gamerule.betterdogs:bd_play_penalty_minutes must be present");
         }
     }
 }

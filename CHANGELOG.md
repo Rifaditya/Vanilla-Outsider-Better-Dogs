@@ -1,5 +1,10 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.1.2+1.20.1] - 2026-10-17
+
+### Fixed
+- ⚙️ **GameRule Standard Identifier Normalization ([BL-BD-025])**: Standardized GameRule identifiers to lowercase snake_case (`bd_dog_play_fighting` and `bd_play_penalty_minutes`) to prevent startup registration issues across platforms while maintaining backward compatibility with legacy translation keys.
+
 ## [1.1.1+1.20.1] - 2026-10-12
 
 ### Fixed
