@@ -1,6 +1,7 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
 package net.vanillaoutsider.betterdogs.registry;
 
+import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.vanillaoutsider.betterdogs.platform.Services;
@@ -114,6 +115,28 @@ public class BetterDogsGameRules {
     public static GameRules.Key<GameRules.IntegerValue> BD_BREED_DILUTED_NORMAL_CHANCE;
     public static GameRules.Key<GameRules.IntegerValue> BD_BREED_DILUTED_OTHER_CHANCE;
     public static GameRules.Key<GameRules.IntegerValue> BD_WOLF_LITTER_MAX_SIZE;
+    public static GameRules.Key<GameRules.IntegerValue> BD_WOLF_LITTER_EXTRA_CHANCE;
+
+    public static GameRules.Key<GameRules.BooleanValue> BD_HORN_COMMANDS_ENABLED;
+    public static GameRules.Key<GameRules.BooleanValue> BD_FETCH_ENABLED;
+    public static GameRules.Key<GameRules.IntegerValue> BD_FETCH_RANGE;
+    public static GameRules.Key<GameRules.BooleanValue> BD_ZOOMIES_ENABLED;
+    public static GameRules.Key<GameRules.IntegerValue> BD_ZOOMIES_DURATION_TICKS;
+    public static GameRules.Key<GameRules.BooleanValue> BD_WOLVES_SEEK_WATER_ON_FIRE;
+    public static GameRules.Key<GameRules.BooleanValue> BD_WOLVES_BREAK_SIT_ON_FIRE;
+
+    // Guard Mode
+    public static GameRules.Key<GameRules.BooleanValue> BD_PACIFIST_GUARD_BUFFS;
+    public static GameRules.Key<GameRules.BooleanValue> BD_ENABLE_INBRED_CURING;
+    public static GameRules.Key<GameRules.BooleanValue> BD_SHOW_RUNT_PARTICLES;
+    public static GameRules.Key<GameRules.IntegerValue> BD_PARTICLE_DENSITY;
+    public static GameRules.Key<GameRules.IntegerValue> BD_GUARD_PATROL_RANGE_AGGRESSIVE;
+    public static GameRules.Key<GameRules.IntegerValue> BD_GUARD_PATROL_RANGE_NORMAL;
+    public static GameRules.Key<GameRules.IntegerValue> BD_GUARD_PATROL_RANGE_PACIFIST;
+
+    // Pack Spread Scaling
+    public static GameRules.Key<GameRules.IntegerValue> BD_WILD_PACK_SPREAD_MULTIPLIER;
+    public static GameRules.Key<GameRules.IntegerValue> BD_WILD_PACK_SPREAD_MAX;
 
     public static void init() {
         // General
@@ -223,27 +246,77 @@ public class BetterDogsGameRules {
         BD_BREED_DILUTED_NORMAL_CHANCE = Services.GAMERULES.registerInt("bd_breed_diluted_normal_chance", GameRules.Category.MISC, 50);
         BD_BREED_DILUTED_OTHER_CHANCE = Services.GAMERULES.registerInt("bd_breed_diluted_other_chance", GameRules.Category.MISC, 25);
         BD_WOLF_LITTER_MAX_SIZE = Services.GAMERULES.registerInt("bd_wolf_litter_max_size", GameRules.Category.MISC, 4);
+        BD_WOLF_LITTER_EXTRA_CHANCE = Services.GAMERULES.registerInt("bd_wolf_litter_extra_chance", GameRules.Category.MISC, 20);
+
+        BD_HORN_COMMANDS_ENABLED = Services.GAMERULES.registerBoolean("bd_horn_commands_enabled", GameRules.Category.MISC, true);
+        BD_FETCH_ENABLED = Services.GAMERULES.registerBoolean("bd_fetch_enabled", GameRules.Category.MISC, true);
+        BD_FETCH_RANGE = Services.GAMERULES.registerInt("bd_fetch_range", GameRules.Category.MISC, 16);
+        BD_ZOOMIES_ENABLED = Services.GAMERULES.registerBoolean("bd_zoomies_enabled", GameRules.Category.MISC, true);
+        BD_ZOOMIES_DURATION_TICKS = Services.GAMERULES.registerInt("bd_zoomies_duration_ticks", GameRules.Category.MISC, 160);
+        BD_WOLVES_SEEK_WATER_ON_FIRE = Services.GAMERULES.registerBoolean("bd_wolves_seek_water_on_fire", GameRules.Category.MISC, true);
+        BD_WOLVES_BREAK_SIT_ON_FIRE = Services.GAMERULES.registerBoolean("bd_wolves_break_sit_on_fire", GameRules.Category.MISC, true);
+
+        // Guard Mode
+        BD_PACIFIST_GUARD_BUFFS = Services.GAMERULES.registerBoolean("bd_pacifist_guard_buffs", GameRules.Category.MISC, false);
+        BD_ENABLE_INBRED_CURING = Services.GAMERULES.registerBoolean("bd_enable_inbred_curing", GameRules.Category.MISC, true);
+        BD_SHOW_RUNT_PARTICLES = Services.GAMERULES.registerBoolean("bd_show_runt_particles", GameRules.Category.MISC, false);
+        BD_PARTICLE_DENSITY = Services.GAMERULES.registerInt("bd_particle_density", GameRules.Category.MISC, 2);
+        BD_GUARD_PATROL_RANGE_AGGRESSIVE = Services.GAMERULES.registerInt("bd_guard_patrol_range_aggressive", GameRules.Category.MISC, 12);
+        BD_GUARD_PATROL_RANGE_NORMAL = Services.GAMERULES.registerInt("bd_guard_patrol_range_normal", GameRules.Category.MISC, 0);
+        BD_GUARD_PATROL_RANGE_PACIFIST = Services.GAMERULES.registerInt("bd_guard_patrol_range_pacifist", GameRules.Category.MISC, 3);
+
+        // Pack Spread Scaling
+        BD_WILD_PACK_SPREAD_MULTIPLIER = Services.GAMERULES.registerInt("bd_wild_pack_spread_multiplier", GameRules.Category.MISC, 80);
+        BD_WILD_PACK_SPREAD_MAX = Services.GAMERULES.registerInt("bd_wild_pack_spread_max", GameRules.Category.MISC, 40);
+    }
+
+    public static boolean isHornCommandsEnabled(Level level) {
+        return getBoolean(level, BD_HORN_COMMANDS_ENABLED, true);
+    }
+
+    public static boolean isFetchEnabled(Level level) {
+        return getBoolean(level, BD_FETCH_ENABLED, true);
+    }
+
+    public static int getFetchRange(Level level) {
+        return getInt(level, BD_FETCH_RANGE, 16);
+    }
+
+    public static boolean isZoomiesEnabled(Level level) {
+        return getBoolean(level, BD_ZOOMIES_ENABLED, true);
+    }
+
+    public static int getZoomiesDurationTicks(Level level) {
+        return getInt(level, BD_ZOOMIES_DURATION_TICKS, 160);
     }
 
     public static boolean getBoolean(Level level, GameRules.Key<GameRules.BooleanValue> key, boolean fallback) {
-        if (level == null || level.getGameRules() == null || key == null) {
+        if (level == null || key == null) {
             return fallback;
         }
         try {
-            return level.getGameRules().getBoolean(key);
-        } catch (Exception e) {
-            return fallback;
+            return DynamicGameRuleManager.getBoolean(level, key);
+        } catch (Throwable t) {
+            try {
+                return level.getGameRules() != null ? level.getGameRules().getBoolean(key) : fallback;
+            } catch (Exception e) {
+                return fallback;
+            }
         }
     }
 
     public static int getInt(Level level, GameRules.Key<GameRules.IntegerValue> key, int fallback) {
-        if (level == null || level.getGameRules() == null || key == null) {
+        if (level == null || key == null) {
             return fallback;
         }
         try {
-            return level.getGameRules().getInt(key);
-        } catch (Exception e) {
-            return fallback;
+            return DynamicGameRuleManager.getInt(level, key);
+        } catch (Throwable t) {
+            try {
+                return level.getGameRules() != null ? level.getGameRules().getInt(key) : fallback;
+            } catch (Exception e) {
+                return fallback;
+            }
         }
     }
 }

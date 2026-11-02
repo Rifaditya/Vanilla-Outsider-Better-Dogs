@@ -94,6 +94,7 @@ public class WolfLitterHelper {
                         WolfAdvancementHelper.grantAdvancement(player, "giant_lineage");
                     }
                     WolfInbreedingHelper.applyInbreeding(sibling, parentA, otherParent);
+                    WolfGeneticsHelper.syncWithLibraryGenetics(sibling);
                 }
 
                 level.addFreshEntity(sibling);

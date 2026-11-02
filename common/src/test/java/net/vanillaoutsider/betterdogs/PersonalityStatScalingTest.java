@@ -22,4 +22,15 @@ public class PersonalityStatScalingTest {
         Assertions.assertDoesNotThrow(() -> WolfPersonalityStatHelper.applyPersonalityStats(null, WolfPersonality.PACIFIST));
         Assertions.assertDoesNotThrow(() -> WolfPersonalityStatHelper.applyPersonalityStats(null, WolfPersonality.NORMAL));
     }
+
+    @Test
+    @DisplayName("Verify Personality Attribute Modifier UUIDs")
+    public void testPersonalityModifierUUIDs() {
+        Assertions.assertNotNull(WolfPersonalityStatHelper.PERSONALITY_HEALTH_UUID);
+        Assertions.assertNotNull(WolfPersonalityStatHelper.PERSONALITY_DAMAGE_UUID);
+        Assertions.assertNotNull(WolfPersonalityStatHelper.PERSONALITY_SPEED_UUID);
+        Assertions.assertNotEquals(WolfPersonalityStatHelper.PERSONALITY_HEALTH_UUID, WolfPersonalityStatHelper.PERSONALITY_DAMAGE_UUID);
+        Assertions.assertNotEquals(WolfPersonalityStatHelper.PERSONALITY_HEALTH_UUID, WolfPersonalityStatHelper.PERSONALITY_SPEED_UUID);
+        Assertions.assertNotEquals(WolfPersonalityStatHelper.PERSONALITY_DAMAGE_UUID, WolfPersonalityStatHelper.PERSONALITY_SPEED_UUID);
+    }
 }

@@ -11,6 +11,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CoreMechanicsSuiteTest {
 
+    @org.junit.jupiter.api.BeforeAll
+    public static void setup() {
+        net.minecraft.SharedConstants.tryDetectVersion();
+        net.minecraft.server.Bootstrap.bootStrap();
+    }
+
     @Test
     @DisplayName("Mechanic 1: Petting & Affection Timing Invariants")
     public void testPettingAffectionTiming() {

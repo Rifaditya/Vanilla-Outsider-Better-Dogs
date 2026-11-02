@@ -2,6 +2,7 @@
 package net.vanillaoutsider.betterdogs.util;
 
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.level.Level;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
@@ -10,6 +11,15 @@ import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
  * Dedicated single-purpose helper for calculating offspring personality genetics upon breeding.
  */
 public class WolfGeneticsHelper {
+
+    public static void syncWithLibraryGenetics(Wolf wolf) {
+        if (wolf != null) {
+            try {
+                Class<?> engineClass = Class.forName("net.dasik.social.api.genetics.GeneticsEngine");
+                engineClass.getMethod("getGenetics", net.minecraft.world.entity.LivingEntity.class).invoke(null, wolf);
+            } catch (Throwable ignored) {}
+        }
+    }
 
     public static WolfPersonality calculateOffspringPersonality(Level level, WolfPersonality parentA, WolfPersonality parentB, RandomSource random) {
         if (parentA == null) {

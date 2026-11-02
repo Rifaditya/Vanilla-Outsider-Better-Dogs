@@ -1,5 +1,14 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.98+1.20.1]
+### Added
+- 🐾 **Multi-Era Parity Alignment**:
+  - Full Jade HUD compatibility suite (`BetterDogsJadePlugin`, `WolfInfoProvider`, `WolfHealthProvider`, `InbredStatusProvider`).
+  - YACL v3 client configuration GUI screen helper (`BetterDogsConfig`, `YaclScreenHelper`) with ModMenu integration.
+  - 9 Criteria Triggers for advancements (`TameWolfPersonality`, `GuardWolfPersonality`, `InbredWolf`, `OutcrossRunt`, `CureInbred`, `WolfLitter`, `PutUpForAdoption`, `OnPatrol`, `SelfService`).
+  - 9 Hive Mind Scheduler Dog Events hooking into Dasik Library's `SocialEventRegistry` (`Begging`, `Correction`, `Fetch`, `Howl`, `IdleCuriosity`, `Retaliation`, `SmallFight`, `Wanderlust`, `Zoomies`).
+  - New AI goals: `PathToSoundLocationGoal`, `WildWolfHuntGoal`, and `WolfSeekWaterOnFireGoal`.
+
 ## [1.0.91+1.20.1]
 ### Added
 - 🧪 **Uninstallation & Posture Safety Test Suite**: Added automated headless unit tests (`WolfUninstallationTest.java`) verifying transient attribute modifier isolation, Guard Mode uninstallation sitting serialization, and sneak flag auto-sanitization.
