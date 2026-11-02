@@ -96,6 +96,11 @@ public class BetterDogsGameRules {
     public static GameRules.Key<GameRules.IntegerValue> BD_HAZARD_FLEE_RADIUS;
     public static GameRules.Key<GameRules.IntegerValue> BD_FLEE_SPEED_MULTIPLIER;
 
+    // Ballistic Evasion Reflex (BL-BD-020)
+    public static GameRules.Key<GameRules.BooleanValue> BD_BALLISTIC_EVASION_ENABLED;
+    public static GameRules.Key<GameRules.IntegerValue> BD_EVASION_REACTION_TICKS;
+    public static GameRules.Key<GameRules.IntegerValue> BD_EVASION_LATERAL_IMPULSE;
+
     // Territorial
     public static GameRules.Key<GameRules.BooleanValue> BD_TERRITORIAL_RIVALRY;
     public static GameRules.Key<GameRules.IntegerValue> BD_TERR_AA_WAR;
@@ -340,6 +345,18 @@ public class BetterDogsGameRules {
 
     public static int getFleeSpeedMultiplier(Level level) {
         return getInt(level, BD_FLEE_SPEED_MULTIPLIER, 170);
+    }
+
+    public static boolean isBallisticEvasionEnabled(Level level) {
+        return getBoolean(level, BD_BALLISTIC_EVASION_ENABLED, true);
+    }
+
+    public static int getEvasionReactionTicks(Level level) {
+        return getInt(level, BD_EVASION_REACTION_TICKS, 20);
+    }
+
+    public static int getEvasionLateralImpulse(Level level) {
+        return getInt(level, BD_EVASION_LATERAL_IMPULSE, 85);
     }
 
     public static boolean isHornCommandsEnabled(Level level) {
