@@ -6,6 +6,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.monster.Creeper;
+import net.vanillaoutsider.betterdogs.WolfExtensions;
+import net.vanillaoutsider.betterdogs.personality.CanineArchetype;
 
 public class FleeCreeperGoal extends AvoidEntityGoal<Creeper> {
     private final Wolf wolf;
@@ -26,7 +28,18 @@ public class FleeCreeperGoal extends AvoidEntityGoal<Creeper> {
         if (!this.wolf.isTame() || this.wolf.isOrderedToSit() || this.wolf.isLeashed()) {
             return false;
         }
+        if (this.wolf instanceof WolfExtensions ext && (ext.betterdogs$isGuardMode() || ext.betterdogs$isSittingManually() || ext.betterdogs$getCanineArchetype() == CanineArchetype.FEARLESS)) {
+            return false;
+        }
         return super.canUse();
+    }
+
+    @Override
+    public boolean canContinueToUse() {
+        if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$getCanineArchetype() == CanineArchetype.FEARLESS) {
+            return false;
+        }
+        return super.canContinueToUse();
     }
 
     @Override

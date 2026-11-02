@@ -1,5 +1,15 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.4.0+1.20.1] - 2026-10-23
+
+### Added
+- 🎭 **Extensible Canine Personality Archetypes ([BL-BD-013])**:
+  - Implemented 6 distinct canine archetypes: Guardian, Playful, Adventurer, Glutton, Lazy, and Fearless.
+  - Added deterministic 64-bit seed hashing from UUID to assign archetypes upon taming.
+  - Fearless dogs stand their ground against ignited Creepers without fleeing.
+  - Adventurer dogs roam further with expanded follow boundaries; Lazy dogs lounge and sit autonomously.
+  - Added dynamic game rules `bd_personality_archetypes_enabled` and `bd_personality_distribution_mode`.
+
 ## [1.3.0+1.20.1] - 2026-10-21
 
 ### Added

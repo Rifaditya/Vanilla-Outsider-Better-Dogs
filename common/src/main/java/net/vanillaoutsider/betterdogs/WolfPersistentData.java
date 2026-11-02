@@ -268,6 +268,28 @@ public class WolfPersistentData {
         return false;
     }
 
+    // ========== Canine Archetype (BL-BD-013) ==========
+
+    public static boolean hasPersistedCanineArchetype(net.minecraft.world.entity.animal.Wolf wolf) {
+        if (wolf instanceof WolfExtensions ext) {
+            return ext.betterdogs$hasCanineArchetype();
+        }
+        return false;
+    }
+
+    public static net.vanillaoutsider.betterdogs.personality.CanineArchetype getPersistedCanineArchetype(net.minecraft.world.entity.animal.Wolf wolf) {
+        if (wolf instanceof WolfExtensions ext) {
+            return ext.betterdogs$getCanineArchetype();
+        }
+        return net.vanillaoutsider.betterdogs.personality.CanineArchetype.GUARDIAN;
+    }
+
+    public static void setPersistedCanineArchetype(net.minecraft.world.entity.animal.Wolf wolf, net.vanillaoutsider.betterdogs.personality.CanineArchetype archetype) {
+        if (wolf instanceof WolfExtensions ext) {
+            ext.betterdogs$setCanineArchetype(archetype);
+        }
+    }
+
     public static boolean hasDiscoveredTreat(net.minecraft.world.entity.animal.Wolf wolf) {
         if (wolf instanceof WolfExtensions ext) {
             String fav = ext.betterdogs$getFavoriteTreat();

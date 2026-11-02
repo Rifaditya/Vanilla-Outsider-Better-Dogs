@@ -56,6 +56,8 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
 
     @Unique
     private WolfPersonality betterdogs$personality = null;
+    @Unique
+    private net.vanillaoutsider.betterdogs.personality.CanineArchetype betterdogs$canineArchetype = null;
 
     @Unique
     private float betterdogs$socialScale = 1.0f;
@@ -356,6 +358,25 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     }
 
     @Override
+    public boolean betterdogs$hasCanineArchetype() {
+        return this.betterdogs$canineArchetype != null;
+    }
+
+    @Override
+    public net.vanillaoutsider.betterdogs.personality.CanineArchetype betterdogs$getCanineArchetype() {
+        if (this.betterdogs$canineArchetype == null) {
+            Wolf wolf = (Wolf) (Object) this;
+            this.betterdogs$canineArchetype = net.vanillaoutsider.betterdogs.personality.CaninePersonalityHelper.getOrRollArchetype(wolf);
+        }
+        return this.betterdogs$canineArchetype;
+    }
+
+    @Override
+    public void betterdogs$setCanineArchetype(net.vanillaoutsider.betterdogs.personality.CanineArchetype archetype) {
+        this.betterdogs$canineArchetype = archetype != null ? archetype : net.vanillaoutsider.betterdogs.personality.CanineArchetype.GUARDIAN;
+    }
+
+    @Override
     public boolean betterdogs$hasPersonality() {
         return this.betterdogs$personality != null;
     }
@@ -605,6 +626,10 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         if (this.betterdogs$playPenaltyTicks > 0) {
             tag.putInt("BD_PlayPenaltyTicks", this.betterdogs$playPenaltyTicks);
         }
+        net.vanillaoutsider.betterdogs.personality.CanineArchetype archetype = this.betterdogs$canineArchetype;
+        if (archetype != null) {
+            tag.putString("betterdogs:canine_archetype", archetype.getSerializedName());
+        }
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"), require = 0)
@@ -629,10 +654,21 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.betterdogs$leaderUuid = WolfPersistentData.readLeaderUUIDFromNbt(tag);
         this.betterdogs$isPackLeader = WolfPersistentData.readIsPackLeaderFromNbt(tag);
         this.betterdogs$setPlayPenaltyTicks(tag.contains("BD_PlayPenaltyTicks") ? tag.getInt("BD_PlayPenaltyTicks") : 0);
+        if (tag.contains("betterdogs:canine_archetype")) {
+            this.betterdogs$canineArchetype = net.vanillaoutsider.betterdogs.personality.CanineArchetype.fromSerializedName(tag.getString("betterdogs:canine_archetype"));
+        }
         if (wolf.isShiftKeyDown()) {
             wolf.setShiftKeyDown(false);
         }
         net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper.applyPersonalityStats(wolf, this.betterdogs$personality);
+    }
+
+    @Inject(method = "applyTamingSideEffects", at = @At("TAIL"), require = 0)
+    private void betterdogs$onApplyTamingSideEffectsTail(CallbackInfo ci) {
+        if (this.isTame() && !this.level().isClientSide()) {
+            this.setHealth(this.getMaxHealth());
+            net.vanillaoutsider.betterdogs.personality.CaninePersonalityHelper.getOrRollArchetype((Wolf) (Object) this);
+        }
     }
 
     @Inject(method = "getBreedOffspring", at = @At("RETURN"))

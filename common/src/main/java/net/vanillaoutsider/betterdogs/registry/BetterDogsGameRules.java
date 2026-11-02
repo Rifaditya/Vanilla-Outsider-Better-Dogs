@@ -87,6 +87,10 @@ public class BetterDogsGameRules {
     public static GameRules.Key<GameRules.BooleanValue> BD_DOG_GENETICS_ENABLED;
     public static GameRules.Key<GameRules.IntegerValue> BD_MAX_SCALE_DEVIATION;
 
+    // Personality Archetypes (BL-BD-013)
+    public static GameRules.Key<GameRules.BooleanValue> BD_ARCHETYPES_ENABLED;
+    public static GameRules.Key<GameRules.IntegerValue> BD_ARCHETYPE_DISTRIBUTION_MODE;
+
     // Territorial
     public static GameRules.Key<GameRules.BooleanValue> BD_TERRITORIAL_RIVALRY;
     public static GameRules.Key<GameRules.IntegerValue> BD_TERR_AA_WAR;
@@ -311,6 +315,14 @@ public class BetterDogsGameRules {
 
     public static int getMaxScaleDeviation(Level level) {
         return getInt(level, BD_MAX_SCALE_DEVIATION, 30);
+    }
+
+    public static boolean isArchetypesEnabled(Level level) {
+        return getBoolean(level, BD_ARCHETYPES_ENABLED, true);
+    }
+
+    public static int getArchetypeDistributionMode(Level level) {
+        return getInt(level, BD_ARCHETYPE_DISTRIBUTION_MODE, 0);
     }
 
     public static boolean isHornCommandsEnabled(Level level) {
