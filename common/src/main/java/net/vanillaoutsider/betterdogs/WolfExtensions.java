@@ -89,4 +89,9 @@ public interface WolfExtensions {
 
     int betterdogs$getPlayFightCooldown();
     void betterdogs$setPlayFightCooldown(int ticks);
+
+    java.util.UUID betterdogs$getLeaderUUID();
+    void betterdogs$setLeaderUUID(java.util.UUID uuid);
+    boolean betterdogs$isPackLeader();
+    void betterdogs$setPackLeader(boolean isLeader);
 }
