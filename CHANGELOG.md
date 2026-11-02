@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.60+1.20.1] - 2026-08-17
+### Fixed
+- 🐾 **Petting & Guard Mode Interaction Disentanglement (`WolfGuardHelper.java`, `WolfPettingHelper.java`, `WolfInteractMixin.java`)**:
+  - Re-mapped Guard Mode sentinel post toggling to strictly require holding a **Bone** (`Items.BONE`) while sneaking, consuming 1 Bone per toggle (with creative bypass).
+  - Activating Guard Mode now automatically un-sits the dog (`wolf.setOrderedToSit(false)`) so it immediately begins its designated territory patrol.
+  - Shift + Right-Click with an **Empty Hand** is now exclusively reserved for intimate human-canine interactions (petting, clearing anger, soothing thunderstorm anxiety).
+  - Added a 20-tick (1-second) anti-spam debounce on petting to prevent audio and particle spam when holding right-click.
+
 ## [1.0.59+1.20.1] - 2026-08-16
 ### Added
 - 🌍 **Expanded Biome Spawning & Dynamic Climate Variants (`BetterDogsSpawningFabric.java`, Forge Biome Modifiers, `WolfVariantHelper.java`)**:

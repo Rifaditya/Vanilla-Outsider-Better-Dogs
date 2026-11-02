@@ -73,7 +73,7 @@ public abstract class WolfInteractMixin {
         }
 
         if (net.vanillaoutsider.betterdogs.util.WolfGuardHelper.canToggleGuard(wolf, player, itemInHand)) {
-            InteractionResult result = net.vanillaoutsider.betterdogs.util.WolfGuardHelper.toggleGuardMode(wolf, player);
+            InteractionResult result = net.vanillaoutsider.betterdogs.util.WolfGuardHelper.toggleGuardMode(wolf, player, itemInHand);
             if (result.consumesAction()) {
                 cir.setReturnValue(result);
                 return;

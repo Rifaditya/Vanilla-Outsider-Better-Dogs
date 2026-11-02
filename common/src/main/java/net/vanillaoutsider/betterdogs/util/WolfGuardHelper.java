@@ -11,6 +11,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
@@ -35,23 +36,31 @@ public class WolfGuardHelper {
         if (wolf == null || player == null || !wolf.isTame()) {
             return false;
         }
-        if (!player.isCrouching() && !player.isShiftKeyDown()) {
+        if (!player.isCrouching() && !player.isShiftKeyDown() && !player.isSecondaryUseActive()) {
             return false;
         }
-        if (held != null && !held.isEmpty()) {
+        if (held == null || !held.is(Items.BONE)) {
             return false;
         }
         return wolf.isOwnedBy(player);
     }
 
     public static InteractionResult toggleGuardMode(Wolf wolf, Player player) {
+        return toggleGuardMode(wolf, player, player != null ? player.getMainHandItem() : ItemStack.EMPTY);
+    }
+
+    public static InteractionResult toggleGuardMode(Wolf wolf, Player player, ItemStack held) {
         if (wolf == null || player == null || !(wolf instanceof WolfExtensions ext)) {
             return InteractionResult.PASS;
         }
 
         Level level = wolf.getCommandSenderWorld();
-        if (level == null) {
+        if (level == null || level.isClientSide()) {
             return InteractionResult.PASS;
+        }
+
+        if (!player.getAbilities().instabuild && held != null && !held.isEmpty()) {
+            held.shrink(1);
         }
 
         boolean currentGuarding = ext.betterdogs$isGuarding();
@@ -60,6 +69,7 @@ public class WolfGuardHelper {
         ext.betterdogs$setGuarding(newGuarding);
 
         if (newGuarding) {
+            wolf.setOrderedToSit(false);
             BlockPos guardPos = wolf.blockPosition();
             ext.betterdogs$setGuardPos(guardPos);
             WolfFeedbackHelper.sendFeedback(
