@@ -91,6 +91,11 @@ public class BetterDogsGameRules {
     public static GameRules.Key<GameRules.BooleanValue> BD_ARCHETYPES_ENABLED;
     public static GameRules.Key<GameRules.IntegerValue> BD_ARCHETYPE_DISTRIBUTION_MODE;
 
+    // Canine Explosive Reflex (BL-BD-006)
+    public static GameRules.Key<GameRules.BooleanValue> BD_CANINE_EXPLOSIVE_REFLEX_ENABLED;
+    public static GameRules.Key<GameRules.IntegerValue> BD_HAZARD_FLEE_RADIUS;
+    public static GameRules.Key<GameRules.IntegerValue> BD_FLEE_SPEED_MULTIPLIER;
+
     // Territorial
     public static GameRules.Key<GameRules.BooleanValue> BD_TERRITORIAL_RIVALRY;
     public static GameRules.Key<GameRules.IntegerValue> BD_TERR_AA_WAR;
@@ -323,6 +328,18 @@ public class BetterDogsGameRules {
 
     public static int getArchetypeDistributionMode(Level level) {
         return getInt(level, BD_ARCHETYPE_DISTRIBUTION_MODE, 0);
+    }
+
+    public static boolean isCanineExplosiveReflexEnabled(Level level) {
+        return getBoolean(level, BD_CANINE_EXPLOSIVE_REFLEX_ENABLED, true);
+    }
+
+    public static int getHazardFleeRadius(Level level) {
+        return getInt(level, BD_HAZARD_FLEE_RADIUS, 14);
+    }
+
+    public static int getFleeSpeedMultiplier(Level level) {
+        return getInt(level, BD_FLEE_SPEED_MULTIPLIER, 170);
     }
 
     public static boolean isHornCommandsEnabled(Level level) {

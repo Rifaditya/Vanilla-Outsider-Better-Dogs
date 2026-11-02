@@ -1,5 +1,14 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.5.0+1.20.1] - 2026-10-23
+
+### Added
+- 💥 **Canine Explosive Reflex ([BL-BD-006])**:
+  - Implemented `FleeExplodingHazardGoal` evasive sprint response away from active explosion threats (primed TNT, End Crystals, swelling Creepers).
+  - Added emergency blast scramble breaking sitting postures if within 4 blocks of impending detonation.
+  - Added `HazardDetectionHelper` for fast spatial hazard classification.
+  - Added dynamic game rules `bd_canine_explosive_reflex_enabled`, `bd_hazard_flee_radius`, and `bd_flee_speed_multiplier`.
+
 ## [1.4.0+1.20.1] - 2026-10-23
 
 ### Added
