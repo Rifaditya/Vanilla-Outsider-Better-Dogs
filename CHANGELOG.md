@@ -1,5 +1,10 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.78+1.20.1]
+### Added
+- 🌐 **Traditional Chinese (zh_tw, zh_hk) Localization & Player Guide**:
+  - Added complete `assets/betterdogs/lang/zh_tw.json` and `zh_hk.json` matching all 653 translation keys.
+  - Added localized player guide in `Doc/Players/index_zh_tw.md`.
 ## [1.0.77+1.20.1]
 ### Added
 - 🌐 **Simplified Chinese (zh_cn) Localization & Player Guide**:
@@ -552,5 +557,6 @@
 ## [1.0.0+1.20.1] - 2026-08-11
 ### Added
 - Initial project scaffolding for Minecraft 1.20.1.
+
 
 
