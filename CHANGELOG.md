@@ -1,5 +1,9 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.91+1.20.1]
+### Added
+- 🧪 **Uninstallation & Posture Safety Test Suite**: Added automated headless unit tests (`WolfUninstallationTest.java`) verifying transient attribute modifier isolation, Guard Mode uninstallation sitting serialization, and sneak flag auto-sanitization.
+
 ## [1.0.90+1.20.1]
 ### Changed
 - 🧬 **Transient Attribute Modifiers**: Migrated personality health, damage, and speed scaling from persistent base attribute overrides to transient `AttributeModifier` instances (`addTransientModifier()`). Modifiers are never serialized to disk by vanilla Minecraft, completely preserving vanilla world balance if the mod is removed.
