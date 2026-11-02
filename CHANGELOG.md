@@ -1,5 +1,16 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.70+1.20.1] - 2026-08-18
+### Fixed
+- 🖼️ **Mod Icon Asset Restoration**:
+  - Restored `assets/vanilla-outsider-better-dogs/icon.png` and mirrored it to `assets/betterdogs/icon.png`, resolving the blank default cube icon issue in Fabric Loader and Modrinth launcher.
+
+## [1.0.69+1.20.1] - 2026-08-18 [YANKED - MISSING MOD ICON]
+### Removed
+- 🧹 **Obsolete Asset Namespace Cleanup**:
+  - Purged legacy `assets/vanilla-outsider-better-dogs/` folder to optimize JAR distribution size and eliminate asset duplication.
+  - Normalized `assets/betterdogs/lang/en_us.json` to clean 2-space indentation.
+
 ## [1.0.68+1.20.1] - 2026-08-18
 ### Changed
 - ⚡ **Hot-Path Zero-Allocation Optimizations (`WolfSafetyMixin.java`, `WolfGuardGoal.java`)**:
