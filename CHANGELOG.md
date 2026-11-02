@@ -1,5 +1,9 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.87+1.20.1]
+### Changed
+- 🏛️ **Dasik Library Integration**: Migrated Better Dogs to declare and consume `dasik-library` (MC 1.20.1) as a mandatory runtime dependency per the Universal Dasik Library Law.
+
 ## [1.0.86+1.20.1]
 ### Added
 - 🌐 **Italian (it_it) Localization & Player Guide (11-Language Suite Complete)**:

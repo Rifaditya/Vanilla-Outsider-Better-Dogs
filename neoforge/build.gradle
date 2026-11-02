@@ -11,6 +11,7 @@ loom {
 
 dependencies {
     forge "net.neoforged:forge:${rootProject.neoforge_version}"
+    modImplementation "net.dasik.social:dasik-library-neoforge:${rootProject.dasik_library_version}"
 
     implementation project(path: ':common')
 }
