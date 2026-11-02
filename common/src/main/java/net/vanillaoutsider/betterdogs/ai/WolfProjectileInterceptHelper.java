@@ -113,39 +113,47 @@ public final class WolfProjectileInterceptHelper {
 
         // Time of closest approach: tau = (delta . V) / ||V||^2
         double tau = (dx * vx + dy * vy + dz * vz) / vSq;
-        if (tau < minLookaheadTicks || tau > maxLookaheadTicks) {
-            return InterceptPrediction.NONE; // Outside required reaction window or already passed
+        if (Double.isNaN(tau) || Double.isInfinite(tau) || tau < minLookaheadTicks || tau > maxLookaheadTicks) {
+            return InterceptPrediction.NONE; // Moving away, past closest point, or outside reaction window
         }
 
         // Closest point on projectile trajectory line: P_closest = P_proj + V * tau
         double closestX = px + vx * tau;
         double closestY = py + vy * tau;
         double closestZ = pz + vz * tau;
+        if (Double.isNaN(closestX) || Double.isNaN(closestY) || Double.isNaN(closestZ) ||
+            Double.isInfinite(closestX) || Double.isInfinite(closestY) || Double.isInfinite(closestZ)) {
+            return InterceptPrediction.NONE;
+        }
 
-        // Cylindrical collision check against owner bounding cylinder
-        double horizDx = closestX - ox;
-        double horizDz = closestZ - oz;
-        double horizDistSq = horizDx * horizDx + horizDz * horizDz;
+        // Displacement from owner at closest approach
+        double relX = closestX - ox;
+        double relY = closestY - oy;
+        double relZ = closestZ - oz;
+
+        double horizDistSq = relX * relX + relZ * relZ;
         double radiusSq = ownerCollisionRadius * ownerCollisionRadius;
-
-        if (horizDistSq > radiusSq) {
-            return InterceptPrediction.NONE; // Passes outside horizontal radius
+        double perpDist = Math.sqrt(relX * relX + relY * relY + relZ * relZ);
+        if (Double.isNaN(perpDist) || Double.isInfinite(perpDist)) {
+            perpDist = Double.MAX_VALUE;
         }
 
-        double deltaY = closestY - oy;
-        if (deltaY < OWNER_CYLINDER_MIN_Y || deltaY > OWNER_CYLINDER_MAX_Y) {
-            return InterceptPrediction.NONE; // Passes above head or below feet
+        // Cylinder check: horizontal radius <= ownerCollisionRadius and delta y in [-0.5, 2.0]
+        boolean inCylinder = horizDistSq <= radiusSq && relY >= OWNER_CYLINDER_MIN_Y && relY <= OWNER_CYLINDER_MAX_Y;
+        if (!inCylinder) {
+            return InterceptPrediction.NONE;
         }
 
-        double perpDist = Math.sqrt(horizDistSq + deltaY * deltaY);
-
-        // Pre-impact interception waypoint calculation (1 tick before impact)
-        double interceptTau = Math.max(0.0, tau - 1.0);
-        Vec3 interceptPos = new Vec3(
-                px + vx * interceptTau,
-                py + vy * interceptTau,
-                pz + vz * interceptTau
-        );
+        // Intercept coordinate: P_proj + max(0.0, tau - 1.0) * V
+        double interceptTime = Math.max(0.0, tau - 1.0);
+        double ix = px + vx * interceptTime;
+        double iy = py + vy * interceptTime;
+        double iz = pz + vz * interceptTime;
+        if (Double.isNaN(ix) || Double.isNaN(iy) || Double.isNaN(iz) ||
+            Double.isInfinite(ix) || Double.isInfinite(iy) || Double.isInfinite(iz)) {
+            return InterceptPrediction.NONE;
+        }
+        Vec3 interceptPos = new Vec3(ix, iy, iz);
 
         return new InterceptPrediction(true, tau, perpDist, interceptPos);
     }

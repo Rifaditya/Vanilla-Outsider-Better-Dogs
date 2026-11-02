@@ -36,8 +36,12 @@ public class BetterDogsConfig {
     }
 
     public void validate() {
-        wolfMinScale = Math.max(wolfMinScale, 0.01);
-        wolfMaxScale = Math.max(wolfMaxScale, 0.01);
+        if (Double.isNaN(wolfMinScale) || wolfMinScale < 0.01) {
+            wolfMinScale = 0.01;
+        }
+        if (Double.isNaN(wolfMaxScale) || wolfMaxScale < 0.01) {
+            wolfMaxScale = 0.01;
+        }
         if (wolfMinScale > wolfMaxScale) {
             wolfMinScale = wolfMaxScale;
         }
