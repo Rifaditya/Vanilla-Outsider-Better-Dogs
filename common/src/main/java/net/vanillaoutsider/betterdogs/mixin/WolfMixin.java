@@ -568,6 +568,9 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     private void betterdogs$writeNbt(CompoundTag tag, CallbackInfo ci) {
         WolfPersistentData.writeToNbt(tag, betterdogs$getPersonality(), betterdogs$getSocialScale(), betterdogs$getDnaSeed(), betterdogs$favoriteTreat, betterdogs$soothedTime, betterdogs$nemesisEntityType, betterdogs$nemesisExpiryTime, betterdogs$parentUUID1, betterdogs$parentUUID2, betterdogs$isInbred, betterdogs$isGuarding, betterdogs$guardPos, betterdogs$isUpForAdoption, betterdogs$lastGiftDay, betterdogs$feedCount, betterdogs$getBloodFeudTarget());
         WolfPersistentData.writeLeaderDataToNbt(tag, this.betterdogs$leaderUuid, this.betterdogs$isPackLeader);
+        if (this.betterdogs$isGuarding) {
+            tag.putBoolean("Sitting", true);
+        }
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"), require = 0)

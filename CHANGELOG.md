@@ -1,5 +1,9 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.89+1.20.1]
+### Fixed
+- 🛡️ **Guard Mode Uninstallation Sitting Guard**: Ensured that dogs actively in Guard Mode serialize `"Sitting": true` to chunk save data. If Better Dogs is uninstalled, vanilla will safely station the dog at its post in a sitting posture rather than having it endlessly chase or teleport to the owner.
+
 ## [1.0.88+1.20.1]
 ### Fixed
 - 🛑 **Cliff Safety Sneak Purge**: Removed accidental `shiftKeyDown` flag toggling from cliff edge avoidance, preventing wolves from getting locked in a phantom crouching/sneaking state.
