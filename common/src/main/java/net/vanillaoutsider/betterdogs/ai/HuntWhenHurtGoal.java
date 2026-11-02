@@ -89,7 +89,23 @@ public class HuntWhenHurtGoal extends Goal {
     }
 
     @Override
+    public void tick() {
+        if (this.targetPrey != null && !this.targetPrey.isAlive()) {
+            if (!this.wolf.isTame()) {
+                this.wolf.heal(4.0F);
+            }
+            this.targetPrey = null;
+            this.wolf.setTarget(null);
+        }
+    }
+
+    @Override
     public void stop() {
+        if (this.targetPrey != null && !this.targetPrey.isAlive()) {
+            if (!this.wolf.isTame()) {
+                this.wolf.heal(4.0F);
+            }
+        }
         this.targetPrey = null;
         if (this.wolf.getTarget() != null && !this.wolf.getTarget().isAlive()) {
             this.wolf.setTarget(null);

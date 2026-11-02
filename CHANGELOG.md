@@ -1,5 +1,11 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.58+1.20.1] - 2026-08-16
+### Fixed
+- 🚨 **Resolved Startup Crash (Superclass Mixin Target Mismatch)**:
+  - Removed illegal `@Inject(method = "doHurtTarget")` from `WolfMixin.java` which failed Knot Mixin class transformation at bootstrap because `Wolf` does not declare `doHurtTarget` (it is inherited from `Mob.class`).
+  - Moved the `4.0 HP` sustenance kill healing cleanly inside `HuntWhenHurtGoal.java` in pure Java, guaranteeing zero mixin bootstrap errors.
+
 ## [1.0.57+1.20.1] - 2026-08-16
 ### Added
 - 🌲 **Wanderlust Roaming AI (`WanderlustGoal.java`)**:
