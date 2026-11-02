@@ -5,9 +5,13 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.util.DogFoodHelper;
+import net.vanillaoutsider.betterdogs.util.DogTreatHelper;
+import net.vanillaoutsider.betterdogs.util.WolfAdvancementHelper;
 
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -46,7 +50,7 @@ public class EatGroundFoodGoal extends Goal {
         }
 
         List<ItemEntity> items = level.getEntitiesOfClass(ItemEntity.class, this.wolf.getBoundingBox().inflate(10.0),
-                item -> item.isAlive() && DogFoodHelper.isEdibleDogFood(level, item.getItem()));
+                item -> item.isAlive() && DogFoodHelper.isEdibleDogFood(level, item.getItem()) && !DogTreatHelper.shouldRefuseFood(this.wolf, item.getItem()));
 
         if (items.isEmpty()) {
             return false;
@@ -101,6 +105,19 @@ public class EatGroundFoodGoal extends Goal {
         float healAmount = DogFoodHelper.calculateHealAmount(this.wolf, stack);
         this.wolf.heal(healAmount);
         this.wolf.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
+
+        if (this.wolf.isTame() && this.wolf instanceof WolfExtensions ext) {
+            ext.betterdogs$setFeedCount(ext.betterdogs$getFeedCount() + 1);
+
+            if (this.wolf.getOwner() instanceof Player owner) {
+                if (DogTreatHelper.isFavoriteTreat(this.wolf, stack)) {
+                    ext.betterdogs$setZoomiesTicks(120);
+                    WolfAdvancementHelper.grantAdvancement(owner, "favorite_treat");
+                    WolfAdvancementHelper.grantAdvancement(owner, "zoomies");
+                }
+                DogTreatHelper.tryRollFavoriteTreat(this.wolf, stack, owner);
+            }
+        }
 
         stack.shrink(1);
         if (stack.isEmpty()) {

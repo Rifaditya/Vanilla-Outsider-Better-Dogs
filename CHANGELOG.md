@@ -1,5 +1,12 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.67+1.20.1] - 2026-08-18
+### Added
+- 🥩 **Autonomous Ground Feeding Merit Tracking & Advancement (`EatGroundFoodGoal.java`)**:
+  - Pre-filtered disliked/refused food items during ground food entity search scans.
+  - Tracked feeding count (`feedCount`) on dogs consuming dropped food from the ground.
+  - Added treat affinity rolling, zoomies trigger (120 ticks), and advancement dispatch (`favorite_treat`, `zoomies`) to the dog's online owner upon eating dropped favorite treats.
+
 ## [1.0.66+1.20.1] - 2026-08-18
 ### Fixed
 - 📜 **Adoption Flow Polish & 6D Interaction Guarding (`WolfAdoptionHelper.java`, `WolfInteractMixin.java`)**:
