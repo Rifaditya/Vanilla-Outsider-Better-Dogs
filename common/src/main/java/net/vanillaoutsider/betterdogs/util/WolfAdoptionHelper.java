@@ -111,8 +111,10 @@ public class WolfAdoptionHelper {
         if (canAdopt(wolf, player, held)) {
             if (wolf instanceof WolfExtensions ext) {
                 ext.betterdogs$setUpForAdoption(false);
+                WolfPersonalityStatHelper.applyPersonalityStats(wolf, ext.betterdogs$getPersonality());
             }
             wolf.tame(player);
+            wolf.setOrderedToSit(false);
 
             if (!level.isClientSide()) {
                 String dogName = wolf.hasCustomName() ? wolf.getCustomName().getString() : "Dog";

@@ -1,5 +1,12 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.63+1.20.1] - 2026-08-17
+### Fixed
+- 🐾 **Post-Taming Personality Stat Re-Application (`TamableAnimalMixin.java`, `WolfAdoptionHelper.java`)**:
+  - Prevented vanilla tame health reset from clobbering personality attributes (`MAX_HEALTH`, `ATTACK_DAMAGE`, `MOVEMENT_SPEED`, `SCALE`) upon taming.
+  - Fully restored newly tamed dog health to 100% of its personality max health upon successful taming.
+  - Enhanced adoption flow to re-apply personality stats and automatically un-sit the dog (`wolf.setOrderedToSit(false)`).
+
 ## [1.0.62+1.20.1] - 2026-08-17
 ### Added
 - 📐 **Visual Entity Scaling Engine (`WolfRendererMixin.java`, `WolfMixin.java`)**:
