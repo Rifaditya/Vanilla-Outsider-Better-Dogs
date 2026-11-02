@@ -1,5 +1,12 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.62+1.20.1] - 2026-08-17
+### Added
+- 📐 **Visual Entity Scaling Engine (`WolfRendererMixin.java`, `WolfMixin.java`)**:
+  - Implemented network-synchronized physical scaling using `SynchedEntityData` (`DATA_SOCIAL_SCALE`).
+  - Added client-side `WolfRendererMixin` scaling dog models with `poseStack.scale(s, s, s)`, ensuring runt puppies ($0.35\text{x}$) and giant dire wolves ($1.45\text{x}$) render with distinct visual stature.
+  - Isolated client render mixin in `vanilla-outsider-better-dogs.mixins.json` `"client"` array for 100% headless server classloader safety.
+
 ## [1.0.61+1.20.1] - 2026-08-17
 ### Fixed
 - 🐕 **Multi-Puppy Litter Spawning & Co-Parent Inheritance Fix (`WolfLitterHelper.java`, `CommandSuggestionsHelper.java`)**:
