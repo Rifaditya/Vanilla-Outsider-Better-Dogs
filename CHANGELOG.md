@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.61+1.20.1] - 2026-08-17
+### Fixed
+- 🐕 **Multi-Puppy Litter Spawning & Co-Parent Inheritance Fix (`WolfLitterHelper.java`, `CommandSuggestionsHelper.java`)**:
+  - Fixed coordinate calculation for extra litter siblings (puppies 2–4): siblings now spawn in a safe $\pm 0.4$-block cluster adjacent to `parentA` rather than $(0, 0, 0)$ in the void.
+  - Implemented 50/50 co-parent collar color inheritance: extra puppies roll a 50% chance to inherit Parent A's collar dye and 50% chance to inherit Parent B's collar dye.
+  - Linked wild puppy pack hierarchy: untamed puppies seamlessly inherit their mother's pack leader UUID upon birth.
+  - Cleaned up wildcard imports in `CommandSuggestionsHelper.java`.
+
 ## [1.0.60+1.20.1] - 2026-08-17
 ### Fixed
 - 🐾 **Petting & Guard Mode Interaction Disentanglement (`WolfGuardHelper.java`, `WolfPettingHelper.java`, `WolfInteractMixin.java`)**:
