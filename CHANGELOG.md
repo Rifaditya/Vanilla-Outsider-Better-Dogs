@@ -1,5 +1,12 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.65+1.20.1] - 2026-08-18
+### Added
+- 🐺 **Custom Chorus Howl SoundEvent Registration (`BetterDogsSoundEvents.java`, `sounds.json`, `WolfHowlHelper.java`)**:
+  - Registered `betterdogs:entity.wolf.howl` in `BuiltInRegistries.SOUND_EVENT` (Fabric) and `RegisterEvent` (NeoForge) to provide authentic wolf howling for Minecraft 1.20.1.
+  - Defined `sounds.json` mapping pitch-modulated canine vocalizations (`minecraft:mob/wolf/whine`, `minecraft:mob/wolf/growl`) with subtitle support.
+  - Implemented natural harmonic pitch spread ($0.85\text{F}$ to $1.20\text{F}$) for cascading pack chorus howls.
+
 ## [1.0.64+1.20.1] - 2026-08-17
 ### Fixed
 - 🛡️ **Aggressive Target Goal Creeper Suicide Prevention (`AggressiveTargetGoal.java`)**:

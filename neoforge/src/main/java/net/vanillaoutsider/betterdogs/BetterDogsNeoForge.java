@@ -16,6 +16,15 @@ public class BetterDogsNeoForge {
     public BetterDogsNeoForge() {
         BetterDogs.init();
         MinecraftForge.EVENT_BUS.register(this);
+        net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onRegister);
+    }
+
+    public void onRegister(net.minecraftforge.registries.RegisterEvent event) {
+        if (event.getRegistryKey().equals(net.minecraft.core.registries.Registries.SOUND_EVENT)) {
+            event.register(net.minecraft.core.registries.Registries.SOUND_EVENT,
+                    net.vanillaoutsider.betterdogs.registry.BetterDogsSoundEvents.WOLF_HOWL_ID,
+                    () -> net.vanillaoutsider.betterdogs.registry.BetterDogsSoundEvents.WOLF_HOWL);
+        }
     }
 
     @SubscribeEvent
