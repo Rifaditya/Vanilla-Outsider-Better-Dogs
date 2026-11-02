@@ -101,6 +101,10 @@ public class BetterDogsGameRules {
     public static GameRules.Key<GameRules.IntegerValue> BD_EVASION_REACTION_TICKS;
     public static GameRules.Key<GameRules.IntegerValue> BD_EVASION_LATERAL_IMPULSE;
 
+    // Ballistic Interceptor (BL-BD-021)
+    public static GameRules.Key<GameRules.BooleanValue> BD_PROJECTILE_INTERCEPT;
+    public static GameRules.Key<GameRules.IntegerValue> BD_INTERCEPTOR_OWNER_HEALTH_THRESHOLD;
+
     // Territorial
     public static GameRules.Key<GameRules.BooleanValue> BD_TERRITORIAL_RIVALRY;
     public static GameRules.Key<GameRules.IntegerValue> BD_TERR_AA_WAR;
@@ -357,6 +361,14 @@ public class BetterDogsGameRules {
 
     public static int getEvasionLateralImpulse(Level level) {
         return getInt(level, BD_EVASION_LATERAL_IMPULSE, 85);
+    }
+
+    public static boolean isProjectileInterceptEnabled(Level level) {
+        return getBoolean(level, BD_PROJECTILE_INTERCEPT, true);
+    }
+
+    public static int getInterceptorOwnerHealthThreshold(Level level) {
+        return getInt(level, BD_INTERCEPTOR_OWNER_HEALTH_THRESHOLD, 10);
     }
 
     public static boolean isHornCommandsEnabled(Level level) {

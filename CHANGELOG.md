@@ -1,5 +1,17 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.7.5+1.20.1] - 2026-10-24
+
+### Added
+- 🛡️ **Ballistic Interceptor Suite (BL-BD-021)**: Multi-Era Parity Verification & Full Production Release.
+  - Closed-form Time of Closest Approach (TCA) 3D raycast solver calculating incoming projectile threats targeting the owner.
+  - Cylinder collision detection against owner bounding box ($r \le 1.25$m, $\Delta y \in [-0.5, 2.0]$m) with bounded reaction lookahead.
+  - Deterministic canine archetype defense affinities: Guardian (85%), Fearless (75%), Adventurer (40%), Playful (20%), Glutton (15%), Lazy (5%).
+  - Implemented `WolfProjectileInterceptGoal`: Priority `1` bodyguard AI goal scanning 14m sphere around low-health owner for incoming hostile projectiles.
+  - Emergency unseat scramble: Sitting guardian dogs dynamically break sitting posture if within 2.5m of low-health owner to execute life-saving interceptions.
+  - Heroic Sacrifice Damage Routing & Anti-One-Shot Protection: Guardian dogs absorbing fatal projectile damage intended for their low-health owner are clamped to 1.0 HP rather than dying instantly (if health >= 3.0 HP), with a 20-tick post-intercept invulnerability buffer and `SHIELD_BLOCK` sound / `CRIT` particles.
+  - Added GameRules `betterdogs:bd_projectile_intercept` (default: `true`) and `betterdogs:bd_interceptor_owner_health_threshold` (default: `10` HP).
+
 ## [1.6.0+1.20.1] - 2026-10-24
 
 ### Added
