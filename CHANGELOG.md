@@ -1,5 +1,10 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.1.1+1.20.1] - 2026-10-12
+
+### Fixed
+- 🐺 **Safe Teleportation & Crash Resolution (GitHub Issue #8)**: Fixed a server crash (`NoSuchMethodError: Wolf.randomTeleport`) during owner-follow teleportation by introducing `WolfTeleportHelper` and replacing unsafe vanilla calls with ground-traced safe teleportation bounds.
+
 ## [1.1.0+1.20.1] - 2026-10-03
 
 ### Added
