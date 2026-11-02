@@ -1,5 +1,10 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.82+1.20.1]
+### Added
+- 🌐 **Portuguese (pt_br, pt_pt) Localization & Player Guide**:
+  - Added complete `assets/betterdogs/lang/pt_br.json` and `pt_pt.json` matching all 653 translation keys.
+  - Added localized player guide in `Doc/Players/index_pt_br.md`.
 ## [1.0.81+1.20.1]
 ### Added
 - 🌐 **German (de_de) Localization & Player Guide**:
@@ -572,6 +577,7 @@
 ## [1.0.0+1.20.1] - 2026-08-11
 ### Added
 - Initial project scaffolding for Minecraft 1.20.1.
+
 
 
 
