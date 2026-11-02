@@ -12,6 +12,7 @@ import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.util.DogFoodHelper;
 import net.vanillaoutsider.betterdogs.util.DogTreatHelper;
 import net.vanillaoutsider.betterdogs.util.WolfAdvancementHelper;
+import net.vanillaoutsider.betterdogs.util.WolfDispositionHelper;
 
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -26,6 +27,7 @@ public class EatGroundFoodGoal extends Goal {
     private final double speedModifier;
     private ItemEntity targetItem;
     private int searchCooldown;
+    private int digestionCooldown;
 
     public EatGroundFoodGoal(Wolf wolf, double speedModifier) {
         this.wolf = wolf;
@@ -35,7 +37,18 @@ public class EatGroundFoodGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (!this.wolf.isTame() || this.wolf.isOrderedToSit() || this.wolf.getHealth() >= this.wolf.getMaxHealth()) {
+        if (this.digestionCooldown > 0) {
+            this.digestionCooldown--;
+        }
+
+        if (!this.wolf.isTame() || this.wolf.isOrderedToSit()) {
+            return false;
+        }
+
+        boolean isHurt = this.wolf.getHealth() < this.wolf.getMaxHealth();
+        boolean isHoover = WolfDispositionHelper.isHooverScavenger(this.wolf);
+
+        if (!isHurt && (!isHoover || this.digestionCooldown > 0)) {
             return false;
         }
 
@@ -66,7 +79,10 @@ public class EatGroundFoodGoal extends Goal {
         if (this.targetItem == null || !this.targetItem.isAlive() || this.wolf.isOrderedToSit()) {
             return false;
         }
-        return this.wolf.getHealth() < this.wolf.getMaxHealth();
+        if (this.wolf.getHealth() >= this.wolf.getMaxHealth() && !WolfDispositionHelper.isHooverScavenger(this.wolf)) {
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -105,6 +121,7 @@ public class EatGroundFoodGoal extends Goal {
         float healAmount = DogFoodHelper.calculateHealAmount(this.wolf, stack);
         this.wolf.heal(healAmount);
         this.wolf.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
+        this.digestionCooldown = 160;
 
         if (this.wolf.isTame() && this.wolf instanceof WolfExtensions ext) {
             ext.betterdogs$setFeedCount(ext.betterdogs$getFeedCount() + 1);
