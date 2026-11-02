@@ -70,9 +70,10 @@ public class BetterDogsGameRules {
     public static GameRules.Key<GameRules.IntegerValue> BD_WOLF_MIN_SCALE_PERCENT;
     public static GameRules.Key<GameRules.IntegerValue> BD_WOLF_MAX_SCALE_PERCENT;
 
-    // Correction & Retaliation
+    // Correction & Retaliation & Hunting
     public static GameRules.Key<GameRules.IntegerValue> BD_BLOOD_FEUD_PERCENT;
     public static GameRules.Key<GameRules.IntegerValue> BD_BABY_RETALIATE_PERCENT;
+    public static GameRules.Key<GameRules.IntegerValue> BD_WILD_HUNT_HEALTH_THRESHOLD;
 
     // Territorial
     public static GameRules.Key<GameRules.BooleanValue> BD_TERRITORIAL_RIVALRY;
@@ -178,9 +179,10 @@ public class BetterDogsGameRules {
         BD_WOLF_MIN_SCALE_PERCENT = Services.GAMERULES.registerInt("bd_wolf_min_scale_percent", GameRules.Category.MISC, 70);
         BD_WOLF_MAX_SCALE_PERCENT = Services.GAMERULES.registerInt("bd_wolf_max_scale_percent", GameRules.Category.MISC, 145);
 
-        // Correction
+        // Correction & Hunting
         BD_BLOOD_FEUD_PERCENT = Services.GAMERULES.registerInt("bd_blood_feud_percent", GameRules.Category.MISC, 5);
         BD_BABY_RETALIATE_PERCENT = Services.GAMERULES.registerInt("bd_baby_retaliate_percent", GameRules.Category.MISC, 50);
+        BD_WILD_HUNT_HEALTH_THRESHOLD = Services.GAMERULES.registerInt("bd_wild_hunt_health_threshold", GameRules.Category.MISC, 50);
 
         // Territorial
         BD_TERRITORIAL_RIVALRY = Services.GAMERULES.registerBoolean("bd_territorial_rivalry", GameRules.Category.MISC, true);
