@@ -1,4 +1,4 @@
-﻿// Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
+// Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
 package net.vanillaoutsider.betterdogs.util;
 
 import java.util.UUID;

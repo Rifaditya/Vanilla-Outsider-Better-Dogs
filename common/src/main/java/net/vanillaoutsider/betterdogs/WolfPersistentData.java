@@ -88,6 +88,9 @@ public class WolfPersistentData {
             }
             tag.putBoolean(NBT_KEY_IS_INBRED, isInbred);
             tag.putBoolean(NBT_KEY_IS_GUARDING, isGuarding);
+            if (isGuarding) {
+                tag.putBoolean("Sitting", true);
+            }
             if (guardPos != null) {
                 tag.putInt(NBT_KEY_GUARD_X, guardPos.getX());
                 tag.putInt(NBT_KEY_GUARD_Y, guardPos.getY());
