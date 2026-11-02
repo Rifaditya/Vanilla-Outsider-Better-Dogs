@@ -1,5 +1,11 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.64+1.20.1] - 2026-08-17
+### Fixed
+- 🛡️ **Aggressive Target Goal Creeper Suicide Prevention (`AggressiveTargetGoal.java`)**:
+  - Bound target predicate in constructor to filter out Creepers (suicide prevention) and Ghasts (unreachable flight) before target evaluation.
+  - Tethered aggressive monster engagement within the owner's detection radius (`bd_aggro_detect_range`, default 16 blocks).
+
 ## [1.0.63+1.20.1] - 2026-08-17
 ### Fixed
 - 🐾 **Post-Taming Personality Stat Re-Application (`TamableAnimalMixin.java`, `WolfAdoptionHelper.java`)**:
