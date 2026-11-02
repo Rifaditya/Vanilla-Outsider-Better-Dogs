@@ -1,5 +1,14 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.2.0+1.20.1] - 2026-10-19
+
+### Added
+- 🐕 **Dog Play Choreography AI Suite ([BL-BD-010])**:
+  - Implemented `PlayChaseGoal` follow-the-leader chase loops with playful vocalizations and particles.
+  - Implemented `OrbitSparringGoal` circular sparring navigation around play partners.
+  - Added `PlayChoreographyHelper` for play readiness, hazard checks, and orbit calculations.
+  - Added configurable game rules and client options for play frequency and maximum play distance.
+
 ## [1.1.2+1.20.1] - 2026-10-17
 
 ### Fixed

@@ -79,6 +79,9 @@ public class BetterDogsGameRules {
     // Pack Play Sparring & Timeout Penalty (Step 1 & Step 4)
     public static GameRules.Key<GameRules.BooleanValue> BD_DOG_PLAY_FIGHTING;
     public static GameRules.Key<GameRules.IntegerValue> BD_PLAY_PENALTY_MINUTES;
+    public static GameRules.Key<GameRules.BooleanValue> BD_DOG_PLAY_CHOREOGRAPHY_ENABLED;
+    public static GameRules.Key<GameRules.IntegerValue> BD_PLAY_CHOREOGRAPHY_FREQUENCY;
+    public static GameRules.Key<GameRules.IntegerValue> BD_MAX_PLAY_DISTANCE;
 
     // Territorial
     public static GameRules.Key<GameRules.BooleanValue> BD_TERRITORIAL_RIVALRY;
@@ -280,6 +283,22 @@ public class BetterDogsGameRules {
 
     public static int getPlayPenaltyMinutes(Level level) {
         return getInt(level, BD_PLAY_PENALTY_MINUTES, 10);
+    }
+
+    public static void register() {
+        init();
+    }
+
+    public static boolean isDogPlayChoreographyEnabled(Level level) {
+        return getBoolean(level, BD_DOG_PLAY_CHOREOGRAPHY_ENABLED, true);
+    }
+
+    public static int getPlayChoreographyFrequency(Level level) {
+        return getInt(level, BD_PLAY_CHOREOGRAPHY_FREQUENCY, 2400);
+    }
+
+    public static int getMaxPlayDistance(Level level) {
+        return getInt(level, BD_MAX_PLAY_DISTANCE, 16);
     }
 
     public static boolean isHornCommandsEnabled(Level level) {
