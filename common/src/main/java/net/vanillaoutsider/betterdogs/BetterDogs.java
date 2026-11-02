@@ -37,9 +37,6 @@ public class BetterDogs {
         BetterDogsGameRules.init();
         LOGGER.info("[Better Dogs 1.21.1] Registered 80+ GameRules.");
 
-        // Register Criteria Triggers
-        registerCriteriaTriggers();
-
         // Register Hive Mind Social Events (V3.1) - Migrated to DasikLibrary
         SocialEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.WanderlustDogEvent());
         SocialEventRegistry.register(new net.vanillaoutsider.betterdogs.scheduler.events.RetaliationDogEvent());
@@ -54,7 +51,7 @@ public class BetterDogs {
         LOGGER.info("[Better Dogs 1.21.1] Core systems initialized.");
     }
 
-    private static void registerCriteriaTriggers() {
+    public static void registerCriteriaTriggers() {
         CriteriaTriggers.register("betterdogs:tame_wolf_personality", TAME_WOLF_PERSONALITY);
         CriteriaTriggers.register("betterdogs:guard_wolf_personality", GUARD_WOLF_PERSONALITY);
         CriteriaTriggers.register("betterdogs:inbred_wolf", INBRED_WOLF);

@@ -13,6 +13,7 @@ public class BetterDogsFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         BetterDogs.init();
+        BetterDogs.registerCriteriaTriggers();
         net.vanillaoutsider.betterdogs.registry.BetterDogsSoundEvents.registerSoundEvents();
         net.vanillaoutsider.betterdogs.world.BetterDogsSpawningFabric.registerSpawns();
         UseEntityCallback.EVENT.register((player, level, hand, entity, hitResult) -> DogCommandManager.handleEntityUse(player, level, hand, entity));
