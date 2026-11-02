@@ -1,5 +1,10 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.88+1.20.1]
+### Fixed
+- 🛑 **Cliff Safety Sneak Purge**: Removed accidental `shiftKeyDown` flag toggling from cliff edge avoidance, preventing wolves from getting locked in a phantom crouching/sneaking state.
+- 🩹 **Entity Load Sanitizer**: Automatically cleanses any lingering sneak flags from tamed wolves upon chunk/world load.
+
 ## [1.0.87+1.20.1]
 ### Changed
 - 🏛️ **Dasik Library Integration**: Migrated Better Dogs to declare and consume `dasik-library` (MC 1.20.1) as a mandatory runtime dependency per the Universal Dasik Library Law.

@@ -591,6 +591,9 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.betterdogs$bloodFeudTarget = WolfPersistentData.readBloodFeudTargetFromNbt(tag);
         this.betterdogs$leaderUuid = WolfPersistentData.readLeaderUUIDFromNbt(tag);
         this.betterdogs$isPackLeader = WolfPersistentData.readIsPackLeaderFromNbt(tag);
+        if (wolf.isShiftKeyDown()) {
+            wolf.setShiftKeyDown(false);
+        }
         net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper.applyPersonalityStats(wolf, this.betterdogs$personality);
     }
 
