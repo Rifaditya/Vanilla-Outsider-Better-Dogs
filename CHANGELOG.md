@@ -1,5 +1,11 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.71+1.20.1] - 2026-08-22
+### Changed
+- ✨ **Subtle Particle Feedback for Fetch & Gift Delivery (`WolfFetchHelper.java`, `WolfGiftHelper.java`)**:
+  - Reduced excessive happy villager particle burst when dogs return fetched sticks from 6 to a subtle 2 particles with tight spread (`0.15`) and gentle velocity (`0.02`).
+  - Reduced morning scavenged gift delivery particle burst from 8 to 2 subtle particles, adhering to Vanilla Outsider aesthetic standards.
+
 ## [1.0.70+1.20.1] - 2026-08-18
 ### Fixed
 - 🖼️ **Mod Icon Asset Restoration**:
