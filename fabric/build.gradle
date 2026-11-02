@@ -1,0 +1,39 @@
+architectury {
+    platformSetupLoomIde()
+    fabric()
+}
+
+dependencies {
+    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_version}"
+
+    implementation project(path: ':common')
+}
+
+processResources {
+    inputs.property 'version', project.version
+
+    filesMatching('fabric.mod.json') {
+        expand 'version': project.version
+    }
+}
+
+jar {
+    dependsOn ':common:transformProductionFabric'
+    from(zipTree(project(':common').tasks.transformProductionFabric.archiveFile)) {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+}
+
+remapJar {
+    archiveClassifier.set('fabric')
+}
+
+publishing {
+    publications {
+        mavenFabric(MavenPublication) {
+            artifactId = 'better-dogs-fabric'
+            from components.java
+        }
+    }
+}

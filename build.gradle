@@ -1,80 +1,53 @@
 plugins {
-    id 'fabric-loom' version '1.10.2'
-    id 'maven-publish'
+    id 'architectury-plugin' version '3.4-SNAPSHOT'
+    id 'dev.architectury.loom' version '1.11-SNAPSHOT' apply false
 }
 
-version = project.mod_version
-group = project.maven_group
-
-base {
-    archivesName = "better-dogs"
+architectury {
+    minecraft = rootProject.minecraft_version
 }
 
-repositories {
-    mavenCentral()
-    maven { url "https://maven.fabricmc.net/" }
-}
+subprojects {
+    apply plugin: 'dev.architectury.loom'
 
-dependencies {
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.officialMojangMappings()
-    modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    loom {
+        silentMojangMappingsLicense()
+    }
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api:5.10.0"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.10.0"
-    testRuntimeOnly "org.junit.platform:junit-platform-launcher:1.10.0"
-}
-
-processResources {
-    inputs.property "version", project.version
-
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version
+    dependencies {
+        minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+        mappings loom.officialMojangMappings()
     }
 }
 
-test {
-    useJUnitPlatform()
-}
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'architectury-plugin'
+    apply plugin: 'maven-publish'
 
-tasks.withType(JavaCompile).configureEach {
-    it.options.encoding = "UTF-8"
-    it.options.release = 17
-}
+    version = rootProject.mod_version
+    group = rootProject.maven_group
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
-
-jar {
-    archiveBaseName = "better-dogs"
-    from("LICENSE") {
-        rename "LICENSE_${project.archives_base_name}", "LICENSE"
+    base {
+        archivesName = rootProject.archives_base_name
     }
-}
 
-remapJar {
-    archiveBaseName = "better-dogs"
-}
-
-afterEvaluate {
-    tasks.register('archiveReleaseJar', Copy) {
-        dependsOn build
-        from remapJar.archiveFile
-        into file("../../Archive Jar of all versions/MC 1.20.1")
-        doLast {
-            println "[AUTO-ARCHIVE] Successfully copied ${remapJar.archiveFile.get().asFile.name} to outer Archive directory: ${destinationDir.absolutePath}"
-            def profileModsDir = file("C:/Users/fmrif/AppData/Roaming/ModrinthApp/profiles/Fabric 1.20.1/mods")
-            if (profileModsDir.exists()) {
-                copy {
-                    from remapJar.archiveFile
-                    into profileModsDir
-                }
-                println "[AUTO-DEPLOY] Successfully deployed ${remapJar.archiveFile.get().asFile.name} to Modrinth profile: ${profileModsDir.absolutePath}"
-            }
-        }
+    repositories {
+        mavenCentral()
+        maven { url "https://maven.fabricmc.net/" }
+        maven { url "https://maven.architectury.dev/" }
+        maven { url "https://maven.minecraftforge.net/" }
+        maven { url "https://maven.neoforged.net/releases/" }
     }
-    build.finalizedBy archiveReleaseJar
+
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+        options.release = 17
+    }
+
+    java {
+        withSourcesJar()
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
 }
