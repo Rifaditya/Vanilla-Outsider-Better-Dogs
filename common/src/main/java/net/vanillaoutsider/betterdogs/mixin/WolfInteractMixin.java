@@ -66,7 +66,7 @@ public abstract class WolfInteractMixin {
             }
         }
 
-        InteractionResult adoptionResult = net.vanillaoutsider.betterdogs.util.WolfAdoptionHelper.tryHandleAdoption(wolf, player, itemInHand);
+        InteractionResult adoptionResult = net.vanillaoutsider.betterdogs.util.WolfAdoptionHelper.tryHandleAdoption(wolf, player, hand, itemInHand);
         if (adoptionResult.consumesAction()) {
             cir.setReturnValue(adoptionResult);
             return;

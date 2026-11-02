@@ -1,5 +1,11 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.66+1.20.1] - 2026-08-18
+### Fixed
+- 📜 **Adoption Flow Polish & 6D Interaction Guarding (`WolfAdoptionHelper.java`, `WolfInteractMixin.java`)**:
+  - Enforced strict `InteractionHand.MAIN_HAND` debounce across all adoption validation predicates and interaction handlers.
+  - Required `Shift + Right-Click` with Paper for cancelling adoption listings, preventing empty-handed shift-click petting from accidentally cancelling adoption status.
+
 ## [1.0.65+1.20.1] - 2026-08-18
 ### Added
 - 🐺 **Custom Chorus Howl SoundEvent Registration (`BetterDogsSoundEvents.java`, `sounds.json`, `WolfHowlHelper.java`)**:

@@ -20,7 +20,11 @@ import net.vanillaoutsider.betterdogs.WolfExtensions;
 public class WolfAdoptionHelper {
 
     public static boolean canListForAdoption(Wolf wolf, Player player, ItemStack held) {
-        if (wolf == null || player == null || held == null) {
+        return canListForAdoption(wolf, player, net.minecraft.world.InteractionHand.MAIN_HAND, held);
+    }
+
+    public static boolean canListForAdoption(Wolf wolf, Player player, net.minecraft.world.InteractionHand hand, ItemStack held) {
+        if (wolf == null || player == null || held == null || hand != net.minecraft.world.InteractionHand.MAIN_HAND) {
             return false;
         }
         if (!wolf.isTame() || !wolf.isOwnedBy(player)) {
@@ -36,7 +40,11 @@ public class WolfAdoptionHelper {
     }
 
     public static boolean canCancelAdoption(Wolf wolf, Player player, ItemStack held) {
-        if (wolf == null || player == null) {
+        return canCancelAdoption(wolf, player, net.minecraft.world.InteractionHand.MAIN_HAND, held);
+    }
+
+    public static boolean canCancelAdoption(Wolf wolf, Player player, net.minecraft.world.InteractionHand hand, ItemStack held) {
+        if (wolf == null || player == null || held == null || hand != net.minecraft.world.InteractionHand.MAIN_HAND) {
             return false;
         }
         if (!wolf.isTame() || !wolf.isOwnedBy(player)) {
@@ -48,11 +56,15 @@ public class WolfAdoptionHelper {
         if (!(wolf instanceof WolfExtensions ext) || !ext.betterdogs$isUpForAdoption()) {
             return false;
         }
-        return held.isEmpty() || held.is(Items.PAPER);
+        return held.is(Items.PAPER);
     }
 
     public static boolean canAdopt(Wolf wolf, Player player, ItemStack held) {
-        if (wolf == null || player == null) {
+        return canAdopt(wolf, player, net.minecraft.world.InteractionHand.MAIN_HAND, held);
+    }
+
+    public static boolean canAdopt(Wolf wolf, Player player, net.minecraft.world.InteractionHand hand, ItemStack held) {
+        if (wolf == null || player == null || held == null || hand != net.minecraft.world.InteractionHand.MAIN_HAND) {
             return false;
         }
         if (!wolf.isTame() || wolf.isOwnedBy(player)) {
@@ -68,7 +80,11 @@ public class WolfAdoptionHelper {
     }
 
     public static InteractionResult tryHandleAdoption(Wolf wolf, Player player, ItemStack held) {
-        if (wolf == null || player == null) {
+        return tryHandleAdoption(wolf, player, net.minecraft.world.InteractionHand.MAIN_HAND, held);
+    }
+
+    public static InteractionResult tryHandleAdoption(Wolf wolf, Player player, net.minecraft.world.InteractionHand hand, ItemStack held) {
+        if (wolf == null || player == null || hand != net.minecraft.world.InteractionHand.MAIN_HAND) {
             return InteractionResult.PASS;
         }
 
@@ -78,7 +94,7 @@ public class WolfAdoptionHelper {
         }
 
         // 1. Owner cancels adoption listing
-        if (canCancelAdoption(wolf, player, held)) {
+        if (canCancelAdoption(wolf, player, hand, held)) {
             if (wolf instanceof WolfExtensions ext) {
                 ext.betterdogs$setUpForAdoption(false);
             }
@@ -90,7 +106,7 @@ public class WolfAdoptionHelper {
         }
 
         // 2. Owner lists dog for adoption
-        if (canListForAdoption(wolf, player, held)) {
+        if (canListForAdoption(wolf, player, hand, held)) {
             if (wolf instanceof WolfExtensions ext) {
                 ext.betterdogs$setUpForAdoption(true);
             }
@@ -108,7 +124,7 @@ public class WolfAdoptionHelper {
         }
 
         // 3. New owner adopts dog
-        if (canAdopt(wolf, player, held)) {
+        if (canAdopt(wolf, player, hand, held)) {
             if (wolf instanceof WolfExtensions ext) {
                 ext.betterdogs$setUpForAdoption(false);
                 WolfPersonalityStatHelper.applyPersonalityStats(wolf, ext.betterdogs$getPersonality());
