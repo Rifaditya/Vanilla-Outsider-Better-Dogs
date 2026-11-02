@@ -1,0 +1,39 @@
+architectury {
+    platformSetupLoomIde()
+    neoForge()
+}
+
+dependencies {
+    neoForge "net.neoforged:neoforge:${rootProject.neoforge_version}"
+    modImplementation "net.dasik.social:dasik-library-neoforge:${rootProject.dasik_library_version}"
+
+    implementation project(path: ':common')
+}
+
+processResources {
+    inputs.property 'version', project.version
+
+    filesMatching(['META-INF/neoforge.mods.toml']) {
+        expand 'version': project.version
+    }
+}
+
+jar {
+    dependsOn ':common:transformProductionNeoForge'
+    from(zipTree(project(':common').tasks.transformProductionNeoForge.archiveFile)) {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+}
+
+remapJar {
+    archiveClassifier.set('neoforge')
+}
+
+publishing {
+    publications {
+        mavenNeoForge(MavenPublication) {
+            artifactId = 'better-dogs-neoforge'
+            from components.java
+        }
+    }
+}
