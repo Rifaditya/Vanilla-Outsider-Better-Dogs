@@ -13,12 +13,20 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
 
     @Override
     public boolean isModLoaded(String modId) {
-        String forgeId = modId.replace('-', '_');
-        return ModList.get().isLoaded(modId) || ModList.get().isLoaded(forgeId);
+        try {
+            String forgeId = modId.replace('-', '_');
+            return ModList.get() != null && (ModList.get().isLoaded(modId) || ModList.get().isLoaded(forgeId));
+        } catch (Throwable t) {
+            return false;
+        }
     }
 
     @Override
     public boolean isDevelopmentEnvironment() {
-        return !FMLLoader.isProduction();
+        try {
+            return !FMLLoader.isProduction();
+        } catch (Throwable t) {
+            return false;
+        }
     }
 }

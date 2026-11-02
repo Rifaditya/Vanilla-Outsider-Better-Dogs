@@ -1,4 +1,5 @@
 .gradle/
+.architectury-transformer/
 build/
 bin/
 out/

@@ -12,11 +12,19 @@ public class FabricPlatformHelper implements IPlatformHelper {
 
     @Override
     public boolean isModLoaded(String modId) {
-        return FabricLoader.getInstance().isModLoaded(modId);
+        try {
+            return FabricLoader.getInstance().isModLoaded(modId);
+        } catch (Throwable t) {
+            return false;
+        }
     }
 
     @Override
     public boolean isDevelopmentEnvironment() {
-        return FabricLoader.getInstance().isDevelopmentEnvironment();
+        try {
+            return FabricLoader.getInstance().isDevelopmentEnvironment();
+        } catch (Throwable t) {
+            return false;
+        }
     }
 }
