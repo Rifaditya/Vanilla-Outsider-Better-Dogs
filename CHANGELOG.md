@@ -1,5 +1,10 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.0.90+1.20.1]
+### Changed
+- 🧬 **Transient Attribute Modifiers**: Migrated personality health, damage, and speed scaling from persistent base attribute overrides to transient `AttributeModifier` instances (`addTransientModifier()`). Modifiers are never serialized to disk by vanilla Minecraft, completely preserving vanilla world balance if the mod is removed.
+- 🩹 **Base Stat Healer**: Automatically restores corrupted or over-inflated vanilla base attributes back to standard defaults upon loading.
+
 ## [1.0.89+1.20.1]
 ### Fixed
 - 🛡️ **Guard Mode Uninstallation Sitting Guard**: Ensured that dogs actively in Guard Mode serialize `"Sitting": true` to chunk save data. If Better Dogs is uninstalled, vanilla will safely station the dog at its post in a sitting posture rather than having it endlessly chase or teleport to the owner.
