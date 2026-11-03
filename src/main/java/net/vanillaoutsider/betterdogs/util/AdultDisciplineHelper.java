@@ -23,7 +23,7 @@ public final class AdultDisciplineHelper {
         if (!(attacker instanceof Wolf discipliner) || !discipliner.isAlive() || !discipliner.isTame()) {
             return false;
         }
-        if (victim.getOwner() == null || discipliner.getOwner() == null || !victim.getOwner().equals(discipliner.getOwner())) {
+        if (!PackAudienceHelper.isCoOwned(victim, discipliner)) {
             return false;
         }
         return SmallFightHelper.isRecentCorrectionSnap(victim, discipliner);
@@ -38,6 +38,7 @@ public final class AdultDisciplineHelper {
 
     /**
      * "The Muzzle": Checks whether a HurtByTarget alert should be silenced during a domestic dispute or hierarchy correction.
+     * All domestic packmate disputes (baby training, play correction, or accidental hits between co-owned dogs) must be silenced (BL-BD-035).
      */
     public static boolean shouldSilenceAlert(Wolf victim, LivingEntity attacker) {
         if (victim == null || !victim.isAlive() || !victim.isTame()) {
@@ -46,21 +47,12 @@ public final class AdultDisciplineHelper {
         if (!(attacker instanceof Wolf discipliner) || !discipliner.isAlive() || !discipliner.isTame()) {
             return false;
         }
-        if (victim.getOwner() == null || discipliner.getOwner() == null || !victim.getOwner().equals(discipliner.getOwner())) {
+        if (!PackAudienceHelper.isCoOwned(victim, discipliner)) {
             return false;
         }
 
-        // 1. Adult disciplining baby (legacy baby training)
-        if (victim.isBaby() && !discipliner.isBaby()) {
-            return true;
-        }
-
-        // 2. Hierarchy correction snap during sparring / play fighting
-        if (SmallFightHelper.isRecentCorrectionSnap(victim, discipliner)) {
-            return true;
-        }
-
-        return false;
+        // All domestic packmate disputes must be completely silenced to prevent pack civil war
+        return true;
     }
 
     /**
