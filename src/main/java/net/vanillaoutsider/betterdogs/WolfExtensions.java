@@ -296,6 +296,13 @@ public interface WolfExtensions {
     default void betterdogs$setSparringCooldownUntil(long gameTime) {
     }
 
+    // ========== Play Choreography Cooldown (BL-BD-049) ==========
+    default long betterdogs$getPlayChoreographyCooldownUntil() {
+        return 0L;
+    }
+    default void betterdogs$setPlayChoreographyCooldownUntil(long gameTime) {
+    }
+
     // ========== Hierarchy Correction Snap (Step 3) ==========
     default @Nullable UUID betterdogs$getLastCorrectionSnapSource() {
         return null;
@@ -336,6 +343,7 @@ public interface WolfExtensions {
         betterdogs$setZoomiesTicks(0);
         betterdogs$setHowlingTicks(0);
         betterdogs$setSparringCooldownUntil(0L);
+        betterdogs$setPlayChoreographyCooldownUntil(0L);
         betterdogs$setLastCorrectionSnapSource(null);
         betterdogs$setLastCorrectionSnapExpiry(0L);
         betterdogs$setSpectatorWagTicks(0);

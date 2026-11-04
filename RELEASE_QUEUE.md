@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 5.7.8+26.1.2** - Tamed Pack Clumping Freeze Resolved & Play Choreography Cooldown (BL-BD-036, BL-BD-037, BL-BD-049)
 - [ ] **Better Dogs 5.7.7+26.1.2** - Pack Infighting Civil War Immunity & Configurable Sparring Frequency (BL-BD-035)
 - [ ] **Better Dogs 5.7.6+26.1.2** - 5-Pillar Testing Harness: Concurrency, Brigadier AST & Headless Simulation (BL-BD-018)
 - [ ] **Better Dogs 5.7.5+26.1.2** - Ballistic Interceptor: Multi-Era Parity Verification & Full Production Release (BL-BD-021)

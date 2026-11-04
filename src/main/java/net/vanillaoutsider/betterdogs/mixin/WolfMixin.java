@@ -62,6 +62,8 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     @Unique
     private long betterdogs$sparringCooldownUntil = 0L;
     @Unique
+    private long betterdogs$playChoreographyCooldownUntil = 0L;
+    @Unique
     private java.util.UUID betterdogs$lastCorrectionSnapSource = null;
     @Unique
     private long betterdogs$lastCorrectionSnapExpiry = 0L;
@@ -494,6 +496,16 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     @Override
     public void betterdogs$setSparringCooldownUntil(long gameTime) {
         this.betterdogs$sparringCooldownUntil = gameTime;
+    }
+
+    @Override
+    public long betterdogs$getPlayChoreographyCooldownUntil() {
+        return this.betterdogs$playChoreographyCooldownUntil;
+    }
+
+    @Override
+    public void betterdogs$setPlayChoreographyCooldownUntil(long gameTime) {
+        this.betterdogs$playChoreographyCooldownUntil = gameTime;
     }
 
     @Override

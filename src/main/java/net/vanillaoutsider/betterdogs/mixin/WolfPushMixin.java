@@ -24,31 +24,37 @@ public abstract class WolfPushMixin {
         }
 
         if (self instanceof Wolf thisWolf && thisWolf.isTame()) {
-            double xa = entity.getX() - thisWolf.getX();
-            double za = entity.getZ() - thisWolf.getZ();
-            boolean dangerous = false;
-
-            if (BetterDogsGameRules.getBoolean(level, BetterDogsGameRules.BD_CLIFF_SAFETY, true)) {
-                dangerous = WolfCliffSafetyHelper.isDangerousPushDirection(thisWolf, -xa, -za);
-            }
-
-            if (dangerous || thisWolf.isOrderedToSit()) {
+            if (thisWolf.isOrderedToSit()) {
                 ci.cancel();
                 return;
+            }
+
+            // Minimum separation guard: if entities are overlapping (< 1.5 blocks),
+            // always allow vanilla collision physics to push them apart (BL-BD-037).
+            double distSq = thisWolf.distanceToSqr(entity);
+            if (distSq >= 2.25 && BetterDogsGameRules.getBoolean(level, BetterDogsGameRules.BD_CLIFF_SAFETY, true)) {
+                double xa = entity.getX() - thisWolf.getX();
+                double za = entity.getZ() - thisWolf.getZ();
+                if (WolfCliffSafetyHelper.isDangerousPushDirection(thisWolf, -xa, -za)) {
+                    ci.cancel();
+                    return;
+                }
             }
         }
 
         if (entity instanceof Wolf otherWolf && otherWolf.isTame()) {
-            double xa = otherWolf.getX() - self.getX();
-            double za = otherWolf.getZ() - self.getZ();
-            boolean dangerous = false;
-
-            if (BetterDogsGameRules.getBoolean(level, BetterDogsGameRules.BD_CLIFF_SAFETY, true)) {
-                dangerous = WolfCliffSafetyHelper.isDangerousPushDirection(otherWolf, xa, za);
+            if (otherWolf.isOrderedToSit()) {
+                ci.cancel();
+                return;
             }
 
-            if (dangerous || otherWolf.isOrderedToSit()) {
-                ci.cancel();
+            double distSq = self.distanceToSqr(otherWolf);
+            if (distSq >= 2.25 && BetterDogsGameRules.getBoolean(level, BetterDogsGameRules.BD_CLIFF_SAFETY, true)) {
+                double xa = otherWolf.getX() - self.getX();
+                double za = otherWolf.getZ() - self.getZ();
+                if (WolfCliffSafetyHelper.isDangerousPushDirection(otherWolf, xa, za)) {
+                    ci.cancel();
+                }
             }
         }
     }

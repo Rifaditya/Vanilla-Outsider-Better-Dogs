@@ -82,9 +82,10 @@ public class TamedWanderNearOwnerGoal extends WaterAvoidingRandomStrollGoal {
             }
         }
 
-        // If we couldn't find a position within the radius after 10 attempts,
-        // return null so the wolf stands still at its current spot instead of pacing back.
-        // Returning null is the vanilla API contract for "no valid destination this tick".
-        return null;
+        // If we couldn't find a random position within the radius after 10 attempts,
+        // fall back to a directed position towards the owner within a short reach.
+        // This guarantees the wolf always receives a valid destination and never
+        // freezes into an infinite per-tick null loop (BL-BD-036).
+        return DefaultRandomPos.getPosTowards(this.wolf, 6, 3, owner.position(), Math.PI);
     }
 }
