@@ -1,5 +1,19 @@
 # Changelog
 
+## [5.7.8+26.3] - 2026-11-04
+
+### Fixed
+- 🐾 **Tamed Pack Clumping Freeze Resolved (BL-BD-036)**:
+  - Fixed an infinite per-tick idle loop in TamedWanderNearOwnerGoal where 10 failed random stroll candidates caused the goal to return 
+ull, freezing all co-owned dogs in place.
+  - Implemented directed fallback navigation towards the owner within reach, guaranteeing dogs always receive a valid destination and wander naturally.
+- 💨 **Overlapping Wolf Push Physics Separation (BL-BD-037)**:
+  - Added an overlap separation guard (< 1.5 blocks) to WolfPushMixin, allowing vanilla entity collision physics to continuously separate overlapping dogs on flat ground.
+  - Preserved cliff-safety edge protection for standing dogs beyond the immediate collision boundary.
+- ✨ **Play Choreography Frequency & Particle Cooldown (BL-BD-049)**:
+  - Wired d_play_choreography_frequency (default: 2400 ticks / 2 min) into PlayChoreographyHelper, OrbitSparringGoal, and PlayChaseGoal.
+  - Added post-play cooldown tracking on participating dogs, terminating the non-stop 2-second loop of tag chases, orbit sparring, and happy villager particle bursts.
+
 ## [5.7.7+26.3] - 2026-11-04
 
 ### Added

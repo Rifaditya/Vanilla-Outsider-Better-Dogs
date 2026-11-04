@@ -58,6 +58,15 @@ public class PlayChoreographyHelper {
         if (!BetterDogsGameRules.isDogPlayChoreographyEnabled(level)) {
             return false;
         }
+        int freq = BetterDogsGameRules.getPlayChoreographyFrequency(level);
+        if (freq <= 0) {
+            return false;
+        }
+        if (wolf instanceof WolfExtensions ext) {
+            if (level != null && level.getGameTime() < ext.betterdogs$getPlayChoreographyCooldownUntil()) {
+                return false;
+            }
+        }
         LivingEntity owner = wolf.getOwner();
         if (owner == null || !owner.isAlive() || owner.isSpectator()) {
             return false;
@@ -90,6 +99,24 @@ public class PlayChoreographyHelper {
         }
         double maxAllowedDistSqr = Math.min(1024.0, maxPlayDistance * maxPlayDistance * 4.0);
         return distanceToOwnerSqr <= maxAllowedDistSqr;
+    }
+
+    /**
+     * Pure logical predicate for testing play eligibility with frequency and cooldown.
+     */
+    public static boolean canInitiatePlay(boolean isAlive, boolean isTame, boolean isOrderedToSit,
+                                          boolean isInSittingPose, boolean hasTarget, float health,
+                                          float maxHealth, boolean isGuardMode, boolean isSocialModeActive,
+                                          boolean isRuleEnabled, boolean hasOwner, boolean isOwnerAlive,
+                                          boolean isOwnerSpectator, double distanceToOwnerSqr,
+                                          double maxPlayDistance, int frequency, long currentGameTime,
+                                          long cooldownUntil) {
+        if (frequency <= 0 || currentGameTime < cooldownUntil) {
+            return false;
+        }
+        return canInitiatePlay(isAlive, isTame, isOrderedToSit, isInSittingPose, hasTarget,
+                health, maxHealth, isGuardMode, isSocialModeActive, isRuleEnabled,
+                hasOwner, isOwnerAlive, isOwnerSpectator, distanceToOwnerSqr, maxPlayDistance);
     }
 
     /**
@@ -169,8 +196,32 @@ public class PlayChoreographyHelper {
             if (ext.betterdogs$isGuardMode()) {
                 return false;
             }
+            if (candidate.level() != null && candidate.level().getGameTime() < ext.betterdogs$getPlayChoreographyCooldownUntil()) {
+                return false;
+            }
         }
         return true;
+    }
+
+    /**
+     * Applies the play choreography cooldown to both participating wolves based on the game rule frequency (BL-BD-049).
+     */
+    public static void applyPlayCooldown(@Nullable Wolf wolf, @Nullable Wolf partner) {
+        if (wolf == null || wolf.level() == null) {
+            return;
+        }
+        Level level = wolf.level();
+        int freq = BetterDogsGameRules.getPlayChoreographyFrequency(level);
+        if (freq <= 0) {
+            return;
+        }
+        long expiry = level.getGameTime() + freq;
+        if (wolf instanceof WolfExtensions ext) {
+            ext.betterdogs$setPlayChoreographyCooldownUntil(expiry);
+        }
+        if (partner instanceof WolfExtensions pExt) {
+            pExt.betterdogs$setPlayChoreographyCooldownUntil(expiry);
+        }
     }
 
     /**
