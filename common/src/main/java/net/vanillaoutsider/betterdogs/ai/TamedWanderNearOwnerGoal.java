@@ -69,6 +69,8 @@ public class TamedWanderNearOwnerGoal extends WaterAvoidingRandomStrollGoal {
             }
         }
 
-        return null;
+        // If we couldn't find a random position within the radius after 10 attempts,
+        // fall back to a directed position towards the owner within a short reach (BL-BD-036).
+        return DefaultRandomPos.getPosTowards(this.wolf, 6, 3, ownerPos, Math.PI);
     }
 }

@@ -157,6 +157,7 @@ public class OrbitSparringGoal extends Goal {
 
     @Override
     public void stop() {
+        PlayChoreographyHelper.applyPlayCooldown(this.wolf, this.partner);
         if (this.wolf != null) {
             if (this.wolf.getNavigation() != null) {
                 this.wolf.getNavigation().stop();
