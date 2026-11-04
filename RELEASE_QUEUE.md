@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 1.7.7+1.21.11** - Pack Infighting Civil War Immunity & Configurable Sparring Frequency (BL-BD-035)
 - [ ] **Better Dogs 1.7.6+1.21.11** - Multi-Loader Conversion: Native 3-Module Architecture (Fabric + NeoForge), Zero Runtime Bloat, DasikLibrary 1.4.1 (BL-BD-036)
 - [ ] **Better Dogs 1.7.5+1.21.11** - Ballistic Interceptor: Multi-Era Parity Verification & Full Production Release (BL-BD-021)
 - [ ] **Better Dogs 1.7.4+1.21.11** - Ballistic Interceptor: Heroic Sacrifice Damage Routing, Anti-One-Shot Protection & Sensory Polish (BL-BD-021)

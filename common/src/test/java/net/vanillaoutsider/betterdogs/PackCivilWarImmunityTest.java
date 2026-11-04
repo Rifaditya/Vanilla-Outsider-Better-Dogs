@@ -45,4 +45,19 @@ class PackCivilWarImmunityTest {
         PacifistRevengeGoal goal = new PacifistRevengeGoal(null);
         assertFalse(goal.canUse());
     }
+
+    @Test
+    @DisplayName("Assert Negative Parity: Non-co-owned wolves, wild wolves, and sitting/leashed dogs are immune to sparring (BL-BD-035)")
+    void testNegativeParitySparringImmunity() {
+        assertFalse(net.vanillaoutsider.betterdogs.util.SmallFightHelper.shouldInitiatePlayFight(false, 400, 100, 0, 0),
+                "Wild or ineligible wolves must never initiate sparring");
+        assertFalse(net.vanillaoutsider.betterdogs.util.SmallFightHelper.isEligibleForPlay(true, false, false, false, false, false, 0, false, false),
+                "Wild wolves must never be eligible for play");
+        assertFalse(net.vanillaoutsider.betterdogs.util.SmallFightHelper.isEligibleForPlay(true, true, true, false, false, false, 0, false, false),
+                "Sitting wolves must never be eligible for play");
+        assertFalse(net.vanillaoutsider.betterdogs.util.SmallFightHelper.isEligibleForPlay(true, true, false, true, false, false, 0, false, false),
+                "Leashed wolves must never be eligible for play");
+        assertFalse(net.vanillaoutsider.betterdogs.util.SmallFightHelper.isEligibleForPlay(true, true, false, false, true, false, 0, false, false),
+                "Wolves with active targets must never be eligible for play");
+    }
 }

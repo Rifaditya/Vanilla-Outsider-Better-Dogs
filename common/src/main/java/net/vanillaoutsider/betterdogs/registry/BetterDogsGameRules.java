@@ -6,6 +6,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gamerules.GameRule;
 import net.minecraft.world.level.gamerules.GameRuleCategory;
+import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 
 public class BetterDogsGameRules {
 
@@ -47,6 +48,8 @@ public class BetterDogsGameRules {
 
     // Social / Play Sparring
     public static GameRule<Boolean> BD_DOG_PLAY_FIGHTING;
+    public static GameRule<Integer> BD_DOG_PLAY_FIGHT_FREQUENCY;
+    public static GameRule<Integer> BD_DOG_PLAY_FIGHT_CHANCE;
     public static GameRule<Integer> BD_PLAY_PENALTY_MINUTES;
     public static GameRule<Boolean> BD_DOG_PLAY_CHOREOGRAPHY_ENABLED;
     public static GameRule<Integer> BD_PLAY_CHOREOGRAPHY_FREQUENCY;
@@ -209,13 +212,26 @@ public class BetterDogsGameRules {
         BD_TAMED_PACK_SPREAD_MAX = registerInteger("vanilla-outsider-better-dogs:bd_tamed_pack_spread_max", BETTER_DOGS, 50);
 
         // Social / Play Sparring
+        BetterDogsConfig config = BetterDogsConfig.get();
         BD_DOG_PLAY_FIGHTING = registerBoolean("vanilla-outsider-better-dogs:bd_dog_play_fighting", BETTER_DOGS, true);
+        BD_DOG_PLAY_FIGHT_FREQUENCY = DynamicGameRuleManager.integerRule("betterdogs:bd_dog_play_fight_frequency", BETTER_DOGS,
+                config != null ? config.getPlayFightFrequency() : 400)
+                .range(0, 72000).register();
+        BD_DOG_PLAY_FIGHT_CHANCE = DynamicGameRuleManager.integerRule("betterdogs:bd_dog_play_fight_chance", BETTER_DOGS,
+                config != null ? config.getPlayFightChance() : 100)
+                .range(0, 100).register();
         BD_PLAY_PENALTY_MINUTES = DynamicGameRuleManager.integerRule("vanilla-outsider-better-dogs:bd_play_penalty_minutes", BETTER_DOGS, 10)
                 .range(0, Integer.MAX_VALUE).register();
         BD_DOG_PLAY_CHOREOGRAPHY_ENABLED = registerBoolean("vanilla-outsider-better-dogs:bd_dog_play_choreography_enabled", BETTER_DOGS, true);
         BD_PLAY_CHOREOGRAPHY_FREQUENCY = registerInteger("vanilla-outsider-better-dogs:bd_play_choreography_frequency", BETTER_DOGS, 2400, 20, 72000);
         BD_MAX_PLAY_DISTANCE = registerInteger("vanilla-outsider-better-dogs:bd_max_play_distance", BETTER_DOGS, 16, 4, 128);
 
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:bd_dog_play_fight_frequency", BD_DOG_PLAY_FIGHT_FREQUENCY);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:bd_dog_play_fight_chance", BD_DOG_PLAY_FIGHT_CHANCE);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:playFightFrequency", BD_DOG_PLAY_FIGHT_FREQUENCY);
+        DynamicGameRuleManager.getDynamicRules().put("betterdogs:playFightChance", BD_DOG_PLAY_FIGHT_CHANCE);
+        DynamicGameRuleManager.getDynamicRules().put("vanilla-outsider-better-dogs:bd_dog_play_fight_frequency", BD_DOG_PLAY_FIGHT_FREQUENCY);
+        DynamicGameRuleManager.getDynamicRules().put("vanilla-outsider-better-dogs:bd_dog_play_fight_chance", BD_DOG_PLAY_FIGHT_CHANCE);
         DynamicGameRuleManager.getDynamicRules().put("betterdogs:bd_dog_play_choreography_enabled", BD_DOG_PLAY_CHOREOGRAPHY_ENABLED);
         DynamicGameRuleManager.getDynamicRules().put("betterdogs:bd_play_choreography_frequency", BD_PLAY_CHOREOGRAPHY_FREQUENCY);
         DynamicGameRuleManager.getDynamicRules().put("betterdogs:bd_max_play_distance", BD_MAX_PLAY_DISTANCE);
@@ -405,6 +421,14 @@ public class BetterDogsGameRules {
 
     public static boolean isDogPlayFightingEnabled(Level level) {
         return getBoolean(level, BD_DOG_PLAY_FIGHTING, true);
+    }
+
+    public static int getPlayFightFrequency(Level level) {
+        return getInt(level, BD_DOG_PLAY_FIGHT_FREQUENCY, BetterDogsConfig.get() != null ? BetterDogsConfig.get().getPlayFightFrequency() : 400);
+    }
+
+    public static int getPlayFightChance(Level level) {
+        return getInt(level, BD_DOG_PLAY_FIGHT_CHANCE, BetterDogsConfig.get() != null ? BetterDogsConfig.get().getPlayFightChance() : 100);
     }
 
     public static int getPlayPenaltyMinutes(Level level) {

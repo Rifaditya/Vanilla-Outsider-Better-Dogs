@@ -63,6 +63,8 @@ public class BetterDogsConfig {
     public boolean dogPlayChoreographyEnabled = true;
     public int playChoreographyFrequency = 2400;
     public int maxPlayDistance = 16;
+    public int playFightFrequency = 400;
+    public int playFightChance = 100;
 
     // --- Player ---
     public boolean pacifistGuardBuffs = false;
@@ -243,6 +245,10 @@ public class BetterDogsConfig {
     public boolean getDogPlayChoreographyEnabled() { return dogPlayChoreographyEnabled; }
     public int getPlayChoreographyFrequency() { return playChoreographyFrequency; }
     public int getMaxPlayDistance() { return maxPlayDistance; }
+    public int getPlayFightFrequency() { return playFightFrequency; }
+    public void setPlayFightFrequency(int playFightFrequency) { this.playFightFrequency = playFightFrequency; }
+    public int getPlayFightChance() { return playFightChance; }
+    public void setPlayFightChance(int playFightChance) { this.playFightChance = playFightChance; }
     public boolean getPacifistGuardBuffs() { return pacifistGuardBuffs; }
     public boolean getEnableInbredCuring() { return enableInbredCuring; }
     public boolean getShowRuntParticles() { return showRuntParticles; }
