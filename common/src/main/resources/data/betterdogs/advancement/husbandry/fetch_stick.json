@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minecraft:stick"
+      "id": "minecraft:stick"
     },
     "title": {
       "translate": "advancements.betterdogs.husbandry.fetch_stick.title"
