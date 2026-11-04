@@ -1,17 +1,17 @@
-# Vanilla Outsider: Better Dogs (Minecraft 1.21.1)
+# Vanilla Outsider: Better Dogs (Minecraft 1.21.11 / Winter Drop)
 
-[![Minecraft](https://img.shields.io/badge/Minecraft-1.21.1-brightgreen.svg)](https://minecraft.net)
+[![Minecraft](https://img.shields.io/badge/Minecraft-1.21.11-brightgreen.svg)](https://minecraft.net)
 [![Fabric Loader](https://img.shields.io/badge/Fabric-0.16.0+-blue.svg)](https://fabricmc.net)
 [![Java](https://img.shields.io/badge/Java-21-orange.svg)](https://adoptium.net)
 [![License: GPLv3](https://img.shields.io/badge/License-GPLv3-yellow.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-Welcome to the dedicated documentation for **Vanilla Outsider: Better Dogs** on **Minecraft 1.21.1** (Release `1.0.70+1.21.1`).
+Welcome to the dedicated documentation for **Vanilla Outsider: Better Dogs** on **Minecraft 1.21.11** (Release `1.0.73+1.21.11`).
 
 ---
 
 ## 🎮 Gameplay Mechanics Matrix
 
-Explore detailed guides tailored to Minecraft 1.21.1:
+Explore detailed guides tailored to Minecraft 1.21.11:
 
 * [[Wolf Personalities & Combat AI|Wolf-Personalities]] — Aggressive, Pacifist, and Normal traits, combat follow distances, and storm anxiety.
 * [[Guard Mode & Sentinel Patrols|Guard-Mode-and-Sentinels]] — Sentinel patrol radiuses (12 blk Aggressive, 3 blk Pacifist, 0 blk Normal) and soothing healing aura.
@@ -31,6 +31,6 @@ Explore detailed guides tailored to Minecraft 1.21.1:
 
 ## 💻 Developer & Contributor Reference
 
-* [[Developer Setup & Building|Developer-Setup-and-Building]] — Setup with Java 21, Gradle 9.3+, Loom 1.10.2, and `./gradlew build --no-daemon`.
-* [[Architecture & Mixins|Architecture-and-Mixins]] — Package structure, 9 Mixin target points (leveraging native `Attributes.SCALE`), and AI goal hierarchy.
+* [[Developer Setup & Building|Developer-Setup-and-Building]] — Setup with Java 21, Gradle 9.3+, Loom Remap 1.15-SNAPSHOT, and `./gradlew build --no-daemon`.
+* [[Architecture & Mixins|Architecture-and-Mixins]] — Relocated entity architecture (`net.minecraft.world.entity.animal.wolf.Wolf`), 9 Mixin targets, and AI priority stack.
 * [[API & Addon Integration|API-and-Addon-Integration]] — Event hooks, data attachments, and treat registrations.
