@@ -1,7 +1,9 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
-// Verified against: Minecraft 26.2
+// Verified against: Minecraft 26.3
 package net.vanillaoutsider.betterdogs.ai;
 
+import java.util.EnumSet;
+import java.util.List;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
@@ -10,10 +12,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
+import net.vanillaoutsider.betterdogs.util.PackAudienceHelper;
 import net.vanillaoutsider.betterdogs.util.WolfFleeHelper;
-
-import java.util.EnumSet;
-import java.util.List;
 
 /**
  * Dedicated single-purpose AI goal for Pacifist personality wolves.
@@ -68,9 +68,11 @@ public class PacifistRevengeGoal extends Goal {
             return false;
         }
 
-        // Puppy mercy check: do not alert or flee from allied baby wolf
-        if (attacker instanceof Wolf offendingWolf && offendingWolf.isBaby() && owner != null && owner.equals(offendingWolf.getOwner())) {
-            return false;
+        // Packmate mercy check (BL-BD-035): do not alert or flee from allied co-owned wolf (baby or adult)
+        if (attacker instanceof Wolf offendingWolf && offendingWolf.isTame()) {
+            if (PackAudienceHelper.isCoOwned(this.wolf, offendingWolf)) {
+                return false;
+            }
         }
 
         Vec3 escapePos = WolfFleeHelper.calculateEscapePosition(this.wolf, attacker, 10, 5);
@@ -131,6 +133,14 @@ public class PacifistRevengeGoal extends Goal {
         }
 
         LivingEntity owner = this.wolf.getOwner();
+
+        // Packmate check (BL-BD-035): NEVER alert packmates against another co-owned dog
+        if (attacker instanceof Wolf offendingWolf && offendingWolf.isTame()) {
+            if (PackAudienceHelper.isCoOwned(this.wolf, offendingWolf)) {
+                return;
+            }
+        }
+
         List<Wolf> nearbyWolves = level.getEntitiesOfClass(
                 Wolf.class,
                 this.wolf.getBoundingBox().inflate(DEFENSE_ALERT_RADIUS),

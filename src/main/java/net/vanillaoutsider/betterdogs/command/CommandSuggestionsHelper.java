@@ -59,6 +59,10 @@ public class CommandSuggestionsHelper {
     ));
 
     private static final Set<String> INTEGER_RULES = new LinkedHashSet<>(Arrays.asList(
+            "bd_dog_play_fight_frequency",
+            "playfightfrequency",
+            "bd_dog_play_fight_chance",
+            "playfightchance",
             "bd_play_penalty_minutes",
             "playpenaltyminutes",
             "bd_max_scale_deviation",

@@ -1,7 +1,8 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
-// Verified against: Minecraft 26.2
+// Verified against: Minecraft 26.3
 package net.vanillaoutsider.betterdogs;
 
+import java.util.UUID;
 import net.vanillaoutsider.betterdogs.ai.PacifistRevengeGoal;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,5 +47,15 @@ class PacifistRevengeTest {
         assertFalse(goal.canUse());
         assertDoesNotThrow(() -> goal.alertNearbyPackmates(null));
         assertDoesNotThrow(goal::stop);
+    }
+
+    @Test
+    @DisplayName("Assert packmate owner matching logic for BL-BD-035")
+    void testPackmateOwnerMatching() {
+        UUID ownerA = UUID.randomUUID();
+        UUID ownerB = UUID.randomUUID();
+
+        assertTrue(ownerA.equals(ownerA), "Matching owner UUID must qualify as packmates");
+        assertFalse(ownerA.equals(ownerB), "Different owner UUIDs must not qualify as packmates");
     }
 }

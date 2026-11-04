@@ -645,6 +645,75 @@ class SmallFightTest {
             assertTrue(lang.has("gamerule.betterdogs:playPenaltyMinutes"), "gamerule.betterdogs:playPenaltyMinutes must be present");
             assertTrue(lang.has("gamerule.betterdogs:bd_dog_play_fighting"), "gamerule.betterdogs:bd_dog_play_fighting must be present");
             assertTrue(lang.has("gamerule.betterdogs:bd_play_penalty_minutes"), "gamerule.betterdogs:bd_play_penalty_minutes must be present");
+            assertTrue(lang.has("gamerule.betterdogs:bd_dog_play_fight_frequency"), "gamerule.betterdogs:bd_dog_play_fight_frequency must be present");
+            assertTrue(lang.has("gamerule.betterdogs:bd_dog_play_fight_chance"), "gamerule.betterdogs:bd_dog_play_fight_chance must be present");
         }
+    }
+
+    @Test
+    @DisplayName("Assert Zero-Crash Bound Invariant and roll probability logic for sparring initiation (BL-BD-035)")
+    void testShouldInitiatePlayFightZeroCrashBoundsAndRollLogic() {
+        // Freedom Over Anti-Crash: Zero-Crash Bound Invariant.
+        // frequency <= 0 or chance <= 0 must cleanly return false without throwing IllegalArgumentException in Random.nextInt().
+        assertDoesNotThrow(() -> assertFalse(SmallFightHelper.shouldInitiatePlayFight(true, 0, 100, 0, 0),
+                "frequency = 0 must cleanly return false"));
+        assertDoesNotThrow(() -> assertFalse(SmallFightHelper.shouldInitiatePlayFight(true, -100, 100, 0, 0),
+                "negative frequency must cleanly return false"));
+        assertDoesNotThrow(() -> assertFalse(SmallFightHelper.shouldInitiatePlayFight(true, 400, 0, 0, 0),
+                "chance = 0 must cleanly return false"));
+        assertDoesNotThrow(() -> assertFalse(SmallFightHelper.shouldInitiatePlayFight(true, 400, -50, 0, 0),
+                "negative chance must cleanly return false"));
+        assertDoesNotThrow(() -> assertFalse(SmallFightHelper.shouldInitiatePlayFight(true, 0, 0, 0, 0),
+                "both zero must cleanly return false"));
+
+        // Roll and probability evaluations
+        assertTrue(SmallFightHelper.shouldInitiatePlayFight(true, 400, 100, 0, 0),
+                "roll == 0 and chance >= 100 must initiate sparring");
+        assertFalse(SmallFightHelper.shouldInitiatePlayFight(true, 400, 100, 1, 0),
+                "roll != 0 must reject sparring initiation");
+        assertFalse(SmallFightHelper.shouldInitiatePlayFight(true, 400, 100, 399, 0),
+                "roll != 0 must reject sparring initiation");
+
+        // Percentage chance checks
+        assertTrue(SmallFightHelper.shouldInitiatePlayFight(true, 400, 50, 0, 0), "chanceRoll 0 < chance 50 must succeed");
+        assertTrue(SmallFightHelper.shouldInitiatePlayFight(true, 400, 50, 0, 49), "chanceRoll 49 < chance 50 must succeed");
+        assertFalse(SmallFightHelper.shouldInitiatePlayFight(true, 400, 50, 0, 50), "chanceRoll 50 >= chance 50 must fail");
+        assertFalse(SmallFightHelper.shouldInitiatePlayFight(true, 400, 50, 0, 99), "chanceRoll 99 >= chance 50 must fail");
+
+        // Ineligible dog must always return false
+        assertFalse(SmallFightHelper.shouldInitiatePlayFight(false, 400, 100, 0, 0),
+                "Ineligible dog must never initiate play fight");
+    }
+
+    @Test
+    @DisplayName("Assert Negative Parity: Sitting, leashed, non-co-owned, and hostile dogs are 100% immune to sparring (BL-BD-035)")
+    void testNegativeParitySparringInitiationImmunity() {
+        // Sitting dogs are immune
+        assertFalse(SmallFightHelper.isEligibleForPlay(true, true, true, false, false, false, 0, false, false),
+                "Sitting dogs must be 100% immune to sparring initiation");
+
+        // Leashed dogs are immune
+        assertFalse(SmallFightHelper.isEligibleForPlay(true, true, false, true, false, false, 0, false, false),
+                "Leashed dogs must be 100% immune to sparring initiation");
+
+        // Untamed / wild wolves are immune
+        assertFalse(SmallFightHelper.isEligibleForPlay(true, false, false, false, false, false, 0, false, false),
+                "Wild wolves must be 100% immune to sparring initiation");
+
+        // Wolves actively targeting an enemy (in combat) are immune
+        assertFalse(SmallFightHelper.isEligibleForPlay(true, true, false, false, true, false, 0, false, false),
+                "Wolves actively engaging combat targets must be 100% immune to sparring initiation");
+
+        // Wolves on cooldown or with play penalty are immune
+        assertFalse(SmallFightHelper.isEligibleForPlay(true, true, false, false, false, true, 0, false, false),
+                "Wolves on cooldown must be immune to sparring initiation");
+        assertFalse(SmallFightHelper.isEligibleForPlay(true, true, false, false, false, false, 1200, false, false),
+                "Wolves with play penalty must be immune to sparring initiation");
+
+        // Wolves in active social mode or blood feud are immune
+        assertFalse(SmallFightHelper.isEligibleForPlay(true, true, false, false, false, false, 0, true, false),
+                "Wolves in active social mode must be immune to sparring initiation");
+        assertFalse(SmallFightHelper.isEligibleForPlay(true, true, false, false, false, false, 0, false, true),
+                "Wolves with active Blood Feud must be immune to sparring initiation");
     }
 }
