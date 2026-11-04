@@ -1,4 +1,4 @@
-### 📖 Better Dogs (MC 1.20.1)
+### 📖 Better Dogs (MC 1.21.11)
 
 * [[Home]]
 
@@ -18,6 +18,7 @@
 * [[Commands|Commands]]
 * [[Configuration|Configuration]]
 * [[HUD & Diagnostics|HUD-and-Diagnostics]]
+* [[Version Compatibility & FAQ|Version-Compatibility]]
 
 ---
 

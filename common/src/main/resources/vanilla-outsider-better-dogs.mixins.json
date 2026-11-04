@@ -1,0 +1,24 @@
+{
+  "required": true,
+  "package": "net.vanillaoutsider.betterdogs.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "WolfMixin",
+    "TamableAnimalMixin",
+    "OwnerHurtTargetGoalMixin",
+    "OwnerHurtByTargetGoalMixin",
+    "HurtByTargetGoalMixin",
+    "WolfSafetyMixin",
+    "WolfPushMixin",
+    "WolfInteractMixin",
+    "InstrumentItemMixin",
+    "WolfSoundMixin",
+    "WolfMobMixin"
+  ],
+  "client": [
+    "WolfRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

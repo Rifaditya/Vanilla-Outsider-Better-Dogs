@@ -10,10 +10,10 @@
 | :--- | :--- |
 | **Minecraft Target** | `1.21.1` (Transitional Anchor Early Era) |
 | **Mod Version** | `1.0.70+1.21.1` |
-| **Fabric Loader** | `>=0.16.0` |
+| **Loaders Supported** | **Fabric** (`>=0.16.0`) & **NeoForge** (`>=21.1.0`) |
 | **Java JDK Requirement** | Java 21 (`release = 21`) |
-| **Build Tooling** | Fabric Loom 1.10.2 / Mojang Official Mappings |
-| **Jar Naming Convention** | `better-dogs-1.0.70+1.21.1.jar` |
+| **Build Tooling** | Fabric Loom 1.10.2 / NeoForge Loom / Mojang Mappings |
+| **Jar Naming Convention** | `better-dogs-1.0.70+1.21.1-fabric.jar`<br>`better-dogs-1.0.70+1.21.1-neoforge.jar` |
 
 ---
 
@@ -22,6 +22,7 @@
 The Minecraft 1.21.1 release of **Vanilla Outsider: Better Dogs** provides complete 39-feature parity with the modern release line, utilizing Minecraft 1.21.1's native attributes and vanilla wolf coat variant mechanics.
 
 ### Key Architectural & Engine Highlights
+* **Native Multi-Loader Engine**: Built from a shared `:common` module with dedicated standalone `:fabric` and `:neoforge` loaders.
 * **Native Attribute Scaling**: Uses native `Attributes.SCALE` to seamlessly adjust wolf scale ($0.70\times$ to $1.45\times$) with full hitbox adjustment and client sync.
 * **Vanilla Coat Variants & Biome Spawning**: Seamlessly integrates personality and genetics with vanilla 1.21's 9 wolf variants across biomes.
 * **Custom Chorus Howl Audio Event**: Registers `betterdogs:entity.wolf.howl` with pitch-modulated harmonic response across packs.
@@ -34,10 +35,18 @@ The Minecraft 1.21.1 release of **Vanilla Outsider: Better Dogs** provides compl
 
 ## 🔧 Installation & Requirements
 
+### Option A: Fabric
 1. Install **Fabric Loader** `0.16.0` or higher for Minecraft `1.21.1`.
 2. Install **Fabric API** for 1.21.1 into your `mods/` folder.
-3. Place `better-dogs-1.0.70+1.21.1.jar` into your `mods/` directory.
+3. Place `better-dogs-1.0.70+1.21.1-fabric.jar` into your `mods/` directory.
 4. Launch using **Java 21**.
+
+### Option B: NeoForge
+1. Install **NeoForge** `21.1.0` or higher for Minecraft `1.21.1`.
+2. Place `better-dogs-1.0.70+1.21.1-neoforge.jar` into your `mods/` directory. *(No Fabric API or external bridge libraries needed!)*
+3. Launch using **Java 21**.
+
+> ℹ️ **NeoForge Console Note**: On startup, NeoForge will log a one-time advisory notice: `Identified an attempt to add synced data to a foreign entity: this is highly discouraged`. This is **100% normal, safe, and non-fatal**. See [[Version Compatibility & Lifecycle Policy|Version-Compatibility]] for why Better Dogs uses vanilla data synchronization for multi-loader parity.
 
 ---
 

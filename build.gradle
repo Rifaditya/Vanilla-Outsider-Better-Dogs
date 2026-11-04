@@ -1,111 +1,69 @@
 plugins {
-    id 'fabric-loom' version '1.10.2'
-    id 'maven-publish'
+    id 'architectury-plugin' version '3.4-SNAPSHOT'
+    id 'dev.architectury.loom' version '1.11-SNAPSHOT' apply false
 }
 
-version = project.mod_version
-group = project.maven_group
-
-base {
-    archivesName = "better-dogs"
+architectury {
+    minecraft = rootProject.minecraft_version
 }
 
-repositories {
-    mavenCentral()
-    maven { url "https://maven.fabricmc.net/" }
-    maven { url "https://maven.terraformersmc.com/releases/" }
-    maven { url "https://maven.isxander.dev/releases" }
-    maven { url "https://maven.isxander.dev/snapshots" }
-    maven { url = "https://api.modrinth.com/maven" }
-    flatDir {
-        dirs 'e:/Minecraft Project/Dasik Library v1.20.1/Archive Jar of all versions/MC 1.20.1'
+subprojects {
+    apply plugin: 'dev.architectury.loom'
+
+    loom {
+        silentMojangMappingsLicense()
+    }
+
+    dependencies {
+        minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+        mappings loom.officialMojangMappings()
+
+        testImplementation "org.junit.jupiter:junit-jupiter-api:5.10.0"
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.10.0"
+        testRuntimeOnly "org.junit.platform:junit-platform-launcher:1.10.0"
+    }
+
+    test {
+        useJUnitPlatform()
     }
 }
 
-dependencies {
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.officialMojangMappings()
-    modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'architectury-plugin'
+    apply plugin: 'maven-publish'
 
-    modImplementation "net.dasik.social:dasik-library:1.1.0+1.20.1"
+    version = rootProject.mod_version
+    group = rootProject.maven_group
 
-    modCompileOnly "com.terraformersmc:modmenu:7.2.2"
-    modCompileOnly("dev.isxander.yacl:yet-another-config-lib-fabric:3.2.1+1.20") {
-        transitive = false
+    base {
+        archivesName = rootProject.archives_base_name
     }
-    modCompileOnly "maven.modrinth:jade:11.12.3+fabric"
 
-    testImplementation "org.junit.jupiter:junit-jupiter-api:5.10.0"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.10.0"
-    testRuntimeOnly "org.junit.platform:junit-platform-launcher:1.10.0"
-}
-
-processResources {
-    inputs.property "version", project.version
-
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version
-    }
-}
-
-test {
-    useJUnitPlatform()
-}
-
-tasks.withType(JavaCompile).configureEach {
-    it.options.encoding = "UTF-8"
-    it.options.release = 17
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
-
-jar {
-    archiveBaseName = "better-dogs"
-    from("LICENSE") {
-        rename "LICENSE_${project.archives_base_name}", "LICENSE"
-    }
-}
-
-remapJar {
-    archiveBaseName = "better-dogs"
-}
-
-afterEvaluate {
-    tasks.register('archiveReleaseJar', Copy) {
-        dependsOn build
-        from remapJar.archiveFile
-        into file("../../Archive Jar of all versions/MC 1.20.1")
-        doLast {
-            println "[AUTO-ARCHIVE] Successfully copied ${remapJar.archiveFile.get().asFile.name} to outer Archive directory: ${destinationDir.absolutePath}"
-            def profileModsDir = file("C:/Users/fmrif/AppData/Roaming/ModrinthApp/profiles/Fabric 1.20.1/mods")
-            if (profileModsDir.exists()) {
-                def jarFile = remapJar.archiveFile.get().asFile
-                profileModsDir.listFiles().each { f ->
-                    if (f.name.startsWith(project.archives_base_name) && (f.name.endsWith(".jar") || f.name.endsWith(".disabled")) && f.name != jarFile.name) {
-                        f.delete()
-                        println "[AUTO-DEPLOY] Purged stale version: ${f.name}"
-                    }
-                }
-                copy {
-                    from remapJar.archiveFile
-                    into profileModsDir
-                }
-                println "[AUTO-DEPLOY] Successfully deployed ${jarFile.name} to Modrinth profile: ${profileModsDir.absolutePath}"
-            }
-            def hubArchiveDir = file("E:/Minecraft Project/minecraft-mod-release-hub/archives/Better Dogs")
-            if (hubArchiveDir.exists()) {
-                copy {
-                    from remapJar.archiveFile
-                    into hubArchiveDir
-                }
-                println "[HUB-ARCHIVE] Successfully copied ${remapJar.archiveFile.get().asFile.name} to release hub archives: ${hubArchiveDir.absolutePath}"
-            }
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "https://maven.fabricmc.net/" }
+        maven { url "https://maven.architectury.dev/" }
+        maven { url "https://maven.minecraftforge.net/" }
+        maven { url "https://maven.neoforged.net/releases/" }
+        maven { url "https://maven.terraformersmc.com/releases/" }
+        maven { url "https://maven.isxander.dev/releases" }
+        maven { url "https://maven.isxander.dev/snapshots" }
+        maven { url "https://api.modrinth.com/maven" }
+        flatDir {
+            dirs 'E:/Minecraft Project/Dasik Library v1.20.1/Archive Jar of all versions/MC 1.20.1'
         }
     }
-    build.finalizedBy archiveReleaseJar
-}
 
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+        options.release = 17
+    }
+
+    java {
+        withSourcesJar()
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+}

@@ -1,10 +1,10 @@
-# Panduan Pemain — Vanilla Outsider: Better Dogs (Bahasa Indonesia)
+﻿# Panduan Pemain ΓÇö Vanilla Outsider: Better Dogs (Bahasa Indonesia)
 
 Selamat datang di panduan resmi pemain untuk **Vanilla Outsider: Better Dogs**. Mod ini merombak total AI serigala dan anjing jinak di Minecraft dengan kepribadian unik, genetika ukuran dinamis, mode patroli penjaga cerdas, dan sistem interaksi sosial autentik.
 
 ---
 
-## 🚀 1. Panduan Memulai Cepat (Quick Start)
+## ≡ƒÜÇ 1. Panduan Memulai Cepat (Quick Start)
 
 1. **Instalasi**:
    - Pasang Fabric Loader yang sesuai dengan versi Minecraft Anda (`1.20.1`, `1.21.1`, `1.21.11`, `26.1.2`, `26.2`, atau `26.3`).
@@ -16,7 +16,7 @@ Selamat datang di panduan resmi pemain untuk **Vanilla Outsider: Better Dogs**. 
 
 ---
 
-## 🧠 2. Tiga Kepribadian Unik (Personalities)
+## ≡ƒºá 2. Tiga Kepribadian Unik (Personalities)
 
 | Kepribadian | Ciri & Perilaku Utama | Penyesuaian Stat |
 | :--- | :--- | :--- |
@@ -26,7 +26,7 @@ Selamat datang di panduan resmi pemain untuk **Vanilla Outsider: Better Dogs**. 
 
 ---
 
-## 🍖 3. Fitur Interaksi & Perilaku Cerdas
+## ≡ƒìû 3. Fitur Interaksi & Perilaku Cerdas
 
 - **Camilan Favorit & Lari Zoomies**: Setiap anjing memiliki camilan makanan favorit rahasia (berdasarkan UUID). Memberikan camilan favorit akan memulihkan kesehatan penuh dan memicu ledakan lari ceria (*Zoomies*).
 - **Elus Anjing (Petting)**: Klik kanan anjing jinak dengan tangan kosong sambil berjongkok (*sneak*) untuk mengelusnya, memunculkan partikel hati dan meningkatkan ikatan afinitas.
@@ -37,7 +37,7 @@ Selamat datang di panduan resmi pemain untuk **Vanilla Outsider: Better Dogs**. 
 
 ---
 
-## 🧬 4. Genetika & Silsilah (Genetics & Inbreeding)
+## ≡ƒº¼ 4. Genetika & Silsilah (Genetics & Inbreeding)
 
 - **Ukuran Skala Alami**: Serigala dapat muncul dengan variasi skala ukuran tubuh dari **0.70x (Kecil)** hingga **1.45x (Raksasa)**.
 - **Pewarisan Genetik**: Mengawinkan dua anjing besar secara bertahap dapat menghasilkan garis keturunan anjing raksasa (*advancement* "Dinasti Puncak").
@@ -45,7 +45,7 @@ Selamat datang di panduan resmi pemain untuk **Vanilla Outsider: Better Dogs**. 
 
 ---
 
-## ⚙️ 5. Perintah & GameRules
+## ΓÜÖ∩╕Å 5. Perintah & GameRules
 
 - `/gamerule betterdogs:bd_actionbar_feedback true/false`: Mengaktifkan atau menonaktifkan notifikasi aksi di actionbar.
 - `/gamerule betterdogs:bd_friendly_fire_protection true/false`: Melindungi anjing dari tebasan pedang pemiliknya yang tidak sengaja.

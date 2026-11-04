@@ -1,0 +1,37 @@
+// Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
+package net.vanillaoutsider.betterdogs;
+
+import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class BetterDogsGameRulesTest {
+
+    @Test
+    public void testNullSafeAccessors() {
+        boolean boolVal = BetterDogsGameRules.getBoolean(null, null, true);
+        assertTrue(boolVal, "Null level and key should return fallback boolean value true");
+
+        boolean boolValFalse = BetterDogsGameRules.getBoolean(null, null, false);
+        assertFalse(boolValFalse, "Null level and key should return fallback boolean value false");
+
+        int intVal = BetterDogsGameRules.getInt(null, null, 64);
+        assertEquals(64, intVal, "Null level and key should return fallback integer value");
+
+        assertTrue(BetterDogsGameRules.isDogPlayFightingEnabled(null), "Default for dogPlayFighting should be true");
+        assertEquals(400, BetterDogsGameRules.getPlayFightFrequency(null), "Default for playFightFrequency should be 400");
+        assertEquals(100, BetterDogsGameRules.getPlayFightChance(null), "Default for playFightChance should be 100");
+        assertEquals(10, BetterDogsGameRules.getPlayPenaltyMinutes(null), "Default for playPenaltyMinutes should be 10");
+        assertTrue(BetterDogsGameRules.getBoolean(null, BetterDogsGameRules.BD_DOG_PLAY_FIGHTING, true));
+        assertEquals(400, BetterDogsGameRules.getInt(null, BetterDogsGameRules.BD_DOG_PLAY_FIGHT_FREQUENCY, 400));
+        assertEquals(100, BetterDogsGameRules.getInt(null, BetterDogsGameRules.BD_DOG_PLAY_FIGHT_CHANCE, 100));
+        assertEquals(10, BetterDogsGameRules.getInt(null, BetterDogsGameRules.BD_PLAY_PENALTY_MINUTES, 10));
+
+        assertTrue(BetterDogsGameRules.isProjectileInterceptEnabled(null), "Default for projectileIntercept should be true");
+        assertEquals(10, BetterDogsGameRules.getInterceptorOwnerHealthThreshold(null), "Default for interceptorOwnerHealthThreshold should be 10");
+        assertTrue(BetterDogsGameRules.getBoolean(null, BetterDogsGameRules.BD_PROJECTILE_INTERCEPT, true));
+        assertEquals(10, BetterDogsGameRules.getInt(null, BetterDogsGameRules.BD_INTERCEPTOR_OWNER_HEALTH_THRESHOLD, 10));
+    }
+}
+

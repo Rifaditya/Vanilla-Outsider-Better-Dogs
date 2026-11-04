@@ -1,51 +1,51 @@
-# Spielerhandbuch — Vanilla Outsider: Better Dogs (Bessere Hunde - Deutsch)
+﻿# Spielerhandbuch ΓÇö Vanilla Outsider: Better Dogs (Bessere Hunde - Deutsch)
 
-Willkommen zum offiziellen Spielerhandbuch für **Vanilla Outsider: Better Dogs**. Diese Mod überarbeitet die künstliche Intelligenz von Wölfen und gezähmten Hunden in Minecraft grundlegend und verleiht ihnen ausdrucksstarke Persönlichkeiten, dynamische Größengenetik, einen intelligenten Wachposten-Modus und lebendige soziale Interaktionen.
+Willkommen zum offiziellen Spielerhandbuch f├╝r **Vanilla Outsider: Better Dogs**. Diese Mod ├╝berarbeitet die k├╝nstliche Intelligenz von W├╢lfen und gez├ñhmten Hunden in Minecraft grundlegend und verleiht ihnen ausdrucksstarke Pers├╢nlichkeiten, dynamische Gr├╢├ƒengenetik, einen intelligenten Wachposten-Modus und lebendige soziale Interaktionen.
 
 ---
 
-## 🚀 1. Schnellstartanleitung (Quick Start)
+## ≡ƒÜÇ 1. Schnellstartanleitung (Quick Start)
 
 1. **Installation**:
-   - Installiere den Fabric Loader für deine Minecraft-Version (`1.20.1`, `1.21.1`, `1.21.11`, `26.1.2`, `26.2` oder `26.3`).
-   - Lege `better-dogs-*.jar` (und `dasik-library-*.jar` für Versionen ab 26.x) in deinen Ordner `.minecraft/mods`.
-2. **Einen Wolf zähmen**:
-   - Füttere einen wilden Wolf wie gewohnt mit Knochen. Direkt nach der Zähmung erhält der Hund eine von drei einzigartigen Persönlichkeiten: **Normal**, **Aggressiv** oder **Pazifist**.
+   - Installiere den Fabric Loader f├╝r deine Minecraft-Version (`1.20.1`, `1.21.1`, `1.21.11`, `26.1.2`, `26.2` oder `26.3`).
+   - Lege `better-dogs-*.jar` (und `dasik-library-*.jar` f├╝r Versionen ab 26.x) in deinen Ordner `.minecraft/mods`.
+2. **Einen Wolf z├ñhmen**:
+   - F├╝ttere einen wilden Wolf wie gewohnt mit Knochen. Direkt nach der Z├ñhmung erh├ñlt der Hund eine von drei einzigartigen Pers├╢nlichkeiten: **Normal**, **Aggressiv** oder **Pazifist**.
 3. **Hundeeigenschaften einsehen**:
-   - Falls du die Mod **Jade / Waila** installiert hast, siehst du beim Anvisieren deines Hundes seine Persönlichkeit, Größenskalierung, das geheime Lieblingsleckerli und den Inzuchtstatus.
+   - Falls du die Mod **Jade / Waila** installiert hast, siehst du beim Anvisieren deines Hundes seine Pers├╢nlichkeit, Gr├╢├ƒenskalierung, das geheime Lieblingsleckerli und den Inzuchtstatus.
 
 ---
 
-## 🧠 2. Die drei Charaktertypen (Personalities)
+## ≡ƒºá 2. Die drei Charaktertypen (Personalities)
 
-| Persönlichkeit | Hauptverhaltensmerkmale | Eigenschaftsanpassungen |
+| Pers├╢nlichkeit | Hauptverhaltensmerkmale | Eigenschaftsanpassungen |
 | :--- | :--- | :--- |
-| **Normal** | Ausgeglichener und treuer Begleiter. Patrouilliert nah am Wachposten und folgt dem Besitzer im Standardabstand von 10 Blöcken. | Standard-Vanilla-Werte (Fluchtchance bei niedriger Gesundheit: 50%). |
-| **Aggressiv (Aggressive)** | Furchtloser Beschützer. Erfasst feindliche Monster automatisch im Umkreis von 20 Blöcken und verfolgt sie bis zu 50 Blöcke weit. Keine Gewitterangst. | **+15% Sprinttempo**, **-15% Angriffsschaden**, **-10 HP** (Fluchtchance: 10%). |
-| **Pazifist (Pacifist)** | Vorsichtiger Wächter und Frühwarnsystem (weicht kaum von der Seite, max. 6 Blöcke). Meidet direkte Kämpfe. | **+20 HP Maximalgesundheit**, **-10% Tempo**, **+15% Konterschaden**, **+50% Rückstoß** (Fluchtchance: 100%). Verleiht im Wachmodus eine Regenerationsaura. |
+| **Normal** | Ausgeglichener und treuer Begleiter. Patrouilliert nah am Wachposten und folgt dem Besitzer im Standardabstand von 10 Bl├╢cken. | Standard-Vanilla-Werte (Fluchtchance bei niedriger Gesundheit: 50%). |
+| **Aggressiv (Aggressive)** | Furchtloser Besch├╝tzer. Erfasst feindliche Monster automatisch im Umkreis von 20 Bl├╢cken und verfolgt sie bis zu 50 Bl├╢cke weit. Keine Gewitterangst. | **+15% Sprinttempo**, **-15% Angriffsschaden**, **-10 HP** (Fluchtchance: 10%). |
+| **Pazifist (Pacifist)** | Vorsichtiger W├ñchter und Fr├╝hwarnsystem (weicht kaum von der Seite, max. 6 Bl├╢cke). Meidet direkte K├ñmpfe. | **+20 HP Maximalgesundheit**, **-10% Tempo**, **+15% Konterschaden**, **+50% R├╝cksto├ƒ** (Fluchtchance: 100%). Verleiht im Wachmodus eine Regenerationsaura. |
 
 ---
 
-## 🍖 3. Interaktive Mechaniken & Überleben
+## ≡ƒìû 3. Interaktive Mechaniken & ├£berleben
 
-- **Geheimes Lieblingsleckerli & Rennanfälle (Zoomies)**: Jeder Hund besitzt basierend auf seiner UUID ein individuelles Lieblingsleckerli. Das Füttern heilt ihn vollständig und löst ausgelassene Rennanfälle (*Zoomies*) aus.
+- **Geheimes Lieblingsleckerli & Rennanf├ñlle (Zoomies)**: Jeder Hund besitzt basierend auf seiner UUID ein individuelles Lieblingsleckerli. Das F├╝ttern heilt ihn vollst├ñndig und l├╢st ausgelassene Rennanf├ñlle (*Zoomies*) aus.
 - **Streicheln mit leerer Hand (Petting)**: Schleiche und klicke mit leerer Hand mit Rechts auf deinen Hund, um ihn zu streicheln, Herzchen aufsteigen zu lassen und die Zuneigung zu steigern.
-- **Gewitterangst & Beruhigung (Storm Anxiety)**: Bei Gewitter zittern und winseln normale und pazifistische Hunde vor Angst. Streichle oder füttere sie, um sie zu beruhigen (Fortschritt «In Sicherheit und Geborgenheit»).
-- **Intelligente Gefahrenvermeidung (Smart Hazard Safety)**: Hunde erkennen zündende Creeper und sprinten mit 1.5x Tempo davon; gefährliche Klippen und Lava werden automatisch gemieden.
-- **Morgengeschenke (Morning Gifts)**: Nach ausreichend Pflege und Zuneigung bringt dir ein Hund, der neben deinem Bett geschlafen hat, am Morgen nützliche Geschenke.
-- **Ziegenhorn-Befehle (Goat Horn Commands)**: Blase in ein Ziegenhorn, um dein gesamtes Rudel im Umkreis von 64 Blöcken herbeizurufen und zu koordinieren.
+- **Gewitterangst & Beruhigung (Storm Anxiety)**: Bei Gewitter zittern und winseln normale und pazifistische Hunde vor Angst. Streichle oder f├╝ttere sie, um sie zu beruhigen (Fortschritt ┬½In Sicherheit und Geborgenheit┬╗).
+- **Intelligente Gefahrenvermeidung (Smart Hazard Safety)**: Hunde erkennen z├╝ndende Creeper und sprinten mit 1.5x Tempo davon; gef├ñhrliche Klippen und Lava werden automatisch gemieden.
+- **Morgengeschenke (Morning Gifts)**: Nach ausreichend Pflege und Zuneigung bringt dir ein Hund, der neben deinem Bett geschlafen hat, am Morgen n├╝tzliche Geschenke.
+- **Ziegenhorn-Befehle (Goat Horn Commands)**: Blase in ein Ziegenhorn, um dein gesamtes Rudel im Umkreis von 64 Bl├╢cken herbeizurufen und zu koordinieren.
 
 ---
 
-## 🧬 4. Genetik & Inzucht (Genetics & Inbreeding)
+## ≡ƒº¼ 4. Genetik & Inzucht (Genetics & Inbreeding)
 
-- **Größenvarianz**: Wilde Wölfe spawnen in Größen von **0.70x (Kompakt/Klein)** bis **1.45x (Riesig)**.
-- **Vererbung**: Durch gezielte Zucht großer Hunde lässt sich eine Riesenlinie aufbauen (Fortschritt «Riesen-Dynastie»).
-- **Inzucht-Kümmerlinge (Inbreeding Runt)**: Bei Verwandtenpaarungen können geschwächte Kümmerlinge entstehen. Füttere einen Kümmerling mit einem **Goldenen Apfel (Golden Apple)**, um den genetischen Defekt dauerhaft zu heilen.
+- **Gr├╢├ƒenvarianz**: Wilde W├╢lfe spawnen in Gr├╢├ƒen von **0.70x (Kompakt/Klein)** bis **1.45x (Riesig)**.
+- **Vererbung**: Durch gezielte Zucht gro├ƒer Hunde l├ñsst sich eine Riesenlinie aufbauen (Fortschritt ┬½Riesen-Dynastie┬╗).
+- **Inzucht-K├╝mmerlinge (Inbreeding Runt)**: Bei Verwandtenpaarungen k├╢nnen geschw├ñchte K├╝mmerlinge entstehen. F├╝ttere einen K├╝mmerling mit einem **Goldenen Apfel (Golden Apple)**, um den genetischen Defekt dauerhaft zu heilen.
 
 ---
 
-## ⚙️ 5. Wichtige Spieleinstellungen (GameRules)
+## ΓÜÖ∩╕Å 5. Wichtige Spieleinstellungen (GameRules)
 
 - `/gamerule betterdogs:bd_actionbar_feedback true/false`: Aktionsleisten-Benachrichtigungen an/aus.
 - `/gamerule betterdogs:bd_friendly_fire_protection true/false`: Schutz vor versehentlichem Schlagen eigener Hunde aktivieren.

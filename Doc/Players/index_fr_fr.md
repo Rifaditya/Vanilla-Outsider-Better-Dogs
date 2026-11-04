@@ -1,53 +1,53 @@
-# Guide du Joueur — Vanilla Outsider: Better Dogs (Français)
+﻿# Guide du Joueur ΓÇö Vanilla Outsider: Better Dogs (Fran├ºais)
 
-Bienvenue dans le guide officiel de **Vanilla Outsider: Better Dogs** ! Ce mod repense entièrement l'intelligence artificielle des loups et des chiens apprivoisés dans Minecraft, leur conférant des personnalités expressives, une génétique de taille dynamique, un mode sentinelle intelligent et des interactions sociales riches.
+Bienvenue dans le guide officiel de **Vanilla Outsider: Better Dogs** ! Ce mod repense enti├¿rement l'intelligence artificielle des loups et des chiens apprivois├⌐s dans Minecraft, leur conf├⌐rant des personnalit├⌐s expressives, une g├⌐n├⌐tique de taille dynamique, un mode sentinelle intelligent et des interactions sociales riches.
 
 ---
 
-## 🚀 1. Guide de Démarrage Rapide (Quick Start)
+## ≡ƒÜÇ 1. Guide de D├⌐marrage Rapide (Quick Start)
 
 1. **Installation** :
    - Installez Fabric Loader pour votre version de Minecraft (`1.20.1`, `1.21.1`, `1.21.11`, `26.1.2`, `26.2` ou `26.3`).
    - Placez `better-dogs-*.jar` (et `dasik-library-*.jar` pour la version 26.x+) dans votre dossier `.minecraft/mods`.
 2. **Apprivoiser un Loup** :
-   - Donnez des os à un loup sauvage comme dans le jeu de base. Dès son apprivoisement, le chien recevra l'une des trois personnalités uniques : **Normal**, **Agressif** ou **Pacifiste**.
+   - Donnez des os ├á un loup sauvage comme dans le jeu de base. D├¿s son apprivoisement, le chien recevra l'une des trois personnalit├⌐s uniques : **Normal**, **Agressif** ou **Pacifiste**.
 3. **Afficher les Attributs du Chien** :
-   - Avec le mod **Jade / Waila** installé, regardez votre chien pour voir sa personnalité, son échelle de taille, sa friandise secrète préférée et son statut de consanguinité.
+   - Avec le mod **Jade / Waila** install├⌐, regardez votre chien pour voir sa personnalit├⌐, son ├⌐chelle de taille, sa friandise secr├¿te pr├⌐f├⌐r├⌐e et son statut de consanguinit├⌐.
 
 ---
 
-## 🧠 2. Les Trois Types de Personnalités (Personalities)
+## ≡ƒºá 2. Les Trois Types de Personnalit├⌐s (Personalities)
 
-| Personnalité | Comportement Principal | Ajustements d'Attributs |
+| Personnalit├⌐ | Comportement Principal | Ajustements d'Attributs |
 | :--- | :--- | :--- |
-| **Normal** | Compagnon équilibré et fidèle. Patrouille près du poste de garde et suit son maître à la distance standard de 10 blocs. | Attributs vanilla standards (chance de fuite à basse vie : 50%). |
-| **Agressif (Aggressive)** | Protecteur intrépide. Détecte et attaque automatiquement les monstres hostiles jusqu'à 20 blocs et poursuit jusqu'à 50 blocs. Insensible à la peur des orages. | **+15% vitesse de sprint**, **-15% dégâts**, **-10 PV max** (chance de fuite : 10%). |
-| **Pacifiste (Pacifist)** | Sentinelle attentive et alarme vivante (reste à moins de 6 blocs du maître). Évite le combat direct. | **+20 PV max**, **-10% vitesse**, **+15% dégâts de riposte**, **+50% recul** (chance de fuite : 100%). Confère une aura de régénération et résistance en mode garde. |
+| **Normal** | Compagnon ├⌐quilibr├⌐ et fid├¿le. Patrouille pr├¿s du poste de garde et suit son ma├«tre ├á la distance standard de 10 blocs. | Attributs vanilla standards (chance de fuite ├á basse vie : 50%). |
+| **Agressif (Aggressive)** | Protecteur intr├⌐pide. D├⌐tecte et attaque automatiquement les monstres hostiles jusqu'├á 20 blocs et poursuit jusqu'├á 50 blocs. Insensible ├á la peur des orages. | **+15% vitesse de sprint**, **-15% d├⌐g├óts**, **-10 PV max** (chance de fuite : 10%). |
+| **Pacifiste (Pacifist)** | Sentinelle attentive et alarme vivante (reste ├á moins de 6 blocs du ma├«tre). ├ëvite le combat direct. | **+20 PV max**, **-10% vitesse**, **+15% d├⌐g├óts de riposte**, **+50% recul** (chance de fuite : 100%). Conf├¿re une aura de r├⌐g├⌐n├⌐ration et r├⌐sistance en mode garde. |
 
 ---
 
-## 🍖 3. Interactions et Survie Intelligente
+## ≡ƒìû 3. Interactions et Survie Intelligente
 
-- **Friandise Secrète & Sprint Fou (Zoomies)** : Chaque chien a une friandise secrète préférée liée à son UUID. La lui donner régénère totalement sa santé et déclenche un joyeux sprint fou (*Zoomies*).
-- **Caresses à Main Nue (Petting)** : Accroupissez-vous et faites un clic droit avec la main vide sur votre chien pour le caresser, faire apparaître des cœurs et renforcer votre lien.
-- **Anxiété des Orages (Storm Anxiety)** : Pendant les orages, les chiens normaux et pacifistes tremblent et gémissent de peur. Caressez-les ou nourrissez-les pour les apaiser (progrès « Sain et Sauf »).
-- **Esquive Intelligente des Dangers (Smart Hazard Safety)** : Les chiens détectent les creepers amorcés et s'enfuient à 1.5x de vitesse ; ils évitent également de sauter des falaises dangereuses ou dans la lave.
-- **Cadeaux du Matin (Morning Gifts)** : En prenant soin continuellement de votre chien, s'il dort près de votre lit, il vous offrira des cadeaux utiles au réveil.
-- **Ordres à la Corne de Chèvre (Goat Horn Commands)** : Utilisez une corne de chèvre pour appeler et coordonner toute votre meute dans un rayon de 64 blocs.
-
----
-
-## 🧬 4. Génétique & Consanguinité (Genetics & Inbreeding)
-
-- **Variation Naturelle de Taille** : Les loups sauvages apparaissent avec des échelles comprises entre **0.70x (petit)** et **1.45x (géant)**.
-- **Héritage Génétique** : Accoupler des chiens de grande taille permet de créer une véritable lignée géante (progrès « Dynastie des Géants »).
-- **Chiots Chétifs Consanguins (Inbreeding Runt)** : Croiser des proches parents peut donner naissance à un chiot chétif affaibli. Donnez-lui une **Pomme Dorée (Golden Apple)** pour soigner définitivement ce défaut génétique.
+- **Friandise Secr├¿te & Sprint Fou (Zoomies)** : Chaque chien a une friandise secr├¿te pr├⌐f├⌐r├⌐e li├⌐e ├á son UUID. La lui donner r├⌐g├⌐n├¿re totalement sa sant├⌐ et d├⌐clenche un joyeux sprint fou (*Zoomies*).
+- **Caresses ├á Main Nue (Petting)** : Accroupissez-vous et faites un clic droit avec la main vide sur votre chien pour le caresser, faire appara├«tre des c┼ôurs et renforcer votre lien.
+- **Anxi├⌐t├⌐ des Orages (Storm Anxiety)** : Pendant les orages, les chiens normaux et pacifistes tremblent et g├⌐missent de peur. Caressez-les ou nourrissez-les pour les apaiser (progr├¿s ┬½ Sain et Sauf ┬╗).
+- **Esquive Intelligente des Dangers (Smart Hazard Safety)** : Les chiens d├⌐tectent les creepers amorc├⌐s et s'enfuient ├á 1.5x de vitesse ; ils ├⌐vitent ├⌐galement de sauter des falaises dangereuses ou dans la lave.
+- **Cadeaux du Matin (Morning Gifts)** : En prenant soin continuellement de votre chien, s'il dort pr├¿s de votre lit, il vous offrira des cadeaux utiles au r├⌐veil.
+- **Ordres ├á la Corne de Ch├¿vre (Goat Horn Commands)** : Utilisez une corne de ch├¿vre pour appeler et coordonner toute votre meute dans un rayon de 64 blocs.
 
 ---
 
-## ⚙️ 5. Règles de Jeu Utiles (GameRules)
+## ≡ƒº¼ 4. G├⌐n├⌐tique & Consanguinit├⌐ (Genetics & Inbreeding)
 
-- `/gamerule betterdogs:bd_actionbar_feedback true/false` : Active/désactive les notifications dans la barre d'action.
-- `/gamerule betterdogs:bd_friendly_fire_protection true/false` : Active la protection contre les coups accidentels du maître.
-- `/gamerule betterdogs:bd_storm_anxiety true/false` : Active/désactive l'anxiété pendant les orages.
-- `/gamerule betterdogs:bd_cliff_safety true/false` : Active/désactive la prévention des chutes de falaises.
+- **Variation Naturelle de Taille** : Les loups sauvages apparaissent avec des ├⌐chelles comprises entre **0.70x (petit)** et **1.45x (g├⌐ant)**.
+- **H├⌐ritage G├⌐n├⌐tique** : Accoupler des chiens de grande taille permet de cr├⌐er une v├⌐ritable lign├⌐e g├⌐ante (progr├¿s ┬½ Dynastie des G├⌐ants ┬╗).
+- **Chiots Ch├⌐tifs Consanguins (Inbreeding Runt)** : Croiser des proches parents peut donner naissance ├á un chiot ch├⌐tif affaibli. Donnez-lui une **Pomme Dor├⌐e (Golden Apple)** pour soigner d├⌐finitivement ce d├⌐faut g├⌐n├⌐tique.
+
+---
+
+## ΓÜÖ∩╕Å 5. R├¿gles de Jeu Utiles (GameRules)
+
+- `/gamerule betterdogs:bd_actionbar_feedback true/false` : Active/d├⌐sactive les notifications dans la barre d'action.
+- `/gamerule betterdogs:bd_friendly_fire_protection true/false` : Active la protection contre les coups accidentels du ma├«tre.
+- `/gamerule betterdogs:bd_storm_anxiety true/false` : Active/d├⌐sactive l'anxi├⌐t├⌐ pendant les orages.
+- `/gamerule betterdogs:bd_cliff_safety true/false` : Active/d├⌐sactive la pr├⌐vention des chutes de falaises.

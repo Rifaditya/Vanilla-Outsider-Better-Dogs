@@ -1,0 +1,26 @@
+architectury {
+    common "fabric", "forge"
+}
+
+dependencies {
+    modCompileOnly "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    modCompileOnly "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_version}"
+    modCompileOnly "net.dasik.social:dasik-library:${rootProject.dasik_library_version}"
+    modCompileOnly "com.terraformersmc:modmenu:7.2.2"
+    modCompileOnly("dev.isxander.yacl:yet-another-config-lib-fabric:3.2.1+1.20") {
+        transitive = false
+    }
+    modCompileOnly "maven.modrinth:jade:11.12.3+fabric"
+
+    testImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    testImplementation "net.dasik.social:dasik-library:${rootProject.dasik_library_version}"
+}
+
+publishing {
+    publications {
+        mavenCommon(MavenPublication) {
+            artifactId = 'better-dogs'
+            from components.java
+        }
+    }
+}

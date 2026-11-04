@@ -1,0 +1,45 @@
+architectury {
+    platformSetupLoomIde()
+    forge()
+}
+
+loom {
+    forge {
+        mixinConfigs = ["vanilla-outsider-better-dogs.mixins.json"]
+    }
+}
+
+dependencies {
+    forge "net.neoforged:forge:${rootProject.neoforge_version}"
+    modImplementation "net.dasik.social:dasik-library-neoforge:${rootProject.dasik_library_version}"
+
+    implementation project(path: ':common')
+}
+
+processResources {
+    inputs.property 'version', project.version
+
+    filesMatching(['META-INF/mods.toml', 'META-INF/neoforge.mods.toml']) {
+        expand 'version': project.version
+    }
+}
+
+jar {
+    dependsOn ':common:transformProductionForge'
+    from(zipTree(project(':common').tasks.transformProductionForge.archiveFile)) {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+}
+
+remapJar {
+    archiveClassifier.set('neoforge')
+}
+
+publishing {
+    publications {
+        mavenNeoForge(MavenPublication) {
+            artifactId = 'better-dogs-neoforge'
+            from components.java
+        }
+    }
+}

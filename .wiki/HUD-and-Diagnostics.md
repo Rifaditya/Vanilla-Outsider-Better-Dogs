@@ -51,4 +51,22 @@ When debugging is enabled via `/gamerule betterdogs:bd_debugging true`, server a
 
 ---
 
+## 📋 Console Diagnostics & Multi-Loader Startup Notices
+
+### NeoForge Advisory Notice: "Identified an attempt to add synced data to a foreign entity"
+
+When launching Better Dogs on NeoForge (**MC 1.20.1, 1.21.1, and 1.21.11**), NeoForge's sync worker logs a one-time advisory notice:
+```text
+[modloading-sync-worker/WARN]: Identified an attempt to add synced data to a foreign entity: this is highly discouraged.
+Entity class: net.minecraft.world.entity.animal.wolf.Wolf
+Mixins into entity class: net.vanillaoutsider.betterdogs.mixin.WolfMixin
+```
+
+* **Severity**: `WARN` (harmless developer advisory, printed once on startup).
+* **Does it cause issues?**: No. It is not an error or crash. Wolves synchronize and behave properly on both singleplayer and multiplayer servers.
+* **Why does it appear?**: Better Dogs synchronizes visual defeated postures (`isSubdued`) and Spectator-mode wagging (`isSpectatorWagging`) using vanilla Minecraft's universal `SynchedEntityData`. This allows the exact same `:common` module code to execute seamlessly on both Fabric and NeoForge with zero third-party dependencies.
+* **Full Technical FAQ**: See [[Version Compatibility & Lifecycle Policy|Version-Compatibility]] for detailed multi-loader documentation.
+
+---
+
 *Back to [[Home]]*
