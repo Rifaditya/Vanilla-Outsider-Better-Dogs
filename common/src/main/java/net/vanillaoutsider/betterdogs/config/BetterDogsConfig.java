@@ -45,6 +45,10 @@ public class BetterDogsConfig {
         if (wolfMinScale > wolfMaxScale) {
             wolfMinScale = wolfMaxScale;
         }
+        if (playFightFrequency < 0) playFightFrequency = 0;
+        if (playFightFrequency > 72000) playFightFrequency = 72000;
+        if (playFightChance < 0) playFightChance = 0;
+        if (playFightChance > 100) playFightChance = 100;
     }
 
     // ========== Game Rule Defaults ==========
@@ -65,6 +69,8 @@ public class BetterDogsConfig {
     public boolean dogPlayChoreographyEnabled = true;
     public int playChoreographyFrequency = 2400;
     public int maxPlayDistance = 16;
+    public int playFightFrequency = 400;
+    public int playFightChance = 100;
     public boolean enableDogsEatCookedGroundFood = true;
     public boolean enableRefuseGroundFood = true;
     public int refuseGroundFoodChance = 30;
@@ -347,6 +353,10 @@ public class BetterDogsConfig {
     public boolean getDogPlayChoreographyEnabled() { return dogPlayChoreographyEnabled; }
     public int getPlayChoreographyFrequency() { return playChoreographyFrequency; }
     public int getMaxPlayDistance() { return maxPlayDistance; }
+    public int getPlayFightFrequency() { return playFightFrequency; }
+    public void setPlayFightFrequency(int playFightFrequency) { this.playFightFrequency = playFightFrequency; }
+    public int getPlayFightChance() { return playFightChance; }
+    public void setPlayFightChance(int playFightChance) { this.playFightChance = playFightChance; }
 
     public int getParticleDensityInt() {
         return net.vanillaoutsider.betterdogs.util.ParticleDensity.fromString(this.particleDensity).getLevel();

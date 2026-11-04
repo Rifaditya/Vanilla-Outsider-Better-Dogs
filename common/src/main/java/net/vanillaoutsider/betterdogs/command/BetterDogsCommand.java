@@ -116,6 +116,10 @@ public class BetterDogsCommand {
         // Pack Play Sparring & Timeout Penalty
         registerBool("bd_dog_play_fighting", BetterDogsGameRules.BD_DOG_PLAY_FIGHTING, true);
         registerBool("dogplayfighting", BetterDogsGameRules.BD_DOG_PLAY_FIGHTING, true);
+        registerInt("bd_dog_play_fight_frequency", BetterDogsGameRules.BD_DOG_PLAY_FIGHT_FREQUENCY, 400);
+        registerInt("playfightfrequency", BetterDogsGameRules.BD_DOG_PLAY_FIGHT_FREQUENCY, 400);
+        registerInt("bd_dog_play_fight_chance", BetterDogsGameRules.BD_DOG_PLAY_FIGHT_CHANCE, 100);
+        registerInt("playfightchance", BetterDogsGameRules.BD_DOG_PLAY_FIGHT_CHANCE, 100);
         registerInt("bd_play_penalty_minutes", BetterDogsGameRules.BD_PLAY_PENALTY_MINUTES, 10);
         registerInt("playpenaltyminutes", BetterDogsGameRules.BD_PLAY_PENALTY_MINUTES, 10);
 

@@ -5,15 +5,16 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
-- [ ] **Better Dogs 1.7.6+1.20.1** - 5-Pillar Testing Harness: Concurrency, Brigadier AST & Headless Simulation (BL-BD-018)
-- [ ] **Better Dogs 1.7.5+1.20.1** - Ballistic Interceptor: Multi-Era Parity Verification & Full Production Release (BL-BD-021)
-- [ ] **Better Dogs 1.7.4+1.20.1** - Ballistic Interceptor: Heroic Sacrifice Damage Routing, Anti-One-Shot Protection & Sensory Polish (BL-BD-021)
-- [ ] **Better Dogs 1.7.3+1.20.1** - Ballistic Interceptor: AI Goal Registration in WolfMixin (BL-BD-021)
-- [ ] **Better Dogs 1.7.2+1.20.1** - Ballistic Interceptor: Canine Intercept AI Goal Implementation (BL-BD-021)
-- [ ] **Better Dogs 1.7.1+1.20.1** - Ballistic Interceptor: Dynamic GameRules, Config Synchronization & Localization (BL-BD-021)
+- [ ] **Better Dogs 1.7.7+1.20.1** - Pack Infighting Civil War Immunity & Configurable Sparring Frequency (BL-BD-035)
+- [ ] **`1.7.6+1.20.1`** - 5-Pillar Testing Harness: Concurrency, Brigadier AST & Headless Simulation (BL-BD-018)
+- [ ] **`1.7.5+1.20.1`** - Ballistic Interceptor: Multi-Era Parity Verification & Full Production Release (BL-BD-021)
+- [ ] **`1.7.4+1.20.1`** - Ballistic Interceptor: Heroic Sacrifice Damage Routing, Anti-One-Shot Protection & Sensory Polish (BL-BD-021)
+- [ ] **`1.7.3+1.20.1`** - Ballistic Interceptor: AI Goal Registration in WolfMixin (BL-BD-021)
+- [ ] **`1.7.2+1.20.1`** - Ballistic Interceptor: Canine Intercept AI Goal Implementation (BL-BD-021)
+- [ ] **`1.7.1+1.20.1`** - Ballistic Interceptor: Dynamic GameRules, Config Synchronization & Localization (BL-BD-021)
 
-- [ ] **Better Dogs 1.7.0+1.20.1** - Ballistic Interceptor: Trajectory Intercept Solver & Disposition Affinity (BL-BD-021)
-- [ ] **Better Dogs 1.6.0+1.20.1** - Ballistic Evasion Reflex: Ghast Fireballs, Wither Skulls & Threat Trajectory Dodge (BL-BD-020)
+- [ ] **`1.7.0+1.20.1`** - Ballistic Interceptor: Trajectory Intercept Solver & Disposition Affinity (BL-BD-021)
+- [ ] **`1.6.0+1.20.1`** - Ballistic Evasion Reflex: Ghast Fireballs, Wither Skulls & Threat Trajectory Dodge (BL-BD-020)
 - [ ] **1.5.0+1.20.1** - Canine Explosive Reflex: Primed TNT, End Crystals & Swelling Creepers Flee Reflex (BL-BD-006)
 - [ ] **1.4.0+1.20.1** (2026-10-23) - 🎭 Extensible Canine Personality Archetypes Suite: 6 distinct archetypes, dynamic stat modifiers, specialized follow/flee behaviors, and configurable GameRule distribution modes [BL-BD-013]
 - [ ] **`1.3.0+1.20.1`** - Canine Physical Genetics: Horse-Like Speed, Health, Scale & Pitch Timbre (BL-BD-012)

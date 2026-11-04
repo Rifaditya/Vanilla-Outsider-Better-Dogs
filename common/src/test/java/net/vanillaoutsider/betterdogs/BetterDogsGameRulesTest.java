@@ -20,8 +20,12 @@ public class BetterDogsGameRulesTest {
         assertEquals(64, intVal, "Null level and key should return fallback integer value");
 
         assertTrue(BetterDogsGameRules.isDogPlayFightingEnabled(null), "Default for dogPlayFighting should be true");
+        assertEquals(400, BetterDogsGameRules.getPlayFightFrequency(null), "Default for playFightFrequency should be 400");
+        assertEquals(100, BetterDogsGameRules.getPlayFightChance(null), "Default for playFightChance should be 100");
         assertEquals(10, BetterDogsGameRules.getPlayPenaltyMinutes(null), "Default for playPenaltyMinutes should be 10");
         assertTrue(BetterDogsGameRules.getBoolean(null, BetterDogsGameRules.BD_DOG_PLAY_FIGHTING, true));
+        assertEquals(400, BetterDogsGameRules.getInt(null, BetterDogsGameRules.BD_DOG_PLAY_FIGHT_FREQUENCY, 400));
+        assertEquals(100, BetterDogsGameRules.getInt(null, BetterDogsGameRules.BD_DOG_PLAY_FIGHT_CHANCE, 100));
         assertEquals(10, BetterDogsGameRules.getInt(null, BetterDogsGameRules.BD_PLAY_PENALTY_MINUTES, 10));
 
         assertTrue(BetterDogsGameRules.isProjectileInterceptEnabled(null), "Default for projectileIntercept should be true");
