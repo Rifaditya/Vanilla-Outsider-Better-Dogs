@@ -40,8 +40,8 @@ public class SmallFightGoal extends Goal {
             }
         }
 
-        // Idle initiator search (1 in 400 ticks, ~20s)
-        if (SmallFightHelper.isEligibleForPlay(this.wolf) && this.wolf.getRandom().nextInt(400) == 0) {
+        // Idle initiator search (frequency and chance driven by GameRules / Config)
+        if (SmallFightHelper.shouldInitiatePlayFight(this.wolf)) {
             Wolf found = SmallFightHelper.findPlayPartner(this.wolf, SmallFightHelper.DEFAULT_PARTNER_RADIUS);
             if (found != null) {
                 SmallFightHelper.startPlaySession(this.wolf, found);
