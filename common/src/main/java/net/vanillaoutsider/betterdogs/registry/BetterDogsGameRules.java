@@ -4,6 +4,7 @@ package net.vanillaoutsider.betterdogs.registry;
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import net.vanillaoutsider.betterdogs.platform.Services;
 
 public class BetterDogsGameRules {
@@ -78,6 +79,8 @@ public class BetterDogsGameRules {
 
     // Pack Play Sparring & Timeout Penalty (Step 1 & Step 4)
     public static GameRules.Key<GameRules.BooleanValue> BD_DOG_PLAY_FIGHTING;
+    public static GameRules.Key<GameRules.IntegerValue> BD_DOG_PLAY_FIGHT_FREQUENCY;
+    public static GameRules.Key<GameRules.IntegerValue> BD_DOG_PLAY_FIGHT_CHANCE;
     public static GameRules.Key<GameRules.IntegerValue> BD_PLAY_PENALTY_MINUTES;
     public static GameRules.Key<GameRules.BooleanValue> BD_DOG_PLAY_CHOREOGRAPHY_ENABLED;
     public static GameRules.Key<GameRules.IntegerValue> BD_PLAY_CHOREOGRAPHY_FREQUENCY;
@@ -297,10 +300,48 @@ public class BetterDogsGameRules {
         // Pack Spread Scaling
         BD_WILD_PACK_SPREAD_MULTIPLIER = Services.GAMERULES.registerInt("bd_wild_pack_spread_multiplier", GameRules.Category.MISC, 80);
         BD_WILD_PACK_SPREAD_MAX = Services.GAMERULES.registerInt("bd_wild_pack_spread_max", GameRules.Category.MISC, 40);
+
+        // Social / Play Sparring & Choreography
+        BetterDogsConfig config = BetterDogsConfig.get();
+        BD_DOG_PLAY_FIGHTING = Services.GAMERULES.registerBoolean("betterdogs:bd_dog_play_fighting", GameRules.Category.MISC, true);
+        BD_DOG_PLAY_FIGHT_FREQUENCY = Services.GAMERULES.registerInt("betterdogs:bd_dog_play_fight_frequency", GameRules.Category.MISC,
+                config != null ? config.getPlayFightFrequency() : 400, 0, 72000);
+        BD_DOG_PLAY_FIGHT_CHANCE = Services.GAMERULES.registerInt("betterdogs:bd_dog_play_fight_chance", GameRules.Category.MISC,
+                config != null ? config.getPlayFightChance() : 100, 0, 100);
+        BD_PLAY_PENALTY_MINUTES = Services.GAMERULES.registerInt("betterdogs:bd_play_penalty_minutes", GameRules.Category.MISC, 10, 0, Integer.MAX_VALUE);
+        BD_DOG_PLAY_CHOREOGRAPHY_ENABLED = Services.GAMERULES.registerBoolean("betterdogs:bd_dog_play_choreography_enabled", GameRules.Category.MISC, true);
+        BD_PLAY_CHOREOGRAPHY_FREQUENCY = Services.GAMERULES.registerInt("betterdogs:bd_play_choreography_frequency", GameRules.Category.MISC, 2400, 20, 72000);
+        BD_MAX_PLAY_DISTANCE = Services.GAMERULES.registerInt("betterdogs:bd_max_play_distance", GameRules.Category.MISC, 16, 4, 128);
+
+        registerDynamicAlias("betterdogs:bd_dog_play_fighting", BD_DOG_PLAY_FIGHTING);
+        registerDynamicAlias("betterdogs:bd_dog_play_fight_frequency", BD_DOG_PLAY_FIGHT_FREQUENCY);
+        registerDynamicAlias("betterdogs:bd_dog_play_fight_chance", BD_DOG_PLAY_FIGHT_CHANCE);
+        registerDynamicAlias("betterdogs:playFightFrequency", BD_DOG_PLAY_FIGHT_FREQUENCY);
+        registerDynamicAlias("betterdogs:playFightChance", BD_DOG_PLAY_FIGHT_CHANCE);
+        registerDynamicAlias("betterdogs:bd_dog_play_choreography_enabled", BD_DOG_PLAY_CHOREOGRAPHY_ENABLED);
+        registerDynamicAlias("betterdogs:bd_play_choreography_frequency", BD_PLAY_CHOREOGRAPHY_FREQUENCY);
+        registerDynamicAlias("betterdogs:bd_max_play_distance", BD_MAX_PLAY_DISTANCE);
+        registerDynamicAlias("betterdogs:dogPlayChoreographyEnabled", BD_DOG_PLAY_CHOREOGRAPHY_ENABLED);
+        registerDynamicAlias("betterdogs:playChoreographyFrequency", BD_PLAY_CHOREOGRAPHY_FREQUENCY);
+        registerDynamicAlias("betterdogs:maxPlayDistance", BD_MAX_PLAY_DISTANCE);
+    }
+
+    private static void registerDynamicAlias(String name, GameRules.Key<?> key) {
+        if (key != null) {
+            DynamicGameRuleManager.getDynamicRules().put(name, key);
+        }
     }
 
     public static boolean isDogPlayFightingEnabled(Level level) {
         return getBoolean(level, BD_DOG_PLAY_FIGHTING, true);
+    }
+
+    public static int getPlayFightFrequency(Level level) {
+        return getInt(level, BD_DOG_PLAY_FIGHT_FREQUENCY, BetterDogsConfig.get() != null ? BetterDogsConfig.get().getPlayFightFrequency() : 400);
+    }
+
+    public static int getPlayFightChance(Level level) {
+        return getInt(level, BD_DOG_PLAY_FIGHT_CHANCE, BetterDogsConfig.get() != null ? BetterDogsConfig.get().getPlayFightChance() : 100);
     }
 
     public static int getPlayPenaltyMinutes(Level level) {

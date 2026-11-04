@@ -55,6 +55,10 @@ public class BetterDogsCommand {
         registerBool("bd_dog_genetics_enabled", BetterDogsGameRules.BD_DOG_GENETICS_ENABLED, true);
         registerBool("doggeneticsenabled", BetterDogsGameRules.BD_DOG_GENETICS_ENABLED, true);
 
+        registerInt("bd_dog_play_fight_frequency", BetterDogsGameRules.BD_DOG_PLAY_FIGHT_FREQUENCY, 400);
+        registerInt("playfightfrequency", BetterDogsGameRules.BD_DOG_PLAY_FIGHT_FREQUENCY, 400);
+        registerInt("bd_dog_play_fight_chance", BetterDogsGameRules.BD_DOG_PLAY_FIGHT_CHANCE, 100);
+        registerInt("playfightchance", BetterDogsGameRules.BD_DOG_PLAY_FIGHT_CHANCE, 100);
         registerInt("bd_play_penalty_minutes", BetterDogsGameRules.BD_PLAY_PENALTY_MINUTES, 10);
         registerInt("playpenaltyminutes", BetterDogsGameRules.BD_PLAY_PENALTY_MINUTES, 10);
         registerInt("bd_max_scale_deviation", BetterDogsGameRules.BD_MAX_SCALE_DEVIATION, 30);
@@ -287,6 +291,14 @@ public class BetterDogsCommand {
             int parsed;
             try {
                 parsed = Integer.parseInt(valueArg);
+                if ((normalized.equals("bd_dog_play_fight_frequency") || normalized.equals("playfightfrequency")) && (parsed < 0 || parsed > 72000)) {
+                    source.sendFailure(Component.literal("§c[Better Dogs] bd_dog_play_fight_frequency must be between 0 and 72000."));
+                    return 0;
+                }
+                if ((normalized.equals("bd_dog_play_fight_chance") || normalized.equals("playfightchance")) && (parsed < 0 || parsed > 100)) {
+                    source.sendFailure(Component.literal("§c[Better Dogs] bd_dog_play_fight_chance must be between 0 and 100."));
+                    return 0;
+                }
             } catch (NumberFormatException e) {
                 source.sendFailure(Component.literal("§c[Better Dogs] Value for " + normalized + " must be a valid integer."));
                 return 0;
