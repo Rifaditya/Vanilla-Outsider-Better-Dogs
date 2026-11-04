@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minecraft:lead"
+      "id": "minecraft:lead"
     },
     "title": {
       "translate": "advancements.betterdogs.husbandry.pet_dog.title"

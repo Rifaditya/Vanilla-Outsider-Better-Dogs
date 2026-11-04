@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "minecraft:paper"
+      "id": "minecraft:paper"
     },
     "title": {
       "translate": "advancements.betterdogs.husbandry.adopt_dog.title"

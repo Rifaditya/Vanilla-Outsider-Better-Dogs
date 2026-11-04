@@ -12,7 +12,8 @@
     "WolfPushMixin",
     "WolfInteractMixin",
     "InstrumentItemMixin",
-    "WolfSoundMixin"
+    "WolfSoundMixin",
+    "WolfMobMixin"
   ],
   "client": [],
   "injectors": {

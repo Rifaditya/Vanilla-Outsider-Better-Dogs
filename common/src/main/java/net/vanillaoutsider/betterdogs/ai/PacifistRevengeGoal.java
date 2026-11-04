@@ -7,6 +7,7 @@ import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.monster.Creeper;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
+import net.vanillaoutsider.betterdogs.util.PackAudienceHelper;
 
 public class PacifistRevengeGoal extends HurtByTargetGoal {
 
@@ -19,7 +20,7 @@ public class PacifistRevengeGoal extends HurtByTargetGoal {
 
     @Override
     public boolean canUse() {
-        if (!this.wolf.isTame() || this.wolf.isOrderedToSit() || this.wolf.isBaby()) {
+        if (this.wolf == null || !this.wolf.isTame() || this.wolf.isOrderedToSit() || this.wolf.isBaby()) {
             return false;
         }
 
@@ -45,6 +46,13 @@ public class PacifistRevengeGoal extends HurtByTargetGoal {
             return false;
         }
 
+        // Packmate mercy check (BL-BD-035): do not retaliate against ally co-owned wolves (baby or adult)
+        if (attacker instanceof Wolf offendingWolf && offendingWolf.isTame()) {
+            if (PackAudienceHelper.isCoOwned(this.wolf, offendingWolf)) {
+                return false;
+            }
+        }
+
         // Puppy mercy check: do not retaliate against ally baby wolves
         if (attacker instanceof Wolf offendingWolf && offendingWolf.isBaby() && owner != null && owner.equals(offendingWolf.getOwner())) {
             return false;
@@ -56,6 +64,9 @@ public class PacifistRevengeGoal extends HurtByTargetGoal {
 
     @Override
     public boolean canContinueToUse() {
+        if (this.wolf == null) {
+            return false;
+        }
         LivingEntity target = this.wolf.getTarget();
         if (target == null || !target.isAlive() || target instanceof Creeper) {
             return false;

@@ -2,7 +2,7 @@
   "parent": "betterdogs:husbandry/roughhousing",
   "display": {
     "icon": {
-      "item": "minecraft:wolf_armor"
+      "id": "minecraft:wolf_armor"
     },
     "title": {
       "translate": "advancements.betterdogs.husbandry.know_your_place.title"

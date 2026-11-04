@@ -589,7 +589,7 @@ class SmallFightTest {
 
             assertEquals("minecraft:husbandry/tame_an_animal", json.get("parent").getAsString());
             com.google.gson.JsonObject display = json.getAsJsonObject("display");
-            assertEquals("minecraft:bone", display.getAsJsonObject("icon").get("item").getAsString());
+            assertEquals("minecraft:bone", display.getAsJsonObject("icon").get("id").getAsString());
             assertEquals("advancements.betterdogs.husbandry.roughhousing.title", display.getAsJsonObject("title").get("translate").getAsString());
             assertEquals("advancements.betterdogs.husbandry.roughhousing.description", display.getAsJsonObject("description").get("translate").getAsString());
             assertEquals("task", display.get("frame").getAsString());
@@ -610,7 +610,7 @@ class SmallFightTest {
 
             assertEquals("betterdogs:husbandry/roughhousing", json.get("parent").getAsString());
             com.google.gson.JsonObject display = json.getAsJsonObject("display");
-            assertEquals("minecraft:wolf_armor", display.getAsJsonObject("icon").get("item").getAsString());
+            assertEquals("minecraft:wolf_armor", display.getAsJsonObject("icon").get("id").getAsString());
             assertEquals("advancements.betterdogs.husbandry.know_your_place.title", display.getAsJsonObject("title").get("translate").getAsString());
             assertEquals("advancements.betterdogs.husbandry.know_your_place.description", display.getAsJsonObject("description").get("translate").getAsString());
             assertEquals("task", display.get("frame").getAsString());
