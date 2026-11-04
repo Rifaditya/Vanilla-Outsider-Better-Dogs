@@ -1,4 +1,4 @@
-﻿# Version Compatibility & Lifecycle Policy
+# Version Compatibility & Lifecycle Policy
 
 *[[Home]] / Version Compatibility*
 
@@ -37,6 +37,59 @@ Following the transition to modern Minecraft 26.x:
 1. **Primary Target (MC 26.2)**: Receives all new gameplay features, AI optimizations, performance updates, and instant bug fixes.
 2. **Snapshot Tracking (MC 26.3)**: Tracks upcoming Mojang snapshot API changes to ensure zero-day readiness upon major game updates.
 3. **Maintenance Builds (MC 26.1.2)**: Receives critical bug fixes and security patches backported from the primary release line.
+
+---
+
+## 🔌 Multi-Loader Architecture (Fabric & NeoForge)
+
+**Better Dogs** features native Multi-Loader support across the legacy and transitional anchors (**Minecraft 1.20.1, 1.21.1, and 1.21.11**). Each release builds dual standalone binaries:
+
+| Minecraft Anchor | Mod Loaders Supported | Dual Release JARs | Dependencies |
+| :--- | :--- | :--- | :--- |
+| **MC 1.20.1** | Fabric & NeoForge (Forge SRG) | `better-dogs-*-fabric.jar`<br>`better-dogs-*-neoforge.jar` | Fabric: Fabric API<br>NeoForge: Zero extra APIs |
+| **MC 1.21.1** | Fabric & NeoForge | `better-dogs-*-fabric.jar`<br>`better-dogs-*-neoforge.jar` | Fabric: Fabric API<br>NeoForge: Zero extra APIs |
+| **MC 1.21.11** | Fabric & NeoForge | `better-dogs-*-fabric.jar`<br>`better-dogs-*-neoforge.jar` | Fabric: Fabric API<br>NeoForge: Zero extra APIs |
+| **MC 26.x** | Fabric (Modern Sovereign) | `better-dogs-*-fabric.jar` | Fabric API |
+
+---
+
+## ❓ Frequently Asked Questions: Console & Startup Logs
+
+### NeoForge Startup Notice: "Identified an attempt to add synced data to a foreign entity"
+
+#### 1. What does the message look like?
+On NeoForge client or server startup across **all NeoForge version anchors (MC 1.20.1, 1.21.1, and 1.21.11)**, the console log prints:
+```text
+[modloading-sync-worker/WARN]: Identified an attempt to add synced data to a foreign entity: this is highly discouraged.
+Entity class: net.minecraft.world.entity.animal.wolf.Wolf
+Mixins into entity class: net.vanillaoutsider.betterdogs.mixin.WolfMixin
+Modders should use syncable data attachments instead, as they do not suffer from potential ID mismatches.
+Please refer to the data attachments documentation available at https://docs.neoforged.net/docs/datastorage/attachments.
+This message will only be printed once per class
+```
+
+#### 2. Is this an error or a crash?
+**No. It is 100% harmless.**
+* It is a single **`WARN`** level advisory notice printed **only once** per game launch.
+* It does **not** crash the game, cause lag, produce packet errors, desync multiplayer dogs, or corrupt world save files.
+
+#### 3. Why does this notice appear?
+Better Dogs needs to synchronize two visual wolf states between the server and the player's screen:
+1. `isSubdued` — Displays the playful submissive posture when an adult dog is playfully defeated by a puppy.
+2. `isSpectatorWagging` — Makes a dog wag its tail at a player who is invisible in Spectator Mode.
+
+Better Dogs synchronizes these states using Minecraft's official built-in **`SynchedEntityData`** (`EntityDataAccessor<Boolean>`)—the exact same core system vanilla Minecraft uses to synchronize wolf collar colors, sitting posture, and health.
+
+NeoForge prefers developers to use their own proprietary **Data Attachments** system instead of vanilla's data syncher when modifying vanilla entities ("foreign entities"), so NeoForge emits a developer advisory notice.
+
+#### 4. Why does Better Dogs use vanilla SynchedEntityData instead of NeoForge Data Attachments?
+* **Universal Multi-Loader Compatibility**: Better Dogs is a native multi-loader mod built from a clean, shared `:common` engine module. Fabric does not have NeoForge's proprietary Data Attachments system.
+* **Zero Runtime Bloat**: Using vanilla Minecraft's standard `SynchedEntityData` means Better Dogs does **not** require heavy third-party runtime bridge libraries (such as Architectury API) or custom network packet handlers.
+* **Identical Behavior**: The exact same battle-tested logic executes identically across both Fabric and NeoForge.
+* **Defensive Fail-Safe Gating**: All synched data reads and writes in `WolfMixin` are wrapped in guarded try-catch blocks with static default fallbacks, guaranteeing zero runtime crashes.
+
+---
+
 ## 🌍 Existing World Compatibility & Retrofitting
 
 **Vanilla Outsider: Better Dogs** is 100% backwards-compatible and completely safe to **add or remove** mid-playthrough on existing Minecraft save files.
