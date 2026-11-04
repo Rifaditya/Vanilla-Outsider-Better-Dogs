@@ -37,7 +37,7 @@ dependencies {
     runtimeOnly "com.terraformersmc:modmenu:18.0.0-beta.1"
 
     compileOnly "maven.modrinth:jade:26.2.8+fabric"
-    runtimeOnly "maven.modrinth:jade:26.2.8+fabric"
+    // runtimeOnly "maven.modrinth:jade:26.2.8+fabric" // Incompatible with 26.3 server/gametest runtime (missing FriendlyByteBuf.writeBlockHitResult)
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.10.2"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.10.2"
@@ -70,6 +70,16 @@ loom {
     accessWidenerPath = file("src/main/resources/vanilla-outsider-better-dogs.accesswidener")
     mixin {
         defaultRefmapName = "vanilla-outsider-better-dogs-refmap.json"
+    }
+    runs {
+        gametest {
+            server()
+            name "GameTest"
+            vmArg "-Dfabric-api.gametest"
+            vmArg "-Dfabric-api.gametest.report-file=${project.buildDir}/junit.xml"
+            vmArg "-Djava.awt.headless=true"
+            runDir "build/gametest"
+        }
     }
 }
 

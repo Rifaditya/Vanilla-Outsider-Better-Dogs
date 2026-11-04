@@ -244,6 +244,39 @@ public final class SmallFightHelper {
     }
 
     /**
+     * Determines whether a wolf should initiate a play fight sparring roll based on
+     * play fight frequency and probability GameRules.
+     * Enforces the Zero-Crash Bound Invariant (frequency <= 0 or chance <= 0 cleanly returns false).
+     */
+    public static boolean shouldInitiatePlayFight(Wolf wolf) {
+        if (!isEligibleForPlay(wolf) || wolf.level() == null || wolf.getRandom() == null) {
+            return false;
+        }
+        int frequency = BetterDogsGameRules.getPlayFightFrequency(wolf.level());
+        int chance = BetterDogsGameRules.getPlayFightChance(wolf.level());
+        if (frequency <= 0 || chance <= 0) {
+            return false;
+        }
+        if (wolf.getRandom().nextInt(frequency) != 0) {
+            return false;
+        }
+        return chance >= 100 || wolf.getRandom().nextInt(100) < chance;
+    }
+
+    /**
+     * Pure logic evaluation overload for test suites, headless simulation, and negative parity tests.
+     */
+    public static boolean shouldInitiatePlayFight(boolean isEligible, int frequency, int chance, int roll, int chanceRoll) {
+        if (!isEligible || frequency <= 0 || chance <= 0) {
+            return false;
+        }
+        if (roll != 0) {
+            return false;
+        }
+        return chance >= 100 || chanceRoll < chance;
+    }
+
+    /**
      * Calculates the penalty duration in ticks from minutes (default 10 mins = 12,000 ticks).
      */
     public static int calculatePenaltyTicks(int minutes) {

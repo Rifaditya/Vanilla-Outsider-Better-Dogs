@@ -1,5 +1,21 @@
 # Changelog
 
+## [5.7.7+26.3] - 2026-11-04
+
+### Added
+- ⚙️ **Configurable Sparring Frequency & Probability (BL-BD-035)**:
+  - Added new GameRule `bd_dog_play_fight_frequency` (default: 400 ticks / ~20s, range: 0–72000 ticks) controlling base initiation check interval.
+  - Added new GameRule `bd_dog_play_fight_chance` (default: 100%, range: 0–100%) controlling initiation success probability.
+  - Setting either `bd_dog_play_fight_frequency` or `bd_dog_play_fight_chance` to `0` cleanly disables sparring with zero-crash bound protection.
+  - Full synchronization with `BetterDogsConfig`, YetAnotherConfigLib (YACL) GUI screens, and Brigadier `/betterdogs get/set` command suite with tab completions.
+
+### Fixed
+- 🛡️ **Pack Infighting Civil War Immunity (BL-BD-035)**:
+  - **Domestic Dispute Muzzle**: Silenced vanilla `alertOthers()` alarm cascades between co-owned tamed dogs during hierarchy snaps and playful sparring.
+  - **Root Target Gatekeeper**: Intercepted and blocked `Mob.setTarget()` from acquiring co-owned tamed packmates as combat targets unless bound to a Blood Feud vendetta.
+  - **Pacifist Revenge Protection**: Ensured Pacifist personality dogs never trigger retaliation or alert alarms against co-owned packmates when nipped.
+  - **Social Targeting Confinement**: Confined `SocialAction.PLAY_FIGHT` strictly to tracked social targets, preventing cascading domino pack massacres.
+
 ## [5.7.6+26.3] - 2026-10-30
 
 ### Added

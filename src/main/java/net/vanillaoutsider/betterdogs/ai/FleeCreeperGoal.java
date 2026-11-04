@@ -104,10 +104,24 @@ public class FleeCreeperGoal extends AvoidEntityGoal<Creeper> {
         }
     }
 
+    /**
+     * Explicitly sets the threatening creeper target (used for test harnesses and direct threat binding).
+     */
+    public void setThreatTarget(Creeper creeper) {
+        this.toAvoid = creeper;
+    }
+
+    public Creeper getThreatTarget() {
+        return this.toAvoid;
+    }
+
     @Override
     public void tick() {
+        if (this.toAvoid == null || !this.toAvoid.isAlive()) {
+            return;
+        }
         super.tick();
-        if (this.toAvoid != null && this.wolf != null) {
+        if (this.wolf != null) {
             WolfParticleHelper.spawnParticles(
                     this.wolf,
                     ParticleTypes.SMOKE,

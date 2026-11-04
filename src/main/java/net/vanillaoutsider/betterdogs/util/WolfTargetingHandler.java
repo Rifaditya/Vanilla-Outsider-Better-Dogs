@@ -53,7 +53,22 @@ public class WolfTargetingHandler {
             if (ext.betterdogs$getSocialAction() == WolfExtensions.SocialAction.TERRITORIAL_WAR) {
                 return target == ext.betterdogs$getSocialTarget();
             }
+            // If it's a play fight, ONLY interact with the designated play partner
+            if (ext.betterdogs$getSocialAction() == WolfExtensions.SocialAction.PLAY_FIGHT) {
+                return target == ext.betterdogs$getSocialTarget();
+            }
             return true;
+        }
+
+        // Pack Civil War Protection (BL-BD-035): Co-owned tamed wolves NEVER want to attack each other
+        if (target instanceof Wolf targetWolf && wolf.isTame() && targetWolf.isTame()) {
+            if (PackAudienceHelper.isCoOwned(wolf, targetWolf)) {
+                boolean isNemesis = ext.betterdogs$hasBloodFeud()
+                        && ext.betterdogs$getBloodFeudTarget().equals(targetWolf.getStringUUID());
+                if (!isNemesis) {
+                    return false;
+                }
+            }
         }
 
         // Territorial War: Member constraints (1v1 Leader protection)
