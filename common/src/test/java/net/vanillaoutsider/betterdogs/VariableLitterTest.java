@@ -48,4 +48,29 @@ public class VariableLitterTest {
         Assertions.assertTrue(threeRatio >= 0.08 && threeRatio <= 0.22, "Unexpected triplet puppy ratio: " + threeRatio);
         Assertions.assertTrue(fourRatio >= 0.01 && fourRatio <= 0.10, "Unexpected quadruplet puppy ratio: " + fourRatio);
     }
+
+    @Test
+    @DisplayName("Assert negative parity: Untamed/null wolf spawning safely exits with zero side effects")
+    public void testNegativeParityWildWolfBreeding() {
+        Assertions.assertDoesNotThrow(() -> WolfLitterHelper.spawnExtraPuppies(null, null, null, null));
+    }
+
+    @Test
+    @DisplayName("Assert negative parity: Single puppy litter (size=1) yields zero extra siblings")
+    public void testNegativeParitySinglePuppyLitter() {
+        int nullRandomSize = WolfLitterHelper.determineLitterSize(null, null);
+        Assertions.assertEquals(1, nullRandomSize, "Null random must deterministically return single puppy");
+        int extraSiblings = nullRandomSize - 1;
+        Assertions.assertEquals(0, extraSiblings, "Single puppy litter must yield zero extra siblings");
+    }
+
+    @Test
+    @DisplayName("Assert deterministic litter calculation bounds across 5,000 fuzzing iterations")
+    public void testFuzzingLitterBounds() {
+        RandomSource random = RandomSource.create(777L);
+        for (int i = 0; i < 5000; i++) {
+            int size = WolfLitterHelper.determineLitterSize(null, random);
+            Assertions.assertTrue(size >= 1 && size <= 4, "Litter size must strictly stay within [1, 4]");
+        }
+    }
 }

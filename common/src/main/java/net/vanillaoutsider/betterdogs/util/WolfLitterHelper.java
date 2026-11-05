@@ -73,7 +73,12 @@ public class WolfLitterHelper {
 
                 if (parentA.isTame()) {
                     sibling.setTame(true, true);
-                    sibling.setOwnerUUID(parentA.getOwnerUUID());
+                    if (parentA.getOwnerUUID() != null) {
+                        sibling.setOwnerUUID(parentA.getOwnerUUID());
+                    }
+                    if (parentA.getOwner() instanceof net.minecraft.world.entity.player.Player player) {
+                        sibling.tame(player);
+                    }
                 } else if (parentA instanceof WolfExtensions pExtA) {
                     if (sibling instanceof WolfExtensions sExt) {
                         sExt.betterdogs$setLeaderUUID(pExtA.betterdogs$getLeaderUUID());
