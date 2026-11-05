@@ -77,6 +77,9 @@ public class WolfLitterHelper {
 
                 if (parentA.isTame()) {
                     sibling.setTame(true, true);
+                    if (parentA.getOwnerReference() != null) {
+                        sibling.setOwnerReference(parentA.getOwnerReference());
+                    }
                     if (parentA.getOwner() instanceof Player player) {
                         sibling.tame(player);
                     }
