@@ -5,6 +5,8 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 1.7.10+1.20.1** - Multi-Puppy Sibling Taming & Ownership Fix (BL-BD-039)
+
 - [ ] **Better Dogs 1.7.9+1.20.1** - Chorus Howl Follower Response & Double Sound Fix (BL-BD-038)
 - [ ] **Better Dogs 1.7.8+1.20.1** - Tamed Pack Clumping Freeze Resolved & Play Choreography Cooldown (BL-BD-036, BL-BD-037, BL-BD-049)
 - [ ] **Better Dogs 1.7.7+1.20.1** - Pack Infighting Civil War Immunity & Configurable Sparring Frequency (BL-BD-035)
