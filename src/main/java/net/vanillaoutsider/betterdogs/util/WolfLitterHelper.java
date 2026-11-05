@@ -10,8 +10,10 @@ import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.vanillaoutsider.betterdogs.BetterDogs;
+import net.vanillaoutsider.betterdogs.mixin.WolfAccessor;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 
 import java.util.Random;
@@ -87,6 +89,20 @@ public final class WolfLitterHelper {
             if (extraOffspring != null) {
                 extraOffspring.setBaby(true);
                 extraOffspring.snapTo(parent1.getX(), parent1.getY(), parent1.getZ(), 0.0f, 0.0f);
+
+                if (extraOffspring instanceof Wolf extraPuppy && wolf.isTame()) {
+                    extraPuppy.setTame(true, true);
+                    if (wolf.getOwnerReference() != null) {
+                        extraPuppy.setOwnerReference(wolf.getOwnerReference());
+                    }
+                    if (extraPuppy instanceof WolfAccessor accessor) {
+                        if (partnerWolf.isTame()) {
+                            accessor.betterdogs$invokeSetCollarColor(DyeColor.getMixedColor(level, wolf.getCollarColor(), partnerWolf.getCollarColor()));
+                        } else {
+                            accessor.betterdogs$invokeSetCollarColor(wolf.getCollarColor());
+                        }
+                    }
+                }
 
                 level.addFreshEntityWithPassengers(extraOffspring);
 
