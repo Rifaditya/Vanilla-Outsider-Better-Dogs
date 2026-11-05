@@ -1,4 +1,5 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
+// Verified against: Minecraft 1.21.11
 package net.vanillaoutsider.betterdogs;
 
 import net.vanillaoutsider.betterdogs.ai.GroupHowlGoal;
@@ -44,38 +45,18 @@ class PackHowlTest {
     }
 
     @Test
-    @DisplayName("Assert GroupHowlGoal null safety and safe fallback lifecycle")
-    void testGroupHowlGoalNullSafety() {
+    @DisplayName("Assert GroupHowlGoal cooldown constants and lifecycle state")
+    void testGroupHowlGoalCooldownAndLifecycle() {
+        assertEquals(12000, GroupHowlGoal.HOWL_COOLDOWN, "HOWL_COOLDOWN must be 12000 ticks (10 minutes)");
+        assertEquals(60, WolfHowlHelper.BASE_HOWL_DURATION, "BASE_HOWL_DURATION must be 60 ticks (3.0s)");
+
         GroupHowlGoal goal = new GroupHowlGoal(null);
         assertFalse(goal.canUse(), "Goal with null wolf must safely return false in canUse()");
-        assertFalse(goal.canContinueToUse(), "Goal with null wolf must return false in canContinueToUse()");
+        assertFalse(goal.canContinueToUse(), "Goal with null wolf must safely return false in canContinueToUse()");
+
+        goal.betterdogs$setHowlCooldown(600);
+        assertFalse(goal.canUse(), "Goal with active cooldown must return false in canUse()");
+
         assertDoesNotThrow(goal::stop, "Goal stop must be safe on uninitialized wolf");
-    }
-
-    @Test
-    @DisplayName("BL-BD-038: Follower chorus delay countdown and state-transition threshold logic")
-    void testFollowerChorusStateTransitions() {
-        int baseDuration = WolfHowlHelper.BASE_HOWL_DURATION; // 60 ticks
-        assertEquals(60, baseDuration, "Base howl duration must be 60 ticks (3.0s)");
-
-        // 1. Alerted wolf in staggered delay window (e.g. 60 + 20 = 80 ticks)
-        int delayedTicks = baseDuration + 20;
-        boolean canActivateDuringDelay = delayedTicks > 0 && delayedTicks <= baseDuration;
-        assertFalse(canActivateDuringDelay, "Alerted follower must NOT activate goal while staggered delay is counting down (> 60 ticks)");
-
-        // 2. Exact transition boundary (delay elapsed: exactly 60 ticks)
-        int transitionTicks = baseDuration;
-        boolean canActivateAtThreshold = transitionTicks > 0 && transitionTicks <= baseDuration;
-        assertTrue(canActivateAtThreshold, "Follower must transition to active vocalization when delay elapses (exactly 60 ticks)");
-
-        // 3. Mid-howl execution (e.g. 30 ticks remaining)
-        int activeTicks = 30;
-        boolean canActivateMidHowl = activeTicks > 0 && activeTicks <= baseDuration;
-        assertTrue(canActivateMidHowl, "Follower remains active while howling ticks count down from 60 to 1");
-
-        // 4. Idle/Completed state (0 ticks)
-        int idleTicks = 0;
-        boolean canActivateIdle = idleTicks > 0 && idleTicks <= baseDuration;
-        assertFalse(canActivateIdle, "Un-alerted / idle wolf must not activate follower chorus branch");
     }
 }

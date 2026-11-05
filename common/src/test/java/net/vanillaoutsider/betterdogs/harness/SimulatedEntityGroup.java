@@ -69,13 +69,29 @@ public class SimulatedEntityGroup {
      * @return Number of followers that successfully accepted the signal
      */
     public int broadcastSignal(SimulatedEntity source, String signal, double radius, int baseDelay, int perEntityStagger) {
-        return broadcastSignal(source, signal, radius, idx -> baseDelay + (idx * perEntityStagger), 60, 12000);
+        return broadcastSignal(source, signal, radius, idx -> baseDelay + (idx * perEntityStagger), idx -> 1.0f, 60, 12000);
     }
 
     /**
      * Broadcasts a social signal with dynamic per-entity delay calculator function.
      */
     public int broadcastSignal(SimulatedEntity source, String signal, double radius, ToIntFunction<Integer> delayCalculator, int activeDuration, int cooldownAfter) {
+        return broadcastSignal(source, signal, radius, delayCalculator, idx -> 1.0f, activeDuration, cooldownAfter);
+    }
+
+    /**
+     * Broadcasts a social signal with dynamic per-entity delay calculator and harmonic pitch calculator.
+     * Only receptive followers that accept the signal advance the chorus responder index.
+     */
+    public int broadcastSignal(
+            SimulatedEntity source,
+            String signal,
+            double radius,
+            ToIntFunction<Integer> delayCalculator,
+            java.util.function.IntFunction<Float> pitchCalculator,
+            int activeDuration,
+            int cooldownAfter
+    ) {
         int acceptedCount = 0;
         int followerIdx = 0;
         for (SimulatedEntity entity : allEntities) {
@@ -84,10 +100,11 @@ public class SimulatedEntityGroup {
             }
             if (source.distanceTo(entity) <= radius) {
                 int staggeredDelay = delayCalculator.applyAsInt(followerIdx);
-                if (entity.receiveSignal(signal, staggeredDelay, activeDuration, cooldownAfter)) {
+                float pitch = pitchCalculator != null ? pitchCalculator.apply(followerIdx) : 1.0f;
+                if (entity.receiveSignal(signal, staggeredDelay, activeDuration, cooldownAfter, pitch)) {
                     acceptedCount++;
+                    followerIdx++;
                 }
-                followerIdx++;
             }
         }
         return acceptedCount;
