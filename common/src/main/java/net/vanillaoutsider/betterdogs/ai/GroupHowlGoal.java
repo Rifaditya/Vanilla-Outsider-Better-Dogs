@@ -24,13 +24,7 @@ public class GroupHowlGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (this.wolf.isBaby() || this.wolf.isOrderedToSit() || this.wolf.getTarget() != null) {
-            return false;
-        }
-        if (WolfDispositionHelper.isQuietHowler(this.wolf)) {
-            return false;
-        }
-        if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$isGuarding()) {
+        if (!WolfHowlHelper.canJoinHowl(this.wolf)) {
             return false;
         }
 
@@ -40,24 +34,21 @@ public class GroupHowlGoal extends Goal {
         }
 
         if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$getHowlingTicks() > 0) {
-            return ext.betterdogs$getHowlingTicks() <= 60;
+            return ext.betterdogs$getHowlingTicks() <= WolfHowlHelper.BASE_HOWL_DURATION;
         }
 
         long dayTime = level.getDayTime() % 24000L;
         if (dayTime >= 13000L && dayTime <= 23000L) {
             boolean fullMoon = (level.getDayTime() / 24000L) % 8L == 0L;
             int chance = fullMoon ? 120 : 300;
-            if (this.wolf.getRandom().nextInt(chance) == 0) {
-                WolfHowlHelper.initiateChorusHowl(this.wolf, 24.0);
-                return true;
-            }
+            return this.wolf.getRandom().nextInt(chance) == 0;
         }
         return false;
     }
 
     @Override
     public boolean canContinueToUse() {
-        if (this.wolf.getTarget() != null || this.wolf.isOrderedToSit()) {
+        if (this.wolf == null || this.wolf.getTarget() != null || this.wolf.isOrderedToSit()) {
             return false;
         }
         return this.howlTimer > 0;
@@ -65,11 +56,20 @@ public class GroupHowlGoal extends Goal {
 
     @Override
     public void start() {
-        this.howlTimer = 60;
+        this.howlTimer = WolfHowlHelper.BASE_HOWL_DURATION;
         this.wolf.getNavigation().stop();
 
+        boolean isAlertedFollower = false;
         if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$getHowlingTicks() > 0) {
-            float pitch = 0.85F + this.wolf.getRandom().nextFloat() * 0.35F;
+            isAlertedFollower = true;
+        }
+
+        if (!isAlertedFollower) {
+            // Initiator howling and alerting packmates
+            WolfHowlHelper.initiateChorusHowl(this.wolf, 24.0);
+        } else {
+            // Responding follower with harmonic pitch
+            float pitch = WolfHowlHelper.calculateHarmonicPitch(this.wolf.getRandom().nextFloat());
             WolfHowlHelper.startHowl(this.wolf, pitch);
         }
     }
