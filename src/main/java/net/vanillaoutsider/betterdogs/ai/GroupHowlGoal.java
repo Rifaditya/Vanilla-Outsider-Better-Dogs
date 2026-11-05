@@ -95,7 +95,7 @@ public class GroupHowlGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        return this.howlTimer > 0 && !this.wolf.isOrderedToSit() && this.wolf.getTarget() == null;
+        return this.wolf != null && this.howlTimer > 0 && !this.wolf.isOrderedToSit() && this.wolf.getTarget() == null;
     }
 
     @Override
