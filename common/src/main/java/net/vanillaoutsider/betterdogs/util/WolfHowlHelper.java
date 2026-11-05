@@ -31,7 +31,7 @@ public class WolfHowlHelper {
             return false;
         }
 
-        if (wolf.isOrderedToSit() || wolf.getTarget() != null) {
+        if (wolf.isOrderedToSit() || wolf.isInSittingPose() || wolf.isLeashed() || wolf.getTarget() != null) {
             return false;
         }
 

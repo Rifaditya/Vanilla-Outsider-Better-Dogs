@@ -106,8 +106,37 @@ public class BehavioralStepRunner {
         return assertEntity(followers.get(index), predicate, failureMessage);
     }
 
+    /**
+     * Immediately evaluates all registered invariant watchdogs against current state.
+     */
+    public BehavioralStepRunner evaluateInvariants() {
+        for (InvariantCheck inv : invariants) {
+            if (!inv.check().test(group)) {
+                throw new AssertionError("Invariant violated at tick " + currentTick + ": " + inv.description());
+            }
+        }
+        return this;
+    }
+
+    public BehavioralStepRunner assertAllEntities(Predicate<SimulatedEntity> predicate, String failureMessage) {
+        for (SimulatedEntity entity : group.getAllEntities()) {
+            if (!predicate.test(entity)) {
+                throw new AssertionError("Assertion failed at tick " + currentTick + " for " + entity.getRole() + ": " + failureMessage);
+            }
+        }
+        return this;
+    }
+
     public BehavioralStepRunner assertFollowersCountInState(SimulatedEntity.State state, long expectedCount, String failureMessage) {
         long actual = group.getFollowers().stream().filter(e -> e.getState() == state).count();
+        if (actual != expectedCount) {
+            throw new AssertionError("Assertion failed at tick " + currentTick + ": " + failureMessage + " (expected: " + expectedCount + ", actual: " + actual + ")");
+        }
+        return this;
+    }
+
+    public BehavioralStepRunner assertTotalCountInState(SimulatedEntity.State state, long expectedCount, String failureMessage) {
+        long actual = group.getAllEntities().stream().filter(e -> e.getState() == state).count();
         if (actual != expectedCount) {
             throw new AssertionError("Assertion failed at tick " + currentTick + ": " + failureMessage + " (expected: " + expectedCount + ", actual: " + actual + ")");
         }

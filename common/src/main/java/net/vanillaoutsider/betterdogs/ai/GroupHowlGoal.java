@@ -16,6 +16,8 @@ public class GroupHowlGoal extends Goal {
 
     private final Wolf wolf;
     private int howlTimer = 0;
+    private int howlCooldown = 0;
+    public static final int HOWL_COOLDOWN = 12000; // 10 minutes
 
     public GroupHowlGoal(Wolf wolf) {
         this.wolf = wolf;
@@ -37,6 +39,11 @@ public class GroupHowlGoal extends Goal {
             return ext.betterdogs$getHowlingTicks() <= WolfHowlHelper.BASE_HOWL_DURATION;
         }
 
+        if (this.howlCooldown > 0) {
+            this.howlCooldown--;
+            return false;
+        }
+
         if (level.isNight()) {
             int chance = (level.getMoonPhase() == 0) ? 120 : 300;
             return this.wolf.getRandom().nextInt(chance) == 0;
@@ -46,10 +53,7 @@ public class GroupHowlGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        if (this.wolf == null || this.wolf.getTarget() != null || this.wolf.isOrderedToSit()) {
-            return false;
-        }
-        return this.howlTimer > 0;
+        return this.howlTimer > 0 && WolfHowlHelper.canJoinHowl(this.wolf);
     }
 
     @Override
@@ -74,10 +78,15 @@ public class GroupHowlGoal extends Goal {
 
     @Override
     public void stop() {
+        this.howlCooldown = HOWL_COOLDOWN;
         this.howlTimer = 0;
         if (this.wolf instanceof WolfExtensions ext) {
             ext.betterdogs$setHowlingTicks(0);
         }
+    }
+
+    public void betterdogs$setHowlCooldown(int cooldown) {
+        this.howlCooldown = cooldown;
     }
 
     @Override
