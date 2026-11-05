@@ -42,7 +42,7 @@ public class GroupHowlGoal extends Goal {
 
         // Responding to an active packmate's chorus howl signal
         if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$getHowlingTicks() > 0) {
-            return true;
+            return ext.betterdogs$getHowlingTicks() <= WolfHowlHelper.BASE_HOWL_DURATION;
         }
 
         // Cooldown check for self-initiated howling
