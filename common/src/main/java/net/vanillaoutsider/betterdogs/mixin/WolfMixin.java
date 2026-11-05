@@ -547,7 +547,12 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
                 this.betterdogs$calmTicks--;
             }
             if (this.betterdogs$howlingTicks > 0) {
-                this.betterdogs$howlingTicks--;
+                if (wolf.isOrderedToSit() || wolf.isInSittingPose() || wolf.getTarget() != null
+                        || this.betterdogs$isGuardMode() || this.betterdogs$isSittingManually() || wolf.isLeashed()) {
+                    this.betterdogs$howlingTicks = 0;
+                } else {
+                    this.betterdogs$howlingTicks--;
+                }
             }
             if (this.betterdogs$playFightCooldown > 0) {
                 this.betterdogs$playFightCooldown--;
