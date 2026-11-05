@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.9+26.1.2] - 2026-11-05
+
+### Fixed
+- 🐺 **Chorus Howl Follower Response & Pack Harmony (BL-BD-038)**:
+  - Resolved dead code in `WolfHowlHelper.canJoinHowl()` by decoupling active broadcast alert state from eligibility gating, enabling alerted standing packmates to join chorus howling.
+  - Implemented staggered delay countdown evaluation (10–34 ticks) in `GroupHowlGoal.canUse()`, ensuring natural vocalization transitions when countdown reaches threshold (`<= 60` ticks).
+  - Added duplicate broadcast candidate suppression preventing active or delayed howlers from re-triggering sound effects.
+
 ## [5.7.8+26.1.2] - 2026-11-04
 
 ### Fixed

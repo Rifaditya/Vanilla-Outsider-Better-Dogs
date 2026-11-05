@@ -1,14 +1,15 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
-// Verified against: Minecraft 26.1.2
+// Verified against: Minecraft 26.1
 package net.vanillaoutsider.betterdogs;
 
+import net.vanillaoutsider.betterdogs.ai.GroupHowlGoal;
 import net.vanillaoutsider.betterdogs.util.WolfHowlHelper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Step 23: Tamed Spontaneous Pack Howling AI Tests")
+@DisplayName("Step 23: Tamed Spontaneous Pack Howling AI Tests (BL-BD-038)")
 class PackHowlTest {
 
     @Test
@@ -44,6 +45,15 @@ class PackHowlTest {
     }
 
     @Test
+    @DisplayName("Assert GroupHowlGoal null safety and safe fallback lifecycle")
+    void testGroupHowlGoalNullSafety() {
+        GroupHowlGoal goal = new GroupHowlGoal(null);
+        assertFalse(goal.canUse(), "Goal with null wolf must safely return false in canUse()");
+        assertFalse(goal.canContinueToUse(), "Goal with null wolf must return false in canContinueToUse()");
+        assertDoesNotThrow(goal::stop, "Goal stop must be safe on uninitialized wolf");
+    }
+
+    @Test
     @DisplayName("BL-BD-038: Follower chorus delay countdown and state-transition threshold logic")
     void testFollowerChorusStateTransitions() {
         int baseDuration = WolfHowlHelper.BASE_HOWL_DURATION; // 60 ticks
@@ -68,16 +78,5 @@ class PackHowlTest {
         int idleTicks = 0;
         boolean canActivateIdle = idleTicks > 0 && idleTicks <= baseDuration;
         assertFalse(canActivateIdle, "Un-alerted / idle wolf must not activate follower chorus branch");
-    }
-
-    @Test
-    @DisplayName("BL-BD-038: Candidate alert filter prevents duplicate re-triggering of active howlers")
-    void testCandidateAlertFilter() {
-        // Wolves with howlingTicks <= 0 are eligible to be alerted
-        assertTrue(0 <= 0, "Idle packmate (0 ticks) must be eligible for chorus alert");
-
-        // Wolves with howlingTicks > 0 must be skipped from re-alerting
-        assertFalse(60 <= 0, "Active howler (60 ticks) must NOT be re-alerted to prevent duplicate sound stacking");
-        assertFalse(75 <= 0, "Packmate in delay countdown (75 ticks) must NOT be clobbered by secondary broadcasts");
     }
 }
