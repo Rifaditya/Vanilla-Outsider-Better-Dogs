@@ -60,7 +60,6 @@ public final class WolfHowlHelper {
             if (ext.betterdogs$isGuardMode() || ext.betterdogs$isSittingManually()) {
                 return false;
             }
-            return ext.betterdogs$getHowlingTicks() <= 0;
         }
 
         return true;
@@ -87,7 +86,7 @@ public final class WolfHowlHelper {
         List<Wolf> nearbyWolves = level.getEntitiesOfClass(
                 Wolf.class,
                 initiator.getBoundingBox().inflate(searchRadius),
-                w -> w != initiator && canJoinHowl(w)
+                w -> w != initiator && canJoinHowl(w) && (!(w instanceof WolfExtensions ext) || ext.betterdogs$getHowlingTicks() <= 0)
         );
 
         for (Wolf packWolf : nearbyWolves) {
