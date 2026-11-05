@@ -40,7 +40,7 @@ public class GroupHowlGoal extends Goal {
         }
 
         if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$getHowlingTicks() > 0) {
-            return true;
+            return ext.betterdogs$getHowlingTicks() <= 60;
         }
 
         if (level.isNight()) {
@@ -65,6 +65,11 @@ public class GroupHowlGoal extends Goal {
     public void start() {
         this.howlTimer = 60;
         this.wolf.getNavigation().stop();
+
+        if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$getHowlingTicks() > 0) {
+            float pitch = 0.85F + this.wolf.getRandom().nextFloat() * 0.35F;
+            WolfHowlHelper.startHowl(this.wolf, pitch);
+        }
     }
 
     @Override
