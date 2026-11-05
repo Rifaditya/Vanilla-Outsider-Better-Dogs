@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.1)
 
+## [1.7.9+1.21.1] - 2026-11-05
+
+### Fixed
+- 🐺 **Chorus Howl Follower Response & Double Sound Fix (BL-BD-038)**:
+  - Resolved unreachable chorus howl follower logic by adding `canJoinHowl()` gating and removing blocking tick requirements.
+  - Resolved double sound playback bug by cleanly separating initiator howling in `start()` from follower harmonic response, eliminating duplicate sound and advancement calls in `canUse()`.
+  - Added quiet-howler and guarding state filters to chorus candidate discovery, ensuring ineligible dogs never retain active howling ticks.
+
 ## [1.7.8+1.21.1] - 2026-11-04
 
 ### Fixed
