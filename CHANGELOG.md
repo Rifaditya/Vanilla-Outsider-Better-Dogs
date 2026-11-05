@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.10+26.2] - 2026-11-05
+
+### Fixed
+- 🐶 **Multi-Puppy Litter Sibling Taming & Ownership Inheritance (BL-BD-039)**:
+  - Fixed an issue where extra sibling puppies in litters larger than 1 spawned untamed, unowned, and frozen in place.
+  - Sibling puppies now inherit full taming status, owner reference, and blended collar colors deterministic of their parents.
+  - Ensured wild wolves breeding preserves 100% untamed parity with zero owner or collar assignments.
+
 ## [5.7.9+26.2] - 2026-11-05
 
 ### Fixed
