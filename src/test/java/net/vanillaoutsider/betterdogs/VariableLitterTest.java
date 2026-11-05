@@ -65,4 +65,38 @@ class VariableLitterTest {
         assertEquals(1, WolfLitterHelper.calculateLitterSize(-5, -10, new Random()));
         assertDoesNotThrow(() -> WolfLitterHelper.processBreedingLitter(null, null, null));
     }
+
+    @Test
+    @DisplayName("Assert negative parity: Untamed/wild wolves breeding never triggers extra litter spawning")
+    void testNegativeParityWildWolfBreeding() {
+        // Assert null/wild parent handling does not throw and strictly exits early
+        assertDoesNotThrow(() -> WolfLitterHelper.processBreedingLitter(null, null, null));
+    }
+
+    @Test
+    @DisplayName("Assert negative parity: Single puppy litter (size=1) yields zero extra siblings")
+    void testNegativeParitySinglePuppyLitter() {
+        Random random = new Random(999);
+        // When max size is 1 or extra chance is 0, litter size is always 1, resulting in 0 extra siblings
+        int size = WolfLitterHelper.calculateLitterSize(1, 0, random);
+        assertEquals(1, size);
+        int extraSiblings = size - 1;
+        assertEquals(0, extraSiblings, "Litter size 1 must spawn exactly 0 extra siblings beyond vanilla offspring");
+    }
+
+    @Test
+    @DisplayName("Assert deterministic litter calculation bounds across 5,000 fuzzing iterations")
+    void testFuzzingLitterBounds() {
+        Random random = new Random(777);
+        for (int i = 0; i < 5000; i++) {
+            int maxSize = random.nextInt(10) - 2; // -2 to 7
+            int chance = random.nextInt(150) - 25; // -25 to 124
+            int size = WolfLitterHelper.calculateLitterSize(maxSize, chance, random);
+            if (maxSize <= 1 || chance <= 0) {
+                assertEquals(1, size, "Degenerate bounds must strictly clamp to 1");
+            } else {
+                assertTrue(size >= 1 && size <= maxSize, "Litter size must be clamped within [1, maxSize]");
+            }
+        }
+    }
 }

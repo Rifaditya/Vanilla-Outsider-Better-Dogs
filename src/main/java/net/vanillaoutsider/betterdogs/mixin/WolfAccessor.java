@@ -23,4 +23,7 @@ public interface WolfAccessor {
 
     @Invoker("setVariant")
     void betterdogs$invokeSetVariant(net.minecraft.core.Holder<net.minecraft.world.entity.animal.wolf.WolfVariant> variant);
+
+    @Invoker("setCollarColor")
+    void betterdogs$invokeSetCollarColor(net.minecraft.world.item.DyeColor collarColor);
 }
