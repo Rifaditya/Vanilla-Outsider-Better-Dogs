@@ -22,7 +22,7 @@ public class GroupHowlGoal extends Goal {
     private final Wolf wolf;
     private int howlTimer = 0;
     private int howlCooldown = 0;
-    private static final int HOWL_COOLDOWN = 12000; // 10 minutes
+    public static final int HOWL_COOLDOWN = 12000; // 10 minutes
 
     public GroupHowlGoal(Wolf wolf) {
         this.wolf = wolf;
@@ -95,7 +95,7 @@ public class GroupHowlGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        return this.wolf != null && this.howlTimer > 0 && !this.wolf.isOrderedToSit() && this.wolf.getTarget() == null;
+        return this.howlTimer > 0 && WolfHowlHelper.canJoinHowl(this.wolf);
     }
 
     @Override

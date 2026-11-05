@@ -347,7 +347,8 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
             }
 
             if (this.betterdogs$howlingTicks > 0) {
-                if (wolf.isOrderedToSit() || wolf.isInSittingPose() || wolf.getTarget() != null) {
+                if (wolf.isOrderedToSit() || wolf.isInSittingPose() || wolf.getTarget() != null
+                        || this.betterdogs$isGuardMode() || this.betterdogs$isSittingManually() || wolf.isLeashed()) {
                     this.betterdogs$howlingTicks = 0;
                 } else {
                     this.betterdogs$howlingTicks--;

@@ -41,6 +41,7 @@ public class SimulatedEntity {
     private int delayTicks = 0;
     private int cooldownTicks = 0;
     private String activeSignal = null;
+    private float pitch = 1.0f;
     private Consumer<SimulatedEntity> customTickHook = null;
 
     public SimulatedEntity(UUID uuid, String role, double x, double y, double z) {
@@ -181,6 +182,14 @@ public class SimulatedEntity {
         return activeSignal;
     }
 
+    public float getPitch() {
+        return pitch;
+    }
+
+    public void setPitch(float pitch) {
+        this.pitch = pitch;
+    }
+
     /**
      * Checks if the entity is eligible to participate in social behaviors.
      * Enforces negative parity: invalid states immediately disqualify the entity.
@@ -193,7 +202,7 @@ public class SimulatedEntity {
      * Attempts to trigger a social signal on this entity with default duration (60) and cooldown (12000).
      */
     public boolean receiveSignal(String signal, int responseDelay) {
-        return receiveSignal(signal, responseDelay, 60, 12000);
+        return receiveSignal(signal, responseDelay, 60, 12000, 1.0f);
     }
 
     /**
@@ -201,6 +210,14 @@ public class SimulatedEntity {
      * Rejects if the entity is not available or not idle.
      */
     public boolean receiveSignal(String signal, int responseDelay, int activeDuration, int cooldownAfter) {
+        return receiveSignal(signal, responseDelay, activeDuration, cooldownAfter, 1.0f);
+    }
+
+    /**
+     * Attempts to trigger a social signal with configurable duration, cooldown, and vocalization pitch.
+     * Rejects if the entity is not available or not idle.
+     */
+    public boolean receiveSignal(String signal, int responseDelay, int activeDuration, int cooldownAfter, float pitch) {
         if (!isAvailableForSocial() || state != State.IDLE) {
             return false;
         }
@@ -209,6 +226,7 @@ public class SimulatedEntity {
         this.stateTicks = activeDuration;
         this.cooldownTicks = cooldownAfter;
         this.activeSignal = signal;
+        this.pitch = pitch;
         return true;
     }
 
@@ -216,6 +234,13 @@ public class SimulatedEntity {
      * Triggers active behavioral initiation (e.g. Initiator howls/alerts).
      */
     public boolean initiateBehavior(String signal, int durationTicks, int cooldownAfter) {
+        return initiateBehavior(signal, durationTicks, cooldownAfter, 1.0f);
+    }
+
+    /**
+     * Triggers active behavioral initiation with custom vocalization pitch.
+     */
+    public boolean initiateBehavior(String signal, int durationTicks, int cooldownAfter, float pitch) {
         if (!isAvailableForSocial() || state != State.IDLE) {
             return false;
         }
@@ -223,6 +248,7 @@ public class SimulatedEntity {
         this.stateTicks = durationTicks;
         this.cooldownTicks = cooldownAfter;
         this.activeSignal = signal;
+        this.pitch = pitch;
         return true;
     }
 
@@ -294,6 +320,7 @@ public class SimulatedEntity {
         this.delayTicks = 0;
         this.cooldownTicks = 0;
         this.activeSignal = null;
+        this.pitch = 1.0f;
     }
 
     /**
