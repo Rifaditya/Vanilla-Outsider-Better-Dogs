@@ -242,4 +242,46 @@ public class BetterDogsAllVersionSidednessContractTest {
             assertTrue(Files.exists(classPath), "Mixin class file must exist in source: " + classPath);
         }
     }
+
+    @Test
+    @DisplayName("Pillar 5: Multi-Loader NeoForge manifests & SPI service registration hygiene")
+    void testNeoForgeManifestAndServicesHygiene() throws IOException {
+        Path root = findProjectRoot();
+        Path neoforgeModsToml = root.resolve("neoforge/src/main/resources/META-INF/neoforge.mods.toml");
+        if (!Files.exists(neoforgeModsToml)) {
+            return; // Single-loader project or pre-migration anchor
+        }
+
+        // 1. Verify neoforge.mods.toml & mods.toml exist
+        assertTrue(Files.exists(neoforgeModsToml), "neoforge.mods.toml must exist");
+        Path modsToml = root.resolve("neoforge/src/main/resources/META-INF/mods.toml");
+        assertTrue(Files.exists(modsToml), "mods.toml must exist for legacy Forge forward compatibility");
+
+        String neoContent = Files.readString(neoforgeModsToml, StandardCharsets.UTF_8);
+        assertTrue(neoContent.contains("modId=\"better_dogs\""), "neoforge.mods.toml must declare modId='better_dogs'");
+        assertTrue(neoContent.contains("config=\"vanilla-outsider-better-dogs-common.mixins.json\""), "neoforge.mods.toml must declare common mixin config");
+
+        // 2. Verify pack.mcmeta exists and has pack_format
+        Path packMcmeta = root.resolve("neoforge/src/main/resources/pack.mcmeta");
+        assertTrue(Files.exists(packMcmeta), "pack.mcmeta must exist in neoforge resources");
+        String packContent = Files.readString(packMcmeta, StandardCharsets.UTF_8);
+        assertTrue(packContent.contains("\"pack_format\""), "pack.mcmeta must specify pack_format");
+
+        // 3. Verify Java SPI service provider declarations in :neoforge and :fabric
+        Path neoforgePlatformSvc = root.resolve("neoforge/src/main/resources/META-INF/services/net.vanillaoutsider.betterdogs.platform.services.IPlatformHelper");
+        assertTrue(Files.exists(neoforgePlatformSvc), "NeoForge IPlatformHelper SPI file must exist");
+        assertEquals("net.vanillaoutsider.betterdogs.platform.NeoForgePlatformHelper", Files.readString(neoforgePlatformSvc, StandardCharsets.UTF_8).trim());
+
+        Path neoforgeWolfDataSvc = root.resolve("neoforge/src/main/resources/META-INF/services/net.vanillaoutsider.betterdogs.platform.services.IWolfDataHelper");
+        assertTrue(Files.exists(neoforgeWolfDataSvc), "NeoForge IWolfDataHelper SPI file must exist");
+        assertEquals("net.vanillaoutsider.betterdogs.platform.NeoForgeWolfDataHelper", Files.readString(neoforgeWolfDataSvc, StandardCharsets.UTF_8).trim());
+
+        Path fabricPlatformSvc = root.resolve("fabric/src/main/resources/META-INF/services/net.vanillaoutsider.betterdogs.platform.services.IPlatformHelper");
+        assertTrue(Files.exists(fabricPlatformSvc), "Fabric IPlatformHelper SPI file must exist");
+        assertEquals("net.vanillaoutsider.betterdogs.platform.FabricPlatformHelper", Files.readString(fabricPlatformSvc, StandardCharsets.UTF_8).trim());
+
+        Path fabricWolfDataSvc = root.resolve("fabric/src/main/resources/META-INF/services/net.vanillaoutsider.betterdogs.platform.services.IWolfDataHelper");
+        assertTrue(Files.exists(fabricWolfDataSvc), "Fabric IWolfDataHelper SPI file must exist");
+        assertEquals("net.vanillaoutsider.betterdogs.platform.FabricWolfDataHelper", Files.readString(fabricWolfDataSvc, StandardCharsets.UTF_8).trim());
+    }
 }
