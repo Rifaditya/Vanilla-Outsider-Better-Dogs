@@ -21,6 +21,7 @@ import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.vanillaoutsider.betterdogs.ai.EatGroundFoodGoal;
 import net.vanillaoutsider.betterdogs.ai.FleeCreeperGoal;
 import net.vanillaoutsider.betterdogs.ai.WolfGuardGoal;
+import net.vanillaoutsider.betterdogs.ai.WildWolfWanderGoal;
 
 /**
  * Headless In-Engine Behavioral GameTest Suite for Better Dogs AI goals.
@@ -181,6 +182,30 @@ public class BetterDogsAIBehaviorGameTest {
             wolf.setTarget(zombie);
             helper.assertTrue(!guardGoal.canUse(), "WolfGuardGoal must yield (canUse == false) when wolf has a combat target in range");
         }
+
+        helper.succeed();
+    }
+
+    @GameTest
+    public void testWildWolfWanderGoalActivationAndTameTransition(GameTestHelper helper) {
+        BlockPos wolfPos = new BlockPos(2, 2, 2);
+        Wolf wolf = helper.spawn(EntityTypes.WOLF, wolfPos);
+        helper.assertTrue(wolf != null, "Wolf entity failed to spawn for WildWolfWanderGoal test");
+        helper.assertTrue(!wolf.isTame(), "Spawned wolf must initially be wild/untamed");
+
+        WildWolfWanderGoal wanderGoal = new WildWolfWanderGoal(wolf, 1.0D);
+        helper.assertTrue(WildWolfWanderGoal.isEligible(wolf),
+                "Untamed wild wolf must be eligible for wild wandering");
+
+        // Tame the wolf
+        wolf.setTame(true, false);
+        helper.assertTrue(wolf.isTame(), "Wolf must now report isTame == true");
+        helper.assertTrue(!WildWolfWanderGoal.isEligible(wolf),
+                "Tamed wolf must NOT be eligible for wild wandering");
+        helper.assertTrue(!wanderGoal.canUse(),
+                "WildWolfWanderGoal.canUse() must return false once wolf is tamed");
+        helper.assertTrue(!wanderGoal.canContinueToUse(),
+                "WildWolfWanderGoal.canContinueToUse() must return false once wolf is tamed");
 
         helper.succeed();
     }

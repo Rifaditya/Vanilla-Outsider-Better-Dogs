@@ -37,6 +37,7 @@ import net.vanillaoutsider.betterdogs.ai.WanderlustGoal;
 import net.vanillaoutsider.betterdogs.ai.WildWolfHuntGoal;
 import net.vanillaoutsider.betterdogs.ai.WildWolfPackWarGoal;
 import net.vanillaoutsider.betterdogs.ai.WildWolfTerritorialGoal;
+import net.vanillaoutsider.betterdogs.ai.WildWolfWanderGoal;
 import net.vanillaoutsider.betterdogs.ai.WolfFetchGoal;
 import net.vanillaoutsider.betterdogs.ai.WolfGiftGoal;
 import net.vanillaoutsider.betterdogs.ai.WolfGuardGoal;
@@ -159,6 +160,7 @@ public abstract class WolfAIMixin extends TamableAnimal {
 
         this.goalSelector.addGoal(8, new TamedWanderNearOwnerGoal(wolf, 1.0));
         this.goalSelector.addGoal(8, new WanderlustGoal(wolf, 1.0));
+        this.goalSelector.addGoal(8, new WildWolfWanderGoal(wolf, 1.0));
         
         // DasikLibrary Wild Pack Group Logic (Disabled automatically if Tamed)
         this.goalSelector.addGoal(5, new WildWolfFollowLeaderGoal(wolf));
