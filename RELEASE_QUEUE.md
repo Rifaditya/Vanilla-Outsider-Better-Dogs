@@ -3,28 +3,30 @@
 This file tracks which built versions (from the central archive folder "E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Archive Jar of all versions") have been manually uploaded to Modrinth/CurseForge.
 Open this file in your editor and change `[ ]` to `[x]` when you publish a version.
 
+> **Multi-Loader Note (MC 26.1.2):** Starting from 5.1.1+26.1.2 up to HEAD 5.7.11+26.1.2, all builds are compiled as native Multi-Loader artifacts with dual production JARs: Fabric (`*-fabric.jar`) and NeoForge (`*-neoforge.jar`).
+
 ## 🚀 Published & Backlog Queue
 
-- [ ] **Better Dogs 5.7.11+26.1.2** - Untamed Wild Wolves Wandering AI Fix (BL-BD-040)
-- [ ] **Better Dogs 5.7.10+26.1.2** - Multi-Puppy Sibling Taming & Ownership Fix (BL-BD-039)
+- [ ] **Better Dogs 5.7.11+26.1.2** [Fabric + NeoForge] - Untamed Wild Wolves Wandering AI Fix (BL-BD-040)
+- [ ] **Better Dogs 5.7.10+26.1.2** [Fabric + NeoForge] - Multi-Puppy Sibling Taming & Ownership Fix (BL-BD-039)
 
-- [ ] **Better Dogs 5.7.9+26.1.2** - Chorus Howl Follower Response & Pack Harmony (BL-BD-038)
-- [ ] **Better Dogs 5.7.8+26.1.2** - Tamed Pack Clumping Freeze Resolved & Play Choreography Cooldown (BL-BD-036, BL-BD-037, BL-BD-049)
-- [ ] **Better Dogs 5.7.7+26.1.2** - Pack Infighting Civil War Immunity & Configurable Sparring Frequency (BL-BD-035)
-- [ ] **Better Dogs 5.7.6+26.1.2** - 5-Pillar Testing Harness: Concurrency, Brigadier AST & Headless Simulation (BL-BD-018)
-- [ ] **Better Dogs 5.7.5+26.1.2** - Ballistic Interceptor: Multi-Era Parity Verification & Full Production Release (BL-BD-021)
-- [ ] **Better Dogs 5.7.4+26.1.2** - Ballistic Interceptor: Heroic Sacrifice Damage Routing, Anti-One-Shot Protection & Sensory Polish (BL-BD-021)
-- [ ] **Better Dogs 5.7.3+26.1.2** - Ballistic Interceptor: AI Goal Registration in WolfAIMixin (BL-BD-021)
-- [ ] **Better Dogs 5.7.2+26.1.2** - Ballistic Interceptor: Canine Intercept AI Goal Implementation (BL-BD-021)
-- [ ] **Better Dogs 5.7.1+26.1.2** - Ballistic Interceptor: Dynamic GameRules, Config Synchronization & Localization (BL-BD-021)
+- [ ] **Better Dogs 5.7.9+26.1.2** [Fabric + NeoForge] - Chorus Howl Follower Response & Pack Harmony (BL-BD-038)
+- [ ] **Better Dogs 5.7.8+26.1.2** [Fabric + NeoForge] - Tamed Pack Clumping Freeze Resolved & Play Choreography Cooldown (BL-BD-036, BL-BD-037, BL-BD-049)
+- [ ] **Better Dogs 5.7.7+26.1.2** [Fabric + NeoForge] - Pack Infighting Civil War Immunity & Configurable Sparring Frequency (BL-BD-035)
+- [ ] **Better Dogs 5.7.6+26.1.2** [Fabric + NeoForge] - 5-Pillar Testing Harness: Concurrency, Brigadier AST & Headless Simulation (BL-BD-018)
+- [ ] **Better Dogs 5.7.5+26.1.2** [Fabric + NeoForge] - Ballistic Interceptor: Multi-Era Parity Verification & Full Production Release (BL-BD-021)
+- [ ] **Better Dogs 5.7.4+26.1.2** [Fabric + NeoForge] - Ballistic Interceptor: Heroic Sacrifice Damage Routing, Anti-One-Shot Protection & Sensory Polish (BL-BD-021)
+- [ ] **Better Dogs 5.7.3+26.1.2** [Fabric + NeoForge] - Ballistic Interceptor: AI Goal Registration in WolfAIMixin (BL-BD-021)
+- [ ] **Better Dogs 5.7.2+26.1.2** [Fabric + NeoForge] - Ballistic Interceptor: Canine Intercept AI Goal Implementation (BL-BD-021)
+- [ ] **Better Dogs 5.7.1+26.1.2** [Fabric + NeoForge] - Ballistic Interceptor: Dynamic GameRules, Config Synchronization & Localization (BL-BD-021)
 
-- [ ] **Better Dogs 5.7.0+26.1.2** - Ballistic Interceptor: Trajectory Intercept Solver & Disposition Affinity (BL-BD-021)
-- [ ] **Better Dogs 5.6.0+26.1.2** - Ballistic Evasion Reflex: Dodging Ghast Fireball Trajectories (BL-BD-020)
-- [ ] **5.5.0+26.1.2** - Canine Explosive Reflex: Primed TNT, End Crystals & Swelling Creepers Flee Reflex (BL-BD-019)
-- [ ] **5.4.0+26.1.2** - Extensible Canine Personality Archetypes: Guardian, Playful, Adventurer, Glutton, Lazy, Fearless (BL-BD-013)
-- [ ] **`5.3.0+26.1.2`** - Canine Physical Genetics: Horse-Like Speed, Health, Scale & Pitch Timbre (BL-BD-012)
-- [ ] **`5.2.0+26.1.2`** (2026-10-19) - Dog Play Choreography AI Suite & Orbit Sparring (MC 26.1.2)
-- [x] **`5.1.1+26.1.2`** - GameRule Identifier Crash Fix & Harmless Pack Sparring Suite (MC 26.1.2)
+- [ ] **Better Dogs 5.7.0+26.1.2** [Fabric + NeoForge] - Ballistic Interceptor: Trajectory Intercept Solver & Disposition Affinity (BL-BD-021)
+- [ ] **Better Dogs 5.6.0+26.1.2** [Fabric + NeoForge] - Ballistic Evasion Reflex: Dodging Ghast Fireball Trajectories (BL-BD-020)
+- [ ] **5.5.0+26.1.2** [Fabric + NeoForge] - Canine Explosive Reflex: Primed TNT, End Crystals & Swelling Creepers Flee Reflex (BL-BD-019)
+- [ ] **5.4.0+26.1.2** [Fabric + NeoForge] - Extensible Canine Personality Archetypes: Guardian, Playful, Adventurer, Glutton, Lazy, Fearless (BL-BD-013)
+- [ ] **`5.3.0+26.1.2`** [Fabric + NeoForge] - Canine Physical Genetics: Horse-Like Speed, Health, Scale & Pitch Timbre (BL-BD-012)
+- [ ] **`5.2.0+26.1.2`** [Fabric + NeoForge] (2026-10-19) - Dog Play Choreography AI Suite & Orbit Sparring (MC 26.1.2)
+- [x] **`5.1.1+26.1.2`** [Fabric + NeoForge] - GameRule Identifier Crash Fix & Harmless Pack Sparring Suite (MC 26.1.2) *(Fabric published, NeoForge dual build compiled)*
 - [x] **`5.1.0+26.1.2`** - Pack Play Sparring & Social Dynamics AI Suite (MC 26.1.2)
 - [x] **5.0.94+26.1.2** - Multi-Era Parity Alignment (MC 26.1.2)
 - [x] **`4.24.68+26.1.2`** - Italian (`it_it`) Localization & Player Guide (11-Language Suite Complete)
