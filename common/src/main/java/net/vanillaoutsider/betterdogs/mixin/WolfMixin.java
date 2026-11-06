@@ -574,7 +574,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         Wolf wolf = (Wolf) (Object) this;
         this.goalSelector.getAvailableGoals().removeIf(wrapped -> {
             var goal = wrapped.getGoal();
-            return goal instanceof FollowOwnerGoal || (goal instanceof WaterAvoidingRandomStrollGoal && !(goal instanceof TamedWanderNearOwnerGoal));
+            return goal instanceof FollowOwnerGoal || (goal.getClass() == WaterAvoidingRandomStrollGoal.class);
         });
 
         this.goalSelector.addGoal(1, new net.vanillaoutsider.betterdogs.ai.WolfProjectileInterceptGoal(wolf));
@@ -609,6 +609,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         this.goalSelector.addGoal(7, new WolfBegGoal(wolf, 5.0F));
         this.goalSelector.addGoal(8, new TamedWanderNearOwnerGoal(wolf, 1.0));
         this.goalSelector.addGoal(8, new net.vanillaoutsider.betterdogs.ai.WanderlustGoal(wolf, 1.0));
+        this.goalSelector.addGoal(8, new net.vanillaoutsider.betterdogs.ai.WildWolfWanderGoal(wolf, 1.0));
         this.targetSelector.addGoal(1, new net.vanillaoutsider.betterdogs.ai.BloodFeudGoal(wolf));
         this.targetSelector.addGoal(2, new net.vanillaoutsider.betterdogs.ai.WolfNemesisTargetGoal(wolf));
         this.targetSelector.addGoal(3, new PacifistRevengeGoal(wolf));

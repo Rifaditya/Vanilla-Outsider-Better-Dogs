@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.1)
 
+## [1.7.11+1.21.1] - 2026-11-05
+
+### Fixed
+- 🐺 **Untamed Wild Wolves Wandering & Roaming AI Restored (BL-BD-040)**:
+  - Fixed an issue where natural wild wolves and wild pack leaders in the world became completely immobile statues after spawning due to custom goal registration unconditionally stripping `WaterAvoidingRandomStrollGoal`.
+  - Implemented `WildWolfWanderGoal` restoring vanilla-parity ambient wandering for untamed wolves.
+  - Ensured seamless dynamic goal deactivation when tamed, seamlessly transitioning to `TamedWanderNearOwnerGoal` with zero stroll duplication or conflicts.
+
 ## [1.7.10+1.21.1] - 2026-11-05
 
 ### Fixed
