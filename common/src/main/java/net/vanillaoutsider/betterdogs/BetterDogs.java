@@ -3,6 +3,7 @@
 package net.vanillaoutsider.betterdogs;
 
 import net.dasik.social.api.SocialEventRegistry;
+import net.dasik.social.api.registry.DynamicRegistryHelper;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -28,61 +29,61 @@ public class BetterDogs {
     public static final String MOD_ID = "vanilla-outsider-better-dogs";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-    public static final TameWolfPersonalityTrigger TAME_WOLF_PERSONALITY = Registry.register(
+    public static final TameWolfPersonalityTrigger TAME_WOLF_PERSONALITY = DynamicRegistryHelper.registerWithUnfreeze(
             BuiltInRegistries.TRIGGER_TYPES,
             Identifier.fromNamespaceAndPath(MOD_ID, "tame_wolf_personality"),
             new TameWolfPersonalityTrigger()
     );
 
-    public static final GuardWolfPersonalityTrigger GUARD_WOLF_PERSONALITY = Registry.register(
+    public static final GuardWolfPersonalityTrigger GUARD_WOLF_PERSONALITY = DynamicRegistryHelper.registerWithUnfreeze(
             BuiltInRegistries.TRIGGER_TYPES,
             Identifier.fromNamespaceAndPath(MOD_ID, "guard_wolf_personality"),
             new GuardWolfPersonalityTrigger()
     );
 
-    public static final InbredWolfTrigger INBRED_WOLF = Registry.register(
+    public static final InbredWolfTrigger INBRED_WOLF = DynamicRegistryHelper.registerWithUnfreeze(
             BuiltInRegistries.TRIGGER_TYPES,
             Identifier.fromNamespaceAndPath(MOD_ID, "inbred_wolf"),
             new InbredWolfTrigger()
     );
 
-    public static final OutcrossRuntTrigger OUTCROSS_RUNT = Registry.register(
+    public static final OutcrossRuntTrigger OUTCROSS_RUNT = DynamicRegistryHelper.registerWithUnfreeze(
             BuiltInRegistries.TRIGGER_TYPES,
             Identifier.fromNamespaceAndPath(MOD_ID, "outcross_runt"),
             new OutcrossRuntTrigger()
     );
 
-    public static final CureInbredTrigger CURE_INBRED = Registry.register(
+    public static final CureInbredTrigger CURE_INBRED = DynamicRegistryHelper.registerWithUnfreeze(
             BuiltInRegistries.TRIGGER_TYPES,
             Identifier.fromNamespaceAndPath(MOD_ID, "cure_inbred"),
             new CureInbredTrigger()
     );
 
-    public static final WolfLitterTrigger WOLF_LITTER = Registry.register(
+    public static final WolfLitterTrigger WOLF_LITTER = DynamicRegistryHelper.registerWithUnfreeze(
             BuiltInRegistries.TRIGGER_TYPES,
             Identifier.fromNamespaceAndPath(MOD_ID, "wolf_litter"),
             new WolfLitterTrigger()
     );
 
-    public static final PutUpForAdoptionTrigger PUT_UP_FOR_ADOPTION = Registry.register(
+    public static final PutUpForAdoptionTrigger PUT_UP_FOR_ADOPTION = DynamicRegistryHelper.registerWithUnfreeze(
             BuiltInRegistries.TRIGGER_TYPES,
             Identifier.fromNamespaceAndPath(MOD_ID, "put_up_for_adoption"),
             new PutUpForAdoptionTrigger()
     );
 
-    public static final OnPatrolTrigger ON_PATROL = Registry.register(
+    public static final OnPatrolTrigger ON_PATROL = DynamicRegistryHelper.registerWithUnfreeze(
             BuiltInRegistries.TRIGGER_TYPES,
             Identifier.fromNamespaceAndPath(MOD_ID, "on_patrol"),
             new OnPatrolTrigger()
     );
 
-    public static final SelfServiceTrigger SELF_SERVICE = Registry.register(
+    public static final SelfServiceTrigger SELF_SERVICE = DynamicRegistryHelper.registerWithUnfreeze(
             BuiltInRegistries.TRIGGER_TYPES,
             Identifier.fromNamespaceAndPath(MOD_ID, "self_service"),
             new SelfServiceTrigger()
     );
 
-    public static final net.minecraft.sounds.SoundEvent WOLF_HOWL = Registry.register(
+    public static final net.minecraft.sounds.SoundEvent WOLF_HOWL = DynamicRegistryHelper.registerWithUnfreeze(
             BuiltInRegistries.SOUND_EVENT,
             Identifier.fromNamespaceAndPath("betterdogs", "entity.wolf.howl"),
             net.minecraft.sounds.SoundEvent.createVariableRangeEvent(Identifier.fromNamespaceAndPath("betterdogs", "entity.wolf.howl"))
