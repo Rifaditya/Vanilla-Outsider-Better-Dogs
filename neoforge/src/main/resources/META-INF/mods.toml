@@ -1,0 +1,36 @@
+modLoader="javafml"
+loaderVersion="[2,)"
+license="GPL-3.0-or-later"
+issueTrackerURL="https://github.com/Rifaditya/Vanilla-Outsider-Better-Dogs/issues"
+
+[[mods]]
+modId="better_dogs"
+version="${version}"
+displayName="Vanilla Outsider: Better Dogs"
+authors="Dasik (Rifaditya)"
+description="Enhances vanilla wolves with personalities, genetics, smart survival AI, guard sentinel mode, and social pack dynamics."
+logoFile="assets/vanilla-outsider-better-dogs/icon.png"
+
+[[dependencies.better_dogs]]
+modId="neoforge"
+mandatory=true
+versionRange="[26.1,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.better_dogs]]
+modId="minecraft"
+mandatory=true
+versionRange="[26.1.2,26.2)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.better_dogs]]
+modId="dasik_library"
+mandatory=true
+versionRange="[1.11.2,)"
+ordering="NONE"
+side="BOTH"
+
+[[mixins]]
+config="vanilla-outsider-better-dogs-common.mixins.json"

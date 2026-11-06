@@ -1,0 +1,19 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": [
+    "minecraft:plains",
+    "minecraft:savanna",
+    "minecraft:savanna_plateau",
+    "minecraft:windswept_savanna",
+    "minecraft:badlands",
+    "minecraft:eroded_badlands",
+    "minecraft:wooded_badlands",
+    "minecraft:meadow"
+  ],
+  "spawners": {
+    "type": "minecraft:wolf",
+    "weight": 8,
+    "minCount": 4,
+    "maxCount": 8
+  }
+}

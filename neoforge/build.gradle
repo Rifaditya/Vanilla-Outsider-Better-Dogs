@@ -1,0 +1,51 @@
+// Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
+// Subproject :neoforge — NeoForge Loader Entrypoints & Hooks
+
+architectury {
+    platformSetupLoomIde()
+    neoForge()
+}
+
+dependencies {
+    neoForge "net.neoforged:neoforge:${rootProject.neoforge_version}"
+    implementation "net.dasik.social:dasik-library:${rootProject.dasik_library_version}"
+
+    // Transitive interface symbols from dasik-library bytecode (compileOnly, 0 runtime bloat)
+    compileOnly "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    compileOnly "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_version}"
+    compileOnly "net.fabricmc.fabric-api:fabric-lifecycle-events-v1:4.1.1+9d6daa9756"
+    compileOnly "net.fabricmc.fabric-api:fabric-permission-api-v1:1.0.0+5f4a394125"
+
+    // Optional Integrations
+    compileOnly "dev.isxander:yet-another-config-lib:3.9.5+26.2-fabric"
+    compileOnly "maven.modrinth:jade:26.2.8+fabric"
+
+    // Compile against common classes
+    implementation project(path: ':common')
+}
+
+processResources {
+    inputs.property 'version', project.version
+
+    filesMatching(['META-INF/neoforge.mods.toml', 'META-INF/mods.toml']) {
+        expand 'version': project.version
+    }
+}
+
+// Native zipTree Bundling without Shadow plugin (Gradle 9.3+ safe)
+jar {
+    archiveClassifier.set('neoforge')
+    dependsOn ':common:transformProductionNeoForge'
+    from(zipTree(project(':common').tasks.transformProductionNeoForge.archiveFile)) {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+}
+
+publishing {
+    publications {
+        mavenNeoForge(MavenPublication) {
+            artifactId = "${rootProject.archives_base_name}-neoforge"
+            from components.java
+        }
+    }
+}

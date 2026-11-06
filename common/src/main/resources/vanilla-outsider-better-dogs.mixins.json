@@ -1,0 +1,39 @@
+{
+  "required": true,
+  "package": "net.vanillaoutsider.betterdogs.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "mixins": [
+    "AnimalMixin",
+    "BreedGoalMixin",
+    "EntityMixin",
+    "HurtByTargetGoalMixin",
+    "InstrumentItemMixin",
+    "NaturalSpawnerMixin",
+    "OwnerHurtByTargetGoalMixin",
+    "OwnerHurtTargetGoalMixin",
+    "ServerLevelMixin",
+    "ServerPlayerMixin",
+    "ServerPlayerTickMixin",
+    "TamableAnimalMixin",
+    "WalkNodeEvaluatorMixin",
+    "WolfAIMixin",
+    "WolfAccessor",
+    "WolfBreedingMixin",
+    "WolfCombatMixin",
+    "WolfGroupMixin",
+    "WolfGuardMixin",
+    "WolfInteractMixin",
+    "WolfMixin",
+    "WolfMobMixin",
+    "WolfPushMixin",
+    "WolfSocialMixin",
+    "WolfSoundMixin",
+    "WolfSpawnMixin"
+  ],
+  "client": [
+    "WolfRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
