@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 5.7.11+26.1.2** - Untamed Wild Wolves Wandering AI Fix (BL-BD-040)
 - [ ] **Better Dogs 5.7.10+26.1.2** - Multi-Puppy Sibling Taming & Ownership Fix (BL-BD-039)
 
 - [ ] **Better Dogs 5.7.9+26.1.2** - Chorus Howl Follower Response & Pack Harmony (BL-BD-038)
