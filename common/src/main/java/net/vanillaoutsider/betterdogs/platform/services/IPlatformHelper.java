@@ -42,4 +42,10 @@ public interface IPlatformHelper {
      * @return Version string, or empty string if not found.
      */
     String getModVersion(String modId);
+
+    /**
+     * Registers platform-specific content (e.g. criterion triggers and sound events
+     * on platforms where static or early registration is supported).
+     */
+    default void registerContent() {}
 }

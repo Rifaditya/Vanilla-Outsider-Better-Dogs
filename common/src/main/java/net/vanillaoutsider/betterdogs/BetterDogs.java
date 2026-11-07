@@ -3,9 +3,6 @@
 package net.vanillaoutsider.betterdogs;
 
 import net.dasik.social.api.SocialEventRegistry;
-import net.dasik.social.api.registry.DynamicRegistryHelper;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.vanillaoutsider.betterdogs.advancement.CureInbredTrigger;
 import net.vanillaoutsider.betterdogs.advancement.GuardWolfPersonalityTrigger;
@@ -29,67 +26,22 @@ public class BetterDogs {
     public static final String MOD_ID = "vanilla-outsider-better-dogs";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-    public static final TameWolfPersonalityTrigger TAME_WOLF_PERSONALITY = DynamicRegistryHelper.registerWithUnfreeze(
-            BuiltInRegistries.TRIGGER_TYPES,
-            Identifier.fromNamespaceAndPath(MOD_ID, "tame_wolf_personality"),
-            new TameWolfPersonalityTrigger()
-    );
+    public static final TameWolfPersonalityTrigger TAME_WOLF_PERSONALITY = new TameWolfPersonalityTrigger();
+    public static final GuardWolfPersonalityTrigger GUARD_WOLF_PERSONALITY = new GuardWolfPersonalityTrigger();
+    public static final InbredWolfTrigger INBRED_WOLF = new InbredWolfTrigger();
+    public static final OutcrossRuntTrigger OUTCROSS_RUNT = new OutcrossRuntTrigger();
+    public static final CureInbredTrigger CURE_INBRED = new CureInbredTrigger();
+    public static final WolfLitterTrigger WOLF_LITTER = new WolfLitterTrigger();
+    public static final PutUpForAdoptionTrigger PUT_UP_FOR_ADOPTION = new PutUpForAdoptionTrigger();
+    public static final OnPatrolTrigger ON_PATROL = new OnPatrolTrigger();
+    public static final SelfServiceTrigger SELF_SERVICE = new SelfServiceTrigger();
 
-    public static final GuardWolfPersonalityTrigger GUARD_WOLF_PERSONALITY = DynamicRegistryHelper.registerWithUnfreeze(
-            BuiltInRegistries.TRIGGER_TYPES,
-            Identifier.fromNamespaceAndPath(MOD_ID, "guard_wolf_personality"),
-            new GuardWolfPersonalityTrigger()
-    );
-
-    public static final InbredWolfTrigger INBRED_WOLF = DynamicRegistryHelper.registerWithUnfreeze(
-            BuiltInRegistries.TRIGGER_TYPES,
-            Identifier.fromNamespaceAndPath(MOD_ID, "inbred_wolf"),
-            new InbredWolfTrigger()
-    );
-
-    public static final OutcrossRuntTrigger OUTCROSS_RUNT = DynamicRegistryHelper.registerWithUnfreeze(
-            BuiltInRegistries.TRIGGER_TYPES,
-            Identifier.fromNamespaceAndPath(MOD_ID, "outcross_runt"),
-            new OutcrossRuntTrigger()
-    );
-
-    public static final CureInbredTrigger CURE_INBRED = DynamicRegistryHelper.registerWithUnfreeze(
-            BuiltInRegistries.TRIGGER_TYPES,
-            Identifier.fromNamespaceAndPath(MOD_ID, "cure_inbred"),
-            new CureInbredTrigger()
-    );
-
-    public static final WolfLitterTrigger WOLF_LITTER = DynamicRegistryHelper.registerWithUnfreeze(
-            BuiltInRegistries.TRIGGER_TYPES,
-            Identifier.fromNamespaceAndPath(MOD_ID, "wolf_litter"),
-            new WolfLitterTrigger()
-    );
-
-    public static final PutUpForAdoptionTrigger PUT_UP_FOR_ADOPTION = DynamicRegistryHelper.registerWithUnfreeze(
-            BuiltInRegistries.TRIGGER_TYPES,
-            Identifier.fromNamespaceAndPath(MOD_ID, "put_up_for_adoption"),
-            new PutUpForAdoptionTrigger()
-    );
-
-    public static final OnPatrolTrigger ON_PATROL = DynamicRegistryHelper.registerWithUnfreeze(
-            BuiltInRegistries.TRIGGER_TYPES,
-            Identifier.fromNamespaceAndPath(MOD_ID, "on_patrol"),
-            new OnPatrolTrigger()
-    );
-
-    public static final SelfServiceTrigger SELF_SERVICE = DynamicRegistryHelper.registerWithUnfreeze(
-            BuiltInRegistries.TRIGGER_TYPES,
-            Identifier.fromNamespaceAndPath(MOD_ID, "self_service"),
-            new SelfServiceTrigger()
-    );
-
-    public static final net.minecraft.sounds.SoundEvent WOLF_HOWL = DynamicRegistryHelper.registerWithUnfreeze(
-            BuiltInRegistries.SOUND_EVENT,
-            Identifier.fromNamespaceAndPath("betterdogs", "entity.wolf.howl"),
-            net.minecraft.sounds.SoundEvent.createVariableRangeEvent(Identifier.fromNamespaceAndPath("betterdogs", "entity.wolf.howl"))
-    );
+    public static final net.minecraft.sounds.SoundEvent WOLF_HOWL =
+            net.minecraft.sounds.SoundEvent.createVariableRangeEvent(Identifier.fromNamespaceAndPath("betterdogs", "entity.wolf.howl"));
 
     public static void init() {
+        // Register platform-specific content (triggers, sounds)
+        Services.PLATFORM.registerContent();
         // Verify Library Version compatibility
         try {
             Class.forName("net.dasik.social.api.config.ConfigHelper");

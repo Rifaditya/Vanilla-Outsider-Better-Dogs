@@ -57,4 +57,9 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
             return "";
         }
     }
+
+    @Override
+    public void registerContent() {
+        // Content registration is handled asynchronously via RegisterEvent on the NeoForge mod event bus
+    }
 }
