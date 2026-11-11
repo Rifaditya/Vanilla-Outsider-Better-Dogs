@@ -25,7 +25,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 - [ ] **Better Dogs 5.5.0+26.1.2** [Fabric + NeoForge] - Canine Explosive Reflex: Primed TNT, End Crystals & Swelling Creepers Flee Reflex (BL-BD-019)
 - [ ] **Better Dogs 5.4.0+26.1.2** [Fabric + NeoForge] - Extensible Canine Personality Archetypes: Guardian, Playful, Adventurer, Glutton, Lazy, Fearless (BL-BD-013)
 - [ ] **Better Dogs 5.3.0+26.1.2** [Fabric + NeoForge] - Canine Physical Genetics: Horse-Like Speed, Health, Scale & Pitch Timbre (BL-BD-012)
-- [ ] **Better Dogs 5.2.0+26.1.2** [Fabric + NeoForge] (2026-10-19) - Dog Play Choreography AI Suite & Orbit Sparring (MC 26.1.2)
+- [x] **Better Dogs 5.2.0+26.1.2** [Fabric + NeoForge] (2026-10-19) - Dog Play Choreography AI Suite & Orbit Sparring (MC 26.1.2)
 - [x] **Better Dogs 5.1.1+26.1.2** [Fabric + NeoForge] - GameRule Identifier Crash Fix & Harmless Pack Sparring Suite (MC 26.1.2) *(Fabric published, NeoForge dual build compiled)*
 - [x] **`5.1.0+26.1.2`** - Pack Play Sparring & Social Dynamics AI Suite (MC 26.1.2)
 - [x] **5.0.94+26.1.2** - Multi-Era Parity Alignment (MC 26.1.2)
