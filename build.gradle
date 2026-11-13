@@ -213,6 +213,20 @@ afterEvaluate {
                             }
                         }
                     }
+
+                    // External Vault Archive (OS-guarded for headless CI)
+                    if (file("D:/Minecraft Mod Archive Jars").exists()) {
+                        def fnLower = jarFile.name.toLowerCase()
+                        if (!fnLower.endsWith("-dev.jar") && !fnLower.endsWith("-sources.jar") && !fnLower.endsWith("-common.jar") && !fnLower.endsWith("-all.jar") && !fnLower.endsWith("-javadoc.jar")) {
+                            def vaultDir = file("D:/Minecraft Mod Archive Jars/Better Dogs")
+                            vaultDir.mkdirs()
+                            copy {
+                                from jarFile
+                                into vaultDir
+                            }
+                            println "[DEPLOY-POINT-3] Copied ${jarFile.name} to external vault: ${vaultDir.canonicalPath}"
+                        }
+                    }
                 }
             }
         }
