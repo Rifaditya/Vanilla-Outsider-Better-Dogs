@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 1.7.12+1.20.1** - Offline & Cross-Dimension Owner Bypass Fix in PackAudienceHelper.isCoOwned (BL-BD-053)
 - [ ] **Better Dogs 1.7.11+1.20.1** - Untamed Wild Wolves Wandering AI Fix (BL-BD-040)
 - [ ] **Better Dogs 1.7.10+1.20.1** - Multi-Puppy Sibling Taming & Ownership Fix (BL-BD-039)
 
