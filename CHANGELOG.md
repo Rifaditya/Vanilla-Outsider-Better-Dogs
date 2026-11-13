@@ -1,5 +1,12 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
+## [1.7.12+1.21.11] - 2026-11-13
+
+### Fixed
+- 🛡️ **Offline & Cross-Dimension Pack Co-Ownership Immunity Restored (`BL-BD-053`)**:
+  - Fixed `PackAudienceHelper.isCoOwned()` relying exclusively on live entity owner references (`getOwner()`), which dropped Pack Civil War Immunity and domestic discipline owner checks whenever the owner was offline or in another dimension.
+  - Updated `isCoOwned()` to enforce tamed status on both wolves and compare persistent owner UUIDs via `PlayChoreographyHelper.getOwnerUUID()`, while rejecting untamed wild wolves and `null == null` matches.
+
 ## [1.7.11+1.21.11] - 2026-11-05
 
 ### Fixed

@@ -2,11 +2,11 @@
 // Verified against: Minecraft 1.21.11
 package net.vanillaoutsider.betterdogs.util;
 
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
+import net.vanillaoutsider.betterdogs.ai.play.PlayChoreographyHelper;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -73,14 +73,16 @@ public final class PackAudienceHelper {
     }
 
     /**
-     * Checks if two wolves share the same owner.
+     * Checks if two wolves are both tamed and share the same persistent owner UUID.
+     * Falls back safely via {@link PlayChoreographyHelper#getOwnerUUID(Wolf)} so
+     * offline or cross-dimension owners do not bypass pack co-ownership checks.
      */
     public static boolean isCoOwned(Wolf a, Wolf b) {
-        if (a == null || b == null) {
+        if (a == null || b == null || !a.isTame() || !b.isTame()) {
             return false;
         }
-        LivingEntity ownerA = a.getOwner();
-        LivingEntity ownerB = b.getOwner();
+        UUID ownerA = PlayChoreographyHelper.getOwnerUUID(a);
+        UUID ownerB = PlayChoreographyHelper.getOwnerUUID(b);
         return ownerA != null && ownerA.equals(ownerB);
     }
 
