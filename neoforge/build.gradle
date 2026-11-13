@@ -37,3 +37,32 @@ publishing {
         }
     }
 }
+
+afterEvaluate {
+    def targetJarTask = tasks.findByName('remapJar') ?: tasks.findByName('jar')
+    if (targetJarTask != null) {
+        def archiveTask = tasks.register('archiveReleaseJar') {
+            group = 'build'
+            description = 'Copies built release JAR to external vault when mounted'
+            dependsOn targetJarTask
+            doLast {
+                def jarFile = targetJarTask.archiveFile.get().asFile
+                if (jarFile.exists() && file("D:/Minecraft Mod Archive Jars").exists()) {
+                    def fnLower = jarFile.name.toLowerCase()
+                    if (!fnLower.endsWith("-dev.jar") && !fnLower.endsWith("-sources.jar") && !fnLower.endsWith("-common.jar") && !fnLower.endsWith("-all.jar") && !fnLower.endsWith("-javadoc.jar")) {
+                        def vaultDir = file("D:/Minecraft Mod Archive Jars/Better Dogs")
+                        vaultDir.mkdirs()
+                        copy {
+                            from jarFile
+                            into vaultDir
+                        }
+                        println "[DEPLOY-POINT-3] Copied ${jarFile.name} to external vault: ${vaultDir.canonicalPath}"
+                    }
+                }
+            }
+        }
+        tasks.named('build').configure {
+            finalizedBy(archiveTask)
+        }
+    }
+}
