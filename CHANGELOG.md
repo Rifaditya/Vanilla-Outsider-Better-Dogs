@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.12+26.1.2] - 2026-11-13
+
+### Fixed
+- 🛡️ **Pack Civil War Protection & Play-Fight Target Wiring (BL-BD-054)**:
+  - Fixed a bug where co-owned tamed dogs could still injure or kill each other because combat targeting bypassed `WolfTargetingHandler` and used a legacy hook without pack civil war immunity or offline-owner checks.
+  - Isolated play-fighting (`PLAY_FIGHT`) and territorial war (`TERRITORIAL_WAR`) overrides to strictly permit only the designated target while rejecting bystanders and null targets.
+  - Added null and empty-string safety guards for blood feud target matching so unset nemesis entries cannot trigger unexpected errors or bypass pack safety.
+
 ## [5.7.11+26.1.2] - 2026-11-05
 
 ### Fixed

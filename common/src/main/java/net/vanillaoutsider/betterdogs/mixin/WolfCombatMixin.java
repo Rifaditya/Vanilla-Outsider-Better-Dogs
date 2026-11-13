@@ -7,6 +7,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.util.WolfCombatHooks;
+import net.vanillaoutsider.betterdogs.util.WolfTargetingHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -35,7 +36,7 @@ public abstract class WolfCombatMixin {
     @Inject(method = "wantsToAttack", at = @At("HEAD"), cancellable = true)
     private void betterdogs$onWantsToAttack(LivingEntity target, LivingEntity owner,
             CallbackInfoReturnable<Boolean> cir) {
-        Boolean result = WolfCombatHooks.wantsToAttack((Wolf) (Object) this, target, owner);
+        Boolean result = WolfTargetingHandler.wantsToAttack((Wolf) (Object) this, target, owner);
         if (result != null) {
             cir.setReturnValue(result);
         }
