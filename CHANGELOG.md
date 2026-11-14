@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
+## [1.7.14+1.21.11] - 2026-11-14
+
+### Fixed
+- **Pacifist Defensive Retaliation AI `HurtByTargetGoal.start()` Wipe & 24m Tether Fixes (`BL-BD-062`)**:
+  - Overrode `start()` in `PacifistRevengeGoal` to preserve the validated owner-defense attacker across `super.start()`, preventing vanilla `HurtByTargetGoal.start()` from silently wiping `wolf.getTarget()` back to `null` whenever only the owner was struck, and rallying nearby non-Pacifist standing co-owned adult packmates within `16.0` blocks (`alertNearbyPackmates`).
+  - Enforced the `24.0`-block (`576.0` squared) owner-defense tether identically in both `canUse()` and `canContinueToUse()` to eliminate 1-tick goal thrash loops at range boundaries while allowing self-defense when the owner is offline (`getOwner() == null`).
+  - Added missing `!isAlive()`, `isInSittingPose()`, and `betterdogs$isSittingManually()` defender guards, `stop()` target/state cleanup, and `getSensing() == null` headless safety while keeping Creeper, domestic discipline (`AdultDisciplineHelper`), and co-owned civil-war immunity intact.
+
 ## [1.7.13+1.21.11] - 2026-11-14
 
 ### Fixed

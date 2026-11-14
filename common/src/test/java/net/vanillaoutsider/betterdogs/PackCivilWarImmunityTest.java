@@ -570,6 +570,54 @@ class PackCivilWarImmunityTest {
     void testPacifistRevengeNullSafety() {
         PacifistRevengeGoal goal = new PacifistRevengeGoal(null);
         assertFalse(goal.canUse());
+        assertFalse(goal.canContinueToUse());
+        assertDoesNotThrow(goal::start);
+        assertDoesNotThrow(() -> goal.alertNearbyPackmates(null));
+        assertDoesNotThrow(goal::stop);
+    }
+
+    @Test
+    @DisplayName("BL-BD-062: Pacifist owner-defense start() preservation, 24m tether, and co-owned offline packmate alert immunity")
+    void testPacifistOwnerDefensePreservationAndAlertImmunity() {
+        UUID ownerA = UUID.randomUUID();
+        UUID ownerB = UUID.randomUUID();
+        StubServerPlayer playerA = createStubPlayer(ownerA);
+        StubServerPlayer rivalAttacker = createStubPlayer(ownerB);
+
+        OfflineStubWolf pacifist = createOfflineWolf(true, ownerA);
+        pacifist.betterdogs$setPersonality(WolfPersonality.PACIFIST);
+        OfflineStubWolf standingNormal = createOfflineWolf(true, ownerA);
+        standingNormal.betterdogs$setPersonality(WolfPersonality.NORMAL);
+        OfflineStubWolf otherPacifist = createOfflineWolf(true, ownerA);
+        otherPacifist.betterdogs$setPersonality(WolfPersonality.PACIFIST);
+        OfflineStubWolf rivalWolf = createOfflineWolf(true, ownerB);
+        rivalWolf.betterdogs$setPersonality(WolfPersonality.NORMAL);
+
+        StubServerLevel level = createStubServerLevel(200L, List.of(pacifist, standingNormal, otherPacifist, rivalWolf));
+        pacifist.attachLevel(level);
+        pacifist.attachLiveOwner(playerA, 400.0);
+        playerA.setLastHurtByMob(rivalAttacker);
+
+        PacifistRevengeGoal goal = new PacifistRevengeGoal(pacifist);
+        assertTrue(goal.canUse(), "Pacifist within 24m must engage when owner is struck");
+        goal.start();
+        assertSame(rivalAttacker, pacifist.getTarget(), "start() must preserve owner-defense target across super.start()");
+        assertSame(rivalAttacker, standingNormal.getTarget(), "Standing co-owned non-Pacifist packmate must be rallied");
+        assertNull(otherPacifist.getTarget(), "Nearby Pacifist packmate must not be rallied");
+        assertNull(rivalWolf.getTarget(), "Unrelated rival pack wolf must not be rallied");
+        assertTrue(goal.canContinueToUse(), "Goal must stay active inside 24m tether");
+
+        pacifist.setDistanceToOwnerSqr(576.01);
+        assertFalse(goal.canContinueToUse(), "Goal must disengage once owner distance exceeds 24m");
+        goal.stop();
+        assertNull(pacifist.getTarget(), "stop() must clear target");
+        assertFalse(goal.canUse(), "Pacifist beyond 24m must not re-enter owner defense");
+
+        // Co-owned offline wolf must never be targeted or rallied against
+        OfflineStubWolf coOwnedOfflineWolf = createOfflineWolf(true, ownerA);
+        pacifist.setDistanceToOwnerSqr(4.0);
+        playerA.setLastHurtByMob(coOwnedOfflineWolf);
+        assertFalse(goal.canUse(), "Offline co-owned packmate must retain Pacifist revenge immunity");
     }
 
     @Test
@@ -589,6 +637,7 @@ class PackCivilWarImmunityTest {
 
     private static final class StubServerPlayer extends ServerPlayer {
         private UUID uuid;
+        private @Nullable LivingEntity lastHurtByMob;
 
         private StubServerPlayer() {
             super(null, null, null, null);
@@ -606,6 +655,16 @@ class PackCivilWarImmunityTest {
         @Override
         public boolean isAlive() {
             return true;
+        }
+
+        @Override
+        public @Nullable LivingEntity getLastHurtByMob() {
+            return this.lastHurtByMob;
+        }
+
+        @Override
+        public void setLastHurtByMob(@Nullable LivingEntity attacker) {
+            this.lastHurtByMob = attacker;
         }
 
         @Override
@@ -680,6 +739,10 @@ class PackCivilWarImmunityTest {
         private @Nullable Level level;
         private @Nullable LivingEntity lastHurtByMob;
         private @Nullable LivingEntity target;
+        private double ownerDistanceSq;
+        private boolean orderedToSit;
+        private boolean sittingPose;
+        private boolean sittingManually;
         private WolfPersonality personality;
         private boolean hasPersonality;
         private float socialScale;
@@ -735,6 +798,7 @@ class PackCivilWarImmunityTest {
             this.nemesisEntityType = "";
             this.bloodFeudTarget = "";
             this.hasBloodFeud = false;
+            this.ownerDistanceSq = 4.0;
         }
 
         void attachLevel(@Nullable Level level) {
@@ -743,6 +807,27 @@ class PackCivilWarImmunityTest {
 
         void attachLiveOwner(@Nullable LivingEntity owner) {
             this.liveOwner = owner;
+        }
+
+        void attachLiveOwner(@Nullable LivingEntity owner, double distanceSq) {
+            this.liveOwner = owner;
+            this.ownerDistanceSq = distanceSq;
+        }
+
+        void setDistanceToOwnerSqr(double distanceSq) {
+            this.ownerDistanceSq = distanceSq;
+        }
+
+        void setOrderedToSitStub(boolean orderedToSit) {
+            this.orderedToSit = orderedToSit;
+        }
+
+        void setSittingPoseStub(boolean sittingPose) {
+            this.sittingPose = sittingPose;
+        }
+
+        void setSittingManuallyStub(boolean sittingManually) {
+            this.sittingManually = sittingManually;
         }
 
         void setLastHurtByMobStub(@Nullable LivingEntity attacker) {
@@ -790,12 +875,17 @@ class PackCivilWarImmunityTest {
 
         @Override
         public boolean isOrderedToSit() {
-            return false;
+            return this.orderedToSit;
         }
 
         @Override
         public boolean isInSittingPose() {
-            return false;
+            return this.sittingPose;
+        }
+
+        @Override
+        public boolean betterdogs$isSittingManually() {
+            return this.sittingManually;
         }
 
         @Override
@@ -806,6 +896,11 @@ class PackCivilWarImmunityTest {
         @Override
         public @Nullable LivingEntity getLastHurtByMob() {
             return this.lastHurtByMob;
+        }
+
+        @Override
+        public void setLastHurtByMob(@Nullable LivingEntity attacker) {
+            this.lastHurtByMob = attacker;
         }
 
         @Override
@@ -820,7 +915,7 @@ class PackCivilWarImmunityTest {
 
         @Override
         public double distanceToSqr(Entity entity) {
-            return 4.0;
+            return entity == this.liveOwner ? this.ownerDistanceSq : 4.0;
         }
 
         @Override

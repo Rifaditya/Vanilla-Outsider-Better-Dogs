@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 1.7.14+1.21.11** - Fix PacifistRevengeGoal HurtByTargetGoal.start() Owner-Defense Wipe, 24m Entry Tether & Offline Pack Rally Parity (BL-BD-062)
 - [ ] **Better Dogs 1.7.13+1.21.11** - Offline Owner null==null & Live getOwner() Bypass Fixes [BL-BD-055]
 - [ ] **Better Dogs 1.7.12+1.21.11** - Offline & Cross-Dimension Owner Bypass Fix in PackAudienceHelper.isCoOwned (BL-BD-053)
 - [ ] **Better Dogs 1.7.11+1.21.11** - Untamed Wild Wolves Wandering AI Fix (BL-BD-040)
