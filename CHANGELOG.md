@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.14+26.3] - 2026-11-14
+
+### Fixed
+- **Null-Safe Blood Feud Persistence & Adoption Codec Safety (BL-BD-059)**:
+  - Fixed a `NullPointerException` and chunk/attachment `CODEC` crash triggered when non-sneak empty-hand adoption (`WolfInteractionHelper`) passed `null` to `betterdogs$setBloodFeudTarget(null)`, updating it to call `BloodFeudHelper.clearBloodFeud(wolf)`.
+  - Aligned sneak empty-hand adoption (`WolfAdoptionHelper.tryHandleAdoption`) with non-sneak adoption by resetting `leaderUuid`, clearing active blood feuds via `BloodFeudHelper.clearBloodFeud(wolf)`, resetting `guardMode`/`guardPos`, and clearing ordered sitting state.
+  - Added null-to-empty normalization in `WolfMixin.betterdogs$getBloodFeudTarget()` and `WolfMixin.betterdogs$setBloodFeudTarget(String)` plus compact canonical constructors on `WolfPersistentData`, `BaseData`, and `ExtraData`, hardened blood feud persistence helpers, and headless `WeakHashMap` fallback storage in `WolfPersistentData`.
+
 ## [5.7.13+26.3] - 2026-11-14
 
 ### Fixed
