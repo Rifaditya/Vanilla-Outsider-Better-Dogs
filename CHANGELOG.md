@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.15+26.2] - 2026-11-14
+
+### Fixed
+- **Restored Pacifist Defensive Retaliation AI & HurtByTargetGoal Target/Tether Fixes (BL-BD-062)**:
+  - Restored `PacifistRevengeGoal` from the broken Step 25 `extends Goal` fleeing stub back to `extends HurtByTargetGoal` and relocated its registration in `WolfAIMixin` from `goalSelector` priority 2 to `targetSelector` priority 3 alongside `AggressiveTargetGoal` (`priority 2`), bringing `MC 26.2` back into behavioral parity with the Legacy & Transitional anchors.
+  - Enforced the `24.0` block (`576.0` squared) owner-defense tether identically in both `canUse()` and `canContinueToUse()` to eliminate 1-tick goal thrash loops at range boundaries while allowing self-defense when the owner is offline (`getOwner() == null`).
+  - Overrode `start()` to preserve resolved owner-defense targets across `super.start()`, preventing vanilla `HurtByTargetGoal.start()` from wiping `wolf.getTarget()` back to `null` when only the owner was struck, and rallying nearby non-Pacifist standing co-owned adult packmates within `16.0` blocks while maintaining Creeper, discipline, and co-owned civil-war immunity.
+
 ## [5.7.14+26.2] - 2026-11-14
 
 ### Fixed

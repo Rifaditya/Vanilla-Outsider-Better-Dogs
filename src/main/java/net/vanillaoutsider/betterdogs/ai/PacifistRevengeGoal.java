@@ -1,159 +1,233 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
-// Verified against: Minecraft 26.3
+// Verified against: Minecraft 26.2
 package net.vanillaoutsider.betterdogs.ai;
 
-import java.util.EnumSet;
 import java.util.List;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.AABB;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.util.PackAudienceHelper;
-import net.vanillaoutsider.betterdogs.util.WolfFleeHelper;
+import net.vanillaoutsider.betterdogs.util.WolfTargetingHandler;
+import org.jspecify.annotations.Nullable;
 
 /**
- * Dedicated single-purpose AI goal for Pacifist personality wolves.
- * When attacked or threatened, Pacifist wolves do not initiate direct violence;
- * they alert nearby packmates within 16 blocks to defend them and flee tactically toward safety/owner.
+ * Defensive retaliation target goal for Pacifist wolves (BL-BD-062).
+ * Pacifists never initiate fights, but defend themselves when struck and defend their owner
+ * when their owner is struck within {@value #OWNER_DEFENSE_RADIUS} blocks, while rallying nearby
+ * non-Pacifist standing packmates.
  */
-public class PacifistRevengeGoal extends Goal {
+public class PacifistRevengeGoal extends HurtByTargetGoal {
 
+    /**
+     * Maximum distance from the owner within which a Pacifist enters and maintains defensive retaliation.
+     */
+    public static final double OWNER_DEFENSE_RADIUS = 24.0D;
+
+    /**
+     * Squared owner-defense radius ({@code 24.0 * 24.0 = 576.0}).
+     */
+    public static final double OWNER_DEFENSE_RADIUS_SQR = OWNER_DEFENSE_RADIUS * OWNER_DEFENSE_RADIUS;
+
+    /**
+     * Radius in blocks within which nearby standing co-owned adult packmates are rallied.
+     */
     public static final double DEFENSE_ALERT_RADIUS = 16.0D;
-    public static final double DEFAULT_FLEE_SPEED = 1.25D;
 
     private final Wolf wolf;
-    private final double speedModifier;
-    private double posX;
-    private double posY;
-    private double posZ;
+    private @Nullable LivingEntity pendingAttacker;
 
     public PacifistRevengeGoal(Wolf wolf) {
-        this(wolf, DEFAULT_FLEE_SPEED);
-    }
-
-    public PacifistRevengeGoal(Wolf wolf, double speedModifier) {
+        super(wolf);
         this.wolf = wolf;
-        this.speedModifier = speedModifier;
-        this.setFlags(EnumSet.of(Flag.MOVE));
     }
 
     @Override
     public boolean canUse() {
-        if (this.wolf == null || !this.wolf.isAlive() || this.wolf.isBaby() || this.wolf.isOrderedToSit() || this.wolf.isInSittingPose()) {
+        if (!isEligibleDefender()) {
+            this.pendingAttacker = null;
             return false;
         }
 
-        if (this.wolf instanceof WolfExtensions ext) {
-            if (ext.betterdogs$getPersonality() != WolfPersonality.PACIFIST) {
-                return false;
-            }
-            if (ext.betterdogs$isGuardMode() || ext.betterdogs$isSittingManually()) {
-                return false;
-            }
-        } else {
-            return false;
-        }
-
-        LivingEntity attacker = this.wolf.getLastHurtByMob();
         LivingEntity owner = this.wolf.getOwner();
-        if (attacker == null && owner != null) {
-            attacker = owner.getLastHurtByMob();
-        }
-
-        if (attacker == null || !attacker.isAlive() || attacker instanceof Creeper) {
+        if (!isWithinOwnerDefenseTether(owner)) {
+            this.pendingAttacker = null;
             return false;
         }
 
-        // Packmate mercy check (BL-BD-035): do not alert or flee from allied co-owned wolf (baby or adult)
-        if (attacker instanceof Wolf offendingWolf && offendingWolf.isTame()) {
-            if (PackAudienceHelper.isCoOwned(this.wolf, offendingWolf)) {
-                return false;
-            }
-        }
-
-        Vec3 escapePos = WolfFleeHelper.calculateEscapePosition(this.wolf, attacker, 10, 5);
-        if (escapePos == null) {
+        LivingEntity attacker = resolveAttacker(owner);
+        if (!isEligibleTarget(attacker, owner)) {
+            this.pendingAttacker = null;
             return false;
         }
 
-        this.posX = escapePos.x;
-        this.posY = escapePos.y;
-        this.posZ = escapePos.z;
+        this.pendingAttacker = attacker;
+        this.wolf.setTarget(attacker);
         return true;
     }
 
     @Override
     public void start() {
-        this.wolf.getNavigation().moveTo(this.posX, this.posY, this.posZ, this.speedModifier);
-        this.wolf.setTarget(null); // Preserve pacifist non-retaliation
+        if (this.wolf == null) {
+            this.pendingAttacker = null;
+            return;
+        }
 
-        LivingEntity attacker = this.wolf.getLastHurtByMob();
         LivingEntity owner = this.wolf.getOwner();
-        if (attacker == null && owner != null) {
-            attacker = owner.getLastHurtByMob();
+        LivingEntity resolved = resolveAttacker(owner);
+        if (!isEligibleTarget(resolved, owner)) {
+            resolved = this.pendingAttacker;
         }
 
-        if (attacker != null) {
-            alertNearbyPackmates(attacker);
-        }
+        super.start();
+        this.pendingAttacker = null;
 
-        WolfFleeHelper.playDisengagementFeedback(this.wolf);
+        // HurtByTargetGoal.start() unconditionally calls mob.setTarget(mob.getLastHurtByMob()),
+        // which wipes an owner-defense target back to null when only the owner was struck.
+        if (isEligibleDefender() && isWithinOwnerDefenseTether(owner) && isEligibleTarget(resolved, owner)) {
+            this.wolf.setTarget(resolved);
+            this.targetMob = resolved;
+            this.unseenMemoryTicks = 300;
+            alertNearbyPackmates(resolved);
+        } else {
+            this.wolf.setTarget(null);
+            this.targetMob = null;
+        }
     }
 
     @Override
     public boolean canContinueToUse() {
-        if (this.wolf == null || this.wolf.isOrderedToSit() || this.wolf.isInSittingPose()) {
+        if (!isEligibleDefender()) {
             return false;
         }
-        return this.wolf.getNavigation() != null && !this.wolf.getNavigation().isDone();
+
+        LivingEntity owner = this.wolf.getOwner();
+        if (!isWithinOwnerDefenseTether(owner)) {
+            return false;
+        }
+
+        LivingEntity target = this.wolf.getTarget();
+        if (!isEligibleTarget(target, owner)) {
+            return false;
+        }
+
+        if (this.wolf.getSensing() == null) {
+            return true;
+        }
+        return super.canContinueToUse();
     }
 
     @Override
     public void stop() {
-        if (this.wolf != null && this.wolf.getNavigation() != null) {
-            this.wolf.getNavigation().stop();
+        this.pendingAttacker = null;
+        if (this.wolf == null) {
+            this.targetMob = null;
+            return;
         }
+        super.stop();
     }
 
     /**
-     * Alerts nearby packmates (Aggressive/Normal) to target and neutralize the threat.
+     * Alerts nearby non-Pacifist standing co-owned adult packmates within {@value #DEFENSE_ALERT_RADIUS} blocks
+     * to assist against a validated hostile attacker.
      */
-    public void alertNearbyPackmates(LivingEntity attacker) {
-        if (attacker == null || !attacker.isAlive() || this.wolf == null) {
+    public void alertNearbyPackmates(@Nullable LivingEntity attacker) {
+        if (this.wolf == null || attacker == null || attacker == this.wolf || !attacker.isAlive()) {
             return;
         }
-
         Level level = this.wolf.level();
         if (level == null || level.isClientSide()) {
             return;
         }
-
-        // Packmate check (BL-BD-035): NEVER alert packmates against another co-owned dog
-        if (attacker instanceof Wolf offendingWolf && offendingWolf.isTame()) {
-            if (PackAudienceHelper.isCoOwned(this.wolf, offendingWolf)) {
-                return;
-            }
+        if (attacker instanceof Creeper) {
+            return;
+        }
+        if (attacker instanceof Wolf offendingWolf && PackAudienceHelper.isCoOwned(this.wolf, offendingWolf)) {
+            return;
         }
 
+        AABB alertBounds = this.wolf.getBoundingBox().inflate(DEFENSE_ALERT_RADIUS);
         List<Wolf> nearbyWolves = level.getEntitiesOfClass(
                 Wolf.class,
-                this.wolf.getBoundingBox().inflate(DEFENSE_ALERT_RADIUS),
-                w -> w != this.wolf && w.isAlive() && w.isTame() && !w.isBaby() && !w.isOrderedToSit() && PackAudienceHelper.isCoOwned(this.wolf, w)
+                alertBounds,
+                packmate -> isEligiblePackmateForAlert(packmate, attacker)
         );
-
-        for (Wolf packWolf : nearbyWolves) {
-            if (packWolf instanceof WolfExtensions ext) {
-                if (ext.betterdogs$getPersonality() == WolfPersonality.PACIFIST) {
-                    continue; // Fellow pacifists do not attack
-                }
-            }
-            if (packWolf.getTarget() == null || !packWolf.getTarget().isAlive()) {
-                packWolf.setTarget(attacker);
+        for (Wolf packmate : nearbyWolves) {
+            if (packmate.getTarget() == null) {
+                packmate.setTarget(attacker);
             }
         }
+    }
+
+    private boolean isEligibleDefender() {
+        if (this.wolf == null || !this.wolf.isAlive() || !this.wolf.isTame() || this.wolf.isBaby()) {
+            return false;
+        }
+        if (this.wolf.isOrderedToSit() || this.wolf.isInSittingPose()) {
+            return false;
+        }
+        if (!(this.wolf instanceof WolfExtensions ext)) {
+            return false;
+        }
+        if (ext.betterdogs$isSittingManually()) {
+            return false;
+        }
+        return ext.betterdogs$getPersonality() == WolfPersonality.PACIFIST;
+    }
+
+    private boolean isWithinOwnerDefenseTether(@Nullable LivingEntity owner) {
+        return owner == null || this.wolf.distanceToSqr(owner) <= OWNER_DEFENSE_RADIUS_SQR;
+    }
+
+    private @Nullable LivingEntity resolveAttacker(@Nullable LivingEntity owner) {
+        LivingEntity attacker = this.wolf.getLastHurtByMob();
+        if ((attacker == null || !isEligibleTarget(attacker, owner)) && owner != null) {
+            attacker = owner.getLastHurtByMob();
+        }
+        return attacker;
+    }
+
+    private boolean isEligibleTarget(@Nullable LivingEntity attacker, @Nullable LivingEntity owner) {
+        if (attacker == null || attacker == this.wolf || attacker == owner || !attacker.isAlive()) {
+            return false;
+        }
+        if (this.wolf.isOwnedBy(attacker)) {
+            return false;
+        }
+        if (attacker instanceof Creeper) {
+            return false;
+        }
+        if (this.wolf instanceof WolfExtensions ext
+                && (WolfTargetingHandler.shouldSuppressRetaliation(ext.betterdogs$isBeingDisciplined())
+                        || WolfTargetingHandler.shouldSuppressRetaliation(this.wolf, attacker))) {
+            return false;
+        }
+        if (attacker instanceof Wolf offendingWolf && offendingWolf.isTame()
+                && PackAudienceHelper.isCoOwned(this.wolf, offendingWolf)) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isEligiblePackmateForAlert(@Nullable Wolf packmate, LivingEntity attacker) {
+        if (packmate == null || packmate == this.wolf || packmate == attacker || !packmate.isAlive()) {
+            return false;
+        }
+        if (!packmate.isTame() || packmate.isBaby() || packmate.isOrderedToSit() || packmate.isInSittingPose()) {
+            return false;
+        }
+        if (!PackAudienceHelper.isCoOwned(this.wolf, packmate)) {
+            return false;
+        }
+        if (packmate instanceof WolfExtensions ext) {
+            if (ext.betterdogs$isSittingManually() || ext.betterdogs$getPersonality() == WolfPersonality.PACIFIST) {
+                return false;
+            }
+        }
+        return !WolfTargetingHandler.shouldSuppressRetaliation(packmate, attacker);
     }
 }
