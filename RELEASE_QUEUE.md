@@ -3,10 +3,11 @@
 This file tracks which built versions (from the central archive folder "E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Archive Jar of all versions") have been manually uploaded to Modrinth/CurseForge.
 Open this file in your editor and change `[ ]` to `[x]` when you publish a version.
 
-> **Multi-Loader Note (MC 26.1.2):** Starting from 5.1.1+26.1.2 up to HEAD 5.7.14+26.1.2, all builds are compiled as native Multi-Loader artifacts with dual production JARs: Fabric (`*-fabric.jar`) and NeoForge (`*-neoforge.jar`).
+> **Multi-Loader Note (MC 26.1.2):** Starting from 5.1.1+26.1.2 up to HEAD 5.7.15+26.1.2, all builds are compiled as native Multi-Loader artifacts with dual production JARs: Fabric (`*-fabric.jar`) and NeoForge (`*-neoforge.jar`).
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 5.7.15+26.1.2** [Fabric + NeoForge] - Restore Pacifist Defensive Retaliation AI & Fix HurtByTargetGoal Start/Tether Bugs (BL-BD-062)
 - [ ] **Better Dogs 5.7.14+26.1.2** [Fabric + NeoForge] - Null-Safe Blood Feud Persistence & Adoption Codec Safety (BL-BD-059)
 - [ ] **Better Dogs 5.7.13+26.1.2** [Fabric + NeoForge] - Offline Owner null==null & Live getOwner() Bypass Fixes (BL-BD-055)
 - [ ] **Better Dogs 5.7.12+26.1.2** [Fabric + NeoForge] - Rewire WolfCombatMixin wantsToAttack to WolfTargetingHandler (BL-BD-054)
