@@ -119,9 +119,13 @@ class PackCivilWarImmunityTest {
     }
 
     private static StubServerLevel createStubServerLevel(long gameTime, List<Wolf> worldWolves) {
+        return createStubServerLevel(gameTime, worldWolves, false);
+    }
+
+    private static StubServerLevel createStubServerLevel(long gameTime, List<Wolf> worldWolves, boolean returnMatchedOnQuery) {
         try {
             StubServerLevel level = (StubServerLevel) UNSAFE.allocateInstance(StubServerLevel.class);
-            level.init(gameTime, worldWolves);
+            level.init(gameTime, worldWolves, returnMatchedOnQuery);
             return level;
         } catch (InstantiationException ex) {
             throw new IllegalStateException("Failed to allocate StubServerLevel", ex);
@@ -283,6 +287,53 @@ class PackCivilWarImmunityTest {
     void testPacifistRevengeNullSafety() {
         PacifistRevengeGoal goal = new PacifistRevengeGoal(null);
         assertFalse(goal.canUse());
+        assertFalse(goal.canContinueToUse());
+        assertDoesNotThrow(goal::start);
+        assertDoesNotThrow(() -> goal.alertNearbyPackmates(null));
+        assertDoesNotThrow(goal::stop);
+    }
+
+    @Test
+    @DisplayName("BL-BD-062: Pacifist owner-defense start() preservation, 24m tether, and co-owned offline packmate alert immunity")
+    void testPacifistOwnerDefensePreservationAndAlertImmunity() {
+        UUID ownerA = UUID.randomUUID();
+        UUID ownerB = UUID.randomUUID();
+        StubServerPlayer playerA = createStubPlayer(ownerA, false);
+        StubServerPlayer rivalAttacker = createStubPlayer(ownerB, false);
+
+        OfflineStubWolf pacifist = createOfflineWolf(true, ownerA);
+        pacifist.betterdogs$setPersonality(WolfPersonality.PACIFIST);
+        OfflineStubWolf standingNormal = createOfflineWolf(true, ownerA);
+        standingNormal.betterdogs$setPersonality(WolfPersonality.NORMAL);
+        OfflineStubWolf otherPacifist = createOfflineWolf(true, ownerA);
+        otherPacifist.betterdogs$setPersonality(WolfPersonality.PACIFIST);
+        OfflineStubWolf rivalWolf = createOfflineWolf(true, ownerB);
+        rivalWolf.betterdogs$setPersonality(WolfPersonality.NORMAL);
+
+        StubServerLevel level = createStubServerLevel(200L, List.of(pacifist, standingNormal, otherPacifist, rivalWolf), true);
+        pacifist.attachLevel(level);
+        pacifist.attachLiveOwner(playerA, 400.0);
+        playerA.setLastHurtByMob(rivalAttacker);
+
+        PacifistRevengeGoal goal = new PacifistRevengeGoal(pacifist);
+        assertTrue(goal.canUse(), "Pacifist within 24m must engage when owner is struck");
+        goal.start();
+        assertSame(rivalAttacker, pacifist.getTarget(), "start() must preserve owner-defense target across super.start()");
+        assertSame(rivalAttacker, standingNormal.getTarget(), "Standing co-owned non-Pacifist packmate must be rallied");
+        assertNull(otherPacifist.getTarget(), "Nearby Pacifist packmate must not be rallied");
+        assertNull(rivalWolf.getTarget(), "Unrelated rival pack wolf must not be rallied");
+        assertTrue(goal.canContinueToUse(), "Goal must stay active inside 24m tether");
+
+        pacifist.setDistanceToOwnerSqr(576.01);
+        assertFalse(goal.canContinueToUse(), "Goal must disengage once owner distance exceeds 24m");
+        goal.stop();
+        assertNull(pacifist.getTarget(), "stop() must clear target");
+        assertFalse(goal.canUse(), "Pacifist beyond 24m must not re-enter owner defense");
+
+        OfflineStubWolf coOwnedOfflineWolf = createOfflineWolf(true, ownerA);
+        pacifist.setDistanceToOwnerSqr(4.0);
+        playerA.setLastHurtByMob(coOwnedOfflineWolf);
+        assertFalse(goal.canUse(), "Offline co-owned packmate must retain Pacifist revenge immunity");
     }
 
     @Test
@@ -684,6 +735,7 @@ class PackCivilWarImmunityTest {
     private static final class StubServerLevel extends ServerLevel {
         private long gameTime;
         private List<Wolf> candidates;
+        private boolean returnMatchedOnQuery;
         boolean broadcastQueried;
         List<Wolf> matchedBroadcastWolves;
 
@@ -692,8 +744,13 @@ class PackCivilWarImmunityTest {
         }
 
         void init(long gameTime, List<Wolf> candidates) {
+            init(gameTime, candidates, false);
+        }
+
+        void init(long gameTime, List<Wolf> candidates, boolean returnMatchedOnQuery) {
             this.gameTime = gameTime;
             this.candidates = candidates;
+            this.returnMatchedOnQuery = returnMatchedOnQuery;
             this.broadcastQueried = false;
             this.matchedBroadcastWolves = new ArrayList<>();
         }
@@ -712,15 +769,17 @@ class PackCivilWarImmunityTest {
         public <T extends Entity> List<T> getEntitiesOfClass(Class<T> clazz, AABB aabb, Predicate<? super T> predicate) {
             this.broadcastQueried = true;
             this.matchedBroadcastWolves = new ArrayList<>();
+            List<T> matched = new ArrayList<>();
             if (Wolf.class.isAssignableFrom(clazz) && this.candidates != null) {
                 for (Wolf w : this.candidates) {
                     T cast = clazz.cast(w);
                     if (predicate.test(cast)) {
                         this.matchedBroadcastWolves.add(w);
+                        matched.add(cast);
                     }
                 }
             }
-            return List.of();
+            return this.returnMatchedOnQuery ? matched : List.of();
         }
     }
 
@@ -734,6 +793,10 @@ class PackCivilWarImmunityTest {
         private @Nullable Level level;
         private @Nullable LivingEntity target;
         private @Nullable LivingEntity lastHurtByMob;
+        private double ownerDistanceSq;
+        private boolean orderedToSit;
+        private boolean sittingPose;
+        private boolean sittingManually;
         private WolfPersonality personality;
         private boolean hasPersonality;
         private float socialScale;
@@ -789,6 +852,7 @@ class PackCivilWarImmunityTest {
             this.bloodFeudTarget = "";
             this.hasBloodFeud = false;
             this.lastGiftDay = -1L;
+            this.ownerDistanceSq = 4.0;
             this.setBoundingBox(new AABB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0));
         }
 
@@ -798,6 +862,27 @@ class PackCivilWarImmunityTest {
 
         void attachLiveOwner(@Nullable LivingEntity owner) {
             this.liveOwner = owner;
+        }
+
+        void attachLiveOwner(@Nullable LivingEntity owner, double distanceSq) {
+            this.liveOwner = owner;
+            this.ownerDistanceSq = distanceSq;
+        }
+
+        void setDistanceToOwnerSqr(double distanceSq) {
+            this.ownerDistanceSq = distanceSq;
+        }
+
+        void setOrderedToSitStub(boolean orderedToSit) {
+            this.orderedToSit = orderedToSit;
+        }
+
+        void setSittingPoseStub(boolean sittingPose) {
+            this.sittingPose = sittingPose;
+        }
+
+        void setSittingManuallyStub(boolean sittingManually) {
+            this.sittingManually = sittingManually;
         }
 
         void forceBloodFeud(boolean active, @Nullable String targetUuid) {
@@ -857,12 +942,17 @@ class PackCivilWarImmunityTest {
 
         @Override
         public boolean isOrderedToSit() {
-            return false;
+            return this.orderedToSit;
         }
 
         @Override
         public boolean isInSittingPose() {
-            return false;
+            return this.sittingPose;
+        }
+
+        @Override
+        public boolean betterdogs$isSittingManually() {
+            return this.sittingManually;
         }
 
         @Override
@@ -892,7 +982,7 @@ class PackCivilWarImmunityTest {
 
         @Override
         public double distanceToSqr(Entity entity) {
-            return 4.0;
+            return entity == this.liveOwner ? this.ownerDistanceSq : 4.0;
         }
 
         @Override
