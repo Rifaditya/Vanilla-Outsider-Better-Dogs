@@ -3,6 +3,7 @@
 package net.vanillaoutsider.betterdogs.util;
 
 import java.util.List;
+import java.util.UUID;
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -15,6 +16,7 @@ import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.level.Level;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersistentData;
+import net.vanillaoutsider.betterdogs.ai.play.PlayChoreographyHelper;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 
 /**
@@ -49,12 +51,14 @@ public class WolfNemesisHelper {
 
         // Do not hold grudge against own player/owner
         LivingEntity owner = victim.getOwner();
-        if (owner != null && killer == owner) {
+        UUID victimOwnerUuid = PlayChoreographyHelper.getOwnerUUID(victim);
+        if ((owner != null && killer == owner)
+                || (victimOwnerUuid != null && victimOwnerUuid.equals(killer.getUUID()))) {
             return;
         }
 
         // Do not hold grudge against another friendly dog of same owner
-        if (killer instanceof Wolf killerWolf && killerWolf.isTame() && owner != null && killerWolf.isOwnedBy(owner)) {
+        if (killer instanceof Wolf killerWolf && PackAudienceHelper.isCoOwned(victim, killerWolf)) {
             return;
         }
 
@@ -66,7 +70,7 @@ public class WolfNemesisHelper {
         List<Wolf> packWolves = level.getEntitiesOfClass(
                 Wolf.class,
                 victim.getBoundingBox().inflate(64.0),
-                w -> w != null && w.isTame() && owner != null && w.isOwnedBy(owner)
+                w -> PackAudienceHelper.isCoOwned(victim, w)
         );
 
         for (Wolf packWolf : packWolves) {

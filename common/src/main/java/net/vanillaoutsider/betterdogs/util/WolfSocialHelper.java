@@ -17,7 +17,7 @@ public class WolfSocialHelper {
      * Uses SocialRegistry if available for O(1) or O(log N) lookup.
      */
     public static int getGroupSize(Wolf wolf) {
-        if (wolf.level().isClientSide()) return 0;
+        if (wolf == null || wolf.level() == null || wolf.level().isClientSide()) return 0;
         
         // OPTIMIZATION: Use GroupMember interface
         if (wolf instanceof GroupMember member) {
@@ -26,9 +26,8 @@ public class WolfSocialHelper {
 
         // Fallback to bounding box (Obsolescent)
         AABB box = wolf.getBoundingBox().inflate(16.0);
-        return wolf.level().getEntitiesOfClass(Wolf.class, box, 
-            other -> other != wolf && other.isTame() && 
-            (other.getOwner() != null && other.getOwner().equals(wolf.getOwner()))).size();
+        return wolf.level().getEntitiesOfClass(Wolf.class, box,
+                other -> other != wolf && PackAudienceHelper.isCoOwned(wolf, other)).size();
     }
     
     /**

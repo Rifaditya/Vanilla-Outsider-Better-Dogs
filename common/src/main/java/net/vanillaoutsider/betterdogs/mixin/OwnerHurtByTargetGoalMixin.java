@@ -7,6 +7,7 @@ import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
+import net.vanillaoutsider.betterdogs.util.PackAudienceHelper;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -38,7 +39,7 @@ public abstract class OwnerHurtByTargetGoalMixin {
                 // If the owner was hit by their own pet baby, don't let OTHER pets (adult or baby) target it via this goal.
                 // This prevents the "owner hits baby -> adults kill baby" or "baby hits owner -> adults kill baby" behavior
                 // for adults that aren't AGGRESSIVE and explicitly using InterventionGoal.
-                if (offendingWolf.isBaby() && offendingWolf.getOwner() != null && offendingWolf.getOwner().equals(wolf.getOwner())) {
+                if (offendingWolf.isBaby() && PackAudienceHelper.isCoOwned(wolf, offendingWolf)) {
                     cir.setReturnValue(false);
                     return;
                 }

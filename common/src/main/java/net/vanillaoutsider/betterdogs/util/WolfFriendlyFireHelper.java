@@ -5,12 +5,16 @@ package net.vanillaoutsider.betterdogs.util;
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.player.Player;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
+import net.vanillaoutsider.betterdogs.ai.play.PlayChoreographyHelper;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
+
+import java.util.UUID;
 
 /**
  * Single-purpose helper managing friendly fire evaluation, melee protection, and lethal health clamping.
@@ -46,15 +50,20 @@ public final class WolfFriendlyFireHelper {
             return false;
         }
 
-        if (!(source.getEntity() instanceof LivingEntity attacker)) {
+        Entity rawAttacker = source.getEntity();
+        Entity directAttacker = source.getDirectEntity();
+        if (!(rawAttacker instanceof LivingEntity) && !(directAttacker instanceof LivingEntity)) {
             return false;
         }
 
-        boolean isOwner = attacker instanceof Player player && wolf.isOwnedBy(player);
-        boolean isSneaking = attacker instanceof Player player && (player.isShiftKeyDown() || player.isCrouching());
-        boolean isAllyWolf = attacker instanceof Wolf attackerWolf && attackerWolf.isTame()
-                && (wolf.isOwnedBy(attackerWolf.getOwner())
-                        || (attackerWolf.getOwner() != null && attackerWolf.isOwnedBy(wolf.getOwner())));
+        LivingEntity owner = wolf.getOwner();
+        UUID wolfOwnerUuid = PlayChoreographyHelper.getOwnerUUID(wolf);
+        Player attackerPlayer = rawAttacker instanceof Player p ? p : (directAttacker instanceof Player p ? p : null);
+        boolean isOwner = (owner != null && (rawAttacker == owner || directAttacker == owner))
+                || (attackerPlayer != null && wolfOwnerUuid != null && wolfOwnerUuid.equals(attackerPlayer.getUUID()));
+        boolean isSneaking = attackerPlayer != null && (attackerPlayer.isShiftKeyDown() || attackerPlayer.isCrouching());
+        boolean isAllyWolf = (rawAttacker instanceof Wolf attackerWolf && PackAudienceHelper.isCoOwned(wolf, attackerWolf))
+                || (directAttacker instanceof Wolf directWolf && PackAudienceHelper.isCoOwned(wolf, directWolf));
 
         boolean isProjectile = source.is(DamageTypeTags.IS_PROJECTILE) || source.getDirectEntity() != source.getEntity();
 

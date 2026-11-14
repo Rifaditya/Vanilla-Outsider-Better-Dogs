@@ -62,9 +62,6 @@ public class WolfCombatHooks {
 
         boolean isOwner = attacker instanceof Player player && wolf.isOwnedBy(player);
         boolean isSneaking = attacker instanceof Player player && player.isShiftKeyDown();
-        boolean isAllyWolf = attacker instanceof Wolf attackerWolf && attackerWolf.isTame()
-                && (wolf.isOwnedBy(attackerWolf.getOwner())
-                        || (attackerWolf.getOwner() != null && attackerWolf.isOwnedBy(wolf.getOwner())));
 
         // 0. SOCIAL CHANNEL BYPASS: If attacker is using Social AI on us, ALLOW
         // damage/trigger
