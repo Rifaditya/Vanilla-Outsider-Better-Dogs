@@ -188,7 +188,7 @@ public class WolfInteractionHelper {
                     
                     // Reset old social and guarding states
                     ext.betterdogs$setLeaderUuid(null);
-                    ext.betterdogs$setBloodFeudTarget(null);
+                    BloodFeudHelper.clearBloodFeud(wolf);
                     ext.betterdogs$setGuardMode(false);
                     ext.betterdogs$setGuardPos(null);
 

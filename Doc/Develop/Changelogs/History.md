@@ -1,5 +1,13 @@
 # Better Dogs - Historical Changelog
 
+## [5.7.14+26.1.2] - 2026-11-14
+
+### Fixed
+- **Null-Safe Blood Feud Persistence & Adoption Codec Safety ([BL-BD-059])**:
+  - Updated `WolfInteractionHelper` non-sneak adoption to invoke `BloodFeudHelper.clearBloodFeud(wolf)` instead of passing `null` into `betterdogs$setBloodFeudTarget(null)`.
+  - Aligned `WolfAdoptionHelper.tryHandleAdoption` sneak empty-hand adoption to reset `leaderUuid`, clear blood feuds (`BloodFeudHelper.clearBloodFeud(wolf)`), clear `guardMode`/`guardPos`, and call `wolf.setOrderedToSit(false)`.
+  - Added compact canonical constructors on `WolfPersistentData`, `BaseData`, and `ExtraData`, null-safe normalization in `WolfMixin` and `WolfPersistentData` blood feud accessors, and null-safe `Services.WOLF_DATA` SPI persistence handling (`TestWolfDataHelper`, `FabricWolfDataHelper`, `NeoForgeWolfDataHelper`).
+
 ## [4.24.68+26.1.2]
 ### Added
 - 🌐 **Italian (`it_it`) Localization & Player Guide (11-Language Suite Complete)**:
