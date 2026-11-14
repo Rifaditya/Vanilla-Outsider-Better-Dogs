@@ -194,12 +194,13 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
 
     @Override
     public String betterdogs$getBloodFeudTarget() {
-        return WolfPersistentData.getPersistedBloodFeudTarget((Wolf) (Object) this);
+        String target = WolfPersistentData.getPersistedBloodFeudTarget((Wolf) (Object) this);
+        return target != null ? target : "";
     }
 
     @Override
     public void betterdogs$setBloodFeudTarget(String targetUuid) {
-        WolfPersistentData.setPersistedBloodFeudTarget((Wolf) (Object) this, targetUuid);
+        WolfPersistentData.setPersistedBloodFeudTarget((Wolf) (Object) this, targetUuid != null ? targetUuid : "");
     }
 
     @Override
