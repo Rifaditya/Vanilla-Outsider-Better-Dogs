@@ -12,11 +12,13 @@ import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ShulkerBullet;
 import net.minecraft.world.phys.Vec3;
+import net.vanillaoutsider.betterdogs.ai.play.PlayChoreographyHelper;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.vanillaoutsider.betterdogs.util.WolfDispositionHelper;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Priority 1 canine bodyguard AI goal for intercepting incoming hostile ballistic projectiles
@@ -66,7 +68,12 @@ public class WolfProjectileInterceptGoal extends Goal {
     public static boolean isHostileShooter(Entity shooter, LivingEntity owner) {
         if (shooter == null) return true;
         if (shooter == owner) return false;
-        if (shooter instanceof Wolf w && w.getOwner() == owner) return false;
+        if (owner != null && shooter instanceof Wolf w && w.isTame()) {
+            UUID wolfOwnerUuid = PlayChoreographyHelper.getOwnerUUID(w);
+            if (owner.getUUID().equals(wolfOwnerUuid)) {
+                return false;
+            }
+        }
         return true;
     }
 

@@ -6,6 +6,7 @@ import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.animal.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
+import net.vanillaoutsider.betterdogs.util.PackAudienceHelper;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -32,7 +33,7 @@ public abstract class OwnerHurtByTargetGoalMixin {
             // Check what hurt the owner
             if (wolf.getOwner() != null && wolf.getOwner().getLastHurtByMob() instanceof Wolf offendingWolf) {
                 // If the owner was hit by their own pet baby, don't let OTHER pets target it via this goal.
-                if (offendingWolf.isBaby() && offendingWolf.getOwner() != null && offendingWolf.getOwner().equals(wolf.getOwner())) {
+                if (offendingWolf.isBaby() && PackAudienceHelper.isCoOwned(wolf, offendingWolf)) {
                     cir.setReturnValue(false);
                     return;
                 }
