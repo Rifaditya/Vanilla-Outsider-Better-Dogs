@@ -5,6 +5,7 @@ package net.vanillaoutsider.betterdogs.util;
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.player.Player;
@@ -46,15 +47,17 @@ public final class WolfFriendlyFireHelper {
             return false;
         }
 
-        if (!(source.getEntity() instanceof LivingEntity attacker)) {
+        Entity rawAttacker = source.getEntity();
+        Entity directAttacker = source.getDirectEntity();
+        if (!(rawAttacker instanceof LivingEntity) && !(directAttacker instanceof LivingEntity)) {
             return false;
         }
 
-        boolean isOwner = attacker instanceof Player player && wolf.isOwnedBy(player);
-        boolean isSneaking = attacker instanceof Player player && (player.isShiftKeyDown() || player.isCrouching());
-        boolean isAllyWolf = attacker instanceof Wolf attackerWolf && attackerWolf.isTame()
-                && (wolf.isOwnedBy(attackerWolf.getOwner())
-                        || (attackerWolf.getOwner() != null && attackerWolf.isOwnedBy(wolf.getOwner())));
+        Player attackerPlayer = rawAttacker instanceof Player p ? p : (directAttacker instanceof Player p ? p : null);
+        boolean isOwner = attackerPlayer != null && wolf.isOwnedBy(attackerPlayer);
+        boolean isSneaking = attackerPlayer != null && (attackerPlayer.isShiftKeyDown() || attackerPlayer.isCrouching());
+        boolean isAllyWolf = (rawAttacker instanceof Wolf attackerWolf && PackAudienceHelper.isCoOwned(wolf, attackerWolf))
+                || (directAttacker instanceof Wolf directWolf && PackAudienceHelper.isCoOwned(wolf, directWolf));
 
         boolean isProjectile = source.is(DamageTypeTags.IS_PROJECTILE) || source.getDirectEntity() != source.getEntity();
 

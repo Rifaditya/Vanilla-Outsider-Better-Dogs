@@ -7,6 +7,7 @@ import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
+import net.vanillaoutsider.betterdogs.ai.play.PlayChoreographyHelper;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -77,17 +78,12 @@ public final class PackAudienceHelper {
      * Checks if two wolves share the same owner.
      */
     public static boolean isCoOwned(Wolf a, Wolf b) {
-        if (a == null || b == null) {
+        if (a == null || b == null || !a.isTame() || !b.isTame()) {
             return false;
         }
-        net.minecraft.world.entity.EntityReference<LivingEntity> refA = a.getOwnerReference();
-        net.minecraft.world.entity.EntityReference<LivingEntity> refB = b.getOwnerReference();
-        if (refA != null && refB != null) {
-            return refA.getUUID().equals(refB.getUUID());
-        }
-        LivingEntity ownerA = a.getOwner();
-        LivingEntity ownerB = b.getOwner();
-        return ownerA != null && ownerA == ownerB;
+        UUID ownerA = PlayChoreographyHelper.getOwnerUUID(a);
+        UUID ownerB = PlayChoreographyHelper.getOwnerUUID(b);
+        return ownerA != null && ownerA.equals(ownerB);
     }
 
     /**

@@ -132,8 +132,6 @@ public class PacifistRevengeGoal extends Goal {
             return;
         }
 
-        LivingEntity owner = this.wolf.getOwner();
-
         // Packmate check (BL-BD-035): NEVER alert packmates against another co-owned dog
         if (attacker instanceof Wolf offendingWolf && offendingWolf.isTame()) {
             if (PackAudienceHelper.isCoOwned(this.wolf, offendingWolf)) {
@@ -144,7 +142,7 @@ public class PacifistRevengeGoal extends Goal {
         List<Wolf> nearbyWolves = level.getEntitiesOfClass(
                 Wolf.class,
                 this.wolf.getBoundingBox().inflate(DEFENSE_ALERT_RADIUS),
-                w -> w != this.wolf && w.isAlive() && w.isTame() && !w.isBaby() && !w.isOrderedToSit() && (owner == null || owner.equals(w.getOwner()))
+                w -> w != this.wolf && w.isAlive() && w.isTame() && !w.isBaby() && !w.isOrderedToSit() && PackAudienceHelper.isCoOwned(this.wolf, w)
         );
 
         for (Wolf packWolf : nearbyWolves) {

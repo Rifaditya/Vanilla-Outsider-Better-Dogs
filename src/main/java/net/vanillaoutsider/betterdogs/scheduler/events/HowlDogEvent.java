@@ -8,6 +8,7 @@ import net.dasik.social.api.TickContext;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
+import net.vanillaoutsider.betterdogs.util.PackAudienceHelper;
 
 /**
  * Social Event: Pack howl during full moon.
@@ -48,7 +49,7 @@ public class HowlDogEvent implements SocialEvent {
             if (context.entity() instanceof WolfExtensions ext) {
                 wolf.level().getEntitiesOfClass(Wolf.class, wolf.getBoundingBox().inflate(8.0))
                         .stream()
-                        .filter(w -> w != wolf && w.isTame() && w.isOwnedBy(wolf.getOwner()))
+                        .filter(w -> w != wolf && PackAudienceHelper.isCoOwned(wolf, w))
                         .forEach(w -> ext.betterdogs$adjustAffinity(w.getStringUUID(), 2));
             }
         }

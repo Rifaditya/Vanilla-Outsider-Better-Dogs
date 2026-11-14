@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.12+26.2] - 2026-11-14
+
+### Fixed
+- **Offline Owner UUID Ownership Parity & Wild Wolf `null == null` Immunity Fixes (BL-BD-055)**:
+  - Fixed `PackAudienceHelper.isCoOwned` falling back to raw `ownerA == ownerB` reference equality when owners were offline or unloaded, which previously treated wild untamed wolves (`null == null`) as co-owned and broke packmate protection for offline-owner tamed dogs.
+  - Enforced strict `!isTame()` and non-null `UUID` ownership checks across `TamableAnimalMixin`, `OwnerHurtByTargetGoalMixin`, `WolfFriendlyFireHelper` (protecting both direct and indirect co-owned wolf hits while never cancelling non-living environmental damage), `PacifistRevengeGoal`, `WolfTargetingHandler`, `BabyBiteBackGoal`, `HowlDogEvent`, `WolfProjectileInterceptGoal`, `WolfFlankingHelper`, `WolfGuardHelper`, `SmallFightHelper`, `PlayChoreographyHelper`, and `WolfNemesisHelper`.
+  - Added null-target protection at entry to `TamableAnimalMixin.canAttack` while keeping `BL-BD-041` Blood Feud overrides intact.
+
 ## [5.7.11+26.2] - 2026-11-05
 
 ### Fixed

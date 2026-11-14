@@ -10,6 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.vanillaoutsider.betterdogs.BetterDogs;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
+import net.vanillaoutsider.betterdogs.util.PackAudienceHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -28,6 +29,9 @@ public abstract class TamableAnimalMixin {
      */
     @Inject(method = "canAttack", at = @At("HEAD"), cancellable = true)
     private void betterdogs$onCanAttack(LivingEntity target, CallbackInfoReturnable<Boolean> cir) {
+        if (target == null) {
+            return;
+        }
         if ((Object)this instanceof Wolf wolf && (Object)this instanceof WolfExtensions wolfExt) {
             
             // Priority 1: Blood Feud (Always allow attacking nemesis)
@@ -49,24 +53,18 @@ public abstract class TamableAnimalMixin {
             // Priority 3: Adult Correction (Adult -> Baby)
             if (!wolf.isBaby() && wolf.isTame() && wolfExt.betterdogs$getPersonality() == WolfPersonality.AGGRESSIVE) {
                 if (target instanceof Wolf targetWolf && targetWolf.isBaby() && targetWolf.isTame()) {
-                     LivingEntity myOwner = wolf.getOwner();
-                     LivingEntity targetOwner = targetWolf.getOwner();
-                     if (myOwner != null && targetOwner != null && myOwner.equals(targetOwner)) {
-                         cir.setReturnValue(true);
-                         return;
-                     }
+                    if (PackAudienceHelper.isCoOwned(wolf, targetWolf)) {
+                        cir.setReturnValue(true);
+                        return;
+                    }
                 }
             }
             
             // Priority 4: Prevent "Gang-Up" (Block all other Wolf -> Wolf same owner violence)
             // This fixes the issue where bystanders (babies/adults) attack the participants of a dispute.
             // NOTE: The "Muzzle" (HurtByTargetGoalMixin) is the Primary Guard. This is the Secondary/Fallback Guard.
-            if (target instanceof Wolf targetWolf && targetWolf.isTame()) {
-                LivingEntity myOwner = wolf.getOwner();
-                LivingEntity targetOwner = targetWolf.getOwner();
-                if (wolf.isTame() && myOwner != null && targetOwner != null && myOwner.equals(targetOwner)) {
-                    cir.setReturnValue(false);
-                }
+            if (target instanceof Wolf targetWolf && PackAudienceHelper.isCoOwned(wolf, targetWolf)) {
+                cir.setReturnValue(false);
             }
         }
     }

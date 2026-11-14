@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 5.7.12+26.2** - Offline Owner null==null & Live getOwner() Bypass Fixes (BL-BD-055)
 - [ ] **Better Dogs 5.7.11+26.2** - Untamed Wild Wolves Wandering AI Fix (BL-BD-040)
 - [ ] **Better Dogs 5.7.10+26.2** - Multi-Puppy Sibling Taming & Ownership Fix (BL-BD-039)
 
