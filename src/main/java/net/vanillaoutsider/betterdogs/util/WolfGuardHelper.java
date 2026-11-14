@@ -155,26 +155,26 @@ public final class WolfGuardHelper {
             if (wolf.tickCount % 40 == 0 && DynamicGameRuleManager.getBoolean(serverLevel, BetterDogsGameRules.BD_PACIFIST_GUARD_BUFFS)) {
                 double buffRangeSqr = 36.0; // 6 blocks
                 Player owner = wolf.getOwner() instanceof Player ? (Player) wolf.getOwner() : null;
-                if (owner != null) {
-                    if (owner.isAlive()) {
-                        boolean isNearWolf = wolf.distanceToSqr(owner) <= buffRangeSqr;
-                        BlockPos post = ext.betterdogs$getGuardPos();
-                        boolean isNearPost = post != null && owner.distanceToSqr(post.getX() + 0.5, post.getY() + 0.5, post.getZ() + 0.5) <= buffRangeSqr;
+                if (owner != null && owner.isAlive()) {
+                    boolean isNearWolf = wolf.distanceToSqr(owner) <= buffRangeSqr;
+                    BlockPos post = ext.betterdogs$getGuardPos();
+                    boolean isNearPost = post != null && owner.distanceToSqr(post.getX() + 0.5, post.getY() + 0.5, post.getZ() + 0.5) <= buffRangeSqr;
 
-                        if (isNearWolf || isNearPost) {
-                            owner.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 80, 0, true, true));
-                            owner.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 80, 0, true, true));
-                        }
+                    if (isNearWolf || isNearPost) {
+                        owner.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 80, 0, true, true));
+                        owner.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 80, 0, true, true));
                     }
+                }
 
-                    // Buff allied wolves within 6 blocks of this wolf
-                    List<Wolf> allies = serverLevel.getEntitiesOfClass(Wolf.class, wolf.getBoundingBox().inflate(6.0), w -> w.isTame());
-                    for (Wolf ally : allies) {
-                        if (ally.getOwner() == owner) {
-                            ally.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 80, 0, true, true));
-                            ally.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 80, 0, true, true));
-                        }
-                    }
+                // Buff allied wolves within 6 blocks of this wolf
+                List<Wolf> allies = serverLevel.getEntitiesOfClass(
+                        Wolf.class,
+                        wolf.getBoundingBox().inflate(6.0),
+                        w -> PackAudienceHelper.isCoOwned(wolf, w)
+                );
+                for (Wolf ally : allies) {
+                    ally.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 80, 0, true, true));
+                    ally.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 80, 0, true, true));
                 }
             }
         } else {

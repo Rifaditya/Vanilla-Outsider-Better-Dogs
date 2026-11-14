@@ -66,12 +66,11 @@ public final class WolfFlankingHelper {
         }
 
         if (wolf.isTame()) {
-            LivingEntity owner = wolf.getOwner();
-            if (owner != null) {
+            if (wolf.level() != null) {
                 List<Wolf> activePack = wolf.level().getEntitiesOfClass(
                         Wolf.class,
                         wolf.getBoundingBox().inflate(32.0),
-                        w -> w.isTame() && w.getOwner() == owner && w.getTarget() == target && !w.isOrderedToSit()
+                        w -> PackAudienceHelper.isCoOwned(wolf, w) && w.getTarget() == target && !w.isOrderedToSit()
                 );
 
                 if (activePack.size() > 1) {

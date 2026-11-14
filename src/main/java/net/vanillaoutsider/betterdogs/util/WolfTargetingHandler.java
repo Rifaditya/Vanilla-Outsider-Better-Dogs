@@ -97,8 +97,7 @@ public class WolfTargetingHandler {
 
         // Submissive: Cannot attack pack members
         if (ext.betterdogs$isSubmissive()) {
-            boolean isPackMember = target instanceof Wolf targetWolf && targetWolf.isTame()
-                    && targetWolf.getOwner() != null && targetWolf.getOwner().equals(owner);
+            boolean isPackMember = target instanceof Wolf targetWolf && PackAudienceHelper.isCoOwned(wolf, targetWolf);
             if (isPackMember) {
                 return false;
             }
@@ -106,8 +105,7 @@ public class WolfTargetingHandler {
 
         // Baby wolves cannot attack adult pack members (can still target owner for retaliation)
         if (wolf.isBaby() && target instanceof Wolf targetWolf && targetWolf.isTame() && wolf.isTame()) {
-            if (!targetWolf.isBaby() && targetWolf.getOwner() != null
-                    && targetWolf.getOwner().equals(wolf.getOwner())) {
+            if (!targetWolf.isBaby() && PackAudienceHelper.isCoOwned(wolf, targetWolf)) {
                 return false;
             }
         }

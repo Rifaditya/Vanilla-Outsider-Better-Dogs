@@ -2,11 +2,14 @@
 // Verified against: Minecraft 26.3
 package net.vanillaoutsider.betterdogs.gametest;
 
+import java.util.UUID;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.gametest.framework.GameTestSequence;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityReference;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -20,8 +23,11 @@ import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.vanillaoutsider.betterdogs.ai.EatGroundFoodGoal;
 import net.vanillaoutsider.betterdogs.ai.FleeCreeperGoal;
+import net.vanillaoutsider.betterdogs.ai.PacifistRevengeGoal;
 import net.vanillaoutsider.betterdogs.ai.WolfGuardGoal;
 import net.vanillaoutsider.betterdogs.ai.WildWolfWanderGoal;
+import net.vanillaoutsider.betterdogs.util.PackAudienceHelper;
+import net.vanillaoutsider.betterdogs.util.WolfFriendlyFireHelper;
 
 /**
  * Headless In-Engine Behavioral GameTest Suite for Better Dogs AI goals.
@@ -206,6 +212,129 @@ public class BetterDogsAIBehaviorGameTest {
                 "WildWolfWanderGoal.canUse() must return false once wolf is tamed");
         helper.assertTrue(!wanderGoal.canContinueToUse(),
                 "WildWolfWanderGoal.canContinueToUse() must return false once wolf is tamed");
+
+        helper.succeed();
+    }
+
+    @GameTest
+    public void testOfflineCoOwnedPackImmunityAndHostileIsolation(GameTestHelper helper) {
+        ServerLevel serverLevel = helper.getLevel();
+        UUID uuidA = UUID.randomUUID();
+        UUID uuidB = UUID.randomUUID();
+
+        Wolf dogA1 = helper.spawn(EntityTypes.WOLF, new BlockPos(2, 2, 2));
+        Wolf dogA2 = helper.spawn(EntityTypes.WOLF, new BlockPos(3, 2, 2));
+        Wolf dogB = helper.spawn(EntityTypes.WOLF, new BlockPos(4, 2, 2));
+        Wolf wild1 = helper.spawn(EntityTypes.WOLF, new BlockPos(2, 2, 4));
+        Wolf wild2 = helper.spawn(EntityTypes.WOLF, new BlockPos(4, 2, 4));
+        helper.assertTrue(dogA1 != null && dogA2 != null && dogB != null && wild1 != null && wild2 != null,
+                "All 5 test wolves failed to spawn");
+
+        dogA1.setTame(true, false);
+        dogA1.setOwnerReference(EntityReference.of(uuidA));
+        dogA1.setAge(0);
+
+        dogA2.setTame(true, false);
+        dogA2.setOwnerReference(EntityReference.of(uuidA));
+        dogA2.setAge(0);
+
+        dogB.setTame(true, false);
+        dogB.setOwnerReference(EntityReference.of(uuidB));
+        dogB.setAge(0);
+
+        wild1.setTame(false, false);
+        wild1.setAge(0);
+        wild2.setTame(false, false);
+        wild2.setAge(0);
+
+        helper.assertTrue(dogA1.getOwner() == null && dogA2.getOwner() == null && dogB.getOwner() == null,
+                "Offline-owner test dogs must return getOwner() == null");
+
+        // 1. PackAudienceHelper offline owner resolution & wild null==null rejection
+        helper.assertTrue(PackAudienceHelper.isCoOwned(dogA1, dogA2),
+                "Co-owned dogs with offline owner UUID must match");
+        helper.assertTrue(!PackAudienceHelper.isCoOwned(dogA1, dogB),
+                "Rival-owned offline dogs must not match");
+        helper.assertTrue(!PackAudienceHelper.isCoOwned(wild1, wild2),
+                "Wild wolves must never co-own via null==null");
+        helper.assertTrue(!PackAudienceHelper.isCoOwned(dogA1, wild1),
+                "Tamed dog and wild wolf must not co-own");
+
+        // 2. TamableAnimalMixin live canAttack enforcement (offline civil war block + Blood Feud override)
+        if (dogA1 instanceof WolfExtensions extA1) {
+            extA1.betterdogs$setPersonality(WolfPersonality.PACIFIST);
+            extA1.betterdogs$setBloodFeudTarget("");
+        }
+        if (dogA2 instanceof WolfExtensions extA2) {
+            extA2.betterdogs$setPersonality(WolfPersonality.NORMAL);
+        }
+        if (dogB instanceof WolfExtensions extB) {
+            extB.betterdogs$setPersonality(WolfPersonality.NORMAL);
+        }
+
+        helper.assertTrue(!dogA1.canAttack(dogA2),
+                "TamableAnimalMixin must prevent offline co-owned packmate attack");
+        helper.assertTrue(dogA1.canAttack(dogB),
+                "Offline rival wolf must remain attackable");
+        helper.assertTrue(dogA1.canAttack(wild1),
+                "Wild wolf must remain attackable");
+
+        if (dogA1 instanceof WolfExtensions extA1) {
+            extA1.betterdogs$setBloodFeudTarget(dogA2.getStringUUID());
+            helper.assertTrue(dogA1.canAttack(dogA2),
+                    "TamableAnimalMixin Blood Feud priority must allow attacking co-owned nemesis offline");
+            extA1.betterdogs$setBloodFeudTarget("");
+            helper.assertTrue(!dogA1.canAttack(dogA2),
+                    "Clearing Blood Feud must restore offline co-owned attack immunity");
+        }
+
+        // Verify TamableAnimalMixin null-target guard does not NPE before Priority 2 on aggressive puppies
+        Wolf aggressiveBaby = helper.spawn(EntityTypes.WOLF, new BlockPos(3, 2, 4));
+        helper.assertTrue(aggressiveBaby != null, "Aggressive baby wolf failed to spawn");
+        aggressiveBaby.setTame(true, false);
+        aggressiveBaby.setOwnerReference(EntityReference.of(uuidA));
+        aggressiveBaby.setAge(-24000);
+        if (aggressiveBaby instanceof WolfExtensions extBaby) {
+            extBaby.betterdogs$setPersonality(WolfPersonality.AGGRESSIVE);
+        }
+        aggressiveBaby.canAttack(null);
+
+        // 3. WolfFriendlyFireHelper positive co-owned clamp vs negative rival & non-living fall damage
+        dogA1.setHealth(4.0f);
+        DamageSource coOwnedSource = serverLevel.damageSources().mobAttack(dogA2);
+        helper.assertTrue(WolfFriendlyFireHelper.shouldCancelDamage(dogA1, coOwnedSource, 4.0f),
+                "Co-owned offline packmate lethal blow must clamp and cancel");
+        helper.assertTrue(Math.abs(dogA1.getHealth() - 1.0f) < 1e-4f,
+                "Clamped co-owned wolf health must equal 1.0f");
+
+        dogA1.setHealth(4.0f);
+        DamageSource rivalSource = serverLevel.damageSources().mobAttack(dogB);
+        helper.assertTrue(!WolfFriendlyFireHelper.shouldCancelDamage(dogA1, rivalSource, 4.0f),
+                "Rival offline wolf blow must NOT be cancelled");
+
+        dogA1.setHealth(4.0f);
+        DamageSource environmentalSource = serverLevel.damageSources().fall();
+        helper.assertTrue(!WolfFriendlyFireHelper.shouldCancelDamage(dogA1, environmentalSource, 4.0f),
+                "Non-living environmental damage must NOT be cancelled");
+
+        // 4. PacifistRevengeGoal.alertNearbyPackmates pack isolation with offline owner
+        dogA1.setTarget(null);
+        dogA2.setTarget(null);
+        dogB.setTarget(null);
+        wild1.setTarget(null);
+
+        PacifistRevengeGoal revengeGoal = new PacifistRevengeGoal(dogA1);
+        revengeGoal.alertNearbyPackmates(dogA2);
+        helper.assertTrue(dogB.getTarget() == null && wild1.getTarget() == null,
+                "Co-owned attacker must never trigger defensive rally");
+
+        Zombie zombie = helper.spawn(EntityTypes.ZOMBIE, new BlockPos(3, 2, 3));
+        helper.assertTrue(zombie != null, "Zombie failed to spawn");
+        revengeGoal.alertNearbyPackmates(zombie);
+        helper.assertTrue(dogA2.getTarget() == zombie,
+                "Offline co-owned adult packmate must rally against hostile zombie");
+        helper.assertTrue(dogB.getTarget() == null && wild1.getTarget() == null,
+                "Rival offline wolf and wild wolf must NOT rally for dogA1");
 
         helper.succeed();
     }

@@ -13,6 +13,7 @@ import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.scheduler.events.CorrectionDogEvent;
 import net.vanillaoutsider.betterdogs.util.BabyRetaliationHelper;
+import net.vanillaoutsider.betterdogs.util.PackAudienceHelper;
 import net.vanillaoutsider.betterdogs.util.WolfFriendlyFireHelper;
 
 import java.util.EnumSet;
@@ -106,7 +107,7 @@ public class BabyBiteBackGoal extends Goal {
                 List<Wolf> nearbyWolves = this.wolf.level().getEntitiesOfClass(
                         Wolf.class,
                         searchBox,
-                        w -> w != this.wolf && !w.isBaby() && w.isTame() && w.getOwner() == this.wolf.getOwner());
+                        w -> w != this.wolf && !w.isBaby() && PackAudienceHelper.isCoOwned(this.wolf, w));
 
                 for (Wolf adult : nearbyWolves) {
                     if (adult instanceof WolfExtensions adultExt) {
