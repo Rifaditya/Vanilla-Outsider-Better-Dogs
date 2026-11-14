@@ -411,9 +411,7 @@ public final class SmallFightHelper {
         if (!isEligibleForPlay(wolfA) || !isEligibleForPlay(wolfB) || wolfA == wolfB) {
             return false;
         }
-        LivingEntity ownerA = wolfA.getOwner();
-        LivingEntity ownerB = wolfB.getOwner();
-        if (ownerA == null || ownerA != ownerB) {
+        if (!PackAudienceHelper.isCoOwned(wolfA, wolfB)) {
             return false;
         }
         return wolfA.distanceToSqr(wolfB) <= (DEFAULT_PARTNER_RADIUS * DEFAULT_PARTNER_RADIUS);

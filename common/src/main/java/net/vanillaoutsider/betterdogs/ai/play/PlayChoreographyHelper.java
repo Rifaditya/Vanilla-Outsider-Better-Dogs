@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
+import net.vanillaoutsider.betterdogs.util.PackAudienceHelper;
 import net.vanillaoutsider.betterdogs.util.WolfHazardHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -158,14 +159,7 @@ public class PlayChoreographyHelper {
         if (!candidate.isAlive() || !candidate.isTame()) {
             return false;
         }
-        UUID candidateOwnerUuid = getOwnerUUID(candidate);
-        if (candidateOwnerUuid == null) {
-            return false;
-        }
-        UUID wolfOwnerUuid = getOwnerUUID(wolf);
-        boolean matchingOwner = (wolfOwnerUuid != null && wolfOwnerUuid.equals(candidateOwnerUuid))
-                || (wolf.getOwner() != null && wolf.getOwner() == candidate.getOwner());
-        if (!matchingOwner) {
+        if (!PackAudienceHelper.isCoOwned(wolf, candidate)) {
             return false;
         }
         if (candidate.isOrderedToSit() || candidate.isInSittingPose()) {

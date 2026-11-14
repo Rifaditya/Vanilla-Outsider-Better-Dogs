@@ -1,5 +1,14 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
+## [1.7.13+1.21.11] - 2026-11-14
+
+### Fixed
+- 🛡️ **Offline Owner UUID Ownership Parity & Wild Wolf `null == null` Immunity Fixes (`BL-BD-055`)**:
+  - Eliminated remaining live `getOwner()` and `isOwnedBy()` ownership bypasses across `PacifistRevengeGoal`, `WolfFriendlyFireHelper`, `WolfProjectileInterceptGoal`, `OwnerHurtByTargetGoalMixin`, `SmallFightHelper`, `PlayChoreographyHelper`, and `WolfNemesisHelper` so co-owned tamed dogs stay protected when owners are offline or in another dimension.
+  - Hardened `WolfFriendlyFireHelper.shouldCancelDamage()` to protect both direct and indirect co-owned packmate hits and UUID-matched owner hits, corrected the `bd_friendly_fire_protection` default-`true` polarity guard, rejected non-living environmental `null`/`null` damage sources, and preserved the `BL-BD-041` Blood Feud bypass.
+  - Enforced strict tamed + UUID ownership checks in `WolfProjectileInterceptGoal.isHostileShooter()` and `PlayChoreographyHelper.isValidPlayPartner()` to prevent `null == null` wild wolf matches.
+  - Added offline owner UUID killer and pack-broadcast matching in `WolfNemesisHelper.recordNemesis()`.
+
 ## [1.7.12+1.21.11] - 2026-11-13
 
 ### Fixed

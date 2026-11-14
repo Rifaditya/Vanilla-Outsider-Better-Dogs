@@ -53,11 +53,6 @@ public class PacifistRevengeGoal extends HurtByTargetGoal {
             }
         }
 
-        // Puppy mercy check: do not retaliate against ally baby wolves
-        if (attacker instanceof Wolf offendingWolf && offendingWolf.isBaby() && owner != null && owner.equals(offendingWolf.getOwner())) {
-            return false;
-        }
-
         this.wolf.setTarget(attacker);
         return true;
     }
