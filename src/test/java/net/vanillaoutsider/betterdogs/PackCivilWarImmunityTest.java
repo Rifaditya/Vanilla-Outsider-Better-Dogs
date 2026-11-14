@@ -19,6 +19,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 import net.dasik.social.core.EntitySocialScheduler;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
@@ -58,7 +59,7 @@ import sun.misc.Unsafe;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Step 35: Pack Civil War Immunity, Offline Owner Parity & Alert Silencing Tests (BL-BD-035, BL-BD-055)")
+@DisplayName("Step 35: Pack Civil War Immunity, Offline Owner Parity & Alert Silencing Tests (BL-BD-035, BL-BD-054, BL-BD-055, BL-BD-058)")
 class PackCivilWarImmunityTest {
 
     private static Unsafe unsafe;
@@ -116,6 +117,14 @@ class PackCivilWarImmunityTest {
             return level;
         } catch (InstantiationException e) {
             throw new IllegalStateException("Failed to allocate StubServerLevel", e);
+        }
+    }
+
+    private static Wolf allocatePlainWolf() {
+        try {
+            return (Wolf) unsafe.allocateInstance(Wolf.class);
+        } catch (InstantiationException e) {
+            throw new IllegalStateException("Failed to allocate plain Wolf", e);
         }
     }
 
@@ -177,6 +186,159 @@ class PackCivilWarImmunityTest {
                 "Leashed wolves must never be eligible for play");
         assertFalse(SmallFightHelper.isEligibleForPlay(true, true, false, false, true, false, 0, false, false),
                 "Wolves with active targets must never be eligible for play");
+    }
+
+    @Test
+    @DisplayName("BL-BD-054: Co-owned packmates with offline owner (getOwner == null) are blocked from attacking each other")
+    void testCoOwnedOfflineOwnerCivilWarProtection() {
+        UUID sharedOwner = UUID.randomUUID();
+        UUID otherOwner = UUID.randomUUID();
+
+        OfflineStubWolf dogA = createOfflineWolf(UUID.randomUUID(), sharedOwner, true, false);
+        OfflineStubWolf dogB = createOfflineWolf(UUID.randomUUID(), sharedOwner, true, false);
+        OfflineStubWolf rivalOwnerDog = createOfflineWolf(UUID.randomUUID(), otherOwner, true, false);
+        OfflineStubWolf wildWolf = createOfflineWolf(UUID.randomUUID(), null, false, false);
+
+        assertEquals(Boolean.FALSE, WolfTargetingHandler.wantsToAttack(dogA, dogB, null),
+                "Co-owned tamed wolves must return Boolean.FALSE even when owner is offline (getOwner() == null)");
+        assertNull(WolfTargetingHandler.wantsToAttack(dogA, rivalOwnerDog, null),
+                "Tamed wolves with different owners must not trigger co-owned civil war block");
+        assertNull(WolfTargetingHandler.wantsToAttack(dogA, wildWolf, null),
+                "Tamed wolf vs wild wolf must pass to vanilla super");
+        assertNull(WolfTargetingHandler.wantsToAttack(wildWolf, dogA, null),
+                "Wild wolf vs tamed wolf must pass to vanilla super");
+    }
+
+    @Test
+    @DisplayName("BL-BD-054: PLAY_FIGHT isolates designated partner and guards null target equality")
+    void testPlayFightTargetIsolationAndNullTargetGuard() {
+        UUID sharedOwner = UUID.randomUUID();
+        OfflineStubWolf sparrerA = createOfflineWolf(UUID.randomUUID(), sharedOwner, true, false);
+        OfflineStubWolf sparrerB = createOfflineWolf(UUID.randomUUID(), sharedOwner, true, false);
+        OfflineStubWolf bystanderC = createOfflineWolf(UUID.randomUUID(), sharedOwner, true, false);
+
+        sparrerA.betterdogs$setSocialState(sparrerB, WolfExtensions.SocialAction.PLAY_FIGHT, 120);
+
+        assertEquals(Boolean.TRUE, WolfTargetingHandler.wantsToAttack(sparrerA, sparrerB, null),
+                "PLAY_FIGHT must allow targeting the designated sparring partner");
+        assertEquals(Boolean.FALSE, WolfTargetingHandler.wantsToAttack(sparrerA, bystanderC, null),
+                "PLAY_FIGHT must deny attacking bystanders outside the designated sparring pair");
+        assertEquals(Boolean.FALSE, WolfTargetingHandler.wantsToAttack(sparrerA, null, null),
+                "PLAY_FIGHT with null target must return Boolean.FALSE");
+
+        sparrerA.forceSocialStateRaw(null, WolfExtensions.SocialAction.PLAY_FIGHT);
+        assertEquals(Boolean.FALSE, WolfTargetingHandler.wantsToAttack(sparrerA, null, null),
+                "PLAY_FIGHT with null socialTarget and null target must return Boolean.FALSE (never null == null -> true)");
+
+        sparrerA.forceSocialStateRaw(null, WolfExtensions.SocialAction.TERRITORIAL_WAR);
+        assertEquals(Boolean.FALSE, WolfTargetingHandler.wantsToAttack(sparrerA, null, null),
+                "TERRITORIAL_WAR with null socialTarget and null target must return Boolean.FALSE");
+    }
+
+    @Test
+    @DisplayName("BL-BD-054: Blood feud null/empty target guards prevent NPE and preserve civil war protection")
+    void testBloodFeudNullAndEmptyTargetSafety() {
+        UUID sharedOwner = UUID.randomUUID();
+        OfflineStubWolf dogA = createOfflineWolf(UUID.randomUUID(), sharedOwner, true, false);
+        OfflineStubWolf dogB = createOfflineWolf(UUID.randomUUID(), sharedOwner, true, false);
+
+        dogA.forceBloodFeud(true, null);
+        Boolean nullTargetResult = assertDoesNotThrow(() -> WolfTargetingHandler.wantsToAttack(dogA, dogB, null),
+                "Active blood feud flag with null target string must never throw NullPointerException");
+        assertEquals(Boolean.FALSE, nullTargetResult,
+                "Active blood feud with null target string must fall back to co-owned civil war block");
+
+        dogA.forceBloodFeud(true, "");
+        assertEquals(Boolean.FALSE, WolfTargetingHandler.wantsToAttack(dogA, dogB, null),
+                "Active blood feud with empty target string must not match and must preserve civil war block");
+    }
+
+    @Test
+    @DisplayName("BL-BD-054: Blood feud nemesis bypasses civil war block unless high affinity (> 50) suppresses it")
+    void testBloodFeudNemesisAndAffinitySuppression() {
+        UUID sharedOwner = UUID.randomUUID();
+        OfflineStubWolf dogA = createOfflineWolf(UUID.randomUUID(), sharedOwner, true, false);
+        OfflineStubWolf nemesisB = createOfflineWolf(UUID.randomUUID(), sharedOwner, true, false);
+        OfflineStubWolf bystanderC = createOfflineWolf(UUID.randomUUID(), sharedOwner, true, false);
+
+        dogA.betterdogs$setBloodFeudTarget(nemesisB.getStringUUID());
+
+        assertEquals(Boolean.TRUE, WolfTargetingHandler.wantsToAttack(dogA, nemesisB, null),
+                "Blood feud nemesis must bypass co-owned civil war immunity");
+        assertEquals(Boolean.FALSE, WolfTargetingHandler.wantsToAttack(dogA, bystanderC, null),
+                "Non-nemesis co-owned packmate must still be blocked despite active blood feud against another wolf");
+
+        dogA.betterdogs$adjustAffinity(nemesisB.getStringUUID(), 51);
+        assertEquals(Boolean.FALSE, WolfTargetingHandler.wantsToAttack(dogA, nemesisB, null),
+                "High affinity (> 50) with nemesis must suppress the blood feud override");
+    }
+
+    @Test
+    @DisplayName("BL-BD-054: Hierarchy correction snap suppresses retaliation even under PLAY_FIGHT or blood feud")
+    void testCorrectionSnapRetaliationSuppressionViaHandler() {
+        UUID sharedOwner = UUID.randomUUID();
+        OfflineStubWolf calmDog = createOfflineWolf(UUID.randomUUID(), sharedOwner, true, false);
+        OfflineStubWolf playfulDog = createOfflineWolf(UUID.randomUUID(), sharedOwner, true, false);
+
+        playfulDog.betterdogs$setSocialState(calmDog, WolfExtensions.SocialAction.PLAY_FIGHT, 120);
+        SmallFightHelper.recordCorrectionSnap(calmDog.getUUID(), playfulDog.getUUID(), 5000L);
+
+        assertEquals(Boolean.FALSE, WolfTargetingHandler.wantsToAttack(playfulDog, calmDog, null),
+                "Disciplined wolf must not retaliate against disciplining packmate during active correction snap window");
+    }
+
+    @Test
+    @DisplayName("BL-BD-054: Defensive inputs (null wolf, non-WolfExtensions Wolf) fail safely returning null")
+    void testDefensiveNullAndNonExtensionWolfInputs() {
+        UUID sharedOwner = UUID.randomUUID();
+        OfflineStubWolf target = createOfflineWolf(UUID.randomUUID(), sharedOwner, true, false);
+        Wolf plainWolf = allocatePlainWolf();
+
+        assertNull(assertDoesNotThrow(() -> WolfTargetingHandler.wantsToAttack(null, target, null)),
+                "Null wolf must return null without throwing");
+        assertNull(assertDoesNotThrow(() -> WolfTargetingHandler.wantsToAttack(plainWolf, target, null)),
+                "Wolf instance without WolfExtensions must return null without throwing");
+    }
+
+    @Test
+    @DisplayName("BL-BD-054 Contract: WolfCombatMixin delegates wantsToAttack to WolfTargetingHandler and WolfCombatHooks is purged")
+    void testMixinDelegationRegressionContract() throws IOException {
+        Path root = findProjectRoot();
+        Path mixinFile = root.resolve("src/main/java/net/vanillaoutsider/betterdogs/mixin/WolfCombatMixin.java");
+        Path damageHandlerFile = root.resolve("src/main/java/net/vanillaoutsider/betterdogs/util/WolfDamageHandler.java");
+        Path legacyHooksFile = root.resolve("src/main/java/net/vanillaoutsider/betterdogs/util/WolfCombatHooks.java");
+        Path mainJava = root.resolve("src/main/java");
+
+        assertTrue(Files.exists(mixinFile), "WolfCombatMixin.java must exist");
+        assertTrue(Files.exists(damageHandlerFile), "WolfDamageHandler.java must exist");
+        assertFalse(Files.exists(legacyHooksFile), "Legacy WolfCombatHooks.java must remain purged");
+
+        String mixinContent = Files.readString(mixinFile, StandardCharsets.UTF_8);
+        assertTrue(mixinContent.contains("WolfTargetingHandler.wantsToAttack("),
+                "WolfCombatMixin must delegate wantsToAttack to WolfTargetingHandler.wantsToAttack(...)");
+        assertTrue(mixinContent.contains("WolfDamageHandler.onActuallyHurt("),
+                "WolfCombatMixin must continue delegating actuallyHurt to WolfDamageHandler.onActuallyHurt(...)");
+
+        String damageHandlerContent = Files.readString(damageHandlerFile, StandardCharsets.UTF_8);
+        assertFalse(damageHandlerContent.contains("wantsToAttack("),
+                "WolfDamageHandler.java must not contain wantsToAttack(...)");
+        assertTrue(damageHandlerContent.contains("onActuallyHurt("),
+                "WolfDamageHandler.java must retain onActuallyHurt(...)");
+
+        try (Stream<Path> stream = Files.walk(mainJava)) {
+            List<Path> callers = stream
+                    .filter(p -> p.toString().endsWith(".java"))
+                    .filter(p -> {
+                        try {
+                            return Files.readString(p, StandardCharsets.UTF_8).contains("WolfCombatHooks.wantsToAttack");
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    })
+                    .toList();
+            assertTrue(callers.isEmpty(),
+                    "Zero callers of WolfCombatHooks.wantsToAttack may remain in src/main/java, found: " + callers);
+        }
     }
 
     @Test
@@ -451,6 +613,32 @@ class PackCivilWarImmunityTest {
         assertEquals(0, failures.get(), "Zero invariants or thread safety violations allowed across 64 threads");
     }
 
+    @Test
+    @DisplayName("BL-BD-055 Scenario 11: PacifistRevengeGoal.alertNearbyPackmates rallies only offline co-owned adults")
+    void testScenario11PacifistRevengeGoalOfflinePackIsolation() {
+        UUID ownerA = UUID.randomUUID();
+        UUID ownerB = UUID.randomUUID();
+        OfflineStubWolf pacifistA1 = createOfflineWolf(true, ownerA);
+        OfflineStubWolf adultA2 = createOfflineWolf(true, ownerA);
+        OfflineStubWolf babyA3 = createOfflineWolf(UUID.randomUUID(), ownerA, true, true);
+        OfflineStubWolf rivalB = createOfflineWolf(true, ownerB);
+        OfflineStubWolf wild = createOfflineWolf(false, null);
+
+        StubServerLevel stubLevel = createStubServerLevel(200L, List.of(pacifistA1, adultA2, babyA3, rivalB, wild));
+        pacifistA1.attachLevel(stubLevel);
+
+        PacifistRevengeGoal revengeGoal = new PacifistRevengeGoal(pacifistA1);
+        revengeGoal.alertNearbyPackmates(adultA2);
+        assertFalse(stubLevel.broadcastQueried,
+                "Co-owned attacker must never trigger PacifistRevengeGoal defensive alert");
+
+        StubServerPlayer hostile = createStubPlayer(UUID.randomUUID(), false);
+        revengeGoal.alertNearbyPackmates(hostile);
+        assertTrue(stubLevel.broadcastQueried, "Hostile attacker must query nearby packmates");
+        assertEquals(List.of(adultA2), stubLevel.matchedBroadcastWolves,
+                "Only offline co-owned non-baby packmates must rally; rival and wild wolves must be excluded");
+    }
+
     private static final class StubServerPlayer extends ServerPlayer {
         private UUID uuid;
         private boolean sneaking;
@@ -608,6 +796,11 @@ class PackCivilWarImmunityTest {
         void forceBloodFeud(boolean active, @Nullable String targetUuid) {
             this.hasBloodFeud = active;
             this.bloodFeudTarget = targetUuid;
+        }
+
+        void forceSocialStateRaw(@Nullable LivingEntity target, SocialAction action) {
+            this.socialTarget = target;
+            this.socialAction = action;
         }
 
         @Override

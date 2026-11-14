@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.7.13+26.3] - 2026-11-14
+
+### Fixed
+- **Targeting Null-Safety & Blood Feud Edge-Case Guards (BL-BD-058)**:
+  - Fixed a potential `NullPointerException` in `WolfTargetingHandler` when evaluating blood feud targets with missing or empty target UUID strings (`matchesBloodFeudTarget`).
+  - Added explicit non-null target guards for `PLAY_FIGHT` and `TERRITORIAL_WAR` target checks so a `null` target never accidentally matches a `null` social target.
+
 ## [5.7.12+26.3] - 2026-11-14
 
 ### Fixed

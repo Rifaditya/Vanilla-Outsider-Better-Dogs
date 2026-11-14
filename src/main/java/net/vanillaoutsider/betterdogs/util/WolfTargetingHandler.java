@@ -6,12 +6,24 @@ import net.dasik.social.api.group.GroupMember;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Handles 'wantsToAttack' target evaluation, social combat overrides,
  * 1v1 territorial war constraints, blood feud nemesis targeting, and pack safety.
  */
 public class WolfTargetingHandler {
+
+    /**
+     * Checks whether this wolf has an active blood feud targeting the given wolf UUID.
+     */
+    private static boolean matchesBloodFeudTarget(WolfExtensions ext, @Nullable Wolf targetWolf) {
+        if (!ext.betterdogs$hasBloodFeud() || targetWolf == null) {
+            return false;
+        }
+        String feudTarget = ext.betterdogs$getBloodFeudTarget();
+        return feudTarget != null && !feudTarget.isEmpty() && feudTarget.equals(targetWolf.getStringUUID());
+    }
 
     /**
      * Checks if retaliation targeting should be suppressed for a disciplined wolf against the disciplining packmate.
@@ -51,11 +63,11 @@ public class WolfTargetingHandler {
                 ext.betterdogs$getSocialAction() == WolfExtensions.SocialAction.TERRITORIAL_WAR) {
             // If it's a territorial war, ONLY attack the rival leader
             if (ext.betterdogs$getSocialAction() == WolfExtensions.SocialAction.TERRITORIAL_WAR) {
-                return target == ext.betterdogs$getSocialTarget();
+                return target != null && target == ext.betterdogs$getSocialTarget();
             }
             // If it's a play fight, ONLY interact with the designated play partner
             if (ext.betterdogs$getSocialAction() == WolfExtensions.SocialAction.PLAY_FIGHT) {
-                return target == ext.betterdogs$getSocialTarget();
+                return target != null && target == ext.betterdogs$getSocialTarget();
             }
             return true;
         }
@@ -63,9 +75,7 @@ public class WolfTargetingHandler {
         // Pack Civil War Protection (BL-BD-035): Co-owned tamed wolves NEVER want to attack each other
         if (target instanceof Wolf targetWolf && wolf.isTame() && targetWolf.isTame()) {
             if (PackAudienceHelper.isCoOwned(wolf, targetWolf)) {
-                boolean isNemesis = ext.betterdogs$hasBloodFeud()
-                        && ext.betterdogs$getBloodFeudTarget().equals(targetWolf.getStringUUID());
-                if (!isNemesis) {
+                if (!matchesBloodFeudTarget(ext, targetWolf)) {
                     return false;
                 }
             }
@@ -84,15 +94,13 @@ public class WolfTargetingHandler {
         }
 
         // Blood Feud: ALLOW attacking nemesis (bypass all protection)
-        if (target instanceof Wolf targetWolf && ext.betterdogs$hasBloodFeud()) {
-            if (ext.betterdogs$getBloodFeudTarget().equals(targetWolf.getStringUUID())) {
-                // INTEGRATION: High affinity suppresses the feud for this attack
-                int affinity = ext.betterdogs$getAffinity(targetWolf.getStringUUID());
-                if (affinity > 50) {
-                    return false;
-                }
-                return true;
+        if (target instanceof Wolf targetWolf && matchesBloodFeudTarget(ext, targetWolf)) {
+            // INTEGRATION: High affinity suppresses the feud for this attack
+            int affinity = ext.betterdogs$getAffinity(targetWolf.getStringUUID());
+            if (affinity > 50) {
+                return false;
             }
+            return true;
         }
 
         // Submissive: Cannot attack pack members
