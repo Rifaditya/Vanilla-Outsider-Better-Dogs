@@ -39,6 +39,7 @@ import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.phys.AABB;
 import net.vanillaoutsider.betterdogs.ai.PacifistRevengeGoal;
 import net.vanillaoutsider.betterdogs.ai.WolfProjectileInterceptGoal;
@@ -838,6 +839,141 @@ class PackCivilWarImmunityTest {
                 "WolfAIMixin must not leave PacifistRevengeGoal in goalSelector");
     }
 
+    @Test
+    @DisplayName("BL-BD-063 Scenario 17: Live BD_FRIENDLY_FIRE true/false/fallback gating, lethal clamp & co-owned packmate protection")
+    void testScenario17FriendlyFireGameRulePolarityAndLethalClamp() {
+        UUID ownerA = UUID.randomUUID();
+        UUID ownerB = UUID.randomUUID();
+        OfflineStubWolf wolfA1 = createOfflineWolf(true, ownerA);
+        OfflineStubWolf wolfA2 = createOfflineWolf(true, ownerA);
+        OfflineStubWolf rivalB = createOfflineWolf(true, ownerB);
+        OfflineStubWolf wild = createOfflineWolf(false, null);
+
+        StubServerLevel level = createStubServerLevel(300L, List.of(wolfA1, wolfA2, rivalB, wild));
+        wolfA1.attachLevel(level);
+        StubServerPlayer standingOwner = createStubPlayer(ownerA, false);
+        StubServerPlayer sneakingOwner = createStubPlayer(ownerA, true);
+
+        DamageSource ownerMelee = new DamageSource(mobDamageType, standingOwner, standingOwner);
+        DamageSource sneakingMelee = new DamageSource(mobDamageType, sneakingOwner, sneakingOwner);
+        DamageSource ownerProjectile = new DamageSource(mobDamageType, null, standingOwner);
+        DamageSource allyDirect = new DamageSource(mobDamageType, wolfA2, wolfA2);
+        DamageSource allyIndirectCausingOnly = new DamageSource(mobDamageType, null, wolfA2);
+        DamageSource rivalDirect = new DamageSource(mobDamageType, rivalB, rivalB);
+        DamageSource wildDirect = new DamageSource(mobDamageType, wild, wild);
+
+        // 1. Live BD_FRIENDLY_FIRE = true
+        level.getGameRules().set(BetterDogsGameRules.BD_FRIENDLY_FIRE, true, null);
+        assertNull(wolfA1.getOwner(), "Offline owner UUID match must work even when getOwner() is null");
+
+        wolfA1.setHealth(10.0f);
+        assertTrue(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, ownerMelee, 2.0f),
+                "BD_FRIENDLY_FIRE=true must cancel standing offline-UUID owner non-lethal melee hit");
+        assertTrue(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, allyDirect, 1.0f),
+                "BD_FRIENDLY_FIRE=true must cancel co-owned packmate non-lethal direct hit");
+        assertTrue(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, allyIndirectCausingOnly, 1.0f),
+                "BD_FRIENDLY_FIRE=true must cancel co-owned packmate non-lethal indirect hit");
+        assertEquals(10.0f, wolfA1.getHealth(), 1e-5f, "Non-lethal cancelled hits must leave HP unchanged");
+
+        assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, ownerProjectile, 2.0f),
+                "BD_FRIENDLY_FIRE=true must allow non-lethal owner projectile hits");
+        assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, sneakingMelee, 2.0f),
+                "Sneaking owner intentional hit must bypass non-lethal protection");
+
+        wolfA1.setHealth(4.0f);
+        assertTrue(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, ownerMelee, 4.0f),
+                "BD_FRIENDLY_FIRE=true must clamp & cancel lethal standing owner hit");
+        assertEquals(1.0f, wolfA1.getHealth(), 1e-5f);
+
+        wolfA1.setHealth(4.0f);
+        assertTrue(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, allyDirect, 4.0f),
+                "BD_FRIENDLY_FIRE=true must clamp & cancel lethal co-owned packmate hit");
+        assertEquals(1.0f, wolfA1.getHealth(), 1e-5f);
+
+        // Live online getOwner() ref + sneaking bypass + Aggressive baby provocation + rival/wild negative checks
+        wolfA1.attachLiveOwner(standingOwner, 4.0D);
+        wolfA1.setHealth(4.0f);
+        assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, sneakingMelee, 4.0f),
+                "Sneaking owner lethal hit must not be clamped when sneaking");
+        assertEquals(4.0f, wolfA1.getHealth(), 1e-5f);
+        wolfA1.attachLiveOwner(null, 4.0D);
+
+        wolfA1.setHealth(10.0f);
+        assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, rivalDirect, 4.0f),
+                "Rival dog attack must never be cancelled");
+        assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, wildDirect, 4.0f),
+                "Wild wolf attack must never be cancelled");
+
+        OfflineStubWolf aggressiveBaby = createOfflineWolf(UUID.randomUUID(), ownerA, true, true);
+        aggressiveBaby.betterdogs$setPersonality(WolfPersonality.AGGRESSIVE);
+        aggressiveBaby.attachLevel(level);
+        aggressiveBaby.setHealth(10.0f);
+        assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(aggressiveBaby, ownerMelee, 2.0f),
+                "Non-lethal owner provocation tap on Aggressive baby must still land");
+
+        // 2. Live BD_FRIENDLY_FIRE = false disables BOTH Block 1 lethal clamp & Block 2 non-lethal protection
+        level.getGameRules().set(BetterDogsGameRules.BD_FRIENDLY_FIRE, false, null);
+        wolfA1.setHealth(10.0f);
+        assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, ownerMelee, 2.0f),
+                "BD_FRIENDLY_FIRE=false must allow non-lethal owner melee hit");
+        assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, allyDirect, 1.0f),
+                "BD_FRIENDLY_FIRE=false must allow non-lethal co-owned packmate hit");
+
+        wolfA1.setHealth(4.0f);
+        assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, ownerMelee, 4.0f),
+                "BD_FRIENDLY_FIRE=false must NOT clamp or cancel lethal owner hit");
+        assertEquals(4.0f, wolfA1.getHealth(), 1e-5f, "HP must NOT be clamped to 1.0f when BD_FRIENDLY_FIRE=false");
+        assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, allyDirect, 4.0f),
+                "BD_FRIENDLY_FIRE=false must NOT clamp or cancel lethal co-owned packmate hit");
+        assertEquals(4.0f, wolfA1.getHealth(), 1e-5f, "HP must NOT be clamped to 1.0f for packmate hit when BD_FRIENDLY_FIRE=false");
+
+        // 3. Unavailable GameRules / null Level falls back safely to true (protection ON)
+        level.setGameRules(null);
+        wolfA1.setHealth(4.0f);
+        assertTrue(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, ownerMelee, 4.0f),
+                "Unavailable GameRules must fall back to true (protection ON)");
+        assertEquals(1.0f, wolfA1.getHealth(), 1e-5f);
+
+        wolfA1.attachLevel(null);
+        wolfA1.setHealth(10.0f);
+        assertTrue(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, allyDirect, 1.0f),
+                "Null level fallback must default BD_FRIENDLY_FIRE to true");
+    }
+
+    @Test
+    @DisplayName("BL-BD-063 Scenario 18: Social AI (getSocialTarget) and active Blood Feud bypass WolfFriendlyFireHelper cancellation")
+    void testScenario18SocialChannelAndBloodFeudBypassFriendlyFire() {
+        UUID ownerA = UUID.randomUUID();
+        OfflineStubWolf victim = createOfflineWolf(true, ownerA);
+        OfflineStubWolf sparringPartner = createOfflineWolf(true, ownerA);
+        OfflineStubWolf feudAttacker = createOfflineWolf(true, ownerA);
+
+        StubServerLevel level = createStubServerLevel(400L, List.of(victim, sparringPartner, feudAttacker));
+        level.getGameRules().set(BetterDogsGameRules.BD_FRIENDLY_FIRE, true, null);
+        victim.attachLevel(level);
+
+        sparringPartner.forceSocialStateRaw(victim, WolfExtensions.SocialAction.PLAY_FIGHT);
+        victim.setHealth(10.0f);
+        assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(victim, new DamageSource(mobDamageType, sparringPartner, sparringPartner), 1.0f),
+                "Active social-channel PLAY_FIGHT hit must bypass WolfFriendlyFireHelper");
+
+        victim.setHealth(4.0f);
+        assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(victim, new DamageSource(mobDamageType, sparringPartner, sparringPartner), 4.0f),
+                "WolfFriendlyFireHelper must leave PLAY_FIGHT lethal handling to WolfDamageHandler without double-intercepting");
+        assertEquals(4.0f, victim.getHealth(), 1e-5f);
+
+        feudAttacker.forceBloodFeud(true, victim.getStringUUID());
+        victim.setHealth(4.0f);
+        assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(victim, new DamageSource(mobDamageType, feudAttacker, feudAttacker), 4.0f),
+                "Active Blood Feud attacker targeting victim must bypass WolfFriendlyFireHelper");
+        assertEquals(4.0f, victim.getHealth(), 1e-5f);
+
+        // Non-matching Blood Feud target does NOT bypass friendly fire protection
+        feudAttacker.forceBloodFeud(true, UUID.randomUUID().toString());
+        assertTrue(WolfFriendlyFireHelper.shouldCancelDamage(victim, new DamageSource(mobDamageType, feudAttacker, feudAttacker), 1.0f),
+                "Non-matching Blood Feud target must still obey co-owned friendly fire protection");
+    }
+
     private static final class OfflineStubCreeper extends Creeper {
         private UUID uuid;
 
@@ -914,6 +1050,7 @@ class PackCivilWarImmunityTest {
         private long gameTime;
         private List<Wolf> candidates;
         private boolean returnMatchedOnQuery;
+        private @Nullable GameRules gameRules;
         boolean broadcastQueried;
         List<Wolf> matchedBroadcastWolves;
 
@@ -927,6 +1064,21 @@ class PackCivilWarImmunityTest {
             this.returnMatchedOnQuery = returnMatchedOnQuery;
             this.broadcastQueried = false;
             this.matchedBroadcastWolves = new ArrayList<>();
+            if (BetterDogsGameRules.BD_FRIENDLY_FIRE != null && BetterDogsGameRules.BD_NEMESIS_SYSTEM != null) {
+                this.gameRules = new GameRules(
+                        List.of(BetterDogsGameRules.BD_FRIENDLY_FIRE, BetterDogsGameRules.BD_NEMESIS_SYSTEM));
+            } else {
+                this.gameRules = null;
+            }
+        }
+
+        void setGameRules(@Nullable GameRules gameRules) {
+            this.gameRules = gameRules;
+        }
+
+        @Override
+        public GameRules getGameRules() {
+            return this.gameRules;
         }
 
         @Override
