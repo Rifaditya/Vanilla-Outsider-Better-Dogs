@@ -2,7 +2,6 @@
 // Verified against: Minecraft 26.1.2
 package net.vanillaoutsider.betterdogs.util;
 
-import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -56,6 +55,18 @@ public final class WolfFriendlyFireHelper {
             return false;
         }
 
+        // Preserve deliberate Social AI (Play Fight / Correction / Retaliation) & Blood Feud exemptions
+        if ((rawAttacker instanceof WolfExtensions rawExt && rawExt.betterdogs$getSocialTarget() == wolf)
+                || (directAttacker instanceof WolfExtensions directExt && directExt.betterdogs$getSocialTarget() == wolf)) {
+            return false;
+        }
+        if ((rawAttacker instanceof WolfExtensions feudRaw && feudRaw.betterdogs$hasBloodFeud()
+                && wolf.getStringUUID().equals(feudRaw.betterdogs$getBloodFeudTarget()))
+                || (directAttacker instanceof WolfExtensions feudDirect && feudDirect.betterdogs$hasBloodFeud()
+                        && wolf.getStringUUID().equals(feudDirect.betterdogs$getBloodFeudTarget()))) {
+            return false;
+        }
+
         LivingEntity owner = wolf.getOwner();
         UUID wolfOwnerUuid = PlayChoreographyHelper.getOwnerUUID(wolf);
         Player attackerPlayer = rawAttacker instanceof Player p ? p : (directAttacker instanceof Player p ? p : null);
@@ -66,6 +77,18 @@ public final class WolfFriendlyFireHelper {
                 || (directAttacker instanceof Wolf directWolf && PackAudienceHelper.isCoOwned(wolf, directWolf));
 
         boolean isProjectile = source.is(DamageTypeTags.IS_PROJECTILE) || source.getDirectEntity() != source.getEntity();
+
+        boolean friendlyFireEnabled = true;
+        if (wolf.level() != null && BetterDogsGameRules.BD_FRIENDLY_FIRE != null) {
+            try {
+                friendlyFireEnabled = BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_FRIENDLY_FIRE, true);
+            } catch (Throwable ignored) {
+                friendlyFireEnabled = true;
+            }
+        }
+        if (!friendlyFireEnabled) {
+            return false;
+        }
 
         // 1. Lethal Friendly Fire Clamp (Allied dogs or non-sneaking owner)
         if ((isAllyWolf || isOwner) && !isSneaking) {
@@ -78,28 +101,21 @@ public final class WolfFriendlyFireHelper {
             }
         }
 
-        // 2. Owner Friendly Fire Cancellation
+        // 2. Owner Melee & Co-Owned Packmate Friendly Fire Cancellation
         if (isOwner && !isSneaking && !isProjectile) {
-            boolean friendlyFireEnabled = true;
-            if (wolf.level() != null) {
-                try {
-                    friendlyFireEnabled = DynamicGameRuleManager.getBoolean(wolf.level(), BetterDogsGameRules.BD_FRIENDLY_FIRE);
-                } catch (Throwable ignored) {
-                    friendlyFireEnabled = true;
+            // Exception: Provocation taps on Aggressive Babies to trigger retaliation behavior
+            if (wolf.isBaby() && wolf instanceof WolfExtensions ext
+                    && ext.betterdogs$getPersonality() == WolfPersonality.AGGRESSIVE) {
+                if (amount > 2.0f) {
+                    wolf.setHealth(wolf.getHealth() + (amount - 2.0f));
                 }
+                return false; // Let provocation hit land
             }
+            return true; // Cancel accidental melee hit
+        }
 
-            if (friendlyFireEnabled) {
-                // Exception: Provocation taps on Aggressive Babies to trigger retaliation behavior
-                if (wolf.isBaby() && wolf instanceof WolfExtensions ext
-                        && ext.betterdogs$getPersonality() == WolfPersonality.AGGRESSIVE) {
-                    if (amount > 2.0f) {
-                        wolf.setHealth(wolf.getHealth() + (amount - 2.0f));
-                    }
-                    return false; // Let provocation hit land
-                }
-                return true; // Cancel accidental melee hit
-            }
+        if (isAllyWolf) {
+            return true; // Cancel non-lethal accidental packmate hit
         }
 
         return false;

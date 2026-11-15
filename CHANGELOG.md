@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.7.16+26.1.2] - 2026-11-15
+
+### Fixed
+- **Aligned Friendly Fire GameRule (`bd_friendly_fire_protection`), Lethal Clamp & Co-Owned Packmate Protection (BL-BD-063)**:
+  - Evaluated `BD_FRIENDLY_FIRE` once before both the lethal friendly-fire health clamp and non-lethal protection checks in `WolfFriendlyFireHelper.shouldCancelDamage`, so disabling `bd_friendly_fire_protection` cleanly turns off lethal health clamping as well as non-lethal damage cancellation.
+  - Added non-lethal accidental damage cancellation for co-owned packmates alongside standing owners when `bd_friendly_fire_protection` is enabled, while preserving deliberate Social AI (`betterdogs$getSocialTarget() == wolf`, e.g., `PLAY_FIGHT` clamping) and active Blood Feud (`betterdogs$hasBloodFeud()`) exemptions.
+
 ## [5.7.15+26.1.2] - 2026-11-14
 
 ### Fixed
