@@ -437,13 +437,16 @@ public class BetterDogsGameRules {
             return fallback;
         }
         try {
-            return DynamicGameRuleManager.getBoolean(level, key);
-        } catch (Throwable t) {
-            try {
-                return level.getGameRules() != null ? level.getGameRules().getBoolean(key) : fallback;
-            } catch (Exception e) {
+            if (!level.isClientSide()) {
+                GameRules rules = level.getGameRules();
+                if (rules != null) {
+                    return rules.getBoolean(key);
+                }
                 return fallback;
             }
+            return DynamicGameRuleManager.getBoolean(level, key);
+        } catch (Throwable t) {
+            return fallback;
         }
     }
 

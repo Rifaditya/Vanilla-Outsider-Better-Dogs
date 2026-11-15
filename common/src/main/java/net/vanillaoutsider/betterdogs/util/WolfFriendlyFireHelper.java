@@ -26,44 +26,47 @@ public class WolfFriendlyFireHelper {
             return false;
         }
 
-        // If friendly fire is enabled (true), do NOT cancel damage (vanilla behavior)
-        if (!BetterDogsGameRules.getBoolean(level, BetterDogsGameRules.BD_FRIENDLY_FIRE, false)) {
-            Entity attacker = source.getEntity();
-            Entity directAttacker = source.getDirectEntity();
-            if (!(attacker instanceof LivingEntity) && !(directAttacker instanceof LivingEntity)) {
+        // If friendly fire protection is enabled (true, default), prevent accidental owner & packmate hits
+        boolean friendlyFireEnabled = BetterDogsGameRules.getBoolean(level, BetterDogsGameRules.BD_FRIENDLY_FIRE, true);
+        if (!friendlyFireEnabled) {
+            return false;
+        }
+
+        Entity attacker = source.getEntity();
+        Entity directAttacker = source.getDirectEntity();
+        if (!(attacker instanceof LivingEntity) && !(directAttacker instanceof LivingEntity)) {
+            return false;
+        }
+
+        LivingEntity owner = wolf.getOwner();
+        UUID wolfOwnerUuid = PlayChoreographyHelper.getOwnerUUID(wolf);
+
+        // Check if direct attacker or indirect source is the owner (live ref or offline/cross-dimension UUID)
+        if ((owner != null && (attacker == owner || directAttacker == owner))
+                || (wolfOwnerUuid != null
+                        && ((attacker instanceof Player p && wolfOwnerUuid.equals(p.getUUID()))
+                                || (directAttacker instanceof Player dp && wolfOwnerUuid.equals(dp.getUUID()))))) {
+            return true;
+        }
+
+        // Blood Feud bypasses pack friendly fire between rival wolves
+        if (attacker instanceof net.vanillaoutsider.betterdogs.WolfExtensions ext && ext.betterdogs$hasBloodFeud()) {
+            if (wolf.getStringUUID().equals(ext.betterdogs$getBloodFeudTarget())) {
                 return false;
             }
+        }
+        if (directAttacker instanceof net.vanillaoutsider.betterdogs.WolfExtensions directExt && directExt.betterdogs$hasBloodFeud()) {
+            if (wolf.getStringUUID().equals(directExt.betterdogs$getBloodFeudTarget())) {
+                return false;
+            }
+        }
 
-            LivingEntity owner = wolf.getOwner();
-            UUID wolfOwnerUuid = PlayChoreographyHelper.getOwnerUUID(wolf);
-
-            // Check if direct attacker or indirect source is the owner (live ref or offline/cross-dimension UUID)
-            if ((owner != null && (attacker == owner || directAttacker == owner))
-                    || (wolfOwnerUuid != null
-                            && ((attacker instanceof Player p && wolfOwnerUuid.equals(p.getUUID()))
-                                    || (directAttacker instanceof Player dp && wolfOwnerUuid.equals(dp.getUUID()))))) {
-                return true;
-            }
-
-            // Blood Feud bypasses pack friendly fire between rival wolves
-            if (attacker instanceof net.vanillaoutsider.betterdogs.WolfExtensions ext && ext.betterdogs$hasBloodFeud()) {
-                if (wolf.getStringUUID().equals(ext.betterdogs$getBloodFeudTarget())) {
-                    return false;
-                }
-            }
-            if (directAttacker instanceof net.vanillaoutsider.betterdogs.WolfExtensions directExt && directExt.betterdogs$hasBloodFeud()) {
-                if (wolf.getStringUUID().equals(directExt.betterdogs$getBloodFeudTarget())) {
-                    return false;
-                }
-            }
-
-            // Check if attacker is another friendly dog of the same owner
-            if (attacker instanceof Wolf attackerWolf && PackAudienceHelper.isCoOwned(wolf, attackerWolf)) {
-                return true;
-            }
-            if (directAttacker instanceof Wolf directWolf && PackAudienceHelper.isCoOwned(wolf, directWolf)) {
-                return true;
-            }
+        // Check if attacker is another friendly dog of the same owner
+        if (attacker instanceof Wolf attackerWolf && PackAudienceHelper.isCoOwned(wolf, attackerWolf)) {
+            return true;
+        }
+        if (directAttacker instanceof Wolf directWolf && PackAudienceHelper.isCoOwned(wolf, directWolf)) {
+            return true;
         }
 
         return false;

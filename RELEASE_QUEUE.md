@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 1.7.15+1.21.1** - Align BD_FRIENDLY_FIRE (bd_friendly_fire_protection) Polarity & Server Lookup Fallback (BL-BD-063)
 - [ ] **Better Dogs 1.7.14+1.21.1** - Fix Pacifist Wolf Retaliation & Owner-Defense Lifecycle (BL-BD-062)
 - [ ] **Better Dogs 1.7.13+1.21.1** - Offline Owner null==null & Live getOwner() Bypass Fixes across Friendly Fire, Nemesis, Play & Mixin Guards (BL-BD-055)
 - [ ] **Better Dogs 1.7.12+1.21.1** - Offline & Cross-Dimension Owner Bypass Fix in PackAudienceHelper.isCoOwned (BL-BD-053)
