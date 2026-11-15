@@ -299,13 +299,34 @@ public class BetterDogsAIBehaviorGameTest {
         }
         aggressiveBaby.canAttack(null);
 
-        // 3. WolfFriendlyFireHelper positive co-owned clamp vs negative rival & non-living fall damage
-        dogA1.setHealth(4.0f);
+        // 3. WolfFriendlyFireHelper positive co-owned non-lethal & lethal clamp, live BD_FRIENDLY_FIRE toggle & rival/env negatives
+        // Note: dogA1.setTame(true, false) keeps base MAX_HEALTH at 8.0f, so use 6.0f for non-lethal baseline.
+        dogA1.setHealth(6.0f);
         DamageSource coOwnedSource = serverLevel.damageSources().mobAttack(dogA2);
+        helper.assertTrue(WolfFriendlyFireHelper.shouldCancelDamage(dogA1, coOwnedSource, 1.0f),
+                "Co-owned offline packmate non-lethal blow must cancel when BD_FRIENDLY_FIRE=true");
+        helper.assertTrue(Math.abs(dogA1.getHealth() - 6.0f) < 1e-4f,
+                "Non-lethal cancelled packmate hit must leave health at 6.0f");
+
+        dogA1.setHealth(4.0f);
         helper.assertTrue(WolfFriendlyFireHelper.shouldCancelDamage(dogA1, coOwnedSource, 4.0f),
                 "Co-owned offline packmate lethal blow must clamp and cancel");
         helper.assertTrue(Math.abs(dogA1.getHealth() - 1.0f) < 1e-4f,
                 "Clamped co-owned wolf health must equal 1.0f");
+
+        try {
+            serverLevel.getGameRules().set(BetterDogsGameRules.BD_FRIENDLY_FIRE, false, serverLevel.getServer());
+            dogA1.setHealth(6.0f);
+            helper.assertTrue(!WolfFriendlyFireHelper.shouldCancelDamage(dogA1, coOwnedSource, 1.0f),
+                    "Co-owned non-lethal hit must be allowed when BD_FRIENDLY_FIRE=false");
+            dogA1.setHealth(4.0f);
+            helper.assertTrue(!WolfFriendlyFireHelper.shouldCancelDamage(dogA1, coOwnedSource, 4.0f),
+                    "Co-owned lethal hit must not cancel when BD_FRIENDLY_FIRE=false");
+            helper.assertTrue(Math.abs(dogA1.getHealth() - 4.0f) < 1e-4f,
+                    "BD_FRIENDLY_FIRE=false must not clamp wolf health to 1.0f");
+        } finally {
+            serverLevel.getGameRules().set(BetterDogsGameRules.BD_FRIENDLY_FIRE, true, serverLevel.getServer());
+        }
 
         dogA1.setHealth(4.0f);
         DamageSource rivalSource = serverLevel.damageSources().mobAttack(dogB);

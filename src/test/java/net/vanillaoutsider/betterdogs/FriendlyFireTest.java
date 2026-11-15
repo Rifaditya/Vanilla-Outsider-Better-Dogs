@@ -2,6 +2,11 @@
 // Verified against: Minecraft 26.3
 package net.vanillaoutsider.betterdogs;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import net.vanillaoutsider.betterdogs.util.WolfFriendlyFireHelper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,6 +15,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Step 28: Friendly Fire Dampening & Protection Tests")
 class FriendlyFireTest {
+
+    private static Path findProjectRoot() {
+        Path cursor = Paths.get(System.getProperty("user.dir")).toAbsolutePath();
+        while (cursor != null) {
+            if (Files.exists(cursor.resolve("src/main/java/net/vanillaoutsider/betterdogs/util/WolfFriendlyFireHelper.java"))) {
+                return cursor;
+            }
+            cursor = cursor.getParent();
+        }
+        return Paths.get(System.getProperty("user.dir")).toAbsolutePath();
+    }
 
     @Test
     @DisplayName("Assert standing owner direct melee attack is cancelled under friendly fire protection")
@@ -55,5 +71,31 @@ class FriendlyFireTest {
     @DisplayName("Assert strict null safety across WolfFriendlyFireHelper")
     void testNullSafety() {
         assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(null, null, 5.0f));
+    }
+
+    @Test
+    @DisplayName("BL-BD-063: Assert BD_FRIENDLY_FIRE gates lethal clamp, co-owned ally hits, offline UUID & Social/Blood Feud bypasses")
+    void testFriendlyFireSourceContracts() throws IOException {
+        String source = Files.readString(
+                findProjectRoot().resolve("src/main/java/net/vanillaoutsider/betterdogs/util/WolfFriendlyFireHelper.java"),
+                StandardCharsets.UTF_8);
+
+        int socialBypassIdx = source.indexOf("betterdogs$getSocialTarget() == wolf");
+        int feudBypassIdx = source.indexOf("betterdogs$hasBloodFeud()");
+        int ruleEvalIdx = source.indexOf("BetterDogsGameRules.getBoolean(wolf.level(), BetterDogsGameRules.BD_FRIENDLY_FIRE, true)");
+        int block1Idx = source.indexOf("1. Lethal Friendly Fire Clamp");
+        int block2Idx = source.indexOf("2. Owner Melee & Co-Owned Packmate Friendly Fire Cancellation");
+        int allyBlockIdx = source.indexOf("if (isAllyWolf)");
+
+        assertTrue(socialBypassIdx > 0 && feudBypassIdx > socialBypassIdx,
+                "Social-channel & Blood Feud bypasses must precede damage cancellation");
+        assertTrue(ruleEvalIdx > feudBypassIdx,
+                "BD_FRIENDLY_FIRE must be evaluated via BetterDogsGameRules.getBoolean(..., true)");
+        assertTrue(block1Idx > ruleEvalIdx,
+                "BD_FRIENDLY_FIRE check must gate Block 1 lethal clamp");
+        assertTrue(block2Idx > block1Idx && allyBlockIdx > block2Idx,
+                "Non-lethal co-owned ally wolf protection must live inside Block 2 after BD_FRIENDLY_FIRE gate");
+        assertTrue(source.contains("PlayChoreographyHelper.getOwnerUUID(wolf)"),
+                "Owner matching must include PlayChoreographyHelper.getOwnerUUID offline fallback");
     }
 }
