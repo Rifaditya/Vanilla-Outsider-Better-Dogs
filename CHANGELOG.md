@@ -1,5 +1,12 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
+## [1.7.15+1.21.11] - 2026-11-15
+
+### Fixed
+- **Friendly-Fire GameRule Fallback Hardening & Toggle Regression Suite (`BL-BD-063`)**:
+  - Aligned `WolfFriendlyFireHelper.shouldCancelDamage(...)` with explicit `boolean friendlyFireEnabled` gating before owner, Blood Feud, and packmate evaluation, and hardened `BetterDogsGameRules.getBoolean(...)` so missing or unavailable server `GameRules` always fall back safely to `fallback` (`true`).
+  - Expanded `FriendlyFireTest` and `PackCivilWarImmunityTest` with live toggled `GameRuleMap` (`true` vs `false`), unavailable-`GameRules` fallback, and source contract assertions.
+
 ## [1.7.14+1.21.11] - 2026-11-14
 
 ### Fixed

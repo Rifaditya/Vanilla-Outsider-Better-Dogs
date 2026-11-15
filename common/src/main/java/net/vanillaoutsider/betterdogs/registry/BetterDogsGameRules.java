@@ -3,9 +3,11 @@ package net.vanillaoutsider.betterdogs.registry;
 
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gamerules.GameRule;
 import net.minecraft.world.level.gamerules.GameRuleCategory;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 
 public class BetterDogsGameRules {
@@ -499,7 +501,19 @@ public class BetterDogsGameRules {
         if (level == null || rule == null) {
             return fallback;
         }
-        return DynamicGameRuleManager.getBoolean(level, rule);
+        try {
+            if (level instanceof ServerLevel serverLevel) {
+                GameRules rules = serverLevel.getGameRules();
+                if (rules != null) {
+                    Boolean value = rules.get(rule);
+                    return value != null ? value : fallback;
+                }
+                return fallback;
+            }
+            return DynamicGameRuleManager.getBoolean(level, rule);
+        } catch (Throwable t) {
+            return fallback;
+        }
     }
 
     public static int getInt(Level level, GameRule<Integer> rule, int fallback) {
