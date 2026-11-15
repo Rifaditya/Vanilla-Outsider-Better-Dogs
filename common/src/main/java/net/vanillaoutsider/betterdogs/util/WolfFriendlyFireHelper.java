@@ -26,8 +26,9 @@ public class WolfFriendlyFireHelper {
             return false;
         }
 
-        // If friendly fire is enabled (true), do NOT cancel damage (vanilla behavior)
-        if (BetterDogsGameRules.getBoolean(level, BetterDogsGameRules.BD_FRIENDLY_FIRE, false)) {
+        // If friendly fire protection is enabled (true, default), prevent accidental owner & packmate hits
+        boolean friendlyFireEnabled = BetterDogsGameRules.getBoolean(level, BetterDogsGameRules.BD_FRIENDLY_FIRE, true);
+        if (!friendlyFireEnabled) {
             return false;
         }
 

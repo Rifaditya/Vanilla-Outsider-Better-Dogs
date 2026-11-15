@@ -32,6 +32,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.vanillaoutsider.betterdogs.ai.PacifistRevengeGoal;
@@ -682,6 +683,109 @@ class PackCivilWarImmunityTest {
         assertEquals(0, failures.get(), "Zero invariants or thread safety violations allowed across 64 threads");
     }
 
+    @Test
+    @DisplayName("BL-BD-063: Live BD_FRIENDLY_FIRE polarity, Blood Feud bypass, and server GameRules fallback verification")
+    void testFriendlyFireGameRulePolarityAndFallback() {
+        GameRules.Key<GameRules.BooleanValue> previousKey = BetterDogsGameRules.BD_FRIENDLY_FIRE;
+        GameRules.Key<GameRules.BooleanValue> activeKey = previousKey != null
+                ? previousKey
+                : new GameRules.Key<>("bd_friendly_fire_protection", GameRules.Category.MISC);
+
+        try {
+            BetterDogsGameRules.BD_FRIENDLY_FIRE = activeKey;
+
+            UUID ownerA = UUID.randomUUID();
+            UUID ownerB = UUID.randomUUID();
+            StubServerPlayer onlineOwner = createStubPlayer(ownerA, false);
+            StubServerPlayer offlineUuidOwner = createStubPlayer(ownerA, false);
+            OfflineStubWolf wolfA1 = createOfflineWolf(true, ownerA);
+            OfflineStubWolf wolfA2 = createOfflineWolf(true, ownerA);
+            OfflineStubWolf rivalB = createOfflineWolf(true, ownerB);
+            OfflineStubWolf wildWolf = createOfflineWolf(false, null);
+
+            StubServerLevel stubLevel = createStubServerLevel(300L, List.of(wolfA1, wolfA2, rivalB, wildWolf));
+            wolfA1.attachLevel(stubLevel);
+            wolfA2.attachLevel(stubLevel);
+            rivalB.attachLevel(stubLevel);
+            wildWolf.attachLevel(stubLevel);
+            wolfA1.attachLiveOwner(onlineOwner);
+
+            DamageSource liveOwnerHit = new DamageSource(mobDamageType, onlineOwner, onlineOwner);
+            DamageSource offlineUuidOwnerHit = new DamageSource(mobDamageType, offlineUuidOwner, offlineUuidOwner);
+            DamageSource coOwnedDirect = new DamageSource(mobDamageType, wolfA2, wolfA2);
+            DamageSource coOwnedIndirect = new DamageSource(mobDamageType, null, wolfA2);
+            DamageSource rivalHit = new DamageSource(mobDamageType, rivalB, rivalB);
+            DamageSource wildHit = new DamageSource(mobDamageType, wildWolf, wildWolf);
+            DamageSource envHit = new DamageSource(fallDamageType);
+
+            final boolean[] friendlyFireFlag = { true };
+            GameRules liveRules = new GameRules() {
+                @Override
+                public boolean getBoolean(GameRules.Key<GameRules.BooleanValue> key) {
+                    if (activeKey.equals(key)) {
+                        return friendlyFireFlag[0];
+                    }
+                    return super.getBoolean(key);
+                }
+            };
+
+            // 1. Live GameRules BD_FRIENDLY_FIRE = true (protection enabled)
+            stubLevel.setGameRules(liveRules);
+            assertTrue(BetterDogsGameRules.getBoolean(stubLevel, activeKey, false),
+                    "Live BD_FRIENDLY_FIRE=true must override false fallback when rule lookup succeeds");
+            assertTrue(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, liveOwnerHit),
+                    "BD_FRIENDLY_FIRE=true must cancel live owner hits");
+            assertTrue(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, offlineUuidOwnerHit),
+                    "BD_FRIENDLY_FIRE=true must cancel offline/cross-dimension UUID owner hits");
+            assertTrue(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, coOwnedDirect),
+                    "BD_FRIENDLY_FIRE=true must cancel direct co-owned packmate hits");
+            assertTrue(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, coOwnedIndirect),
+                    "BD_FRIENDLY_FIRE=true must cancel indirect co-owned packmate hits");
+            assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, rivalHit),
+                    "Rival player wolf damage must not be cancelled");
+            assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(wildWolf, wildHit),
+                    "Untamed wild wolf damage must not be cancelled");
+            assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, envHit),
+                    "Environmental null/null damage must not be cancelled");
+
+            wolfA2.forceBloodFeud(true, wolfA1.getStringUUID());
+            assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, coOwnedDirect),
+                    "Active BL-BD-041 Blood Feud nemesis must bypass friendly-fire protection when BD_FRIENDLY_FIRE=true");
+            wolfA2.forceBloodFeud(false, "");
+            assertTrue(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, coOwnedDirect),
+                    "Clearing Blood Feud must restore pack friendly-fire protection");
+
+            // 2. Live GameRules BD_FRIENDLY_FIRE = false (protection disabled)
+            friendlyFireFlag[0] = false;
+            assertFalse(BetterDogsGameRules.getBoolean(stubLevel, activeKey, true),
+                    "Live BD_FRIENDLY_FIRE=false must return false instead of fallback");
+            assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, liveOwnerHit),
+                    "BD_FRIENDLY_FIRE=false must allow live owner hits");
+            assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, offlineUuidOwnerHit),
+                    "BD_FRIENDLY_FIRE=false must allow offline/cross-dimension UUID owner hits");
+            assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, coOwnedDirect),
+                    "BD_FRIENDLY_FIRE=false must allow direct co-owned packmate hits");
+            assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, coOwnedIndirect),
+                    "BD_FRIENDLY_FIRE=false must allow indirect co-owned packmate hits");
+
+            // 3. Unregistered key or null GameRules must preserve fallback=true (never swallow to false)
+            stubLevel.setGameRules(new GameRules());
+            assertTrue(BetterDogsGameRules.getBoolean(stubLevel, activeKey, true),
+                    "Unregistered rule lookup on server GameRules must preserve caller fallback=true");
+            assertTrue(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, liveOwnerHit),
+                    "Unregistered rule fallback must protect against owner friendly fire");
+
+            stubLevel.setGameRules(null);
+            assertTrue(BetterDogsGameRules.getBoolean(stubLevel, activeKey, true),
+                    "Null ServerLevel GameRules must preserve caller fallback=true");
+            BetterDogsGameRules.BD_FRIENDLY_FIRE = null;
+            assertTrue(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, coOwnedDirect),
+                    "Null BD_FRIENDLY_FIRE key fallback must keep packmate protection ON");
+        } finally {
+            BetterDogsGameRules.BD_FRIENDLY_FIRE = previousKey;
+        }
+    }
+
     private static final class StubServerPlayer extends ServerPlayer {
         private UUID uuid;
         private boolean sneaking;
@@ -736,6 +840,7 @@ class PackCivilWarImmunityTest {
         private long gameTime;
         private List<Wolf> candidates;
         private boolean returnMatchedOnQuery;
+        private @Nullable GameRules gameRules;
         boolean broadcastQueried;
         List<Wolf> matchedBroadcastWolves;
 
@@ -751,8 +856,13 @@ class PackCivilWarImmunityTest {
             this.gameTime = gameTime;
             this.candidates = candidates;
             this.returnMatchedOnQuery = returnMatchedOnQuery;
+            this.gameRules = null;
             this.broadcastQueried = false;
             this.matchedBroadcastWolves = new ArrayList<>();
+        }
+
+        void setGameRules(@Nullable GameRules gameRules) {
+            this.gameRules = gameRules;
         }
 
         @Override
@@ -763,6 +873,11 @@ class PackCivilWarImmunityTest {
         @Override
         public long getGameTime() {
             return this.gameTime;
+        }
+
+        @Override
+        public GameRules getGameRules() {
+            return this.gameRules;
         }
 
         @Override

@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.7.15+1.20.1] - 2026-11-15
+
+### Fixed
+- **Friendly-Fire GameRule Polarity & Server Lookup Fallback Fixes (`BL-BD-063`)**:
+  - Fixed inverted `BD_FRIENDLY_FIRE` (`bd_friendly_fire_protection`) evaluation and `false` fallback in `WolfFriendlyFireHelper.shouldCancelDamage(...)` so `true` (default) actively protects tamed dogs from accidental owner and co-owned packmate hits and `false` disables friendly-fire cancellation.
+  - Updated `BetterDogsGameRules.getBoolean(...)` on server levels to query `level.getGameRules()` directly and return the caller's `fallback` (`true`) when `GameRules` or rule keys are unavailable instead of letting `DynamicGameRuleManager.getBoolean(...)` swallow exceptions/nulls to `false`.
+  - Expanded `FriendlyFireTest` and `PackCivilWarImmunityTest` with live toggled `GameRules` (`true` vs `false`), unregistered/null fallback, and source contract checks.
+
 ## [1.7.14+1.20.1] - 2026-11-14
 
 ### Fixed
