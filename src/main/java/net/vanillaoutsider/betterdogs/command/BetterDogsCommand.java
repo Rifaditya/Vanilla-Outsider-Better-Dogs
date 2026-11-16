@@ -5,7 +5,6 @@ package net.vanillaoutsider.betterdogs.command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import net.dasik.social.api.config.DasikSupportHelper;
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandSourceStack;
@@ -279,7 +278,7 @@ public class BetterDogsCommand {
                 "§a/" + literalName + " reset§r - Reset all Better Dogs GameRules to factory defaults (Gamemasters)\n" +
                 "§a/" + literalName + " reload§r - Validate and re-sync active GameRules (Gamemasters)"
         ), false);
-        source.sendSuccess(DasikSupportHelper::getCommandFooter, false);
+        source.sendSuccess(BetterDogsSupportFooter::build, false);
         return 1;
     }
 
@@ -321,7 +320,7 @@ public class BetterDogsCommand {
                 .append(" §7| Autonomous Feeding: ").append(formatBool(DynamicGameRuleManager.getBoolean(source.getLevel(), BetterDogsGameRules.BD_DOGS_EAT_RAW_FOOD)));
 
         source.sendSuccess(() -> Component.literal(sb.toString()), false);
-        source.sendSuccess(DasikSupportHelper::getCommandFooter, false);
+        source.sendSuccess(BetterDogsSupportFooter::build, false);
         return 1;
     }
 

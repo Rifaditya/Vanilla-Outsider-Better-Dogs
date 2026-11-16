@@ -433,6 +433,7 @@
   "gamerule.betterdogs.bd_demerit_accidental_attacks": "Demerit on Accidental Attacks",
   "gamerule.betterdogs.bd_demerit_accidental_attacks.description": "If true, accidentally attacking your dog will reset its gifting merits. If false, only sneaking and attacking will reset the merits. Default: true.",
   "text.betterdogs.gift_received": "%s brought you a gift!",
+  "subtitles.betterdogs.entity.wolf.howl": "Wolf howls",
   "gamerule.betterdogs.bd_pack_flanking_tactics": "Enable Pack Flanking Tactics",
   "gamerule.betterdogs.bd_pack_flanking_tactics.description": "If true, wolves will dynamically surround their targets instead of attacking in a straight line. Default: true.",
   "gamerule.betterdogs.bd_flanking_raycast_check": "Enable Flanking Raycast Checks",

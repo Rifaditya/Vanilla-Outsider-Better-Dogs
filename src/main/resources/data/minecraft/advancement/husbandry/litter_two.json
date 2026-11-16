@@ -6,10 +6,12 @@
       "count": 2
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.litter_two.title"
+      "translate": "advancements.betterdogs.husbandry.litter_two.title",
+      "fallback": "Double Trouble"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.litter_two.description"
+      "translate": "advancements.betterdogs.husbandry.litter_two.description",
+      "fallback": "Breed two tamed wolves to get a litter of 2 puppies"
     },
     "frame": "task",
     "show_toast": true,

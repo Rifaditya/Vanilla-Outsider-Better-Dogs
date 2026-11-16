@@ -1,5 +1,16 @@
 # Better Dogs History & Concept Changelog
 
+## [5.7.17+26.3] - 2026-11-16
+
+### Fixed
+- **Restored Full Vanilla-Client Dedicated Server Compatibility ([BL-BD-064])**:
+  - Special thanks to `QienSnowpoff` for identifying and reporting dedicated server desyncs when unmodded vanilla clients join modded servers!
+  - **Dynamic Sound Event Decoupling**: Removed static `BuiltInRegistries.SOUND_EVENT` registration to prevent registry synchronization freezes on unmodded clients. Implemented dual sound routing in `WolfHowlAudioHelper`: sends direct variable-range sound packets to Better Dogs clients, and gracefully falls back to pitched-down vanilla baby wolf whines (`[0.50f, 0.80f]`) for vanilla clients.
+  - **Capability Handshake**: Added `BetterDogsClientCapPayload` (`betterdogs:client_audio_cap`) clientbound play payload and receiver for zero-overhead client mod detection via standard channels and local singleplayer addresses.
+  - **Synced Entity Data & Mixin Hygiene**: Removed `BETTERDOGS$DATA_SUBDUED` and `BETTERDOGS$DATA_SPECTATOR_WAGGING` `EntityDataAccessor` slots and `WolfRendererMixin`, preserving internal tick logic, personality state, and NBT saves while eliminating entity tracker crashes on vanilla clients.
+  - **Translatable Text & Advancement Resilience**: Converted all 20 server-sent player notification components across listeners and helpers to `Component.translatableWithFallback` matching `en_us.json`, preventing untranslated translation key popups on unmodded clients. Added resilient command support footer in `BetterDogsSupportFooter`.
+  - **Advancement Fallbacks & Subtitles**: Added `"fallback"` text across all 15 husbandry advancement JSON definitions and added `"subtitles.betterdogs.entity.wolf.howl"` subtitle localization.
+
 ## [5.7.14+26.3] - 2026-11-14
 
 ### Fixed

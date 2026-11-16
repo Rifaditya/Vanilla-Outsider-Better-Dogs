@@ -92,7 +92,7 @@ public final class WolfGuardHelper {
                 }
 
                 player.sendOverlayMessage(
-                        Component.translatable("text.betterdogs.guard_activated", wolf.getName(), guardPos.getX(), guardPos.getY(), guardPos.getZ())
+                        Component.translatableWithFallback("text.betterdogs.guard_activated", "Guard Mode Activated for %s at %d, %d, %d", wolf.getName(), guardPos.getX(), guardPos.getY(), guardPos.getZ())
                 );
 
                 WolfPersonality personality = ext.betterdogs$getPersonality();
@@ -118,7 +118,7 @@ public final class WolfGuardHelper {
                 ext.betterdogs$setGuardPos(null);
                 ext.betterdogs$setSittingManually(false);
                 player.sendOverlayMessage(
-                        Component.translatable("text.betterdogs.guard_deactivated", wolf.getName())
+                        Component.translatableWithFallback("text.betterdogs.guard_deactivated", "Guard Mode Deactivated for %s. Following owner.", wolf.getName())
                 );
 
                 SoundEvent sound = ((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().ambientSound().value();

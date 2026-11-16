@@ -114,7 +114,7 @@ public final class WolfHowlHelper {
             ext.betterdogs$setHowlingTicks(BASE_HOWL_DURATION);
         }
 
-        level.playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), BetterDogs.WOLF_HOWL, SoundSource.NEUTRAL, 1.2f, pitch);
+        WolfHowlAudioHelper.playHowlSound(level, wolf, 1.4f, pitch);
 
         if (level instanceof ServerLevel serverLevel) {
             serverLevel.sendParticles(ParticleTypes.NOTE, wolf.getX(), wolf.getY() + 0.8, wolf.getZ(), 2, 0.2, 0.2, 0.2, pitch / 24.0);
