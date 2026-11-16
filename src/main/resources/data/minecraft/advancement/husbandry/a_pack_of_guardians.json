@@ -5,10 +5,12 @@
       "id": "minecraft:bone"
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.a_pack_of_guardians.title"
+      "translate": "advancements.betterdogs.husbandry.a_pack_of_guardians.title",
+      "fallback": "A Pack of Guardians"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.a_pack_of_guardians.description"
+      "translate": "advancements.betterdogs.husbandry.a_pack_of_guardians.description",
+      "fallback": "Place a wolf of each personality type (Normal, Aggressive, and Pacifist) into Guard Mode using a bone while sneaking"
     },
     "frame": "goal",
     "show_toast": true,

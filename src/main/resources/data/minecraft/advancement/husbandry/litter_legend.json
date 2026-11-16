@@ -5,10 +5,12 @@
       "id": "minecraft:golden_carrot"
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.litter_legend.title"
+      "translate": "advancements.betterdogs.husbandry.litter_legend.title",
+      "fallback": "Litter Legend"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.litter_legend.description"
+      "translate": "advancements.betterdogs.husbandry.litter_legend.description",
+      "fallback": "Experience all litter sizes: get a litter of 2, 3, and 4 puppies at least once"
     },
     "frame": "challenge",
     "show_toast": true,

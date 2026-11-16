@@ -33,7 +33,6 @@
         "WolfSoundMixin"
     ],
     "client": [
-        "WolfRendererMixin"
     ],
     "injectors": {
         "defaultRequire": 1

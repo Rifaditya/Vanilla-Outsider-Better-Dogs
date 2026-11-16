@@ -5,10 +5,12 @@
       "id": "minecraft:bone"
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.a_pack_of_personalities.title"
+      "translate": "advancements.betterdogs.husbandry.a_pack_of_personalities.title",
+      "fallback": "A Pack of Personalities"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.a_pack_of_personalities.description"
+      "translate": "advancements.betterdogs.husbandry.a_pack_of_personalities.description",
+      "fallback": "Tame a wolf of each personality type: Normal, Aggressive, and Pacifist"
     },
     "frame": "goal",
     "show_toast": true,

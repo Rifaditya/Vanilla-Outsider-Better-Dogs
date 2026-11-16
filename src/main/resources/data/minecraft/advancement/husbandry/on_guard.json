@@ -5,10 +5,12 @@
       "id": "minecraft:bone"
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.on_guard.title"
+      "translate": "advancements.betterdogs.husbandry.on_guard.title",
+      "fallback": "On Guard!"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.on_guard.description"
+      "translate": "advancements.betterdogs.husbandry.on_guard.description",
+      "fallback": "Place a wolf into Guard Mode for the first time using a bone while sneaking"
     },
     "frame": "task",
     "show_toast": true,

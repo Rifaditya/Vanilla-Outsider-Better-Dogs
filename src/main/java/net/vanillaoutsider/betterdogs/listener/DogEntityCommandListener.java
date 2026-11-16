@@ -60,7 +60,7 @@ public class DogEntityCommandListener {
                                     entity.discard();
                                 }
 
-                                player.sendOverlayMessage(Component.translatable("text.betterdogs.dog_dismounted", wolf.getName()));
+                                player.sendOverlayMessage(Component.translatableWithFallback("text.betterdogs.dog_dismounted", "%s hopped out of the seat.", wolf.getName()));
                                 SoundEvent ambientSound = ((WolfAccessor) wolf).betterdogs$invokeGetAmbientSound();
                                 serverLevel.playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(),
                                         ambientSound, wolf.getSoundSource(), 1.0f, 1.0f);
@@ -78,7 +78,7 @@ public class DogEntityCommandListener {
                 if (selectedEntity instanceof Wolf wolf && wolf.isTame() && wolf.isOwnedBy(player) && wolf.isAlive()) {
                     // Range check (12 blocks = 144.0D squared)
                     if (wolf.distanceToSqr(entity) > DogSeatHelper.MAX_COMMAND_DISTANCE_SQ) {
-                        player.sendOverlayMessage(Component.translatable("text.betterdogs.dog_too_far", wolf.getName()));
+                        player.sendOverlayMessage(Component.translatableWithFallback("text.betterdogs.dog_too_far", "%s is too far away to board.", wolf.getName()));
                         return InteractionResult.SUCCESS;
                     }
 
@@ -88,13 +88,13 @@ public class DogEntityCommandListener {
                             DogCommandManager.setVehicleTarget(wolf.getUUID(), entity);
                             DogCommandManager.clearSelection(player.getUUID());
                             wolf.setOrderedToSit(false);
-                            player.sendOverlayMessage(Component.translatable("text.betterdogs.dog_commanded_to_board", wolf.getName(), entity.getName()));
+                            player.sendOverlayMessage(Component.translatableWithFallback("text.betterdogs.dog_commanded_to_board", "Commanded %s to board %s.", wolf.getName(), entity.getName()));
                             SoundEvent whineSound = ((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().whineSound().value();
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(),
                                     whineSound, wolf.getSoundSource(), 1.0f, 1.2f);
                             return InteractionResult.SUCCESS;
                         } else {
-                            player.sendOverlayMessage(Component.translatable("text.betterdogs.seat_occupied"));
+                            player.sendOverlayMessage(Component.translatableWithFallback("text.betterdogs.seat_occupied", "That seat is already occupied."));
                             return InteractionResult.SUCCESS;
                         }
                     }

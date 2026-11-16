@@ -89,11 +89,7 @@ public class BetterDogs implements ModInitializer {
             new SelfServiceTrigger()
     );
 
-    public static final net.minecraft.sounds.SoundEvent WOLF_HOWL = Registry.register(
-            BuiltInRegistries.SOUND_EVENT,
-            Identifier.fromNamespaceAndPath("betterdogs", "entity.wolf.howl"),
-            net.minecraft.sounds.SoundEvent.createVariableRangeEvent(Identifier.fromNamespaceAndPath("betterdogs", "entity.wolf.howl"))
-    );
+    public static final Identifier WOLF_HOWL_ID = Identifier.fromNamespaceAndPath("betterdogs", "entity.wolf.howl");
 
     @Override
     public void onInitialize() {
@@ -119,6 +115,11 @@ public class BetterDogs implements ModInitializer {
 
         // Register Game Rules (Hybrid Config)
         net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.register();
+
+        // Register optional client audio capability payload (BL-BD-064)
+        net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry.clientboundPlay()
+                .register(net.vanillaoutsider.betterdogs.network.BetterDogsClientCapPayload.TYPE,
+                        net.vanillaoutsider.betterdogs.network.BetterDogsClientCapPayload.CODEC);
 
         // Initialize platform-specific attachments
         @SuppressWarnings("unused")

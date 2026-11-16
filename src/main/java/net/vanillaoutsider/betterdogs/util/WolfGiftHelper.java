@@ -242,7 +242,7 @@ public final class WolfGiftHelper {
         itemEntity.setDefaultPickUpDelay();
         level.addFreshEntity(itemEntity);
 
-        owner.sendOverlayMessage(Component.translatable("text.betterdogs.gift_received", wolf.getName()));
+        owner.sendOverlayMessage(Component.translatableWithFallback("text.betterdogs.gift_received", "%s brought you a gift!", wolf.getName()));
 
         if (level instanceof ServerLevel serverLevel) {
             serverLevel.playSound(

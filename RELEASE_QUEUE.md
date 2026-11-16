@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 5.7.17+26.2** - Restore Vanilla-Client Dedicated Server Compatibility (BL-BD-064)
 - [ ] **Better Dogs 5.7.16+26.2** - Align `BD_FRIENDLY_FIRE` Lethal Clamp, Co-Owned Packmate Protection & Offline Owner Parity (BL-BD-063)
 - [ ] **Better Dogs 5.7.15+26.2** - Restore Pacifist Defensive Retaliation AI & Fix HurtByTargetGoal Start/Tether Bugs (BL-BD-062)
 - [ ] **Better Dogs 5.7.14+26.2** - Null-Safe Blood Feud Persistence & Adoption Codec Safety (BL-BD-059)

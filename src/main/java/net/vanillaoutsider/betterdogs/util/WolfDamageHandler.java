@@ -55,7 +55,7 @@ public class WolfDamageHandler {
                 ext.betterdogs$setAdoptable(false);
                 LivingEntity owner = wolf.getOwner();
                 if (owner instanceof Player player) {
-                    player.sendOverlayMessage(Component.translatable("text.betterdogs.adoption_cancelled_damage", wolf.getName()));
+                    player.sendOverlayMessage(Component.translatableWithFallback("text.betterdogs.adoption_cancelled_damage", "Adoption cancelled for %s because they took damage!", wolf.getName()));
                 }
             }
         }
