@@ -5,10 +5,12 @@
       "id": "minecraft:beef"
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.outcross_runt.title"
+      "translate": "advancements.betterdogs.husbandry.outcross_runt.title",
+      "fallback": "Fresh Blood"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.outcross_runt.description"
+      "translate": "advancements.betterdogs.husbandry.outcross_runt.description",
+      "fallback": "Breed an inbred runt parent with an unrelated wolf to produce a healthy puppy and recover the lineage"
     },
     "frame": "task",
     "show_toast": true,

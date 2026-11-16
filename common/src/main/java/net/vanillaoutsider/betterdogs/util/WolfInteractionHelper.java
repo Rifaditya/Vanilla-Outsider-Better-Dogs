@@ -83,7 +83,7 @@ public class WolfInteractionHelper {
                             serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, wolf.getRandomX(1.0), wolf.getRandomY() + 0.5, wolf.getRandomZ(1.0), 10, 0.2, 0.2, 0.2, 0.05);
                         }
                         
-                        player.sendOverlayMessage(Component.translatable("text.betterdogs.cured_inbred", wolf.getName()));
+                        player.sendOverlayMessage(Component.translatableWithFallback("text.betterdogs.cured_inbred", "%s has been cured of genetic inbreeding penalties!", wolf.getName()));
                     }
                     return InteractionResult.SUCCESS;
                 }
@@ -127,7 +127,7 @@ public class WolfInteractionHelper {
 						
 						net.minecraft.sounds.SoundEvent sound = ((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().ambientSound().value();
 						wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), sound, wolf.getSoundSource(), 1.0f, 1.0f);
-						player.sendOverlayMessage(Component.translatable("text.betterdogs.dog_dismounted", wolf.getName()));
+						player.sendOverlayMessage(Component.translatableWithFallback("text.betterdogs.dog_dismounted", "%s hopped out of the seat.", wolf.getName()));
 						if (wolf.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
 							serverLevel.sendParticles(ParticleTypes.CLOUD, wolf.getX(), wolf.getY() + 0.5, wolf.getZ(), 5, 0.2, 0.2, 0.2, 0.02);
 						}
@@ -136,7 +136,7 @@ public class WolfInteractionHelper {
 						DogCommandManager.selectDog(player.getUUID(), wolf.getUUID());
 						net.minecraft.sounds.SoundEvent sound = ((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().ambientSound().value();
 						wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), sound, wolf.getSoundSource(), 1.0f, 1.2f);
-						player.sendOverlayMessage(Component.translatable("text.betterdogs.dog_selected", wolf.getName()));
+						player.sendOverlayMessage(Component.translatableWithFallback("text.betterdogs.dog_selected", "Selected %s for command. Shift+Right-click a vehicle to board.", wolf.getName()));
 						if (wolf.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
 							serverLevel.sendParticles(ParticleTypes.NOTE, wolf.getX(), wolf.getY() + 0.5, wolf.getZ(), 5, 0.2, 0.2, 0.2, 0.05);
 						}
@@ -162,14 +162,14 @@ public class WolfInteractionHelper {
                         }
                         itemStack.consume(1, player);
                         wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), SoundEvents.BOOK_PAGE_TURN, wolf.getSoundSource(), 1.0f, 1.0f);
-                        player.sendOverlayMessage(Component.translatable("text.betterdogs.adoption_pending", wolf.getName()));
+                        player.sendOverlayMessage(Component.translatableWithFallback("text.betterdogs.adoption_pending", "%s is now ready for adoption! Another player can right-click them to claim.", wolf.getName()));
 
                         if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
                             net.vanillaoutsider.betterdogs.BetterDogs.PUT_UP_FOR_ADOPTION.trigger(serverPlayer);
                         }
                     } else {
                         wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), SoundEvents.BOOK_PAGE_TURN, wolf.getSoundSource(), 1.0f, 1.0f);
-                        player.sendOverlayMessage(Component.translatable("text.betterdogs.adoption_cancelled", wolf.getName()));
+                        player.sendOverlayMessage(Component.translatableWithFallback("text.betterdogs.adoption_cancelled", "Adoption cancelled for %s.", wolf.getName()));
                     }
                 }
                 return InteractionResult.SUCCESS;
@@ -212,11 +212,11 @@ public class WolfInteractionHelper {
                     }
 
                     // Notify players
-                    player.sendOverlayMessage(Component.translatable("text.betterdogs.adopted_new_owner", wolf.getName()));
+                    player.sendOverlayMessage(Component.translatableWithFallback("text.betterdogs.adopted_new_owner", "You have adopted %s!", wolf.getName()));
                     if (oldOwnerUuid != null) {
                         Player oldOwner = wolf.level().getPlayerByUUID(oldOwnerUuid);
                         if (oldOwner != null) {
-                            oldOwner.sendOverlayMessage(Component.translatable("text.betterdogs.adopted_old_owner", wolf.getName(), player.getName()));
+                            oldOwner.sendOverlayMessage(Component.translatableWithFallback("text.betterdogs.adopted_old_owner", "%s has been adopted by %s!", wolf.getName(), player.getName()));
                         }
                     }
                 }
@@ -229,7 +229,7 @@ public class WolfInteractionHelper {
                     if (!wolf.level().isClientSide()) {
                         ext.betterdogs$setAdoptable(false);
                         wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), SoundEvents.BOOK_PAGE_TURN, wolf.getSoundSource(), 1.0f, 1.0f);
-                        player.sendOverlayMessage(Component.translatable("text.betterdogs.adoption_cancelled", wolf.getName()));
+                        player.sendOverlayMessage(Component.translatableWithFallback("text.betterdogs.adoption_cancelled", "Adoption cancelled for %s.", wolf.getName()));
                     }
                     return InteractionResult.SUCCESS;
                 }
@@ -268,7 +268,7 @@ public class WolfInteractionHelper {
                 net.minecraft.sounds.SoundEvent sound = ((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().whineSound().value();
                 wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), sound, wolf.getSoundSource(), 1.0f, 1.2f);
                 
-                player.sendOverlayMessage(Component.translatable("text.betterdogs.calmed_down", wolf.getName()));
+                player.sendOverlayMessage(Component.translatableWithFallback("text.betterdogs.calmed_down", "Calmed down %s", wolf.getName()));
                 
                 if (wolf.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
                     serverLevel.sendParticles(ParticleTypes.SMOKE, wolf.getX(), wolf.getY() + 0.5, wolf.getZ(), 5, 0.2, 0.2, 0.2, 0.02);
@@ -287,7 +287,7 @@ public class WolfInteractionHelper {
                     if (newGuard) {
                         ext.betterdogs$setGuardPos(wolf.blockPosition());
                         BlockPos pos = wolf.blockPosition();
-                        player.sendOverlayMessage(Component.translatable("text.betterdogs.guard_activated", wolf.getName(), pos.getX(), pos.getY(), pos.getZ()));
+                        player.sendOverlayMessage(Component.translatableWithFallback("text.betterdogs.guard_activated", "Guard Mode Activated for %s at %d, %d, %d", wolf.getName(), pos.getX(), pos.getY(), pos.getZ()));
                         
                         WolfPersonality personality = ext.betterdogs$getPersonality();
                         
@@ -307,7 +307,7 @@ public class WolfInteractionHelper {
                     } else {
                         ext.betterdogs$setGuardPos(null);
                         ext.betterdogs$setSittingManually(false);
-                        player.sendOverlayMessage(Component.translatable("text.betterdogs.guard_deactivated", wolf.getName()));
+                        player.sendOverlayMessage(Component.translatableWithFallback("text.betterdogs.guard_deactivated", "Guard Mode Deactivated for %s. Following owner.", wolf.getName()));
                         wolf.level().playSound(null, wolf.getX(), wolf.getY(), wolf.getZ(), ((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().ambientSound().value(), wolf.getSoundSource(), 1.0f, 1.0f);
                     }
                     itemStack.consume(1, player);

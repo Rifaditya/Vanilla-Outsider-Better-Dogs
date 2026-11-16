@@ -6,10 +6,12 @@
       "count": 3
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.litter_three.title"
+      "translate": "advancements.betterdogs.husbandry.litter_three.title",
+      "fallback": "Triple Threat"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.litter_three.description"
+      "translate": "advancements.betterdogs.husbandry.litter_three.description",
+      "fallback": "Breed two tamed wolves to get a litter of 3 puppies"
     },
     "frame": "task",
     "show_toast": true,

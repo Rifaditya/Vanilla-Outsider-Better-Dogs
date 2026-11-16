@@ -629,5 +629,6 @@
   "gamerule.betterdogs.playfightchance": "Dog Play Fight Chance (%)",
   "gamerule.betterdogs.playfightchance.description": "Percentage chance for dogs to initiate a play fight when frequency check triggers (default: 100%). Set to 0 to disable.",
   "gamerule.vanilla-outsider-better-dogs.betterdogs:playFightChance": "Dog Play Fight Chance (%)",
-  "gamerule.vanilla-outsider-better-dogs.betterdogs:playFightChance.description": "Percentage chance for dogs to initiate a play fight when frequency check triggers (default: 100%). Set to 0 to disable."
+  "gamerule.vanilla-outsider-better-dogs.betterdogs:playFightChance.description": "Percentage chance for dogs to initiate a play fight when frequency check triggers (default: 100%). Set to 0 to disable.",
+  "subtitles.betterdogs.entity.wolf.howl": "Wolf howls"
 }

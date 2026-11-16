@@ -1,12 +1,16 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
 package net.vanillaoutsider.betterdogs.platform;
 
+import io.netty.channel.local.LocalAddress;
 import java.nio.file.Path;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerPlayer;
 import net.vanillaoutsider.betterdogs.BetterDogs;
+import net.vanillaoutsider.betterdogs.network.BetterDogsClientCapPayload;
 import net.vanillaoutsider.betterdogs.platform.services.IPlatformHelper;
 
 public class FabricPlatformHelper implements IPlatformHelper {
@@ -57,7 +61,14 @@ public class FabricPlatformHelper implements IPlatformHelper {
         Registry.register(BuiltInRegistries.TRIGGER_TYPES, Identifier.fromNamespaceAndPath(BetterDogs.MOD_ID, "put_up_for_adoption"), BetterDogs.PUT_UP_FOR_ADOPTION);
         Registry.register(BuiltInRegistries.TRIGGER_TYPES, Identifier.fromNamespaceAndPath(BetterDogs.MOD_ID, "on_patrol"), BetterDogs.ON_PATROL);
         Registry.register(BuiltInRegistries.TRIGGER_TYPES, Identifier.fromNamespaceAndPath(BetterDogs.MOD_ID, "self_service"), BetterDogs.SELF_SERVICE);
+    }
 
-        Registry.register(BuiltInRegistries.SOUND_EVENT, Identifier.fromNamespaceAndPath("betterdogs", "entity.wolf.howl"), BetterDogs.WOLF_HOWL);
+    @Override
+    public boolean hasBetterDogsClient(ServerPlayer player) {
+        if (player == null || player.connection == null) {
+            return false;
+        }
+        return (player.connection.getRemoteAddress() instanceof LocalAddress)
+                || ServerPlayNetworking.canSend(player, BetterDogsClientCapPayload.TYPE);
     }
 }

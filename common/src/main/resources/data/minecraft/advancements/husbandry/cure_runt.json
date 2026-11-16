@@ -5,10 +5,12 @@
       "id": "minecraft:golden_apple"
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.cure_runt.title"
+      "translate": "advancements.betterdogs.husbandry.cure_runt.title",
+      "fallback": "A Fresh Start"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.cure_runt.description"
+      "translate": "advancements.betterdogs.husbandry.cure_runt.description",
+      "fallback": "Cure an inbred runt using a Golden Apple"
     },
     "frame": "goal",
     "show_toast": true,

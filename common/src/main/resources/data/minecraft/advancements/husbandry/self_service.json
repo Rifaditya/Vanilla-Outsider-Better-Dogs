@@ -5,10 +5,12 @@
       "id": "minecraft:cooked_beef"
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.self_service.title"
+      "translate": "advancements.betterdogs.husbandry.self_service.title",
+      "fallback": "Self-Service"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.self_service.description"
+      "translate": "advancements.betterdogs.husbandry.self_service.description",
+      "fallback": "Let your hurt tamed dog heal itself by automatically eating food you dropped on the ground"
     },
     "frame": "task",
     "show_toast": true,

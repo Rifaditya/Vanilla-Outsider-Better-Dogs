@@ -5,10 +5,12 @@
       "id": "minecraft:paper"
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.put_up_for_adoption.title"
+      "translate": "advancements.betterdogs.husbandry.put_up_for_adoption.title",
+      "fallback": "Looking for a Home"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.put_up_for_adoption.description"
+      "translate": "advancements.betterdogs.husbandry.put_up_for_adoption.description",
+      "fallback": "Put one of your tamed dogs up for adoption using a piece of paper while sneaking"
     },
     "frame": "task",
     "show_toast": true,

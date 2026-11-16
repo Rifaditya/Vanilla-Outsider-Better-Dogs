@@ -31,7 +31,6 @@
     "WolfSpawnMixin"
   ],
   "client": [
-    "WolfRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

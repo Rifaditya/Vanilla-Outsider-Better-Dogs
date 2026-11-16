@@ -9,6 +9,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.util.PackAudienceHelper;
+import net.vanillaoutsider.betterdogs.util.WolfHowlAudioHelper;
 
 /**
  * Social Event: Pack howl during full moon.
@@ -42,8 +43,8 @@ public class HowlDogEvent implements SocialEvent {
     @Override
     public void onStart(TickContext context) {
         if (context.entity().dasik$asEntity() instanceof Wolf wolf) {
-            // Play initial howl sound using lowered-pitch baby whine
-            wolf.playSound(SoundEvents.WOLF_WHINE_BABY.value(), 1.3f, 0.5f + wolf.getRandom().nextFloat() * 0.2f);
+            // Play initial howl sound using lowered-pitch baby whine with vanilla client desync protection
+            WolfHowlAudioHelper.playHowlSound(wolf.level(), wolf, 1.3f, 0.5f + wolf.getRandom().nextFloat() * 0.2f);
 
             // INTEGRATION: Howling together increases affinity
             if (context.entity() instanceof WolfExtensions ext) {

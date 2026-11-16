@@ -8,8 +8,10 @@ import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.resources.Identifier;
 import net.vanillaoutsider.betterdogs.command.BetterDogsCommand;
+import net.vanillaoutsider.betterdogs.network.BetterDogsClientCapPayload;
 import net.vanillaoutsider.betterdogs.util.DogCommandManager;
 import net.vanillaoutsider.betterdogs.world.BetterDogsSpawningFabric;
 
@@ -40,5 +42,8 @@ public class BetterDogsFabric implements ModInitializer {
 
         // Register Fabric biome modifications
         BetterDogsSpawningFabric.registerSpawns();
+
+        // Register optional client audio capability payload (BL-BD-064)
+        PayloadTypeRegistry.clientboundPlay().register(BetterDogsClientCapPayload.TYPE, BetterDogsClientCapPayload.CODEC);
     }
 }

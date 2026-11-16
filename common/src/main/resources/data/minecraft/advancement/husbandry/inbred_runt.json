@@ -5,10 +5,12 @@
       "id": "minecraft:rotten_flesh"
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.inbred_wolf.title"
+      "translate": "advancements.betterdogs.husbandry.inbred_wolf.title",
+      "fallback": "Keep it in the family"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.inbred_wolf.description"
+      "translate": "advancements.betterdogs.husbandry.inbred_wolf.description",
+      "fallback": "Breed two closely related wolves and produce an inbred runt... yuck!"
     },
     "frame": "task",
     "show_toast": true,

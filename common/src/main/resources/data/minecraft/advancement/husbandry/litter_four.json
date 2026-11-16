@@ -6,10 +6,12 @@
       "count": 4
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.litter_four.title"
+      "translate": "advancements.betterdogs.husbandry.litter_four.title",
+      "fallback": "Puppy Rain"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.litter_four.description"
+      "translate": "advancements.betterdogs.husbandry.litter_four.description",
+      "fallback": "Breed two tamed wolves to get a maximum litter of 4 puppies"
     },
     "frame": "goal",
     "show_toast": true,

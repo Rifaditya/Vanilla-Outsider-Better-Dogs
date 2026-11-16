@@ -36,8 +36,7 @@ public class BetterDogs {
     public static final OnPatrolTrigger ON_PATROL = new OnPatrolTrigger();
     public static final SelfServiceTrigger SELF_SERVICE = new SelfServiceTrigger();
 
-    public static final net.minecraft.sounds.SoundEvent WOLF_HOWL =
-            net.minecraft.sounds.SoundEvent.createVariableRangeEvent(Identifier.fromNamespaceAndPath("betterdogs", "entity.wolf.howl"));
+    public static final Identifier WOLF_HOWL_ID = Identifier.fromNamespaceAndPath("betterdogs", "entity.wolf.howl");
 
     public static void init() {
         // Register platform-specific content (triggers, sounds)

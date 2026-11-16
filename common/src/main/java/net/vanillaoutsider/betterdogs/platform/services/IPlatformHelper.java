@@ -2,6 +2,7 @@
 package net.vanillaoutsider.betterdogs.platform.services;
 
 import java.nio.file.Path;
+import net.minecraft.server.level.ServerPlayer;
 
 /**
  * Platform abstraction interface for environment, mod list, and path queries.
@@ -48,4 +49,14 @@ public interface IPlatformHelper {
      * on platforms where static or early registration is supported).
      */
     default void registerContent() {}
+
+    /**
+     * Checks if the connected client possesses Better Dogs capabilities via network channel query.
+     *
+     * @param player the server player connection to inspect
+     * @return true if the player has Better Dogs client installed or is in local singleplayer, false otherwise
+     */
+    default boolean hasBetterDogsClient(ServerPlayer player) {
+        return false;
+    }
 }

@@ -12,10 +12,12 @@ import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.vanillaoutsider.betterdogs.command.BetterDogsCommand;
+import net.vanillaoutsider.betterdogs.network.BetterDogsClientCapPayload;
 import net.vanillaoutsider.betterdogs.util.DogCommandManager;
 
 @Mod("better_dogs")
@@ -32,6 +34,7 @@ public class BetterDogsNeoForge {
     public BetterDogsNeoForge(IEventBus modEventBus) {
         ATTACHMENT_TYPES.register(modEventBus);
         modEventBus.addListener(this::onRegister);
+        modEventBus.addListener(this::registerPayloads);
         BetterDogs.init();
         NeoForge.EVENT_BUS.register(this);
     }
@@ -48,9 +51,14 @@ public class BetterDogsNeoForge {
             event.register(Registries.TRIGGER_TYPE, Identifier.fromNamespaceAndPath(BetterDogs.MOD_ID, "on_patrol"), () -> BetterDogs.ON_PATROL);
             event.register(Registries.TRIGGER_TYPE, Identifier.fromNamespaceAndPath(BetterDogs.MOD_ID, "self_service"), () -> BetterDogs.SELF_SERVICE);
         }
-        if (event.getRegistryKey().equals(Registries.SOUND_EVENT)) {
-            event.register(Registries.SOUND_EVENT, Identifier.fromNamespaceAndPath("betterdogs", "entity.wolf.howl"), () -> BetterDogs.WOLF_HOWL);
-        }
+    }
+
+    private void registerPayloads(final RegisterPayloadHandlersEvent event) {
+        event.registrar("1").optional().playToClient(
+                BetterDogsClientCapPayload.TYPE,
+                BetterDogsClientCapPayload.CODEC,
+                (payload, ctx) -> {}
+        );
     }
 
     @SubscribeEvent
