@@ -4,10 +4,12 @@
       "id": "minecraft:rabbit_foot"
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.morning_gift.title"
+      "translate": "advancements.betterdogs.husbandry.morning_gift.title",
+      "fallback": "Morning Surprise"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.morning_gift.description"
+      "translate": "advancements.betterdogs.husbandry.morning_gift.description",
+      "fallback": "Receive a morning gift from your sleeping companion"
     },
     "frame": "task",
     "show_toast": true,

@@ -4,10 +4,12 @@
       "id": "minecraft:stick"
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.fetch_stick.title"
+      "translate": "advancements.betterdogs.husbandry.fetch_stick.title",
+      "fallback": "Fetch Master"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.fetch_stick.description"
+      "translate": "advancements.betterdogs.husbandry.fetch_stick.description",
+      "fallback": "Throw a stick and have your dog retrieve it for you"
     },
     "frame": "task",
     "show_toast": true,

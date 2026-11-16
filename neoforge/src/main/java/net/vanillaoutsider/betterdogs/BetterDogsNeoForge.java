@@ -10,10 +10,13 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.NetworkRegistry;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.vanillaoutsider.betterdogs.command.BetterDogsCommand;
-import net.vanillaoutsider.betterdogs.registry.BetterDogsSoundEvents;
+import net.vanillaoutsider.betterdogs.network.BetterDogsClientCapPayload;
 import net.vanillaoutsider.betterdogs.util.DogCommandManager;
+import net.vanillaoutsider.betterdogs.util.WolfHowlAudioHelper;
 
 @Mod("better_dogs")
 public class BetterDogsNeoForge {
@@ -22,14 +25,15 @@ public class BetterDogsNeoForge {
         BetterDogs.init();
         NeoForge.EVENT_BUS.register(this);
         modEventBus.addListener(this::onRegister);
+        modEventBus.addListener(this::registerPayloads);
+
+        // Optional client capability payload for vanilla client compatibility (BL-BD-064)
+        WolfHowlAudioHelper.setClientCapabilityChecker(player ->
+                player.connection.getConnection().isMemoryConnection()
+                        || NetworkRegistry.hasChannel(player.connection, BetterDogsClientCapPayload.TYPE.id()));
     }
 
     public void onRegister(RegisterEvent event) {
-        if (event.getRegistryKey().equals(Registries.SOUND_EVENT)) {
-            event.register(Registries.SOUND_EVENT,
-                    BetterDogsSoundEvents.WOLF_HOWL_ID,
-                    () -> BetterDogsSoundEvents.WOLF_HOWL);
-        }
         if (event.getRegistryKey().equals(Registries.TRIGGER_TYPE)) {
             event.register(Registries.TRIGGER_TYPE, helper -> {
                 helper.register(Identifier.fromNamespaceAndPath("betterdogs", "tame_wolf_personality"), BetterDogs.TAME_WOLF_PERSONALITY);
@@ -43,6 +47,14 @@ public class BetterDogsNeoForge {
                 helper.register(Identifier.fromNamespaceAndPath("betterdogs", "self_service"), BetterDogs.SELF_SERVICE);
             });
         }
+    }
+
+    private void registerPayloads(final RegisterPayloadHandlersEvent event) {
+        event.registrar("1").optional().playToClient(
+                BetterDogsClientCapPayload.TYPE,
+                BetterDogsClientCapPayload.CODEC,
+                (payload, ctx) -> {}
+        );
     }
 
     @SubscribeEvent

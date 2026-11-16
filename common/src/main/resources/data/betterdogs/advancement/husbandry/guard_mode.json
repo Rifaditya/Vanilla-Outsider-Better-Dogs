@@ -4,10 +4,12 @@
       "id": "minecraft:iron_helmet"
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.guard_mode.title"
+      "translate": "advancements.betterdogs.husbandry.guard_mode.title",
+      "fallback": "Sentinel on Duty"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.guard_mode.description"
+      "translate": "advancements.betterdogs.husbandry.guard_mode.description",
+      "fallback": "Place a loyal dog on sentinel guard patrol mode"
     },
     "frame": "task",
     "show_toast": true,
