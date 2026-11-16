@@ -4,10 +4,12 @@
       "item": "minecraft:cooked_beef"
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.favorite_treat.title"
+      "translate": "advancements.betterdogs.husbandry.favorite_treat.title",
+      "fallback": "Gourmet Canine"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.favorite_treat.description"
+      "translate": "advancements.betterdogs.husbandry.favorite_treat.description",
+      "fallback": "Discover and feed your companion their individual favorite treat"
     },
     "frame": "task",
     "show_toast": true,

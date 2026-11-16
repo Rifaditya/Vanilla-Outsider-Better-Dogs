@@ -4,10 +4,12 @@
       "item": "minecraft:bone"
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.tame_wolf.title"
+      "translate": "advancements.betterdogs.husbandry.tame_wolf.title",
+      "fallback": "Man's Best Companion"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.tame_wolf.description"
+      "translate": "advancements.betterdogs.husbandry.tame_wolf.description",
+      "fallback": "Tame a canine companion with an authentic personality"
     },
     "frame": "task",
     "show_toast": true,

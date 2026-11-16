@@ -5,10 +5,12 @@
       "item": "minecraft:bone"
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.roughhousing.title"
+      "translate": "advancements.betterdogs.husbandry.roughhousing.title",
+      "fallback": "Roughhousing"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.roughhousing.description"
+      "translate": "advancements.betterdogs.husbandry.roughhousing.description",
+      "fallback": "Witness two tamed dogs engaging in playful sparring"
     },
     "frame": "task",
     "show_toast": true,

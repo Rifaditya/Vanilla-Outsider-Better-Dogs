@@ -4,10 +4,12 @@
       "item": "minecraft:goat_horn"
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.horn_command.title"
+      "translate": "advancements.betterdogs.husbandry.horn_command.title",
+      "fallback": "Pack Conductor"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.horn_command.description"
+      "translate": "advancements.betterdogs.husbandry.horn_command.description",
+      "fallback": "Command a pack of dogs using a Goat Horn"
     },
     "frame": "task",
     "show_toast": true,

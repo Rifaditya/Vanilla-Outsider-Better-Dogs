@@ -4,10 +4,12 @@
       "item": "minecraft:diamond"
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.giant_lineage.title"
+      "translate": "advancements.betterdogs.husbandry.giant_lineage.title",
+      "fallback": "Apex Dynasty"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.giant_lineage.description"
+      "translate": "advancements.betterdogs.husbandry.giant_lineage.description",
+      "fallback": "Successfully breed a giant-scale (1.25x+) companion dog through generational lineage"
     },
     "frame": "challenge",
     "show_toast": true,

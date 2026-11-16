@@ -4,10 +4,12 @@
       "item": "minecraft:paper"
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.adopt_dog.title"
+      "translate": "advancements.betterdogs.husbandry.adopt_dog.title",
+      "fallback": "Second Chance"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.adopt_dog.description"
+      "translate": "advancements.betterdogs.husbandry.adopt_dog.description",
+      "fallback": "Successfully adopt a listed dog using an adoption paper certificate"
     },
     "frame": "task",
     "show_toast": true,

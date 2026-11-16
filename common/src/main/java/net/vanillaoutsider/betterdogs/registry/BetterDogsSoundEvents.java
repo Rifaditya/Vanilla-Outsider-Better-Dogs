@@ -1,8 +1,6 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
 package net.vanillaoutsider.betterdogs.registry;
 
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 
@@ -15,6 +13,7 @@ public class BetterDogsSoundEvents {
     public static final SoundEvent WOLF_HOWL = SoundEvent.createVariableRangeEvent(WOLF_HOWL_ID);
 
     public static void registerSoundEvents() {
-        Registry.register(BuiltInRegistries.SOUND_EVENT, WOLF_HOWL_ID, WOLF_HOWL);
+        // Zero-registration on dedicated servers: custom sound events are not registered in the shared
+        // BuiltInRegistries to protect unmodded vanilla clients from registry mismatch disconnection.
     }
 }

@@ -6,7 +6,7 @@ import net.dasik.social.api.SocialEvent;
 import net.dasik.social.api.TickContext;
 import net.minecraft.world.entity.animal.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
-import net.vanillaoutsider.betterdogs.registry.BetterDogsSoundEvents;
+import net.vanillaoutsider.betterdogs.util.WolfHowlAudioHelper;
 
 public class HowlDogEvent implements SocialEvent {
     public static final String ID = "howl";
@@ -35,7 +35,7 @@ public class HowlDogEvent implements SocialEvent {
     @Override
     public void onStart(TickContext context) {
         if (context.entity().dasik$asEntity() instanceof Wolf wolf) {
-            wolf.playSound(BetterDogsSoundEvents.WOLF_HOWL, 1.3f, 0.5f + wolf.getRandom().nextFloat() * 0.2f);
+            WolfHowlAudioHelper.playHowlSound(wolf.level(), wolf, 1.3f, 0.5f + wolf.getRandom().nextFloat() * 0.2f);
             if (wolf instanceof WolfExtensions ext) {
                 ext.betterdogs$setHowlingTicks(60);
             }

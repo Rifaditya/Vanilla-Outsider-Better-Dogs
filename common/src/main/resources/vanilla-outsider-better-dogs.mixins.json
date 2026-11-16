@@ -15,9 +15,7 @@
     "WolfSoundMixin",
     "WolfMobMixin"
   ],
-  "client": [
-    "WolfRendererMixin"
-  ],
+  "client": [],
   "injectors": {
     "defaultRequire": 1
   }

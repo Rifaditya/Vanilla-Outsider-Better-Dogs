@@ -38,23 +38,6 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     }
 
     @Unique
-    private static final net.minecraft.network.syncher.EntityDataAccessor<Float> BETTERDOGS$DATA_SOCIAL_SCALE =
-            net.minecraft.network.syncher.SynchedEntityData.defineId(Wolf.class, net.minecraft.network.syncher.EntityDataSerializers.FLOAT);
-    @Unique
-    private static final net.minecraft.network.syncher.EntityDataAccessor<Boolean> BETTERDOGS$DATA_SUBDUED =
-            net.minecraft.network.syncher.SynchedEntityData.defineId(Wolf.class, net.minecraft.network.syncher.EntityDataSerializers.BOOLEAN);
-    @Unique
-    private static final net.minecraft.network.syncher.EntityDataAccessor<Boolean> BETTERDOGS$DATA_SPECTATOR_WAGGING =
-            net.minecraft.network.syncher.SynchedEntityData.defineId(Wolf.class, net.minecraft.network.syncher.EntityDataSerializers.BOOLEAN);
-
-    @Inject(method = "defineSynchedData", at = @At("TAIL"))
-    private void betterdogs$defineSynchedData(CallbackInfo ci) {
-                this.entityData.define(BETTERDOGS$DATA_SOCIAL_SCALE, 1.0f);
-        this.entityData.define(BETTERDOGS$DATA_SUBDUED, false);
-        this.entityData.define(BETTERDOGS$DATA_SPECTATOR_WAGGING, false);
-    }
-
-    @Unique
     private WolfPersonality betterdogs$personality = null;
     @Unique
     private net.vanillaoutsider.betterdogs.personality.CanineArchetype betterdogs$canineArchetype = null;
@@ -385,24 +368,9 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
 
     @Override
     public float betterdogs$getSocialScale() {
-        if (this.entityData != null) {
-            try {
-                float tracked = this.entityData.get(BETTERDOGS$DATA_SOCIAL_SCALE);
-                if (tracked > 0.0f) {
-                    return tracked;
-                }
-            } catch (Exception ignored) {
-            }
-        }
         if (this.betterdogs$socialScale <= 0.0f) {
             Wolf wolf = (Wolf) (Object) this;
             this.betterdogs$socialScale = net.vanillaoutsider.betterdogs.util.WolfScaleGeneticsHelper.generateWildWolfScale(wolf.getCommandSenderWorld(), wolf.getRandom());
-            if (this.entityData != null) {
-                try {
-                    this.entityData.set(BETTERDOGS$DATA_SOCIAL_SCALE, this.betterdogs$socialScale);
-                } catch (Exception ignored) {
-                }
-            }
         }
         return this.betterdogs$socialScale;
     }
@@ -410,12 +378,6 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     @Override
     public void betterdogs$setSocialScale(float scale) {
         this.betterdogs$socialScale = scale;
-        if (this.entityData != null) {
-            try {
-                this.entityData.set(BETTERDOGS$DATA_SOCIAL_SCALE, scale);
-            } catch (Exception ignored) {
-            }
-        }
     }
 
     @Override
@@ -795,17 +757,6 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         return data;
     }
 
-    @Inject(method = "getTailAngle", at = @At("HEAD"), cancellable = true)
-    private void betterdogs$onGetTailAngle(CallbackInfoReturnable<Float> cir) {
-        if (this.betterdogs$isSubdued()) {
-            cir.setReturnValue(0.10F * (float) Math.PI);
-        } else if (this.betterdogs$isSpectatorWagging()) {
-            Wolf wolf = (Wolf) (Object) this;
-            float wag = net.minecraft.util.Mth.cos(wolf.tickCount * 0.6F) * 0.08F;
-            cir.setReturnValue((0.60F + wag) * (float) Math.PI);
-        }
-    }
-
     @Override
     public long betterdogs$getSparringCooldownUntil() {
         return this.betterdogs$sparringCooldownUntil;
@@ -854,22 +805,10 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     @Override
     public void betterdogs$setPlayPenaltyTicks(int ticks) {
         this.betterdogs$playPenaltyTicks = Math.max(0, ticks);
-        try {
-            if (this.entityData != null) {
-                this.entityData.set(BETTERDOGS$DATA_SUBDUED, this.betterdogs$playPenaltyTicks > 0);
-            }
-        } catch (Throwable ignored) {
-        }
     }
 
     @Override
     public boolean betterdogs$isSubdued() {
-        try {
-            if (this.level() != null && this.level().isClientSide() && this.entityData != null) {
-                return this.entityData.get(BETTERDOGS$DATA_SUBDUED);
-            }
-        } catch (Throwable ignored) {
-        }
         return this.betterdogs$playPenaltyTicks > 0;
     }
 
@@ -881,22 +820,10 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     @Override
     public void betterdogs$setSpectatorWagTicks(int ticks) {
         this.betterdogs$spectatorWagTicks = Math.max(0, ticks);
-        try {
-            if (this.entityData != null) {
-                this.entityData.set(BETTERDOGS$DATA_SPECTATOR_WAGGING, this.betterdogs$spectatorWagTicks > 0);
-            }
-        } catch (Throwable ignored) {
-        }
     }
 
     @Override
     public boolean betterdogs$isSpectatorWagging() {
-        try {
-            if (this.level() != null && this.level().isClientSide() && this.entityData != null) {
-                return this.entityData.get(BETTERDOGS$DATA_SPECTATOR_WAGGING);
-            }
-        } catch (Throwable ignored) {
-        }
         return this.betterdogs$spectatorWagTicks > 0;
     }
 }

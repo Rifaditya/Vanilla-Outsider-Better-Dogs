@@ -4,10 +4,12 @@
       "item": "minecraft:amethyst_shard"
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.chorus_howl.title"
+      "translate": "advancements.betterdogs.husbandry.chorus_howl.title",
+      "fallback": "Nocturnal Symphony"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.chorus_howl.description"
+      "translate": "advancements.betterdogs.husbandry.chorus_howl.description",
+      "fallback": "Witness or participate in a nocturnal pack chorus howl under the moonlight"
     },
     "frame": "goal",
     "show_toast": true,

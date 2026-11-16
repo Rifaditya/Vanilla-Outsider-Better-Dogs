@@ -1,5 +1,16 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.7.16+1.20.1] - 2026-11-16
+
+### Fixed
+- **Restored Full Vanilla-Client Dedicated Server Compatibility (BL-BD-064)**:
+  - Special thanks to `QienSnowpoff` for identifying and reporting dedicated server desyncs when unmodded vanilla clients join modded servers!
+  - **Dynamic Sound Event Decoupling**: Removed static `BuiltInRegistries.SOUND_EVENT` and `Registries.SOUND_EVENT` registration to prevent registry synchronization freezes on unmodded clients. Implemented dual sound routing in `WolfHowlAudioHelper`: sends direct variable-range sound packets to Better Dogs clients, and gracefully falls back to pitched-down vanilla wolf whines (`[0.50f, 0.80f]`) for vanilla clients.
+  - **Multi-Loader Capability Handshake & Forge Handshake Hygiene**: Added optional client capability channel (`betterdogs:client_audio_cap`) receiver on Fabric with raw channel detection, and configured Forge 47.1.106 handshake bypass via `displayTest="IGNORE_SERVER_VERSION"` (`IExtensionPoint.DisplayTest`) and `NetworkHooks.getConnectionData(...)` client query.
+  - **Synced Entity Data & Mixin Hygiene**: Removed `BETTERDOGS$DATA_SOCIAL_SCALE`, `BETTERDOGS$DATA_SUBDUED`, and `BETTERDOGS$DATA_SPECTATOR_WAGGING` `EntityDataAccessor` slots and `WolfRendererMixin`, preserving internal tick logic, genetics, personality state, and NBT saves while eliminating entity tracker crashes on vanilla clients.
+  - **Translatable Text Resilience**: Converted server-sent player notification components across `DogCommandManager` and `WolfInteractMixin` to `Component.translatableWithFallback` matching `en_us.json`, preventing untranslated translation key popups on unmodded clients.
+  - **Advancement Fallbacks & Subtitles**: Added `"fallback"` text across all 15 husbandry advancement JSON definitions and added `"subtitles.betterdogs.entity.wolf.howl"` subtitle localization.
+
 ## [1.7.15+1.20.1] - 2026-11-15
 
 ### Fixed

@@ -4,10 +4,12 @@
       "item": "minecraft:golden_apple"
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.cure_inbred.title"
+      "translate": "advancements.betterdogs.husbandry.cure_inbred.title",
+      "fallback": "Genetic Restoration"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.cure_inbred.description"
+      "translate": "advancements.betterdogs.husbandry.cure_inbred.description",
+      "fallback": "Cure an inbred runt defect using a Golden Apple"
     },
     "frame": "goal",
     "show_toast": true,

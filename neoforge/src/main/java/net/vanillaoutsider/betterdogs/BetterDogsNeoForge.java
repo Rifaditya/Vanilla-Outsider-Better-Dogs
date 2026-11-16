@@ -6,7 +6,10 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.IExtensionPoint;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.network.NetworkConstants;
 import net.vanillaoutsider.betterdogs.command.BetterDogsCommand;
 import net.vanillaoutsider.betterdogs.util.DogCommandManager;
 
@@ -16,15 +19,8 @@ public class BetterDogsNeoForge {
     public BetterDogsNeoForge() {
         BetterDogs.init();
         MinecraftForge.EVENT_BUS.register(this);
-        net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onRegister);
-    }
-
-    public void onRegister(net.minecraftforge.registries.RegisterEvent event) {
-        if (event.getRegistryKey().equals(net.minecraft.core.registries.Registries.SOUND_EVENT)) {
-            event.register(net.minecraft.core.registries.Registries.SOUND_EVENT,
-                    net.vanillaoutsider.betterdogs.registry.BetterDogsSoundEvents.WOLF_HOWL_ID,
-                    () -> net.vanillaoutsider.betterdogs.registry.BetterDogsSoundEvents.WOLF_HOWL);
-        }
+        ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class,
+                () -> new IExtensionPoint.DisplayTest(() -> NetworkConstants.IGNORESERVERONLY, (remote, isServer) -> true));
     }
 
     @SubscribeEvent
