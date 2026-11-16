@@ -5,10 +5,12 @@
       "id": "minecraft:wolf_armor"
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.know_your_place.title"
+      "translate": "advancements.betterdogs.husbandry.know_your_place.title",
+      "fallback": "Know Your Place"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.know_your_place.description"
+      "translate": "advancements.betterdogs.husbandry.know_your_place.description",
+      "fallback": "Witness a pack elder deliver a hierarchy correction snap"
     },
     "frame": "task",
     "show_toast": true,

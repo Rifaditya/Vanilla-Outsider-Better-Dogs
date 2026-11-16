@@ -44,11 +44,11 @@ public abstract class WolfInteractMixin {
                     net.vanillaoutsider.betterdogs.util.DogCommandManager.clearVehicleTarget(wolf.getUUID());
                     net.vanillaoutsider.betterdogs.util.DogCommandManager.clearSelection(player.getUUID());
                     wolf.playSound(net.minecraft.sounds.SoundEvents.WOLF_AMBIENT, 1.0f, 1.0f);
-                    net.vanillaoutsider.betterdogs.util.WolfFeedbackHelper.sendFeedback(player, level, net.minecraft.network.chat.Component.translatable("text.betterdogs.dog_dismounted", wolf.getName()));
+                    net.vanillaoutsider.betterdogs.util.WolfFeedbackHelper.sendFeedback(player, level, net.minecraft.network.chat.Component.translatableWithFallback("text.betterdogs.dog_dismounted", "%s hopped out of the seat.", wolf.getName()));
                 } else {
                     net.vanillaoutsider.betterdogs.util.DogCommandManager.selectDog(player.getUUID(), wolf.getUUID());
                     wolf.playSound(net.minecraft.sounds.SoundEvents.WOLF_AMBIENT, 1.0f, 1.2f);
-                    net.vanillaoutsider.betterdogs.util.WolfFeedbackHelper.sendFeedback(player, level, net.minecraft.network.chat.Component.translatable("text.betterdogs.dog_selected", wolf.getName()));
+                    net.vanillaoutsider.betterdogs.util.WolfFeedbackHelper.sendFeedback(player, level, net.minecraft.network.chat.Component.translatableWithFallback("text.betterdogs.dog_selected", "Selected %s for command. Shift+Right-click a vehicle to board.", wolf.getName()));
                     if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
                         serverLevel.sendParticles(net.minecraft.core.particles.ParticleTypes.NOTE, wolf.getX(), wolf.getY() + 0.5, wolf.getZ(), 5, 0.2, 0.2, 0.2, 0.05);
                     }

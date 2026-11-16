@@ -4,10 +4,12 @@
       "id": "minecraft:lead"
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.pet_dog.title"
+      "translate": "advancements.betterdogs.husbandry.pet_dog.title",
+      "fallback": "Who's a Good Dog?"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.pet_dog.description"
+      "translate": "advancements.betterdogs.husbandry.pet_dog.description",
+      "fallback": "Pet a tamed dog with an empty hand"
     },
     "frame": "task",
     "show_toast": true,

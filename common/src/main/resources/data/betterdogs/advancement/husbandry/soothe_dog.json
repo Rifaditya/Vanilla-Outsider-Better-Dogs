@@ -4,10 +4,12 @@
       "id": "minecraft:feather"
     },
     "title": {
-      "translate": "advancements.betterdogs.husbandry.soothe_dog.title"
+      "translate": "advancements.betterdogs.husbandry.soothe_dog.title",
+      "fallback": "Safe and Sound"
     },
     "description": {
-      "translate": "advancements.betterdogs.husbandry.soothe_dog.description"
+      "translate": "advancements.betterdogs.husbandry.soothe_dog.description",
+      "fallback": "Soothe a trembling or weather-panicked dog during a thunderstorm"
     },
     "frame": "task",
     "show_toast": true,

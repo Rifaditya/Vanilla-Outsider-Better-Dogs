@@ -8,8 +8,10 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.vanillaoutsider.betterdogs.command.BetterDogsCommand;
+import net.vanillaoutsider.betterdogs.network.BetterDogsClientCapPayload;
 import net.vanillaoutsider.betterdogs.util.DogCommandManager;
 
 @Mod("better_dogs")
@@ -19,14 +21,10 @@ public class BetterDogsNeoForge {
         BetterDogs.init();
         NeoForge.EVENT_BUS.register(this);
         modEventBus.addListener(this::onRegister);
+        modEventBus.addListener(this::registerPayloads);
     }
 
     public void onRegister(RegisterEvent event) {
-        if (event.getRegistryKey().equals(net.minecraft.core.registries.Registries.SOUND_EVENT)) {
-            event.register(net.minecraft.core.registries.Registries.SOUND_EVENT,
-                    net.vanillaoutsider.betterdogs.registry.BetterDogsSoundEvents.WOLF_HOWL_ID,
-                    () -> net.vanillaoutsider.betterdogs.registry.BetterDogsSoundEvents.WOLF_HOWL);
-        }
         if (event.getRegistryKey().equals(net.minecraft.core.registries.Registries.TRIGGER_TYPE)) {
             event.register(net.minecraft.core.registries.Registries.TRIGGER_TYPE, helper -> {
                 helper.register(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("betterdogs", "tame_wolf_personality"), BetterDogs.TAME_WOLF_PERSONALITY);
@@ -40,6 +38,14 @@ public class BetterDogsNeoForge {
                 helper.register(net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("betterdogs", "self_service"), BetterDogs.SELF_SERVICE);
             });
         }
+    }
+
+    private void registerPayloads(final RegisterPayloadHandlersEvent event) {
+        event.registrar("1").optional().playToClient(
+                BetterDogsClientCapPayload.TYPE,
+                BetterDogsClientCapPayload.CODEC,
+                (payload, ctx) -> {}
+        );
     }
 
     @SubscribeEvent

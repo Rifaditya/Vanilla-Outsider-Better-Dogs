@@ -1,8 +1,11 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
 package net.vanillaoutsider.betterdogs.platform;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.network.registration.NetworkRegistry;
+import net.vanillaoutsider.betterdogs.network.BetterDogsClientCapPayload;
 import net.vanillaoutsider.betterdogs.platform.services.IPlatformHelper;
 
 public class NeoForgePlatformHelper implements IPlatformHelper {
@@ -28,5 +31,14 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
         } catch (Throwable t) {
             return false;
         }
+    }
+
+    @Override
+    public boolean hasBetterDogsClient(ServerPlayer player) {
+        if (player == null || player.connection == null) {
+            return false;
+        }
+        return player.connection.getConnection().isMemoryConnection()
+                || NetworkRegistry.hasChannel(player.connection, BetterDogsClientCapPayload.TYPE.id());
     }
 }

@@ -16,4 +16,12 @@ public interface IPlatformHelper {
      * Checks if the game is currently running in a development environment.
      */
     boolean isDevelopmentEnvironment();
+
+    /**
+     * Checks if the connected client has the Better Dogs mod installed.
+     * Always returns true for local singleplayer integrated server connections.
+     */
+    default boolean hasBetterDogsClient(net.minecraft.server.level.ServerPlayer player) {
+        return false;
+    }
 }

@@ -87,7 +87,7 @@ public class BetterDogsAllVersionSidednessContractTest {
 
             for (Path file : javaFiles) {
                 String normalized = file.toString().replace('\\', '/');
-                if (normalized.contains("/client/") || normalized.contains("WolfRendererMixin") || normalized.contains("BetterDogsClient") || normalized.contains("YaclScreenHelper") || normalized.contains("/compat/jade/") || normalized.contains("/compat/yacl/")) {
+                if (normalized.contains("/client/") || normalized.contains("BetterDogsClient") || normalized.contains("YaclScreenHelper") || normalized.contains("/compat/jade/") || normalized.contains("/compat/yacl/")) {
                     continue; // Skip legitimate client-only subpackages / files
                 }
 
@@ -121,6 +121,7 @@ public class BetterDogsAllVersionSidednessContractTest {
         JsonObject entrypoints = json.getAsJsonObject("entrypoints");
         assertNotNull(entrypoints, "fabric.mod.json must declare entrypoints object");
         assertTrue(entrypoints.has("main"), "entrypoints must contain 'main'");
+        assertTrue(entrypoints.has("client"), "entrypoints must contain 'client'");
         assertTrue(entrypoints.has("modmenu"), "entrypoints must contain 'modmenu'");
 
         Path commonRoot = findCommonRoot();
@@ -150,5 +151,91 @@ public class BetterDogsAllVersionSidednessContractTest {
             Path classPath = srcMain.resolve(pkg).resolve(mixinName + ".java");
             assertTrue(Files.exists(classPath), "Mixin class file must exist in source: " + classPath);
         }
+    }
+
+    @Test
+    @DisplayName("Pillar 5 / BL-BD-064: WolfRendererMixin removed from mixin configs and file tree")
+    void testWolfRendererMixinAbsent() throws IOException {
+        Path root = findProjectRoot();
+        Path mixinConfigPath = root.resolve("common/src/main/resources/vanilla-outsider-better-dogs.mixins.json");
+        assertTrue(Files.exists(mixinConfigPath), "Mixin config must exist");
+        String content = Files.readString(mixinConfigPath, StandardCharsets.UTF_8);
+        assertFalse(content.contains("WolfRendererMixin"), "Mixin config must not reference WolfRendererMixin");
+
+        Path wolfRendererMixinPath = root.resolve("common/src/main/java/net/vanillaoutsider/betterdogs/mixin/WolfRendererMixin.java");
+        assertFalse(Files.exists(wolfRendererMixinPath), "WolfRendererMixin.java must be deleted to protect vanilla clients");
+    }
+
+    @Test
+    @DisplayName("Pillar 5 / BL-BD-064: Zero EntityDataAccessor or defineSynchedData in WolfMixin")
+    void testWolfMixinZeroEntityDataAccessor() throws IOException {
+        Path root = findProjectRoot();
+        Path wolfMixinPath = root.resolve("common/src/main/java/net/vanillaoutsider/betterdogs/mixin/WolfMixin.java");
+        assertTrue(Files.exists(wolfMixinPath), "WolfMixin.java must exist");
+        String content = Files.readString(wolfMixinPath, StandardCharsets.UTF_8);
+        assertFalse(content.contains("EntityDataAccessor"), "WolfMixin must contain zero EntityDataAccessor definitions");
+        assertFalse(content.contains("defineId"), "WolfMixin must contain zero defineId calls");
+        assertFalse(content.contains("defineSynchedData"), "WolfMixin must contain zero defineSynchedData injections");
+    }
+
+    @Test
+    @DisplayName("Pillar 5 / BL-BD-064: Zero BuiltInRegistries.SOUND_EVENT or Registries.SOUND_EVENT registration")
+    void testZeroSoundEventRegistration() throws IOException {
+        Path root = findProjectRoot();
+
+        Path soundEventsPath = root.resolve("common/src/main/java/net/vanillaoutsider/betterdogs/registry/BetterDogsSoundEvents.java");
+        assertTrue(Files.exists(soundEventsPath), "BetterDogsSoundEvents.java must exist");
+        String soundEventsContent = Files.readString(soundEventsPath, StandardCharsets.UTF_8);
+        assertFalse(soundEventsContent.contains("BuiltInRegistries.SOUND_EVENT"), "BetterDogsSoundEvents.java must not register into BuiltInRegistries.SOUND_EVENT");
+
+        Path fabricInitPath = root.resolve("fabric/src/main/java/net/vanillaoutsider/betterdogs/BetterDogsFabric.java");
+        assertTrue(Files.exists(fabricInitPath), "BetterDogsFabric.java must exist");
+        String fabricContent = Files.readString(fabricInitPath, StandardCharsets.UTF_8);
+        assertFalse(fabricContent.contains("registerSoundEvents"), "BetterDogsFabric.java must not call registerSoundEvents()");
+
+        Path neoforgeInitPath = root.resolve("neoforge/src/main/java/net/vanillaoutsider/betterdogs/BetterDogsNeoForge.java");
+        assertTrue(Files.exists(neoforgeInitPath), "BetterDogsNeoForge.java must exist");
+        String neoforgeContent = Files.readString(neoforgeInitPath, StandardCharsets.UTF_8);
+        assertFalse(neoforgeContent.contains("Registries.SOUND_EVENT"), "BetterDogsNeoForge.java must not register into Registries.SOUND_EVENT");
+    }
+
+    @Test
+    @DisplayName("Pillar 5 / BL-BD-064: 100% advancement title and description fallback coverage")
+    void testAdvancementFallbackCoverage() throws IOException {
+        Path root = findProjectRoot();
+        Path advDir = root.resolve("common/src/main/resources/data/betterdogs/advancement/husbandry");
+        assertTrue(Files.exists(advDir), "advancement/husbandry directory must exist");
+        try (Stream<Path> stream = Files.walk(advDir)) {
+            List<Path> advFiles = stream.filter(p -> p.toString().endsWith(".json")).toList();
+            assertTrue(advFiles.size() >= 15, "At least 15 advancement files must be audited for fallback coverage (found " + advFiles.size() + ")");
+            for (Path advFile : advFiles) {
+                String advContent = Files.readString(advFile, StandardCharsets.UTF_8);
+                JsonObject advJson = JsonParser.parseString(advContent).getAsJsonObject();
+                JsonObject display = advJson.getAsJsonObject("display");
+                assertNotNull(display, "Advancement must have display object: " + advFile);
+
+                JsonObject title = display.getAsJsonObject("title");
+                assertNotNull(title, "Advancement must have title object: " + advFile);
+                assertTrue(title.has("fallback") && !title.get("fallback").getAsString().isBlank(),
+                        "Advancement title must have non-blank fallback: " + advFile);
+
+                JsonObject description = display.getAsJsonObject("description");
+                assertNotNull(description, "Advancement must have description object: " + advFile);
+                assertTrue(description.has("fallback") && !description.get("fallback").getAsString().isBlank(),
+                        "Advancement description must have non-blank fallback: " + advFile);
+            }
+        }
+    }
+
+    @Test
+    @DisplayName("Pillar 5 / BL-BD-064: en_us.json contains wolf howl subtitle key")
+    void testWolfHowlSubtitlePresent() throws IOException {
+        Path root = findProjectRoot();
+        Path langPath = root.resolve("common/src/main/resources/assets/betterdogs/lang/en_us.json");
+        assertTrue(Files.exists(langPath), "en_us.json must exist at " + langPath);
+        String content = Files.readString(langPath, StandardCharsets.UTF_8);
+        JsonObject json = JsonParser.parseString(content).getAsJsonObject();
+        assertTrue(json.has("subtitles.betterdogs.entity.wolf.howl"), "en_us.json must contain subtitles.betterdogs.entity.wolf.howl");
+        assertEquals("Wolf howls", json.get("subtitles.betterdogs.entity.wolf.howl").getAsString());
     }
 }
