@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.20+26.2] - 2026-11-18
+
+### Fixed
+- **Resolved Permanent Play Disqualification & Static UUID Heap Leaks (`SmallFightHelper`) (BL-BD-043)**:
+  - Moved live entity play penalty, sparring cooldown, and hierarchy correction snap state to entity-first `WolfExtensions` storage (`SmallFightHelper`, `WolfMixin`), eliminating stale fallthrough to `PLAY_PENALTY_TRACKER` once penalty ticks reach `0` so dogs naturally regain play eligibility after their scuffle timeout.
+  - Purged residual static UUID entries whenever live `Wolf` state is set, expired, cleared via `betterdogs$clearTransientState()`, or ticked down to `0` on server/headless worlds (preserving singleplayer client isolation), preventing unbounded static heap leaks on entity unload or death.
+  - Bounded UUID-only headless fallback trackers (`PLAY_PENALTY_TRACKER`, `COOLDOWN_EXPIRY`, `ACTIVE_SESSIONS`, and synchronized `LAST_CORRECTION_DISCIPLINER`/`CORRECTION_SNAP_EXPIRY` pairs) to `MAX_TRACKED_UUID_ENTRIES = 1024` while preserving existing UUID test hooks and attacker-match guards.
+
 ## [5.7.19+26.2] - 2026-11-18
 
 ### Fixed
