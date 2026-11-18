@@ -2,6 +2,11 @@
 // Verified against: Minecraft 26.1.2
 package net.vanillaoutsider.betterdogs;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import net.vanillaoutsider.betterdogs.util.WolfGiftHelper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -62,10 +67,70 @@ class MorningGiftTest {
     }
 
     @Test
+    @DisplayName("Assert morning time window and sleep waking trigger via WolfGiftHelper")
+    void testMorningTimeWindowEligibility() {
+        assertTrue(WolfGiftHelper.isMorningOrWakingTicks(0L, false), "0 ticks is early morning");
+        assertTrue(WolfGiftHelper.isMorningOrWakingTicks(2000L, false), "2000 ticks is boundary of morning");
+        assertTrue(WolfGiftHelper.isMorningOrWakingTicks(24000L, false), "24000 ticks is dawn of day 1");
+
+        assertFalse(WolfGiftHelper.isMorningOrWakingTicks(2001L, false), "2001 ticks is midday");
+        assertFalse(WolfGiftHelper.isMorningOrWakingTicks(6000L, false), "6000 ticks is noon");
+        assertFalse(WolfGiftHelper.isMorningOrWakingTicks(14000L, false), "14000 ticks is night");
+
+        assertFalse(WolfGiftHelper.isMorningOrWakingTicks(-1000L, false), "-1000 ticks wraps to 23000 (late night)");
+        assertTrue(WolfGiftHelper.isMorningOrWakingTicks(-24000L, false), "-24000 ticks wraps to 0 (morning boundary)");
+        assertTrue(WolfGiftHelper.isMorningOrWakingTicks(14000L, true), "Waking player bypasses time of day");
+    }
+
+    @Test
+    @DisplayName("Assert day count calculation handles sleep-skip progression and negative ticks")
+    void testDayCountCalculationAndSleepProgression() {
+        assertEquals(0L, WolfGiftHelper.calculateDayCount(0L));
+        assertEquals(0L, WolfGiftHelper.calculateDayCount(18000L), "Night before sleep belongs to day 0");
+        assertEquals(1L, WolfGiftHelper.calculateDayCount(24000L), "Dawn after sleep advances to day 1");
+        assertEquals(4166L, WolfGiftHelper.calculateDayCount(100_000_000L));
+        assertEquals(-1L, WolfGiftHelper.calculateDayCount(-1L), "Negative tick -1 floors to day -1");
+        assertEquals(-1L, WolfGiftHelper.calculateDayCount(-24000L), "Exact -24000 floors to day -1");
+        assertEquals(-2L, WolfGiftHelper.calculateDayCount(-24001L));
+    }
+
+    @Test
     @DisplayName("Assert strict null safety across gift helper methods")
     void testNullSafety() {
         assertFalse(WolfGiftHelper.canDeliverGift(null, null));
+        assertFalse(WolfGiftHelper.hasDaylightCycle(null));
+        assertEquals(0L, WolfGiftHelper.getCelestialDayTime(null));
         assertEquals(0L, WolfGiftHelper.getDayCount(null));
+        assertFalse(WolfGiftHelper.isMorningOrWaking(null, null));
         assertDoesNotThrow(() -> WolfGiftHelper.deliverGift(null, null));
+    }
+
+    @Test
+    @DisplayName("BL-BD-042: Assert WolfGiftHelper uses celestial default clock time and floor math")
+    void testWolfGiftHelperSourceContract() throws IOException {
+        String source = Files.readString(resolveWolfGiftHelperSource(), StandardCharsets.UTF_8);
+        assertFalse(source.contains("getGameTime() / 24000L"), "Must not compute day count from monotonic gameTime");
+        assertFalse(source.contains("getGameTime() % 24000L"), "Must not compute time of day from monotonic gameTime");
+        assertTrue(source.contains("getDefaultClockTime()"), "Modern 26.x must read celestial default clock time");
+        assertTrue(source.contains("hasDaylightCycle"), "Must guard dimensions without active daylight cycle");
+        assertTrue(source.contains("Math.floorDiv"), "Must use floorDiv for day counts");
+        assertTrue(source.contains("Math.floorMod"), "Must use floorMod for time-of-day wrapping");
+        assertTrue(source.contains("isMorningOrWaking(level, owner)"), "canDeliverGift must enforce morning/waking gate");
+    }
+
+    private static Path resolveWolfGiftHelperSource() {
+        Path cursor = Paths.get(System.getProperty("user.dir")).toAbsolutePath();
+        while (cursor != null) {
+            Path direct = cursor.resolve("src/main/java/net/vanillaoutsider/betterdogs/util/WolfGiftHelper.java");
+            if (Files.exists(direct)) {
+                return direct;
+            }
+            Path common = cursor.resolve("common/src/main/java/net/vanillaoutsider/betterdogs/util/WolfGiftHelper.java");
+            if (Files.exists(common)) {
+                return common;
+            }
+            cursor = cursor.getParent();
+        }
+        throw new AssertionError("Unable to locate WolfGiftHelper.java from " + System.getProperty("user.dir"));
     }
 }

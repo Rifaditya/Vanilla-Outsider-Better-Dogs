@@ -3,10 +3,11 @@
 This file tracks which built versions (from the central archive folder "E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Archive Jar of all versions") have been manually uploaded to Modrinth/CurseForge.
 Open this file in your editor and change `[ ]` to `[x]` when you publish a version.
 
-> **Multi-Loader Note (MC 26.1.2):** Starting from 5.1.1+26.1.2 up to HEAD 5.7.18+26.1.2, all builds are compiled as native Multi-Loader artifacts with dual production JARs: Fabric (`*-fabric.jar`) and NeoForge (`*-neoforge.jar`).
+> **Multi-Loader Note (MC 26.1.2):** Starting from 5.1.1+26.1.2 up to HEAD 5.7.19+26.1.2, all builds are compiled as native Multi-Loader artifacts with dual production JARs: Fabric (`*-fabric.jar`) and NeoForge (`*-neoforge.jar`).
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 5.7.19+26.1.2** [Fabric + NeoForge] - Fix Morning Gifts Broken by Sleep & Monotonic GameTime Desynchronization (BL-BD-042)
 - [ ] **Better Dogs 5.7.18+26.1.2** [Fabric + NeoForge] - Blood Feud Friendly Fire Health Clamping Deadlock (BL-BD-041)
 - [ ] **Better Dogs 5.7.17+26.1.2** [Fabric + NeoForge] - Restore Vanilla Client Compatibility Across Dedicated Servers (BL-BD-064)
 - [ ] **Better Dogs 5.7.16+26.1.2** [Fabric + NeoForge] - Align `BD_FRIENDLY_FIRE` Lethal Clamp, Co-Owned Packmate Protection & Offline Owner Parity (BL-BD-063)
