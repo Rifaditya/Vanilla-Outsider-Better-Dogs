@@ -41,6 +41,7 @@ public final class SmallFightHelper {
     public static final float CORRECTION_DAMAGE_PUPPY = 0.0F; // Gentle reprimand growl, adult patience
 
     public static final String NBT_KEY_PLAY_PENALTY_TICKS = "BD_PlayPenaltyTicks";
+    public static final int MAX_TRACKED_UUID_ENTRIES = 1024;
 
     private static final Map<UUID, Long> COOLDOWN_EXPIRY = new ConcurrentHashMap<>();
     private static final Map<SparringSessionKey, SparringSessionData> ACTIVE_SESSIONS = new ConcurrentHashMap<>();
@@ -103,6 +104,44 @@ public final class SmallFightHelper {
     private SmallFightHelper() {
     }
 
+    public static int getTrackedPenaltyCount() {
+        return PLAY_PENALTY_TRACKER.size();
+    }
+
+    public static int getTrackedCooldownCount() {
+        return COOLDOWN_EXPIRY.size();
+    }
+
+    public static int getTrackedCorrectionSnapCount() {
+        return LAST_CORRECTION_DISCIPLINER.size();
+    }
+
+    private static <K, V> void enforceMapCap(Map<K, V> map, K incomingKey) {
+        if (incomingKey == null || map.containsKey(incomingKey) || map.size() < MAX_TRACKED_UUID_ENTRIES) {
+            return;
+        }
+        var it = map.keySet().iterator();
+        while (map.size() >= MAX_TRACKED_UUID_ENTRIES && it.hasNext()) {
+            it.next();
+            it.remove();
+        }
+    }
+
+    private static void enforceCorrectionSnapCap(UUID incomingVictimId) {
+        if (incomingVictimId == null || LAST_CORRECTION_DISCIPLINER.containsKey(incomingVictimId)
+                || LAST_CORRECTION_DISCIPLINER.size() < MAX_TRACKED_UUID_ENTRIES) {
+            return;
+        }
+        var it = LAST_CORRECTION_DISCIPLINER.keySet().iterator();
+        while (LAST_CORRECTION_DISCIPLINER.size() >= MAX_TRACKED_UUID_ENTRIES && it.hasNext()) {
+            UUID evicted = it.next();
+            it.remove();
+            if (evicted != null) {
+                CORRECTION_SNAP_EXPIRY.remove(evicted);
+            }
+        }
+    }
+
     /**
      * Applies the baseline post-sparring cooldown (1200–1800 ticks, 60–90 seconds) to the wolf.
      */
@@ -135,10 +174,14 @@ public final class SmallFightHelper {
         }
         UUID uuid = wolf.getUUID();
         if (uuid != null) {
-            COOLDOWN_EXPIRY.put(uuid, expiryGameTime);
+            COOLDOWN_EXPIRY.remove(uuid);
         }
         if (wolf instanceof WolfExtensions ext) {
-            ext.betterdogs$setSparringCooldownUntil(expiryGameTime);
+            ext.betterdogs$setSparringCooldownUntil(Math.max(0L, expiryGameTime));
+            return;
+        }
+        if (uuid != null) {
+            setCooldown(uuid, expiryGameTime);
         }
     }
 
@@ -147,6 +190,7 @@ public final class SmallFightHelper {
      */
     public static void setCooldown(UUID wolfUuid, long expiryGameTime) {
         if (wolfUuid != null) {
+            enforceMapCap(COOLDOWN_EXPIRY, wolfUuid);
             COOLDOWN_EXPIRY.put(wolfUuid, expiryGameTime);
         }
     }
@@ -171,9 +215,13 @@ public final class SmallFightHelper {
         }
         if (wolf instanceof WolfExtensions ext) {
             long extExpiry = ext.betterdogs$getSparringCooldownUntil();
-            if (extExpiry > 0L && currentGameTime < extExpiry) {
-                return true;
+            if (extExpiry > 0L) {
+                if (currentGameTime < extExpiry) {
+                    return true;
+                }
+                ext.betterdogs$setSparringCooldownUntil(0L);
             }
+            return false;
         }
         UUID uuid = wolf.getUUID();
         if (uuid != null) {
@@ -299,10 +347,7 @@ public final class SmallFightHelper {
             return 0;
         }
         if (wolf instanceof WolfExtensions ext) {
-            int extTicks = ext.betterdogs$getPlayPenaltyTicks();
-            if (extTicks > 0) {
-                return extTicks;
-            }
+            return Math.max(0, ext.betterdogs$getPlayPenaltyTicks());
         }
         UUID uuid = wolf.getUUID();
         return uuid != null ? PLAY_PENALTY_TRACKER.getOrDefault(uuid, 0) : 0;
@@ -316,16 +361,16 @@ public final class SmallFightHelper {
             return;
         }
         int safeTicks = Math.max(0, ticks);
-        if (wolf instanceof WolfExtensions ext) {
-            ext.betterdogs$setPlayPenaltyTicks(safeTicks);
-        }
         UUID uuid = wolf.getUUID();
         if (uuid != null) {
-            if (safeTicks > 0) {
-                PLAY_PENALTY_TRACKER.put(uuid, safeTicks);
-            } else {
-                PLAY_PENALTY_TRACKER.remove(uuid);
-            }
+            PLAY_PENALTY_TRACKER.remove(uuid);
+        }
+        if (wolf instanceof WolfExtensions ext) {
+            ext.betterdogs$setPlayPenaltyTicks(safeTicks);
+            return;
+        }
+        if (uuid != null) {
+            setPlayPenaltyTicks(uuid, safeTicks);
         }
     }
 
@@ -348,6 +393,7 @@ public final class SmallFightHelper {
         }
         int safeTicks = Math.max(0, ticks);
         if (safeTicks > 0) {
+            enforceMapCap(PLAY_PENALTY_TRACKER, wolfUuid);
             PLAY_PENALTY_TRACKER.put(wolfUuid, safeTicks);
         } else {
             PLAY_PENALTY_TRACKER.remove(wolfUuid);
@@ -462,6 +508,9 @@ public final class SmallFightHelper {
     public static SparringSessionData getOrCreateSession(UUID a, UUID b, net.minecraft.util.RandomSource random) {
         if (a == null || b == null) return null;
         SparringSessionKey key = new SparringSessionKey(a, b);
+        if (!ACTIVE_SESSIONS.containsKey(key)) {
+            enforceMapCap(ACTIVE_SESSIONS, key);
+        }
         return ACTIVE_SESSIONS.computeIfAbsent(key, k -> {
             int threshold = MIN_POUNCE_THRESHOLD;
             if (random != null) {
@@ -477,6 +526,9 @@ public final class SmallFightHelper {
     public static void initSession(UUID a, UUID b, int threshold) {
         if (a == null || b == null) return;
         SparringSessionKey key = new SparringSessionKey(a, b);
+        if (!ACTIVE_SESSIONS.containsKey(key)) {
+            enforceMapCap(ACTIVE_SESSIONS, key);
+        }
         ACTIVE_SESSIONS.put(key, new SparringSessionData(threshold));
     }
 
@@ -538,25 +590,52 @@ public final class SmallFightHelper {
 
     public static void recordCorrectionSnap(Wolf discipliningDog, Wolf victim) {
         if (discipliningDog == null || victim == null) return;
+        UUID disciplinerId = discipliningDog.getUUID();
+        if (disciplinerId == null) return;
         long gameTime = (victim.level() != null) ? victim.level().getGameTime() : 0L;
         long expiry = gameTime + BASELINE_SPARRING_COOLDOWN_TICKS;
-        recordCorrectionSnap(discipliningDog.getUUID(), victim.getUUID(), expiry);
+        UUID victimId = victim.getUUID();
+        if (victimId != null) {
+            LAST_CORRECTION_DISCIPLINER.remove(victimId);
+            CORRECTION_SNAP_EXPIRY.remove(victimId);
+        }
         if (victim instanceof WolfExtensions ext) {
-            ext.betterdogs$setLastCorrectionSnapSource(discipliningDog.getUUID());
+            ext.betterdogs$setLastCorrectionSnapSource(disciplinerId);
             ext.betterdogs$setLastCorrectionSnapExpiry(expiry);
+            return;
+        }
+        if (victimId != null) {
+            recordCorrectionSnap(disciplinerId, victimId, expiry);
         }
     }
 
     public static void recordCorrectionSnap(UUID discipliningId, UUID victimId, long expiryGameTime) {
         if (discipliningId == null || victimId == null) return;
+        enforceCorrectionSnapCap(victimId);
         LAST_CORRECTION_DISCIPLINER.put(victimId, discipliningId);
         CORRECTION_SNAP_EXPIRY.put(victimId, expiryGameTime);
     }
 
     public static boolean isRecentCorrectionSnap(Wolf victim, LivingEntity attacker) {
         if (victim == null || !(attacker instanceof Wolf discipliningWolf)) return false;
+        UUID attackerId = discipliningWolf.getUUID();
+        if (attackerId == null) return false;
         long gameTime = (victim.level() != null) ? victim.level().getGameTime() : 0L;
-        return isRecentCorrectionSnap(victim.getUUID(), discipliningWolf.getUUID(), gameTime);
+        if (victim instanceof WolfExtensions ext) {
+            UUID discipliner = ext.betterdogs$getLastCorrectionSnapSource();
+            if (discipliner != null) {
+                if (!discipliner.equals(attackerId)) return false;
+                long expiry = ext.betterdogs$getLastCorrectionSnapExpiry();
+                if (expiry > 0L && gameTime > expiry) {
+                    ext.betterdogs$setLastCorrectionSnapSource(null);
+                    ext.betterdogs$setLastCorrectionSnapExpiry(0L);
+                    return false;
+                }
+                return true;
+            }
+        }
+        UUID victimId = victim.getUUID();
+        return victimId != null && isRecentCorrectionSnap(victimId, attackerId, gameTime);
     }
 
     public static boolean isRecentCorrectionSnap(UUID victimId, UUID attackerId, long currentGameTime) {
