@@ -14,7 +14,9 @@ import net.vanillaoutsider.betterdogs.util.SmallFightHelper;
 import net.vanillaoutsider.betterdogs.util.WolfAdvancementHelper;
 import net.vanillaoutsider.betterdogs.util.WolfDispositionHelper;
 import net.vanillaoutsider.betterdogs.util.WolfPettingHelper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -32,6 +34,15 @@ class SmallFightTest {
             net.minecraft.server.Bootstrap.bootStrap();
         } catch (Throwable ignored) {
         }
+    }
+
+    @BeforeEach
+    @AfterEach
+    void resetSmallFightStaticState() {
+        SmallFightHelper.clearPlayPenalties();
+        SmallFightHelper.clearCooldowns();
+        SmallFightHelper.clearCorrectionSnaps();
+        SmallFightHelper.clearSessions();
     }
 
     @Test
@@ -713,5 +724,128 @@ class SmallFightTest {
                 "Wolves in active social mode must be immune to sparring initiation");
         assertFalse(SmallFightHelper.isEligibleForPlay(true, true, false, false, false, false, 0, false, true),
                 "Wolves with active Blood Feud must be immune to sparring initiation");
+    }
+
+    @Test
+    @DisplayName("BL-BD-043: Entity-first penalty expiry restores play eligibility with zero static heap leak")
+    void testEntityFirstPenaltyExpiryRestoresEligibilityAndZeroHeapLeak() {
+        UUID ownerUuid = UUID.randomUUID();
+        var wolf = PackCivilWarImmunityTest.createOfflineWolf(UUID.randomUUID(), ownerUuid, true, false);
+        net.minecraft.world.entity.animal.Wolf asWolf = wolf;
+
+        SmallFightHelper.setPlayPenaltyTicks(asWolf, 3);
+        assertEquals(3, SmallFightHelper.getPlayPenaltyTicks(asWolf));
+        assertTrue(((WolfExtensions) wolf).betterdogs$isSubdued());
+        assertFalse(SmallFightHelper.isEligibleForPlay(asWolf));
+        assertEquals(0, SmallFightHelper.getTrackedPenaltyCount(), "Live entity penalty must not leak into static map");
+
+        ((WolfExtensions) wolf).betterdogs$setPlayPenaltyTicks(2);
+        assertEquals(2, SmallFightHelper.getPlayPenaltyTicks(asWolf));
+        assertTrue(((WolfExtensions) wolf).betterdogs$isSubdued());
+        assertFalse(SmallFightHelper.isEligibleForPlay(asWolf));
+
+        ((WolfExtensions) wolf).betterdogs$setPlayPenaltyTicks(1);
+        assertEquals(1, SmallFightHelper.getPlayPenaltyTicks(asWolf));
+        assertTrue(((WolfExtensions) wolf).betterdogs$isSubdued());
+        assertFalse(SmallFightHelper.isEligibleForPlay(asWolf));
+
+        ((WolfExtensions) wolf).betterdogs$setPlayPenaltyTicks(0);
+        assertEquals(0, SmallFightHelper.getPlayPenaltyTicks(asWolf));
+        assertFalse(((WolfExtensions) wolf).betterdogs$isSubdued());
+        assertTrue(SmallFightHelper.isEligibleForPlay(asWolf));
+        assertEquals(0, SmallFightHelper.getTrackedPenaltyCount());
+    }
+
+    @Test
+    @DisplayName("BL-BD-043: Zero fallthrough to pre-seeded static tracker when entity penalty is 0 and negative parity holds")
+    void testNoFallthroughToPreSeededStaticTrackerWhenEntityPenaltyZero() {
+        UUID ownerUuid = UUID.randomUUID();
+        var wolf = PackCivilWarImmunityTest.createOfflineWolf(UUID.randomUUID(), ownerUuid, true, false);
+        net.minecraft.world.entity.animal.Wolf asWolf = wolf;
+
+        SmallFightHelper.setPlayPenaltyTicks(wolf.getUUID(), 12000);
+        assertEquals(1, SmallFightHelper.getTrackedPenaltyCount());
+        assertEquals(0, SmallFightHelper.getPlayPenaltyTicks(asWolf), "Entity penalty 0 must not fall through to static map");
+        assertTrue(SmallFightHelper.isEligibleForPlay(asWolf), "Zero-penalty WolfExtensions entity must remain eligible");
+
+        SmallFightHelper.setPlayPenaltyTicks(asWolf, 0);
+        assertEquals(0, SmallFightHelper.getTrackedPenaltyCount(), "setPlayPenaltyTicks(Wolf, 0) must purge residual UUID entry");
+
+        // Negative parity at 0 penalty
+        wolf.setOrderedToSitStub(true);
+        assertFalse(SmallFightHelper.isEligibleForPlay(asWolf), "Sitting wolf must remain ineligible at 0 penalty");
+        wolf.setOrderedToSitStub(false);
+
+        var targetWolf = PackCivilWarImmunityTest.createOfflineWolf(UUID.randomUUID(), UUID.randomUUID(), true, false);
+        wolf.setTarget(targetWolf);
+        assertFalse(SmallFightHelper.isEligibleForPlay(asWolf), "Targeted wolf must remain ineligible at 0 penalty");
+        wolf.setTarget(null);
+
+        var untamedWolf = PackCivilWarImmunityTest.createOfflineWolf(UUID.randomUUID(), null, false, false);
+        assertFalse(SmallFightHelper.isEligibleForPlay((net.minecraft.world.entity.animal.Wolf) untamedWolf),
+                "Untamed wolf must remain ineligible at 0 penalty");
+
+        wolf.betterdogs$setBloodFeudTarget(UUID.randomUUID().toString());
+        assertFalse(SmallFightHelper.isEligibleForPlay(asWolf), "Blood-feud wolf must remain ineligible at 0 penalty");
+        wolf.betterdogs$setBloodFeudTarget("");
+
+        assertTrue(SmallFightHelper.isEligibleForPlay(asWolf));
+    }
+
+    @Test
+    @DisplayName("BL-BD-043: Entity-first cooldown and correction snap storage keep static UUID maps empty")
+    void testEntityFirstCooldownAndCorrectionSnapZeroHeapLeak() {
+        UUID ownerUuid = UUID.randomUUID();
+        var wolf = PackCivilWarImmunityTest.createOfflineWolf(UUID.randomUUID(), ownerUuid, true, false);
+        var calmWolf = PackCivilWarImmunityTest.createOfflineWolf(UUID.randomUUID(), ownerUuid, true, false);
+        var strangerWolf = PackCivilWarImmunityTest.createOfflineWolf(UUID.randomUUID(), UUID.randomUUID(), true, false);
+        net.minecraft.world.entity.animal.Wolf asWolf = wolf;
+
+        SmallFightHelper.setCooldown(asWolf, 500L);
+        assertEquals(0, SmallFightHelper.getTrackedCooldownCount(), "Live entity cooldown must not leak into static map");
+        assertTrue(SmallFightHelper.isOnCooldown(asWolf, 400L));
+
+        SmallFightHelper.setCooldown(wolf.getUUID(), 9999L);
+        assertFalse(SmallFightHelper.isOnCooldown(asWolf, 500L), "Expired entity cooldown must return false without static fallback");
+        assertEquals(0L, ((WolfExtensions) wolf).betterdogs$getSparringCooldownUntil());
+        SmallFightHelper.clearCooldowns();
+
+        SmallFightHelper.recordCorrectionSnap(calmWolf, asWolf);
+        assertEquals(0, SmallFightHelper.getTrackedCorrectionSnapCount(), "Live correction snap must not leak into static map");
+        assertTrue(SmallFightHelper.isRecentCorrectionSnap(asWolf, calmWolf));
+        assertFalse(SmallFightHelper.isRecentCorrectionSnap(asWolf, strangerWolf));
+        assertTrue(SmallFightHelper.isRecentCorrectionSnap(asWolf, calmWolf),
+                "Checking non-matching stranger must not clear original discipliner");
+    }
+
+    @Test
+    @DisplayName("BL-BD-043: Bounded UUID map capacity caps fallback trackers at MAX_TRACKED_UUID_ENTRIES")
+    void testBoundedUuidMapCapacityPreventsUnboundedLeak() {
+        assertDoesNotThrow(() -> {
+            for (int i = 0; i < 1500; i++) {
+                UUID wolfId = UUID.randomUUID();
+                UUID partnerId = UUID.randomUUID();
+                SmallFightHelper.setPlayPenaltyTicks(wolfId, 12000);
+                SmallFightHelper.setCooldown(wolfId, 5000L + i);
+                SmallFightHelper.recordCorrectionSnap(partnerId, wolfId, 5000L + i);
+                SmallFightHelper.initSession(wolfId, partnerId, 4);
+                SmallFightHelper.getOrCreateSession(UUID.randomUUID(), UUID.randomUUID(), null);
+            }
+        });
+
+        assertTrue(SmallFightHelper.getTrackedPenaltyCount() <= SmallFightHelper.MAX_TRACKED_UUID_ENTRIES);
+        assertTrue(SmallFightHelper.getTrackedCooldownCount() <= SmallFightHelper.MAX_TRACKED_UUID_ENTRIES);
+        assertTrue(SmallFightHelper.getTrackedCorrectionSnapCount() <= SmallFightHelper.MAX_TRACKED_UUID_ENTRIES);
+        assertEquals(SmallFightHelper.MAX_TRACKED_UUID_ENTRIES, SmallFightHelper.getTrackedPenaltyCount());
+        assertEquals(SmallFightHelper.MAX_TRACKED_UUID_ENTRIES, SmallFightHelper.getTrackedCooldownCount());
+        assertEquals(SmallFightHelper.MAX_TRACKED_UUID_ENTRIES, SmallFightHelper.getTrackedCorrectionSnapCount());
+
+        SmallFightHelper.clearPlayPenalties();
+        SmallFightHelper.clearCooldowns();
+        SmallFightHelper.clearCorrectionSnaps();
+        SmallFightHelper.clearSessions();
+        assertEquals(0, SmallFightHelper.getTrackedPenaltyCount());
+        assertEquals(0, SmallFightHelper.getTrackedCooldownCount());
+        assertEquals(0, SmallFightHelper.getTrackedCorrectionSnapCount());
     }
 }

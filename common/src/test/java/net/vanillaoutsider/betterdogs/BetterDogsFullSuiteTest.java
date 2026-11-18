@@ -72,6 +72,18 @@ class BetterDogsFullSuiteTest {
 
         // BabyCuriosityGoal
         assertFalse(BabyCuriosityGoal.isInterestingBlock(null));
+
+        // SmallFightHelper (BL-BD-043)
+        SmallFightHelper.clearPlayPenalties();
+        SmallFightHelper.clearCooldowns();
+        SmallFightHelper.clearCorrectionSnaps();
+        SmallFightHelper.clearSessions();
+        assertFalse(SmallFightHelper.isEligibleForPlay(null));
+        assertFalse(SmallFightHelper.shouldInitiatePlayFight(null));
+        assertDoesNotThrow(() -> SmallFightHelper.applyCooldown(null));
+        assertEquals(0, SmallFightHelper.getTrackedPenaltyCount());
+        assertEquals(0, SmallFightHelper.getTrackedCooldownCount());
+        assertEquals(0, SmallFightHelper.getTrackedCorrectionSnapCount());
     }
 
     @Test
