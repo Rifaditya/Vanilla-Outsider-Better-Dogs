@@ -64,9 +64,19 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("Step 35: Pack Civil War Immunity, Offline Owner Parity & Alert Silencing Tests (BL-BD-035, BL-BD-054, BL-BD-055, BL-BD-058)")
 class PackCivilWarImmunityTest {
 
-    private static Unsafe unsafe;
+    private static final Unsafe unsafe = initUnsafe();
     private static Holder<DamageType> mobDamageType;
     private static Holder<DamageType> fallDamageType;
+
+    private static Unsafe initUnsafe() {
+        try {
+            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+            theUnsafe.setAccessible(true);
+            return (Unsafe) theUnsafe.get(null);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to initialize Unsafe", e);
+        }
+    }
 
     @BeforeAll
     static void setupMinecraftBootstrap() throws Exception {
@@ -75,9 +85,6 @@ class PackCivilWarImmunityTest {
         if (BetterDogsGameRules.BD_NEMESIS_SYSTEM == null) {
             BetterDogsGameRules.register();
         }
-        Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
-        theUnsafe.setAccessible(true);
-        unsafe = (Unsafe) theUnsafe.get(null);
         mobDamageType = Holder.direct(new DamageType("mob", 0.1f));
         fallDamageType = Holder.direct(new DamageType("fall", 0.0f));
     }
@@ -92,8 +99,17 @@ class PackCivilWarImmunityTest {
         return createOfflineWolf(UUID.randomUUID(), ownerUuid, tame, false);
     }
 
-    private static OfflineStubWolf createOfflineWolf(UUID wolfUuid, @Nullable UUID ownerUuid, boolean tame, boolean baby) {
+    static void ensureBootstrap() {
         try {
+            SharedConstants.tryDetectVersion();
+            Bootstrap.bootStrap();
+        } catch (Throwable ignored) {
+        }
+    }
+
+    static OfflineStubWolf createOfflineWolf(UUID wolfUuid, @Nullable UUID ownerUuid, boolean tame, boolean baby) {
+        try {
+            ensureBootstrap();
             OfflineStubWolf stub = (OfflineStubWolf) unsafe.allocateInstance(OfflineStubWolf.class);
             stub.init(wolfUuid, ownerUuid, tame, baby);
             return stub;
@@ -968,6 +984,12 @@ class PackCivilWarImmunityTest {
                 "Active Blood Feud attacker targeting victim must bypass WolfFriendlyFireHelper");
         assertEquals(4.0f, victim.getHealth(), 1e-5f);
 
+        // BL-BD-041: Retaliating defender must also bypass friendly fire against feud attacker
+        feudAttacker.setHealth(4.0f);
+        assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(feudAttacker, new DamageSource(mobDamageType, victim, victim), 4.0f),
+                "BL-BD-041: Defending victim retaliating against Blood Feud aggressor must bypass WolfFriendlyFireHelper");
+        assertEquals(4.0f, feudAttacker.getHealth(), 1e-5f);
+
         // Non-matching Blood Feud target does NOT bypass friendly fire protection
         feudAttacker.forceBloodFeud(true, UUID.randomUUID().toString());
         assertTrue(WolfFriendlyFireHelper.shouldCancelDamage(victim, new DamageSource(mobDamageType, feudAttacker, feudAttacker), 1.0f),
@@ -1111,7 +1133,7 @@ class PackCivilWarImmunityTest {
         }
     }
 
-    private static final class OfflineStubWolf extends Wolf implements WolfExtensions {
+    static final class OfflineStubWolf extends Wolf implements WolfExtensions {
         private UUID uuid;
         private @Nullable UUID ownerUuid;
         private boolean tame;

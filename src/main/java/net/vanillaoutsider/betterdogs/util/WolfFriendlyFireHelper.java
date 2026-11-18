@@ -59,10 +59,9 @@ public final class WolfFriendlyFireHelper {
                 || (directAttacker instanceof WolfExtensions directExt && directExt.betterdogs$getSocialTarget() == wolf)) {
             return false;
         }
-        if ((rawAttacker instanceof WolfExtensions feudRaw && feudRaw.betterdogs$hasBloodFeud()
-                && wolf.getStringUUID().equals(feudRaw.betterdogs$getBloodFeudTarget()))
-                || (directAttacker instanceof WolfExtensions feudDirect && feudDirect.betterdogs$hasBloodFeud()
-                        && wolf.getStringUUID().equals(feudDirect.betterdogs$getBloodFeudTarget()))) {
+        // Blood Feud bypass (betterdogs$hasBloodFeud())
+        if ((rawAttacker instanceof Wolf rawWolf && isBloodFeudPair(wolf, rawWolf))
+                || (directAttacker instanceof Wolf directWolf && isBloodFeudPair(wolf, directWolf))) {
             return false;
         }
 
@@ -117,6 +116,27 @@ public final class WolfFriendlyFireHelper {
             return true; // Cancel non-lethal accidental packmate hit
         }
 
+        return false;
+    }
+
+    /**
+     * BL-BD-041: Bidirectional blood feud evaluation ensuring both aggressor and retaliating defender can deal damage.
+     */
+    public static boolean isBloodFeudPair(Wolf first, Wolf second) {
+        if (first == null || second == null) {
+            return false;
+        }
+        return targetsInBloodFeud(first, second) || targetsInBloodFeud(second, first);
+    }
+
+    private static boolean targetsInBloodFeud(Wolf source, Wolf target) {
+        if (source == null || target == null) {
+            return false;
+        }
+        if (source instanceof WolfExtensions ext && ext.betterdogs$hasBloodFeud()) {
+            String feudTarget = ext.betterdogs$getBloodFeudTarget();
+            return feudTarget != null && !feudTarget.isEmpty() && feudTarget.equals(target.getStringUUID());
+        }
         return false;
     }
 }
