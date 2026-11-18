@@ -51,7 +51,10 @@ class BetterDogsFullSuiteTest {
 
         // WolfGiftHelper
         assertFalse(WolfGiftHelper.canDeliverGift(null, null));
+        assertFalse(WolfGiftHelper.hasDaylightCycle(null));
+        assertEquals(0L, WolfGiftHelper.getCelestialDayTime(null));
         assertEquals(0L, WolfGiftHelper.getDayCount(null));
+        assertFalse(WolfGiftHelper.isMorningOrWaking(null, null));
 
         // BabyCuriosityHelper
         assertFalse(BabyCuriosityHelper.canExhibitCuriosity(null));

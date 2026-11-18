@@ -44,26 +44,70 @@ public final class WolfGiftHelper {
     }
 
     /**
+     * Returns true if the dimension has an active celestial daylight cycle and default world clock.
+     */
+    public static boolean hasDaylightCycle(Level level) {
+        if (level == null) {
+            return false;
+        }
+        try {
+            return !level.dimensionType().hasFixedTime()
+                    && level.dimensionType().hasSkyLight()
+                    && level.dimensionType().defaultClock().isPresent();
+        } catch (Throwable ignored) {
+            return true;
+        }
+    }
+
+    /**
+     * Returns the celestial day time ticks for the level, falling back safely for headless stubs.
+     */
+    public static long getCelestialDayTime(Level level) {
+        if (level == null) {
+            return 0L;
+        }
+        try {
+            return level.getDefaultClockTime();
+        } catch (Throwable ignored) {
+            return level.getGameTime();
+        }
+    }
+
+    /**
+     * Calculates the calendar day count from celestial day ticks using floor division.
+     */
+    public static long calculateDayCount(long celestialDayTime) {
+        return Math.floorDiv(celestialDayTime, 24000L);
+    }
+
+    /**
      * Helper getting current in-game day count.
      */
     public static long getDayCount(Level level) {
         if (level == null) {
             return 0L;
         }
-        return level.getGameTime() / 24000L;
+        return calculateDayCount(getCelestialDayTime(level));
+    }
+
+    /**
+     * Evaluates whether the given celestial tick timestamp falls in morning (0-2000) or owner is sleeping/waking.
+     */
+    public static boolean isMorningOrWakingTicks(long celestialDayTime, boolean isSleepingOrWaking) {
+        long timeOfDay = Math.floorMod(celestialDayTime, 24000L);
+        boolean isMorning = timeOfDay >= 0L && timeOfDay <= 2000L;
+        return isMorning || isSleepingOrWaking;
     }
 
     /**
      * Checks if the current time is morning (0-2000 ticks) or the owner is waking up from sleep.
      */
     public static boolean isMorningOrWaking(Level level, Player owner) {
-        if (level == null) {
+        if (level == null || !hasDaylightCycle(level)) {
             return false;
         }
-        long timeOfDay = level.getGameTime() % 24000L;
-        boolean isMorning = timeOfDay >= 0 && timeOfDay <= 2000L;
         boolean isSleepingOrWaking = owner != null && (owner.isSleeping() || owner.getSleepTimer() > 0);
-        return isMorning || isSleepingOrWaking;
+        return isMorningOrWakingTicks(getCelestialDayTime(level), isSleepingOrWaking);
     }
 
     /**

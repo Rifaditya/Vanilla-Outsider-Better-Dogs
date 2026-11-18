@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 5.7.19+26.3** - Fix Morning Gifts Broken by Sleep & Monotonic GameTime Desynchronization (BL-BD-042)
 - [ ] **Better Dogs 5.7.18+26.3** - Blood Feud Friendly Fire Health Clamping Deadlock (BL-BD-041)
 - [ ] **Better Dogs 5.7.17+26.3** - Restore Vanilla-Client Dedicated Server Compatibility (BL-BD-064)
 - [ ] **Better Dogs 5.7.16+26.3** - Align `BD_FRIENDLY_FIRE` Lethal Clamp, Co-Owned Packmate Protection & Offline Owner Parity (BL-BD-063)

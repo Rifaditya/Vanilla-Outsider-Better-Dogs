@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.19+26.3] - 2026-11-18
+
+### Fixed
+- **Morning Gifts Synchronized with Celestial Day Time & Bed Wake-Up (BL-BD-042)**:
+  - Fixed an issue where tamed dogs failed to bring morning gifts after sleeping in a bed because `WolfGiftHelper` computed time-of-day and day counts from monotonic `level.getGameTime()` instead of celestial world time (`getDefaultClockTime()`).
+  - Added active daylight-cycle and default-clock guards (`hasDaylightCycle`) so non-skylight or fixed-time dimensions (such as the Nether and End) cleanly skip morning gift delivery without errors or gift spam.
+  - Replaced raw modulo and integer division with `Math.floorMod` and `Math.floorDiv` (`calculateDayCount`, `isMorningOrWakingTicks`) to handle negative world times safely while enforcing the once-per-day, morning-or-waking delivery gate.
+
 ## [5.7.18+26.3] - 2026-11-18
 
 ### Fixed
