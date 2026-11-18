@@ -7,7 +7,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
+import net.minecraft.SharedConstants;
+import net.minecraft.server.Bootstrap;
 import net.vanillaoutsider.betterdogs.util.WolfFriendlyFireHelper;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +19,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Step 28: Friendly Fire Dampening & Protection Tests")
 class FriendlyFireTest {
+
+    @BeforeAll
+    static void setupMinecraftBootstrap() {
+        try {
+            SharedConstants.tryDetectVersion();
+            Bootstrap.bootStrap();
+        } catch (Throwable ignored) {
+        }
+    }
 
     private static Path findProjectRoot() {
         Path cursor = Paths.get(System.getProperty("user.dir")).toAbsolutePath();
@@ -71,6 +84,41 @@ class FriendlyFireTest {
     @DisplayName("Assert strict null safety across WolfFriendlyFireHelper")
     void testNullSafety() {
         assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(null, null, 5.0f));
+        assertFalse(WolfFriendlyFireHelper.isBloodFeudPair(null, null));
+    }
+
+    @Test
+    @DisplayName("BL-BD-041: Assert bidirectional Blood Feud exemption, symmetry, and bystander protection")
+    void testBloodFeudBidirectionalExemption() {
+        UUID ownerId = UUID.randomUUID();
+        UUID dogAId = UUID.randomUUID();
+        UUID dogBId = UUID.randomUUID();
+        UUID dogCId = UUID.randomUUID();
+
+        PackCivilWarImmunityTest.OfflineStubWolf dogA = PackCivilWarImmunityTest.createOfflineWolf(dogAId, ownerId, true, false);
+        PackCivilWarImmunityTest.OfflineStubWolf dogB = PackCivilWarImmunityTest.createOfflineWolf(dogBId, ownerId, true, false);
+        PackCivilWarImmunityTest.OfflineStubWolf dogC = PackCivilWarImmunityTest.createOfflineWolf(dogCId, ownerId, true, false);
+
+        // Dog A initiates blood feud against Dog B
+        dogA.betterdogs$setBloodFeudTarget(dogBId.toString());
+
+        // 1. Bidirectional Feud Pair Symmetry (Crucial fix for defender retaliation)
+        assertTrue(WolfFriendlyFireHelper.isBloodFeudPair(dogA, dogB), "Aggressor -> Victim must be in feud pair");
+        assertTrue(WolfFriendlyFireHelper.isBloodFeudPair(dogB, dogA), "Defending Victim -> Aggressor must be in feud pair (bidirectional)");
+
+        // 2. Anti-Cross-Bleed Protection (Anti-Goal 2: Bystander co-owned dogs remain fully protected)
+        assertFalse(WolfFriendlyFireHelper.isBloodFeudPair(dogA, dogC), "Aggressor with bystander must NOT be in feud pair");
+        assertFalse(WolfFriendlyFireHelper.isBloodFeudPair(dogC, dogA), "Bystander with aggressor must NOT be in feud pair");
+        assertFalse(WolfFriendlyFireHelper.isBloodFeudPair(dogB, dogC), "Victim with bystander must NOT be in feud pair");
+
+        // 3. Null & Empty Safety (PAT-20261114-001)
+        assertFalse(WolfFriendlyFireHelper.isBloodFeudPair(null, null), "Null wolves must return false");
+        assertFalse(WolfFriendlyFireHelper.isBloodFeudPair(dogA, null), "Null target must return false");
+        assertFalse(WolfFriendlyFireHelper.isBloodFeudPair(null, dogB), "Null source must return false");
+
+        // Empty feud target
+        dogA.betterdogs$setBloodFeudTarget("");
+        assertFalse(WolfFriendlyFireHelper.isBloodFeudPair(dogA, dogB), "Empty feud target must return false");
     }
 
     @Test
@@ -97,5 +145,7 @@ class FriendlyFireTest {
                 "Non-lethal co-owned ally wolf protection must live inside Block 2 after BD_FRIENDLY_FIRE gate");
         assertTrue(source.contains("PlayChoreographyHelper.getOwnerUUID(wolf)"),
                 "Owner matching must include PlayChoreographyHelper.getOwnerUUID offline fallback");
+        assertTrue(source.contains("isBloodFeudPair("),
+                "WolfFriendlyFireHelper must invoke isBloodFeudPair");
     }
 }
