@@ -21,9 +21,21 @@ import java.util.Set;
  */
 public final class WolfCatchupHelper {
 
-    private static final double MAX_FOLLOW_DISTANCE_SQR = 1600.0; // 40 blocks
+    private static final double BASE_FOLLOW_DISTANCE = 40.0D;
+    private static final double FLYING_FOLLOW_DISTANCE = 32.0D;
+    private static final double MIN_SCAN_RADIUS = 64.0D;
 
     private WolfCatchupHelper() {
+    }
+
+    public static double getCatchupTeleportDistance(Wolf wolf, boolean isFlying) {
+        double baseMaxFollow = isFlying ? FLYING_FOLLOW_DISTANCE : BASE_FOLLOW_DISTANCE;
+        if (wolf == null) {
+            return baseMaxFollow;
+        }
+        float startDist = net.vanillaoutsider.betterdogs.ai.PersonalityFollowOwnerGoal.getEffectiveStartDistance(wolf);
+        float goalTeleportThreshold = net.vanillaoutsider.betterdogs.ai.PersonalityFollowOwnerGoal.calculateTeleportThreshold(startDist);
+        return Math.max(baseMaxFollow, goalTeleportThreshold);
     }
 
     public static double calculateCatchupSpeed(Wolf wolf, LivingEntity owner, double baseSpeed) {
@@ -85,7 +97,15 @@ public final class WolfCatchupHelper {
             return;
         }
 
-        AABB scanBox = player.getBoundingBox().inflate(64.0, 32.0, 64.0);
+        int aggroStart = BetterDogsGameRules.getInt(level, BetterDogsGameRules.BD_AGGRO_FOLLOW_START, 25);
+        int normalStart = BetterDogsGameRules.getInt(level, BetterDogsGameRules.BD_NORMAL_FOLLOW_START, 10);
+        int paciStart = BetterDogsGameRules.getInt(level, BetterDogsGameRules.BD_PACI_FOLLOW_START, 5);
+        float maxConfiguredStart = Math.max(aggroStart, Math.max(normalStart, paciStart));
+        double maxThreshold = net.vanillaoutsider.betterdogs.ai.PersonalityFollowOwnerGoal.calculateTeleportThreshold(maxConfiguredStart);
+        double maxSpread = BetterDogsGameRules.getInt(level, BetterDogsGameRules.BD_TAMED_PACK_SPREAD_MAX, 50) / 10.0D;
+        double scanHorizontal = Math.max(MIN_SCAN_RADIUS, maxThreshold + maxSpread + 16.0D);
+
+        AABB scanBox = player.getBoundingBox().inflate(scanHorizontal, Math.max(32.0D, scanHorizontal * 0.5D), scanHorizontal);
         List<Wolf> nearbyWolves = level.getEntitiesOfClass(Wolf.class, scanBox);
 
         if (nearbyWolves.isEmpty()) {
@@ -93,15 +113,14 @@ public final class WolfCatchupHelper {
         }
 
         boolean isFlying = player.getAbilities().flying || player.isFallFlying();
-        double requiredDistSq = isFlying ? 1024.0D : MAX_FOLLOW_DISTANCE_SQR;
-
         BlockPos playerBlockPos = player.blockPosition();
         for (Wolf wolf : nearbyWolves) {
             if (!WolfTeleportHelper.isEligibleFollowingWolf(wolf, player)) {
                 continue;
             }
 
-            if (wolf.distanceToSqr(player) > requiredDistSq) {
+            double requiredDist = getCatchupTeleportDistance(wolf, isFlying);
+            if (wolf.distanceToSqr(player) > (requiredDist * requiredDist)) {
                 Vec3 safePos = WolfTeleportHelper.findSafeTeleportPos(wolf, level, playerBlockPos);
                 if (safePos != null) {
                     wolf.teleportTo(level, safePos.x, safePos.y, safePos.z, Set.of(), wolf.getYRot(), wolf.getXRot(), false);

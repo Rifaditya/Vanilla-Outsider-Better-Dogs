@@ -132,7 +132,7 @@ public class ClothConfigScreenHelper {
                 .build());
 
         personalities.addEntry(entryBuilder.startFloatField(Component.translatable("config.betterdogs.aggressiveFollowStart"), config.aggressiveFollowStart)
-                .setDefaultValue(50.0f)
+                .setDefaultValue(25.0f)
                 .setSaveConsumer(val -> config.aggressiveFollowStart = val)
                 .build());
 
