@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.18+26.1.2] - 2026-11-18
+
+### Fixed
+- **Blood Feud Combat Resolution & Retaliation Deadlock (BL-BD-041)**:
+  - Fixed an issue where co-owned dogs locked in a Blood Feud could never decisively resolve their feud due to friendly-fire damage cancellation and lethal health clamping.
+  - Implemented bidirectional blood feud damage exemption in `WolfFriendlyFireHelper` so both the feuding aggressor and retaliating defender can inflict combat damage and conclude feuds naturally across Fabric and NeoForge.
+  - Preserved full friendly-fire protection and lethal health clamping for all non-feuding co-owned packmates and third-party bystanders.
+
 ## [5.7.17+26.1.2] - 2026-11-16
 
 ### Fixed
