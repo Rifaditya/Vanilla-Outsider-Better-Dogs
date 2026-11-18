@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 1.7.17+1.21.1** - Blood Feud Friendly Fire Health Clamping Deadlock (BL-BD-041)
 - [ ] **Better Dogs 1.7.16+1.21.1** - Restore Vanilla Client Compatibility across Dedicated Servers (BL-BD-064)
 - [ ] **Better Dogs 1.7.15+1.21.1** - Align BD_FRIENDLY_FIRE (bd_friendly_fire_protection) Polarity & Server Lookup Fallback (BL-BD-063)
 - [ ] **Better Dogs 1.7.14+1.21.1** - Fix Pacifist Wolf Retaliation & Owner-Defense Lifecycle (BL-BD-062)

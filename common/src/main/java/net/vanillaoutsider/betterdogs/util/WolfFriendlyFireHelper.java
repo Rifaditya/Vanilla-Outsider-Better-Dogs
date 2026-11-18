@@ -8,6 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.ai.play.PlayChoreographyHelper;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 
@@ -49,16 +50,10 @@ public class WolfFriendlyFireHelper {
             return true;
         }
 
-        // Blood Feud bypasses pack friendly fire between rival wolves
-        if (attacker instanceof net.vanillaoutsider.betterdogs.WolfExtensions ext && ext.betterdogs$hasBloodFeud()) {
-            if (wolf.getStringUUID().equals(ext.betterdogs$getBloodFeudTarget())) {
-                return false;
-            }
-        }
-        if (directAttacker instanceof net.vanillaoutsider.betterdogs.WolfExtensions directExt && directExt.betterdogs$hasBloodFeud()) {
-            if (wolf.getStringUUID().equals(directExt.betterdogs$getBloodFeudTarget())) {
-                return false;
-            }
+        // Blood Feud bypasses pack friendly fire between rival wolves (betterdogs$hasBloodFeud())
+        if ((attacker instanceof Wolf rawWolf && isBloodFeudPair(wolf, rawWolf))
+                || (directAttacker instanceof Wolf directWolf && isBloodFeudPair(wolf, directWolf))) {
+            return false;
         }
 
         // Check if attacker is another friendly dog of the same owner
@@ -69,6 +64,27 @@ public class WolfFriendlyFireHelper {
             return true;
         }
 
+        return false;
+    }
+
+    /**
+     * BL-BD-041: Bidirectional blood feud evaluation ensuring both aggressor and retaliating defender can deal damage.
+     */
+    public static boolean isBloodFeudPair(Wolf first, Wolf second) {
+        if (first == null || second == null) {
+            return false;
+        }
+        return targetsInBloodFeud(first, second) || targetsInBloodFeud(second, first);
+    }
+
+    private static boolean targetsInBloodFeud(Wolf source, Wolf target) {
+        if (source == null || target == null) {
+            return false;
+        }
+        if (source instanceof WolfExtensions ext && ext.betterdogs$hasBloodFeud()) {
+            String feudTarget = ext.betterdogs$getBloodFeudTarget();
+            return feudTarget != null && !feudTarget.isEmpty() && feudTarget.equals(target.getStringUUID());
+        }
         return false;
     }
 }
