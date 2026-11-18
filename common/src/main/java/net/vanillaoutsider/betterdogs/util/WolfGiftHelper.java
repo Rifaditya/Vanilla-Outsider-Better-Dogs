@@ -23,6 +23,67 @@ import net.vanillaoutsider.betterdogs.WolfPersonality;
  */
 public class WolfGiftHelper {
 
+    /**
+     * Returns true if the dimension has an active celestial daylight cycle.
+     */
+    public static boolean hasDaylightCycle(Level level) {
+        if (level == null) {
+            return false;
+        }
+        try {
+            return !level.dimensionType().hasFixedTime() && level.dimensionType().hasSkyLight();
+        } catch (Throwable ignored) {
+            return true;
+        }
+    }
+
+    /**
+     * Returns the celestial day time ticks for the level.
+     */
+    public static long getCelestialDayTime(Level level) {
+        if (level == null) {
+            return 0L;
+        }
+        return level.getDayTime();
+    }
+
+    /**
+     * Calculates the calendar day count from celestial day ticks using floor division.
+     */
+    public static long calculateDayCount(long celestialDayTime) {
+        return Math.floorDiv(celestialDayTime, 24000L);
+    }
+
+    /**
+     * Helper getting current in-game day count.
+     */
+    public static long getDayCount(Level level) {
+        if (level == null) {
+            return 0L;
+        }
+        return calculateDayCount(getCelestialDayTime(level));
+    }
+
+    /**
+     * Evaluates whether the given celestial tick timestamp falls in morning (0-2000) or owner is sleeping/waking.
+     */
+    public static boolean isMorningOrWakingTicks(long celestialDayTime, boolean isSleepingOrWaking) {
+        long timeOfDay = Math.floorMod(celestialDayTime, 24000L);
+        boolean isMorning = timeOfDay >= 0L && timeOfDay <= 2000L;
+        return isMorning || isSleepingOrWaking;
+    }
+
+    /**
+     * Checks if the current time is morning (0-2000 ticks) or the owner is waking up from sleep.
+     */
+    public static boolean isMorningOrWaking(Level level, Player owner) {
+        if (level == null || !hasDaylightCycle(level)) {
+            return false;
+        }
+        boolean isSleepingOrWaking = owner != null && (owner.isSleeping() || owner.getSleepTimer() > 0);
+        return isMorningOrWakingTicks(getCelestialDayTime(level), isSleepingOrWaking);
+    }
+
     public static boolean canDeliverGift(Wolf wolf, Player owner) {
         if (wolf == null || owner == null) {
             return false;
@@ -38,6 +99,10 @@ public class WolfGiftHelper {
             return false;
         }
 
+        if (!isMorningOrWaking(level, owner)) {
+            return false;
+        }
+
         int threshold = net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.getInt(
             level,
             net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.BD_GIFT_FEED_THRESHOLD,
@@ -48,7 +113,7 @@ public class WolfGiftHelper {
             if (ext.betterdogs$getFeedCount() < threshold) {
                 return false;
             }
-            long currentDay = level.getDayTime() / 24000L;
+            long currentDay = getDayCount(level);
             if (ext.betterdogs$getLastGiftDay() >= currentDay) {
                 return false;
             }
@@ -132,7 +197,7 @@ public class WolfGiftHelper {
             10
         );
 
-        long currentDay = level.getDayTime() / 24000L;
+        long currentDay = getDayCount(level);
         if (wolf instanceof WolfExtensions ext) {
             ext.betterdogs$setLastGiftDay(currentDay);
             ext.betterdogs$setFeedCount(Math.max(0, ext.betterdogs$getFeedCount() - threshold));

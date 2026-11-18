@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.7.18+1.20.1] - 2026-11-18
+
+### Fixed
+- **Morning Gifts Synchronized with Celestial Day Time & Bed Wake-Up (BL-BD-042)**:
+  - Fixed an issue where `WolfGiftHelper.canDeliverGift` omitted the `isMorningOrWaking(level, owner)` time-of-day/wake-up gate and used raw integer division (`level.getDayTime() / 24000L`) for day counts across Fabric and NeoForge.
+  - Added active daylight-cycle dimension checks (`hasDaylightCycle`) so non-skylight or fixed-time dimensions (such as the Nether and End) cleanly skip morning gift delivery without errors or gift spam.
+  - Unified morning window and day-count math with `Math.floorMod` and `Math.floorDiv` (`getCelestialDayTime`, `calculateDayCount`, `isMorningOrWakingTicks`) to handle negative world times safely while preserving the once-per-day morning gift cooldown.
+
 ## [1.7.17+1.20.1] - 2026-11-18
 
 ### Fixed
