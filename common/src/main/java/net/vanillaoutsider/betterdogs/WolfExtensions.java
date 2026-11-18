@@ -346,6 +346,7 @@ public interface WolfExtensions {
         betterdogs$setPlayChoreographyCooldownUntil(0L);
         betterdogs$setLastCorrectionSnapSource(null);
         betterdogs$setLastCorrectionSnapExpiry(0L);
+        betterdogs$setPlayPenaltyTicks(0);
         betterdogs$setSpectatorWagTicks(0);
     }
 }

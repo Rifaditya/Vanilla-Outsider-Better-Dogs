@@ -1177,6 +1177,10 @@ class PackCivilWarImmunityTest {
         private @Nullable ItemStack fetchedItemStack;
         private int zoomiesTicks;
         private int howlingTicks;
+        private long sparringCooldownUntil;
+        private @Nullable UUID lastCorrectionSnapSource;
+        private long lastCorrectionSnapExpiry;
+        private int playPenaltyTicks;
 
         private OfflineStubWolf() {
             super(null, null);
@@ -1683,6 +1687,46 @@ class PackCivilWarImmunityTest {
         @Override
         public void betterdogs$setHowlingTicks(int ticks) {
             this.howlingTicks = ticks;
+        }
+
+        @Override
+        public long betterdogs$getSparringCooldownUntil() {
+            return this.sparringCooldownUntil;
+        }
+
+        @Override
+        public void betterdogs$setSparringCooldownUntil(long gameTime) {
+            this.sparringCooldownUntil = gameTime;
+        }
+
+        @Override
+        public @Nullable UUID betterdogs$getLastCorrectionSnapSource() {
+            return this.lastCorrectionSnapSource;
+        }
+
+        @Override
+        public void betterdogs$setLastCorrectionSnapSource(@Nullable UUID source) {
+            this.lastCorrectionSnapSource = source;
+        }
+
+        @Override
+        public long betterdogs$getLastCorrectionSnapExpiry() {
+            return this.lastCorrectionSnapExpiry;
+        }
+
+        @Override
+        public void betterdogs$setLastCorrectionSnapExpiry(long expiryTime) {
+            this.lastCorrectionSnapExpiry = expiryTime;
+        }
+
+        @Override
+        public int betterdogs$getPlayPenaltyTicks() {
+            return this.playPenaltyTicks;
+        }
+
+        @Override
+        public void betterdogs$setPlayPenaltyTicks(int ticks) {
+            this.playPenaltyTicks = Math.max(0, ticks);
         }
     }
 }
