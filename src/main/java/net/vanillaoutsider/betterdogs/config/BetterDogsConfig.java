@@ -89,7 +89,7 @@ public class BetterDogsConfig {
     // ...
     public double aggressiveChaseDistance = 50.0;
     public double aggressiveDamageModifier = 0.50;
-    public float aggressiveFollowStart = 50.0f;
+    public float aggressiveFollowStart = 25.0f;
     public float aggressiveFollowStop = 2.0f;
 
     // ========== Pacifist Personality ==========

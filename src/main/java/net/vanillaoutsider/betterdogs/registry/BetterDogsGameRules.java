@@ -485,7 +485,19 @@ public class BetterDogsGameRules {
         if (level == null || rule == null) {
             return fallback;
         }
-        return DynamicGameRuleManager.getInt(level, rule);
+        try {
+            if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+                net.minecraft.world.level.gamerules.GameRules rules = serverLevel.getGameRules();
+                if (rules != null) {
+                    Integer value = rules.get(rule);
+                    return value != null ? value : fallback;
+                }
+                return fallback;
+            }
+            return DynamicGameRuleManager.getInt(level, rule);
+        } catch (Throwable t) {
+            return fallback;
+        }
     }
 
     public static boolean isHornCommandsEnabled(net.minecraft.world.level.Level level) {
