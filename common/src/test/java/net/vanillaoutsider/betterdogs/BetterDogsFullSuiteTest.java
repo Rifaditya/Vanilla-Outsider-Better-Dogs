@@ -2,6 +2,11 @@
 // Verified against: Minecraft 1.21.11
 package net.vanillaoutsider.betterdogs;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import net.vanillaoutsider.betterdogs.ai.BabyCuriosityGoal;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsTags;
 import net.vanillaoutsider.betterdogs.util.*;
@@ -48,6 +53,10 @@ class BetterDogsFullSuiteTest {
 
         // WolfGiftHelper
         assertFalse(WolfGiftHelper.canDeliverGift(null, null));
+        assertFalse(WolfGiftHelper.hasDaylightCycle(null));
+        assertEquals(0L, WolfGiftHelper.getCelestialDayTime(null));
+        assertEquals(0L, WolfGiftHelper.getDayCount(null));
+        assertFalse(WolfGiftHelper.isMorningOrWaking(null, null));
 
         // BabyCuriosityGoal
         assertFalse(BabyCuriosityGoal.isInterestingBlock(null));
@@ -77,5 +86,47 @@ class BetterDogsFullSuiteTest {
         assertNotNull(BetterDogsTags.COOKED_FOOD);
         assertNotNull(BetterDogsTags.TREATS);
         assertNotNull(BetterDogsTags.COMMAND_ITEMS);
+    }
+
+    @Test
+    @DisplayName("BL-BD-042: Assert WolfGiftHelper celestial day math, morning window, and source contract")
+    void testMorningGiftHelperContractsAndMath() throws IOException {
+        assertEquals(0L, WolfGiftHelper.calculateDayCount(18000L));
+        assertEquals(1L, WolfGiftHelper.calculateDayCount(24000L));
+        assertEquals(-1L, WolfGiftHelper.calculateDayCount(-1L));
+        assertEquals(-1L, WolfGiftHelper.calculateDayCount(-24000L));
+
+        assertTrue(WolfGiftHelper.isMorningOrWakingTicks(0L, false));
+        assertTrue(WolfGiftHelper.isMorningOrWakingTicks(2000L, false));
+        assertFalse(WolfGiftHelper.isMorningOrWakingTicks(2001L, false));
+        assertFalse(WolfGiftHelper.isMorningOrWakingTicks(6000L, false));
+        assertFalse(WolfGiftHelper.isMorningOrWakingTicks(14000L, false));
+        assertFalse(WolfGiftHelper.isMorningOrWakingTicks(-1000L, false));
+        assertTrue(WolfGiftHelper.isMorningOrWakingTicks(14000L, true));
+        assertTrue(WolfGiftHelper.isMorningOrWakingTicks(-24000L, false));
+
+        String source = Files.readString(resolveWolfGiftHelperSource(), StandardCharsets.UTF_8);
+        assertFalse(source.contains("getGameTime() / 24000L"));
+        assertFalse(source.contains("getGameTime() % 24000L"));
+        assertTrue(source.contains("getDayTime()"));
+        assertTrue(source.contains("hasDaylightCycle"));
+        assertTrue(source.contains("Math.floorDiv"));
+        assertTrue(source.contains("Math.floorMod"));
+    }
+
+    private static Path resolveWolfGiftHelperSource() {
+        Path cursor = Paths.get(System.getProperty("user.dir")).toAbsolutePath();
+        while (cursor != null) {
+            Path direct = cursor.resolve("src/main/java/net/vanillaoutsider/betterdogs/util/WolfGiftHelper.java");
+            if (Files.exists(direct)) {
+                return direct;
+            }
+            Path common = cursor.resolve("common/src/main/java/net/vanillaoutsider/betterdogs/util/WolfGiftHelper.java");
+            if (Files.exists(common)) {
+                return common;
+            }
+            cursor = cursor.getParent();
+        }
+        throw new AssertionError("Unable to locate WolfGiftHelper.java from " + System.getProperty("user.dir"));
     }
 }
