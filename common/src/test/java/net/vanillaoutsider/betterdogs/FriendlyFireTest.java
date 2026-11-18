@@ -7,12 +7,25 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
+import net.minecraft.SharedConstants;
+import net.minecraft.server.Bootstrap;
 import net.vanillaoutsider.betterdogs.util.WolfFriendlyFireHelper;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class FriendlyFireTest {
+
+    @BeforeAll
+    public static void setupMinecraftBootstrap() {
+        try {
+            SharedConstants.tryDetectVersion();
+            Bootstrap.bootStrap();
+        } catch (Throwable ignored) {
+        }
+    }
 
     private static Path findProjectRoot() {
         Path dir = Paths.get(System.getProperty("user.dir")).toAbsolutePath();
@@ -29,6 +42,41 @@ public class FriendlyFireTest {
     @DisplayName("Verify Friendly Fire Null Safety")
     public void testNullSafety() {
         Assertions.assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(null, null));
+        Assertions.assertFalse(WolfFriendlyFireHelper.isBloodFeudPair(null, null));
+    }
+
+    @Test
+    @DisplayName("BL-BD-041: Assert bidirectional Blood Feud exemption, symmetry, and bystander protection")
+    public void testBloodFeudBidirectionalExemption() {
+        UUID ownerId = UUID.randomUUID();
+        UUID dogAId = UUID.randomUUID();
+        UUID dogBId = UUID.randomUUID();
+        UUID dogCId = UUID.randomUUID();
+
+        PackCivilWarImmunityTest.OfflineStubWolf dogA = PackCivilWarImmunityTest.createOfflineWolf(dogAId, ownerId, true, false);
+        PackCivilWarImmunityTest.OfflineStubWolf dogB = PackCivilWarImmunityTest.createOfflineWolf(dogBId, ownerId, true, false);
+        PackCivilWarImmunityTest.OfflineStubWolf dogC = PackCivilWarImmunityTest.createOfflineWolf(dogCId, ownerId, true, false);
+
+        // Dog A initiates blood feud against Dog B
+        dogA.betterdogs$setBloodFeudTarget(dogBId.toString());
+
+        // 1. Bidirectional Feud Pair Symmetry (Crucial fix for defender retaliation)
+        Assertions.assertTrue(WolfFriendlyFireHelper.isBloodFeudPair(dogA, dogB), "Aggressor -> Victim must be in feud pair");
+        Assertions.assertTrue(WolfFriendlyFireHelper.isBloodFeudPair(dogB, dogA), "Defending Victim -> Aggressor must be in feud pair (bidirectional)");
+
+        // 2. Anti-Cross-Bleed Protection (Anti-Goal 2: Bystander co-owned dogs remain fully protected)
+        Assertions.assertFalse(WolfFriendlyFireHelper.isBloodFeudPair(dogA, dogC), "Aggressor with bystander must NOT be in feud pair");
+        Assertions.assertFalse(WolfFriendlyFireHelper.isBloodFeudPair(dogC, dogA), "Bystander with aggressor must NOT be in feud pair");
+        Assertions.assertFalse(WolfFriendlyFireHelper.isBloodFeudPair(dogB, dogC), "Victim with bystander must NOT be in feud pair");
+
+        // 3. Null & Empty Safety (PAT-20261114-001)
+        Assertions.assertFalse(WolfFriendlyFireHelper.isBloodFeudPair(null, null), "Null wolves must return false");
+        Assertions.assertFalse(WolfFriendlyFireHelper.isBloodFeudPair(dogA, null), "Null target must return false");
+        Assertions.assertFalse(WolfFriendlyFireHelper.isBloodFeudPair(null, dogB), "Null source must return false");
+
+        // Empty feud target
+        dogA.betterdogs$setBloodFeudTarget("");
+        Assertions.assertFalse(WolfFriendlyFireHelper.isBloodFeudPair(dogA, dogB), "Empty feud target must return false");
     }
 
     @Test
@@ -54,6 +102,9 @@ public class FriendlyFireTest {
         int coOwnedIdx = helperSource.indexOf("PackAudienceHelper.isCoOwned");
         Assertions.assertTrue(gateIdx > 0 && feudIdx > gateIdx && coOwnedIdx > feudIdx,
                 "Friendly-fire gate must run before Blood Feud exemption, which must precede PackAudienceHelper.isCoOwned");
+
+        Assertions.assertTrue(helperSource.contains("isBloodFeudPair("),
+                "WolfFriendlyFireHelper must invoke isBloodFeudPair");
 
         Assertions.assertTrue(rulesSource.contains("!level.isClientSide()"),
                 "BetterDogsGameRules.getBoolean must query server GameRules directly instead of swallowing exceptions to false");

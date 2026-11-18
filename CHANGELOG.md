@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.7.17+1.20.1] - 2026-11-18
+
+### Fixed
+- **Blood Feud Combat Resolution & Retaliation Deadlock (BL-BD-041)**:
+  - Fixed an issue where a defending dog in a Blood Feud could not damage the aggressor because friendly-fire protection cancelled all counter-attacks from non-initiating wolves.
+  - Implemented bidirectional blood feud damage exemption in `WolfFriendlyFireHelper` so both the initiator and defending target can inflict combat damage and conclude feuds naturally across Fabric and NeoForge.
+  - Preserved full friendly-fire protection and lethal health clamping for all non-feuding co-owned packmates and third-party bystanders.
+
 ## [1.7.16+1.20.1] - 2026-11-16
 
 ### Fixed
