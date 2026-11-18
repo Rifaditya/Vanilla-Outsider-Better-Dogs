@@ -98,15 +98,17 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
         }
     }
 
-    public float getStartDistance() {
+    public static float calculateBaseStartDistance(Wolf wolf) {
         float baseDist = 10.0f;
-        if (this.wolf instanceof WolfExtensions ext) {
+        if (wolf instanceof WolfExtensions ext) {
             WolfPersonality personality = ext.betterdogs$getPersonality();
-            baseDist = switch (personality) {
-                case AGGRESSIVE -> (float) BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_AGGRO_FOLLOW_START, 50);
-                case PACIFIST -> (float) BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_PACI_FOLLOW_START, 5);
-                case NORMAL -> (float) BetterDogsGameRules.getInt(this.wolf.level(), BetterDogsGameRules.BD_NORMAL_FOLLOW_START, 10);
-            };
+            if (personality != null) {
+                baseDist = switch (personality) {
+                    case AGGRESSIVE -> (float) BetterDogsGameRules.getInt(wolf.level(), BetterDogsGameRules.BD_AGGRO_FOLLOW_START, 25);
+                    case PACIFIST -> (float) BetterDogsGameRules.getInt(wolf.level(), BetterDogsGameRules.BD_PACI_FOLLOW_START, 5);
+                    case NORMAL -> (float) BetterDogsGameRules.getInt(wolf.level(), BetterDogsGameRules.BD_NORMAL_FOLLOW_START, 10);
+                };
+            }
 
             CanineArchetype archetype = ext.betterdogs$getCanineArchetype();
             if (archetype == CanineArchetype.ADVENTURER) {
@@ -115,7 +117,37 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
                 baseDist = Math.min(baseDist, 4.0f);
             }
         }
-        return baseDist + this.betterdogs$followerSpacingOffset;
+        return baseDist;
+    }
+
+    public static float getEffectiveStartDistance(Wolf wolf) {
+        float baseDist = calculateBaseStartDistance(wolf);
+        if (wolf == null) {
+            return baseDist;
+        }
+        java.util.UUID ownerUuid = wolf.getOwner() != null
+                ? wolf.getOwner().getUUID()
+                : net.vanillaoutsider.betterdogs.ai.play.PlayChoreographyHelper.getOwnerUUID(wolf);
+        int followerCount = ownerUuid != null ? FollowerSpacingCache.getLastKnownCount(ownerUuid) : 0;
+        if (followerCount <= 1 || wolf.level() == null) {
+            return baseDist;
+        }
+        float multiplier = BetterDogsGameRules.getInt(
+            wolf.level(),
+            BetterDogsGameRules.BD_TAMED_PACK_SPREAD_MULTIPLIER,
+            100
+        ) / 100.0f;
+        float maxExtra = BetterDogsGameRules.getInt(
+            wolf.level(),
+            BetterDogsGameRules.BD_TAMED_PACK_SPREAD_MAX,
+            50
+        ) / 10.0f;
+        float offset = Math.min((float) Math.sqrt(followerCount - 1) * multiplier, maxExtra);
+        return baseDist + offset;
+    }
+
+    public float getStartDistance() {
+        return calculateBaseStartDistance(this.wolf) + this.betterdogs$followerSpacingOffset;
     }
 
     public float getStopDistance() {
@@ -131,18 +163,18 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
         return stopDist + this.betterdogs$followerSpacingOffset;
     }
 
+    public static float calculateTeleportThreshold(float startDist) {
+        return Math.max(startDist + 16.0f, 32.0f);
+    }
+
     public float getTeleportThreshold() {
-        float startDist = getStartDistance();
-        if (startDist > 16.0f) {
-            return 32.0f;
-        }
-        return startDist * 2.0f;
+        return calculateTeleportThreshold(getStartDistance());
     }
 
     @Override
     public boolean canUse() {
         LivingEntity owner = this.wolf.getOwner();
-        if (owner == null || owner.isSpectator() || this.wolf.isOrderedToSit() || this.wolf.isLeashed()) {
+        if (owner == null || owner.isSpectator() || this.wolf.isOrderedToSit() || this.wolf.isLeashed() || this.wolf.isPassenger()) {
             return false;
         }
         if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$isGuardMode()) {
@@ -155,14 +187,14 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
 
     @Override
     public boolean canContinueToUse() {
-        if (this.wolf.getNavigation().isDone() || this.wolf.isOrderedToSit() || this.wolf.isLeashed()) {
+        if (this.wolf.getNavigation().isDone() || this.wolf.isOrderedToSit() || this.wolf.isLeashed() || this.wolf.isPassenger()) {
             return false;
         }
         if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$isGuardMode()) {
             return false;
         }
         LivingEntity owner = this.wolf.getOwner();
-        if (owner == null) {
+        if (owner == null || owner.isSpectator()) {
             return false;
         }
         float stopDist = getStopDistance();

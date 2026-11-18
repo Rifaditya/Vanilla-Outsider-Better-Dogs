@@ -15,7 +15,9 @@ import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.zombie.Zombie;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.GameType;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.personality.CanineArchetype;
@@ -24,9 +26,11 @@ import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.vanillaoutsider.betterdogs.ai.EatGroundFoodGoal;
 import net.vanillaoutsider.betterdogs.ai.FleeCreeperGoal;
 import net.vanillaoutsider.betterdogs.ai.PacifistRevengeGoal;
+import net.vanillaoutsider.betterdogs.ai.PersonalityFollowOwnerGoal;
 import net.vanillaoutsider.betterdogs.ai.WolfGuardGoal;
 import net.vanillaoutsider.betterdogs.ai.WildWolfWanderGoal;
 import net.vanillaoutsider.betterdogs.util.PackAudienceHelper;
+import net.vanillaoutsider.betterdogs.util.WolfCatchupHelper;
 import net.vanillaoutsider.betterdogs.util.WolfFriendlyFireHelper;
 
 /**
@@ -356,6 +360,70 @@ public class BetterDogsAIBehaviorGameTest {
                 "Offline co-owned adult packmate must rally against hostile zombie");
         helper.assertTrue(dogB.getTarget() == null && wild1.getTarget() == null,
                 "Rival offline wolf and wild wolf must NOT rally for dogA1");
+
+        helper.succeed();
+    }
+
+    @GameTest
+    public void testPersonalityFollowOwnerGoalThresholdsAndCatchupWindow(GameTestHelper helper) {
+        ServerLevel serverLevel = helper.getLevel();
+        BlockPos platformPos = new BlockPos(4, 2, 4);
+        BlockPos absOwnerPos = helper.absolutePos(platformPos);
+
+        Player mockOwner = helper.makeMockPlayer(GameType.SURVIVAL);
+        mockOwner.setPos(absOwnerPos.getX() + 0.5, absOwnerPos.getY(), absOwnerPos.getZ() + 0.5);
+
+        Wolf wolf = helper.spawn(EntityTypes.WOLF, platformPos);
+        helper.assertTrue(wolf != null, "Wolf entity failed to spawn for follow threshold GameTest");
+        wolf.setTame(true, false);
+        wolf.setOwner(mockOwner);
+        if (wolf instanceof WolfExtensions ext) {
+            ext.betterdogs$setPersonality(WolfPersonality.AGGRESSIVE);
+            ext.betterdogs$setCanineArchetype(CanineArchetype.GUARDIAN);
+        }
+
+        PersonalityFollowOwnerGoal.FollowerSpacingCache.update(
+                mockOwner.getUUID(), 1, serverLevel.getGameTime(), 40);
+        PersonalityFollowOwnerGoal goal = new PersonalityFollowOwnerGoal(wolf, 1.0, false);
+
+        try {
+            int baselineStart = BetterDogsGameRules.getInt(serverLevel, BetterDogsGameRules.BD_AGGRO_FOLLOW_START, 25);
+            helper.assertTrue(baselineStart == 25,
+                    "Default BD_AGGRO_FOLLOW_START GameRule must equal 25, got " + baselineStart);
+            helper.assertTrue(Math.abs(goal.getStartDistance() - 25.0f) < 1e-4f,
+                    "Default aggressive startDistance must equal 25.0f");
+            helper.assertTrue(Math.abs(goal.getTeleportThreshold() - 41.0f) < 1e-4f,
+                    "Default aggressive teleportThreshold must equal 41.0f");
+            helper.assertTrue(Math.abs(WolfCatchupHelper.getCatchupTeleportDistance(wolf, false) - 41.0D) < 1e-4D,
+                    "Default catchup ground teleport distance must equal 41.0D");
+            helper.assertTrue(Math.abs(WolfCatchupHelper.getCatchupTeleportDistance(wolf, true) - 41.0D) < 1e-4D,
+                    "Default catchup flying teleport distance must equal 41.0D");
+
+            // Running window [25.0, 41.0): activates goal at 26 blocks without teleporting
+            wolf.setPos(mockOwner.getX() + 26.0, mockOwner.getY(), mockOwner.getZ());
+            helper.assertTrue(goal.canUse(), "Aggressive wolf at 26 blocks must activate follow goal");
+            goal.start();
+            goal.tick();
+            helper.assertTrue(wolf.distanceToSqr(mockOwner) > (25.0D * 25.0D),
+                    "Aggressive wolf at 26 blocks must run instead of prematurely teleporting");
+
+            // Beyond 41.0 blocks: tick() teleports wolf back onto solid platform around owner
+            wolf.setPos(mockOwner.getX() + 42.0, mockOwner.getY(), mockOwner.getZ());
+            goal.tick();
+            helper.assertTrue(wolf.distanceToSqr(mockOwner) < (25.0D * 25.0D),
+                    "Aggressive wolf at 42 blocks (>= 41.0f) must teleport back near owner");
+
+            // Live GameRule mutation to 50 -> 50.0f / 66.0f
+            serverLevel.getGameRules().set(BetterDogsGameRules.BD_AGGRO_FOLLOW_START, 50, serverLevel.getServer());
+            helper.assertTrue(Math.abs(goal.getStartDistance() - 50.0f) < 1e-4f,
+                    "Live BD_AGGRO_FOLLOW_START=50 must update startDistance to 50.0f");
+            helper.assertTrue(Math.abs(goal.getTeleportThreshold() - 66.0f) < 1e-4f,
+                    "Live BD_AGGRO_FOLLOW_START=50 must update teleportThreshold to 66.0f");
+            helper.assertTrue(Math.abs(WolfCatchupHelper.getCatchupTeleportDistance(wolf, false) - 66.0D) < 1e-4D,
+                    "Live BD_AGGRO_FOLLOW_START=50 must update catchup threshold to 66.0D");
+        } finally {
+            serverLevel.getGameRules().set(BetterDogsGameRules.BD_AGGRO_FOLLOW_START, 25, serverLevel.getServer());
+        }
 
         helper.succeed();
     }
