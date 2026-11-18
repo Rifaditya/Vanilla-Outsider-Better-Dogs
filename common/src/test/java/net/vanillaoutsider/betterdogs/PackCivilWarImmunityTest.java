@@ -118,8 +118,17 @@ class PackCivilWarImmunityTest {
         return createOfflineWolf(UUID.randomUUID(), ownerUuid, tame, false);
     }
 
-    private static OfflineStubWolf createOfflineWolf(UUID wolfUuid, @Nullable UUID ownerUuid, boolean tame, boolean baby) {
+    static void ensureBootstrap() {
         try {
+            SharedConstants.tryDetectVersion();
+            Bootstrap.bootStrap();
+        } catch (Throwable ignored) {
+        }
+    }
+
+    static OfflineStubWolf createOfflineWolf(UUID wolfUuid, @Nullable UUID ownerUuid, boolean tame, boolean baby) {
+        try {
+            ensureBootstrap();
             OfflineStubWolf wolf = (OfflineStubWolf) UNSAFE.allocateInstance(OfflineStubWolf.class);
             wolf.init(wolfUuid, ownerUuid, tame, baby);
             return wolf;
@@ -408,6 +417,10 @@ class PackCivilWarImmunityTest {
                 "BL-BD-041 Blood Feud must bypass when causingEntity targets victim");
         assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(wolfA1, new DamageSource(mobDamageType, wolfA2, null)),
                 "BL-BD-041 Blood Feud must bypass when directEntity targets victim");
+
+        // BL-BD-041: Defending victim counter-attacking blood feud aggressor must also bypass friendly fire
+        assertFalse(WolfFriendlyFireHelper.shouldCancelDamage(wolfA2, new DamageSource(mobDamageType, wolfA1, wolfA1)),
+                "BL-BD-041 Blood Feud must bypass pack friendly fire when defending victim retaliates against aggressor");
     }
 
     @Test
@@ -864,7 +877,7 @@ class PackCivilWarImmunityTest {
         }
     }
 
-    private static final class OfflineStubWolf extends Wolf implements WolfExtensions {
+    static final class OfflineStubWolf extends Wolf implements WolfExtensions {
         private UUID uuid;
         private volatile boolean tame;
         private volatile boolean baby;

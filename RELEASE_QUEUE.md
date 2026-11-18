@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 1.7.17+1.21.11** - Blood Feud Friendly Fire Health Clamping Deadlock (BL-BD-041)
 - [ ] **Better Dogs 1.7.16+1.21.11** - Restore Vanilla Client Dedicated Server Compatibility (BL-BD-064)
 - [ ] **Better Dogs 1.7.15+1.21.11** - Friendly-Fire GameRule Fallback Hardening & Live Toggle Tests (BL-BD-063)
 - [ ] **Better Dogs 1.7.14+1.21.11** - Fix PacifistRevengeGoal HurtByTargetGoal.start() Owner-Defense Wipe, 24m Entry Tether & Offline Pack Rally Parity (BL-BD-062)
