@@ -287,7 +287,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         }
 
         if (this.betterdogs$playPenaltyTicks > 0) {
-            this.betterdogs$playPenaltyTicks--;
+            this.betterdogs$setPlayPenaltyTicks(this.betterdogs$playPenaltyTicks - 1);
         }
 
         if (this.betterdogs$spectatorWagTicks > 0) {
@@ -498,6 +498,15 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     @Override
     public void betterdogs$setPlayPenaltyTicks(int ticks) {
         this.betterdogs$playPenaltyTicks = Math.max(0, ticks);
+        if (this.betterdogs$playPenaltyTicks == 0) {
+            Wolf self = (Wolf) (Object) this;
+            if (self.level() == null || !self.level().isClientSide()) {
+                java.util.UUID uuid = self.getUUID();
+                if (uuid != null) {
+                    net.vanillaoutsider.betterdogs.util.SmallFightHelper.setPlayPenaltyTicks(uuid, 0);
+                }
+            }
+        }
     }
 
     @Override

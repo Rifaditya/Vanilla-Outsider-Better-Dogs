@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 5.7.20+26.3** - Fix Permanent Play Disqualification & Static UUID Heap Leaks in SmallFightHelper (BL-BD-043)
 - [ ] **Better Dogs 5.7.19+26.3** - Fix Morning Gifts Broken by Sleep & Monotonic GameTime Desynchronization (BL-BD-042)
 - [ ] **Better Dogs 5.7.18+26.3** - Blood Feud Friendly Fire Health Clamping Deadlock (BL-BD-041)
 - [ ] **Better Dogs 5.7.17+26.3** - Restore Vanilla-Client Dedicated Server Compatibility (BL-BD-064)
