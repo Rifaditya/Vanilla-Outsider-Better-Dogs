@@ -206,7 +206,7 @@ public class BetterDogsGameRules {
         BD_AGGRO_HEALTH = Services.GAMERULES.registerInt("bd_aggressive_health", GameRules.Category.MISC, -10);
         BD_AGGRO_SPEED_PCT = Services.GAMERULES.registerInt("bd_aggro_speed_percent", GameRules.Category.MISC, 15);
         BD_AGGRO_DMG_PCT = Services.GAMERULES.registerInt("bd_aggro_dmg_percent", GameRules.Category.MISC, 15);
-        BD_AGGRO_FOLLOW_START = Services.GAMERULES.registerInt("bd_aggro_follow_start", GameRules.Category.MISC, 50);
+        BD_AGGRO_FOLLOW_START = Services.GAMERULES.registerInt("bd_aggro_follow_start", GameRules.Category.MISC, 25);
         BD_AGGRO_CHASE_DIST = Services.GAMERULES.registerInt("bd_aggro_chase_dist", GameRules.Category.MISC, 50);
         BD_AGGRO_DETECT_RANGE = Services.GAMERULES.registerInt("bd_aggro_detect_range", GameRules.Category.MISC, 20);
         BD_AGGRO_FLEE_CHANCE = Services.GAMERULES.registerInt("bd_aggro_flee_chance", GameRules.Category.MISC, 10);
@@ -455,13 +455,16 @@ public class BetterDogsGameRules {
             return fallback;
         }
         try {
-            return DynamicGameRuleManager.getInt(level, key);
-        } catch (Throwable t) {
-            try {
-                return level.getGameRules() != null ? level.getGameRules().getInt(key) : fallback;
-            } catch (Exception e) {
+            if (!level.isClientSide()) {
+                GameRules rules = level.getGameRules();
+                if (rules != null) {
+                    return rules.getInt(key);
+                }
                 return fallback;
             }
+            return DynamicGameRuleManager.getInt(level, key);
+        } catch (Throwable t) {
+            return fallback;
         }
     }
 }

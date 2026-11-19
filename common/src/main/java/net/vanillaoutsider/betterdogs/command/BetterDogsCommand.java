@@ -71,7 +71,7 @@ public class BetterDogsCommand {
         registerInt("bd_aggressive_health", BetterDogsGameRules.BD_AGGRO_HEALTH, -10);
         registerInt("bd_aggro_speed_percent", BetterDogsGameRules.BD_AGGRO_SPEED_PCT, 15);
         registerInt("bd_aggro_dmg_percent", BetterDogsGameRules.BD_AGGRO_DMG_PCT, 15);
-        registerInt("bd_aggro_follow_start", BetterDogsGameRules.BD_AGGRO_FOLLOW_START, 50);
+        registerInt("bd_aggro_follow_start", BetterDogsGameRules.BD_AGGRO_FOLLOW_START, 25);
         registerInt("bd_aggro_chase_dist", BetterDogsGameRules.BD_AGGRO_CHASE_DIST, 50);
         registerInt("bd_aggro_detect_range", BetterDogsGameRules.BD_AGGRO_DETECT_RANGE, 20);
         registerInt("bd_aggro_flee_chance", BetterDogsGameRules.BD_AGGRO_FLEE_CHANCE, 10);

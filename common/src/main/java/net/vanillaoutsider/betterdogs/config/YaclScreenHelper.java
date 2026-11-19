@@ -209,7 +209,7 @@ public class YaclScreenHelper {
                                 .option(Option.<Float>createBuilder()
                                         .name(Component.translatable("config.betterdogs.aggressiveFollowStart"))
                                         .description(OptionDescription.of(Component.translatable("config.betterdogs.aggressiveFollowStart.description")))
-                                        .binding(50.0f, () -> config.aggressiveFollowStart, val -> config.aggressiveFollowStart = val)
+                                        .binding(25.0f, () -> config.aggressiveFollowStart, val -> config.aggressiveFollowStart = val)
                                         .controller(FloatFieldControllerBuilder::create)
                                         .build())
                                 .option(Option.<Float>createBuilder()

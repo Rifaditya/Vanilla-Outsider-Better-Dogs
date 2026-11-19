@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.1)
 
+## [1.7.20+1.21.1] - 2026-11-19
+
+### Fixed
+- **Eliminated Inverted Aggressive Follow Teleport Clamping & Restored Catchup Parity (`PersonalityFollowOwnerGoal`, `WolfCatchupHelper`) (BL-BD-046)**:
+  - Replaced the inverted `startDist > 16.0f -> 32.0f` clamp in `PersonalityFollowOwnerGoal.getTeleportThreshold()` with monotonic `calculateTeleportThreshold(startDist) = Math.max(startDist + 16.0f, 32.0f)`, restoring a full running catch-up window (`[25.0, 41.0)` blocks by default) before teleportation triggers.
+  - Wired `PersonalityFollowOwnerGoal.calculateBaseStartDistance(Wolf)` to query `BetterDogsGameRules.getInt(...)` (`BD_AGGRO_FOLLOW_START`, `BD_PACI_FOLLOW_START`, `BD_NORMAL_FOLLOW_START`) with server `GameRules` priority and safe fallback preservation, added `recalcTimer` pathfinding throttling, removed the premature `navigation.stop()` inside `tick()` below `startDist`, and enforced `!isPassenger()`, `!isLeashed()`, and `!owner.isSpectator()` follow and teleport guards.
+  - Lowered `BD_AGGRO_FOLLOW_START` / `aggressiveFollowStart` defaults from `50` to `25` blocks across `BetterDogsGameRules`, `BetterDogsConfig`, `BetterDogsCommand`, `YaclScreenHelper`, `WolfMixin`, `vanilla-outsider-better-dogs.json`, and `en_us`/`id_id` localizations (leaving combat chase distance `50` and detection range `20` untouched), and added `WolfCatchupHelper.getCatchupTeleportDistance(wolf, isFlying)` parity.
+
 ## [1.7.19+1.21.1] - 2026-11-18
 
 ### Fixed

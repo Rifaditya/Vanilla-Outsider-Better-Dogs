@@ -15,7 +15,7 @@
   "aggressiveDetectionRange": 20.0,
   "aggressiveChaseDistance": 50.0,
   "aggressiveDamageModifier": 0.5,
-  "aggressiveFollowStart": 50.0,
+  "aggressiveFollowStart": 25.0,
   "aggressiveFollowStop": 2.0,
   "pacifistHealthBonus": 20.0,
   "pacifistSpeedModifier": -0.1,
