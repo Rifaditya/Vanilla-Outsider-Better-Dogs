@@ -1,4 +1,5 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
+// Verified against: Minecraft 1.20.1
 package net.vanillaoutsider.betterdogs.util;
 
 import java.util.Collections;
@@ -9,12 +10,26 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.vanillaoutsider.betterdogs.ai.PersonalityFollowOwnerGoal;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 
 /**
  * Dedicated single-purpose helper for high-speed fast-travel catchup and interdimensional teleport sync.
  */
 public class WolfCatchupHelper {
+
+    private static final double BASE_FOLLOW_DISTANCE = 40.0D;
+    private static final double FLYING_FOLLOW_DISTANCE = 32.0D;
+
+    public static double getCatchupTeleportDistance(Wolf wolf, boolean isFlying) {
+        double baseMaxFollow = isFlying ? FLYING_FOLLOW_DISTANCE : BASE_FOLLOW_DISTANCE;
+        if (wolf == null) {
+            return baseMaxFollow;
+        }
+        float startDist = PersonalityFollowOwnerGoal.getEffectiveStartDistance(wolf);
+        float goalTeleportThreshold = PersonalityFollowOwnerGoal.calculateTeleportThreshold(startDist);
+        return Math.max(baseMaxFollow, goalTeleportThreshold);
+    }
 
     public static double calculateCatchupSpeed(Wolf wolf, LivingEntity owner, double baseSpeed) {
         if (wolf == null || owner == null || !wolf.isTame()) {
@@ -58,6 +73,7 @@ public class WolfCatchupHelper {
 
         for (Wolf dog : nearbyDogs) {
             dog.teleportTo(destLevel, destPos.x(), destPos.y(), destPos.z(), Collections.emptySet(), dog.getYRot(), dog.getXRot());
+            dog.getNavigation().stop();
         }
     }
 }
