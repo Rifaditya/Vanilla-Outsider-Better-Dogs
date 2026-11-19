@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.1)
 
+## [1.7.21+1.21.1] - 2026-11-19
+
+### Fixed
+- **Registered 12 Missing GameRules & Eliminated `/betterdogs status` and `/betterdogs reset` NullPointerExceptions (`BetterDogsGameRules`, `BetterDogsCommand`, `CommandSuggestionsHelper`) (BL-BD-067)**:
+  - Assigned and registered all 12 previously uninitialized `GameRules.Key<?>` fields (`BD_DOG_GENETICS_ENABLED`, `BD_MAX_SCALE_DEVIATION`, `BD_ARCHETYPES_ENABLED`, `BD_ARCHETYPE_DISTRIBUTION_MODE`, `BD_CANINE_EXPLOSIVE_REFLEX_ENABLED`, `BD_HAZARD_FLEE_RADIUS`, `BD_FLEE_SPEED_MULTIPLIER`, `BD_BALLISTIC_EVASION_ENABLED`, `BD_EVASION_REACTION_TICKS`, `BD_EVASION_LATERAL_IMPULSE`, `BD_PROJECTILE_INTERCEPT`, `BD_INTERCEPTOR_OWNER_HEALTH_THRESHOLD`) in `BetterDogsGameRules.init()` along with all 24 `DynamicGameRuleManager` snake_case and camelCase aliases.
+  - Refactored `BetterDogsCommand` to populate rule maps lazily and idempotently via `ensureRulesPopulated()` (protecting against classloading before `BetterDogsGameRules.init()`), added null-safe key and `rules.getRule(...)` guards across `executeStatus`, `executeGet`, `executeSet`, and `executeReset` so NPEs cannot occur even on partial/synthetic `GameRules`, aligned `bd_max_scale_deviation` bounds (`[0, 100]`), and wired all 10 remaining missing rules with `[min, max]` integer range validation in `executeSet`.
+  - Updated `CommandSuggestionsHelper` (`BOOLEAN_RULES`, `INTEGER_RULES`, and canonical camelCase-to-snake_case normalization in `normalizeRuleName`) so `/betterdogs get` and `/betterdogs set` consistently resolve, suggest, and validate all 12 rules and their aliases.
+
 ## [1.7.20+1.21.1] - 2026-11-19
 
 ### Fixed

@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 1.7.21+1.21.1** - Register 12 Missing GameRules & Fix /betterdogs status and reset NPE (BL-BD-067)
 - [ ] **Better Dogs 1.7.20+1.21.1** - Fix Inverted Aggressive Follow Teleport Thresholds & Catchup Parity (BL-BD-046)
 - [ ] **Better Dogs 1.7.19+1.21.1** - Fix Permanent Play Disqualification & Static UUID Heap Leaks in SmallFightHelper (BL-BD-043)
 - [ ] **Better Dogs 1.7.18+1.21.1** - Fix Morning Gifts Broken by Sleep & Monotonic GameTime Desynchronization (BL-BD-042)

@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
@@ -20,6 +21,25 @@ import java.util.concurrent.CompletableFuture;
  * Dedicated single-purpose tab-completion and rule normalization helper for Brigadier commands.
  */
 public class CommandSuggestionsHelper {
+
+    private static final Map<String, String> ALIAS_TO_CANONICAL = Map.ofEntries(
+            Map.entry("dogplayfighting", "bd_dog_play_fighting"),
+            Map.entry("playfightfrequency", "bd_dog_play_fight_frequency"),
+            Map.entry("playfightchance", "bd_dog_play_fight_chance"),
+            Map.entry("playpenaltyminutes", "bd_play_penalty_minutes"),
+            Map.entry("doggeneticsenabled", "bd_dog_genetics_enabled"),
+            Map.entry("maxscaledeviation", "bd_max_scale_deviation"),
+            Map.entry("personalityarchetypesenabled", "bd_personality_archetypes_enabled"),
+            Map.entry("personalitydistributionmode", "bd_personality_distribution_mode"),
+            Map.entry("canineexplosivereflexenabled", "bd_canine_explosive_reflex_enabled"),
+            Map.entry("hazardfleeradius", "bd_hazard_flee_radius"),
+            Map.entry("fleespeedmultiplier", "bd_flee_speed_multiplier"),
+            Map.entry("ballisticevasionenabled", "bd_ballistic_evasion_enabled"),
+            Map.entry("evasionreactionticks", "bd_evasion_reaction_ticks"),
+            Map.entry("evasionlateralimpulse", "bd_evasion_lateral_impulse"),
+            Map.entry("projectileintercept", "bd_projectile_intercept"),
+            Map.entry("interceptorownerhealththreshold", "bd_interceptor_owner_health_threshold")
+    );
 
     private static final Set<String> BOOLEAN_RULES = new LinkedHashSet<>(Arrays.asList(
             "bd_storm_anxiety",
@@ -48,7 +68,15 @@ public class CommandSuggestionsHelper {
             "bd_dog_play_fighting",
             "dogplayfighting",
             "bd_dog_genetics_enabled",
-            "doggeneticsenabled"
+            "doggeneticsenabled",
+            "bd_personality_archetypes_enabled",
+            "personalityarchetypesenabled",
+            "bd_canine_explosive_reflex_enabled",
+            "canineexplosivereflexenabled",
+            "bd_ballistic_evasion_enabled",
+            "ballisticevasionenabled",
+            "bd_projectile_intercept",
+            "projectileintercept"
     ));
 
     private static final Set<String> INTEGER_RULES = new LinkedHashSet<>(Arrays.asList(
@@ -120,7 +148,19 @@ public class CommandSuggestionsHelper {
             "bd_breed_mixed_recessive_chance",
             "bd_breed_diluted_normal_chance",
             "bd_breed_diluted_other_chance",
-            "bd_wolf_litter_max_size"
+            "bd_wolf_litter_max_size",
+            "bd_personality_distribution_mode",
+            "personalitydistributionmode",
+            "bd_hazard_flee_radius",
+            "hazardfleeradius",
+            "bd_flee_speed_multiplier",
+            "fleespeedmultiplier",
+            "bd_evasion_reaction_ticks",
+            "evasionreactionticks",
+            "bd_evasion_lateral_impulse",
+            "evasionlateralimpulse",
+            "bd_interceptor_owner_health_threshold",
+            "interceptorownerhealththreshold"
     ));
 
     private static final List<String> ALL_RULES;
@@ -160,6 +200,10 @@ public class CommandSuggestionsHelper {
             clean = clean.substring("vanilla-outsider-better-dogs:".length());
         } else if (clean.startsWith("betterdogs:")) {
             clean = clean.substring("betterdogs:".length());
+        }
+        String canonical = ALIAS_TO_CANONICAL.get(clean);
+        if (canonical != null) {
+            return canonical;
         }
         if (!clean.startsWith("bd_") && !clean.isEmpty()) {
             String withPrefix = "bd_" + clean;

@@ -302,11 +302,12 @@ public class FireballTrajectoryHelperTest {
         assertEquals(85, BetterDogsGameRules.getEvasionLateralImpulse(null),
                 "getEvasionLateralImpulse(null) must return 85");
 
-        if (BetterDogsGameRules.BD_BALLISTIC_EVASION_ENABLED != null) {
-            assertEquals("bd_ballistic_evasion_enabled", BetterDogsGameRules.BD_BALLISTIC_EVASION_ENABLED.getId());
-            assertEquals("bd_evasion_reaction_ticks", BetterDogsGameRules.BD_EVASION_REACTION_TICKS.getId());
-            assertEquals("bd_evasion_lateral_impulse", BetterDogsGameRules.BD_EVASION_LATERAL_IMPULSE.getId());
-        }
+        assertNotNull(BetterDogsGameRules.BD_BALLISTIC_EVASION_ENABLED, "BD_BALLISTIC_EVASION_ENABLED must not be null");
+        assertNotNull(BetterDogsGameRules.BD_EVASION_REACTION_TICKS, "BD_EVASION_REACTION_TICKS must not be null");
+        assertNotNull(BetterDogsGameRules.BD_EVASION_LATERAL_IMPULSE, "BD_EVASION_LATERAL_IMPULSE must not be null");
+        assertEquals("betterdogs:bd_ballistic_evasion_enabled", BetterDogsGameRules.BD_BALLISTIC_EVASION_ENABLED.getId());
+        assertEquals("betterdogs:bd_evasion_reaction_ticks", BetterDogsGameRules.BD_EVASION_REACTION_TICKS.getId());
+        assertEquals("betterdogs:bd_evasion_lateral_impulse", BetterDogsGameRules.BD_EVASION_LATERAL_IMPULSE.getId());
 
         // Assert snake_case pattern
         String enabledKey = "betterdogs:bd_ballistic_evasion_enabled";
