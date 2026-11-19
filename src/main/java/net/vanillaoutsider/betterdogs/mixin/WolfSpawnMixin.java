@@ -3,8 +3,6 @@
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -19,10 +17,10 @@ import net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.vanillaoutsider.betterdogs.util.WolfDebugLogger;
 import net.vanillaoutsider.betterdogs.util.WolfPersonalityStatHelper;
+import net.vanillaoutsider.betterdogs.util.WolfReinforcementSpawnHelper;
 import net.vanillaoutsider.betterdogs.util.WolfScaleGeneticsHelper;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -91,44 +89,10 @@ public abstract class WolfSpawnMixin extends TamableAnimal {
                 net.dasik.social.core.SocialRegistry.register((net.dasik.social.api.SocialEntity) wolf);
                 WolfDebugLogger.log(wolf, "Spawn", "Initialized with personality: " + personality.name());
 
-                // Density Boost Logic (v3.3.0)
-                if (spawnReason == EntitySpawnReason.NATURAL && groupData == null) {
-                    int boostChance = DynamicGameRuleManager.getInt(level.getLevel(), BetterDogsGameRules.BD_WOLF_SPAWN_DENSITY_BOOST);
-                    int roll = this.getRandom().nextInt(100);
-                    WolfDebugLogger.log(wolf, "Spawn", "Density Boost Evaluation - Roll: " + roll + " / Target: " + boostChance);
-                    if (roll < boostChance) {
-                        this.betterdogs$triggerReinforcementSpawn(level);
-                    }
-                }
+                // Density Boost Logic (BL-BD-047)
+                WolfReinforcementSpawnHelper.tryTriggerDensityBoost(wolf, level, spawnReason, groupData);
             }
         }
-    }
-
-    @Unique
-    private void betterdogs$triggerReinforcementSpawn(ServerLevelAccessor level) {
-        Wolf wolf = (Wolf) (Object) this;
-        ServerLevel serverLevel = level.getLevel();
-        BlockPos pos = wolf.blockPosition();
-
-        // Find a spot nearby
-        BlockPos spawnPos = pos.offset(
-            this.getRandom().nextInt(16) - 8,
-            0,
-            this.getRandom().nextInt(16) - 8
-        );
-
-        // Spawn a reinforcement cluster
-        int clusterSize = DynamicGameRuleManager.getInt(serverLevel, BetterDogsGameRules.BD_WOLF_PACK_CLUSTER_SIZE);
-        int count = clusterSize / 2 + 1;
-        for (int i = 0; i < count; i++) {
-             Wolf reinforcement = net.minecraft.world.entity.EntityTypes.WOLF.create(serverLevel, EntitySpawnReason.REINFORCEMENT);
-             if (reinforcement != null) {
-                 reinforcement.snapTo(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, this.getRandom().nextFloat() * 360.0F, 0.0F);
-                 reinforcement.finalizeSpawn(level, serverLevel.getCurrentDifficultyAt(spawnPos), EntitySpawnReason.REINFORCEMENT, null);
-                 serverLevel.addFreshEntityWithPassengers(reinforcement);
-             }
-        }
-        WolfDebugLogger.log(wolf, "Spawn", "Density Boost: Reinforcement pack (" + count + ") spawned at " + spawnPos);
     }
 
     @Override
