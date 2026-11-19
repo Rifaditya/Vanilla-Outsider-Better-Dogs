@@ -248,7 +248,7 @@ public class BetterDogsGameRules {
         BD_AGGRO_HEALTH = registerInteger("vanilla-outsider-better-dogs:bd_aggressive_health", BETTER_DOGS, -10);
         BD_AGGRO_SPEED_PCT = registerInteger("vanilla-outsider-better-dogs:bd_aggro_speed_percent", BETTER_DOGS, 15);
         BD_AGGRO_DMG_PCT = registerInteger("vanilla-outsider-better-dogs:bd_aggro_dmg_percent", BETTER_DOGS, 15);
-        BD_AGGRO_FOLLOW_START = registerInteger("vanilla-outsider-better-dogs:bd_aggro_follow_start", BETTER_DOGS, 50);
+        BD_AGGRO_FOLLOW_START = registerInteger("vanilla-outsider-better-dogs:bd_aggro_follow_start", BETTER_DOGS, 25);
         BD_AGGRO_CHASE_DIST = registerInteger("vanilla-outsider-better-dogs:bd_aggro_chase_dist", BETTER_DOGS, 50);
         BD_AGGRO_DETECT_RANGE = registerInteger("vanilla-outsider-better-dogs:bd_aggro_detect_range", BETTER_DOGS, 20);
         BD_AGGRO_FLEE_CHANCE = registerInteger("vanilla-outsider-better-dogs:bd_aggro_flee_chance", BETTER_DOGS, 10);
@@ -520,6 +520,18 @@ public class BetterDogsGameRules {
         if (level == null || rule == null) {
             return fallback;
         }
-        return DynamicGameRuleManager.getInt(level, rule);
+        try {
+            if (level instanceof ServerLevel serverLevel) {
+                GameRules rules = serverLevel.getGameRules();
+                if (rules != null) {
+                    Integer value = rules.get(rule);
+                    return value != null ? value : fallback;
+                }
+                return fallback;
+            }
+            return DynamicGameRuleManager.getInt(level, rule);
+        } catch (Throwable t) {
+            return fallback;
+        }
     }
 }

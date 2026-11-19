@@ -1,6 +1,8 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
 package net.vanillaoutsider.betterdogs;
 
+import net.vanillaoutsider.betterdogs.ai.PersonalityFollowOwnerGoal;
+import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -8,16 +10,16 @@ public class WolfRadiusAiTest {
 
     @Test
     public void testPersonalityFollowStartDistances() {
-        assertEquals(50.0f, getExpectedFollowStart(WolfPersonality.AGGRESSIVE), 0.001f);
+        assertEquals(25.0f, getExpectedFollowStart(WolfPersonality.AGGRESSIVE), 0.001f);
         assertEquals(5.0f, getExpectedFollowStart(WolfPersonality.PACIFIST), 0.001f);
         assertEquals(10.0f, getExpectedFollowStart(WolfPersonality.NORMAL), 0.001f);
     }
 
     @Test
     public void testPersonalityTeleportThresholds() {
-        assertEquals(32.0f, getExpectedTeleportThreshold(WolfPersonality.AGGRESSIVE), 0.001f);
-        assertEquals(10.0f, getExpectedTeleportThreshold(WolfPersonality.PACIFIST), 0.001f);
-        assertEquals(20.0f, getExpectedTeleportThreshold(WolfPersonality.NORMAL), 0.001f);
+        assertEquals(41.0f, getExpectedTeleportThreshold(WolfPersonality.AGGRESSIVE), 0.001f);
+        assertEquals(32.0f, getExpectedTeleportThreshold(WolfPersonality.PACIFIST), 0.001f);
+        assertEquals(32.0f, getExpectedTeleportThreshold(WolfPersonality.NORMAL), 0.001f);
     }
 
     @Test
@@ -28,19 +30,16 @@ public class WolfRadiusAiTest {
     }
 
     private float getExpectedFollowStart(WolfPersonality personality) {
+        BetterDogsConfig config = new BetterDogsConfig();
         return switch (personality) {
-            case AGGRESSIVE -> 50.0f;
-            case PACIFIST -> 5.0f;
-            case NORMAL -> 10.0f;
+            case AGGRESSIVE -> config.getAggressiveFollowStart();
+            case PACIFIST -> config.pacifistFollowStart;
+            case NORMAL -> config.normalFollowStart;
         };
     }
 
     private float getExpectedTeleportThreshold(WolfPersonality personality) {
-        float startDist = getExpectedFollowStart(personality);
-        if (startDist > 16.0f) {
-            return 32.0f;
-        }
-        return startDist * 2.0f;
+        return PersonalityFollowOwnerGoal.calculateTeleportThreshold(getExpectedFollowStart(personality));
     }
 
     private double getExpectedRoamRadius(WolfPersonality personality) {
