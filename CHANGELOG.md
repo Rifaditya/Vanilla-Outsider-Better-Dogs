@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.22+26.3] - 2026-11-19
+
+### Fixed
+- **Terrain-Safe Wolf Density-Boost Reinforcement Spawning (`WolfReinforcementSpawnHelper`, `WolfSpawnMixin`) (BL-BD-047)**:
+  - Fixed reinforcement wolves spawning inside solid blocks or suspended over cliff drops on sloped terrain by replacing the shared flat `Y = 0` offset in `WolfSpawnMixin` with `WolfReinforcementSpawnHelper.tryTriggerDensityBoost(...)`.
+  - Added independent per-wolf horizontal scatter (up to 4 attempts in `±8` blocks skipping `(0, 0)`), loaded-chunk guards (`hasChunkAt`) preventing `WorldGenRegion` / C2ME deadlocks, `MOTION_BLOCKING_NO_LEAVES` heightmap surface resolution within `|dy| <= 12` blocks, and bounded `+4..-4` local overhang floor fallback scans.
+  - Enforced sturdy non-leaf floor validation, empty foot and head collision shapes, bounding-box clearance (`noCollision` with `0.20` XZ inflation), and strict exclusion of fluids, fire, magma, campfires, powder snow, sweet berry bushes, cacti, cobwebs, and wither roses.
+
 ## [5.7.21+26.3] - 2026-11-19
 
 ### Fixed
