@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
+## [1.7.21+1.21.11] - 2026-11-19
+
+### Fixed
+- **Terrain-Safe Wolf Density-Boost Reinforcement Spawning (`WolfReinforcementSpawnHelper`, `WolfMixin`) (BL-BD-047)**:
+  - Wired natural wolf density-boost reinforcement spawning (`BD_WOLF_SPAWN_DENSITY_BOOST` and `BD_WOLF_PACK_CLUSTER_SIZE`) into `WolfMixin.betterdogs$onFinalizeSpawn` via `WolfReinforcementSpawnHelper.tryTriggerDensityBoost(...)` across Fabric and NeoForge, restoring full multi-era parity with `26.x`.
+  - Implemented independent per-wolf horizontal scatter (up to 4 attempts in `±8` blocks skipping `(0, 0)`), loaded-chunk guards (`hasChunkAt`) preventing `WorldGenRegion` / C2ME deadlocks, `MOTION_BLOCKING_NO_LEAVES` heightmap surface resolution within `|dy| <= 12` blocks, and bounded `+4..-4` local overhang floor fallback scans.
+  - Enforced sturdy non-leaf floor validation, empty foot and head collision shapes, bounding-box clearance (`noCollision` with `0.20` XZ inflation), recursive `REINFORCEMENT` / non-null `groupData` exclusions, and strict rejection of fluids, fire, magma, campfires, powder snow, sweet berry bushes, cacti, cobwebs, and wither roses.
+
 ## [1.7.20+1.21.11] - 2026-11-19
 
 ### Fixed

@@ -784,6 +784,8 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
                     this.setHealth(this.getMaxHealth());
                 }
             }
+            net.vanillaoutsider.betterdogs.util.WolfReinforcementSpawnHelper.tryTriggerDensityBoost(
+                    (Wolf) (Object) this, level, spawnReason, groupData);
         }
     }
 
