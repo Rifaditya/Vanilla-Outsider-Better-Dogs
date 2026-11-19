@@ -108,12 +108,10 @@ public class WolfSoundGeneticsTest {
         assertTrue(BetterDogsGameRules.isDogGeneticsEnabled(null), "Default isDogGeneticsEnabled(null) should be true");
         assertEquals(30, BetterDogsGameRules.getMaxScaleDeviation(null), "Default getMaxScaleDeviation(null) should be 30");
 
-        if (BetterDogsGameRules.BD_DOG_GENETICS_ENABLED != null) {
-            assertEquals("bd_dog_genetics_enabled", BetterDogsGameRules.BD_DOG_GENETICS_ENABLED.getId());
-        }
-        if (BetterDogsGameRules.BD_MAX_SCALE_DEVIATION != null) {
-            assertEquals("bd_max_scale_deviation", BetterDogsGameRules.BD_MAX_SCALE_DEVIATION.getId());
-        }
+        assertNotNull(BetterDogsGameRules.BD_DOG_GENETICS_ENABLED, "BD_DOG_GENETICS_ENABLED GameRule must not be null");
+        assertEquals("betterdogs:bd_dog_genetics_enabled", BetterDogsGameRules.BD_DOG_GENETICS_ENABLED.getId());
+        assertNotNull(BetterDogsGameRules.BD_MAX_SCALE_DEVIATION, "BD_MAX_SCALE_DEVIATION GameRule must not be null");
+        assertEquals("betterdogs:bd_max_scale_deviation", BetterDogsGameRules.BD_MAX_SCALE_DEVIATION.getId());
     }
 
     @Test

@@ -7,16 +7,16 @@ import net.vanillaoutsider.betterdogs.platform.services.IGameRuleHelper;
 public class TestGameRuleHelper implements IGameRuleHelper {
     @Override
     public GameRules.Key<GameRules.BooleanValue> registerBoolean(String name, GameRules.Category category, boolean defaultValue) {
-        return null;
+        return new GameRules.Key<>(name, category);
     }
 
     @Override
     public GameRules.Key<GameRules.IntegerValue> registerInt(String name, GameRules.Category category, int defaultValue) {
-        return null;
+        return new GameRules.Key<>(name, category);
     }
 
     @Override
     public GameRules.Key<GameRules.IntegerValue> registerInt(String name, GameRules.Category category, int defaultValue, int min, int max) {
-        return null;
+        return new GameRules.Key<>(name, category);
     }
 }

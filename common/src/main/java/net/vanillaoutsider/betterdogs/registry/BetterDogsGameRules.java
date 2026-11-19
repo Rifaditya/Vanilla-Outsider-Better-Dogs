@@ -324,6 +324,57 @@ public class BetterDogsGameRules {
         registerDynamicAlias("betterdogs:dogPlayChoreographyEnabled", BD_DOG_PLAY_CHOREOGRAPHY_ENABLED);
         registerDynamicAlias("betterdogs:playChoreographyFrequency", BD_PLAY_CHOREOGRAPHY_FREQUENCY);
         registerDynamicAlias("betterdogs:maxPlayDistance", BD_MAX_PLAY_DISTANCE);
+
+        // Physical Canine Genetics
+        BD_DOG_GENETICS_ENABLED = Services.GAMERULES.registerBoolean("betterdogs:bd_dog_genetics_enabled", GameRules.Category.MISC, true);
+        BD_MAX_SCALE_DEVIATION = Services.GAMERULES.registerInt("betterdogs:bd_max_scale_deviation", GameRules.Category.MISC, 30, 0, 100);
+
+        registerDynamicAlias("betterdogs:bd_dog_genetics_enabled", BD_DOG_GENETICS_ENABLED);
+        registerDynamicAlias("betterdogs:bd_max_scale_deviation", BD_MAX_SCALE_DEVIATION);
+        registerDynamicAlias("betterdogs:dogGeneticsEnabled", BD_DOG_GENETICS_ENABLED);
+        registerDynamicAlias("betterdogs:maxScaleDeviation", BD_MAX_SCALE_DEVIATION);
+
+        // Personality Archetypes (BL-BD-013)
+        BD_ARCHETYPES_ENABLED = Services.GAMERULES.registerBoolean("betterdogs:bd_personality_archetypes_enabled", GameRules.Category.MISC, true);
+        BD_ARCHETYPE_DISTRIBUTION_MODE = Services.GAMERULES.registerInt("betterdogs:bd_personality_distribution_mode", GameRules.Category.MISC, 0, 0, 1);
+
+        registerDynamicAlias("betterdogs:bd_personality_archetypes_enabled", BD_ARCHETYPES_ENABLED);
+        registerDynamicAlias("betterdogs:bd_personality_distribution_mode", BD_ARCHETYPE_DISTRIBUTION_MODE);
+        registerDynamicAlias("betterdogs:personalityArchetypesEnabled", BD_ARCHETYPES_ENABLED);
+        registerDynamicAlias("betterdogs:personalityDistributionMode", BD_ARCHETYPE_DISTRIBUTION_MODE);
+
+        // Canine Explosive Reflex (BL-BD-006)
+        BD_CANINE_EXPLOSIVE_REFLEX_ENABLED = Services.GAMERULES.registerBoolean("betterdogs:bd_canine_explosive_reflex_enabled", GameRules.Category.MISC, true);
+        BD_HAZARD_FLEE_RADIUS = Services.GAMERULES.registerInt("betterdogs:bd_hazard_flee_radius", GameRules.Category.MISC, 14, 4, 64);
+        BD_FLEE_SPEED_MULTIPLIER = Services.GAMERULES.registerInt("betterdogs:bd_flee_speed_multiplier", GameRules.Category.MISC, 170, 100, 300);
+
+        registerDynamicAlias("betterdogs:bd_canine_explosive_reflex_enabled", BD_CANINE_EXPLOSIVE_REFLEX_ENABLED);
+        registerDynamicAlias("betterdogs:bd_hazard_flee_radius", BD_HAZARD_FLEE_RADIUS);
+        registerDynamicAlias("betterdogs:bd_flee_speed_multiplier", BD_FLEE_SPEED_MULTIPLIER);
+        registerDynamicAlias("betterdogs:canineExplosiveReflexEnabled", BD_CANINE_EXPLOSIVE_REFLEX_ENABLED);
+        registerDynamicAlias("betterdogs:hazardFleeRadius", BD_HAZARD_FLEE_RADIUS);
+        registerDynamicAlias("betterdogs:fleeSpeedMultiplier", BD_FLEE_SPEED_MULTIPLIER);
+
+        // Ballistic Evasion Reflex (BL-BD-020)
+        BD_BALLISTIC_EVASION_ENABLED = Services.GAMERULES.registerBoolean("betterdogs:bd_ballistic_evasion_enabled", GameRules.Category.MISC, true);
+        BD_EVASION_REACTION_TICKS = Services.GAMERULES.registerInt("betterdogs:bd_evasion_reaction_ticks", GameRules.Category.MISC, 20, 5, 60);
+        BD_EVASION_LATERAL_IMPULSE = Services.GAMERULES.registerInt("betterdogs:bd_evasion_lateral_impulse", GameRules.Category.MISC, 85, 20, 250);
+
+        registerDynamicAlias("betterdogs:bd_ballistic_evasion_enabled", BD_BALLISTIC_EVASION_ENABLED);
+        registerDynamicAlias("betterdogs:bd_evasion_reaction_ticks", BD_EVASION_REACTION_TICKS);
+        registerDynamicAlias("betterdogs:bd_evasion_lateral_impulse", BD_EVASION_LATERAL_IMPULSE);
+        registerDynamicAlias("betterdogs:ballisticEvasionEnabled", BD_BALLISTIC_EVASION_ENABLED);
+        registerDynamicAlias("betterdogs:evasionReactionTicks", BD_EVASION_REACTION_TICKS);
+        registerDynamicAlias("betterdogs:evasionLateralImpulse", BD_EVASION_LATERAL_IMPULSE);
+
+        // Ballistic Interceptor (BL-BD-021)
+        BD_PROJECTILE_INTERCEPT = Services.GAMERULES.registerBoolean("betterdogs:bd_projectile_intercept", GameRules.Category.MISC, true);
+        BD_INTERCEPTOR_OWNER_HEALTH_THRESHOLD = Services.GAMERULES.registerInt("betterdogs:bd_interceptor_owner_health_threshold", GameRules.Category.MISC, 10, 0, 1000);
+
+        registerDynamicAlias("betterdogs:bd_projectile_intercept", BD_PROJECTILE_INTERCEPT);
+        registerDynamicAlias("betterdogs:bd_interceptor_owner_health_threshold", BD_INTERCEPTOR_OWNER_HEALTH_THRESHOLD);
+        registerDynamicAlias("betterdogs:projectileIntercept", BD_PROJECTILE_INTERCEPT);
+        registerDynamicAlias("betterdogs:interceptorOwnerHealthThreshold", BD_INTERCEPTOR_OWNER_HEALTH_THRESHOLD);
     }
 
     private static void registerDynamicAlias(String name, GameRules.Key<?> key) {
