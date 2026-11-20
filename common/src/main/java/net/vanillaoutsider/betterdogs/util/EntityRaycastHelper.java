@@ -3,11 +3,15 @@ package net.vanillaoutsider.betterdogs.util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
  * Dedicated single-purpose helper for raycasting clear line-of-sight and obstacle-free positions.
@@ -21,8 +25,12 @@ public class EntityRaycastHelper {
         if (level == null || from == null || to == null) {
             return false;
         }
-        BlockHitResult hit = level.clip(new ClipContext(from, to, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, (net.minecraft.world.entity.Entity) null));
-        return hit.getType() == HitResult.Type.MISS;
+        BlockHitResult hit = BlockGetter.traverseBlocks(from, to, null, (ignored, pos) -> {
+            BlockState state = level.getBlockState(pos);
+            VoxelShape shape = state.getCollisionShape(level, pos, CollisionContext.empty());
+            return shape.isEmpty() ? null : shape.clip(from, to, pos);
+        }, ignored -> null);
+        return hit == null || hit.getType() == HitResult.Type.MISS;
     }
 
     /**

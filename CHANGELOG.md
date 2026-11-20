@@ -1,5 +1,12 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.7.23+1.20.1] - 2026-11-20
+
+### Fixed
+- **EntityRaycastHelper ClipContext Null Entity NPE Safety ([BL-BD-068])**:
+  - Replaced ambiguous `level.clip(new ClipContext(..., (Entity) null))` in `EntityRaycastHelper.hasLineOfSight` with entity-free voxel traversal via `BlockGetter.traverseBlocks` using `CollisionContext.empty()`.
+  - Resolves latent `NullPointerException: Cannot invoke "net.minecraft.class_1297.method_21752()" because "$$0" is null` during line-of-sight checks without an active entity on MC 1.20.1, 1.21.1, and 1.21.11.
+
 ## [1.7.22+1.20.1] - 2026-11-19
 
 ### Fixed
