@@ -32,7 +32,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 - [ ] **Better Dogs 5.7.1+26.1.2** [Fabric + NeoForge] - Ballistic Interceptor: Dynamic GameRules, Config Synchronization & Localization (BL-BD-021)
 
 - [ ] **Better Dogs 5.7.0+26.1.2** [Fabric + NeoForge] - Ballistic Interceptor: Trajectory Intercept Solver & Disposition Affinity (BL-BD-021)
-- [ ] **Better Dogs 5.6.0+26.1.2** [Fabric + NeoForge] - Ballistic Evasion Reflex: Dodging Ghast Fireball Trajectories (BL-BD-020)
+- [x] **Better Dogs 5.6.0+26.1.2** [Fabric + NeoForge] - Ballistic Evasion Reflex: Dodging Ghast Fireball Trajectories (BL-BD-020)
 - [x] **Better Dogs 5.5.0+26.1.2** [Fabric + NeoForge] - Canine Explosive Reflex: Primed TNT, End Crystals & Swelling Creepers Flee Reflex (BL-BD-019)
 - [x] **Better Dogs 5.4.0+26.1.2** [Fabric + NeoForge] - Extensible Canine Personality Archetypes: Guardian, Playful, Adventurer, Glutton, Lazy, Fearless (BL-BD-013)
 - [x] **Better Dogs 5.3.0+26.1.2** [Fabric + NeoForge] - Canine Physical Genetics: Horse-Like Speed, Health, Scale & Pitch Timbre (BL-BD-012)
