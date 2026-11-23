@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 5.7.24+26.2** - Fix Sitting Pose State Desync During Movement & AI Transitions (BL-BD-069)
 - [ ] **Better Dogs 5.7.23+26.2** - Persist Genetic Scale & Modulated Voice Pitch Across Spawn, Ticks, Breeding, Runt & Cure (BL-BD-071)
 - [ ] **Better Dogs 5.7.22+26.2** - Fix Reinforcement Wolf Suffocation on Sloped Terrain & Unloaded Chunk Guard (BL-BD-047)
 - [ ] **Better Dogs 5.7.21+26.2** - Fix Inverted Aggressive Follow Teleport Thresholds & Catchup Parity (BL-BD-046)

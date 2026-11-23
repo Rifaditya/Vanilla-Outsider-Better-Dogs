@@ -74,6 +74,7 @@ public class WolfGuardGoal extends Goal {
         wolf.getNavigation().stop();
         if (ext.betterdogs$getPersonality() == WolfPersonality.NORMAL && !ext.betterdogs$isSittingManually()) {
             wolf.setOrderedToSit(false);
+            net.vanillaoutsider.betterdogs.util.WolfSittingPoseHelper.clearUnorderedSittingPose(wolf);
         }
     }
 
@@ -216,6 +217,7 @@ public class WolfGuardGoal extends Goal {
         if (personality == WolfPersonality.NORMAL && patrolRange <= 0) {
             if (distToPostSqr > 1.5) {
                 wolf.setOrderedToSit(false);
+                net.vanillaoutsider.betterdogs.util.WolfSittingPoseHelper.clearUnorderedSittingPose(wolf);
                 wolf.getNavigation().moveTo(post.getX(), post.getY(), post.getZ(), 1.0);
             } else {
                 wolf.getNavigation().stop();
@@ -229,6 +231,7 @@ public class WolfGuardGoal extends Goal {
         // If Normal sentinel is moving, ensure orderedToSit is false
         if (personality == WolfPersonality.NORMAL && wolf.isInSittingPose()) {
             wolf.setOrderedToSit(false);
+            net.vanillaoutsider.betterdogs.util.WolfSittingPoseHelper.clearUnorderedSittingPose(wolf);
         }
 
         // 7. Pacing Timer

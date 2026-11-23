@@ -62,11 +62,18 @@ public class WolfDamageHandler {
         
         WolfDebugLogger.log(wolf, "Hurt", "Source: " + source.getMsgId() + ", Amount: " + amount);
 
-        if (!wolf.isTame())
+        if (!wolf.isTame()) {
+            WolfSittingPoseHelper.clearSittingPoseOnDamage(wolf);
             return false;
+        }
 
-        if (!(source.getEntity() instanceof LivingEntity attacker))
+        if (!(source.getEntity() instanceof LivingEntity attacker)) {
+            if (WolfFriendlyFireHelper.shouldCancelDamage(wolf, source, amount)) {
+                return true;
+            }
+            WolfSittingPoseHelper.clearSittingPoseOnDamage(wolf);
             return false;
+        }
 
         boolean isOwner = attacker instanceof Player player && wolf.isOwnedBy(player);
         boolean isSneaking = attacker instanceof Player player && player.isShiftKeyDown();
@@ -104,6 +111,7 @@ public class WolfDamageHandler {
             }
         }
 
+        WolfSittingPoseHelper.clearSittingPoseOnDamage(wolf);
         return false;
     }
 }
