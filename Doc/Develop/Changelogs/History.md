@@ -4,6 +4,7 @@
 
 ### Fixed
 - **Genetic Scale & Voice Pitch Persistence Across Spawn, Breeding, Runt & Cure ([BL-BD-071])**:
+  - **Reported By**: `@UnderscoreNash` via GitHub Issue #14 (credited in `CHANGELOG.md`).
   - Routed wild/summoned scale writes (`WolfSpawnMixin`), offspring scale writes (`WolfBreedingMixin`), inbred runt penalties (`WolfInbreedingHelper`), and Golden Apple cure restoration (`WolfCureHelper`) through `WolfExtensions.betterdogs$setSocialScale(float)` across Fabric and NeoForge to persist `WolfPersistentData.scale` atomically with `Attributes.SCALE`.
   - Updated `WolfBreedingMixin`, `WolfInbreedingHelper`, and `WolfCureHelper` scale reads to prefer persisted `betterdogs$getSocialScale()` (`> 0.0f` fallback `Attributes.SCALE`), eliminating the `WolfSocialMixin.onTickTail` tick-1 snap back to `1.00` Scale / `1.000` Pitch Timbre while leaving existing `1.0f` wolves untouched.
   - Sanitized `NaN`, non-positive (`<= 0`), and infinite float inputs to `1.0f` in `WolfPersistentData`'s compact canonical constructor, `WolfPersistentData.setScale`, and `WolfSocialMixin.betterdogs$setSocialScale`.
