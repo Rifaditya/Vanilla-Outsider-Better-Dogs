@@ -70,7 +70,8 @@ public class WolfPersistentData {
             if (personality != null) {
                 output.putString(NBT_KEY_PERSONALITY, personality.getId());
             }
-            output.putInt(NBT_KEY_SOCIAL_SCALE, Math.round(socialScale * 10000.0f));
+            float safeSocialScale = (Float.isFinite(socialScale) && socialScale > 0.0f) ? socialScale : 1.0f;
+            output.putInt(NBT_KEY_SOCIAL_SCALE, Math.round(safeSocialScale * 10000.0f));
             output.putLong(NBT_KEY_DNA_SEED, dnaSeed);
             if (favoriteTreat != null && !favoriteTreat.isEmpty()) {
                 output.putString(NBT_KEY_FAVORITE_TREAT, favoriteTreat);
@@ -154,7 +155,9 @@ public class WolfPersistentData {
 
     public static float readSocialScaleFromSaveData(ValueInput input) {
         if (input != null) {
-            return input.getInt(NBT_KEY_SOCIAL_SCALE).map(v -> v / 10000.0f).orElse(1.0f);
+            return input.getInt(NBT_KEY_SOCIAL_SCALE)
+                    .map(v -> v > 0 ? v / 10000.0f : 1.0f)
+                    .orElse(1.0f);
         }
         return 1.0f;
     }
@@ -282,7 +285,8 @@ public class WolfPersistentData {
             if (personality != null) {
                 tag.putString(NBT_KEY_PERSONALITY, personality.getId());
             }
-            tag.putFloat(NBT_KEY_SOCIAL_SCALE, socialScale);
+            float safeSocialScale = (Float.isFinite(socialScale) && socialScale > 0.0f) ? socialScale : 1.0f;
+            tag.putFloat(NBT_KEY_SOCIAL_SCALE, safeSocialScale);
             tag.putLong(NBT_KEY_DNA_SEED, dnaSeed);
             if (favoriteTreat != null && !favoriteTreat.isEmpty()) {
                 tag.putString(NBT_KEY_FAVORITE_TREAT, favoriteTreat);
@@ -359,7 +363,9 @@ public class WolfPersistentData {
 
     public static float readSocialScaleFromNbt(CompoundTag tag) {
         if (tag != null && tag.contains(NBT_KEY_SOCIAL_SCALE)) {
-            return tag.getFloat(NBT_KEY_SOCIAL_SCALE).orElse(1.0f);
+            return tag.getFloat(NBT_KEY_SOCIAL_SCALE)
+                    .filter(v -> Float.isFinite(v) && v > 0.0f)
+                    .orElse(1.0f);
         }
         return 1.0f;
     }
