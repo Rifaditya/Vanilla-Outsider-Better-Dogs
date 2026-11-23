@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.7.23+26.2] - 2026-11-23
+
+### Fixed
+- **Genetic Scale & Voice Pitch Persistence Across Spawn, Breeding, Runt & Cure (`WolfSpawnMixin`, `WolfBreedingMixin`, `WolfSocialMixin`, `WolfInbreedingHelper`, `WolfCureHelper`, `WolfPersistentData`) (BL-BD-071)**:
+  - Routed wild/summoned spawn scale assignment in `WolfSpawnMixin`, inherited offspring scale assignment in `WolfBreedingMixin`, inbred runt scale penalties in `WolfInbreedingHelper`, and Golden Apple cure restoration in `WolfCureHelper` through `WolfExtensions.betterdogs$setSocialScale(float)` so both `WolfPersistentData.scale` and `Attributes.SCALE` update atomically.
+  - Resolved the tick-1 sync overwrite in `WolfSocialMixin.onTickTail` that previously reset `Attributes.SCALE` (and derived `CanineGeneticsHelper.getModulatedVoicePitch`) back to `1.00` / `1.000` immediately after spawn or breeding.
+  - Updated `WolfBreedingMixin`, `WolfInbreedingHelper`, and `WolfCureHelper` scale reads to prefer persisted `betterdogs$getSocialScale()` (`> 0.0f` fallback `Attributes.SCALE`), preserving existing `1.0f` wolves without migration re-rolls.
+  - Sanitized `NaN`, non-positive (`<= 0`), and infinite float inputs to `1.0f` inside `WolfPersistentData`'s compact canonical constructor, `WolfPersistentData.setScale`, and `WolfSocialMixin.betterdogs$setSocialScale`.
+
 ## [5.7.22+26.2] - 2026-11-19
 
 ### Fixed

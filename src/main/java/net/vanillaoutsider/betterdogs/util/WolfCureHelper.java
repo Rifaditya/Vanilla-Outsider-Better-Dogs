@@ -2,7 +2,6 @@
 // Verified against: Minecraft 26.2
 package net.vanillaoutsider.betterdogs.util;
 
-import net.dasik.social.api.genetics.GeneticsEngine;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -72,7 +71,7 @@ public final class WolfCureHelper {
             return false;
         }
 
-        return GeneticsEngine.getGenetics(wolf).inbred();
+        return WolfPersistentData.isPersistedInbred(wolf);
     }
 
     /**
@@ -103,9 +102,14 @@ public final class WolfCureHelper {
 
             // 3. Restore Scale to Normal
             var scaleAttr = wolf.getAttribute(Attributes.SCALE);
-            if (scaleAttr != null) {
-                float currentScale = (float) scaleAttr.getBaseValue();
-                scaleAttr.setBaseValue(calculateCuredScale(currentScale));
+            float currentScale = (wolf instanceof WolfExtensions ext && ext.betterdogs$getSocialScale() > 0.0f)
+                    ? ext.betterdogs$getSocialScale()
+                    : (scaleAttr != null ? (float) scaleAttr.getBaseValue() : 1.0f);
+            float curedScale = calculateCuredScale(currentScale);
+            if (wolf instanceof WolfExtensions ext) {
+                ext.betterdogs$setSocialScale(curedScale);
+            } else if (scaleAttr != null) {
+                scaleAttr.setBaseValue(curedScale);
             }
 
             // 4. Restore Personality Combat Stats
