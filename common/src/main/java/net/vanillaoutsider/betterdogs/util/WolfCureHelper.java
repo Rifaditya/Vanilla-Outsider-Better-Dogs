@@ -103,9 +103,14 @@ public final class WolfCureHelper {
 
             // 3. Restore Scale to Normal
             var scaleAttr = wolf.getAttribute(Attributes.SCALE);
-            if (scaleAttr != null) {
-                float currentScale = (float) scaleAttr.getBaseValue();
-                scaleAttr.setBaseValue(calculateCuredScale(currentScale));
+            float currentScale = (wolf instanceof WolfExtensions ext && ext.betterdogs$getSocialScale() > 0.0f)
+                    ? ext.betterdogs$getSocialScale()
+                    : (scaleAttr != null ? (float) scaleAttr.getBaseValue() : 1.0f);
+            float curedScale = calculateCuredScale(currentScale);
+            if (wolf instanceof WolfExtensions ext) {
+                ext.betterdogs$setSocialScale(curedScale);
+            } else if (scaleAttr != null) {
+                scaleAttr.setBaseValue(curedScale);
             }
 
             // 4. Restore Personality Combat Stats

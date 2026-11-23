@@ -1,6 +1,7 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
 package net.vanillaoutsider.betterdogs.platform;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
 import net.minecraft.world.entity.animal.wolf.Wolf;
@@ -9,7 +10,7 @@ import net.vanillaoutsider.betterdogs.platform.services.IWolfDataHelper;
 
 public class TestWolfDataHelper implements IWolfDataHelper {
 
-    private static final Map<Wolf, WolfPersistentData> DATA_STORE = new WeakHashMap<>();
+    private static final Map<Wolf, WolfPersistentData> DATA_STORE = Collections.synchronizedMap(new WeakHashMap<>());
 
     @Override
     public WolfPersistentData getWolfData(Wolf wolf) {

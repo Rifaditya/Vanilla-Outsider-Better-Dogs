@@ -24,6 +24,7 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
     public static final WolfPersistentData DEFAULT = new WolfPersistentData(-1, 0, false, "", 0L, 0L, 1.0f, Map.of(), Optional.empty(), false, Optional.empty(), false, false, 0, "", 0L, false, "");
 
     public WolfPersistentData {
+        scale = (Float.isFinite(scale) && scale > 0.0f) ? scale : 1.0f;
         bloodFeudTarget = bloodFeudTarget != null ? bloodFeudTarget : "";
         affinityMap = affinityMap != null ? Map.copyOf(affinityMap) : Map.of();
         leaderUuid = leaderUuid != null ? leaderUuid : Optional.empty();
@@ -219,7 +220,9 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
     }
 
     public static void setScale(int personalityId, int lastDamageTime, boolean submissive, @Nullable String bloodFeudTarget, long lastMischiefDay, long dna, Wolf wolf, float scale, Map<String, Integer> affinityMap, Optional<UUID> leaderUuid, boolean guardMode, Optional<BlockPos> guardPos, boolean adoptable) {
-        setWolfData(wolf, new WolfPersistentData(personalityId, lastDamageTime, submissive, bloodFeudTarget, lastMischiefDay, dna, scale, affinityMap, leaderUuid, guardMode, guardPos, adoptable, getWolfData(wolf).refusesGroundFood(), getWolfData(wolf).feedCount(), getWolfData(wolf).nemesisType(), getWolfData(wolf).nemesisExpiry(), getWolfData(wolf).discoveredTreat(), getWolfData(wolf).canineArchetype()));
+        float safeScale = (Float.isFinite(scale) && scale > 0.0f) ? scale : 1.0f;
+        WolfPersistentData current = getWolfData(wolf);
+        setWolfData(wolf, new WolfPersistentData(personalityId, lastDamageTime, submissive, bloodFeudTarget, lastMischiefDay, dna, safeScale, affinityMap, leaderUuid, guardMode, guardPos, adoptable, current.refusesGroundFood(), current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat(), current.canineArchetype()));
     }
 
     // ========== Social Bonding (v3.1.37) ==========

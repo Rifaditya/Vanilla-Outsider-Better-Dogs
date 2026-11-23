@@ -13,6 +13,7 @@ import java.util.UUID;
 import net.dasik.social.core.EntitySocialScheduler;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
@@ -27,6 +28,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityReference;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.GoalSelector;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.player.Player;
@@ -111,11 +115,13 @@ public class AdoptionSystemTest {
         wolf.betterdogs$setLeaderUuid(leaderUuid);
         wolf.betterdogs$setGuardMode(true);
         wolf.betterdogs$setGuardPos(new BlockPos(12, 64, -8));
+        wolf.betterdogs$setSocialScale(1.22f);
 
         Assertions.assertTrue(wolf.betterdogs$hasBloodFeud());
         Assertions.assertTrue(BloodFeudHelper.hasBloodFeud(wolf));
         Assertions.assertTrue(wolf.betterdogs$isGuardMode());
         Assertions.assertEquals(leaderUuid, wolf.betterdogs$getLeaderUuid());
+        Assertions.assertEquals(1.22f, wolf.betterdogs$getSocialScale(), 1e-5f);
 
         StubServerPlayer newOwner = createStubPlayer(newOwnerUuid, true);
         InteractionResult result = WolfAdoptionHelper.tryHandleAdoption(wolf, newOwner, ItemStack.EMPTY);
@@ -130,6 +136,8 @@ public class AdoptionSystemTest {
         Assertions.assertNull(wolf.betterdogs$getLeaderUuid(), "Adoption must reset old pack leader UUID");
         Assertions.assertFalse(wolf.betterdogs$isGuardMode(), "Adoption must reset guard mode");
         Assertions.assertNull(wolf.betterdogs$getGuardPos(), "Adoption must reset guard position");
+        Assertions.assertEquals(1.22f, wolf.betterdogs$getSocialScale(), 1e-5f, "Adoption must preserve genetic social scale");
+        Assertions.assertEquals(1.22d, wolf.getAttribute(Attributes.SCALE).getBaseValue(), 1e-5d, "Adoption must preserve Attributes.SCALE");
 
         WolfPersistentData persisted = WolfPersistentData.getWolfData(wolf);
         DataResult<Tag> encoded = Assertions.assertDoesNotThrow(() -> WolfPersistentData.CODEC.encodeStart(NbtOps.INSTANCE, persisted));
@@ -143,6 +151,7 @@ public class AdoptionSystemTest {
         Assertions.assertTrue(roundTripped.leaderUuid().isEmpty());
         Assertions.assertFalse(roundTripped.guardMode());
         Assertions.assertTrue(roundTripped.guardPos().isEmpty());
+        Assertions.assertEquals(1.22f, roundTripped.scale(), 1e-5f);
     }
 
     @Test
@@ -241,6 +250,7 @@ public class AdoptionSystemTest {
         private boolean tame;
         private boolean orderedToSit;
         private Level level;
+        private AttributeInstance scaleAttribute;
 
         private AdoptionStubWolf() {
             super(null, null);
@@ -251,7 +261,16 @@ public class AdoptionSystemTest {
             this.ownerUuid = ownerUuid;
             this.tame = tame;
             this.level = level;
+            this.scaleAttribute = new AttributeInstance(Attributes.SCALE, instance -> {});
             WolfPersistentData.setPersistedAdoptable(this, adoptable);
+        }
+
+        @Override
+        public @Nullable AttributeInstance getAttribute(Holder<Attribute> attribute) {
+            if (Attributes.SCALE.equals(attribute)) {
+                return this.scaleAttribute;
+            }
+            return null;
         }
 
         @Override
@@ -413,6 +432,15 @@ public class AdoptionSystemTest {
 
         @Override
         public void betterdogs$setSocialScale(float scale) {
+            float safeScale = (Float.isFinite(scale) && scale > 0.0f) ? scale : 1.0f;
+            WolfPersistentData current = WolfPersistentData.getWolfData(this);
+            WolfPersistentData.setScale(current.personalityId(), current.lastDamageTime(), current.submissive(),
+                    current.bloodFeudTarget(), current.lastMischiefDay(), current.dna(), this, safeScale,
+                    current.affinityMap(), current.leaderUuid(), current.guardMode(), current.guardPos(), current.adoptable());
+            AttributeInstance scaleAttr = this.getAttribute(Attributes.SCALE);
+            if (scaleAttr != null) {
+                scaleAttr.setBaseValue(safeScale);
+            }
         }
 
         @Override
