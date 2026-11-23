@@ -43,7 +43,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     private net.vanillaoutsider.betterdogs.personality.CanineArchetype betterdogs$canineArchetype = null;
 
     @Unique
-    private float betterdogs$socialScale = 1.0f;
+    private float betterdogs$socialScale = 0.0f;
 
     @Unique
     private long betterdogs$dnaSeed = 0L;
@@ -369,15 +369,20 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     @Override
     public float betterdogs$getSocialScale() {
         if (this.betterdogs$socialScale <= 0.0f) {
-            Wolf wolf = (Wolf) (Object) this;
-            this.betterdogs$socialScale = net.vanillaoutsider.betterdogs.util.WolfScaleGeneticsHelper.generateWildWolfScale(wolf.getCommandSenderWorld(), wolf.getRandom());
+            if (this.getCommandSenderWorld() != null && this.getCommandSenderWorld().isClientSide) {
+                return 1.0f;
+            }
+            float wildScale = net.vanillaoutsider.betterdogs.util.WolfScaleGeneticsHelper
+                    .generateWildWolfScale(this.getCommandSenderWorld(), this.getRandom());
+            this.betterdogs$setSocialScale(wildScale);
         }
         return this.betterdogs$socialScale;
     }
 
     @Override
     public void betterdogs$setSocialScale(float scale) {
-        this.betterdogs$socialScale = scale;
+        float safeScale = (Float.isFinite(scale) && scale > 0.0f) ? scale : 1.0f;
+        this.betterdogs$socialScale = safeScale;
     }
 
     @Override
@@ -731,6 +736,9 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
             net.minecraft.nbt.CompoundTag tag) {
         net.minecraft.world.entity.SpawnGroupData data = super.finalizeSpawn(level, difficulty, spawnType, groupData, tag);
         if (!level.getLevel().isClientSide()) {
+            float wildScale = net.vanillaoutsider.betterdogs.util.WolfScaleGeneticsHelper
+                    .generateWildWolfScale(level.getLevel(), this.getRandom());
+            this.betterdogs$setSocialScale(wildScale);
             if (net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.isDogGeneticsEnabled(level.getLevel())) {
                 float wildSpeed = net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper.clamp(
                         0.30f + (float) this.getRandom().nextGaussian() * net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper.SPEED_STD_DEV,
