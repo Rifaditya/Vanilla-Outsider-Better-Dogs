@@ -3,7 +3,8 @@
 ## [5.7.23+26.2] - 2026-11-23
 
 ### Fixed
-- **Genetic Scale & Voice Pitch Persistence Across Spawn, Breeding, Runt & Cure (`WolfSpawnMixin`, `WolfBreedingMixin`, `WolfSocialMixin`, `WolfInbreedingHelper`, `WolfCureHelper`, `WolfPersistentData`) (BL-BD-071)**:
+- **Genetic Scale & Voice Pitch Persistence Across Spawn, Breeding, Runt & Cure** (`WolfSpawnMixin`, `WolfBreedingMixin`, `WolfSocialMixin`, `WolfInbreedingHelper`, `WolfCureHelper`, `WolfPersistentData`) (BL-BD-071) *(Reported by @UnderscoreNash on GitHub Issue #14)*:
+  - Special thanks to `@UnderscoreNash` for identifying and reporting the wolf size and voice pitch reset bug on GitHub Issue #14!
   - Routed wild/summoned spawn scale assignment in `WolfSpawnMixin`, inherited offspring scale assignment in `WolfBreedingMixin`, inbred runt scale penalties in `WolfInbreedingHelper`, and Golden Apple cure restoration in `WolfCureHelper` through `WolfExtensions.betterdogs$setSocialScale(float)` so both `WolfPersistentData.scale` and `Attributes.SCALE` update atomically.
   - Resolved the tick-1 sync overwrite in `WolfSocialMixin.onTickTail` that previously reset `Attributes.SCALE` (and derived `CanineGeneticsHelper.getModulatedVoicePitch`) back to `1.00` / `1.000` immediately after spawn or breeding.
   - Updated `WolfBreedingMixin`, `WolfInbreedingHelper`, and `WolfCureHelper` scale reads to prefer persisted `betterdogs$getSocialScale()` (`> 0.0f` fallback `Attributes.SCALE`), preserving existing `1.0f` wolves without migration re-rolls.
@@ -71,7 +72,8 @@
 ## [5.7.15+26.2] - 2026-11-14
 
 ### Fixed
-- **Restored Pacifist Defensive Retaliation AI & HurtByTargetGoal Target/Tether Fixes (BL-BD-062)**:
+- **Restored Pacifist Defensive Retaliation AI & HurtByTargetGoal Target/Tether Fixes (BL-BD-062)** *(Reported by Night Dragon(Jasmine) on Discord)*:
+  - Special thanks to `Night Dragon(Jasmine)` for reporting Pacifist defensive retaliation behavior on Discord!
   - Restored `PacifistRevengeGoal` from the broken Step 25 `extends Goal` fleeing stub back to `extends HurtByTargetGoal` and relocated its registration in `WolfAIMixin` from `goalSelector` priority 2 to `targetSelector` priority 3 alongside `AggressiveTargetGoal` (`priority 2`), bringing `MC 26.2` back into behavioral parity with the Legacy & Transitional anchors.
   - Enforced the `24.0` block (`576.0` squared) owner-defense tether identically in both `canUse()` and `canContinueToUse()` to eliminate 1-tick goal thrash loops at range boundaries while allowing self-defense when the owner is offline (`getOwner() == null`).
   - Overrode `start()` to preserve resolved owner-defense targets across `super.start()`, preventing vanilla `HurtByTargetGoal.start()` from wiping `wolf.getTarget()` back to `null` when only the owner was struck, and rallying nearby non-Pacifist standing co-owned adult packmates within `16.0` blocks while maintaining Creeper, discipline, and co-owned civil-war immunity.
