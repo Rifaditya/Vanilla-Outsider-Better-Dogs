@@ -2,13 +2,14 @@
 // Verified against: Minecraft 26.3
 package net.vanillaoutsider.betterdogs.util;
 
-import net.dasik.social.api.genetics.GeneticsEngine;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.BetterDogs;
+import net.vanillaoutsider.betterdogs.WolfExtensions;
+import net.vanillaoutsider.betterdogs.WolfPersistentData;
 
 import java.util.UUID;
 
@@ -72,15 +73,20 @@ public final class WolfInbreedingHelper {
             return;
         }
 
-        var babyGen = GeneticsEngine.getGenetics(baby);
-        var p1Gen = GeneticsEngine.getGenetics(parent1);
-        var p2Gen = GeneticsEngine.getGenetics(parent2);
+        var babyGen = WolfPersistentData.getGeneticsData(baby);
+        var p1Gen = WolfPersistentData.getGeneticsData(parent1);
+        var p2Gen = WolfPersistentData.getGeneticsData(parent2);
 
         if (babyGen.inbred()) {
             var babyScaleAttr = baby.getAttribute(Attributes.SCALE);
-            if (babyScaleAttr != null) {
-                float currentScale = (float) babyScaleAttr.getBaseValue();
-                babyScaleAttr.setBaseValue(calculateRuntScale(currentScale, RUNT_SCALE_MULTIPLIER));
+            float currentScale = (baby instanceof WolfExtensions ext && ext.betterdogs$getSocialScale() > 0.0f)
+                    ? ext.betterdogs$getSocialScale()
+                    : (babyScaleAttr != null ? (float) babyScaleAttr.getBaseValue() : 1.0f);
+            float runtScale = calculateRuntScale(currentScale, RUNT_SCALE_MULTIPLIER);
+            if (baby instanceof WolfExtensions ext) {
+                ext.betterdogs$setSocialScale(runtScale);
+            } else if (babyScaleAttr != null) {
+                babyScaleAttr.setBaseValue(runtScale);
             }
             playRuntBirthFeedback(baby, level);
 

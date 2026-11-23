@@ -25,8 +25,10 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
     public static final WolfPersistentData DEFAULT = new WolfPersistentData(-1, 0, false, "", 0L, 0L, 1.0f, Map.of(), Optional.empty(), false, Optional.empty(), false, false, 0, "", 0L, false, "");
 
     private static final Map<Wolf, WolfPersistentData> HEADLESS_FALLBACK_DATA = Collections.synchronizedMap(new WeakHashMap<>());
+    private static final Map<Wolf, net.dasik.social.api.genetics.EntityGenetics> HEADLESS_FALLBACK_GENETICS = Collections.synchronizedMap(new WeakHashMap<>());
 
     public WolfPersistentData {
+        scale = (Float.isFinite(scale) && scale > 0.0f) ? scale : 1.0f;
         bloodFeudTarget = bloodFeudTarget != null ? bloodFeudTarget : "";
         affinityMap = affinityMap != null ? Map.copyOf(affinityMap) : Map.of();
         leaderUuid = leaderUuid != null ? leaderUuid : Optional.empty();
@@ -228,7 +230,9 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
     }
 
     public static void setScale(int personalityId, int lastDamageTime, boolean submissive, @Nullable String bloodFeudTarget, long lastMischiefDay, long dna, Wolf wolf, float scale, Map<String, Integer> affinityMap, Optional<UUID> leaderUuid, boolean guardMode, Optional<BlockPos> guardPos, boolean adoptable) {
-        setWolfData(wolf, new WolfPersistentData(personalityId, lastDamageTime, submissive, bloodFeudTarget, lastMischiefDay, dna, scale, affinityMap, leaderUuid, guardMode, guardPos, adoptable, getWolfData(wolf).refusesGroundFood(), getWolfData(wolf).feedCount(), getWolfData(wolf).nemesisType(), getWolfData(wolf).nemesisExpiry(), getWolfData(wolf).discoveredTreat(), getWolfData(wolf).canineArchetype()));
+        float safeScale = (Float.isFinite(scale) && scale > 0.0f) ? scale : 1.0f;
+        WolfPersistentData current = getWolfData(wolf);
+        setWolfData(wolf, new WolfPersistentData(personalityId, lastDamageTime, submissive, bloodFeudTarget, lastMischiefDay, dna, safeScale, affinityMap, leaderUuid, guardMode, guardPos, adoptable, current.refusesGroundFood(), current.feedCount(), current.nemesisType(), current.nemesisExpiry(), current.discoveredTreat(), current.canineArchetype()));
     }
 
     // ========== Social Bonding (v3.1.37) ==========
@@ -311,16 +315,39 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
 
     // ========== Range Stats (v4.3.1) - Migrated to DasikLibrary ==========
 
+    public static net.dasik.social.api.genetics.EntityGenetics getGeneticsData(@Nullable Wolf wolf) {
+        if (wolf == null) {
+            return net.dasik.social.api.genetics.EntityGenetics.DEFAULT;
+        }
+        try {
+            return net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf);
+        } catch (UnsupportedOperationException | IllegalStateException | ExceptionInInitializerError | NoClassDefFoundError ignored) {
+            return HEADLESS_FALLBACK_GENETICS.getOrDefault(wolf, net.dasik.social.api.genetics.EntityGenetics.DEFAULT);
+        }
+    }
+
+    public static void setGeneticsData(@Nullable Wolf wolf, net.dasik.social.api.genetics.@Nullable EntityGenetics genetics) {
+        if (wolf == null) {
+            return;
+        }
+        net.dasik.social.api.genetics.EntityGenetics safeGenetics = genetics != null ? genetics : net.dasik.social.api.genetics.EntityGenetics.DEFAULT;
+        try {
+            net.dasik.social.api.genetics.GeneticsEngine.setGenetics(wolf, safeGenetics);
+        } catch (UnsupportedOperationException | IllegalStateException | ExceptionInInitializerError | NoClassDefFoundError ignored) {
+            HEADLESS_FALLBACK_GENETICS.put(wolf, safeGenetics);
+        }
+    }
+
     public static float getPersistedHealthBonus(Wolf wolf) {
-        net.dasik.social.api.genetics.EntityGenetics genetics = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf);
+        net.dasik.social.api.genetics.EntityGenetics genetics = getGeneticsData(wolf);
         return genetics.traits().getOrDefault("max_health", 0.0f);
     }
 
     public static void setPersistedHealthBonus(Wolf wolf, float hp) {
-        net.dasik.social.api.genetics.EntityGenetics genetics = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf);
+        net.dasik.social.api.genetics.EntityGenetics genetics = getGeneticsData(wolf);
         java.util.Map<String, Float> traits = new HashMap<>(genetics.traits());
         traits.put("max_health", hp);
-        net.dasik.social.api.genetics.GeneticsEngine.setGenetics(wolf, new net.dasik.social.api.genetics.EntityGenetics(
+        setGeneticsData(wolf, new net.dasik.social.api.genetics.EntityGenetics(
             genetics.parent1Uuid(),
             genetics.parent2Uuid(),
             genetics.inbred(),
@@ -330,15 +357,15 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
     }
 
     public static float getPersistedDamageMod(Wolf wolf) {
-        net.dasik.social.api.genetics.EntityGenetics genetics = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf);
+        net.dasik.social.api.genetics.EntityGenetics genetics = getGeneticsData(wolf);
         return genetics.traits().getOrDefault("attack_damage", 0.0f);
     }
 
     public static void setPersistedDamageMod(Wolf wolf, float dmg) {
-        net.dasik.social.api.genetics.EntityGenetics genetics = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf);
+        net.dasik.social.api.genetics.EntityGenetics genetics = getGeneticsData(wolf);
         java.util.Map<String, Float> traits = new HashMap<>(genetics.traits());
         traits.put("attack_damage", dmg);
-        net.dasik.social.api.genetics.GeneticsEngine.setGenetics(wolf, new net.dasik.social.api.genetics.EntityGenetics(
+        setGeneticsData(wolf, new net.dasik.social.api.genetics.EntityGenetics(
             genetics.parent1Uuid(),
             genetics.parent2Uuid(),
             genetics.inbred(),
@@ -348,15 +375,15 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
     }
 
     public static float getPersistedSpeedMod(Wolf wolf) {
-        net.dasik.social.api.genetics.EntityGenetics genetics = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf);
+        net.dasik.social.api.genetics.EntityGenetics genetics = getGeneticsData(wolf);
         return genetics.traits().getOrDefault("movement_speed", 0.0f);
     }
 
     public static void setPersistedSpeedMod(Wolf wolf, float speed) {
-        net.dasik.social.api.genetics.EntityGenetics genetics = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf);
+        net.dasik.social.api.genetics.EntityGenetics genetics = getGeneticsData(wolf);
         java.util.Map<String, Float> traits = new HashMap<>(genetics.traits());
         traits.put("movement_speed", speed);
-        net.dasik.social.api.genetics.GeneticsEngine.setGenetics(wolf, new net.dasik.social.api.genetics.EntityGenetics(
+        setGeneticsData(wolf, new net.dasik.social.api.genetics.EntityGenetics(
             genetics.parent1Uuid(),
             genetics.parent2Uuid(),
             genetics.inbred(),
@@ -366,12 +393,12 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
     }
 
     public static boolean arePersistedStatsRolled(Wolf wolf) {
-        return net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf).traitsRolled();
+        return getGeneticsData(wolf).traitsRolled();
     }
 
     public static void setPersistedStatsRolled(Wolf wolf, boolean rolled) {
-        net.dasik.social.api.genetics.EntityGenetics genetics = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf);
-        net.dasik.social.api.genetics.GeneticsEngine.setGenetics(wolf, new net.dasik.social.api.genetics.EntityGenetics(
+        net.dasik.social.api.genetics.EntityGenetics genetics = getGeneticsData(wolf);
+        setGeneticsData(wolf, new net.dasik.social.api.genetics.EntityGenetics(
             genetics.parent1Uuid(),
             genetics.parent2Uuid(),
             genetics.inbred(),
@@ -383,20 +410,20 @@ public record WolfPersistentData(int personalityId, int lastDamageTime, boolean 
     // ========== Kinship / Parents ==========
 
     public static Optional<UUID> getPersistedParent1Uuid(Wolf wolf) {
-        return net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf).parent1Uuid();
+        return getGeneticsData(wolf).parent1Uuid();
     }
 
     public static Optional<UUID> getPersistedParent2Uuid(Wolf wolf) {
-        return net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf).parent2Uuid();
+        return getGeneticsData(wolf).parent2Uuid();
     }
 
     public static boolean isPersistedInbred(Wolf wolf) {
-        return net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf).inbred();
+        return getGeneticsData(wolf).inbred();
     }
 
     public static void setPersistedParentsAndInbred(Wolf wolf, @Nullable UUID p1, @Nullable UUID p2, boolean inbred) {
-        net.dasik.social.api.genetics.EntityGenetics genetics = net.dasik.social.api.genetics.GeneticsEngine.getGenetics(wolf);
-        net.dasik.social.api.genetics.GeneticsEngine.setGenetics(wolf, new net.dasik.social.api.genetics.EntityGenetics(
+        net.dasik.social.api.genetics.EntityGenetics genetics = getGeneticsData(wolf);
+        setGeneticsData(wolf, new net.dasik.social.api.genetics.EntityGenetics(
             Optional.ofNullable(p1),
             Optional.ofNullable(p2),
             inbred,

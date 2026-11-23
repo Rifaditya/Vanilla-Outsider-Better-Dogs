@@ -53,22 +53,19 @@ public abstract class WolfBreedingMixin {
         babyExt.betterdogs$setPersonality(babyPersonality);
 
         // Inherit offspring scale with continuous variance
-        float p1Scale = 1.0f;
-        var s1 = parent1.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.SCALE);
-        if (s1 != null) {
-            p1Scale = (float) s1.getBaseValue();
+        float p1Scale = ext1.betterdogs$getSocialScale();
+        if (p1Scale <= 0.0f) {
+            var s1 = parent1.getAttribute(Attributes.SCALE);
+            p1Scale = (s1 != null) ? (float) s1.getBaseValue() : 1.0f;
         }
-        float p2Scale = 1.0f;
-        var s2 = parent2.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.SCALE);
-        if (s2 != null) {
-            p2Scale = (float) s2.getBaseValue();
+        float p2Scale = ext2.betterdogs$getSocialScale();
+        if (p2Scale <= 0.0f) {
+            var s2 = parent2.getAttribute(Attributes.SCALE);
+            p2Scale = (s2 != null) ? (float) s2.getBaseValue() : 1.0f;
         }
 
         float babyScale = WolfScaleGeneticsHelper.calculateOffspringScale(level, p1Scale, p2Scale, baby.getRandom());
-        var babyScaleAttr = baby.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.SCALE);
-        if (babyScaleAttr != null) {
-            babyScaleAttr.setBaseValue(babyScale);
-        }
+        babyExt.betterdogs$setSocialScale(babyScale);
 
         // Canine Physical Genetics (Movement Speed & Max Health)
         if (DynamicGameRuleManager.getBoolean(level, BetterDogsGameRules.BD_DOG_GENETICS_ENABLED)) {

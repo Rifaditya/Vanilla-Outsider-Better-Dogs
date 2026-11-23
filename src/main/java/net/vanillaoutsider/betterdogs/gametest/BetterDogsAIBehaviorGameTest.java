@@ -8,18 +8,25 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.gametest.framework.GameTestSequence;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityReference;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameType;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
+import net.vanillaoutsider.betterdogs.WolfPersistentData;
+import net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper;
 import net.vanillaoutsider.betterdogs.personality.CanineArchetype;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
@@ -31,6 +38,7 @@ import net.vanillaoutsider.betterdogs.ai.WolfGuardGoal;
 import net.vanillaoutsider.betterdogs.ai.WildWolfWanderGoal;
 import net.vanillaoutsider.betterdogs.util.PackAudienceHelper;
 import net.vanillaoutsider.betterdogs.util.WolfCatchupHelper;
+import net.vanillaoutsider.betterdogs.util.WolfCureHelper;
 import net.vanillaoutsider.betterdogs.util.WolfFriendlyFireHelper;
 
 /**
@@ -426,5 +434,125 @@ public class BetterDogsAIBehaviorGameTest {
         }
 
         helper.succeed();
+    }
+
+    @GameTest
+    public void testGeneticScalePersistsAcrossTicksAndBreedCure(GameTestHelper helper) {
+        ServerLevel serverLevel = helper.getLevel();
+
+        // 1. Spawn wild wolves via EntitySpawnReason.COMMAND so WolfSpawnMixin.finalizeSpawn executes
+        Wolf[] spawnedWolves = new Wolf[4];
+        float[] spawnedScales = new float[4];
+        boolean anyNonDefaultSpawn = false;
+        for (int i = 0; i < spawnedWolves.length; i++) {
+            Wolf wild = helper.spawn(EntityTypes.WOLF, new BlockPos(2 + i, 2, 2), EntitySpawnReason.COMMAND);
+            helper.assertTrue(wild != null && wild instanceof WolfExtensions, "Spawned wolf must implement WolfExtensions");
+            WolfExtensions ext = (WolfExtensions) wild;
+            var scaleAttr = wild.getAttribute(Attributes.SCALE);
+            helper.assertTrue(scaleAttr != null, "Spawned wolf must have Attributes.SCALE");
+            float persisted = ext.betterdogs$getSocialScale();
+            float attrVal = (float) scaleAttr.getBaseValue();
+            helper.assertTrue(Math.abs(persisted - attrVal) < 1e-4f,
+                    "finalizeSpawn must persist wild scale into both WolfPersistentData and Attributes.SCALE (persisted="
+                            + persisted + ", attr=" + attrVal + ")");
+            if (Math.abs(persisted - 1.0f) > 0.005f) {
+                anyNonDefaultSpawn = true;
+            }
+            spawnedWolves[i] = wild;
+            spawnedScales[i] = persisted;
+        }
+        helper.assertTrue(anyNonDefaultSpawn, "At least one spawned wolf must roll a non-1.00f genetic scale");
+
+        // 2. Breeding inheritance persistence (unrelated large parents -> baby > 1.05f)
+        Wolf parent1 = helper.spawn(EntityTypes.WOLF, new BlockPos(2, 2, 4));
+        Wolf outcrossParent = helper.spawn(EntityTypes.WOLF, new BlockPos(3, 2, 4));
+        helper.assertTrue(parent1 != null && outcrossParent != null, "Breeding parent wolves failed to spawn");
+        ((WolfExtensions) parent1).betterdogs$setSocialScale(1.30f);
+        ((WolfExtensions) outcrossParent).betterdogs$setSocialScale(1.26f);
+
+        Wolf normalBaby = parent1.getBreedOffspring(serverLevel, outcrossParent);
+        helper.assertTrue(normalBaby != null, "getBreedOffspring must produce a normal puppy");
+        BlockPos normalBabyPos = helper.absolutePos(new BlockPos(4, 2, 4));
+        normalBaby.snapTo(normalBabyPos.getX() + 0.5, normalBabyPos.getY(), normalBabyPos.getZ() + 0.5, 0.0f, 0.0f);
+        serverLevel.addFreshEntity(normalBaby);
+
+        float normalBabyScale = ((WolfExtensions) normalBaby).betterdogs$getSocialScale();
+        helper.assertTrue(normalBabyScale > 1.05f,
+                "Offspring of large parents must inherit persisted scale > 1.05f, got " + normalBabyScale);
+        helper.assertTrue(Math.abs(normalBabyScale - (float) normalBaby.getAttribute(Attributes.SCALE).getBaseValue()) < 1e-4f,
+                "Normal puppy Attributes.SCALE must match persisted scale");
+
+        // 3. Inbred runt penalty persistence (< 0.75f) + Golden Apple cure restoration
+        Wolf siblingParent = helper.spawn(EntityTypes.WOLF, new BlockPos(5, 2, 4));
+        helper.assertTrue(siblingParent != null, "Sibling parent failed to spawn");
+        UUID sharedAncestor = UUID.randomUUID();
+        WolfPersistentData.setPersistedParentsAndInbred(parent1, sharedAncestor, null, false);
+        WolfPersistentData.setPersistedParentsAndInbred(siblingParent, sharedAncestor, null, false);
+        ((WolfExtensions) parent1).betterdogs$setSocialScale(0.90f);
+        ((WolfExtensions) siblingParent).betterdogs$setSocialScale(0.90f);
+
+        Wolf inbredBaby = parent1.getBreedOffspring(serverLevel, siblingParent);
+        helper.assertTrue(inbredBaby != null, "getBreedOffspring must produce an inbred puppy");
+        BlockPos inbredBabyPos = helper.absolutePos(new BlockPos(5, 2, 5));
+        inbredBaby.snapTo(inbredBabyPos.getX() + 0.5, inbredBabyPos.getY(), inbredBabyPos.getZ() + 0.5, 0.0f, 0.0f);
+        serverLevel.addFreshEntity(inbredBaby);
+
+        helper.assertTrue(WolfPersistentData.isPersistedInbred(inbredBaby),
+                "Shared-ancestor offspring must be marked inbred");
+        float runtScale = ((WolfExtensions) inbredBaby).betterdogs$getSocialScale();
+        helper.assertTrue(runtScale < 0.75f,
+                "Inbred runt puppy must persist reduced scale < 0.75f, got " + runtScale);
+        helper.assertTrue(Math.abs(runtScale - (float) inbredBaby.getAttribute(Attributes.SCALE).getBaseValue()) < 1e-4f,
+                "Inbred runt puppy Attributes.SCALE must match persisted runt scale");
+
+        Player mockOwner = helper.makeMockPlayer(GameType.SURVIVAL);
+        GameTestSequence seq = helper.startSequence();
+        seq.thenExecuteAfter(5, () -> {
+            // Verify tick 1+ WolfSocialMixin sync preserves wild, normal baby, and runt scales + voice pitch
+            for (int i = 0; i < spawnedWolves.length; i++) {
+                Wolf wild = spawnedWolves[i];
+                float expected = spawnedScales[i];
+                helper.assertTrue(Math.abs(((WolfExtensions) wild).betterdogs$getSocialScale() - expected) < 1e-4f,
+                        "Spawned wolf " + i + " lost persisted scale after ticks");
+                helper.assertTrue(Math.abs((float) wild.getAttribute(Attributes.SCALE).getBaseValue() - expected) < 1e-4f,
+                        "Spawned wolf " + i + " Attributes.SCALE snapped after ticks");
+                float expectedPitch = CanineGeneticsHelper.calculateVoicePitch(1.0f, expected);
+                helper.assertTrue(Math.abs(CanineGeneticsHelper.getModulatedVoicePitch(wild, 1.0f) - expectedPitch) < 1e-4f,
+                        "Spawned wolf " + i + " modulated voice pitch drifted after ticks");
+            }
+
+            helper.assertTrue(Math.abs(((WolfExtensions) normalBaby).betterdogs$getSocialScale() - normalBabyScale) < 1e-4f,
+                    "Bred puppy lost persisted scale after ticks");
+            helper.assertTrue(Math.abs((float) normalBaby.getAttribute(Attributes.SCALE).getBaseValue() - normalBabyScale) < 1e-4f,
+                    "Bred puppy Attributes.SCALE snapped back after ticks");
+            helper.assertTrue(CanineGeneticsHelper.getModulatedVoicePitch(normalBaby, 1.0f) < 0.98f,
+                    "Large bred puppy voice pitch must remain modulated (< 0.98f)");
+
+            helper.assertTrue(Math.abs(((WolfExtensions) inbredBaby).betterdogs$getSocialScale() - runtScale) < 1e-4f,
+                    "Inbred runt puppy lost persisted scale after ticks");
+            helper.assertTrue(Math.abs((float) inbredBaby.getAttribute(Attributes.SCALE).getBaseValue() - runtScale) < 1e-4f,
+                    "Inbred runt puppy Attributes.SCALE snapped back after ticks");
+            helper.assertTrue(CanineGeneticsHelper.getModulatedVoicePitch(inbredBaby, 1.0f) > 1.12f,
+                    "Small runt puppy voice pitch must remain modulated (> 1.12f)");
+
+            // Cure inbred runt with Golden Apple and verify restoration persists across further ticks
+            inbredBaby.setTame(true, false);
+            inbredBaby.setOwner(mockOwner);
+            InteractionResult cureResult = WolfCureHelper.tryCureInbredWolf(
+                    inbredBaby, mockOwner, InteractionHand.MAIN_HAND, new ItemStack(Items.GOLDEN_APPLE));
+            helper.assertTrue(cureResult == InteractionResult.SUCCESS, "Golden Apple cure must return SUCCESS");
+            helper.assertTrue(!WolfPersistentData.isPersistedInbred(inbredBaby), "Cure must clear inbred status");
+            helper.assertTrue(Math.abs(((WolfExtensions) inbredBaby).betterdogs$getSocialScale() - 1.0f) < 1e-4f,
+                    "Cure must persist restored 1.0f scale");
+            helper.assertTrue(Math.abs((float) inbredBaby.getAttribute(Attributes.SCALE).getBaseValue() - 1.0f) < 1e-4f,
+                    "Cure must update Attributes.SCALE to 1.0f");
+        }).thenExecuteAfter(3, () -> {
+            helper.assertTrue(Math.abs(((WolfExtensions) inbredBaby).betterdogs$getSocialScale() - 1.0f) < 1e-4f,
+                    "Cured wolf persisted scale must stay 1.0f after subsequent ticks");
+            helper.assertTrue(Math.abs((float) inbredBaby.getAttribute(Attributes.SCALE).getBaseValue() - 1.0f) < 1e-4f,
+                    "Cured wolf Attributes.SCALE must stay 1.0f after subsequent ticks");
+            helper.assertTrue(Math.abs((float) normalBaby.getAttribute(Attributes.SCALE).getBaseValue() - normalBabyScale) < 1e-4f,
+                    "Normal bred puppy scale must still remain at " + normalBabyScale);
+        }).thenSucceed();
     }
 }

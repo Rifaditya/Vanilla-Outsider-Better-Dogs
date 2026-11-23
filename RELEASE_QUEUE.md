@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 5.7.23+26.3** - Persist Genetic Scale & Modulated Voice Pitch Across Spawn, Ticks, Breeding, Runt & Cure (BL-BD-071)
 - [ ] **Better Dogs 5.7.22+26.3** - Fix Reinforcement Wolf Suffocation on Sloped Terrain & Unloaded Chunk Guard (BL-BD-047)
 - [ ] **Better Dogs 5.7.21+26.3** - Fix Inverted Aggressive Follow Teleport Thresholds & Catchup Parity (BL-BD-046)
 - [ ] **Better Dogs 5.7.20+26.3** - Fix Permanent Play Disqualification & Static UUID Heap Leaks in SmallFightHelper (BL-BD-043)

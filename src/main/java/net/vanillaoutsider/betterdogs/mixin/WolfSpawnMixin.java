@@ -51,10 +51,7 @@ public abstract class WolfSpawnMixin extends TamableAnimal {
 
                 // Apply wild scale via Gaussian distribution
                 float wildScale = WolfScaleGeneticsHelper.generateWildWolfScale(level.getLevel(), this.getRandom());
-                var scaleAttr = wolf.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.SCALE);
-                if (scaleAttr != null) {
-                    scaleAttr.setBaseValue(wildScale);
-                }
+                ext.betterdogs$setSocialScale(wildScale);
 
                 // Apply personality stats immediately at spawn
                 WolfPersonalityStatHelper.applyPersonalityStats(wolf, personality);
