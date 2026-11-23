@@ -23,6 +23,10 @@ public class WolfCombatHooks {
      * @return true if the damage should be CANCELLED, false otherwise.
      */
     public static boolean onActuallyHurt(Wolf wolf, DamageSource source, float amount) {
+        if (wolf == null || source == null) {
+            return false;
+        }
+
         // Heroic Sacrifice Damage Routing & Anti-One-Shot Protection (BL-BD-021)
         if (net.vanillaoutsider.betterdogs.ai.WolfProjectileInterceptHelper.handleInterceptDamage(wolf, source, amount)) {
             return true;
@@ -54,11 +58,18 @@ public class WolfCombatHooks {
         
         WolfDebugLogger.log(wolf, "Hurt", "Source: " + source.getMsgId() + ", Amount: " + amount);
 
-        if (!wolf.isTame())
+        if (!wolf.isTame()) {
+            WolfSittingPoseHelper.clearSittingPoseOnDamage(wolf);
             return false;
+        }
 
-        if (!(source.getEntity() instanceof LivingEntity attacker))
+        if (!(source.getEntity() instanceof LivingEntity attacker)) {
+            if (WolfFriendlyFireHelper.shouldCancelDamage(wolf, source, amount)) {
+                return true;
+            }
+            WolfSittingPoseHelper.clearSittingPoseOnDamage(wolf);
             return false;
+        }
 
         boolean isOwner = attacker instanceof Player player && wolf.isOwnedBy(player);
         boolean isSneaking = attacker instanceof Player player && player.isShiftKeyDown();
@@ -100,6 +111,7 @@ public class WolfCombatHooks {
             }
         }
 
+        WolfSittingPoseHelper.clearSittingPoseOnDamage(wolf);
         return false; // Default: Do not cancel
     }
 }

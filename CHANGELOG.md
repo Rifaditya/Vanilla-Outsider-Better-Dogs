@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.7.24+26.1.2] - 2026-11-23
+
+### Fixed
+- **Sitting Pose State Desync During Movement & AI Transitions** (`WolfSittingPoseHelper`, `PersonalityFollowOwnerGoal`, `WolfMixin`, `WolfMobMixin`, `WolfCombatHooks`) (BL-BD-069) *(Reported by Apeirohex on Discord)*:
+  - Special thanks to `Apeirohex` on Discord for spotting and reporting lazy dogs sliding around in the sitting pose while walking, running, and jumping!
+  - Added server-side posture synchronization in `WolfSittingPoseHelper` and `WolfMixin` across Fabric and NeoForge so dogs idling in `CanineArchetype.LAZY` resting pose immediately stand up (`setInSittingPose(false)`) whenever navigation starts, horizontal/vertical movement occurs, a combat target is set (`WolfMobMixin`), or non-cancelled damage is taken (`WolfCombatHooks`), without ever altering player-ordered sitting (`isOrderedToSit()`) or boat/minecart passenger seating (`isPassenger()`).
+  - Hardened `PersonalityFollowOwnerGoal.stop()` to verify grounded/safe resting preconditions (`canEnterLazyRestingPose`) and zero residual horizontal momentum before entering the lazy resting pose, preventing single-tick deceleration state cancellation and redundant `SynchedEntityData` network updates.
+  - Cleared stale non-commanded sitting poses on start in `TamedWanderNearOwnerGoal`, `WanderlustGoal`, `WolfSeekWaterOnFireGoal`, and `WolfGuardGoal`, and fixed `AvoidGhastFireballGoal`, `FleeExplodingHazardGoal`, and `WolfProjectileInterceptGoal` so scrambling out of a lazy rest pose no longer falsely turns the dog into permanently ordered-to-sit (`wasSitting`).
+
 ## [5.7.23+26.1.2] - 2026-11-23
 
 ### Fixed
