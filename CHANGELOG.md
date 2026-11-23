@@ -3,7 +3,8 @@
 ## [1.7.23+1.21.1] - 2026-11-23
 
 ### Fixed
-- **Wild-Spawn Genetic Scale & Voice Pitch Persistence (`WolfMixin`, `WolfPersistentData`) (BL-BD-071)**:
+- **Wild-Spawn Genetic Scale & Voice Pitch Persistence** (`WolfMixin`, `WolfPersistentData`) (BL-BD-071) *(Reported by @UnderscoreNash on GitHub Issue #14)*:
+  - Special thanks to `@UnderscoreNash` for identifying and reporting the wolf size and voice pitch reset bug on GitHub Issue #14!
   - Initialized `WolfMixin.betterdogs$socialScale` at `0.0f` instead of `1.0f` and rolled wild wolves' genetic physical scale (`WolfScaleGeneticsHelper.generateWildWolfScale`) inside `betterdogs$onFinalizeSpawn` on the server across Fabric and NeoForge, syncing both `betterdogs$socialScale` and `Attributes.SCALE` (and derived `CanineGeneticsHelper.getModulatedVoicePitch` acoustic voice timbre).
   - Added a client-side guard to `WolfMixin.betterdogs$getSocialScale()` returning safe `1.0f` when uninitialized on clients before sync, while rolling and persisting via `betterdogs$setSocialScale(wildScale)` on server entities.
   - Sanitized `NaN`, non-positive (`<= 0`), and infinite float inputs to `1.0f` in `WolfMixin.betterdogs$setSocialScale`, `WolfPersistentData.writeToNbt`, and `WolfPersistentData.readSocialScaleFromNbt`, while preserving legacy `1.0f` saves missing `BetterDogsSocialScale`.
@@ -78,7 +79,8 @@
 ## [1.7.14+1.21.1] - 2026-11-14
 
 ### Fixed
-- **Pacifist Defensive Retaliation AI `HurtByTargetGoal.start()` Wipe & 24m Tether Fixes (`BL-BD-062`)**:
+- **Pacifist Defensive Retaliation AI** `HurtByTargetGoal.start()` **Wipe & 24m Tether Fixes** (BL-BD-062) *(Reported by Night Dragon(Jasmine) on Discord)*:
+  - Special thanks to `Night Dragon(Jasmine)` for reporting Pacifist defensive retaliation behavior on Discord!
   - Overrode `start()` in `PacifistRevengeGoal` to preserve the validated owner-defense attacker across `super.start()`, preventing vanilla `HurtByTargetGoal.start()` from silently wiping `wolf.getTarget()` back to `null` whenever only the owner was struck, and rallying nearby non-Pacifist standing co-owned adult packmates within `16.0` blocks (`alertNearbyPackmates`).
   - Enforced the `24.0`-block (`576.0` squared) owner-defense tether identically in both `canUse()` and `canContinueToUse()` to eliminate 1-tick goal thrash loops at range boundaries while allowing self-defense when the owner is offline (`getOwner() == null`).
   - Added missing `!isAlive()`, `isInSittingPose()`, and `betterdogs$isSittingManually()` defender guards, `stop()` target/state cleanup, and `getSensing() == null` headless safety while keeping Creeper, domestic discipline (`AdultDisciplineHelper`), and co-owned civil-war immunity intact.
