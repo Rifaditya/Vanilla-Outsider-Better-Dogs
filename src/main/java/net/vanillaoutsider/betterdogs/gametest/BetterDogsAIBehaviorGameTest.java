@@ -23,6 +23,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.block.Blocks;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.WolfPersistentData;
@@ -30,8 +31,10 @@ import net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper;
 import net.vanillaoutsider.betterdogs.personality.CanineArchetype;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
+import net.vanillaoutsider.betterdogs.ai.AvoidGhastFireballGoal;
 import net.vanillaoutsider.betterdogs.ai.EatGroundFoodGoal;
 import net.vanillaoutsider.betterdogs.ai.FleeCreeperGoal;
+import net.vanillaoutsider.betterdogs.ai.FleeExplodingHazardGoal;
 import net.vanillaoutsider.betterdogs.ai.PacifistRevengeGoal;
 import net.vanillaoutsider.betterdogs.ai.PersonalityFollowOwnerGoal;
 import net.vanillaoutsider.betterdogs.ai.WolfGuardGoal;
@@ -39,7 +42,9 @@ import net.vanillaoutsider.betterdogs.ai.WildWolfWanderGoal;
 import net.vanillaoutsider.betterdogs.util.PackAudienceHelper;
 import net.vanillaoutsider.betterdogs.util.WolfCatchupHelper;
 import net.vanillaoutsider.betterdogs.util.WolfCureHelper;
+import net.vanillaoutsider.betterdogs.util.WolfDamageHandler;
 import net.vanillaoutsider.betterdogs.util.WolfFriendlyFireHelper;
+import net.vanillaoutsider.betterdogs.util.WolfSittingPoseHelper;
 
 /**
  * Headless In-Engine Behavioral GameTest Suite for Better Dogs AI goals.
@@ -553,6 +558,137 @@ public class BetterDogsAIBehaviorGameTest {
                     "Cured wolf Attributes.SCALE must stay 1.0f after subsequent ticks");
             helper.assertTrue(Math.abs((float) normalBaby.getAttribute(Attributes.SCALE).getBaseValue() - normalBabyScale) < 1e-4f,
                     "Normal bred puppy scale must still remain at " + normalBabyScale);
+        }).thenSucceed();
+    }
+
+    @GameTest
+    public void testLazySittingPoseClearsOnMoveTargetDamageAndPreservesOrderedSit(GameTestHelper helper) {
+        for (int x = 0; x < 8; x++) {
+            for (int z = 0; z < 8; z++) {
+                helper.setBlock(x, 1, z, Blocks.STONE);
+            }
+        }
+        ServerLevel serverLevel = helper.getLevel();
+        Player mockOwner = helper.makeMockPlayer(GameType.SURVIVAL);
+        BlockPos ownerPos = helper.absolutePos(new BlockPos(2, 2, 3));
+        mockOwner.setPos(ownerPos.getX() + 0.5, ownerPos.getY(), ownerPos.getZ() + 0.5);
+
+        Wolf lazyWolf = helper.spawn(EntityTypes.WOLF, new BlockPos(2, 2, 2));
+        Wolf orderedWolf = helper.spawn(EntityTypes.WOLF, new BlockPos(4, 2, 2));
+        Wolf evasionLazyWolf = helper.spawn(EntityTypes.WOLF, new BlockPos(2, 2, 4));
+        helper.assertTrue(lazyWolf != null && orderedWolf != null && evasionLazyWolf != null,
+                "Wolves failed to spawn for sitting pose GameTest");
+
+        lazyWolf.setTame(true, false);
+        lazyWolf.setOwner(mockOwner);
+        lazyWolf.setOrderedToSit(false);
+        lazyWolf.setNoActionTime(100);
+        lazyWolf.getNavigation().stop();
+        lazyWolf.setDeltaMovement(0.0, -0.0784, 0.0);
+        lazyWolf.setInSittingPose(true);
+        if (lazyWolf instanceof WolfExtensions ext) {
+            ext.betterdogs$setPersonality(WolfPersonality.NORMAL);
+            ext.betterdogs$setCanineArchetype(CanineArchetype.LAZY);
+        }
+        lazyWolf.setOnGround(true);
+
+        orderedWolf.setTame(true, false);
+        orderedWolf.setOwner(mockOwner);
+        orderedWolf.setOrderedToSit(true);
+        orderedWolf.setInSittingPose(true);
+        if (orderedWolf instanceof WolfExtensions ext) {
+            ext.betterdogs$setPersonality(WolfPersonality.NORMAL);
+        }
+        orderedWolf.setOnGround(true);
+
+        evasionLazyWolf.setTame(true, false);
+        evasionLazyWolf.setOwner(mockOwner);
+        evasionLazyWolf.setOrderedToSit(false);
+        evasionLazyWolf.setInSittingPose(true);
+
+        helper.assertTrue(!WolfSittingPoseHelper.syncSittingPoseOnTick(lazyWolf) && lazyWolf.isInSittingPose(),
+                "Stationary lazy wolf must preserve resting pose on sync");
+
+        // Evasion goal wasSitting check: lazy pose clears on start() and NEVER promotes to ordered sit on stop()
+        AvoidGhastFireballGoal avoidGoal = new AvoidGhastFireballGoal(evasionLazyWolf);
+        avoidGoal.start();
+        helper.assertTrue(!evasionLazyWolf.isInSittingPose(), "AvoidGhastFireballGoal.start() must clear lazy sitting pose");
+        helper.assertTrue(!avoidGoal.wasSitting(), "AvoidGhastFireballGoal must not mark lazy sit as wasSitting");
+        avoidGoal.stop();
+        helper.assertTrue(!evasionLazyWolf.isOrderedToSit() && !evasionLazyWolf.isInSittingPose(),
+                "AvoidGhastFireballGoal.stop() must not promote lazy dog to orderedToSit");
+
+        evasionLazyWolf.getNavigation().stop();
+        evasionLazyWolf.setDeltaMovement(0.0, -0.0784, 0.0);
+        evasionLazyWolf.setInSittingPose(true);
+        FleeExplodingHazardGoal fleeGoal = new FleeExplodingHazardGoal(evasionLazyWolf);
+        fleeGoal.start();
+        helper.assertTrue(!evasionLazyWolf.isInSittingPose(), "FleeExplodingHazardGoal.start() must clear lazy sitting pose");
+        helper.assertTrue(!fleeGoal.wasSitting(), "FleeExplodingHazardGoal must not mark lazy sit as wasSitting");
+        fleeGoal.stop();
+        helper.assertTrue(!evasionLazyWolf.isOrderedToSit() && !evasionLazyWolf.isInSittingPose(),
+                "FleeExplodingHazardGoal.stop() must not promote lazy dog to orderedToSit");
+
+        GameTestSequence seq = helper.startSequence();
+        seq.thenExecuteAfter(2, () -> {
+            helper.assertTrue(lazyWolf.isInSittingPose() && !lazyWolf.isOrderedToSit(),
+                    "Stationary lazy wolf must remain in resting pose across server ticks (sitting="
+                            + lazyWolf.isInSittingPose()
+                            + ", ordered=" + lazyWolf.isOrderedToSit()
+                            + ", dm=" + lazyWolf.getDeltaMovement()
+                            + ", navDone=" + lazyWolf.getNavigation().isDone()
+                            + ", target=" + lazyWolf.getTarget()
+                            + ", onGround=" + lazyWolf.onGround() + ")");
+            helper.assertTrue(orderedWolf.isInSittingPose() && orderedWolf.isOrderedToSit(),
+                    "Ordered wolf must remain seated across server ticks");
+
+            // 1. Navigation movement clears lazy resting pose via WolfMixin tick guard
+            BlockPos dest = helper.absolutePos(new BlockPos(5, 2, 2));
+            lazyWolf.getNavigation().moveTo(dest.getX() + 0.5, dest.getY(), dest.getZ() + 0.5, 1.0);
+            orderedWolf.getNavigation().moveTo(dest.getX() + 0.5, dest.getY(), dest.getZ() + 0.5, 1.0);
+        }).thenExecuteAfter(2, () -> {
+            helper.assertTrue(!lazyWolf.isInSittingPose(),
+                    "Navigation movement must clear lazy resting pose");
+            helper.assertTrue(!lazyWolf.isOrderedToSit(),
+                    "Clearing lazy pose must keep isOrderedToSit == false");
+            helper.assertTrue(orderedWolf.isInSittingPose() && orderedWolf.isOrderedToSit(),
+                    "Ordered sit must remain seated even if navigation was invoked");
+
+            Zombie zombie = helper.spawn(EntityTypes.ZOMBIE, new BlockPos(5, 2, 4));
+            helper.assertTrue(zombie != null, "Zombie failed to spawn");
+
+            // 2. Combat target acquisition clears lazy pose via WolfMobMixin setTarget TAIL
+            lazyWolf.getNavigation().stop();
+            lazyWolf.setDeltaMovement(0.0, -0.0784, 0.0);
+            lazyWolf.setInSittingPose(true);
+            lazyWolf.setTarget(zombie);
+            helper.assertTrue(!lazyWolf.isInSittingPose(),
+                    "Acquiring a combat target must immediately clear lazy sitting pose");
+            lazyWolf.setTarget(null);
+
+            orderedWolf.setTarget(zombie);
+            helper.assertTrue(orderedWolf.isInSittingPose() && orderedWolf.isOrderedToSit(),
+                    "Acquiring a target must not clear ordered sitting pose");
+            orderedWolf.setTarget(null);
+
+            // 3. Cancelled friendly-fire preserves lazy pose; live non-cancelled damage clears lazy pose;
+            //    WolfDamageHandler itself preserves player-ordered sit (vanilla Wolf.hurtServer clears ordered sit pre-actuallyHurt).
+            lazyWolf.getNavigation().stop();
+            lazyWolf.setDeltaMovement(0.0, -0.0784, 0.0);
+            lazyWolf.setInSittingPose(true);
+            boolean ffCancelled = WolfDamageHandler.onActuallyHurt(
+                    lazyWolf, serverLevel.damageSources().playerAttack(mockOwner), 1.0f);
+            helper.assertTrue(ffCancelled && lazyWolf.isInSittingPose(),
+                    "Cancelled friendly-fire damage must preserve lazy sitting pose");
+
+            lazyWolf.hurtServer(serverLevel, serverLevel.damageSources().fall(), 1.0f);
+            helper.assertTrue(!lazyWolf.isInSittingPose(),
+                    "Non-cancelled damage must clear lazy sitting pose");
+
+            boolean orderedCancelled = WolfDamageHandler.onActuallyHurt(
+                    orderedWolf, serverLevel.damageSources().fall(), 1.0f);
+            helper.assertTrue(!orderedCancelled && orderedWolf.isInSittingPose() && orderedWolf.isOrderedToSit(),
+                    "WolfDamageHandler must preserve player-ordered sit");
         }).thenSucceed();
     }
 }

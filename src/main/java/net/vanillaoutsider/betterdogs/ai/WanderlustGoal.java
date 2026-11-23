@@ -53,6 +53,12 @@ public class WanderlustGoal extends WaterAvoidingRandomStrollGoal {
     }
 
     @Override
+    public void start() {
+        net.vanillaoutsider.betterdogs.util.WolfSittingPoseHelper.clearUnorderedSittingPose(this.wolf);
+        super.start();
+    }
+
+    @Override
     protected @Nullable Vec3 getPosition() {
         if (this.wolf.level().getFluidState(this.wolf.blockPosition()).is(FluidTags.WATER)) {
             return super.getPosition();

@@ -335,6 +335,11 @@ public interface WolfExtensions {
         return betterdogs$getSpectatorWagTicks() > 0;
     }
 
+    // ========== Ambient Sitting Quirk Hook (BL-BD-069 / BL-BD-070) ==========
+    default boolean betterdogs$isPerformingScoot() {
+        return false;
+    }
+
     default void betterdogs$clearTransientState() {
         betterdogs$setSoundLocationTarget(null);
         betterdogs$setPassiveOverrideTicks(0);

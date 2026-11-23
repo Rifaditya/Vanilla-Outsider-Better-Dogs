@@ -189,13 +189,12 @@ public class WolfProjectileInterceptGoal extends Goal {
 
     @Override
     public void start() {
-        boolean isSitting = this.wolf.isOrderedToSit() || this.wolf.isInSittingPose();
-        if (isSitting) {
-            this.wasSitting = true;
+        this.wasSitting = this.wolf.isOrderedToSit();
+        if (this.wasSitting) {
             this.wolf.setOrderedToSit(false);
+        }
+        if (this.wolf.isInSittingPose()) {
             this.wolf.setInSittingPose(false);
-        } else {
-            this.wasSitting = false;
         }
         this.hasLeaped = false;
         this.activeTicks = MAX_ACTIVE_TICKS;

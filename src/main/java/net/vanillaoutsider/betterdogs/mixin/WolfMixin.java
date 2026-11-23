@@ -306,6 +306,8 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         Wolf wolf = (Wolf) (Object) this;
 
         if (!wolf.level().isClientSide()) {
+            net.vanillaoutsider.betterdogs.util.WolfSittingPoseHelper.syncSittingPoseOnTick(wolf);
+
             if (this.betterdogs$passiveOverrideTicks > 0) {
                 this.betterdogs$passiveOverrideTicks--;
             }
