@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.1)
 
+## [1.7.23+1.21.1] - 2026-11-23
+
+### Fixed
+- **Wild-Spawn Genetic Scale & Voice Pitch Persistence (`WolfMixin`, `WolfPersistentData`) (BL-BD-071)**:
+  - Initialized `WolfMixin.betterdogs$socialScale` at `0.0f` instead of `1.0f` and rolled wild wolves' genetic physical scale (`WolfScaleGeneticsHelper.generateWildWolfScale`) inside `betterdogs$onFinalizeSpawn` on the server across Fabric and NeoForge, syncing both `betterdogs$socialScale` and `Attributes.SCALE` (and derived `CanineGeneticsHelper.getModulatedVoicePitch` acoustic voice timbre).
+  - Added a client-side guard to `WolfMixin.betterdogs$getSocialScale()` returning safe `1.0f` when uninitialized on clients before sync, while rolling and persisting via `betterdogs$setSocialScale(wildScale)` on server entities.
+  - Sanitized `NaN`, non-positive (`<= 0`), and infinite float inputs to `1.0f` in `WolfMixin.betterdogs$setSocialScale`, `WolfPersistentData.writeToNbt`, and `WolfPersistentData.readSocialScaleFromNbt`, while preserving legacy `1.0f` saves missing `BetterDogsSocialScale`.
+
 ## [1.7.22+1.21.1] - 2026-11-19
 
 ### Fixed

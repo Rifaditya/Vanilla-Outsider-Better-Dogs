@@ -46,7 +46,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     private CanineArchetype betterdogs$canineArchetype = null;
 
     @Unique
-    private float betterdogs$socialScale = 1.0f;
+    private float betterdogs$socialScale = 0.0f;
 
     @Unique
     private long betterdogs$dnaSeed = 0L;
@@ -372,19 +372,23 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     @Override
     public float betterdogs$getSocialScale() {
         if (this.betterdogs$socialScale <= 0.0f) {
-            Wolf wolf = (Wolf) (Object) this;
-            this.betterdogs$socialScale = net.vanillaoutsider.betterdogs.util.WolfScaleGeneticsHelper.generateWildWolfScale(wolf.level(), wolf.getRandom());
+            if (this.level() != null && this.level().isClientSide()) {
+                return 1.0f;
+            }
+            float wildScale = net.vanillaoutsider.betterdogs.util.WolfScaleGeneticsHelper
+                    .generateWildWolfScale(this.level(), this.getRandom());
+            this.betterdogs$setSocialScale(wildScale);
         }
         return this.betterdogs$socialScale;
     }
 
     @Override
     public void betterdogs$setSocialScale(float scale) {
-        this.betterdogs$socialScale = scale;
-        Wolf wolf = (Wolf) (Object) this;
-        var scaleAttr = wolf.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.SCALE);
-        if (scaleAttr != null && scale > 0.0f) {
-            scaleAttr.setBaseValue(scale);
+        float safeScale = (Float.isFinite(scale) && scale > 0.0f) ? scale : 1.0f;
+        this.betterdogs$socialScale = safeScale;
+        var scaleAttr = this.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.SCALE);
+        if (scaleAttr != null) {
+            scaleAttr.setBaseValue(safeScale);
         }
     }
 
@@ -735,6 +739,9 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
             net.minecraft.world.entity.MobSpawnType spawnType, net.minecraft.world.entity.SpawnGroupData groupData,
             CallbackInfoReturnable<net.minecraft.world.entity.SpawnGroupData> cir) {
         if (!level.getLevel().isClientSide()) {
+            float wildScale = net.vanillaoutsider.betterdogs.util.WolfScaleGeneticsHelper
+                    .generateWildWolfScale(level.getLevel(), this.getRandom());
+            this.betterdogs$setSocialScale(wildScale);
             if (net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules.isDogGeneticsEnabled(level.getLevel())) {
                 float wildSpeed = net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper.clamp(
                         0.30f + (float) this.getRandom().nextGaussian() * net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper.SPEED_STD_DEV,

@@ -66,7 +66,8 @@ public class WolfPersistentData {
             if (personality != null) {
                 tag.putString(NBT_KEY_PERSONALITY, personality.getId());
             }
-            tag.putFloat(NBT_KEY_SOCIAL_SCALE, socialScale);
+            float safeSocialScale = (Float.isFinite(socialScale) && socialScale > 0.0f) ? socialScale : 1.0f;
+            tag.putFloat(NBT_KEY_SOCIAL_SCALE, safeSocialScale);
             tag.putLong(NBT_KEY_DNA_SEED, dnaSeed);
             if (favoriteTreat != null && !favoriteTreat.isEmpty()) {
                 tag.putString(NBT_KEY_FAVORITE_TREAT, favoriteTreat);
@@ -143,7 +144,8 @@ public class WolfPersistentData {
 
     public static float readSocialScaleFromNbt(CompoundTag tag) {
         if (tag != null && tag.contains(NBT_KEY_SOCIAL_SCALE)) {
-            return tag.getFloat(NBT_KEY_SOCIAL_SCALE);
+            float raw = tag.getFloat(NBT_KEY_SOCIAL_SCALE);
+            return (Float.isFinite(raw) && raw > 0.0f) ? raw : 1.0f;
         }
         return 1.0f;
     }
