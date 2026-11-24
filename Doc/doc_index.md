@@ -8,7 +8,7 @@ Central navigation hub for all project documentation.
 
 ## 🧠 Concept & Design
 - [Current Concept (YAML)](Concept/concept_better_dogs.yaml): Technical design specifications.
-- [Idea Backlog](Concept/idea_backlog.md): [NEW] Brainstorming board for sporadic, future ideas.
+- [Master Backlog](../../../BACKLOG.md): Active modular feature and bugfix tracker.
 - [Initial Concept (Historical)](Concept/initial_concept.md): [ARCHIVE] Original design document.
 - [Player Hub](Players/index.md): Player guide navigation hub.
 - [Genetics & Breeding](Players/Features/genetics_and_breeding.md): Stats, inbreeding, and prioritization.
