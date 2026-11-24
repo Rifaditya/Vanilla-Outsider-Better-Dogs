@@ -35,4 +35,11 @@ public abstract class WolfMobMixin {
             }
         }
     }
+
+    @Inject(method = "setTarget", at = @At("TAIL"))
+    private void betterdogs$clearSittingPoseOnTarget(@Nullable LivingEntity newTarget, CallbackInfo ci) {
+        if (newTarget != null && (Object) this instanceof Wolf wolf && wolf.getTarget() == newTarget) {
+            net.vanillaoutsider.betterdogs.util.WolfSittingPoseHelper.clearUnorderedSittingPose(wolf);
+        }
+    }
 }

@@ -1,5 +1,14 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.1)
 
+## [1.7.24+1.21.1] - 2026-11-23
+
+### Fixed
+- **Sitting Pose State Synchronization During Movement & AI Transitions** (`WolfSittingPoseHelper`, `PersonalityFollowOwnerGoal`, `WolfMixin`, `WolfMobMixin`) (BL-BD-069) *(Reported by Apeirohex on Discord)*:
+  - Special thanks to `Apeirohex` on Discord for identifying and reporting wolves getting stuck visually seated while sliding, moving, or switching AI states!
+  - Added single-purpose server-side synchronization (`WolfSittingPoseHelper`) in `WolfMixin.betterdogs$onTick` across Fabric and NeoForge to clear non-ordered sitting pose whenever a dog navigates, targets an enemy, or exceeds horizontal/vertical movement thresholds (preserving resting vertical gravity `-0.0784` and player-ordered/passenger/scoot sits with zero entity data spam while stationary).
+  - Updated `WolfMobMixin.betterdogs$clearSittingPoseOnTarget` (`setTarget` tail hook), `WolfMixin.betterdogs$onHurt` (non-cancelled damage wake-up), `TamedWanderNearOwnerGoal.start()`, and `WanderlustGoal.start()` to clear unordered sitting poses cleanly upon combat or movement activation.
+  - Guarded lazy resting entry in `PersonalityFollowOwnerGoal.stop()` via `WolfSittingPoseHelper.canEnterLazyRestingPose` and horizontal momentum zeroing `(0.0, dm.y, 0.0)`, and updated `WolfSeekWaterOnFireGoal`, `AvoidGhastFireballGoal`, `FleeExplodingHazardGoal`, and `WolfProjectileInterceptGoal` so unordered resting poses are never promoted into permanent player-ordered sits (`wasSitting`).
+
 ## [1.7.23+1.21.1] - 2026-11-23
 
 ### Fixed
