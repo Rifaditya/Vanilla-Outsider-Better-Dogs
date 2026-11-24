@@ -158,4 +158,9 @@ public interface WolfExtensions {
     default boolean betterdogs$isSocialModeActive() {
         return false;
     }
+
+    // ========== Ambient Sitting Quirk Hook (BL-BD-069 / BL-BD-070) ==========
+    default boolean betterdogs$isPerformingScoot() {
+        return false;
+    }
 }

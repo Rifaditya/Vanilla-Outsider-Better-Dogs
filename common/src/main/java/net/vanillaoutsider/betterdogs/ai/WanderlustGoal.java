@@ -41,6 +41,12 @@ public class WanderlustGoal extends WaterAvoidingRandomStrollGoal {
     }
 
     @Override
+    public void start() {
+        net.vanillaoutsider.betterdogs.util.WolfSittingPoseHelper.clearUnorderedSittingPose(this.wolf);
+        super.start();
+    }
+
+    @Override
     public boolean canContinueToUse() {
         if (this.wolf.isOrderedToSit() || this.wolf.isLeashed() || this.wolf.getTarget() != null) {
             return false;
