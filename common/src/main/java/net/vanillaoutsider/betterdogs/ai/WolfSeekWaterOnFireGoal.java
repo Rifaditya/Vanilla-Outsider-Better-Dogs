@@ -82,12 +82,12 @@ public class WolfSeekWaterOnFireGoal extends Goal {
 
     @Override
     public void start() {
-        if (wolf.isOrderedToSit()) {
-            this.wasSitting = true;
+        this.wasSitting = wolf.isOrderedToSit();
+        if (this.wasSitting) {
             wolf.setOrderedToSit(false);
+        }
+        if (wolf.isInSittingPose()) {
             wolf.setInSittingPose(false);
-        } else {
-            this.wasSitting = false;
         }
 
         this.searchCooldown = 0;

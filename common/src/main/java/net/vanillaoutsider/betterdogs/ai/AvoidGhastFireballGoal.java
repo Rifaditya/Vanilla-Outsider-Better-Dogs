@@ -171,13 +171,12 @@ public class AvoidGhastFireballGoal extends Goal {
 
     @Override
     public void start() {
-        boolean sitting = this.wolf.isOrderedToSit() || this.wolf.isInSittingPose();
-        if (sitting) {
-            this.wasSitting = true;
+        this.wasSitting = this.wolf.isOrderedToSit();
+        if (this.wasSitting) {
             this.wolf.setOrderedToSit(false);
+        }
+        if (this.wolf.isInSittingPose()) {
             this.wolf.setInSittingPose(false);
-        } else {
-            this.wasSitting = false;
         }
 
         // Apply dodge velocity and jump hop

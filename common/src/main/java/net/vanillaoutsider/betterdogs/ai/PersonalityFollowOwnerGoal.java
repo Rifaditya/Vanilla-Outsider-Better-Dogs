@@ -208,16 +208,20 @@ public class PersonalityFollowOwnerGoal extends FollowOwnerGoal {
     public void start() {
         super.start();
         this.recalcTimer = 0;
-        if (this.wolf.isInSittingPose() && !this.wolf.isOrderedToSit()) {
-            this.wolf.setInSittingPose(false);
-        }
+        net.vanillaoutsider.betterdogs.util.WolfSittingPoseHelper.clearUnorderedSittingPose(this.wolf);
     }
 
     @Override
     public void stop() {
         this.wolf.getNavigation().stop();
         if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$getCanineArchetype() == CanineArchetype.LAZY) {
-            if (!this.wolf.isOrderedToSit() && this.wolf.getRandom().nextFloat() < 0.35f) {
+            if (net.vanillaoutsider.betterdogs.util.WolfSittingPoseHelper.canEnterLazyRestingPose(this.wolf)
+                    && !this.wolf.isInSittingPose()
+                    && this.wolf.getRandom().nextFloat() < 0.35f) {
+                net.minecraft.world.phys.Vec3 dm = this.wolf.getDeltaMovement();
+                if (dm != null && dm.horizontalDistanceSqr() > 0.0) {
+                    this.wolf.setDeltaMovement(0.0, dm.y, 0.0);
+                }
                 this.wolf.setInSittingPose(true);
             }
         }

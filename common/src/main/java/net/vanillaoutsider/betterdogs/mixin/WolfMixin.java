@@ -485,6 +485,9 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
                 this.betterdogs$retaliationTicks = 100;
             }
         }
+        if (!wolf.isInvulnerableTo(source)) {
+            net.vanillaoutsider.betterdogs.util.WolfSittingPoseHelper.clearSittingPoseOnDamage(wolf);
+        }
     }
 
     @Inject(method = "die", at = @At("HEAD"))
@@ -501,6 +504,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     private void betterdogs$onTick(CallbackInfo ci) {
         if (!this.getCommandSenderWorld().isClientSide()) {
             Wolf wolf = (Wolf) (Object) this;
+            net.vanillaoutsider.betterdogs.util.WolfSittingPoseHelper.syncSittingPoseOnTick(wolf);
             if (!wolf.isTame() && this.betterdogs$leaderUuid == null && !this.betterdogs$isPackLeader) {
                 net.vanillaoutsider.betterdogs.util.WolfVariantHelper.initializeWildPackCluster(this.getCommandSenderWorld(), wolf);
             }

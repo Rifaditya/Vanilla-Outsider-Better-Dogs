@@ -45,6 +45,12 @@ public class TamedWanderNearOwnerGoal extends WaterAvoidingRandomStrollGoal {
     }
 
     @Override
+    public void start() {
+        net.vanillaoutsider.betterdogs.util.WolfSittingPoseHelper.clearUnorderedSittingPose(this.wolf);
+        super.start();
+    }
+
+    @Override
     protected Vec3 getPosition() {
         LivingEntity owner = this.wolf.getOwner();
         if (owner == null) {
