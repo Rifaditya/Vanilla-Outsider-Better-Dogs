@@ -1,5 +1,16 @@
 # Better Dogs History & Concept Changelog
 
+## [5.7.24+26.3] - 2026-11-23
+
+### Fixed
+- **Sitting Pose State Desync During Movement & AI Transitions ([BL-BD-069])**:
+  - **Reported By**: `Apeirohex` via Discord community support (credited in `CHANGELOG.md`).
+  - Added single-purpose `WolfSittingPoseHelper` and `WolfExtensions.betterdogs$isPerformingScoot()` seam for future `BL-BD-070` scoot behavior, wired into `WolfMixin` via `syncSittingPoseOnTick` to clear non-ordered sitting pose (`setInSittingPose(false)`) only on real server-side transitions when navigating, targeting, or moving beyond `1.0e-4` horizontal sqr / `0.15` vertical delta (preserving resting `-0.0784` gravity, `isOrderedToSit()`, and `isPassenger()`).
+  - Updated `PersonalityFollowOwnerGoal` (`start()` unordered pose clear; `stop()` gated by `canEnterLazyRestingPose(...)` and `(0.0, dm.y, 0.0)` horizontal inertia zeroing so tick-0 follow deceleration does not immediately cancel lazy resting).
+  - Wired `WolfMobMixin` (`setTarget` `@At("TAIL")`) and `WolfDamageHandler` (`clearSittingPoseOnDamage` post interception and friendly-fire cancellation checks) to stand lazy-resting dogs up immediately upon combat targeting or non-cancelled damage.
+  - Updated companion AI goals (`TamedWanderNearOwnerGoal`, `WanderlustGoal`, `WolfSeekWaterOnFireGoal`, and `WolfGuardGoal`) to clear stale unordered sitting poses, and bound `wasSitting` in `AvoidGhastFireballGoal`, `FleeExplodingHazardGoal`, and `WolfProjectileInterceptGoal` strictly to `isOrderedToSit()` so evasion never promotes lazy rests into permanent ordered sits.
+  - Verified with `SittingPoseStateTransitionTest` (`410/410`) and `BetterDogsAIBehaviorGameTest.testLazySittingPoseClearsOnMoveTargetDamageAndPreservesOrderedSit` (`11/11`).
+
 ## [5.7.23+26.3] - 2026-11-23
 
 ### Fixed
