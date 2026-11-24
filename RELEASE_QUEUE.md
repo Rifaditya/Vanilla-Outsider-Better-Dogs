@@ -3,7 +3,7 @@
 This file tracks which built versions (from the central archive folder "E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Archive Jar of all versions") have been manually uploaded to Modrinth/CurseForge.
 Open this file in your editor and change `[ ]` to `[x]` when you publish a version.
 
-> **Multi-Loader Note (MC 26.1.2):** Starting from 5.1.1+26.1.2 up to HEAD 5.7.20+26.1.2, all builds are compiled as native Multi-Loader artifacts with dual production JARs: Fabric (`*-fabric.jar`) and NeoForge (`*-neoforge.jar`).
+> **Multi-Loader Note (MC 26.1.2):** Starting from 5.1.1+26.1.2 up to HEAD 5.7.24+26.1.2, all builds are compiled as native Multi-Loader artifacts with dual production JARs: Fabric (`*-fabric.jar`) and NeoForge (`*-neoforge.jar`).
 
 ## 🚀 Published & Backlog Queue
 
