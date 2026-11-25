@@ -30,7 +30,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 - [ ] **Better Dogs 5.7.5+26.1.2** [Fabric + NeoForge] - Ballistic Interceptor: Multi-Era Parity Verification & Full Production Release (BL-BD-021)
 - [ ] **Better Dogs 5.7.4+26.1.2** [Fabric + NeoForge] - Ballistic Interceptor: Heroic Sacrifice Damage Routing, Anti-One-Shot Protection & Sensory Polish (BL-BD-021)
 - [ ] **Better Dogs 5.7.3+26.1.2** [Fabric + NeoForge] - Ballistic Interceptor: AI Goal Registration in WolfAIMixin (BL-BD-021)
-- [ ] **Better Dogs 5.7.2+26.1.2** [Fabric + NeoForge] - Ballistic Interceptor: Canine Intercept AI Goal Implementation (BL-BD-021)
+- [x] **Better Dogs 5.7.2+26.1.2** [Fabric + NeoForge] - Ballistic Interceptor: Canine Intercept AI Goal Implementation (BL-BD-021)
 - [x] **Better Dogs 5.7.1+26.1.2** [Fabric + NeoForge] - Ballistic Interceptor: Dynamic GameRules, Config Synchronization & Localization (BL-BD-021)
 
 - [x] **Better Dogs 5.7.0+26.1.2** [Fabric + NeoForge] - Ballistic Interceptor: Trajectory Intercept Solver & Disposition Affinity (BL-BD-021)
