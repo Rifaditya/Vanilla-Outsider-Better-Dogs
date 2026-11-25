@@ -1,4 +1,4 @@
-﻿# Better Dogs - Documentation Index
+# Better Dogs - Documentation Index
 
 Central navigation hub for all project documentation.
 
