@@ -90,7 +90,7 @@ public class BabyBiteBackGoal extends Goal {
                 level.playSound(null, this.wolf.getX(), this.wolf.getY(), this.wolf.getZ(), SoundEvents.WOLF_GROWL, SoundSource.NEUTRAL, 0.8F, 1.4F);
 
                 DamageSource source = level.damageSources().mobAttack(this.wolf);
-                if (!WolfFriendlyFireHelper.shouldCancelDamage(this.wolf, source)) {
+                if (!WolfFriendlyFireHelper.shouldCancelRetaliationDamage(this.wolf, this.target, source)) {
                     this.target.hurt(source, 1.0F);
                 }
             }

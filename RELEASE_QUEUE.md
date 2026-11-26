@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 1.7.25+1.21.1** [Fabric + NeoForge] - Fix Baby Retaliation Reversed Entity Parameter & Aggressive Puppy Provocation Overdamage (BL-BD-050)
 - [ ] **Better Dogs 1.7.24+1.21.1** [Fabric + NeoForge] - Fix Sitting Pose State Desync During Movement & AI Transitions (BL-BD-069)
 - [ ] **Better Dogs 1.7.23+1.21.1** - Persist Genetic Scale & Modulated Voice Pitch Across Wild Spawn, Breeding, Runt & Cure (BL-BD-071)
 - [ ] **Better Dogs 1.7.22+1.21.1** - Fix Reinforcement Wolf Suffocation on Sloped Terrain, Unloaded Chunk Guard & Density Boost Parity (BL-BD-047)

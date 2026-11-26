@@ -30,6 +30,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -469,6 +470,11 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
         betterdogs$invokeSetCollarColor(color);
     }
 
+    @ModifyVariable(method = "hurt", at = @At("HEAD"), argsOnly = true, ordinal = 0)
+    private float betterdogs$clampProvocationDamage(float amount, DamageSource source) {
+        return net.vanillaoutsider.betterdogs.util.WolfFriendlyFireHelper.clampProvocationDamage((Wolf) (Object) this, source, amount);
+    }
+
     @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
     private void betterdogs$onHurt(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         Wolf wolf = (Wolf) (Object) this;
@@ -477,7 +483,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
             cir.setReturnValue(false);
             return;
         }
-        if (net.vanillaoutsider.betterdogs.util.WolfFriendlyFireHelper.shouldCancelDamage(wolf, source)) {
+        if (net.vanillaoutsider.betterdogs.util.WolfFriendlyFireHelper.shouldCancelDamage(wolf, source, amount)) {
             cir.setReturnValue(false);
             return;
         }

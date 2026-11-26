@@ -31,6 +31,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -58,8 +59,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class PackCivilWarImmunityTest {
 
     private static final Unsafe UNSAFE = initUnsafe();
-    private static Holder<DamageType> mobDamageType;
-    private static Holder<DamageType> fallDamageType;
+    static Holder<DamageType> mobDamageType;
+    static Holder<DamageType> fallDamageType;
 
     private static Unsafe initUnsafe() {
         try {
@@ -105,6 +106,12 @@ class PackCivilWarImmunityTest {
             Bootstrap.bootStrap();
         } catch (Throwable ignored) {
         }
+        if (mobDamageType == null) {
+            mobDamageType = Holder.direct(new DamageType("mob", 0.1f));
+        }
+        if (fallDamageType == null) {
+            fallDamageType = Holder.direct(new DamageType("fall", 0.0f));
+        }
     }
 
     static OfflineStubWolf createOfflineWolf(UUID wolfUuid, @Nullable UUID ownerUuid, boolean tame, boolean baby) {
@@ -118,7 +125,11 @@ class PackCivilWarImmunityTest {
         }
     }
 
-    private static StubServerPlayer createStubPlayer(UUID playerUuid, boolean sneaking) {
+    static StubServerPlayer createStubPlayer(UUID playerUuid) {
+        return createStubPlayer(playerUuid, false);
+    }
+
+    static StubServerPlayer createStubPlayer(UUID playerUuid, boolean sneaking) {
         try {
             StubServerPlayer player = (StubServerPlayer) UNSAFE.allocateInstance(StubServerPlayer.class);
             player.init(playerUuid, sneaking);
@@ -128,7 +139,15 @@ class PackCivilWarImmunityTest {
         }
     }
 
-    private static StubServerLevel createStubServerLevel(long gameTime, List<Wolf> worldWolves) {
+    static Creeper createOfflineCreeper() {
+        try {
+            return (Creeper) UNSAFE.allocateInstance(Creeper.class);
+        } catch (InstantiationException ex) {
+            throw new IllegalStateException("Failed to allocate Creeper", ex);
+        }
+    }
+
+    static StubServerLevel createStubServerLevel(long gameTime, List<Wolf> worldWolves) {
         return createStubServerLevel(gameTime, worldWolves, false);
     }
 
@@ -799,7 +818,7 @@ class PackCivilWarImmunityTest {
         }
     }
 
-    private static final class StubServerPlayer extends ServerPlayer {
+    static final class StubServerPlayer extends ServerPlayer {
         private UUID uuid;
         private boolean sneaking;
         private @Nullable LivingEntity lastHurtByMob;
@@ -849,7 +868,7 @@ class PackCivilWarImmunityTest {
         }
     }
 
-    private static final class StubServerLevel extends ServerLevel {
+    static final class StubServerLevel extends ServerLevel {
         private long gameTime;
         private List<Wolf> candidates;
         private boolean returnMatchedOnQuery;
@@ -918,6 +937,7 @@ class PackCivilWarImmunityTest {
         private boolean tame;
         private boolean baby;
         private float health;
+        private float maxHealth;
         private @Nullable Level level;
         private @Nullable LivingEntity target;
         private @Nullable LivingEntity lastHurtByMob;
@@ -971,6 +991,7 @@ class PackCivilWarImmunityTest {
             this.ownerUuid = ownerUuid;
             this.tame = tame;
             this.baby = baby;
+            this.maxHealth = 20.0f;
             this.health = 20.0f;
             this.personality = WolfPersonality.NORMAL;
             this.hasPersonality = true;
@@ -1043,6 +1064,13 @@ class PackCivilWarImmunityTest {
             return this.health > 0.0f;
         }
 
+        void setStubMaxHealth(float maxHealth) {
+            this.maxHealth = maxHealth;
+            if (this.health > maxHealth) {
+                this.health = maxHealth;
+            }
+        }
+
         @Override
         public float getHealth() {
             return this.health;
@@ -1050,7 +1078,7 @@ class PackCivilWarImmunityTest {
 
         @Override
         public void setHealth(float health) {
-            this.health = health;
+            this.health = Math.max(0.0f, Math.min(this.maxHealth, health));
         }
 
         @Override
