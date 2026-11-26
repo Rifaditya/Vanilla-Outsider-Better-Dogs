@@ -5,7 +5,7 @@ architectury {
 dependencies {
     modCompileOnly "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
     modCompileOnly "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_version}"
-    modCompileOnly "net.dasik.social:dasik-library:${rootProject.dasik_library_version}"
+    modImplementation "net.dasik.social:dasik-library:${rootProject.dasik_library_version}"
     modCompileOnly "com.terraformersmc:modmenu:11.0.1"
     modCompileOnly("dev.isxander:yet-another-config-lib:3.5.0+1.21-fabric") {
         transitive = false
@@ -13,7 +13,6 @@ dependencies {
     modCompileOnly "maven.modrinth:jade:15.3.3+fabric"
 
     testImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
-    testImplementation "net.dasik.social:dasik-library:${rootProject.dasik_library_version}"
 }
 
 publishing {

@@ -1,5 +1,14 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.1)
 
+## [1.7.26+1.21.1] - 2026-11-26
+
+### Fixed
+- **Inverted `SocialEvent.tick()` Expirations, Dead/Null Target Early-Exit Loops, Howl Timer Reset & Manifest Lower Bound** (`scheduler/events/*.java`, `fabric.mod.json`, `neoforge.mods.toml`) (BL-BD-074):
+  - Fixed all 9 `SocialEvent` classes returning `tickCount >= N` (causing tick-1 expiration under `DasikLibrary`'s `true = continue` contract) instead of `tickCount < N` (`BeggingDogEvent` `400`, `CorrectionDogEvent` `60`, `FetchDogEvent` `600`, `HowlDogEvent` `60`, `IdleCuriosityEvent` `300`, `RetaliationDogEvent` `100`, `SmallFightDogEvent` `200`, `WanderlustDogEvent` `600`, `ZoomiesDogEvent` `240`).
+  - Changed the `target == null || !target.isAlive()` early guards in `CorrectionDogEvent` and `RetaliationDogEvent` from `return true;` to `return false;` so invalid or dead targets terminate cleanly (`EndReason.EXPIRED`) on tick 1 instead of looping indefinitely.
+  - Added `this.timer = 0;` at the top of `HowlDogEvent.onStart(TickContext)` so reused instances start with a clean 60-tick duration.
+  - Tightened `dasik-library` dependency lower bounds from `>=1.1.0` / `[1.1.0,)` to `>=1.4.0` / `[1.4.0,)` in `fabric.mod.json` and `neoforge.mods.toml` to prevent incompatible legacy `DasikLibrary` contract mismatches.
+
 ## [1.7.25+1.21.1] - 2026-11-26
 
 ### Fixed

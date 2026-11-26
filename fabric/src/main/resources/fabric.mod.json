@@ -42,7 +42,7 @@
         "minecraft": "1.21.1",
         "java": ">=21",
         "fabric-api": "*",
-        "dasik-library": ">=1.1.0"
+        "dasik-library": ">=1.4.0"
     },
     "custom": {
         "modmenu": {
