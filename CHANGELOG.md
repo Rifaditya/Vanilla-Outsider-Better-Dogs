@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.27+26.3] - 2026-11-26
+
+### Fixed
+- **Remaining 8 SocialEvent Expirations, Dead/Null Target Early-Exit Loops & Howl Timer Reset** (`BeggingDogEvent`, `CorrectionDogEvent`, `FetchDogEvent`, `HowlDogEvent`, `IdleCuriosityEvent`, `RetaliationDogEvent`, `SmallFightDogEvent`, `WanderlustDogEvent`) (BL-BD-074):
+  - Fixed inverted `tickCount >= N` / `timer >= 60` expiration comparisons across all 8 remaining `SocialEvent` classes (`BeggingDogEvent` `< 400`, `CorrectionDogEvent` `< 60`, `FetchDogEvent` `< 600`, `HowlDogEvent` `< 60`, `IdleCuriosityEvent` `< 300`, `RetaliationDogEvent` `< 100`, `SmallFightDogEvent` `< 200`, `WanderlustDogEvent` `< 600`), aligning them with `DasikLibrary`'s `true = continue` `EntitySocialScheduler` contract so events run their full authored duration instead of expiring on tick 1.
+  - Fixed `CorrectionDogEvent` and `RetaliationDogEvent` null/dead target early-exit guards (`target == null || !target.isAlive()`) returning `false` instead of `true`, eliminating infinite active loops when targets are missing or killed.
+  - Reset `this.timer = 0;` at the start of `HowlDogEvent.onStart(TickContext)` so reused instances always run the full 60-tick howl window.
+
 ## [5.7.26+26.3] - 2026-11-26
 
 ### Fixed

@@ -42,6 +42,7 @@ public class HowlDogEvent implements SocialEvent {
 
     @Override
     public void onStart(TickContext context) {
+        this.timer = 0;
         if (context.entity().dasik$asEntity() instanceof Wolf wolf) {
             // Play initial howl sound using lowered-pitch baby whine with vanilla client desync protection
             WolfHowlAudioHelper.playHowlSound(wolf.level(), wolf, 1.3f, 0.5f + wolf.getRandom().nextFloat() * 0.2f);
@@ -59,7 +60,7 @@ public class HowlDogEvent implements SocialEvent {
     @Override
     public boolean tick(TickContext context) {
         timer++;
-        return timer >= 60;
+        return timer < 60;
     }
 
     @Override

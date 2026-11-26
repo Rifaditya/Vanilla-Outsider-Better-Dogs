@@ -41,7 +41,7 @@ public class IdleCuriosityEvent implements SocialEvent {
     @Override
     public boolean tick(TickContext context) {
         this.tickCount++;
-        return this.tickCount >= 300; // 15 seconds
+        return this.tickCount < 300; // 15 seconds
     }
 
     @Override
