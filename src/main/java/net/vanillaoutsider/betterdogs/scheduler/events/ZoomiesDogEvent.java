@@ -38,7 +38,7 @@ public class ZoomiesDogEvent implements SocialEvent {
     @Override
     public boolean tick(TickContext context) {
         this.tickCount++;
-        return this.tickCount >= 240; // 12 seconds
+        return this.tickCount < 240; // 12 seconds
     }
 
     @Override

@@ -2,11 +2,14 @@
 // Verified against: Minecraft 26.2
 package net.vanillaoutsider.betterdogs.util;
 
+import net.dasik.social.core.EntitySocialScheduler;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
+import net.vanillaoutsider.betterdogs.scheduler.events.ZoomiesDogEvent;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Dedicated single-purpose helper for playful hyperactive zoomies activation and particle dispatch.
@@ -14,6 +17,31 @@ import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 public final class WolfZoomiesHelper {
 
     private WolfZoomiesHelper() {
+    }
+
+    public static boolean shouldTriggerAmbientMorningZoomies(Wolf wolf, @Nullable EntitySocialScheduler scheduler) {
+        if (wolf == null || wolf.level() == null || wolf.level().isClientSide()) {
+            return false;
+        }
+        if (wolf.tickCount % 20 != 0) {
+            return false;
+        }
+        if (!wolf.isTame() || !wolf.onGround() || wolf.isOrderedToSit() || wolf.isInSittingPose() || wolf.getTarget() != null) {
+            return false;
+        }
+        if (wolf instanceof WolfExtensions ext && (ext.betterdogs$isGuardMode() || ext.betterdogs$getZoomiesTicks() > 0)) {
+            return false;
+        }
+        if (!BetterDogsGameRules.isZoomiesEnabled(wolf.level())) {
+            return false;
+        }
+        if (Math.floorMod(wolf.level().getDefaultClockTime(), 24000L) >= 3000L) {
+            return false;
+        }
+        if (scheduler != null && scheduler.isEventActive(ZoomiesDogEvent.ID)) {
+            return false;
+        }
+        return wolf.getRandom().nextFloat() < 0.01f;
     }
 
     public static boolean canTriggerZoomies(Wolf wolf) {
