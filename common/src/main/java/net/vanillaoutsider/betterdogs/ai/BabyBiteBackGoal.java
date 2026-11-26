@@ -96,7 +96,8 @@ public class BabyBiteBackGoal extends Goal {
 
             if (this.wolf.level() instanceof ServerLevel serverLevel) {
                 DamageSource source = serverLevel.damageSources().mobAttack(this.wolf);
-                if (!WolfFriendlyFireHelper.shouldCancelDamage(this.wolf, source, BabyRetaliationHelper.RETALIATION_DAMAGE)) {
+                if (!WolfFriendlyFireHelper.shouldCancelRetaliationDamage(
+                        this.wolf, this.retaliationTarget, source, BabyRetaliationHelper.RETALIATION_DAMAGE)) {
                     this.retaliationTarget.hurtServer(serverLevel, source, BabyRetaliationHelper.RETALIATION_DAMAGE);
                 }
                 this.hasAttacked = true;
