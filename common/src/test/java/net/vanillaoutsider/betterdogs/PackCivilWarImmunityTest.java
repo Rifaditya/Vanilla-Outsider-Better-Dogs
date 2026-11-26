@@ -35,6 +35,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.animal.wolf.WolfSoundVariant;
 import net.minecraft.world.entity.animal.wolf.WolfVariant;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.Level;
@@ -67,8 +68,8 @@ class PackCivilWarImmunityTest {
 
     private static final Unsafe UNSAFE = initUnsafe();
     private static final long ENTITY_POSITION_OFFSET = initPositionOffset();
-    private static Holder<DamageType> mobDamageType;
-    private static Holder<DamageType> fallDamageType;
+    static Holder<DamageType> mobDamageType;
+    static Holder<DamageType> fallDamageType;
 
     @BeforeAll
     static void setupMinecraftBootstrap() {
@@ -124,6 +125,12 @@ class PackCivilWarImmunityTest {
             Bootstrap.bootStrap();
         } catch (Throwable ignored) {
         }
+        if (mobDamageType == null) {
+            mobDamageType = Holder.direct(new DamageType("mob", 0.1f));
+        }
+        if (fallDamageType == null) {
+            fallDamageType = Holder.direct(new DamageType("fall", 0.0f));
+        }
     }
 
     static OfflineStubWolf createOfflineWolf(UUID wolfUuid, @Nullable UUID ownerUuid, boolean tame, boolean baby) {
@@ -137,17 +144,29 @@ class PackCivilWarImmunityTest {
         }
     }
 
-    private static StubServerPlayer createStubPlayer(UUID playerUuid) {
+    static StubServerPlayer createStubPlayer(UUID playerUuid) {
+        return createStubPlayer(playerUuid, false);
+    }
+
+    static StubServerPlayer createStubPlayer(UUID playerUuid, boolean sneaking) {
         try {
             StubServerPlayer player = (StubServerPlayer) UNSAFE.allocateInstance(StubServerPlayer.class);
-            player.init(playerUuid);
+            player.init(playerUuid, sneaking);
             return player;
         } catch (InstantiationException ex) {
             throw new IllegalStateException("Failed to allocate StubServerPlayer", ex);
         }
     }
 
-    private static StubServerLevel createStubServerLevel(long gameTime, List<Wolf> candidates) {
+    static Creeper createOfflineCreeper() {
+        try {
+            return (Creeper) UNSAFE.allocateInstance(Creeper.class);
+        } catch (InstantiationException ex) {
+            throw new IllegalStateException("Failed to allocate Creeper", ex);
+        }
+    }
+
+    static StubServerLevel createStubServerLevel(long gameTime, List<Wolf> candidates) {
         try {
             StubServerLevel level = (StubServerLevel) UNSAFE.allocateInstance(StubServerLevel.class);
             level.init(gameTime, candidates);
@@ -157,7 +176,7 @@ class PackCivilWarImmunityTest {
         }
     }
 
-    private static StubGameRules createStubGameRules(GameRuleMap initialMap) {
+    static StubGameRules createStubGameRules(GameRuleMap initialMap) {
         try {
             StubGameRules rules = (StubGameRules) UNSAFE.allocateInstance(StubGameRules.class);
             rules.init(initialMap);
@@ -755,7 +774,7 @@ class PackCivilWarImmunityTest {
                 "Unavailable GameRules fallback must keep packmate friendly-fire protection ON");
     }
 
-    private static final class StubGameRules extends GameRules {
+    static final class StubGameRules extends GameRules {
         private GameRuleMap map;
 
         private StubGameRules() {
@@ -776,21 +795,33 @@ class PackCivilWarImmunityTest {
         }
     }
 
-    private static final class StubServerPlayer extends ServerPlayer {
+    static final class StubServerPlayer extends ServerPlayer {
         private UUID uuid;
+        private boolean sneaking;
         private @Nullable LivingEntity lastHurtByMob;
 
         private StubServerPlayer() {
             super(null, null, null, null);
         }
 
-        void init(UUID uuid) {
+        void init(UUID uuid, boolean sneaking) {
             this.uuid = uuid;
+            this.sneaking = sneaking;
         }
 
         @Override
         public UUID getUUID() {
             return this.uuid;
+        }
+
+        @Override
+        public boolean isShiftKeyDown() {
+            return this.sneaking;
+        }
+
+        @Override
+        public boolean isCrouching() {
+            return this.sneaking;
         }
 
         @Override
@@ -814,7 +845,7 @@ class PackCivilWarImmunityTest {
         }
     }
 
-    private static final class StubServerLevel extends ServerLevel {
+    static final class StubServerLevel extends ServerLevel {
         private long gameTime;
         private List<Wolf> candidates;
         private @Nullable GameRules gameRules;
@@ -926,6 +957,8 @@ class PackCivilWarImmunityTest {
         private long lastCorrectionSnapExpiry;
         private int playPenaltyTicks;
         private int spectatorWagTicks;
+        private float health;
+        private float maxHealth;
 
         private OfflineStubWolf() {
             super(null, null);
@@ -946,6 +979,25 @@ class PackCivilWarImmunityTest {
             this.bloodFeudTarget = "";
             this.hasBloodFeud = false;
             this.ownerDistanceSq = 4.0;
+            this.maxHealth = 8.0f;
+            this.health = 8.0f;
+        }
+
+        void setStubMaxHealth(float maxHealth) {
+            this.maxHealth = maxHealth;
+            if (this.health > maxHealth) {
+                this.health = maxHealth;
+            }
+        }
+
+        @Override
+        public float getHealth() {
+            return this.health;
+        }
+
+        @Override
+        public void setHealth(float health) {
+            this.health = Math.max(0.0f, Math.min(this.maxHealth, health));
         }
 
         void attachLevel(@Nullable Level level) {
