@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.7.27+26.1.2] - 2026-11-26
+
+### Fixed
+- **Remaining 8 Inverted SocialEvent Expirations, Dead/Null Target Early-Exit Loops, Howl Timer Reset & Dependency Floor Tightening** (`BeggingDogEvent`, `CorrectionDogEvent`, `FetchDogEvent`, `HowlDogEvent`, `IdleCuriosityEvent`, `RetaliationDogEvent`, `SmallFightDogEvent`, `WanderlustDogEvent`, `fabric.mod.json`, `neoforge.mods.toml`, `mods.toml`) (BL-BD-074):
+  - Fixed the inverted `>=` expiration return conditions across all 8 remaining `SocialEvent` classes (`BeggingDogEvent`, `CorrectionDogEvent`, `FetchDogEvent`, `HowlDogEvent`, `IdleCuriosityEvent`, `RetaliationDogEvent`, `SmallFightDogEvent`, `WanderlustDogEvent`), restoring full authored event durations (`400`, `60`, `600`, `60`, `300`, `100`, `200`, `600` ticks) instead of expiring on tick 1.
+  - Fixed dead/null target early-exit guards in `CorrectionDogEvent.tick(TickContext)` and `RetaliationDogEvent.tick(TickContext)` returning `true` instead of `false` when `target == null || !target.isAlive()`, preventing indefinite event loops until timer completion.
+  - Added `this.timer = 0;` reset at the top of `HowlDogEvent.onStart(TickContext)` to prevent stale timer state across consecutive or preempted runs.
+  - Tightened `dasik-library` / `dasik_library` minimum dependency floors to `>=1.12.0` / `[1.12.0,)` in `fabric.mod.json`, `neoforge.mods.toml`, and `mods.toml`.
+
 ## [5.7.26+26.1.2] - 2026-11-26
 
 ### Fixed

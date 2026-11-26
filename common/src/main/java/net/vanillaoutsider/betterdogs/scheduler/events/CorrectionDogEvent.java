@@ -53,9 +53,9 @@ public class CorrectionDogEvent implements SocialEvent {
     public boolean tick(TickContext context) {
         this.tickCount++;
         if (this.target == null || !this.target.isAlive())
-            return true;
+            return false;
 
-        return this.tickCount >= 60; // 3 seconds
+        return this.tickCount < 60; // 3 seconds
     }
 
     @Override

@@ -38,7 +38,7 @@ public class SmallFightDogEvent implements SocialEvent {
     @Override
     public boolean tick(TickContext context) {
         this.tickCount++;
-        return this.tickCount >= 200; // 10 seconds
+        return this.tickCount < 200; // 10 seconds
     }
 
     @Override

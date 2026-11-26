@@ -43,7 +43,7 @@ public class BeggingDogEvent implements SocialEvent {
     public boolean tick(TickContext context) {
         this.tickCount++;
         // Stop if duration exceeded (e.g. 20 seconds) or logic satisfied
-        return this.tickCount >= 400;
+        return this.tickCount < 400;
     }
 
     @Override

@@ -63,7 +63,7 @@ public class RetaliationDogEvent implements SocialEvent {
     public boolean tick(TickContext context) {
         this.tickCount++;
         if (this.target == null || !this.target.isAlive())
-            return true;
+            return false;
 
         // Ensure state is maintained (in case something reset it)
         if (context.entity() instanceof WolfExtensions ext) {
@@ -73,7 +73,7 @@ public class RetaliationDogEvent implements SocialEvent {
             }
         }
 
-        return this.tickCount >= 100; // 5 seconds
+        return this.tickCount < 100; // 5 seconds
     }
 
     @Override
