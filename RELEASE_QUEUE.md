@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 1.7.26+1.20.1** [Fabric + Forge] - Fix Baby Retaliation Reversed Entity Parameter & Aggressive Puppy Provocation Overdamage (BL-BD-050)
 - [ ] **Better Dogs 1.7.25+1.20.1** [Fabric + Forge] - Fix Sitting Pose State Desync During Movement & AI Transitions (BL-BD-069)
 - [ ] **Better Dogs 1.7.24+1.20.1** - Persist Genetic Scale & Modulated Voice Pitch Across Wild Spawn, Breeding, Runt & Cure (BL-BD-071)
 - [ ] **Better Dogs 1.7.23+1.20.1** - EntityRaycastHelper ClipContext Null Entity NPE Safety (BL-BD-068)

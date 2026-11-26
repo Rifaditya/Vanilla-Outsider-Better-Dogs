@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.7.26+1.20.1] - 2026-11-26
+
+### Fixed
+- **Baby Retaliation Target Filtering & Aggressive Puppy Provocation Damage Clamp** (`BabyBiteBackGoal`, `WolfFriendlyFireHelper`, `WolfMixin`) (BL-BD-050):
+  - Fixed `BabyBiteBackGoal` passing `this.wolf` instead of `this.target` to `WolfFriendlyFireHelper`, which previously treated every tamed aggressive puppy as attacking itself and silently cancelled 100% of puppy retaliation hits while `BD_FRIENDLY_FIRE` was enabled.
+  - Added `WolfFriendlyFireHelper.shouldCancelRetaliationDamage(...)` so aggressive puppies cleanly bite back owners, hostile mobs, wild/rival wolves, and Blood Feud rivals for `1.0F`, while protecting non-feud co-owned packmates when `BD_FRIENDLY_FIRE = true` and allowing pack hits when `BD_FRIENDLY_FIRE = false`.
+  - Added `WolfMixin.betterdogs$clampProvocationDamage` (`@ModifyVariable` on `hurt` `amount`) and `WolfFriendlyFireHelper.shouldCancelDamage(wolf, source, amount)` so standing-owner direct melee provocation taps on `AGGRESSIVE` puppies are capped at `2.0f` HP (`MAX_AGGRESSIVE_BABY_PROVOCATION_DAMAGE`) with a `1.0f` non-lethal floor when `BD_FRIENDLY_FIRE = true`, while crouching owners, projectiles, non-aggressive/adult dogs, and `BD_FRIENDLY_FIRE = false` keep full vanilla behavior.
+
 ## [1.7.25+1.20.1] - 2026-11-23
 
 ### Fixed
