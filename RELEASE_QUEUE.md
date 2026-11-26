@@ -3,10 +3,11 @@
 This file tracks which built versions (from the central archive folder "E:\Minecraft Project\Vanilla Outsider Collections\Better Dogs all version\Archive Jar of all versions") have been manually uploaded to Modrinth/CurseForge.
 Open this file in your editor and change `[ ]` to `[x]` when you publish a version.
 
-> **Multi-Loader Note (MC 26.1.2):** Starting from 5.1.1+26.1.2 up to HEAD 5.7.25+26.1.2, all builds are compiled as native Multi-Loader artifacts with dual production JARs: Fabric (`*-fabric.jar`) and NeoForge (`*-neoforge.jar`).
+> **Multi-Loader Note (MC 26.1.2):** Starting from 5.1.1+26.1.2 up to HEAD 5.7.26+26.1.2, all builds are compiled as native Multi-Loader artifacts with dual production JARs: Fabric (`*-fabric.jar`) and NeoForge (`*-neoforge.jar`).
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 5.7.26+26.1.2** [Fabric + NeoForge] - Fix Ambient Social Scheduler Catch-22, Null/Inbox Safety & Morning Zoomies Duration (BL-BD-051)
 - [ ] **Better Dogs 5.7.25+26.1.2** [Fabric + NeoForge] - Fix Baby Retaliation Reversed Entity Parameter & Aggressive Puppy Provocation Overdamage (BL-BD-050)
 - [ ] **Better Dogs 5.7.24+26.1.2** [Fabric + NeoForge] - Fix Sitting Pose State Desync During Movement & AI Transitions (BL-BD-069)
 - [ ] **Better Dogs 5.7.23+26.1.2** [Fabric + NeoForge] - Persist Genetic Scale & Modulated Voice Pitch Across Spawn, Ticks, Breeding, Runt & Cure (BL-BD-071)
