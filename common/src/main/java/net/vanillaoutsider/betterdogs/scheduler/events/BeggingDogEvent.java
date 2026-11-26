@@ -40,7 +40,7 @@ public class BeggingDogEvent implements SocialEvent {
     @Override
     public boolean tick(TickContext context) {
         this.tickCount++;
-        return this.tickCount >= 400;
+        return this.tickCount < 400;
     }
 
     @Override
