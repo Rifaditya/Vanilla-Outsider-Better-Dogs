@@ -40,7 +40,7 @@ public class FetchDogEvent implements SocialEvent {
     @Override
     public boolean tick(TickContext context) {
         this.tickCount++;
-        return this.tickCount >= 600;
+        return this.tickCount < 600;
     }
 
     @Override

@@ -52,7 +52,7 @@ public class RetaliationDogEvent implements SocialEvent {
     public boolean tick(TickContext context) {
         this.tickCount++;
         if (this.target == null || !this.target.isAlive()) {
-            return true;
+            return false;
         }
 
         if (context.entity().dasik$asEntity() instanceof WolfExtensions ext) {
@@ -61,7 +61,7 @@ public class RetaliationDogEvent implements SocialEvent {
             }
         }
 
-        return this.tickCount >= 100;
+        return this.tickCount < 100;
     }
 
     @Override

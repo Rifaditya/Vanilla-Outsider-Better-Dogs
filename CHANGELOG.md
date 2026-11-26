@@ -1,5 +1,14 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.7.27+1.20.1] - 2026-11-26
+
+### Fixed
+- **SocialEvent Duration Expiration, Dead/Null Target Early-Exit Loops & Howl Timer Reset** (`BeggingDogEvent`, `CorrectionDogEvent`, `FetchDogEvent`, `HowlDogEvent`, `IdleCuriosityEvent`, `RetaliationDogEvent`, `SmallFightDogEvent`, `WanderlustDogEvent`, `ZoomiesDogEvent`) (BL-BD-074):
+  - Fixed all 9 `SocialEvent.tick(TickContext)` implementations returning inverted `>= N` conditions under `DasikLibrary`'s `true = continue` `EntitySocialScheduler` contract, restoring their full authored durations (`< 400`, `< 60`, `< 600`, `< 60`, `< 300`, `< 100`, `< 200`, `< 600`, `< 240`).
+  - Fixed `CorrectionDogEvent` and `RetaliationDogEvent` returning `true` instead of `false` when `target == null || !target.isAlive()`, preventing infinite scheduler loops on null or dying targets.
+  - Added `this.timer = 0;` reset at the top of `HowlDogEvent.onStart(TickContext)` so reused or preempted `HowlDogEvent` instances always start cleanly at tick `0`.
+  - Tightened `dasik-library` minimum dependency bounds to `>=1.4.0` (`fabric.mod.json`) and `[1.4.0,)` (`mods.toml`, `neoforge.mods.toml`) to enforce `EntitySocialScheduler` contract compatibility.
+
 ## [1.7.26+1.20.1] - 2026-11-26
 
 ### Fixed
