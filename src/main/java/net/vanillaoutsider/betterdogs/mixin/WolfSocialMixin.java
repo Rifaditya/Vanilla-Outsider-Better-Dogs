@@ -11,9 +11,9 @@ import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersistentData;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
-import net.vanillaoutsider.betterdogs.scheduler.events.BeggingDogEvent;
 import net.vanillaoutsider.betterdogs.scheduler.events.ZoomiesDogEvent;
 import net.vanillaoutsider.betterdogs.util.WolfDebugLogger;
+import net.vanillaoutsider.betterdogs.util.WolfZoomiesHelper;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -178,46 +178,24 @@ public abstract class WolfSocialMixin implements SocialEntity, WolfExtensions {
     @Override
     public void betterdogs$tickScheduler() {
         Wolf wolf = (Wolf) (Object) this;
-        if (!wolf.level().isClientSide() && betterdogs$socialScheduler != null) {
+        if (wolf.level().isClientSide()) {
+            return;
+        }
+        if (betterdogs$socialScheduler != null) {
             betterdogs$socialScheduler.tick();
-            betterdogs$pollAmbientEvents();
-
             if (betterdogs$socialScheduler.isIdle()) {
                 betterdogs$socialScheduler = null;
             }
         }
+        betterdogs$pollAmbientEvents();
     }
-
-    @Unique
-    private long betterdogs$lastBeggingTime = 0;
 
     @Unique
     private void betterdogs$pollAmbientEvents() {
         Wolf wolf = (Wolf) (Object) this;
-        if (wolf.tickCount % 20 != 0)
-            return;
-
-        if (wolf.isOrderedToSit())
-            return;
-
-        // Begging
-        if (wolf.isTame() && wolf.onGround() && !betterdogs$socialScheduler.isEventActive(BeggingDogEvent.ID)) {
-            long currentTime = wolf.level().getGameTime();
-            if (currentTime - betterdogs$lastBeggingTime >= 1200) {
-                betterdogs$lastBeggingTime = currentTime;
-                betterdogs$socialScheduler.schedule(new BeggingDogEvent());
-            }
-        }
-
-        // Morning Zoomies
-        long timeOfDay = wolf.level().getDefaultClockTime() % 24000;
-        if (wolf.isTame() && wolf.onGround() && timeOfDay < 3000) {
-            if (!betterdogs$socialScheduler.isEventActive(ZoomiesDogEvent.ID)) {
-                if (wolf.getRandom().nextFloat() < 0.01f) {
-                    betterdogs$socialScheduler.schedule(new ZoomiesDogEvent());
-                    WolfDebugLogger.log(wolf, "Ambient", "Morning zoomies triggered!");
-                }
-            }
+        if (WolfZoomiesHelper.shouldTriggerAmbientMorningZoomies(wolf, betterdogs$socialScheduler)) {
+            betterdogs$getOrInitializeScheduler().schedule(new ZoomiesDogEvent());
+            WolfDebugLogger.log(wolf, "Ambient", "Morning zoomies triggered!");
         }
     }
 

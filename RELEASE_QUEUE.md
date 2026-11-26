@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 5.7.26+26.3** - Fix Ambient Social Scheduler Catch-22, Null/Inbox Safety & Morning Zoomies Duration; Align `dasik-library >= 1.12.0` (BL-BD-051)
 - [ ] **Better Dogs 5.7.25+26.3** - Fix Baby Retaliation Reversed Entity Parameter & Aggressive Puppy Provocation Overdamage (BL-BD-050)
 - [ ] **Better Dogs 5.7.24+26.3** - Fix Sitting Pose State Desync During Movement & AI Transitions (BL-BD-069)
 - [ ] **Better Dogs 5.7.23+26.3** - Persist Genetic Scale & Modulated Voice Pitch Across Spawn, Ticks, Breeding, Runt & Cure (BL-BD-071)

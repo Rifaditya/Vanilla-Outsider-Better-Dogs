@@ -1,5 +1,15 @@
 # Changelog
 
+## [5.7.26+26.3] - 2026-11-26
+
+### Fixed
+- **Ambient Social Scheduler Catch-22, Null/Inbox Safety & Morning Zoomies Duration** (`WolfSocialMixin`, `WolfZoomiesHelper`, `ZoomiesDogEvent`) (BL-BD-051):
+  - Fixed the ambient scheduler Catch-22 in `WolfSocialMixin.betterdogs$tickScheduler()` where `betterdogs$pollAmbientEvents()` was nested inside `betterdogs$socialScheduler != null`, preventing idle dogs from ever initiating spontaneous morning zoomies.
+  - Moved `betterdogs$pollAmbientEvents()` strictly *after* `isIdle()` null-cleanup and routed scheduling through `betterdogs$getOrInitializeScheduler()` on trigger, preventing null-pointer crashes and `inbox` event wipes while avoiding unnecessary scheduler allocations on disabled or ineligible dogs.
+  - Added `WolfZoomiesHelper.shouldTriggerAmbientMorningZoomies(...)` with full state, morning celestial window (`Math.floorMod(clockTime, 24000L) < 3000L`), `bd_zoomies_enabled` GameRule, sitting/resting/guard/combat, and active-event checks, and removed dead `BeggingDogEvent` ambient polling from `WolfSocialMixin` (`WolfBegGoal` handles food begging independently).
+  - Fixed `ZoomiesDogEvent.tick(TickContext)` returning `this.tickCount >= 240` instead of `this.tickCount < 240`, restoring the full 240-tick (12-second) morning zoomies duration instead of expiring on tick 1.
+  - Aligned `dasik-library` dependency to `>= 1.12.0`.
+
 ## [5.7.25+26.3] - 2026-11-26
 
 ### Fixed

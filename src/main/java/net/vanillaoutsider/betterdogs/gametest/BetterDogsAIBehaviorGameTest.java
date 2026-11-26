@@ -32,6 +32,7 @@ import net.vanillaoutsider.betterdogs.genetics.CanineGeneticsHelper;
 import net.vanillaoutsider.betterdogs.personality.CanineArchetype;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
+import net.dasik.social.core.EntitySocialScheduler;
 import net.vanillaoutsider.betterdogs.ai.AvoidGhastFireballGoal;
 import net.vanillaoutsider.betterdogs.ai.BabyBiteBackGoal;
 import net.vanillaoutsider.betterdogs.ai.EatGroundFoodGoal;
@@ -41,6 +42,8 @@ import net.vanillaoutsider.betterdogs.ai.PacifistRevengeGoal;
 import net.vanillaoutsider.betterdogs.ai.PersonalityFollowOwnerGoal;
 import net.vanillaoutsider.betterdogs.ai.WolfGuardGoal;
 import net.vanillaoutsider.betterdogs.ai.WildWolfWanderGoal;
+import net.vanillaoutsider.betterdogs.ai.ZoomiesGoal;
+import net.vanillaoutsider.betterdogs.scheduler.events.ZoomiesDogEvent;
 import net.vanillaoutsider.betterdogs.util.PackAudienceHelper;
 import net.vanillaoutsider.betterdogs.util.WolfCatchupHelper;
 import net.vanillaoutsider.betterdogs.util.WolfCureHelper;
@@ -839,5 +842,80 @@ public class BetterDogsAIBehaviorGameTest {
         }
 
         helper.succeed();
+    }
+
+    @GameTest
+    public void testAmbientMorningZoomiesSchedulerLifecycle(GameTestHelper helper) {
+        for (int x = 0; x < 5; x++) {
+            for (int z = 0; z < 5; z++) {
+                helper.setBlock(x, 1, z, Blocks.STONE);
+            }
+        }
+
+        ServerLevel serverLevel = helper.getLevel();
+        serverLevel.getGameRules().set(BetterDogsGameRules.BD_ZOOMIES_ENABLED, true, serverLevel.getServer());
+
+        Player mockOwner = helper.makeMockPlayer(GameType.SURVIVAL);
+        BlockPos ownerPos = helper.absolutePos(new BlockPos(2, 2, 2));
+        mockOwner.setPos(ownerPos.getX() + 0.5, ownerPos.getY(), ownerPos.getZ() + 0.5);
+
+        Wolf wolf = helper.spawn(EntityTypes.WOLF, new BlockPos(2, 2, 2));
+        helper.assertTrue(wolf != null, "Wolf failed to spawn for ambient zoomies test");
+        wolf.setTame(true, false);
+        wolf.setOwner(mockOwner);
+        wolf.setOrderedToSit(false);
+        wolf.setInSittingPose(false);
+        wolf.setOnGround(true);
+        wolf.tickCount = 20;
+
+        helper.assertTrue(wolf instanceof WolfExtensions, "Wolf must implement WolfExtensions");
+        WolfExtensions ext = (WolfExtensions) wolf;
+        ext.betterdogs$setGuardMode(false);
+        ext.betterdogs$setZoomiesTicks(0);
+
+        helper.assertTrue(ext.betterdogs$getScheduler() == null,
+                "Freshly spawned wolf must start with null social scheduler");
+
+        // Woven WolfSocialMixin.betterdogs$tickScheduler() must never NPE when scheduler is null
+        ext.betterdogs$tickScheduler();
+
+        EntitySocialScheduler scheduler = ext.betterdogs$getOrInitializeScheduler();
+        helper.assertTrue(scheduler != null, "betterdogs$getOrInitializeScheduler must return non-null scheduler");
+        scheduler.schedule(new ZoomiesDogEvent());
+
+        ZoomiesGoal zoomiesGoal = new ZoomiesGoal(wolf);
+
+        GameTestSequence seq = helper.startSequence();
+        seq.thenExecuteAfter(1, () -> {
+            EntitySocialScheduler active = ext.betterdogs$getScheduler();
+            helper.assertTrue(active != null && active.isEventActive(ZoomiesDogEvent.ID),
+                    "ZoomiesDogEvent must remain active after tick 1 (not inverted tick-1 expiration)");
+            helper.assertTrue(zoomiesGoal.canUse() && zoomiesGoal.canContinueToUse(),
+                    "ZoomiesGoal must activate while ZoomiesDogEvent is active on tick 1 (canUse="
+                            + zoomiesGoal.canUse()
+                            + ", canContinue=" + zoomiesGoal.canContinueToUse()
+                            + ", tame=" + wolf.isTame()
+                            + ", orderedSit=" + wolf.isOrderedToSit()
+                            + ", sittingPose=" + wolf.isInSittingPose()
+                            + ", target=" + wolf.getTarget()
+                            + ", guard=" + ext.betterdogs$isGuardMode()
+                            + ", zoomiesRule=" + BetterDogsGameRules.isZoomiesEnabled(wolf.level())
+                            + ")");
+        }).thenExecuteAfter(4, () -> {
+            EntitySocialScheduler active = ext.betterdogs$getScheduler();
+            helper.assertTrue(active != null && active.isEventActive(ZoomiesDogEvent.ID),
+                    "ZoomiesDogEvent must remain active across ticks 1..5");
+            helper.assertTrue(zoomiesGoal.canUse() && zoomiesGoal.canContinueToUse(),
+                    "ZoomiesGoal must remain active across ticks 1..5 (canUse="
+                            + zoomiesGoal.canUse()
+                            + ", canContinue=" + zoomiesGoal.canContinueToUse()
+                            + ", tame=" + wolf.isTame()
+                            + ", orderedSit=" + wolf.isOrderedToSit()
+                            + ", sittingPose=" + wolf.isInSittingPose()
+                            + ", target=" + wolf.getTarget()
+                            + ", guard=" + ext.betterdogs$isGuardMode()
+                            + ", zoomiesRule=" + BetterDogsGameRules.isZoomiesEnabled(wolf.level())
+                            + ")");
+        }).thenSucceed();
     }
 }
