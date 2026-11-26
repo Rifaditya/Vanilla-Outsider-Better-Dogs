@@ -7,10 +7,12 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.util.WolfDamageHandler;
+import net.vanillaoutsider.betterdogs.util.WolfFriendlyFireHelper;
 import net.vanillaoutsider.betterdogs.util.WolfTargetingHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -24,6 +26,11 @@ public abstract class WolfCombatMixin {
     @Inject(method = "die", at = @At("HEAD"))
     private void betterdogs$onDie(DamageSource source, CallbackInfo ci) {
         net.vanillaoutsider.betterdogs.util.WolfNemesisHelper.recordNemesis((Wolf) (Object) this, source);
+    }
+
+    @ModifyVariable(method = "actuallyHurt", at = @At("HEAD"), argsOnly = true, ordinal = 0)
+    private float betterdogs$clampProvocationDamage(float amount, ServerLevel level, DamageSource source) {
+        return WolfFriendlyFireHelper.clampProvocationDamage((Wolf) (Object) this, source, amount);
     }
 
     @Inject(method = "actuallyHurt", at = @At("HEAD"), cancellable = true)
