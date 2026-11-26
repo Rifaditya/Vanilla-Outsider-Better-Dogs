@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.25+26.3] - 2026-11-26
+
+### Fixed
+- **Aggressive Puppy Provocation Damage Cap & Baby Retaliation Target Filtering** (`WolfCombatMixin`, `BabyBiteBackGoal`, `WolfFriendlyFireHelper`) (BL-BD-050):
+  - Fixed `BabyBiteBackGoal` passing `this.wolf` instead of `this.retaliationTarget` into friendly-fire checks, which previously caused tamed aggressive puppies to cancel their own `1.0F` bite-back against their owner, hostile mobs, and rival wolves when `bd_friendly_fire_protection` is enabled.
+  - Replaced the pre-heal `setHealth` workaround in `WolfFriendlyFireHelper` with a `@ModifyVariable` damage clamp on `Wolf.actuallyHurt` (`MAX_AGGRESSIVE_BABY_PROVOCATION_DAMAGE = 2.0f`), ensuring standing owner melee hits on `AGGRESSIVE` puppies cleanly deal at most `2.0 HP`, never heal wounded puppies wearing Wolf Armor, and honor the `1.0 HP` non-lethal floor when `bd_friendly_fire_protection` is enabled.
+  - Excluded `SocialAction.RETALIATION` from the Social AI friendly-fire bypass and routed `BabyBiteBackGoal` through `WolfFriendlyFireHelper.shouldCancelRetaliationDamage(...)`, allowing puppy bite-backs against owners, hostile mobs, rivals, and Blood Feud packmates while protecting non-feuding co-owned packmates when `bd_friendly_fire_protection` is enabled.
+
 ## [5.7.24+26.3] - 2026-11-23
 
 ### Fixed

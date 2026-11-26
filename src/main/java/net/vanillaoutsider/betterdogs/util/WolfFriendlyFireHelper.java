@@ -9,6 +9,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.ai.play.PlayChoreographyHelper;
@@ -18,6 +19,8 @@ import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
  * Single-purpose helper managing friendly fire evaluation, melee protection, and lethal health clamping.
  */
 public final class WolfFriendlyFireHelper {
+
+    public static final float MAX_AGGRESSIVE_BABY_PROVOCATION_DAMAGE = 2.0f;
 
     private WolfFriendlyFireHelper() {
     }
@@ -54,9 +57,11 @@ public final class WolfFriendlyFireHelper {
             return false;
         }
 
-        // Preserve deliberate Social AI (Play Fight / Correction / Retaliation) & Blood Feud exemptions
-        if ((rawAttacker instanceof WolfExtensions rawExt && rawExt.betterdogs$getSocialTarget() == wolf)
-                || (directAttacker instanceof WolfExtensions directExt && directExt.betterdogs$getSocialTarget() == wolf)) {
+        // Preserve deliberate Social AI (Play Fight / Correction) & Blood Feud exemptions (RETALIATION obeys BD_FRIENDLY_FIRE)
+        if ((rawAttacker instanceof WolfExtensions rawExt && rawExt.betterdogs$getSocialTarget() == wolf
+                && rawExt.betterdogs$getSocialAction() != WolfExtensions.SocialAction.RETALIATION)
+                || (directAttacker instanceof WolfExtensions directExt && directExt.betterdogs$getSocialTarget() == wolf
+                && directExt.betterdogs$getSocialAction() != WolfExtensions.SocialAction.RETALIATION)) {
             return false;
         }
         // Blood Feud bypass (betterdogs$hasBloodFeud())
@@ -88,10 +93,17 @@ public final class WolfFriendlyFireHelper {
             return false;
         }
 
+        boolean isAggressiveBabyProvocation = isOwner && !isSneaking && !isProjectile
+                && wolf.isBaby() && wolf instanceof WolfExtensions ext
+                && ext.betterdogs$getPersonality() == WolfPersonality.AGGRESSIVE;
+        float effectiveAmount = isAggressiveBabyProvocation
+                ? Math.min(amount, MAX_AGGRESSIVE_BABY_PROVOCATION_DAMAGE)
+                : amount;
+
         // 1. Lethal Friendly Fire Clamp (Allied dogs or non-sneaking owner)
         if ((isAllyWolf || isOwner) && !isSneaking) {
             float currentHealth = wolf.getHealth();
-            if (amount >= currentHealth - 1.0f) {
+            if (effectiveAmount >= currentHealth - 1.0f) {
                 if (currentHealth > 1.0f) {
                     wolf.setHealth(1.0f);
                 }
@@ -102,12 +114,8 @@ public final class WolfFriendlyFireHelper {
         // 2. Owner Melee & Co-Owned Packmate Friendly Fire Cancellation
         if (isOwner && !isSneaking && !isProjectile) {
             // Exception: Provocation taps on Aggressive Babies to trigger retaliation behavior
-            if (wolf.isBaby() && wolf instanceof WolfExtensions ext
-                    && ext.betterdogs$getPersonality() == WolfPersonality.AGGRESSIVE) {
-                if (amount > 2.0f) {
-                    wolf.setHealth(wolf.getHealth() + (amount - 2.0f));
-                }
-                return false; // Let provocation hit land
+            if (isAggressiveBabyProvocation) {
+                return false; // Damage is cleanly clamped to <= 2.0f via @ModifyVariable in WolfCombatMixin
             }
             return true; // Cancel accidental melee hit
         }
@@ -138,5 +146,71 @@ public final class WolfFriendlyFireHelper {
             return feudTarget != null && !feudTarget.isEmpty() && feudTarget.equals(target.getStringUUID());
         }
         return false;
+    }
+
+    /**
+     * Clamps standing-owner direct melee provocation damage against an AGGRESSIVE puppy to
+     * {@link #MAX_AGGRESSIVE_BABY_PROVOCATION_DAMAGE} when {@code BD_FRIENDLY_FIRE} is enabled.
+     */
+    public static float clampProvocationDamage(Wolf wolf, DamageSource source, float amount) {
+        if (wolf == null || !wolf.isTame() || !wolf.isBaby() || source == null
+                || Float.isNaN(amount) || amount <= MAX_AGGRESSIVE_BABY_PROVOCATION_DAMAGE) {
+            return amount;
+        }
+        if (!(wolf instanceof WolfExtensions ext) || ext.betterdogs$getPersonality() != WolfPersonality.AGGRESSIVE) {
+            return amount;
+        }
+        if (!isStandingOwnerDirectMelee(wolf, source)) {
+            return amount;
+        }
+        return isFriendlyFireEnabled(wolf.level()) ? MAX_AGGRESSIVE_BABY_PROVOCATION_DAMAGE : amount;
+    }
+
+    /**
+     * Evaluates whether an aggressive puppy's {@code BabyBiteBackGoal} retaliation hit against {@code victim}
+     * should be cancelled under friendly-fire and Blood Feud rules.
+     */
+    public static boolean shouldCancelRetaliationDamage(Wolf attackerPuppy, LivingEntity victim, DamageSource source, float amount) {
+        if (attackerPuppy == null || victim == null || source == null) {
+            return false;
+        }
+        if (!(victim instanceof Wolf victimWolf)) {
+            return false;
+        }
+        if (victimWolf == attackerPuppy) {
+            return true;
+        }
+        if (isBloodFeudPair(attackerPuppy, victimWolf)) {
+            return false;
+        }
+        Level ruleLevel = attackerPuppy.level() != null ? attackerPuppy.level() : victimWolf.level();
+        if (isFriendlyFireEnabled(ruleLevel) && PackAudienceHelper.isCoOwned(attackerPuppy, victimWolf)) {
+            return true;
+        }
+        return shouldCancelDamage(victimWolf, source, amount);
+    }
+
+    private static boolean isStandingOwnerDirectMelee(Wolf wolf, DamageSource source) {
+        Entity rawAttacker = source.getEntity();
+        Entity directAttacker = source.getDirectEntity();
+        LivingEntity owner = wolf.getOwner();
+        UUID wolfOwnerUuid = PlayChoreographyHelper.getOwnerUUID(wolf);
+        Player attackerPlayer = rawAttacker instanceof Player p ? p : (directAttacker instanceof Player p ? p : null);
+        boolean isOwner = (owner != null && (rawAttacker == owner || directAttacker == owner))
+                || (attackerPlayer != null && wolfOwnerUuid != null && wolfOwnerUuid.equals(attackerPlayer.getUUID()));
+        boolean isSneaking = attackerPlayer != null && (attackerPlayer.isShiftKeyDown() || attackerPlayer.isCrouching());
+        boolean isProjectile = source.is(DamageTypeTags.IS_PROJECTILE) || source.getDirectEntity() != source.getEntity();
+        return isOwner && !isSneaking && !isProjectile;
+    }
+
+    private static boolean isFriendlyFireEnabled(Level level) {
+        if (level == null || BetterDogsGameRules.BD_FRIENDLY_FIRE == null) {
+            return true;
+        }
+        try {
+            return BetterDogsGameRules.getBoolean(level, BetterDogsGameRules.BD_FRIENDLY_FIRE, true);
+        } catch (Throwable ignored) {
+            return true;
+        }
     }
 }

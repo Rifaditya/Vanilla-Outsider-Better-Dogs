@@ -48,6 +48,7 @@ import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.vanillaoutsider.betterdogs.util.AdultDisciplineHelper;
 import net.vanillaoutsider.betterdogs.util.PackAudienceHelper;
 import net.vanillaoutsider.betterdogs.util.SmallFightHelper;
+import net.vanillaoutsider.betterdogs.util.WolfDamageHandler;
 import net.vanillaoutsider.betterdogs.util.WolfFriendlyFireHelper;
 import net.vanillaoutsider.betterdogs.util.WolfNemesisHelper;
 import net.vanillaoutsider.betterdogs.util.WolfTargetingHandler;
@@ -65,8 +66,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class PackCivilWarImmunityTest {
 
     private static final Unsafe unsafe = initUnsafe();
-    private static Holder<DamageType> mobDamageType;
-    private static Holder<DamageType> fallDamageType;
+    static Holder<DamageType> mobDamageType;
+    static Holder<DamageType> fallDamageType;
 
     private static Unsafe initUnsafe() {
         try {
@@ -103,7 +104,16 @@ class PackCivilWarImmunityTest {
         try {
             SharedConstants.tryDetectVersion();
             Bootstrap.bootStrap();
+            if (BetterDogsGameRules.BD_NEMESIS_SYSTEM == null || BetterDogsGameRules.BD_FRIENDLY_FIRE == null) {
+                BetterDogsGameRules.register();
+            }
         } catch (Throwable ignored) {
+        }
+        if (mobDamageType == null) {
+            mobDamageType = Holder.direct(new DamageType("mob", 0.1f));
+        }
+        if (fallDamageType == null) {
+            fallDamageType = Holder.direct(new DamageType("fall", 0.0f));
         }
     }
 
@@ -118,7 +128,7 @@ class PackCivilWarImmunityTest {
         }
     }
 
-    private static StubServerPlayer createStubPlayer(UUID playerUuid, boolean sneaking) {
+    static StubServerPlayer createStubPlayer(UUID playerUuid, boolean sneaking) {
         try {
             StubServerPlayer player = (StubServerPlayer) unsafe.allocateInstance(StubServerPlayer.class);
             player.init(playerUuid, sneaking);
@@ -128,11 +138,11 @@ class PackCivilWarImmunityTest {
         }
     }
 
-    private static StubServerLevel createStubServerLevel(long gameTime, List<Wolf> worldWolves) {
+    static StubServerLevel createStubServerLevel(long gameTime, List<Wolf> worldWolves) {
         return createStubServerLevel(gameTime, worldWolves, false);
     }
 
-    private static StubServerLevel createStubServerLevel(long gameTime, List<Wolf> worldWolves, boolean returnMatchedOnQuery) {
+    static StubServerLevel createStubServerLevel(long gameTime, List<Wolf> worldWolves, boolean returnMatchedOnQuery) {
         try {
             StubServerLevel level = (StubServerLevel) unsafe.allocateInstance(StubServerLevel.class);
             level.init(gameTime, worldWolves, returnMatchedOnQuery);
@@ -142,7 +152,7 @@ class PackCivilWarImmunityTest {
         }
     }
 
-    private static OfflineStubCreeper createOfflineCreeper() {
+    static OfflineStubCreeper createOfflineCreeper() {
         try {
             OfflineStubCreeper creeper = (OfflineStubCreeper) unsafe.allocateInstance(OfflineStubCreeper.class);
             creeper.init();
@@ -996,7 +1006,71 @@ class PackCivilWarImmunityTest {
                 "Non-matching Blood Feud target must still obey co-owned friendly fire protection");
     }
 
-    private static final class OfflineStubCreeper extends Creeper {
+    @Test
+    @DisplayName("BL-BD-050 Scenario 19: WolfCombatMixin @ModifyVariable, RETALIATION bypass exclusion & PLAY_FIGHT/DISCIPLINE parity")
+    void testScenario19BabyProvocationClampAndSocialBypassParity() throws IOException {
+        Path root = findProjectRoot();
+        String combatMixinSrc = Files.readString(
+                root.resolve("src/main/java/net/vanillaoutsider/betterdogs/mixin/WolfCombatMixin.java"),
+                StandardCharsets.UTF_8);
+        assertTrue(combatMixinSrc.contains("@ModifyVariable(method = \"actuallyHurt\"")
+                        && combatMixinSrc.contains("WolfFriendlyFireHelper.clampProvocationDamage("),
+                "WolfCombatMixin must declare @ModifyVariable on actuallyHurt delegating to clampProvocationDamage");
+
+        UUID ownerA = UUID.randomUUID();
+        OfflineStubWolf aggressiveBaby = createOfflineWolf(UUID.randomUUID(), ownerA, true, true);
+        aggressiveBaby.betterdogs$setPersonality(WolfPersonality.AGGRESSIVE);
+        OfflineStubWolf packmate = createOfflineWolf(UUID.randomUUID(), ownerA, true, false);
+        OfflineStubWolf discipliningAdult = createOfflineWolf(UUID.randomUUID(), ownerA, true, false);
+
+        StubServerLevel level = createStubServerLevel(500L, List.of(aggressiveBaby, packmate, discipliningAdult));
+        aggressiveBaby.attachLevel(level);
+        packmate.attachLevel(level);
+        discipliningAdult.attachLevel(level);
+        level.getGameRules().set(BetterDogsGameRules.BD_FRIENDLY_FIRE, true, null);
+
+        StubServerPlayer standingOwner = createStubPlayer(ownerA, false);
+        DamageSource ownerMelee = new DamageSource(mobDamageType, standingOwner, standingOwner);
+
+        // 1. Standing owner provocation clamp respects BD_FRIENDLY_FIRE polarity
+        assertEquals(2.0f, WolfFriendlyFireHelper.clampProvocationDamage(aggressiveBaby, ownerMelee, 20.0f), 1e-5f);
+        level.getGameRules().set(BetterDogsGameRules.BD_FRIENDLY_FIRE, false, null);
+        assertEquals(20.0f, WolfFriendlyFireHelper.clampProvocationDamage(aggressiveBaby, ownerMelee, 20.0f), 1e-5f);
+        level.getGameRules().set(BetterDogsGameRules.BD_FRIENDLY_FIRE, true, null);
+
+        // 2. SocialAction.RETALIATION must NOT bypass BD_FRIENDLY_FIRE against co-owned packmate
+        aggressiveBaby.forceSocialStateRaw(packmate, WolfExtensions.SocialAction.RETALIATION);
+        DamageSource babyRetaliationSrc = new DamageSource(mobDamageType, aggressiveBaby, aggressiveBaby);
+        packmate.setHealth(10.0f);
+        assertTrue(WolfFriendlyFireHelper.shouldCancelDamage(packmate, babyRetaliationSrc, 1.0f),
+                "RETALIATION must NOT bypass BD_FRIENDLY_FIRE protection on co-owned packmate");
+        assertTrue(WolfFriendlyFireHelper.shouldCancelRetaliationDamage(aggressiveBaby, packmate, babyRetaliationSrc, 1.0f),
+                "Co-owned packmate retaliation must be blocked when BD_FRIENDLY_FIRE=true");
+
+        level.getGameRules().set(BetterDogsGameRules.BD_FRIENDLY_FIRE, false, null);
+        assertFalse(WolfFriendlyFireHelper.shouldCancelRetaliationDamage(aggressiveBaby, packmate, babyRetaliationSrc, 1.0f),
+                "Co-owned packmate retaliation must be allowed when BD_FRIENDLY_FIRE=false");
+        level.getGameRules().set(BetterDogsGameRules.BD_FRIENDLY_FIRE, true, null);
+
+        // 3. Negative parity: PLAY_FIGHT & DISCIPLINE still bypass via WolfDamageHandler.onActuallyHurt
+        packmate.forceSocialStateRaw(aggressiveBaby, WolfExtensions.SocialAction.PLAY_FIGHT);
+        DamageSource playSrc = new DamageSource(mobDamageType, packmate, packmate);
+        aggressiveBaby.setHealth(6.0f);
+        assertFalse(WolfDamageHandler.onActuallyHurt(aggressiveBaby, playSrc, 1.0f),
+                "PLAY_FIGHT non-lethal hit must still be allowed by WolfDamageHandler");
+        aggressiveBaby.setHealth(2.0f);
+        assertTrue(WolfDamageHandler.onActuallyHurt(aggressiveBaby, playSrc, 2.0f),
+                "PLAY_FIGHT lethal hit must still clamp to 1.0f and cancel via WolfDamageHandler");
+        assertEquals(1.0f, aggressiveBaby.getHealth(), 1e-5f);
+
+        discipliningAdult.forceSocialStateRaw(aggressiveBaby, WolfExtensions.SocialAction.DISCIPLINE);
+        DamageSource disciplineSrc = new DamageSource(mobDamageType, discipliningAdult, discipliningAdult);
+        aggressiveBaby.setHealth(6.0f);
+        assertFalse(WolfDamageHandler.onActuallyHurt(aggressiveBaby, disciplineSrc, 1.0f),
+                "DISCIPLINE hit from adult must still bypass friendly fire cancellation");
+    }
+
+    static final class OfflineStubCreeper extends Creeper {
         private UUID uuid;
 
         private OfflineStubCreeper() {
@@ -1018,7 +1092,7 @@ class PackCivilWarImmunityTest {
         }
     }
 
-    private static final class StubServerPlayer extends ServerPlayer {
+    static final class StubServerPlayer extends ServerPlayer {
         private UUID uuid;
         private boolean sneaking;
         private @Nullable LivingEntity lastHurtByMob;
@@ -1068,7 +1142,7 @@ class PackCivilWarImmunityTest {
         }
     }
 
-    private static final class StubServerLevel extends ServerLevel {
+    static final class StubServerLevel extends ServerLevel {
         private long gameTime;
         private List<Wolf> candidates;
         private boolean returnMatchedOnQuery;
