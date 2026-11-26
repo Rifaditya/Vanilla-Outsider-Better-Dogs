@@ -47,7 +47,7 @@ public class FetchDogEvent implements SocialEvent {
         // Placeholder for fetch logic
         // if (fetchCompleted) return true;
 
-        return this.tickCount >= 600; // Max duration 30 seconds
+        return this.tickCount < 600; // Max duration 30 seconds
     }
 
     @Override
