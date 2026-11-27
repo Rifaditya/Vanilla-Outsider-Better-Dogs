@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.1)
 
+## [1.7.28+1.21.1] - 2026-11-27
+
+### Fixed
+- **Secondary Static Heap Memory Leak in `PackAudienceHelper`** (`PackAudienceHelper`, `WolfMixin`, `SmallFightTest`, `PackCivilWarImmunityTest`) (BL-BD-044):
+  - Switched `PackAudienceHelper.applyAudienceReaction(...)`, `getAudienceWagTicks(Wolf)`, `setAudienceWagTicks(Wolf, int)`, and `isSpectating(Wolf)` to entity-first `WolfExtensions` storage across Fabric and NeoForge, eliminating write-only `AUDIENCE_WAG_TRACKER` UUID accumulation on dead or unloaded spectator wolves.
+  - Updated `WolfMixin.betterdogs$setSpectatorWagTicks(int)` to purge any stale static UUID fallback entry when spectator wag ticks clamp or decay to `0` on server/headless worlds (preserving singleplayer client isolation).
+  - Bounded the UUID-only headless fallback tracker (`AUDIENCE_WAG_TRACKER`) to `MAX_TRACKED_UUID_ENTRIES = 1024` via FIFO key eviction while maintaining `getAudienceWagTicks(UUID)` / `setAudienceWagTicks(UUID, int)` compatibility.
+
 ## [1.7.27+1.21.1] - 2026-11-27
 
 ### Fixed

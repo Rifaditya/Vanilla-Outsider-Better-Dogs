@@ -43,6 +43,7 @@ class SmallFightTest {
         SmallFightHelper.clearCooldowns();
         SmallFightHelper.clearCorrectionSnaps();
         SmallFightHelper.clearSessions();
+        PackAudienceHelper.clearAudienceWagTracker();
     }
 
     @Test
@@ -571,8 +572,11 @@ class SmallFightTest {
         assertEquals(0, PackAudienceHelper.tickAudience(null, null));
         assertEquals(0, SmallFightHelper.evaluateAudience(null, null));
 
-        assertEquals(0, PackAudienceHelper.getAudienceWagTicks(null));
-        assertDoesNotThrow(() -> PackAudienceHelper.setAudienceWagTicks(null, 30));
+        assertFalse(PackAudienceHelper.isSpectating(null));
+        assertEquals(0, PackAudienceHelper.getAudienceWagTicks((net.minecraft.world.entity.animal.Wolf) null));
+        assertDoesNotThrow(() -> PackAudienceHelper.setAudienceWagTicks((net.minecraft.world.entity.animal.Wolf) null, 30));
+        assertEquals(0, PackAudienceHelper.getAudienceWagTicks((UUID) null));
+        assertDoesNotThrow(() -> PackAudienceHelper.setAudienceWagTicks((UUID) null, 30));
     }
 
     @Test
@@ -847,5 +851,58 @@ class SmallFightTest {
         assertEquals(0, SmallFightHelper.getTrackedPenaltyCount());
         assertEquals(0, SmallFightHelper.getTrackedCooldownCount());
         assertEquals(0, SmallFightHelper.getTrackedCorrectionSnapCount());
+    }
+
+    @Test
+    @DisplayName("BL-BD-044: Entity-first spectator wag storage keeps static UUID map empty and purges on expiry")
+    void testEntityFirstSpectatorWagZeroHeapLeakAndPurge() {
+        UUID ownerUuid = UUID.randomUUID();
+        var wolf = PackCivilWarImmunityTest.createOfflineWolf(UUID.randomUUID(), ownerUuid, true, false);
+        var nonSpectator = PackCivilWarImmunityTest.createOfflineWolf(UUID.randomUUID(), ownerUuid, true, false);
+        net.minecraft.world.entity.animal.Wolf asWolf = wolf;
+        net.minecraft.world.entity.animal.Wolf asNonSpectator = nonSpectator;
+
+        PackAudienceHelper.applyAudienceReaction(asWolf, Vec3.ZERO);
+        assertTrue(wolf.isInterested());
+        assertEquals(PackAudienceHelper.WAG_DURATION_TICKS, ((WolfExtensions) wolf).betterdogs$getSpectatorWagTicks());
+        assertTrue(PackAudienceHelper.isSpectating(asWolf));
+        assertEquals(PackAudienceHelper.WAG_DURATION_TICKS, PackAudienceHelper.getAudienceWagTicks(asWolf));
+        assertEquals(0, PackAudienceHelper.getTrackedAudienceWagCount(),
+                "Live entity spectator wag must not leak into static AUDIENCE_WAG_TRACKER");
+
+        // Reset entity wag ticks to 0 and verify zero fallthrough to pre-seeded static UUID map
+        PackAudienceHelper.setAudienceWagTicks(asWolf, 0);
+        PackAudienceHelper.setAudienceWagTicks(wolf.getUUID(), 30);
+        assertEquals(1, PackAudienceHelper.getTrackedAudienceWagCount());
+        assertEquals(0, PackAudienceHelper.getAudienceWagTicks(asWolf),
+                "Entity wag ticks 0 must not fall through to static map");
+        assertFalse(PackAudienceHelper.isSpectating(asWolf));
+
+        PackAudienceHelper.setAudienceWagTicks(asWolf, 0);
+        assertEquals(0, PackAudienceHelper.getTrackedAudienceWagCount(),
+                "setAudienceWagTicks(Wolf, 0) must purge residual UUID entry");
+
+        // Negative parity: non-spectating wolf, negative clamp, and null midpoint
+        assertFalse(PackAudienceHelper.isSpectating(asNonSpectator));
+        assertEquals(0, PackAudienceHelper.getAudienceWagTicks(asNonSpectator));
+        PackAudienceHelper.setAudienceWagTicks(asWolf, -5);
+        assertEquals(0, PackAudienceHelper.getAudienceWagTicks(asWolf));
+        assertDoesNotThrow(() -> PackAudienceHelper.applyAudienceReaction(asNonSpectator, null));
+        assertEquals(0, PackAudienceHelper.getTrackedAudienceWagCount());
+    }
+
+    @Test
+    @DisplayName("BL-BD-044: Bounded audience wag tracker caps UUID-only fallback at MAX_TRACKED_UUID_ENTRIES")
+    void testBoundedAudienceWagTrackerPreventsUnboundedLeak() {
+        assertDoesNotThrow(() -> {
+            for (int i = 0; i < 1500; i++) {
+                PackAudienceHelper.setAudienceWagTicks(UUID.randomUUID(), PackAudienceHelper.WAG_DURATION_TICKS);
+            }
+        });
+        assertTrue(PackAudienceHelper.getTrackedAudienceWagCount() <= PackAudienceHelper.MAX_TRACKED_UUID_ENTRIES);
+        assertEquals(PackAudienceHelper.MAX_TRACKED_UUID_ENTRIES, PackAudienceHelper.getTrackedAudienceWagCount());
+
+        PackAudienceHelper.clearAudienceWagTracker();
+        assertEquals(0, PackAudienceHelper.getTrackedAudienceWagCount());
     }
 }
