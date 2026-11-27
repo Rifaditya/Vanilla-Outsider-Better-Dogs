@@ -45,7 +45,7 @@ public class BetterDogs {
         try {
             Class.forName("net.dasik.social.api.config.ConfigHelper");
         } catch (ClassNotFoundException e) {
-            net.minecraft.CrashReport report = net.minecraft.CrashReport.forThrowable(e, "Better Dogs: DasikLibrary version mismatch! Requires version 1.7.4 or higher. Please update your mods.");
+            net.minecraft.CrashReport report = net.minecraft.CrashReport.forThrowable(e, "Better Dogs: DasikLibrary version mismatch! Requires version 1.12.0 or higher. Please update your mods.");
             throw new net.minecraft.ReportedException(report);
         }
 

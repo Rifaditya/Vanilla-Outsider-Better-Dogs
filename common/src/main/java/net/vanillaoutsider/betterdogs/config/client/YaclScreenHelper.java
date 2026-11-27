@@ -1,6 +1,6 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
 // Verified against: Minecraft 26.1.2
-package net.vanillaoutsider.betterdogs.config;
+package net.vanillaoutsider.betterdogs.config.client;
 
 import dev.isxander.yacl3.api.ConfigCategory;
 import dev.isxander.yacl3.api.Option;
@@ -15,10 +15,14 @@ import dev.isxander.yacl3.api.controller.FloatSliderControllerBuilder;
 import dev.isxander.yacl3.api.controller.IntegerFieldControllerBuilder;
 import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder;
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import java.util.List;
 
+@Environment(EnvType.CLIENT)
 public class YaclScreenHelper {
     public static Screen createScreen(Screen parent) {
         BetterDogsConfig config = BetterDogsConfig.get();

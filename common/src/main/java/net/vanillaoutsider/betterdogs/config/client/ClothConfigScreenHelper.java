@@ -1,13 +1,17 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
 // Verified against: ClothConfigScreenHelper.java (26.1.2+)
-package net.vanillaoutsider.betterdogs.config;
+package net.vanillaoutsider.betterdogs.config.client;
 
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 
+@Environment(EnvType.CLIENT)
 public class ClothConfigScreenHelper {
     public static Screen createScreen(Screen parent) {
         BetterDogsConfig config = BetterDogsConfig.get();

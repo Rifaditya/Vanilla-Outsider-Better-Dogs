@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.7.28+26.1.2] - 2026-11-27
+
+### Fixed
+- **Client Subpackage Isolation, Reflective ModMenu Dispatch, Mixin `minVersion` & Sidedness Audit Enforcement** (`BetterDogsHealthElement`, `WolfHealthProvider`, `BetterDogsJadePlugin`, `YaclScreenHelper`, `ClothConfigScreenHelper`, `ModMenuIntegration`, `BetterDogs`, `fabric.mod.json`, `*.mixins.json`, `BetterDogsAllVersionSidednessContractTest`) (BL-BD-057):
+  - Relocated client-only Jade rendering helpers (`BetterDogsHealthElement`, `WolfHealthProvider`) and config screen builders (`YaclScreenHelper`, `ClothConfigScreenHelper`, `ModMenuIntegration`) into dedicated `client/` subpackages with `@Environment(EnvType.CLIENT)` isolation, eliminating all 6 Pillar 5 dedicated-server sidedness criticals.
+  - Updated `ModMenuIntegration` to resolve `YaclScreenHelper` and `ClothConfigScreenHelper` reflectively via `Class.forName(...)` + `getMethod("createScreen", Screen.class)` instead of direct method-reference linkage, preventing linkage errors when optional config libraries are absent, and updated `fabric.mod.json` `"modmenu"` entrypoint to `net.vanillaoutsider.betterdogs.config.client.ModMenuIntegration`.
+  - Updated the stale `DasikLibrary` crash-guard message in `BetterDogs.java` from `"1.7.4"` to `"1.12.0"` to match manifest dependency floors, and added `"minVersion": "0.8"` across all 4 mixin configs (`common`, `common-alt`, `fabric`, `neoforge`).
+  - Tightened `BetterDogsAllVersionSidednessContractTest` by removing legacy client bypasses, fixing the multi-module bytecode scanner path (`common/build/classes/java/main`), and adding contract assertions for reflective ModMenu dispatch, Mixin `minVersion`, `1.12.0` guard text, and removal of legacy un-isolated client files.
+
 ## [5.7.27+26.1.2] - 2026-11-26
 
 ### Fixed

@@ -121,12 +121,7 @@ public class BetterDogsAllVersionSidednessContractTest {
             for (Path file : javaFiles) {
                 String normalized = file.toString().replace('\\', '/');
                 if (normalized.contains("/client/")
-                        || normalized.endsWith("Client.java")
-                        || normalized.contains("ModMenuIntegration")
-                        || normalized.contains("YaclScreenHelper")
-                        || normalized.contains("ClothConfigScreenHelper")
-                        || normalized.contains("/compat/jade/")
-                        || normalized.contains("WolfRendererMixin")) {
+                        || normalized.endsWith("Client.java")) {
                     continue;
                 }
                 String content = Files.readString(file, StandardCharsets.UTF_8);
@@ -148,7 +143,9 @@ public class BetterDogsAllVersionSidednessContractTest {
     @DisplayName("Pillar 5: Non-client bytecode contains zero unguarded client package constant pool references")
     void testDynamicBytecodeConstantPoolScanner() throws IOException {
         Path root = findProjectRoot();
-        Path classesRoot = root.resolve("build/classes/java/main");
+        Path classesRoot = Files.exists(root.resolve("common/build/classes/java/main"))
+                ? root.resolve("common/build/classes/java/main")
+                : root.resolve("build/classes/java/main");
         if (!Files.exists(classesRoot)) {
             return;
         }
@@ -160,14 +157,11 @@ public class BetterDogsAllVersionSidednessContractTest {
 
         try (Stream<Path> stream = Files.walk(classesRoot)) {
             List<Path> classFiles = stream.filter(p -> p.toString().endsWith(".class")).toList();
+            assertFalse(classFiles.isEmpty(), "Compiled class files must exist in " + classesRoot);
             for (Path classFile : classFiles) {
                 String normalized = classFile.toString().replace('\\', '/');
                 if (normalized.contains("/client/")
-                        || normalized.contains("ModMenuIntegration")
-                        || normalized.contains("YaclScreenHelper")
-                        || normalized.contains("ClothConfigScreenHelper")
-                        || normalized.contains("/compat/jade/")
-                        || normalized.contains("WolfRendererMixin")) {
+                        || normalized.contains("BetterDogsClient")) {
                     continue;
                 }
                 String rawBytes = new String(Files.readAllBytes(classFile), StandardCharsets.ISO_8859_1);
@@ -198,6 +192,11 @@ public class BetterDogsAllVersionSidednessContractTest {
         JsonObject entrypoints = json.getAsJsonObject("entrypoints");
         assertTrue(entrypoints.has("main"), "entrypoints must contain 'main'");
         assertTrue(entrypoints.has("modmenu"), "entrypoints must contain 'modmenu'");
+        JsonArray modmenuEntrypoints = entrypoints.getAsJsonArray("modmenu");
+        assertTrue(modmenuEntrypoints.size() > 0, "modmenu entrypoint must not be empty");
+        assertEquals("net.vanillaoutsider.betterdogs.config.client.ModMenuIntegration",
+                modmenuEntrypoints.get(0).getAsString(),
+                "fabric.mod.json modmenu entrypoint must point to .config.client.ModMenuIntegration");
 
         Path mixinConfigPath = Files.exists(root.resolve("common/src/main/resources/vanilla-outsider-better-dogs-common.mixins.json"))
                 ? root.resolve("common/src/main/resources/vanilla-outsider-better-dogs-common.mixins.json")
@@ -391,5 +390,54 @@ public class BetterDogsAllVersionSidednessContractTest {
         JsonObject json = JsonParser.parseString(content).getAsJsonObject();
         assertTrue(json.has("subtitles.betterdogs.entity.wolf.howl"), "en_us.json must contain subtitles.betterdogs.entity.wolf.howl");
         assertEquals("Wolf howls", json.get("subtitles.betterdogs.entity.wolf.howl").getAsString());
+    }
+
+    @Test
+    @DisplayName("Pillar 5 / BL-BD-057: Reflective ModMenu dispatch, 1.12.0 guard, Mixin minVersion & legacy client cleanup")
+    void testClientIsolationAndGuardContracts() throws IOException {
+        Path root = findProjectRoot();
+
+        Path modMenuPath = root.resolve("fabric/src/main/java/net/vanillaoutsider/betterdogs/config/client/ModMenuIntegration.java");
+        assertTrue(Files.exists(modMenuPath), "Relocated ModMenuIntegration must exist in config/client/");
+        String modMenuContent = Files.readString(modMenuPath, StandardCharsets.UTF_8);
+        assertTrue(modMenuContent.contains("Class.forName("), "ModMenuIntegration must load screen helpers via Class.forName");
+        assertTrue(modMenuContent.contains("net.vanillaoutsider.betterdogs.config.client.YaclScreenHelper"),
+                "ModMenuIntegration must reference relocated YaclScreenHelper");
+        assertTrue(modMenuContent.contains("net.vanillaoutsider.betterdogs.config.client.ClothConfigScreenHelper"),
+                "ModMenuIntegration must reference relocated ClothConfigScreenHelper");
+        assertFalse(modMenuContent.contains("YaclScreenHelper::"), "ModMenuIntegration must not directly link YaclScreenHelper::");
+        assertFalse(modMenuContent.contains("ClothConfigScreenHelper::"), "ModMenuIntegration must not directly link ClothConfigScreenHelper::");
+
+        Path betterDogsPath = root.resolve("common/src/main/java/net/vanillaoutsider/betterdogs/BetterDogs.java");
+        assertTrue(Files.exists(betterDogsPath), "BetterDogs.java must exist");
+        String betterDogsContent = Files.readString(betterDogsPath, StandardCharsets.UTF_8);
+        assertFalse(betterDogsContent.contains("1.7.4"), "BetterDogs.java must not retain stale 1.7.4 DasikLibrary message");
+        assertTrue(betterDogsContent.contains("Requires version 1.12.0 or higher"),
+                "BetterDogs.java must enforce DasikLibrary 1.12.0 floor in crash guard");
+
+        String[] mixinConfigs = {
+            "common/src/main/resources/vanilla-outsider-better-dogs.mixins.json",
+            "common/src/main/resources/vanilla-outsider-better-dogs-common.mixins.json",
+            "fabric/src/main/resources/vanilla-outsider-better-dogs-fabric.mixins.json",
+            "neoforge/src/main/resources/vanilla-outsider-better-dogs-neoforge.mixins.json"
+        };
+        for (String relPath : mixinConfigs) {
+            Path cfgPath = root.resolve(relPath);
+            assertTrue(Files.exists(cfgPath), "Mixin config must exist: " + relPath);
+            JsonObject cfgJson = JsonParser.parseString(Files.readString(cfgPath, StandardCharsets.UTF_8)).getAsJsonObject();
+            assertTrue(cfgJson.has("minVersion"), "Mixin config must declare minVersion: " + relPath);
+            assertEquals("0.8", cfgJson.get("minVersion").getAsString(), "Mixin minVersion must be 0.8: " + relPath);
+        }
+
+        String[] legacyFiles = {
+            "common/src/main/java/net/vanillaoutsider/betterdogs/compat/jade/BetterDogsHealthElement.java",
+            "common/src/main/java/net/vanillaoutsider/betterdogs/compat/jade/WolfHealthProvider.java",
+            "common/src/main/java/net/vanillaoutsider/betterdogs/config/YaclScreenHelper.java",
+            "common/src/main/java/net/vanillaoutsider/betterdogs/config/ClothConfigScreenHelper.java",
+            "fabric/src/main/java/net/vanillaoutsider/betterdogs/config/ModMenuIntegration.java"
+        };
+        for (String relPath : legacyFiles) {
+            assertFalse(Files.exists(root.resolve(relPath)), "Legacy un-isolated client file must be deleted: " + relPath);
+        }
     }
 }

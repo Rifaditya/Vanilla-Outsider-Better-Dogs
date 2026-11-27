@@ -1,9 +1,11 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
 // Verified against: Minecraft 26.1.2
-package net.vanillaoutsider.betterdogs.compat.jade;
+package net.vanillaoutsider.betterdogs.compat.jade.client;
 
 import java.util.Objects;
 import org.jspecify.annotations.Nullable;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.Gui;
@@ -19,6 +21,7 @@ import snownee.jade.api.ui.Element;
 import snownee.jade.api.ui.IDisplayHelper;
 import snownee.jade.track.HealthTrackInfo;
 
+@Environment(EnvType.CLIENT)
 public class BetterDogsHealthElement extends Element {
     private Gui.HeartType heartType;
     private final float maxHealth;
