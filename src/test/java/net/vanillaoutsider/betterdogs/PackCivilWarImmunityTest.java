@@ -1261,6 +1261,7 @@ class PackCivilWarImmunityTest {
         private long lastCorrectionSnapExpiry;
         private int playPenaltyTicks;
         private int spectatorWagTicks;
+        private boolean interested;
 
         private OfflineStubWolf() {
             super(null, null);
@@ -1832,6 +1833,16 @@ class PackCivilWarImmunityTest {
         @Override
         public void betterdogs$setSpectatorWagTicks(int ticks) {
             this.spectatorWagTicks = ticks;
+        }
+
+        @Override
+        public void setIsInterested(boolean interested) {
+            this.interested = interested;
+        }
+
+        @Override
+        public boolean isInterested() {
+            return this.interested;
         }
     }
 }

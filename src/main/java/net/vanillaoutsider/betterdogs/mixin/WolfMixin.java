@@ -292,7 +292,7 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
         }
 
         if (this.betterdogs$spectatorWagTicks > 0) {
-            this.betterdogs$spectatorWagTicks--;
+            this.betterdogs$setSpectatorWagTicks(this.betterdogs$spectatorWagTicks - 1);
         }
 
         if (!this.betterdogs$statsApplied && this.betterdogs$hasPersonality()) {
@@ -526,6 +526,15 @@ public abstract class WolfMixin extends TamableAnimal implements WolfExtensions 
     @Override
     public void betterdogs$setSpectatorWagTicks(int ticks) {
         this.betterdogs$spectatorWagTicks = Math.max(0, ticks);
+        if (this.betterdogs$spectatorWagTicks == 0) {
+            Wolf self = (Wolf) (Object) this;
+            if (self.level() == null || !self.level().isClientSide()) {
+                java.util.UUID uuid = self.getUUID();
+                if (uuid != null) {
+                    net.vanillaoutsider.betterdogs.util.PackAudienceHelper.setAudienceWagTicks(uuid, 0);
+                }
+            }
+        }
     }
 
     @Override

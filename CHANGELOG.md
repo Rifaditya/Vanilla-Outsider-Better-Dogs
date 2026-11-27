@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.29+26.2] - 2026-11-27
+
+### Fixed
+- **Eliminated Secondary Static Heap Memory Leak in `PackAudienceHelper`** (`PackAudienceHelper`, `WolfMixin`) (BL-BD-044):
+  - Routed spectator tail-wag state in `PackAudienceHelper.applyAudienceReaction(...)`, `getAudienceWagTicks(Wolf)`, `setAudienceWagTicks(Wolf, int)`, and `isSpectating(Wolf)` strictly through entity-first `WolfExtensions` storage so live `Wolf` instances no longer allocate or retain UUID entries in `AUDIENCE_WAG_TRACKER`.
+  - Updated `WolfMixin.betterdogs$tickHandler` and `betterdogs$setSpectatorWagTicks(int)` to decrement through the setter and purge any residual server/headless UUID fallback entry whenever spectator wag ticks reach `0` (preserving singleplayer client isolation).
+  - Bounded the UUID-only fallback `AUDIENCE_WAG_TRACKER` to `MAX_TRACKED_UUID_ENTRIES = 1024` via `enforceAudienceMapCap`, and added entity-first zero-leak, purge, null-safety, and capacity-bound assertions in `SmallFightTest`.
+
 ## [5.7.28+26.2] - 2026-11-27
 
 ### Changed
