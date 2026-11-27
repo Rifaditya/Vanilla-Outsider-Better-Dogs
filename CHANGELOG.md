@@ -1,5 +1,14 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.1)
 
+## [1.7.27+1.21.1] - 2026-11-27
+
+### Fixed
+- **Client Sidedness Isolation, Mixin `minVersion`, `dasik-library >= 1.4.1` Manifest Bounds & Bytecode Constant-Pool Gate** (`compat/jade/client/*`, `config/client/*`, `fabric.mod.json`, `neoforge.mods.toml`, `vanilla-outsider-better-dogs.mixins.json`, `BetterDogsAllVersionSidednessContractTest`) (BL-BD-057):
+  - Relocated client-only Jade and ModMenu/YACL UI classes (`BetterDogsHealthElement`, `WolfHealthProvider`, `YaclScreenHelper`, `ModMenuIntegration`) into `.client` subpackages with `@Environment(EnvType.CLIENT)` guards and updated `BetterDogsJadePlugin`, `ModMenuIntegration` reflection target, and `fabric.mod.json` `modmenu` entrypoint so dedicated servers never touch client classes.
+  - Added `"minVersion": "0.8"` to `common/src/main/resources/vanilla-outsider-better-dogs.mixins.json`.
+  - Tightened `dasik-library` dependency bounds to `>=1.4.1` in `fabric.mod.json` and `[1.4.1,)` in `neoforge.mods.toml` to enforce `Services.PLATFORM.getConfigDir()` support.
+  - Upgraded `BetterDogsAllVersionSidednessContractTest` to remove legacy directory/class bypasses, scan full source contents and compiled bytecode constant pools for `net.minecraft.client.` / `com.mojang.blaze3d.`, and verify mixin `minVersion`, client entrypoints, manifest bounds, and absence of legacy non-`client/` files.
+
 ## [1.7.26+1.21.1] - 2026-11-26
 
 ### Fixed

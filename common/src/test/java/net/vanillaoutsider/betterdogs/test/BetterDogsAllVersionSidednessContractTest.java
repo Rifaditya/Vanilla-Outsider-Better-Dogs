@@ -8,6 +8,9 @@ import com.google.gson.JsonParser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -75,7 +78,7 @@ public class BetterDogsAllVersionSidednessContractTest {
     }
 
     @Test
-    @DisplayName("Pillar 5: Non-client sources contain zero unguarded client package imports")
+    @DisplayName("Pillar 5: Non-client sources contain zero unguarded client references")
     void testSourceSidedness() throws IOException {
         Path commonRoot = findCommonRoot();
         Path srcMain = commonRoot.resolve("src/main/java");
@@ -87,24 +90,87 @@ public class BetterDogsAllVersionSidednessContractTest {
 
             for (Path file : javaFiles) {
                 String normalized = file.toString().replace('\\', '/');
-                if (normalized.contains("/client/") || normalized.contains("BetterDogsClient") || normalized.contains("YaclScreenHelper") || normalized.contains("/compat/jade/") || normalized.contains("/compat/yacl/")) {
+                if (normalized.contains("/client/") || normalized.contains("BetterDogsClient")) {
                     continue; // Skip legitimate client-only subpackages / files
                 }
 
-                List<String> lines = Files.readAllLines(file, StandardCharsets.UTF_8);
-                for (int i = 0; i < lines.size(); i++) {
-                    String line = lines.get(i).trim();
-                    assertFalse(line.startsWith("import net.minecraft.client."),
-                            "Non-client file " + file.getFileName() + " imports net.minecraft.client.* at line " + (i + 1));
-                    assertFalse(line.startsWith("import com.mojang.blaze3d."),
-                            "Non-client file " + file.getFileName() + " imports com.mojang.blaze3d.* at line " + (i + 1));
+                String content = Files.readString(file, StandardCharsets.UTF_8);
+                if (content.contains("@Environment(EnvType.CLIENT)")) {
+                    continue;
                 }
+                assertFalse(content.contains("net.minecraft.client."),
+                        "Non-client file " + file.getFileName() + " contains net.minecraft.client.* reference");
+                assertFalse(content.contains("com.mojang.blaze3d."),
+                        "Non-client file " + file.getFileName() + " contains com.mojang.blaze3d.* reference");
             }
         }
     }
 
     @Test
-    @DisplayName("Pillar 5: fabric.mod.json and mixin manifest hygiene")
+    @DisplayName("Pillar 5: Compiled bytecode constant pool contains zero client references outside client/")
+    void testDynamicBytecodeConstantPoolScanner() throws IOException {
+        Path commonRoot = findCommonRoot();
+        Path classesDir = commonRoot.resolve("build/classes/java/main");
+        if (!Files.exists(classesDir)) {
+            classesDir = findProjectRoot().resolve("common/build/classes/java/main");
+        }
+        if (!Files.exists(classesDir)) {
+            classesDir = findProjectRoot().resolve("build/classes/java/main");
+        }
+        assertTrue(Files.exists(classesDir), "Compiled classes directory must exist at " + classesDir);
+
+        List<Path> classFiles;
+        try (Stream<Path> stream = Files.walk(classesDir)) {
+            classFiles = stream.filter(p -> p.toString().endsWith(".class")).toList();
+        }
+        assertFalse(classFiles.isEmpty(), "Compiled .class files must exist in " + classesDir);
+
+        for (Path classFile : classFiles) {
+            String normalized = classFile.toString().replace('\\', '/');
+            if (normalized.contains("/client/") || normalized.contains("BetterDogsClient")) {
+                continue;
+            }
+            List<String> utf8Entries = readConstantPoolUtf8Entries(Files.readAllBytes(classFile));
+            for (String entry : utf8Entries) {
+                assertFalse(entry.contains("net/minecraft/client/"),
+                        "Non-client bytecode " + normalized + " references net/minecraft/client/: " + entry);
+                assertFalse(entry.contains("com/mojang/blaze3d/"),
+                        "Non-client bytecode " + normalized + " references com/mojang/blaze3d/: " + entry);
+            }
+        }
+    }
+
+    private static List<String> readConstantPoolUtf8Entries(byte[] classBytes) throws IOException {
+        List<String> entries = new ArrayList<>();
+        try (DataInputStream in = new DataInputStream(new ByteArrayInputStream(classBytes))) {
+            int magic = in.readInt();
+            assertEquals(0xCAFEBABE, magic, "Invalid classfile magic");
+            in.readUnsignedShort(); // minor
+            in.readUnsignedShort(); // major
+            int cpCount = in.readUnsignedShort();
+            for (int i = 1; i < cpCount; i++) {
+                int tag = in.readUnsignedByte();
+                switch (tag) {
+                    case 1 -> entries.add(in.readUTF()); // CONSTANT_Utf8
+                    case 3, 4, 9, 10, 11, 12, 17, 18 -> in.readInt(); // 4-byte entries
+                    case 5, 6 -> {
+                        in.readLong(); // 8-byte entries occupy two constant pool slots
+                        i++;
+                    }
+                    case 7, 8, 16, 19, 20 -> in.readUnsignedShort(); // 2-byte entries
+                    case 15 -> {
+                        in.readUnsignedByte();
+                        in.readUnsignedShort();
+                    }
+                    default -> throw new EOFException("Unknown constant pool tag " + tag);
+                }
+            }
+        }
+        return entries;
+    }
+
+    @Test
+    @DisplayName("Pillar 5: fabric.mod.json, neoforge.mods.toml, mixin manifest, and client isolation hygiene")
     void testManifestAndMixinHygiene() throws IOException {
         Path root = findProjectRoot();
         Path fabricModPath = root.resolve("fabric/src/main/resources/fabric.mod.json");
@@ -118,18 +184,53 @@ public class BetterDogsAllVersionSidednessContractTest {
 
         assertEquals("*", json.get("environment").getAsString(), "environment must be universal '*'");
 
+        JsonObject depends = json.getAsJsonObject("depends");
+        assertNotNull(depends, "fabric.mod.json must declare depends object");
+        assertTrue(depends.has("dasik-library"), "fabric.mod.json must declare dasik-library dependency");
+        assertEquals(">=1.4.1", depends.get("dasik-library").getAsString(),
+                "fabric.mod.json must require dasik-library >=1.4.1");
+
         JsonObject entrypoints = json.getAsJsonObject("entrypoints");
         assertNotNull(entrypoints, "fabric.mod.json must declare entrypoints object");
         assertTrue(entrypoints.has("main"), "entrypoints must contain 'main'");
         assertTrue(entrypoints.has("client"), "entrypoints must contain 'client'");
         assertTrue(entrypoints.has("modmenu"), "entrypoints must contain 'modmenu'");
+        JsonArray modmenuEntries = entrypoints.getAsJsonArray("modmenu");
+        assertNotNull(modmenuEntries);
+        assertEquals("net.vanillaoutsider.betterdogs.config.client.ModMenuIntegration",
+                modmenuEntries.get(0).getAsString(),
+                "modmenu entrypoint must point to config.client.ModMenuIntegration");
+
+        Path neoforgeModsPath = root.resolve("neoforge/src/main/resources/META-INF/neoforge.mods.toml");
+        assertTrue(Files.exists(neoforgeModsPath), "neoforge.mods.toml must exist at " + neoforgeModsPath);
+        String neoforgeToml = Files.readString(neoforgeModsPath, StandardCharsets.UTF_8);
+        assertTrue(neoforgeToml.contains("modId=\"dasik_library\""), "neoforge.mods.toml must declare dasik_library dependency");
+        assertTrue(neoforgeToml.contains("versionRange=\"[1.4.1,)\""),
+                "neoforge.mods.toml must require dasik_library versionRange=\"[1.4.1,)\"");
 
         Path commonRoot = findCommonRoot();
+        Path modMenuPath = commonRoot.resolve("src/main/java/net/vanillaoutsider/betterdogs/config/client/ModMenuIntegration.java");
+        assertTrue(Files.exists(modMenuPath), "ModMenuIntegration.java must exist in config/client/");
+        String modMenuContent = Files.readString(modMenuPath, StandardCharsets.UTF_8);
+        assertTrue(modMenuContent.contains("net.vanillaoutsider.betterdogs.config.client.YaclScreenHelper"),
+                "ModMenuIntegration must reflectively target config.client.YaclScreenHelper");
+
+        assertFalse(Files.exists(commonRoot.resolve("src/main/java/net/vanillaoutsider/betterdogs/compat/jade/BetterDogsHealthElement.java")),
+                "Legacy un-isolated BetterDogsHealthElement.java must not exist");
+        assertFalse(Files.exists(commonRoot.resolve("src/main/java/net/vanillaoutsider/betterdogs/compat/jade/WolfHealthProvider.java")),
+                "Legacy un-isolated WolfHealthProvider.java must not exist");
+        assertFalse(Files.exists(commonRoot.resolve("src/main/java/net/vanillaoutsider/betterdogs/config/YaclScreenHelper.java")),
+                "Legacy un-isolated YaclScreenHelper.java must not exist");
+        assertFalse(Files.exists(commonRoot.resolve("src/main/java/net/vanillaoutsider/betterdogs/config/ModMenuIntegration.java")),
+                "Legacy un-isolated ModMenuIntegration.java must not exist");
+
         Path mixinConfigPath = commonRoot.resolve("src/main/resources/vanilla-outsider-better-dogs.mixins.json");
         assertTrue(Files.exists(mixinConfigPath), "vanilla-outsider-better-dogs.mixins.json must exist at " + mixinConfigPath);
 
         String mixinContent = Files.readString(mixinConfigPath, StandardCharsets.UTF_8);
         JsonObject mixinJson = JsonParser.parseString(mixinContent).getAsJsonObject();
+        assertTrue(mixinJson.has("minVersion"), "vanilla-outsider-better-dogs.mixins.json must declare minVersion");
+        assertEquals("0.8", mixinJson.get("minVersion").getAsString(), "Mixin minVersion must be 0.8");
 
         String pkg = mixinJson.get("package").getAsString().replace('.', '/');
         JsonArray mixinsArray = mixinJson.getAsJsonArray("mixins");

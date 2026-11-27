@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 1.7.27+1.21.1** [Fabric + NeoForge] - Client Sidedness Isolation, Mixin minVersion 0.8, dasik-library >= 1.4.1 Manifest Bounds & Bytecode Constant-Pool Sidedness Gate (BL-BD-057)
 - [ ] **Better Dogs 1.7.26+1.21.1** [Fabric + NeoForge] - Fix All 9 Inverted SocialEvent Expirations, Dead/Null Target Early-Exit Loops, Howl Timer Reset & Tighten dasik-library >= 1.4.0 (BL-BD-074)
 - [ ] **Better Dogs 1.7.25+1.21.1** [Fabric + NeoForge] - Fix Baby Retaliation Reversed Entity Parameter & Aggressive Puppy Provocation Overdamage (BL-BD-050)
 - [ ] **Better Dogs 1.7.24+1.21.1** [Fabric + NeoForge] - Fix Sitting Pose State Desync During Movement & AI Transitions (BL-BD-069)

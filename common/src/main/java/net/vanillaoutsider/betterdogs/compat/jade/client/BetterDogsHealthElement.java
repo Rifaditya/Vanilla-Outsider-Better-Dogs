@@ -1,5 +1,5 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
-package net.vanillaoutsider.betterdogs.compat.jade;
+package net.vanillaoutsider.betterdogs.compat.jade.client;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

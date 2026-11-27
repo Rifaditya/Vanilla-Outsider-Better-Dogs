@@ -1,6 +1,8 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
-package net.vanillaoutsider.betterdogs.compat.jade;
+package net.vanillaoutsider.betterdogs.compat.jade.client;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.animal.Wolf;
 import snownee.jade.api.EntityAccessor;
@@ -10,6 +12,7 @@ import snownee.jade.api.JadeIds;
 import snownee.jade.api.TooltipPosition;
 import snownee.jade.api.config.IPluginConfig;
 
+@Environment(EnvType.CLIENT)
 public enum WolfHealthProvider implements IEntityComponentProvider {
     INSTANCE;
 

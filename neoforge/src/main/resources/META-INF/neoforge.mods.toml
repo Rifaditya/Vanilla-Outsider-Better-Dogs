@@ -28,7 +28,7 @@ side="BOTH"
 [[dependencies.better_dogs]]
 modId="dasik_library"
 type="required"
-versionRange="[1.4.0,)"
+versionRange="[1.4.1,)"
 ordering="NONE"
 side="BOTH"
 

@@ -1,6 +1,6 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
 // Verified against: Minecraft 1.21.1
-package net.vanillaoutsider.betterdogs.config;
+package net.vanillaoutsider.betterdogs.config.client;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
@@ -15,7 +15,7 @@ public class ModMenuIntegration implements ModMenuApi {
         if (FabricLoader.getInstance().isModLoaded("yet_another_config_lib_v3") ||
             FabricLoader.getInstance().isModLoaded("yet-another-config-lib")) {
             try {
-                Class<?> helperClass = Class.forName("net.vanillaoutsider.betterdogs.config.YaclScreenHelper");
+                Class<?> helperClass = Class.forName("net.vanillaoutsider.betterdogs.config.client.YaclScreenHelper");
                 java.lang.reflect.Method method = helperClass.getMethod("createFactory");
                 return (ConfigScreenFactory<?>) method.invoke(null);
             } catch (Exception e) {
