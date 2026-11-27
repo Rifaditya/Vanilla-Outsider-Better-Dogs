@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 5.7.28+26.3** - Isolate Client-Only Jade/Config Classes in `client/` Subpackages, Tighten Sidedness Contract & Align `DasikLibrary >= 1.12.0` Guard (BL-BD-057)
 - [ ] **Better Dogs 5.7.27+26.3** - Fix Remaining 8 Inverted SocialEvent Expirations, Dead/Null Target Early-Exit Loops & Howl Timer Reset (BL-BD-074)
 - [ ] **Better Dogs 5.7.26+26.3** - Fix Ambient Social Scheduler Catch-22, Null/Inbox Safety & Morning Zoomies Duration; Align `dasik-library >= 1.12.0` (BL-BD-051)
 - [ ] **Better Dogs 5.7.25+26.3** - Fix Baby Retaliation Reversed Entity Parameter & Aggressive Puppy Provocation Overdamage (BL-BD-050)

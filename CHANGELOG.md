@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.28+26.3] - 2026-11-27
+
+### Changed
+- **Client Subpackage Isolation, Sidedness Contract Tightening & DasikLibrary Version Guard Alignment** (`compat/jade/client/*`, `config/client/*`, `BetterDogsJadePlugin`, `BetterDogs`, `BetterDogsAllVersionSidednessContractTest`, `fabric.mod.json`) (BL-BD-057):
+  - Relocated client-only Jade and Config/ModMenu classes (`BetterDogsHealthElement`, `WolfHealthProvider`, `YaclScreenHelper`, `ModMenuIntegration`) into dedicated `client/` subpackages (`compat.jade.client` and `config.client`) with `@Environment(EnvType.CLIENT)` annotations, updated `BetterDogsJadePlugin` and `fabric.mod.json` `"modmenu"` entrypoints, and updated `ModMenuIntegration`'s reflective `Class.forName` target to `net.vanillaoutsider.betterdogs.config.client.YaclScreenHelper`.
+  - Updated `BetterDogs.init()`'s stale `DasikLibrary` crash-report message from `1.7.4` to `1.12.0` to match `gradle.properties` and `fabric.mod.json`.
+  - Removed legacy sidedness contract bypasses (`/compat/jade/`, `ModMenuIntegration`, `YaclScreenHelper`, `ClothConfigScreenHelper`, `WolfRendererMixin`) from `BetterDogsAllVersionSidednessContractTest` and added non-empty bytecode checks and client-isolation assertions.
+
 ## [5.7.27+26.3] - 2026-11-26
 
 ### Fixed
