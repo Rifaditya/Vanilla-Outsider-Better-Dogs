@@ -1255,6 +1255,8 @@ class PackCivilWarImmunityTest {
         private @Nullable UUID lastCorrectionSnapSource;
         private long lastCorrectionSnapExpiry;
         private int playPenaltyTicks;
+        private int spectatorWagTicks;
+        private boolean interested;
 
         private OfflineStubWolf() {
             super(null, null);
@@ -1801,6 +1803,26 @@ class PackCivilWarImmunityTest {
         @Override
         public void betterdogs$setPlayPenaltyTicks(int ticks) {
             this.playPenaltyTicks = Math.max(0, ticks);
+        }
+
+        @Override
+        public void setIsInterested(boolean interested) {
+            this.interested = interested;
+        }
+
+        @Override
+        public boolean isInterested() {
+            return this.interested;
+        }
+
+        @Override
+        public int betterdogs$getSpectatorWagTicks() {
+            return this.spectatorWagTicks;
+        }
+
+        @Override
+        public void betterdogs$setSpectatorWagTicks(int ticks) {
+            this.spectatorWagTicks = ticks;
         }
     }
 }

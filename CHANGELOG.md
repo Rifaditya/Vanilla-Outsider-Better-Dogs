@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.29+26.1.2] - 2026-11-27
+
+### Fixed
+- **Secondary Static Heap Memory Leak in `PackAudienceHelper`** (`PackAudienceHelper`, `WolfMixin`) (BL-BD-044):
+  - Routed `PackAudienceHelper.applyAudienceReaction(...)` spectator wag tracking through entity-first `setAudienceWagTicks(Wolf, int)` backed by `WolfExtensions.betterdogs$setSpectatorWagTicks(...)` across Fabric and NeoForge, eliminating write-only `AUDIENCE_WAG_TRACKER` entries for live `Wolf` entities.
+  - Added entity-first `isSpectating(Wolf)`, `getAudienceWagTicks(Wolf)`, `setAudienceWagTicks(Wolf, int)`, `getTrackedAudienceWagCount()`, and bounded `MAX_TRACKED_UUID_ENTRIES = 1024` eviction on the static UUID fallback tracker.
+  - Updated `WolfMixin.betterdogs$tickHandler` and `betterdogs$setSpectatorWagTicks(int)` to purge any residual static UUID entry on server/headless worlds when spectator wag ticks clamp to `0`.
+
 ## [5.7.28+26.1.2] - 2026-11-27
 
 ### Fixed

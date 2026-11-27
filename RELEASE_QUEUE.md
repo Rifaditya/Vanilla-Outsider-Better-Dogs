@@ -7,6 +7,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 5.7.29+26.1.2** - Fix Secondary Static Heap Memory Leak in PackAudienceHelper (BL-BD-044)
 - [ ] **Better Dogs 5.7.28+26.1.2** [Fabric + NeoForge] - Relocate Client Config/Jade Helpers, Reflective ModMenu Dispatch, Mixin minVersion & Sidedness Audit Enforcement (BL-BD-057)
 - [ ] **Better Dogs 5.7.27+26.1.2** [Fabric + NeoForge] - Fix Remaining 8 Inverted SocialEvent Expirations, Dead/Null Target Early-Exit Loops, Howl Timer Reset & Tighten dasik-library >= 1.12.0 (BL-BD-074)
 - [ ] **Better Dogs 5.7.26+26.1.2** [Fabric + NeoForge] - Fix Ambient Social Scheduler Catch-22, Null/Inbox Safety & Morning Zoomies Duration (BL-BD-051)
