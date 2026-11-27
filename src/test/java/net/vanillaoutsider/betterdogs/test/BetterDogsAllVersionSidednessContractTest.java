@@ -112,12 +112,7 @@ public class BetterDogsAllVersionSidednessContractTest {
             for (Path file : javaFiles) {
                 String normalized = file.toString().replace('\\', '/');
                 if (normalized.contains("/client/")
-                        || normalized.endsWith("Client.java")
-                        || normalized.contains("ModMenuIntegration")
-                        || normalized.contains("YaclScreenHelper")
-                        || normalized.contains("ClothConfigScreenHelper")
-                        || normalized.contains("/compat/jade/")
-                        || normalized.contains("WolfRendererMixin")) {
+                        || normalized.contains("BetterDogsClient")) {
                     continue;
                 }
                 String content = Files.readString(file, StandardCharsets.UTF_8);
@@ -151,14 +146,11 @@ public class BetterDogsAllVersionSidednessContractTest {
 
         try (Stream<Path> stream = Files.walk(classesRoot)) {
             List<Path> classFiles = stream.filter(p -> p.toString().endsWith(".class")).toList();
+            assertFalse(classFiles.isEmpty(), "Compiled class files must exist in " + classesRoot);
             for (Path classFile : classFiles) {
                 String normalized = classFile.toString().replace('\\', '/');
                 if (normalized.contains("/client/")
-                        || normalized.contains("ModMenuIntegration")
-                        || normalized.contains("YaclScreenHelper")
-                        || normalized.contains("ClothConfigScreenHelper")
-                        || normalized.contains("/compat/jade/")
-                        || normalized.contains("WolfRendererMixin")) {
+                        || normalized.contains("BetterDogsClient")) {
                     continue;
                 }
                 String rawBytes = new String(Files.readAllBytes(classFile), StandardCharsets.ISO_8859_1);
@@ -167,6 +159,41 @@ public class BetterDogsAllVersionSidednessContractTest {
                 assertFalse(rawBytes.contains(blazeToken),
                     "Forbidden Blaze3D constant pool reference in common bytecode: " + normalized);
             }
+        }
+    }
+
+    @Test
+    @DisplayName("Pillar 5 / BL-BD-057: Client-only compat & config classes isolated in client/ subpackages and dependency prompt aligned")
+    void testClientSubpackageIsolationAndVersionGuard() throws IOException {
+        Path root = findProjectRoot();
+        Path fabricModPath = root.resolve("src/main/resources/fabric.mod.json");
+        JsonObject json = JsonParser.parseString(Files.readString(fabricModPath, StandardCharsets.UTF_8)).getAsJsonObject();
+        JsonArray modmenuEntrypoints = json.getAsJsonObject("entrypoints").getAsJsonArray("modmenu");
+        assertNotNull(modmenuEntrypoints, "entrypoints.modmenu must exist");
+        assertEquals(1, modmenuEntrypoints.size());
+        assertEquals("net.vanillaoutsider.betterdogs.config.client.ModMenuIntegration",
+                modmenuEntrypoints.get(0).getAsString(),
+                "modmenu entrypoint must point to config.client.ModMenuIntegration");
+
+        Path modMenuPath = root.resolve("src/main/java/net/vanillaoutsider/betterdogs/config/client/ModMenuIntegration.java");
+        assertTrue(Files.exists(modMenuPath), "ModMenuIntegration.java must exist in config/client/");
+        String modMenuContent = Files.readString(modMenuPath, StandardCharsets.UTF_8);
+        assertTrue(modMenuContent.contains("net.vanillaoutsider.betterdogs.config.client.YaclScreenHelper"),
+                "ModMenuIntegration must reflectively load config.client.YaclScreenHelper");
+
+        Path mainPath = root.resolve("src/main/java/net/vanillaoutsider/betterdogs/BetterDogs.java");
+        String mainContent = Files.readString(mainPath, StandardCharsets.UTF_8);
+        assertFalse(mainContent.contains("1.7.4"), "BetterDogs.java must not contain stale 1.7.4 version guard text");
+        assertTrue(mainContent.contains("1.12.0"), "BetterDogs.java must reference DasikLibrary 1.12.0");
+
+        String[] legacyPaths = {
+            "src/main/java/net/vanillaoutsider/betterdogs/compat/jade/BetterDogsHealthElement.java",
+            "src/main/java/net/vanillaoutsider/betterdogs/compat/jade/WolfHealthProvider.java",
+            "src/main/java/net/vanillaoutsider/betterdogs/config/YaclScreenHelper.java",
+            "src/main/java/net/vanillaoutsider/betterdogs/config/ModMenuIntegration.java"
+        };
+        for (String legacyPath : legacyPaths) {
+            assertFalse(Files.exists(root.resolve(legacyPath)), "Legacy un-isolated client file must not exist: " + legacyPath);
         }
     }
 
