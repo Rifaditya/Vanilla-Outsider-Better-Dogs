@@ -23,7 +23,7 @@
             "net.vanillaoutsider.betterdogs.client.BetterDogsClientFabric"
         ],
         "modmenu": [
-            "net.vanillaoutsider.betterdogs.config.ModMenuIntegration"
+            "net.vanillaoutsider.betterdogs.config.client.ModMenuIntegration"
         ],
         "jade": [
             "net.vanillaoutsider.betterdogs.compat.jade.BetterDogsJadePlugin"

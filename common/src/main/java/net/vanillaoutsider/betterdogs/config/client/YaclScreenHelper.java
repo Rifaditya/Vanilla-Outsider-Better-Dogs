@@ -1,6 +1,8 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
 // Verified against: Minecraft 1.21.11
-package net.vanillaoutsider.betterdogs.config;
+package net.vanillaoutsider.betterdogs.config.client;
+
+import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import dev.isxander.yacl3.api.ConfigCategory;

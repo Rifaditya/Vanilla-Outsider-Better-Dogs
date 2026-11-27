@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
+## [1.7.26+1.21.11] - 2026-11-27
+
+### Fixed
+- **Client Package Sidedness Isolation, Mixin `minVersion` & Bytecode Sidedness Contract Verification** (`compat/jade/client/*`, `config/client/*`, `fabric.mod.json`, `vanilla-outsider-better-dogs.mixins.json`, `BetterDogsAllVersionSidednessContractTest`) (BL-BD-057):
+  - Relocated client-only Jade and ModMenu/YACL classes (`BetterDogsHealthElement`, `WolfHealthProvider`, `YaclScreenHelper`, `ModMenuIntegration`) into `compat.jade.client` and `config.client` subpackages with explicit `@Environment(EnvType.CLIENT)` annotations, updating `BetterDogsJadePlugin`, `ModMenuIntegration`'s `Class.forName(...)` reflection target, and `fabric.mod.json`'s `"modmenu"` entrypoint.
+  - Added `"minVersion": "0.8"` to `vanilla-outsider-better-dogs.mixins.json`.
+  - Hardened `BetterDogsAllVersionSidednessContractTest` by removing legacy compat/YACL bypasses, enforcing full-file client FQCN checks, adding a JVM constant-pool bytecode scanner (`testDynamicBytecodeConstantPoolScanner`), and asserting mixin `minVersion`, updated `modmenu` / `YaclScreenHelper` wiring, and absence of legacy un-isolated files.
+
 ## [1.7.25+1.21.11] - 2026-11-26
 
 ### Fixed
