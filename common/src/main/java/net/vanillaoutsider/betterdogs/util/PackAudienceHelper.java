@@ -26,6 +26,7 @@ public final class PackAudienceHelper {
     public static final double AUDIENCE_RADIUS_SQR = AUDIENCE_RADIUS * AUDIENCE_RADIUS; // 36.0 blocks squared
     public static final int MAX_AUDIENCE_COUNT = 3;
     public static final int WAG_DURATION_TICKS = 30; // 1.5 seconds, refreshed every 20 ticks during sparring
+    public static final int MAX_TRACKED_UUID_ENTRIES = 1024;
 
     private static final Map<UUID, Integer> AUDIENCE_WAG_TRACKER = new ConcurrentHashMap<>();
 
@@ -211,13 +212,8 @@ public final class PackAudienceHelper {
         if (audienceDog.getNavigation() != null) {
             audienceDog.getNavigation().stop();
         }
-        // 4. Wag tail in excitement
-        if (audienceDog instanceof WolfExtensions ext) {
-            ext.betterdogs$setSpectatorWagTicks(WAG_DURATION_TICKS);
-        }
-        if (audienceDog.getUUID() != null) {
-            setAudienceWagTicks(audienceDog.getUUID(), WAG_DURATION_TICKS);
-        }
+        // 4. Wag tail in excitement (entity-first storage avoids leaking dead/unloaded wolf UUIDs)
+        setAudienceWagTicks(audienceDog, WAG_DURATION_TICKS);
     }
 
     /**
@@ -233,7 +229,56 @@ public final class PackAudienceHelper {
         return applyAudienceReactions(wolfA, wolfB, audience);
     }
 
-    // ========== In-Memory Spectator Wag Tracking (for headless testing & state tracking) ==========
+    // ========== Spectator Wag Tracking (Entity-First + Bounded UUID Fallback) ==========
+
+    public static int getTrackedAudienceWagCount() {
+        return AUDIENCE_WAG_TRACKER.size();
+    }
+
+    private static void enforceAudienceMapCap(UUID incomingKey) {
+        if (incomingKey == null || AUDIENCE_WAG_TRACKER.containsKey(incomingKey)
+                || AUDIENCE_WAG_TRACKER.size() < MAX_TRACKED_UUID_ENTRIES) {
+            return;
+        }
+        var it = AUDIENCE_WAG_TRACKER.keySet().iterator();
+        while (AUDIENCE_WAG_TRACKER.size() >= MAX_TRACKED_UUID_ENTRIES && it.hasNext()) {
+            it.next();
+            it.remove();
+        }
+    }
+
+    public static boolean isSpectating(Wolf wolf) {
+        return getAudienceWagTicks(wolf) > 0;
+    }
+
+    public static int getAudienceWagTicks(Wolf wolf) {
+        if (wolf == null) {
+            return 0;
+        }
+        if (wolf instanceof WolfExtensions ext) {
+            return Math.max(0, ext.betterdogs$getSpectatorWagTicks());
+        }
+        UUID uuid = wolf.getUUID();
+        return uuid != null ? AUDIENCE_WAG_TRACKER.getOrDefault(uuid, 0) : 0;
+    }
+
+    public static void setAudienceWagTicks(Wolf wolf, int ticks) {
+        if (wolf == null) {
+            return;
+        }
+        int safeTicks = Math.max(0, ticks);
+        UUID uuid = wolf.getUUID();
+        if (uuid != null) {
+            AUDIENCE_WAG_TRACKER.remove(uuid);
+        }
+        if (wolf instanceof WolfExtensions ext) {
+            ext.betterdogs$setSpectatorWagTicks(safeTicks);
+            return;
+        }
+        if (uuid != null) {
+            setAudienceWagTicks(uuid, safeTicks);
+        }
+    }
 
     public static int getAudienceWagTicks(UUID wolfUuid) {
         if (wolfUuid == null) {
@@ -246,8 +291,10 @@ public final class PackAudienceHelper {
         if (wolfUuid == null) {
             return;
         }
-        if (ticks > 0) {
-            AUDIENCE_WAG_TRACKER.put(wolfUuid, ticks);
+        int safeTicks = Math.max(0, ticks);
+        if (safeTicks > 0) {
+            enforceAudienceMapCap(wolfUuid);
+            AUDIENCE_WAG_TRACKER.put(wolfUuid, safeTicks);
         } else {
             AUDIENCE_WAG_TRACKER.remove(wolfUuid);
         }

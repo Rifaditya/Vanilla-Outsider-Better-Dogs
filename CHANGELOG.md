@@ -1,5 +1,14 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.7.29+1.20.1] - 2026-11-27
+
+### Fixed
+- **Secondary Static Heap Memory Leak in `PackAudienceHelper`** (`PackAudienceHelper`, `WolfMixin`) (BL-BD-044):
+  - Migrated spectator tail-wag tracking in `PackAudienceHelper.applyAudienceReaction` to entity-first `setAudienceWagTicks(Wolf, int)` storage backed by `WolfExtensions.betterdogs$setSpectatorWagTicks(...)`, eliminating unbounded static `AUDIENCE_WAG_TRACKER` UUID allocations for live in-game wolves.
+  - Added bounded fallback map cap (`MAX_TRACKED_UUID_ENTRIES = 1024`) via `enforceAudienceMapCap(...)` and `getTrackedAudienceWagCount()`, `isSpectating(Wolf)`, and entity-first `getAudienceWagTicks(Wolf)` / `setAudienceWagTicks(Wolf, int)` overloads.
+  - Updated `WolfMixin.betterdogs$setSpectatorWagTicks(int)` to defensively purge any residual `PackAudienceHelper` UUID entry when clamping to `0` on server/null levels.
+  - Added `OfflineStubWolf.setIsInterested`/`isInterested` support in `PackCivilWarImmunityTest` and `BL-BD-044` entity-first, negative parity, and bounded-map regression tests in `SmallFightTest`.
+
 ## [1.7.28+1.20.1] - 2026-11-27
 
 ### Fixed
