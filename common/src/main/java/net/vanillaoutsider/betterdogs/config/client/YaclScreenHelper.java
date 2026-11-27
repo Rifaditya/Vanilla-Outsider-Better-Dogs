@@ -1,6 +1,6 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
 // Verified against: Minecraft 1.20.1
-package net.vanillaoutsider.betterdogs.config;
+package net.vanillaoutsider.betterdogs.config.client;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import dev.isxander.yacl3.api.ConfigCategory;
@@ -21,6 +21,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.vanillaoutsider.betterdogs.config.BetterDogsConfig;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)

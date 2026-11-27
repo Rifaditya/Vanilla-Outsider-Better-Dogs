@@ -1,5 +1,14 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.7.28+1.20.1] - 2026-11-27
+
+### Fixed
+- **Multi-Loader Client Compat Isolation, Mixin `minVersion` & `dasik-library >= 1.4.2` Manifest Parity** (`BetterDogsHealthElement`, `WolfHealthProvider`, `BetterDogsJadePlugin`, `YaclScreenHelper`, `ModMenuIntegration`, `fabric.mod.json`, `mods.toml`, `neoforge.mods.toml`, `vanilla-outsider-better-dogs.mixins.json`) (BL-BD-057):
+  - Relocated client-only Jade and config UI classes (`BetterDogsHealthElement`, `WolfHealthProvider` with `@Environment(EnvType.CLIENT)`, `YaclScreenHelper`, and `ModMenuIntegration`) into `compat.jade.client` and `config.client` subpackages, updated `BetterDogsJadePlugin` and `ModMenuIntegration`'s `Class.forName` target, and updated `fabric.mod.json`'s `"modmenu"` entrypoint to `net.vanillaoutsider.betterdogs.config.client.ModMenuIntegration`.
+  - Added `"minVersion": "0.8"` to `vanilla-outsider-better-dogs.mixins.json` to eliminate Forge 1.20.1 SpongePowered Mixin `0.8.5` startup error logs.
+  - Tightened `dasik-library` minimum dependency bounds to `>=1.4.2` (`fabric.mod.json`) and `[1.4.2,)` (`mods.toml`, `neoforge.mods.toml`).
+  - Upgraded `BetterDogsAllVersionSidednessContractTest` with a compiled-bytecode constant pool scanner, full-source client FQCN checks, and strict manifest/entrypoint/isolation assertions with zero legacy bypasses.
+
 ## [1.7.27+1.20.1] - 2026-11-26
 
 ### Fixed

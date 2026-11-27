@@ -23,7 +23,7 @@
       "net.vanillaoutsider.betterdogs.client.BetterDogsClientFabric"
     ],
     "modmenu": [
-      "net.vanillaoutsider.betterdogs.config.ModMenuIntegration"
+      "net.vanillaoutsider.betterdogs.config.client.ModMenuIntegration"
     ],
     "jade": [
       "net.vanillaoutsider.betterdogs.compat.jade.BetterDogsJadePlugin"
@@ -42,7 +42,7 @@
     "minecraft": "1.20.1",
     "java": ">=17",
     "fabric-api": "*",
-    "dasik-library": ">=1.4.0"
+    "dasik-library": ">=1.4.2"
   },
   "custom": {
     "modmenu": {

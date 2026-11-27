@@ -2,6 +2,7 @@
 package net.vanillaoutsider.betterdogs.compat.jade;
 
 import net.minecraft.world.entity.animal.Wolf;
+import net.vanillaoutsider.betterdogs.compat.jade.client.WolfHealthProvider;
 import snownee.jade.api.IWailaClientRegistration;
 import snownee.jade.api.IWailaCommonRegistration;
 import snownee.jade.api.IWailaPlugin;
