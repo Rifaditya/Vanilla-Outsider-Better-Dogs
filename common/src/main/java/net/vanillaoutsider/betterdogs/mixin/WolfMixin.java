@@ -878,6 +878,15 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
     @Override
     public void betterdogs$setSpectatorWagTicks(int ticks) {
         this.betterdogs$spectatorWagTicks = Math.max(0, ticks);
+        if (this.betterdogs$spectatorWagTicks == 0) {
+            Wolf self = (Wolf) (Object) this;
+            if (self.level() == null || !self.level().isClientSide()) {
+                java.util.UUID uuid = self.getUUID();
+                if (uuid != null) {
+                    net.vanillaoutsider.betterdogs.util.PackAudienceHelper.setAudienceWagTicks(uuid, 0);
+                }
+            }
+        }
     }
 
     @Override

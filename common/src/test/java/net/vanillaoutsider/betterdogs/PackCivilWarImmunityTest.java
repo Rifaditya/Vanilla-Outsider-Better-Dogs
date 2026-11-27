@@ -957,6 +957,7 @@ class PackCivilWarImmunityTest {
         private long lastCorrectionSnapExpiry;
         private int playPenaltyTicks;
         private int spectatorWagTicks;
+        private boolean interested;
         private float health;
         private float maxHealth;
 
@@ -1491,6 +1492,16 @@ class PackCivilWarImmunityTest {
         @Override
         public void betterdogs$setSpectatorWagTicks(int ticks) {
             this.spectatorWagTicks = ticks;
+        }
+
+        @Override
+        public void setIsInterested(boolean interested) {
+            this.interested = interested;
+        }
+
+        @Override
+        public boolean isInterested() {
+            return this.interested;
         }
     }
 }
