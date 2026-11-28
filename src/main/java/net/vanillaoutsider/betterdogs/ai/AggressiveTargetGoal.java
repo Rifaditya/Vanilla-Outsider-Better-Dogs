@@ -56,7 +56,7 @@ public class AggressiveTargetGoal extends NearestAttackableTargetGoal<Monster> {
         }
 
         if (wolf != null) {
-            if (wolf.isBaby() || wolf.isOrderedToSit() || wolf.isInSittingPose()) {
+            if (wolf.isBaby() || wolf.isOrderedToSit() || wolf.isInSittingPose() || wolf.isLeashed()) {
                 return false;
             }
             if (wolf instanceof WolfExtensions ext && ext.betterdogs$isGuardMode()) {
@@ -149,7 +149,7 @@ public class AggressiveTargetGoal extends NearestAttackableTargetGoal<Monster> {
 
     @Override
     public boolean canUse() {
-        if (this.wolf == null || this.wolf.isBaby() || this.wolf.isOrderedToSit() || this.wolf.isInSittingPose()) {
+        if (this.wolf == null || this.wolf.isBaby() || this.wolf.isOrderedToSit() || this.wolf.isInSittingPose() || this.wolf.isLeashed()) {
             return false;
         }
 
@@ -274,7 +274,7 @@ public class AggressiveTargetGoal extends NearestAttackableTargetGoal<Monster> {
 
     @Override
     public boolean canContinueToUse() {
-        if (this.wolf == null || this.wolf.isOrderedToSit() || this.wolf.isInSittingPose()) {
+        if (this.wolf == null || this.wolf.isOrderedToSit() || this.wolf.isInSittingPose() || this.wolf.isLeashed()) {
             return false;
         }
 

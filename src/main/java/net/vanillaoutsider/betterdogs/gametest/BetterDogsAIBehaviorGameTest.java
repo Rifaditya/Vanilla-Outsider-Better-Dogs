@@ -18,6 +18,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Interaction;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.wolf.Wolf;
+import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.zombie.Zombie;
@@ -35,6 +36,7 @@ import net.vanillaoutsider.betterdogs.personality.CanineArchetype;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
 import net.dasik.social.api.gamerule.DynamicGameRuleManager;
 import net.dasik.social.core.EntitySocialScheduler;
+import net.vanillaoutsider.betterdogs.ai.AggressiveTargetGoal;
 import net.vanillaoutsider.betterdogs.ai.AvoidGhastFireballGoal;
 import net.vanillaoutsider.betterdogs.ai.BabyBiteBackGoal;
 import net.vanillaoutsider.betterdogs.ai.EatGroundFoodGoal;
@@ -53,6 +55,7 @@ import net.vanillaoutsider.betterdogs.util.WolfCatchupHelper;
 import net.vanillaoutsider.betterdogs.util.WolfCureHelper;
 import net.vanillaoutsider.betterdogs.util.WolfDamageHandler;
 import net.vanillaoutsider.betterdogs.util.WolfFriendlyFireHelper;
+import net.vanillaoutsider.betterdogs.util.WolfGuardHelper;
 import net.vanillaoutsider.betterdogs.util.WolfSittingPoseHelper;
 
 /**
@@ -1128,6 +1131,89 @@ public class BetterDogsAIBehaviorGameTest {
             DogCommandManager.clearVehicleTarget(wolf.getUUID());
             if (!seat.isRemoved()) {
                 seat.discard();
+            }
+        }
+
+        helper.succeed();
+    }
+
+    @GameTest
+    public void testLeashedGuardDogHaltsPatrolAndPreservesGuardPost(GameTestHelper helper) {
+        for (int x = 0; x < 8; x++) {
+            for (int z = 0; z < 8; z++) {
+                helper.setBlock(x, 1, z, Blocks.STONE);
+            }
+        }
+
+        BlockPos fencePos = new BlockPos(2, 2, 2);
+        BlockPos guardPost = new BlockPos(4, 2, 2);
+        BlockPos absGuardPost = helper.absolutePos(guardPost);
+        helper.setBlock(fencePos, Blocks.OAK_FENCE);
+
+        LeashFenceKnotEntity knot = LeashFenceKnotEntity.getOrCreateKnot(helper.getLevel(), helper.absolutePos(fencePos));
+        Wolf wolf = helper.spawn(EntityTypes.WOLF, guardPost);
+        Zombie zombie = null;
+        helper.assertTrue(knot != null && wolf != null,
+                "Leash knot and wolf failed to spawn for leashed guard dog GameTest");
+
+        try {
+            wolf.setTame(true, false);
+            wolf.setNoActionTime(100);
+            helper.assertTrue(wolf instanceof WolfExtensions, "Wolf must implement WolfExtensions");
+            WolfExtensions ext = (WolfExtensions) wolf;
+            ext.betterdogs$setGuardMode(true);
+            ext.betterdogs$setGuardPos(absGuardPost);
+            ext.betterdogs$setPersonality(WolfPersonality.PACIFIST);
+
+            WolfGuardGoal guardGoal = new WolfGuardGoal(wolf);
+            helper.assertTrue(guardGoal.canUse(),
+                    "Unleashed guard dog must allow WolfGuardGoal.canUse()");
+
+            // Leash wolf to fence knot
+            wolf.setLeashedTo(knot, true);
+            helper.assertTrue(wolf.isLeashed(), "Wolf must report isLeashed == true after setLeashedTo");
+            helper.assertTrue(!guardGoal.canUse(),
+                    "Leashed guard dog must halt WolfGuardGoal.canUse()");
+            helper.assertTrue(!guardGoal.canContinueToUse(),
+                    "Leashed guard dog must halt WolfGuardGoal.canContinueToUse()");
+            helper.assertTrue(ext.betterdogs$isGuardMode() && absGuardPost.equals(ext.betterdogs$getGuardPos()),
+                    "Leashing must preserve guardMode and guardPos");
+
+            // Nearby hostile triggers stationary watchdog alarm while suppressing aggressive targeting
+            zombie = helper.spawn(EntityTypes.ZOMBIE, new BlockPos(5, 2, 2));
+            helper.assertTrue(zombie != null, "Zombie failed to spawn for watchdog alarm GameTest");
+            helper.assertTrue(
+                    WolfGuardHelper.shouldRunLeashedWatchdogAlarm(
+                            wolf.isTame(),
+                            ext.betterdogs$isGuardMode(),
+                            ext.betterdogs$isSittingManually(),
+                            wolf.isLeashed(),
+                            ext.betterdogs$getPersonality()),
+                    "Leashed PACIFIST guard dog must qualify for stationary watchdog alarm");
+            helper.assertTrue(WolfGuardHelper.findClosestWatchdogThreat(wolf) == zombie,
+                    "Watchdog threat scanner must locate nearby Zombie");
+            helper.assertTrue(!AggressiveTargetGoal.isEligibleTarget(wolf, zombie),
+                    "Leashed wolf must NOT mark nearby Zombie as eligible combat target");
+
+            // Unleash wolf and verify patrol immediately resumes around preserved guardPost
+            wolf.removeLeash();
+            helper.assertTrue(!wolf.isLeashed(), "Wolf must report isLeashed == false after removeLeash");
+            helper.assertTrue(guardGoal.canUse(),
+                    "Unleashed guard dog must immediately resume WolfGuardGoal.canUse()");
+            helper.assertTrue(ext.betterdogs$isGuardMode() && absGuardPost.equals(ext.betterdogs$getGuardPos()),
+                    "Unleashing must preserve original guardMode and guardPos");
+        } finally {
+            if (wolf.isLeashed()) {
+                wolf.removeLeash();
+            }
+            if (!wolf.isRemoved()) {
+                wolf.discard();
+            }
+            if (zombie != null && !zombie.isRemoved()) {
+                zombie.discard();
+            }
+            if (!knot.isRemoved()) {
+                knot.discard();
             }
         }
 

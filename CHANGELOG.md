@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.32+26.3] - 2026-11-28
+
+### Fixed
+- **Leashed Guard Dog Patrol Suspension, Target Suppression & Stationary Watchdog Alarm** (`WolfGuardGoal`, `WolfGuardHelper`, `AggressiveTargetGoal`) (BL-BD-048):
+  - Gated `WolfGuardGoal.canUse()` (and delegating `canContinueToUse()`) on `!wolf.isLeashed()` so leashed guard dogs halt perimeter/radial patrol movement while preserving `guardMode` and `guardPos` state until unleashed.
+  - Extracted shared Pacifist Watchdog Alarm helpers (`shouldRunLeashedWatchdogAlarm`, `findClosestWatchdogThreat`, `emitWatchdogAlarm`, and stationary `tickLeashedWatchdogAlarm`) into `WolfGuardHelper` so leashed `PACIFIST` guard dogs still track nearby threats with look-at, growl sound, and warning dust particles without invoking navigation movement.
+  - Added `wolf.isLeashed()` guards to `AggressiveTargetGoal.isEligibleTarget(...)`, `canUse()`, and `canContinueToUse()` so leashed dogs never lunge after distant hostile mobs and snap vanilla leads.
+
 ## [5.7.31+26.3] - 2026-11-28
 
 ### Fixed

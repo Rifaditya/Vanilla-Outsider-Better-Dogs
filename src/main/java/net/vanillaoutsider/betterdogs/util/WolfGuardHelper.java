@@ -11,7 +11,9 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.animal.wolf.Wolf;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import org.jspecify.annotations.Nullable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -177,8 +179,108 @@ public final class WolfGuardHelper {
                     ally.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 80, 0, true, true));
                 }
             }
+            tickLeashedWatchdogAlarm(wolf, ext, serverLevel);
         } else {
             serverLevel.sendParticles(GUARD_PARTICLE, px, py, pz, 1, 0, 0.05, 0, 0.0);
+        }
+    }
+
+    public static boolean shouldRunLeashedWatchdogAlarm(
+            boolean isTame,
+            boolean isGuardMode,
+            boolean isSittingManually,
+            boolean isLeashed,
+            @Nullable WolfPersonality personality) {
+        return isTame
+                && isGuardMode
+                && !isSittingManually
+                && isLeashed
+                && personality == WolfPersonality.PACIFIST;
+    }
+
+    public static @Nullable Monster findClosestWatchdogThreat(@Nullable Wolf wolf) {
+        if (wolf == null || wolf.level() == null) {
+            return null;
+        }
+        List<Monster> enemies = wolf.level().getEntitiesOfClass(
+                Monster.class,
+                wolf.getBoundingBox().inflate(16.0, 16.0, 16.0),
+                enemy -> {
+                    double dy = Math.abs(enemy.getY() - wolf.getY());
+                    if (dy > 16.0) return false;
+                    if (dy <= 4.0) return true;
+                    return wolf.getSensing().hasLineOfSight(enemy);
+                });
+        Monster closest = null;
+        double closestDist = Double.MAX_VALUE;
+        for (Monster enemy : enemies) {
+            double dist = wolf.distanceToSqr(enemy);
+            if (dist < closestDist) {
+                closestDist = dist;
+                closest = enemy;
+            }
+        }
+        return closest;
+    }
+
+    public static void emitWatchdogAlarm(@Nullable Wolf wolf, @Nullable ServerLevel serverLevel) {
+        if (wolf == null) {
+            return;
+        }
+        wolf.playSound(((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().growlSound().value(), 1.0f, 1.0f);
+        if (serverLevel == null) {
+            return;
+        }
+        String density = net.vanillaoutsider.betterdogs.config.BetterDogsConfig.get().getGuardParticleDensity();
+        int count = switch (density) {
+            case "high" -> 12;
+            case "medium" -> 6;
+            case "low" -> 3;
+            default -> 0;
+        };
+        if (count <= 0) {
+            return;
+        }
+        DustParticleOptions alertDust = new DustParticleOptions(0xFF0000, 1.5f);
+        net.minecraft.world.phys.Vec3 look = wolf.getLookAngle();
+        double yaw = Math.atan2(look.z, look.x);
+        double horizontalLength = Math.sqrt(look.x * look.x + look.z * look.z);
+        double pitch = look.y;
+        double speed = 0.5;
+        double spread = Math.PI / 6.0;
+        for (int i = 0; i < count; i++) {
+            double angleOffset = (count > 1) ? (((double) i / (count - 1)) - 0.5) * spread : 0.0;
+            double pAngle = yaw + angleOffset;
+            double vx = Math.cos(pAngle) * horizontalLength;
+            double vz = Math.sin(pAngle) * horizontalLength;
+            double spawnX = wolf.getX() + vx * 0.5;
+            double spawnY = wolf.getEyeY() - 0.1;
+            double spawnZ = wolf.getZ() + vz * 0.5;
+            serverLevel.sendParticles(alertDust, spawnX, spawnY, spawnZ, 0, vx, pitch, vz, speed);
+        }
+    }
+
+    public static void tickLeashedWatchdogAlarm(
+            @Nullable Wolf wolf,
+            @Nullable WolfExtensions ext,
+            @Nullable ServerLevel serverLevel) {
+        if (wolf == null || ext == null || serverLevel == null) {
+            return;
+        }
+        if (!shouldRunLeashedWatchdogAlarm(
+                wolf.isTame(),
+                ext.betterdogs$isGuardMode(),
+                ext.betterdogs$isSittingManually(),
+                wolf.isLeashed(),
+                ext.betterdogs$getPersonality())) {
+            return;
+        }
+        Monster closestThreat = findClosestWatchdogThreat(wolf);
+        if (closestThreat != null && closestThreat.isAlive()) {
+            wolf.getLookControl().setLookAt(closestThreat, 30.0f, 30.0f);
+            if (wolf.tickCount % 60 == 0) {
+                emitWatchdogAlarm(wolf, serverLevel);
+            }
         }
     }
 

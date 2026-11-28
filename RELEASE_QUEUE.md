@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 5.7.32+26.3** - Halt Leashed Guard Dog Patrol & Aggro Lunges While Preserving Guard Post & Stationary Watchdog Alarm (BL-BD-048)
 - [ ] **Better Dogs 5.7.31+26.3** - Fix Sitting Dog Chair Boarding & Orphaned `"betterdogs:seat"` Entity Lifecycle (BL-BD-045)
 - [ ] **Better Dogs 5.7.30+26.3** - Replace Strong Entity Reference Leak in `DogCommandManager.VEHICLE_TARGETS` with Bounded `WeakReference` Pruning (BL-BD-060)
 - [ ] **Better Dogs 5.7.29+26.3** - Fix Secondary Static Heap Memory Leak in PackAudienceHelper (BL-BD-044)
