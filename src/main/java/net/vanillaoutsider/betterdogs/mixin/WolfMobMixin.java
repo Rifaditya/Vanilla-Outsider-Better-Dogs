@@ -1,11 +1,12 @@
 // Copyright (C) 2026 Dasik (Rifaditya) | GNU GPLv3
-// Verified against: Minecraft 26.3
+// Verified against: Minecraft 26.2
 package net.vanillaoutsider.betterdogs.mixin;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
+import net.vanillaoutsider.betterdogs.util.BloodFeudHelper;
 import net.vanillaoutsider.betterdogs.util.PackAudienceHelper;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,8 +37,7 @@ public abstract class WolfMobMixin {
             // unless executing an active Blood Feud vendetta against that specific nemesis.
             if (newTarget instanceof Wolf targetWolf && wolf.isTame() && targetWolf.isTame()) {
                 if (PackAudienceHelper.isCoOwned(wolf, targetWolf)) {
-                    boolean isNemesis = wolfExt.betterdogs$hasBloodFeud()
-                            && wolfExt.betterdogs$getBloodFeudTarget().equals(targetWolf.getStringUUID());
+                    boolean isNemesis = BloodFeudHelper.matchesBloodFeudTarget(wolfExt, targetWolf);
                     if (!isNemesis) {
                         ci.cancel();
                     }

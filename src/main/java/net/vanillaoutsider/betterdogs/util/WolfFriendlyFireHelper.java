@@ -138,14 +138,7 @@ public final class WolfFriendlyFireHelper {
     }
 
     private static boolean targetsInBloodFeud(Wolf source, Wolf target) {
-        if (source == null || target == null) {
-            return false;
-        }
-        if (source instanceof WolfExtensions ext && ext.betterdogs$hasBloodFeud()) {
-            String feudTarget = ext.betterdogs$getBloodFeudTarget();
-            return feudTarget != null && !feudTarget.isEmpty() && feudTarget.equals(target.getStringUUID());
-        }
-        return false;
+        return BloodFeudHelper.matchesBloodFeudTarget(source, target);
     }
 
     /**
