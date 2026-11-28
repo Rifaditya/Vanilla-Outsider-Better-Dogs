@@ -15,6 +15,7 @@ import net.minecraft.world.entity.EntityReference;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Interaction;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -44,6 +45,7 @@ import net.vanillaoutsider.betterdogs.ai.WolfGuardGoal;
 import net.vanillaoutsider.betterdogs.ai.WildWolfWanderGoal;
 import net.vanillaoutsider.betterdogs.ai.ZoomiesGoal;
 import net.vanillaoutsider.betterdogs.scheduler.events.ZoomiesDogEvent;
+import net.vanillaoutsider.betterdogs.util.DogCommandManager;
 import net.vanillaoutsider.betterdogs.util.PackAudienceHelper;
 import net.vanillaoutsider.betterdogs.util.WolfCatchupHelper;
 import net.vanillaoutsider.betterdogs.util.WolfCureHelper;
@@ -917,5 +919,35 @@ public class BetterDogsAIBehaviorGameTest {
                             + ", zoomiesRule=" + BetterDogsGameRules.isZoomiesEnabled(wolf.level())
                             + ")");
         }).thenSucceed();
+    }
+
+    @GameTest
+    public void testVehicleTargetAutoPrunesWhenSeatDiscarded(GameTestHelper helper) {
+        UUID dogUuid = UUID.randomUUID();
+        int baselineCount = DogCommandManager.getTrackedVehicleTargetCount();
+        Interaction seat = helper.spawn(EntityTypes.INTERACTION, new BlockPos(2, 2, 2));
+        helper.assertTrue(seat != null, "Interaction seat failed to spawn for vehicle target GameTest");
+
+        try {
+            DogCommandManager.setVehicleTarget(dogUuid, seat);
+            helper.assertTrue(DogCommandManager.getVehicleTarget(dogUuid) == seat,
+                    "Live Interaction seat must be returned by DogCommandManager.getVehicleTarget");
+            helper.assertTrue(DogCommandManager.getTrackedVehicleTargetCount() == baselineCount + 1,
+                    "Tracked vehicle target count must increment while seat is live");
+
+            seat.discard();
+            helper.assertTrue(seat.isRemoved(), "Discarded Interaction seat must report isRemoved == true");
+            helper.assertTrue(DogCommandManager.getVehicleTarget(dogUuid) == null,
+                    "DogCommandManager.getVehicleTarget must return null after seat.discard()");
+            helper.assertTrue(DogCommandManager.getTrackedVehicleTargetCount() == baselineCount,
+                    "Discarded Interaction seat must auto-prune from VEHICLE_TARGETS on lookup");
+        } finally {
+            DogCommandManager.clearVehicleTarget(dogUuid);
+            if (!seat.isRemoved()) {
+                seat.discard();
+            }
+        }
+
+        helper.succeed();
     }
 }

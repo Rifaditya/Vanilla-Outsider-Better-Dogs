@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.30+26.3] - 2026-11-28
+
+### Fixed
+- **Eliminated Strong `Entity` Reference Leak in `DogCommandManager.VEHICLE_TARGETS`** (`DogCommandManager`, `MoveToVehicleGoal`) (BL-BD-060):
+  - Replaced strong `Entity` values in `DogCommandManager.VEHICLE_TARGETS` with `WeakReference<Entity>` and added `pruneStaleAndEnforceCap(UUID)` + `getTrackedVehicleTargetCount()` bounded by `MAX_TRACKED_VEHICLE_TARGETS = 1024`, auto-pruning garbage-collected or removed (`entity.isRemoved()`) vehicle references on both `setVehicleTarget` and `getVehicleTarget`.
+  - Updated `MoveToVehicleGoal.canUse()` and `MoveToVehicleGoal.tick()` to call `DogCommandManager.clearVehicleTarget(this.wolf.getUUID())` immediately when the target becomes `null` or `!target.isAlive()`.
+  - Added WeakReference GC reclamation, `removalReason` pruning, bounded-capacity, and null/negative parity tests in `VehicleBoardingTest`, plus a live `ServerLevel` `Interaction` seat discard GameTest in `BetterDogsAIBehaviorGameTest`.
+
 ## [5.7.29+26.3] - 2026-11-27
 
 ### Fixed
