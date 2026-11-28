@@ -2,9 +2,12 @@
 // Verified against: Minecraft 26.1.2
 package net.vanillaoutsider.betterdogs.mixin;
 
+import java.util.ArrayList;
+import java.util.List;
 import net.dasik.social.core.GlobalSocialSystem;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.vanillaoutsider.betterdogs.util.DogCommandManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,14 +21,23 @@ public class ServerLevelMixin {
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void betterdogs$onTick(CallbackInfo ci) {
-        GlobalSocialSystem.pulse((ServerLevel) (Object) this);
-        
+        ServerLevel level = (ServerLevel) (Object) this;
+        GlobalSocialSystem.pulse(level);
+
         if (++betterdogs$cleanTicks >= 100) {
             betterdogs$cleanTicks = 0;
-            ServerLevel level = (ServerLevel) (Object) this;
+            List<Entity> toDiscard = null;
             for (Entity entity : level.getAllEntities()) {
-                if (entity.entityTags().contains("betterdogs:seat") && entity.getPassengers().isEmpty()) {
-                    entity.discard();
+                if (DogCommandManager.shouldSweepOrphanedSeat(level, entity)) {
+                    if (toDiscard == null) {
+                        toDiscard = new ArrayList<>();
+                    }
+                    toDiscard.add(entity);
+                }
+            }
+            if (toDiscard != null) {
+                for (Entity orphan : toDiscard) {
+                    orphan.discard();
                 }
             }
         }

@@ -3,6 +3,7 @@
 package net.vanillaoutsider.betterdogs.ai;
 
 import java.util.EnumSet;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
@@ -32,14 +33,17 @@ public class MoveToVehicleGoal extends Goal {
             DogCommandManager.clearVehicleTarget(this.wolf.getUUID());
             return false;
         }
+        ServerLevel serverLevel = this.wolf.level() instanceof ServerLevel sl ? sl : null;
         // Distance check (12 blocks limit = 144 squared)
         if (this.wolf.distanceToSqr(target) > DogSeatHelper.MAX_COMMAND_DISTANCE_SQ) {
             DogCommandManager.clearVehicleTarget(this.wolf.getUUID());
+            DogCommandManager.discardIfAbandonedSeat(serverLevel, target);
             return false;
         }
         // Verify target has space
         if (!DogSeatHelper.hasPassengerSpace(target)) {
             DogCommandManager.clearVehicleTarget(this.wolf.getUUID());
+            DogCommandManager.discardIfAbandonedSeat(serverLevel, target);
             return false;
         }
         return true;
@@ -47,6 +51,9 @@ public class MoveToVehicleGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
+        if (this.wolf.isOrderedToSit()) {
+            return false;
+        }
         Entity target = DogCommandManager.getVehicleTarget(this.wolf.getUUID());
         if (target == null || !target.isAlive() || this.wolf.isPassenger()) {
             return false;
@@ -81,7 +88,14 @@ public class MoveToVehicleGoal extends Goal {
 
     @Override
     public void stop() {
+        Entity target = DogCommandManager.getVehicleTarget(this.wolf.getUUID());
         DogCommandManager.clearVehicleTarget(this.wolf.getUUID());
-        this.wolf.getNavigation().stop();
+        if (target != null && !this.wolf.isPassenger()) {
+            ServerLevel serverLevel = this.wolf.level() instanceof ServerLevel sl ? sl : null;
+            DogCommandManager.discardIfAbandonedSeat(serverLevel, target);
+        }
+        if (this.wolf.getNavigation() != null) {
+            this.wolf.getNavigation().stop();
+        }
     }
 }

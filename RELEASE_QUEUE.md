@@ -7,6 +7,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 5.7.31+26.1.2** [Fabric + NeoForge] - Fix Orphaned Invisible Interaction Seat Entities & Sitting Dogs Chair Boarding (BL-BD-045)
 - [ ] **Better Dogs 5.7.30+26.1.2** [Fabric + NeoForge] - Replace Strong Entity Reference Leak in `DogCommandManager.VEHICLE_TARGETS` with Bounded `WeakReference` Pruning (BL-BD-060)
 - [ ] **Better Dogs 5.7.29+26.1.2** - Fix Secondary Static Heap Memory Leak in PackAudienceHelper (BL-BD-044)
 - [ ] **Better Dogs 5.7.28+26.1.2** [Fabric + NeoForge] - Relocate Client Config/Jade Helpers, Reflective ModMenu Dispatch, Mixin minVersion & Sidedness Audit Enforcement (BL-BD-057)

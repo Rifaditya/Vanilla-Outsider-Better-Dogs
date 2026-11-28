@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.7.31+26.1.2] - 2026-11-28
+
+### Fixed
+- **Orphaned Invisible Interaction Seat Entities & Sitting Dogs Boarding Failure** (`DogCommandManager`, `MoveToVehicleGoal`, `ServerLevelMixin`) (BL-BD-045):
+  - Added `DogCommandManager.prepareWolfForBoarding(Wolf)` (clearing both `setOrderedToSit(false)` and `setInSittingPose(false)`) and routed both `handleEntityInteract` and `handleBlockInteract` (inside `hasPassengerSpace`) through it so sitting dogs stand up and navigate onto commanded chair/stair seats and vehicles.
+  - Replaced `"betterdogs:seat"` string literals with `DogCommandManager.SEAT_ENTITY_TAG`, added `ORPHAN_SEAT_GRACE_TICKS = 200`, `isBetterDogsSeat`, `isActivelyTargetedByLiveWolf`, `shouldDiscardAbandonedSeat`, `discardIfAbandonedSeat`, `shouldSweepOrphanedSeatState`, and `shouldSweepOrphanedSeat`.
+  - Updated `MoveToVehicleGoal` to abort immediately in `canContinueToUse()` when `this.wolf.isOrderedToSit()` is true, and to discard abandoned `"betterdogs:seat"` entities on out-of-range `canUse()` bailouts and non-mounted `stop()` timeouts/aborts with null-safe `getNavigation()` handling.
+  - Updated `ServerLevelMixin.betterdogs$onTick` to enforce the `200`-tick grace period and active live-wolf targeting check via `shouldSweepOrphanedSeat(level, entity)` and discard orphans from a lazy post-loop `toDiscard` list while preserving `GlobalSocialSystem.pulse(level)`.
+
 ## [5.7.30+26.1.2] - 2026-11-28
 
 ### Fixed
