@@ -1,5 +1,14 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
+## [1.7.29+1.21.11] - 2026-11-28
+
+### Fixed
+- **Orphaned Invisible Interaction Seat Entities & Sitting Dogs Boarding Failure** (`DogCommandManager`, `MoveToVehicleGoal`, `ServerLevelMixin`, `WolfInteractMixin`) (BL-BD-045):
+  - Added `DogCommandManager.prepareWolfForBoarding(Wolf)` (clearing both `setOrderedToSit(false)` and `setInSittingPose(false)`) and routed both `handleEntityUse` and `handleBlockUse` through it so sitting dogs stand up and navigate onto commanded chair/stair seats and vehicles.
+  - Replaced `"betterdogs:seat"` string literals with `DogCommandManager.SEAT_ENTITY_TAG`, added `ORPHAN_SEAT_GRACE_TICKS = 200`, `isBetterDogsSeat`, `isActivelyTargetedByLiveWolf`, `shouldDiscardAbandonedSeat`, `discardIfAbandonedSeat`, `shouldSweepOrphanedSeatState`, and `shouldSweepOrphanedSeat`.
+  - Updated `MoveToVehicleGoal` to abort immediately in `canContinueToUse()` when `this.wolf.isOrderedToSit()` is true, and to discard abandoned `"betterdogs:seat"` entities on out-of-range / no-space `canUse()` bailouts and non-mounted `stop()` timeouts/aborts with null-safe `getNavigation()` handling.
+  - Added and registered `ServerLevelMixin` (`betterdogs$onTick`) to sweep orphaned `"betterdogs:seat"` entities past the `200`-tick grace period via `shouldSweepOrphanedSeat(level, entity)` using a lazy post-loop `toDiscard` list.
+
 ## [1.7.28+1.21.11] - 2026-11-28
 
 ### Fixed

@@ -38,7 +38,7 @@ public abstract class WolfInteractMixin {
                 if (wolf.isPassenger()) {
                     net.minecraft.world.entity.Entity vehicle = wolf.getVehicle();
                     wolf.stopRiding();
-                    if (vehicle != null && vehicle.getTags().contains("betterdogs:seat")) {
+                    if (net.vanillaoutsider.betterdogs.util.DogCommandManager.isBetterDogsSeat(vehicle)) {
                         vehicle.discard();
                     }
                     net.vanillaoutsider.betterdogs.util.DogCommandManager.clearVehicleTarget(wolf.getUUID());
