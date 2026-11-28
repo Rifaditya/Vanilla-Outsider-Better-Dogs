@@ -27,6 +27,7 @@ public class MoveToVehicleGoal extends Goal {
         }
         Entity target = DogCommandManager.getVehicleTarget(this.wolf.getUUID());
         if (target == null || !target.isAlive()) {
+            DogCommandManager.clearVehicleTarget(this.wolf.getUUID());
             return false;
         }
         if (this.wolf.distanceToSqr(target) > 144.0D) {
@@ -57,7 +58,8 @@ public class MoveToVehicleGoal extends Goal {
     @Override
     public void tick() {
         Entity target = DogCommandManager.getVehicleTarget(this.wolf.getUUID());
-        if (target == null) {
+        if (target == null || !target.isAlive()) {
+            DogCommandManager.clearVehicleTarget(this.wolf.getUUID());
             return;
         }
 

@@ -1,5 +1,14 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.7.30+1.20.1] - 2026-11-28
+
+### Fixed
+- **Strong Static `Entity` Reference Leak in `DogCommandManager.VEHICLE_TARGETS`** (`DogCommandManager`, `MoveToVehicleGoal`) (BL-BD-060):
+  - Converted `DogCommandManager.VEHICLE_TARGETS` from strong `Map<UUID, Entity>` to `Map<UUID, WeakReference<Entity>>` with `MAX_TRACKED_VEHICLE_TARGETS = 1024`, `getTrackedVehicleTargetCount()`, and `pruneStaleAndEnforceCap(UUID)` to eliminate unbounded JVM heap retention when commanded vehicles or dogs are unloaded, discarded, or die.
+  - Guarded `setVehicleTarget` (`dogUuid == null`, `vehicle == null || vehicle.isRemoved()` -> remove) and `getVehicleTarget` (`dogUuid == null`, `ref == null`, `target == null || target.isRemoved()` -> atomic `VEHICLE_TARGETS.remove(dogUuid, ref)`).
+  - Updated `MoveToVehicleGoal.canUse()` and `tick()` to call `DogCommandManager.clearVehicleTarget(this.wolf.getUUID())` whenever the tracked vehicle target is `null` or `!target.isAlive()`.
+  - Ported `DogCommandTest` coverage (Java 17 compatible) verifying live target lifecycle, `WeakReference` GC reclamation, reflective `Entity.removalReason = DISCARDED` auto-prune/rejection, `MAX_TRACKED_VEHICLE_TARGETS = 1024` bounding, `null` negative parity, and `MoveToVehicleGoal` cleanup.
+
 ## [1.7.29+1.20.1] - 2026-11-27
 
 ### Fixed
