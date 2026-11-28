@@ -147,7 +147,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
 
     @Override
     public String betterdogs$getBloodFeudTarget() {
-        return this.betterdogs$bloodFeudTarget;
+        return this.betterdogs$bloodFeudTarget != null ? this.betterdogs$bloodFeudTarget : "";
     }
 
     @Override
@@ -157,7 +157,7 @@ public abstract class WolfMixin extends net.minecraft.world.entity.TamableAnimal
 
     @Override
     public boolean betterdogs$hasBloodFeud() {
-        return !this.betterdogs$bloodFeudTarget.isEmpty();
+        return this.betterdogs$bloodFeudTarget != null && !this.betterdogs$bloodFeudTarget.isEmpty();
     }
 
     @Unique

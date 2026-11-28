@@ -13,6 +13,7 @@ import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
 import net.vanillaoutsider.betterdogs.ai.play.PlayChoreographyHelper;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Dedicated single-purpose helper for preventing accidental friendly fire damage between dogs and owners.
@@ -77,15 +78,24 @@ public class WolfFriendlyFireHelper {
         return targetsInBloodFeud(first, second) || targetsInBloodFeud(second, first);
     }
 
-    private static boolean targetsInBloodFeud(Wolf source, Wolf target) {
-        if (source == null || target == null) {
+    public static boolean matchesBloodFeudTarget(@Nullable Wolf source, @Nullable Wolf target) {
+        return source instanceof WolfExtensions ext && matchesBloodFeudTarget(ext, target);
+    }
+
+    public static boolean matchesBloodFeudTarget(@Nullable WolfExtensions ext, @Nullable Wolf target) {
+        if (ext == null || target == null || !ext.betterdogs$hasBloodFeud()) {
             return false;
         }
-        if (source instanceof WolfExtensions ext && ext.betterdogs$hasBloodFeud()) {
-            String feudTarget = ext.betterdogs$getBloodFeudTarget();
-            return feudTarget != null && !feudTarget.isEmpty() && feudTarget.equals(target.getStringUUID());
+        String feudTarget = ext.betterdogs$getBloodFeudTarget();
+        if (feudTarget == null || feudTarget.isEmpty()) {
+            return false;
         }
-        return false;
+        String targetUuid = target.getStringUUID();
+        return targetUuid != null && !targetUuid.isEmpty() && feudTarget.equals(targetUuid);
+    }
+
+    private static boolean targetsInBloodFeud(Wolf source, Wolf target) {
+        return matchesBloodFeudTarget(source, target);
     }
 
     public static final float MAX_AGGRESSIVE_BABY_PROVOCATION_DAMAGE = 2.0f;

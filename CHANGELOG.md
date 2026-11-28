@@ -1,5 +1,13 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
+## [1.7.31+1.21.11] - 2026-11-28
+
+### Fixed
+- **Null-Safe Blood Feud Target UUID Matching & Mixin Accessor Guards** (`WolfFriendlyFireHelper`, `WolfMobMixin`, `WolfMixin`) (BL-BD-056):
+  - Promoted `WolfFriendlyFireHelper.targetsInBloodFeud` to public null- and empty-safe `matchesBloodFeudTarget(@Nullable Wolf, @Nullable Wolf)` and `matchesBloodFeudTarget(@Nullable WolfExtensions, @Nullable Wolf)` overloads checking non-null and non-empty values on both `feudTarget` and `target.getStringUUID()` with zero state mutation.
+  - Replaced the raw `wolfExt.betterdogs$getBloodFeudTarget().equals(targetWolf.getStringUUID())` call in `WolfMobMixin.betterdogs$gatekeeperSetTarget` with `WolfFriendlyFireHelper.matchesBloodFeudTarget(wolfExt, targetWolf)` across Fabric and NeoForge.
+  - Null-guarded `this.betterdogs$bloodFeudTarget` inside `WolfMixin.betterdogs$getBloodFeudTarget()` and `WolfMixin.betterdogs$hasBloodFeud()`.
+
 ## [1.7.30+1.21.11] - 2026-11-28
 
 ### Fixed
