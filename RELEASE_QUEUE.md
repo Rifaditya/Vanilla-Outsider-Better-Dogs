@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 1.7.28+1.21.11** [Fabric + NeoForge] - Fix Static VEHICLE_TARGETS Entity Heap Leak in DogCommandManager (BL-BD-060)
 - [ ] **Better Dogs 1.7.27+1.21.11** - Fix Secondary Static Heap Memory Leak in PackAudienceHelper (BL-BD-044)
 - [ ] **Better Dogs 1.7.26+1.21.11** [Fabric + NeoForge] - Client Package Sidedness Isolation, Mixin minVersion & Bytecode Sidedness Verification (BL-BD-057)
 - [ ] **Better Dogs 1.7.25+1.21.11** [Fabric + NeoForge] - Fix All 9 Inverted SocialEvent Expirations, Dead/Null Target Early-Exit Loops & Howl Timer Reset (BL-BD-074)
