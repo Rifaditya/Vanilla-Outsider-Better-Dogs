@@ -42,6 +42,8 @@ import net.vanillaoutsider.betterdogs.registry.BetterDogsTags;
 public class DogCommandManager {
 
     public static final int MAX_TRACKED_VEHICLE_TARGETS = 1024;
+    public static final String SEAT_ENTITY_TAG = "betterdogs:seat";
+    public static final int ORPHAN_SEAT_GRACE_TICKS = 200;
 
     private static final Map<UUID, UUID> SELECTED_DOGS = new ConcurrentHashMap<>();
     private static final Map<UUID, WeakReference<Entity>> VEHICLE_TARGETS = new ConcurrentHashMap<>();
@@ -133,6 +135,9 @@ public class DogCommandManager {
         if (entity instanceof Strider strider && strider.isSaddled()) {
             return true;
         }
+        if (isBetterDogsSeat(entity)) {
+            return true;
+        }
         String className = entity.getClass().getSimpleName().toLowerCase();
         String typeId = BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).toString().toLowerCase();
         return className.contains("seat") || className.contains("chair") || className.contains("stool") || className.contains("bench") || className.contains("mount")
@@ -161,6 +166,116 @@ public class DogCommandManager {
                 || stack.is(Items.BLAZE_ROD);
     }
 
+    /**
+     * Clears sitting state so a tamed dog stands up before navigating to a commanded seat or vehicle.
+     */
+    public static void prepareWolfForBoarding(Wolf wolf) {
+        if (wolf == null) {
+            return;
+        }
+        wolf.setOrderedToSit(false);
+        wolf.setInSittingPose(false);
+    }
+
+    /**
+     * Checks whether an entity carries the Better Dogs temporary seat marker tag.
+     */
+    public static boolean isBetterDogsSeat(Entity entity) {
+        return entity != null && entity.getTags().contains(SEAT_ENTITY_TAG);
+    }
+
+    /**
+     * Checks whether a vehicle or seat is currently targeted by a live, standing, non-mounted wolf.
+     * Prunes stale or invalid references along the way so orphaned seats cannot deadlock cleanup.
+     */
+    public static boolean isActivelyTargetedByLiveWolf(ServerLevel level, Entity vehicle) {
+        if (vehicle == null || vehicle.isRemoved()) {
+            return false;
+        }
+        Iterator<Map.Entry<UUID, WeakReference<Entity>>> iterator = VEHICLE_TARGETS.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<UUID, WeakReference<Entity>> entry = iterator.next();
+            WeakReference<Entity> ref = entry.getValue();
+            Entity target = ref != null ? ref.get() : null;
+            if (target == null || target.isRemoved()) {
+                iterator.remove();
+                continue;
+            }
+            if (target != vehicle) {
+                continue;
+            }
+            if (level == null) {
+                return true;
+            }
+            Entity dogEntity = level.getEntity(entry.getKey());
+            if (dogEntity instanceof Wolf wolf
+                    && !wolf.isRemoved()
+                    && wolf.isAlive()
+                    && !wolf.isPassenger()
+                    && !wolf.isOrderedToSit()) {
+                return true;
+            }
+            iterator.remove();
+        }
+        return false;
+    }
+
+    /**
+     * Returns true when an untargeted, unoccupied Better Dogs seat entity is safe to discard immediately.
+     */
+    public static boolean shouldDiscardAbandonedSeat(ServerLevel level, Entity entity) {
+        return entity != null
+                && !entity.isRemoved()
+                && isBetterDogsSeat(entity)
+                && entity.getPassengers().isEmpty()
+                && !isActivelyTargetedByLiveWolf(level, entity);
+    }
+
+    /**
+     * Discards an entity if and only if it is an abandoned, unoccupied Better Dogs seat.
+     */
+    public static void discardIfAbandonedSeat(ServerLevel level, Entity entity) {
+        if (shouldDiscardAbandonedSeat(level, entity)) {
+            entity.discard();
+        }
+    }
+
+    /**
+     * Pure state predicate enforcing the orphan-seat grace period before periodic level sweeps discard a seat.
+     */
+    public static boolean shouldSweepOrphanedSeatState(
+            boolean isRemoved,
+            boolean isBetterDogsSeat,
+            boolean hasPassengers,
+            boolean isActivelyTargeted,
+            int tickCount
+    ) {
+        return !isRemoved
+                && isBetterDogsSeat
+                && !hasPassengers
+                && !isActivelyTargeted
+                && tickCount >= ORPHAN_SEAT_GRACE_TICKS;
+    }
+
+    /**
+     * Checks whether a world entity is an orphaned Better Dogs seat past the grace period.
+     */
+    public static boolean shouldSweepOrphanedSeat(ServerLevel level, Entity entity) {
+        if (entity == null || entity.isRemoved() || !isBetterDogsSeat(entity)) {
+            return false;
+        }
+        if (!entity.getPassengers().isEmpty() || entity.tickCount < ORPHAN_SEAT_GRACE_TICKS) {
+            return false;
+        }
+        return shouldSweepOrphanedSeatState(
+                false,
+                true,
+                false,
+                isActivelyTargetedByLiveWolf(level, entity),
+                entity.tickCount
+        );
+    }
+
     public static InteractionResult handleEntityUse(Player player, Level level, InteractionHand hand, Entity entity) {
         if (hand != InteractionHand.MAIN_HAND || level.isClientSide()) {
             return InteractionResult.PASS;
@@ -186,7 +301,7 @@ public class DogCommandManager {
                     if (hasPassengerSpace(entity)) {
                         setVehicleTarget(wolf.getUUID(), entity);
                         clearSelection(player.getUUID());
-                        wolf.setOrderedToSit(false);
+                        prepareWolfForBoarding(wolf);
                         WolfFeedbackHelper.sendFeedback(player, level, Component.translatableWithFallback("text.betterdogs.dog_commanded_to_board", "Commanded %s to board %s.", wolf.getName(), entity.getName()));
                         serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(),
                                 SoundEvents.WOLF_WHINE, wolf.getSoundSource(), 1.0f, 1.2f);
@@ -231,14 +346,14 @@ public class DogCommandManager {
 
                     AABB searchArea = new AABB(pos);
                     List<Entity> existingSeats = serverLevel.getEntities((Entity) null, searchArea,
-                            e -> e.getTags().contains("betterdogs:seat"));
+                            DogCommandManager::isBetterDogsSeat);
 
                     Entity seatEntity;
                     if (!existingSeats.isEmpty()) {
                         seatEntity = existingSeats.get(0);
                     } else {
                         Interaction seat = new Interaction(EntityType.INTERACTION, serverLevel);
-                        seat.addTag("betterdogs:seat");
+                        seat.addTag(SEAT_ENTITY_TAG);
                         seat.setPos(pos.getX() + 0.5D, pos.getY() + 0.22D, pos.getZ() + 0.5D);
                         serverLevel.addFreshEntity(seat);
                         seatEntity = seat;
@@ -247,7 +362,7 @@ public class DogCommandManager {
                     if (hasPassengerSpace(seatEntity)) {
                         setVehicleTarget(wolf.getUUID(), seatEntity);
                         clearSelection(player.getUUID());
-                        wolf.setOrderedToSit(false);
+                        prepareWolfForBoarding(wolf);
                         WolfFeedbackHelper.sendFeedback(player, level, Component.translatableWithFallback("text.betterdogs.dog_commanded_to_board", "Commanded %s to board %s.", wolf.getName(), state.getBlock().getName()));
                         serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(),
                                 SoundEvents.WOLF_WHINE, wolf.getSoundSource(), 1.0f, 1.2f);

@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 1.7.31+1.20.1** [Fabric + Forge] - Fix Orphaned "betterdogs:seat" Interaction Entities & Sitting Boarding Lifecycle (BL-BD-045)
 - [ ] **Better Dogs 1.7.30+1.20.1** [Fabric + Forge] - Replace Strong Entity Reference Leak in DogCommandManager.VEHICLE_TARGETS (BL-BD-060)
 - [ ] **Better Dogs 1.7.29+1.20.1** - Fix Secondary Static Heap Memory Leak in PackAudienceHelper (BL-BD-044)
 - [ ] **Better Dogs 1.7.28+1.20.1** [Fabric + Forge] - Client Compat Isolation (compat/jade/client & config/client), Mixin minVersion 0.8 & dasik-library >= 1.4.2 Manifest Parity (BL-BD-057)

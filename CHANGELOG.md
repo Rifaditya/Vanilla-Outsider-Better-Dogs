@@ -1,5 +1,15 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.20.1)
 
+## [1.7.31+1.20.1] - 2026-11-28
+
+### Fixed
+- **Orphaned `"betterdogs:seat"` Interaction Entities & Unsit Boarding Lifecycle (`DogCommandManager`, `MoveToVehicleGoal`, `ServerLevelMixin`, `WolfInteractMixin`) (BL-BD-045)**:
+  - Added `DogCommandManager.prepareWolfForBoarding(wolf)` (`setOrderedToSit(false)` and `setInSittingPose(false)`) and routed both `handleEntityUse` and `handleBlockUse` through it so sitting dogs cleanly stand up before navigating to commanded chairs or vehicles.
+  - Added `SEAT_ENTITY_TAG`, `ORPHAN_SEAT_GRACE_TICKS = 200`, `isBetterDogsSeat`, `isActivelyTargetedByLiveWolf`, `shouldDiscardAbandonedSeat`, `discardIfAbandonedSeat`, `shouldSweepOrphanedSeatState`, and `shouldSweepOrphanedSeat`, wired `isBetterDogsSeat` into `isSitTarget` and `WolfInteractMixin` dismount cleanup, and pruned stale `VEHICLE_TARGETS` entries for dead, unloaded, mounted, or sitting wolves.
+  - Updated `MoveToVehicleGoal` to abort cleanly when `wolf.isOrderedToSit()` becomes true in `canContinueToUse()` and to discard abandoned unoccupied `"betterdogs:seat"` entities on out-of-range/full checks in `canUse()` and navigation abort/timeout in `stop()` (leaving mounted seats and vanilla vehicles untouched).
+  - Created and registered `ServerLevelMixin` (`vanilla-outsider-better-dogs.mixins.json`) sweeping loaded server levels every `100` ticks via a lazy post-loop `toDiscard` list gated by `DogCommandManager.shouldSweepOrphanedSeat` so newly spawned or actively targeted seats survive past the `200`-tick grace window while orphaned seats are cleaned safely.
+  - Expanded `DogCommandTest` (`StubWolf` mutable state without `Unsafe` `entityData` or bare `Entity.discard()` calls) verifying `ORPHAN_SEAT_GRACE_TICKS`, `shouldSweepOrphanedSeatState`/`shouldSweepOrphanedSeat`, negative parity (untagged `Interaction`, vanilla `Boat`, occupied/targeted seats), `prepareWolfForBoarding`, and `MoveToVehicleGoal` sit-abort cleanup.
+
 ## [1.7.30+1.20.1] - 2026-11-28
 
 ### Fixed
