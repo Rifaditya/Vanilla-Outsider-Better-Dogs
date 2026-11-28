@@ -55,7 +55,7 @@ public class DogBlockCommandListener {
                         // Check if seat already exists to avoid duplication
                         AABB searchArea = new AABB(pos);
                         List<Entity> existingSeats = serverLevel.getEntities((Entity) null, searchArea,
-                                e -> e.entityTags().contains("betterdogs:seat"));
+                                e -> e.entityTags().contains(DogCommandManager.SEAT_ENTITY_TAG));
 
                         Entity seatEntity;
                         if (!existingSeats.isEmpty()) {
@@ -65,13 +65,14 @@ public class DogBlockCommandListener {
                             Interaction seat = new Interaction(EntityTypes.INTERACTION, serverLevel);
                             seat.setWidth(0.5f);
                             seat.setHeight(0.5f);
-                            seat.addTag("betterdogs:seat");
+                            seat.addTag(DogCommandManager.SEAT_ENTITY_TAG);
                             seat.setPos(pos.getX() + 0.5D, pos.getY() + 0.22D, pos.getZ() + 0.5D);
                             serverLevel.addFreshEntity(seat);
                             seatEntity = seat;
                         }
 
                         if (DogSeatHelper.hasPassengerSpace(seatEntity)) {
+                            DogCommandManager.prepareWolfForBoarding(wolf);
                             DogCommandManager.setVehicleTarget(wolf.getUUID(), seatEntity);
                             DogCommandManager.clearSelection(player.getUUID());
                             player.sendOverlayMessage(Component.translatableWithFallback("text.betterdogs.dog_commanded_to_board", "Commanded %s to board %s.", wolf.getName(), state.getBlock().getName()));

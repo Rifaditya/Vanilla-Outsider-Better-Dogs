@@ -56,7 +56,7 @@ public class DogEntityCommandListener {
                                 Vec3 offset = DogSeatHelper.calculateDismountOffset(player.getLookAngle(), DogSeatHelper.DEFAULT_DISMOUNT_DISTANCE);
                                 wolf.setPos(wolf.getX() + offset.x, wolf.getY(), wolf.getZ() + offset.z);
 
-                                if (entity.entityTags().contains("betterdogs:seat")) {
+                                if (entity.entityTags().contains(DogCommandManager.SEAT_ENTITY_TAG)) {
                                     entity.discard();
                                 }
 
@@ -85,9 +85,9 @@ public class DogEntityCommandListener {
                     boolean unrestricted = DynamicGameRuleManager.getBoolean(level, BetterDogsGameRules.BD_ALLOW_UNRESTRICTED_RIDING);
                     if (unrestricted || DogSeatHelper.isSitTarget(entity)) {
                         if (DogSeatHelper.hasPassengerSpace(entity)) {
+                            DogCommandManager.prepareWolfForBoarding(wolf);
                             DogCommandManager.setVehicleTarget(wolf.getUUID(), entity);
                             DogCommandManager.clearSelection(player.getUUID());
-                            wolf.setOrderedToSit(false);
                             player.sendOverlayMessage(Component.translatableWithFallback("text.betterdogs.dog_commanded_to_board", "Commanded %s to board %s.", wolf.getName(), entity.getName()));
                             SoundEvent whineSound = ((WolfAccessor) wolf).betterdogs$invokeGetSoundSet().whineSound().value();
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(),

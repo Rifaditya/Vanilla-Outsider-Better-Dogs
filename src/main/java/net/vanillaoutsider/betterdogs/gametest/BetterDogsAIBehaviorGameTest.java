@@ -22,6 +22,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.boat.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameType;
@@ -39,6 +40,7 @@ import net.vanillaoutsider.betterdogs.ai.BabyBiteBackGoal;
 import net.vanillaoutsider.betterdogs.ai.EatGroundFoodGoal;
 import net.vanillaoutsider.betterdogs.ai.FleeCreeperGoal;
 import net.vanillaoutsider.betterdogs.ai.FleeExplodingHazardGoal;
+import net.vanillaoutsider.betterdogs.ai.MoveToVehicleGoal;
 import net.vanillaoutsider.betterdogs.ai.PacifistRevengeGoal;
 import net.vanillaoutsider.betterdogs.ai.PersonalityFollowOwnerGoal;
 import net.vanillaoutsider.betterdogs.ai.WolfGuardGoal;
@@ -943,6 +945,187 @@ public class BetterDogsAIBehaviorGameTest {
                     "Discarded Interaction seat must auto-prune from VEHICLE_TARGETS on lookup");
         } finally {
             DogCommandManager.clearVehicleTarget(dogUuid);
+            if (!seat.isRemoved()) {
+                seat.discard();
+            }
+        }
+
+        helper.succeed();
+    }
+
+    @GameTest
+    public void testSittingDogStandsAndMountsChairSeat(GameTestHelper helper) {
+        for (int x = 0; x < 8; x++) {
+            for (int z = 0; z < 8; z++) {
+                helper.setBlock(x, 1, z, Blocks.STONE);
+            }
+        }
+
+        Player mockOwner = helper.makeMockPlayer(GameType.SURVIVAL);
+        BlockPos ownerPos = helper.absolutePos(new BlockPos(2, 2, 2));
+        mockOwner.setPos(ownerPos.getX() + 0.5, ownerPos.getY(), ownerPos.getZ() + 0.5);
+
+        Wolf wolf = helper.spawn(EntityTypes.WOLF, new BlockPos(2, 2, 2));
+        Interaction seat = helper.spawn(EntityTypes.INTERACTION, new BlockPos(4, 2, 2));
+        helper.assertTrue(wolf != null && seat != null, "Wolf and chair seat failed to spawn");
+
+        seat.addTag(DogCommandManager.SEAT_ENTITY_TAG);
+        wolf.setTame(true, false);
+        wolf.setOwner(mockOwner);
+        wolf.setNoActionTime(100);
+        wolf.setOrderedToSit(true);
+        wolf.setInSittingPose(true);
+        helper.assertTrue(wolf.isOrderedToSit() && wolf.isInSittingPose(),
+                "Wolf must start ordered-to-sit and in sitting pose");
+
+        // Unsit and command onto the chair seat (matching DogBlockCommandListener)
+        DogCommandManager.prepareWolfForBoarding(wolf);
+        DogCommandManager.setVehicleTarget(wolf.getUUID(), seat);
+
+        helper.assertTrue(!wolf.isOrderedToSit(), "prepareWolfForBoarding must clear orderedToSit");
+        helper.assertTrue(!wolf.isInSittingPose(), "prepareWolfForBoarding must clear sittingPose");
+
+        MoveToVehicleGoal probeGoal = new MoveToVehicleGoal(wolf);
+        helper.assertTrue(probeGoal.canUse(),
+                "MoveToVehicleGoal.canUse() must succeed immediately after prepareWolfForBoarding");
+
+        GameTestSequence seq = helper.startSequence();
+        seq.thenExecuteAfter(15, () -> {
+            helper.assertTrue(wolf.getVehicle() == seat,
+                    "Standing wolf must navigate to and mount chair seat (vehicle=" + wolf.getVehicle()
+                            + ", orderedSit=" + wolf.isOrderedToSit()
+                            + ", distSqr=" + wolf.distanceToSqr(seat) + ")");
+            helper.assertTrue(DogCommandManager.getVehicleTarget(wolf.getUUID()) == null,
+                    "Mounted wolf must clear VEHICLE_TARGETS");
+            wolf.stopRiding();
+            if (!seat.isRemoved()) {
+                seat.discard();
+            }
+        }).thenSucceed();
+    }
+
+    @GameTest
+    public void testSeatGraceAgeProtectsActiveCommandAndSweepsOrphanAfterGrace(GameTestHelper helper) {
+        for (int x = 0; x < 8; x++) {
+            for (int z = 0; z < 8; z++) {
+                helper.setBlock(x, 1, z, Blocks.STONE);
+            }
+        }
+
+        ServerLevel serverLevel = helper.getLevel();
+        Player mockOwner = helper.makeMockPlayer(GameType.SURVIVAL);
+        BlockPos ownerPos = helper.absolutePos(new BlockPos(2, 2, 2));
+        mockOwner.setPos(ownerPos.getX() + 0.5, ownerPos.getY(), ownerPos.getZ() + 0.5);
+
+        Wolf walkingWolf = helper.spawn(EntityTypes.WOLF, new BlockPos(2, 2, 2));
+        Wolf riderWolf = helper.spawn(EntityTypes.WOLF, new BlockPos(5, 2, 2));
+        Interaction targetedSeat = helper.spawn(EntityTypes.INTERACTION, new BlockPos(6, 2, 2));
+        Interaction orphanSeat = helper.spawn(EntityTypes.INTERACTION, new BlockPos(3, 2, 4));
+        Interaction untaggedInteraction = helper.spawn(EntityTypes.INTERACTION, new BlockPos(4, 2, 4));
+        Interaction occupiedSeat = helper.spawn(EntityTypes.INTERACTION, new BlockPos(5, 2, 4));
+        Boat vanillaBoat = helper.spawn(EntityTypes.OAK_BOAT, new BlockPos(6, 2, 4));
+        helper.assertTrue(walkingWolf != null && riderWolf != null && targetedSeat != null
+                && orphanSeat != null && untaggedInteraction != null && occupiedSeat != null && vanillaBoat != null,
+                "Entities failed to spawn for seat grace and negative parity GameTest");
+
+        try {
+            walkingWolf.setTame(true, false);
+            walkingWolf.setOwner(mockOwner);
+            walkingWolf.setNoActionTime(100);
+            DogCommandManager.prepareWolfForBoarding(walkingWolf);
+
+            targetedSeat.addTag(DogCommandManager.SEAT_ENTITY_TAG);
+            orphanSeat.addTag(DogCommandManager.SEAT_ENTITY_TAG);
+            occupiedSeat.addTag(DogCommandManager.SEAT_ENTITY_TAG);
+            riderWolf.startRiding(occupiedSeat);
+
+            // 1. Young untargeted seat (< 200 ticks) and actively targeted seat (even >= 200 ticks) are protected
+            orphanSeat.tickCount = 50;
+            helper.assertTrue(!DogCommandManager.shouldSweepOrphanedSeat(serverLevel, orphanSeat),
+                    "Young seat (tickCount < 200) must NOT be swept");
+
+            DogCommandManager.setVehicleTarget(walkingWolf.getUUID(), targetedSeat);
+            targetedSeat.tickCount = 50;
+            helper.assertTrue(!DogCommandManager.shouldSweepOrphanedSeat(serverLevel, targetedSeat),
+                    "Young actively targeted seat must NOT be swept");
+            targetedSeat.tickCount = DogCommandManager.ORPHAN_SEAT_GRACE_TICKS + 50;
+            helper.assertTrue(!DogCommandManager.shouldSweepOrphanedSeat(serverLevel, targetedSeat),
+                    "Actively targeted seat must remain protected even past grace age");
+
+            // 2. Negative Parity: untagged Interaction, occupied seat, and vanilla Boat are NEVER swept past grace age
+            untaggedInteraction.tickCount = DogCommandManager.ORPHAN_SEAT_GRACE_TICKS + 100;
+            occupiedSeat.tickCount = DogCommandManager.ORPHAN_SEAT_GRACE_TICKS + 100;
+            vanillaBoat.tickCount = DogCommandManager.ORPHAN_SEAT_GRACE_TICKS + 100;
+            helper.assertTrue(!DogCommandManager.shouldSweepOrphanedSeat(serverLevel, untaggedInteraction),
+                    "Untagged Interaction entity must NEVER be swept");
+            helper.assertTrue(!DogCommandManager.shouldSweepOrphanedSeat(serverLevel, occupiedSeat),
+                    "Occupied betterdogs:seat entity must NEVER be swept");
+            helper.assertTrue(!DogCommandManager.shouldSweepOrphanedSeat(serverLevel, vanillaBoat),
+                    "Vanilla Boat entity must NEVER be swept");
+
+            // 3. Untargeted empty betterdogs:seat past 200 ticks qualifies and is discarded cleanly
+            orphanSeat.tickCount = DogCommandManager.ORPHAN_SEAT_GRACE_TICKS;
+            helper.assertTrue(DogCommandManager.shouldSweepOrphanedSeat(serverLevel, orphanSeat),
+                    "Untargeted empty betterdogs:seat at tickCount >= 200 must qualify for sweep");
+            orphanSeat.discard();
+            helper.assertTrue(orphanSeat.isRemoved(), "Swept orphan seat must report isRemoved == true");
+        } finally {
+            DogCommandManager.clearVehicleTarget(walkingWolf.getUUID());
+            riderWolf.stopRiding();
+            for (var entity : new net.minecraft.world.entity.Entity[] {
+                    targetedSeat, orphanSeat, untaggedInteraction, occupiedSeat, vanillaBoat }) {
+                if (entity != null && !entity.isRemoved()) {
+                    entity.discard();
+                }
+            }
+        }
+
+        helper.succeed();
+    }
+
+    @GameTest
+    public void testMoveToVehicleGoalSitToggleAbortsAndDiscardsAbandonedSeat(GameTestHelper helper) {
+        for (int x = 0; x < 8; x++) {
+            for (int z = 0; z < 8; z++) {
+                helper.setBlock(x, 1, z, Blocks.STONE);
+            }
+        }
+
+        Player mockOwner = helper.makeMockPlayer(GameType.SURVIVAL);
+        BlockPos ownerPos = helper.absolutePos(new BlockPos(2, 2, 2));
+        mockOwner.setPos(ownerPos.getX() + 0.5, ownerPos.getY(), ownerPos.getZ() + 0.5);
+
+        Wolf wolf = helper.spawn(EntityTypes.WOLF, new BlockPos(2, 2, 2));
+        Interaction seat = helper.spawn(EntityTypes.INTERACTION, new BlockPos(6, 2, 2));
+        helper.assertTrue(wolf != null && seat != null, "Wolf and seat failed to spawn for sit-toggle abort test");
+
+        try {
+            seat.addTag(DogCommandManager.SEAT_ENTITY_TAG);
+            wolf.setTame(true, false);
+            wolf.setOwner(mockOwner);
+            wolf.setNoActionTime(100);
+            DogCommandManager.prepareWolfForBoarding(wolf);
+            DogCommandManager.setVehicleTarget(wolf.getUUID(), seat);
+
+            MoveToVehicleGoal goal = new MoveToVehicleGoal(wolf);
+            helper.assertTrue(goal.canUse(), "MoveToVehicleGoal.canUse() must activate before sit toggle");
+            goal.start();
+            goal.tick();
+
+            // Owner manually toggles sitting mid-walk
+            wolf.setOrderedToSit(true);
+            helper.assertTrue(!goal.canContinueToUse(),
+                    "MoveToVehicleGoal.canContinueToUse() must return false when wolf is ordered to sit");
+            goal.stop();
+
+            helper.assertTrue(seat.isRemoved(),
+                    "MoveToVehicleGoal.stop() must immediately discard abandoned empty betterdogs:seat");
+            helper.assertTrue(DogCommandManager.getVehicleTarget(wolf.getUUID()) == null,
+                    "MoveToVehicleGoal.stop() must clear VEHICLE_TARGETS");
+            helper.assertTrue(wolf.isOrderedToSit(),
+                    "Wolf must remain obedient to owner sit toggle after abort");
+        } finally {
+            DogCommandManager.clearVehicleTarget(wolf.getUUID());
             if (!seat.isRemoved()) {
                 seat.discard();
             }
