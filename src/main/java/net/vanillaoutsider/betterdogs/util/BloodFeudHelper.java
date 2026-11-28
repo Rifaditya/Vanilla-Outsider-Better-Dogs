@@ -7,6 +7,7 @@ import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.phys.AABB;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.registry.BetterDogsGameRules;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Random;
 import java.util.UUID;
@@ -34,11 +35,34 @@ public final class BloodFeudHelper {
     /**
      * Retrieves the string UUID representation of the nemesis wolf.
      */
-    public static String getBloodFeudTarget(Wolf wolf) {
+    public static String getBloodFeudTarget(@Nullable Wolf wolf) {
         if (wolf instanceof WolfExtensions ext) {
-            return ext.betterdogs$getBloodFeudTarget();
+            String target = ext.betterdogs$getBloodFeudTarget();
+            return target != null ? target : "";
         }
         return "";
+    }
+
+    /**
+     * Evaluates whether {@code source} holds an active blood feud targeting {@code target} without throwing on null/empty UUIDs.
+     */
+    public static boolean matchesBloodFeudTarget(@Nullable Wolf source, @Nullable Wolf target) {
+        return source instanceof WolfExtensions ext && matchesBloodFeudTarget(ext, target);
+    }
+
+    /**
+     * Null- and empty-safe blood feud target UUID comparison for mixins and combat helpers.
+     */
+    public static boolean matchesBloodFeudTarget(@Nullable WolfExtensions sourceExt, @Nullable Wolf target) {
+        if (sourceExt == null || target == null || !sourceExt.betterdogs$hasBloodFeud()) {
+            return false;
+        }
+        String feudTarget = sourceExt.betterdogs$getBloodFeudTarget();
+        if (feudTarget == null || feudTarget.isEmpty()) {
+            return false;
+        }
+        String targetUuid = target.getStringUUID();
+        return targetUuid != null && !targetUuid.isEmpty() && feudTarget.equals(targetUuid);
     }
 
     /**

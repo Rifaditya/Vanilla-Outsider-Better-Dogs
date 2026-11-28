@@ -3,22 +3,38 @@
 package net.vanillaoutsider.betterdogs;
 
 import com.mojang.serialization.DataResult;
+import net.dasik.social.core.EntitySocialScheduler;
 import net.minecraft.SharedConstants;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.Bootstrap;
+import net.minecraft.world.entity.EntityReference;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.GoalSelector;
 import net.minecraft.world.entity.animal.wolf.Wolf;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.vanillaoutsider.betterdogs.util.BloodFeudHelper;
+import net.vanillaoutsider.betterdogs.util.WolfFriendlyFireHelper;
+import net.vanillaoutsider.betterdogs.util.WolfTargetingHandler;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import sun.misc.Unsafe;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -213,5 +229,277 @@ class BloodFeudTest {
         assertDoesNotThrow(() -> BloodFeudHelper.clearBloodFeud(null));
         assertDoesNotThrow(() -> assertFalse(BloodFeudHelper.shouldTriggerBloodFeud(null, null)));
         assertDoesNotThrow(() -> assertNull(BloodFeudHelper.findNemesis(null, null, 20.0)));
+        assertDoesNotThrow(() -> assertFalse(BloodFeudHelper.matchesBloodFeudTarget((Wolf) null, null)));
+        assertDoesNotThrow(() -> assertFalse(BloodFeudHelper.matchesBloodFeudTarget((WolfExtensions) null, null)));
+    }
+
+    @Test
+    @DisplayName("BL-BD-056: Null feud target with hasBloodFeud()==true fails safely without NPE or silent feud mutation")
+    void testNullFeudTargetAgainstValidUuidFailsSafelyWithoutMutation() throws Exception {
+        UUID ownerUuid = UUID.randomUUID();
+        UUID wolfUuid = UUID.randomUUID();
+        UUID targetUuid = UUID.randomUUID();
+
+        NullFeudStubWolf wolf = createStubWolf(wolfUuid, ownerUuid, true, null);
+        NullFeudStubWolf target = createStubWolf(targetUuid, ownerUuid, false, "");
+
+        assertEquals("", assertDoesNotThrow(() -> BloodFeudHelper.getBloodFeudTarget(wolf)));
+        assertFalse(assertDoesNotThrow(() -> BloodFeudHelper.matchesBloodFeudTarget((Wolf) wolf, target)));
+        assertFalse(assertDoesNotThrow(() -> BloodFeudHelper.matchesBloodFeudTarget((WolfExtensions) wolf, target)));
+        assertFalse(assertDoesNotThrow(() -> WolfFriendlyFireHelper.isBloodFeudPair(wolf, target)));
+        assertEquals(Boolean.FALSE, assertDoesNotThrow(() -> WolfTargetingHandler.wantsToAttack(wolf, target, null)));
+
+        // Anti-Goal #2: Zero silent state destruction
+        assertEquals(0, wolf.getSetBloodFeudCalls(), "Read-only Blood Feud matching must not mutate feud state");
+        assertTrue(wolf.betterdogs$hasBloodFeud(), "Active blood feud flag must remain intact after read checks");
+    }
+
+    @Test
+    @DisplayName("BL-BD-056: Negative parity (null, null) and (\"\", \"\") never match as Blood Feud")
+    void testNegativeParityNullAndEmptyTargetUuidsNeverMatch() throws Exception {
+        UUID ownerUuid = UUID.randomUUID();
+
+        // Case 1: (null, null)
+        NullFeudStubWolf nullFeudWolf = createStubWolf(UUID.randomUUID(), ownerUuid, true, null);
+        NullFeudStubWolf nullTargetUuidWolf = createStubWolf(UUID.randomUUID(), ownerUuid, false, "");
+        nullTargetUuidWolf.setStringUuidOverride(null);
+
+        assertFalse(assertDoesNotThrow(() -> BloodFeudHelper.matchesBloodFeudTarget((Wolf) nullFeudWolf, nullTargetUuidWolf)));
+        assertFalse(assertDoesNotThrow(() -> BloodFeudHelper.matchesBloodFeudTarget((WolfExtensions) nullFeudWolf, nullTargetUuidWolf)));
+        assertFalse(assertDoesNotThrow(() -> WolfFriendlyFireHelper.isBloodFeudPair(nullFeudWolf, nullTargetUuidWolf)));
+        assertEquals(Boolean.FALSE, assertDoesNotThrow(() -> WolfTargetingHandler.wantsToAttack(nullFeudWolf, nullTargetUuidWolf, null)));
+        assertEquals(0, nullFeudWolf.getSetBloodFeudCalls());
+        assertTrue(nullFeudWolf.betterdogs$hasBloodFeud());
+
+        // Case 2: ("", "")
+        NullFeudStubWolf emptyFeudWolf = createStubWolf(UUID.randomUUID(), ownerUuid, true, "");
+        NullFeudStubWolf emptyTargetUuidWolf = createStubWolf(UUID.randomUUID(), ownerUuid, false, "");
+        emptyTargetUuidWolf.setStringUuidOverride("");
+
+        assertFalse(assertDoesNotThrow(() -> BloodFeudHelper.matchesBloodFeudTarget((Wolf) emptyFeudWolf, emptyTargetUuidWolf)));
+        assertFalse(assertDoesNotThrow(() -> BloodFeudHelper.matchesBloodFeudTarget((WolfExtensions) emptyFeudWolf, emptyTargetUuidWolf)));
+        assertFalse(assertDoesNotThrow(() -> WolfFriendlyFireHelper.isBloodFeudPair(emptyFeudWolf, emptyTargetUuidWolf)));
+        assertEquals(Boolean.FALSE, assertDoesNotThrow(() -> WolfTargetingHandler.wantsToAttack(emptyFeudWolf, emptyTargetUuidWolf, null)));
+        assertEquals(0, emptyFeudWolf.getSetBloodFeudCalls());
+        assertTrue(emptyFeudWolf.betterdogs$hasBloodFeud());
+    }
+
+    @Test
+    @DisplayName("BL-BD-056: Anti-Goal #1 active Blood Feud parity for matching, mismatched, and inactive flags")
+    void testActiveFeudMatchingMismatchedAndInactiveParity() throws Exception {
+        UUID ownerUuid = UUID.randomUUID();
+        UUID nemesisUuid = UUID.randomUUID();
+        UUID bystanderUuid = UUID.randomUUID();
+
+        NullFeudStubWolf nemesis = createStubWolf(nemesisUuid, ownerUuid, false, "");
+        NullFeudStubWolf bystander = createStubWolf(bystanderUuid, ownerUuid, false, "");
+
+        // Active matching feud
+        NullFeudStubWolf activeWolf = createStubWolf(UUID.randomUUID(), ownerUuid, true, nemesisUuid.toString());
+        assertEquals(nemesisUuid.toString(), BloodFeudHelper.getBloodFeudTarget(activeWolf));
+        assertTrue(BloodFeudHelper.matchesBloodFeudTarget((Wolf) activeWolf, nemesis));
+        assertTrue(BloodFeudHelper.matchesBloodFeudTarget((WolfExtensions) activeWolf, nemesis));
+        assertTrue(WolfFriendlyFireHelper.isBloodFeudPair(activeWolf, nemesis));
+        assertEquals(Boolean.TRUE, WolfTargetingHandler.wantsToAttack(activeWolf, nemesis, null));
+
+        // Mismatched UUID
+        assertFalse(BloodFeudHelper.matchesBloodFeudTarget((Wolf) activeWolf, bystander));
+        assertFalse(BloodFeudHelper.matchesBloodFeudTarget((WolfExtensions) activeWolf, bystander));
+        assertFalse(WolfFriendlyFireHelper.isBloodFeudPair(activeWolf, bystander));
+        assertEquals(Boolean.FALSE, WolfTargetingHandler.wantsToAttack(activeWolf, bystander, null));
+
+        // Inactive flag even when backing string is populated
+        NullFeudStubWolf inactiveWolf = createStubWolf(UUID.randomUUID(), ownerUuid, false, nemesisUuid.toString());
+        assertFalse(BloodFeudHelper.matchesBloodFeudTarget((Wolf) inactiveWolf, nemesis));
+        assertFalse(BloodFeudHelper.matchesBloodFeudTarget((WolfExtensions) inactiveWolf, nemesis));
+        assertFalse(WolfFriendlyFireHelper.isBloodFeudPair(inactiveWolf, nemesis));
+        assertEquals(Boolean.FALSE, WolfTargetingHandler.wantsToAttack(inactiveWolf, nemesis, null));
+    }
+
+    @Test
+    @DisplayName("BL-BD-056: Source-contract guard ensures zero raw betterdogs$getBloodFeudTarget().equals( calls remain")
+    void testSourceContractNoRawBloodFeudEqualsCallsRemain() throws IOException {
+        Path mainJava = Path.of("src", "main", "java");
+        assertTrue(Files.isDirectory(mainJava), "Expected src/main/java directory under " + mainJava.toAbsolutePath());
+
+        List<Path> javaFiles;
+        try (Stream<Path> walk = Files.walk(mainJava)) {
+            javaFiles = walk.filter(p -> p.toString().endsWith(".java")).toList();
+        }
+        assertFalse(javaFiles.isEmpty(), "Expected Java source files in src/main/java");
+
+        for (Path file : javaFiles) {
+            String content = Files.readString(file, StandardCharsets.UTF_8);
+            assertFalse(content.contains("betterdogs$getBloodFeudTarget().equals("),
+                    "Raw unguarded betterdogs$getBloodFeudTarget().equals( found in " + file);
+        }
+
+        String wolfMobMixin = Files.readString(
+                mainJava.resolve("net/vanillaoutsider/betterdogs/mixin/WolfMobMixin.java"),
+                StandardCharsets.UTF_8);
+        assertTrue(wolfMobMixin.contains("BloodFeudHelper.matchesBloodFeudTarget"),
+                "WolfMobMixin must delegate blood feud matching to BloodFeudHelper.matchesBloodFeudTarget");
+
+        String tamableAnimalMixin = Files.readString(
+                mainJava.resolve("net/vanillaoutsider/betterdogs/mixin/TamableAnimalMixin.java"),
+                StandardCharsets.UTF_8);
+        assertTrue(tamableAnimalMixin.contains("BloodFeudHelper.matchesBloodFeudTarget"),
+                "TamableAnimalMixin must delegate blood feud matching to BloodFeudHelper.matchesBloodFeudTarget");
+    }
+
+    private static NullFeudStubWolf createStubWolf(
+            UUID uuid,
+            @Nullable UUID ownerUuid,
+            boolean hasBloodFeud,
+            @Nullable String bloodFeudTarget) throws InstantiationException {
+        NullFeudStubWolf stub = (NullFeudStubWolf) unsafe.allocateInstance(NullFeudStubWolf.class);
+        stub.init(uuid, ownerUuid, hasBloodFeud, bloodFeudTarget);
+        return stub;
+    }
+
+    private static final class NullFeudStubWolf extends Wolf implements WolfExtensions {
+        private UUID uuid;
+        private @Nullable String stringUuidOverride;
+        private boolean useStringUuidOverride;
+        private @Nullable UUID ownerUuid;
+        private boolean hasBloodFeud;
+        private @Nullable String bloodFeudTarget;
+        private int setBloodFeudCalls;
+
+        private NullFeudStubWolf() {
+            super(null, null);
+        }
+
+        void init(UUID uuid, @Nullable UUID ownerUuid, boolean hasBloodFeud, @Nullable String bloodFeudTarget) {
+            this.uuid = uuid;
+            this.ownerUuid = ownerUuid;
+            this.hasBloodFeud = hasBloodFeud;
+            this.bloodFeudTarget = bloodFeudTarget;
+            this.useStringUuidOverride = false;
+            this.setBloodFeudCalls = 0;
+        }
+
+        void setStringUuidOverride(@Nullable String override) {
+            this.useStringUuidOverride = true;
+            this.stringUuidOverride = override;
+        }
+
+        int getSetBloodFeudCalls() {
+            return this.setBloodFeudCalls;
+        }
+
+        @Override
+        public UUID getUUID() {
+            return this.uuid;
+        }
+
+        @Override
+        public String getStringUUID() {
+            return this.useStringUuidOverride ? this.stringUuidOverride : this.uuid.toString();
+        }
+
+        @Override
+        public boolean isTame() {
+            return this.ownerUuid != null;
+        }
+
+        @Override
+        protected boolean canBeABaby() {
+            return true;
+        }
+
+        @Override
+        public int getAge() {
+            return 0;
+        }
+
+        @Override
+        public @Nullable EntityReference<LivingEntity> getOwnerReference() {
+            return this.ownerUuid != null ? EntityReference.of(this.ownerUuid) : null;
+        }
+
+        @Override
+        public @Nullable LivingEntity getOwner() {
+            return null;
+        }
+
+        @Override
+        public @Nullable Level level() {
+            return null;
+        }
+
+        @Override public WolfPersonality betterdogs$getPersonality() { return WolfPersonality.NORMAL; }
+        @Override public void betterdogs$setPersonality(WolfPersonality personality) {}
+        @Override public boolean betterdogs$hasPersonality() { return true; }
+        @Override public int betterdogs$getLastDamageTime() { return 0; }
+        @Override public void betterdogs$setLastDamageTime(int time) {}
+        @Override public boolean betterdogs$isSubmissive() { return false; }
+        @Override public void betterdogs$setSubmissive(boolean submissive) {}
+        @Override public String betterdogs$getBloodFeudTarget() { return this.bloodFeudTarget; }
+        @Override public void betterdogs$setBloodFeudTarget(String targetUuid) {
+            this.setBloodFeudCalls++;
+            this.bloodFeudTarget = targetUuid;
+            this.hasBloodFeud = targetUuid != null && !targetUuid.isEmpty();
+        }
+        @Override public boolean betterdogs$hasBloodFeud() { return this.hasBloodFeud; }
+        @Override public long betterdogs$getLastMischiefDay() { return 0L; }
+        @Override public void betterdogs$setLastMischiefDay(long day) {}
+        @Override public boolean betterdogs$isBeingDisciplined() { return false; }
+        @Override public void betterdogs$setBeingDisciplined(boolean isBeingDisciplined) {}
+        @Override public void betterdogs$setSocialState(@Nullable LivingEntity target, SocialAction action, int maxDurationTicks) {}
+        @Override public @Nullable LivingEntity betterdogs$getSocialTarget() { return null; }
+        @Override public SocialAction betterdogs$getSocialAction() { return SocialAction.NONE; }
+        @Override public boolean betterdogs$isSocialModeActive() { return false; }
+        @Override public void betterdogs$tickSocialMode() {}
+        @Override public long betterdogs$getDNA() { return 0L; }
+        @Override public void betterdogs$setDNA(long dna) {}
+        @Override public float betterdogs$getSocialScale() { return 1.0f; }
+        @Override public void betterdogs$setSocialScale(float scale) {}
+        @Override public @Nullable EntitySocialScheduler betterdogs$getScheduler() { return null; }
+        @Override public EntitySocialScheduler betterdogs$getOrInitializeScheduler() { return null; }
+        @Override public void betterdogs$tickScheduler() {}
+        @Override public int betterdogs$getAffinity(String targetUuid) { return 0; }
+        @Override public void betterdogs$adjustAffinity(String targetUuid, int delta) {}
+        @Override public @Nullable UUID betterdogs$getLeaderUuid() { return null; }
+        @Override public void betterdogs$setLeaderUuid(@Nullable UUID uuid) {}
+        @Override public boolean betterdogs$isGuardMode() { return false; }
+        @Override public void betterdogs$setGuardMode(boolean guardMode) {}
+        @Override public @Nullable BlockPos betterdogs$getGuardPos() { return null; }
+        @Override public void betterdogs$setGuardPos(@Nullable BlockPos pos) {}
+        @Override public boolean betterdogs$isSittingManually() { return false; }
+        @Override public void betterdogs$setSittingManually(boolean sitting) {}
+        @Override public boolean betterdogs$isAdoptable() { return false; }
+        @Override public void betterdogs$setAdoptable(boolean adoptable) {}
+        @Override public float betterdogs$getHealthBonus() { return 0.0f; }
+        @Override public void betterdogs$setHealthBonus(float hp) {}
+        @Override public float betterdogs$getDamageMod() { return 0.0f; }
+        @Override public void betterdogs$setDamageMod(float dmg) {}
+        @Override public float betterdogs$getSpeedMod() { return 0.0f; }
+        @Override public void betterdogs$setSpeedMod(float speed) {}
+        @Override public boolean betterdogs$areStatsRolled() { return false; }
+        @Override public void betterdogs$setStatsRolled(boolean rolled) {}
+        @Override public int betterdogs$getPushWaitTimer() { return 0; }
+        @Override public void betterdogs$setPushWaitTimer(int ticks) {}
+        @Override public @Nullable BlockPos betterdogs$getPathfindAvoidPos() { return null; }
+        @Override public void betterdogs$setPathfindAvoidPos(@Nullable BlockPos pos) {}
+        @Override public GoalSelector betterdogs$getGoalSelector() { return null; }
+        @Override public long betterdogs$getSoothedTime() { return 0L; }
+        @Override public void betterdogs$setSoothedTime(long time) {}
+        @Override public @Nullable BlockPos betterdogs$getSoundLocationTarget() { return null; }
+        @Override public void betterdogs$setSoundLocationTarget(@Nullable BlockPos pos) {}
+        @Override public int betterdogs$getPassiveOverrideTicks() { return 0; }
+        @Override public void betterdogs$setPassiveOverrideTicks(int ticks) {}
+        @Override public String betterdogs$getNemesisEntityType() { return ""; }
+        @Override public void betterdogs$setNemesisEntityType(String type) {}
+        @Override public long betterdogs$getNemesisExpiryTime() { return 0L; }
+        @Override public void betterdogs$setNemesisExpiryTime(long time) {}
+        @Override public boolean betterdogs$hasFetchedItem() { return false; }
+        @Override public void betterdogs$setHasFetchedItem(boolean fetched) {}
+        @Override public @Nullable ItemStack betterdogs$getFetchedItemStack() { return null; }
+        @Override public void betterdogs$setFetchedItemStack(@Nullable ItemStack stack) {}
+        @Override public int betterdogs$getZoomiesTicks() { return 0; }
+        @Override public void betterdogs$setZoomiesTicks(int ticks) {}
+        @Override public int betterdogs$getHowlingTicks() { return 0; }
+        @Override public void betterdogs$setHowlingTicks(int ticks) {}
     }
 }

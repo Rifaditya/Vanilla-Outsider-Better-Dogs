@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.7.33+26.3] - 2026-11-28
+
+### Fixed
+- **Null-Safe Blood Feud Target UUID Matching Across Combat & Target Mixins** (`BloodFeudHelper`, `WolfMobMixin`, `TamableAnimalMixin`, `WolfFriendlyFireHelper`, `WolfTargetingHandler`) (BL-BD-056):
+  - Hardened `BloodFeudHelper.getBloodFeudTarget(@Nullable Wolf)` to return `""` when the extension getter returns `null`, and added canonical zero-allocation overloads `BloodFeudHelper.matchesBloodFeudTarget(@Nullable Wolf, @Nullable Wolf)` and `matchesBloodFeudTarget(@Nullable WolfExtensions, @Nullable Wolf)` enforcing `betterdogs$hasBloodFeud()`, non-null/non-empty `feudTarget` and `target.getStringUUID()`, and exact UUID equality without mutating feud state.
+  - Replaced raw `betterdogs$getBloodFeudTarget().equals(...)` checks in `WolfMobMixin` and `TamableAnimalMixin` with `BloodFeudHelper.matchesBloodFeudTarget(wolfExt, targetWolf)`, and delegated `WolfFriendlyFireHelper.targetsInBloodFeud(...)` and `WolfTargetingHandler.matchesBloodFeudTarget(...)` to the shared helper.
+
 ## [5.7.32+26.3] - 2026-11-28
 
 ### Fixed

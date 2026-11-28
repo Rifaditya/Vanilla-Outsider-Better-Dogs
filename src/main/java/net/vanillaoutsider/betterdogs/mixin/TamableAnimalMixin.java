@@ -10,6 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.vanillaoutsider.betterdogs.BetterDogs;
 import net.vanillaoutsider.betterdogs.WolfExtensions;
 import net.vanillaoutsider.betterdogs.WolfPersonality;
+import net.vanillaoutsider.betterdogs.util.BloodFeudHelper;
 import net.vanillaoutsider.betterdogs.util.PackAudienceHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -35,11 +36,9 @@ public abstract class TamableAnimalMixin {
         if ((Object)this instanceof Wolf wolf && (Object)this instanceof WolfExtensions wolfExt) {
             
             // Priority 1: Blood Feud (Always allow attacking nemesis)
-            if (target instanceof Wolf targetWolf && wolfExt.betterdogs$hasBloodFeud()) {
-                if (wolfExt.betterdogs$getBloodFeudTarget().equals(targetWolf.getStringUUID())) {
-                    cir.setReturnValue(true);
-                    return;
-                }
+            if (target instanceof Wolf targetWolf && BloodFeudHelper.matchesBloodFeudTarget(wolfExt, targetWolf)) {
+                cir.setReturnValue(true);
+                return;
             }
 
             // Priority 2: Baby Retaliation (Baby -> Owner)
