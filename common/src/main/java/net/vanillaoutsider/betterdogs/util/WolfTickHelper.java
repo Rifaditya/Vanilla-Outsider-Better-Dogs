@@ -73,6 +73,7 @@ public class WolfTickHelper {
                     ally.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 80, 0, true, true));
                 }
             }
+            WolfGuardHelper.tickLeashedWatchdogAlarm(wolf, ext, serverLevel);
         } else {
             serverLevel.sendParticles(GUARD_PARTICLE, px, py, pz, 1, 0, 0.05, 0, 0.0);
         }
