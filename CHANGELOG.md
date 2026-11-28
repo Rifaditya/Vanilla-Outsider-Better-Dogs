@@ -1,5 +1,12 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.1)
 
+## [1.7.29+1.21.1] - 2026-11-28
+
+### Fixed
+- **Static `VEHICLE_TARGETS` Entity Heap Leak in `DogCommandManager` (`DogCommandManager`, `MoveToVehicleGoal`) (BL-BD-060)**:
+  - Converted `DogCommandManager.VEHICLE_TARGETS` from strong `Entity` references to `WeakReference<Entity>` with bounded tracking (`MAX_TRACKED_VEHICLE_TARGETS = 1024`), automatic stale/removed entity pruning (`pruneStaleAndEnforceCap`), and atomic stale reference removal in `getVehicleTarget`.
+  - Guarded `setVehicleTarget` against `null` UUIDs, `null` vehicles, and removed entities (`vehicle.isRemoved()`), and updated `MoveToVehicleGoal.canUse()` / `tick()` to clear invalid or non-living targets immediately before returning.
+
 ## [1.7.28+1.21.1] - 2026-11-27
 
 ### Fixed
