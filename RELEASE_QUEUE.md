@@ -5,6 +5,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 5.7.31+26.2** - Fix Sitting Dog Chair Boarding & Orphaned `"betterdogs:seat"` Entity Lifecycle (BL-BD-045)
 - [ ] **Better Dogs 5.7.30+26.2** - Replace Strong Entity Reference Leak in `DogCommandManager.VEHICLE_TARGETS` with Bounded `WeakReference` Pruning (BL-BD-060)
 - [ ] **Better Dogs 5.7.29+26.2** - Fix Secondary Static Heap Memory Leak in PackAudienceHelper (BL-BD-044)
 - [ ] **Better Dogs 5.7.28+26.2** - Isolate Client-Only Jade/Config Classes in `client/` Subpackages, Tighten Sidedness Contract & Align `DasikLibrary >= 1.12.0` Guard (BL-BD-057)

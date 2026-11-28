@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.31+26.2] - 2026-11-28
+
+### Fixed
+- **Sitting Dog Chair Boarding & Orphaned `"betterdogs:seat"` Lifecycle** (`DogCommandManager`, `DogBlockCommandListener`, `DogEntityCommandListener`, `MoveToVehicleGoal`, `ServerLevelMixin`) (BL-BD-045):
+  - Added `DogCommandManager.prepareWolfForBoarding(Wolf)` to clear both `setOrderedToSit(false)` and `setInSittingPose(false)` when commanding a dog onto a chair/stair block or entity seat, so sitting dogs immediately stand up and navigate onto seats.
+  - Hardened `MoveToVehicleGoal` to abort immediately when the owner toggles sitting (`canContinueToUse()` returns `false` on `isOrderedToSit()`) and immediately discard abandoned empty `"betterdogs:seat"` entities on out-of-range cancellation or `stop()`.
+  - Updated `ServerLevelMixin` to sweep orphaned `"betterdogs:seat"` entities lazily post-loop only after `ORPHAN_SEAT_GRACE_TICKS` (`200` ticks) when unoccupied and untargeted by any live walking wolf (`DogCommandManager.shouldSweepOrphanedSeat`), preventing premature deletion during active commands while preserving untagged `Interaction` entities, occupied seats, and vanilla vehicles.
+
 ## [5.7.30+26.2] - 2026-11-28
 
 ### Fixed

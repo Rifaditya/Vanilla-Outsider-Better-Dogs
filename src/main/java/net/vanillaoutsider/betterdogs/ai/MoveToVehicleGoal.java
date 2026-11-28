@@ -3,6 +3,7 @@
 package net.vanillaoutsider.betterdogs.ai;
 
 import java.util.EnumSet;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
@@ -35,6 +36,8 @@ public class MoveToVehicleGoal extends Goal {
         // Distance check (12 blocks limit = 144 squared)
         if (this.wolf.distanceToSqr(target) > DogSeatHelper.MAX_COMMAND_DISTANCE_SQ) {
             DogCommandManager.clearVehicleTarget(this.wolf.getUUID());
+            ServerLevel serverLevel = this.wolf.level() instanceof ServerLevel sl ? sl : null;
+            DogCommandManager.discardIfAbandonedSeat(serverLevel, target);
             return false;
         }
         // Verify target has space
@@ -48,7 +51,7 @@ public class MoveToVehicleGoal extends Goal {
     @Override
     public boolean canContinueToUse() {
         Entity target = DogCommandManager.getVehicleTarget(this.wolf.getUUID());
-        if (target == null || !target.isAlive() || this.wolf.isPassenger()) {
+        if (target == null || !target.isAlive() || this.wolf.isPassenger() || this.wolf.isOrderedToSit()) {
             return false;
         }
         // Timeout check (5 seconds = 100 ticks) and distance check
@@ -81,7 +84,14 @@ public class MoveToVehicleGoal extends Goal {
 
     @Override
     public void stop() {
+        Entity target = DogCommandManager.getVehicleTarget(this.wolf.getUUID());
         DogCommandManager.clearVehicleTarget(this.wolf.getUUID());
-        this.wolf.getNavigation().stop();
+        if (target != null && !this.wolf.isPassenger()) {
+            ServerLevel serverLevel = this.wolf.level() instanceof ServerLevel sl ? sl : null;
+            DogCommandManager.discardIfAbandonedSeat(serverLevel, target);
+        }
+        if (this.wolf.getNavigation() != null) {
+            this.wolf.getNavigation().stop();
+        }
     }
 }
