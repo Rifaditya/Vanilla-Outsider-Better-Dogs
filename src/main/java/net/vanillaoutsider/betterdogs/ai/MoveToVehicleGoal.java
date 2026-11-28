@@ -29,6 +29,7 @@ public class MoveToVehicleGoal extends Goal {
         }
         Entity target = DogCommandManager.getVehicleTarget(this.wolf.getUUID());
         if (target == null || !target.isAlive()) {
+            DogCommandManager.clearVehicleTarget(this.wolf.getUUID());
             return false;
         }
         // Distance check (12 blocks limit = 144 squared)
@@ -62,7 +63,8 @@ public class MoveToVehicleGoal extends Goal {
     @Override
     public void tick() {
         Entity target = DogCommandManager.getVehicleTarget(this.wolf.getUUID());
-        if (target == null) {
+        if (target == null || !target.isAlive()) {
+            DogCommandManager.clearVehicleTarget(this.wolf.getUUID());
             return;
         }
 
