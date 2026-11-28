@@ -18,11 +18,7 @@ public class WolfTargetingHandler {
      * Checks whether this wolf has an active blood feud targeting the given wolf UUID.
      */
     private static boolean matchesBloodFeudTarget(WolfExtensions ext, @Nullable Wolf targetWolf) {
-        if (!ext.betterdogs$hasBloodFeud() || targetWolf == null) {
-            return false;
-        }
-        String feudTarget = ext.betterdogs$getBloodFeudTarget();
-        return feudTarget != null && !feudTarget.isEmpty() && feudTarget.equals(targetWolf.getStringUUID());
+        return BloodFeudHelper.matchesBloodFeudTarget(ext, targetWolf);
     }
 
     /**

@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.7.33+26.1.2] - 2026-11-28
+
+### Fixed
+- **Null-Safe Blood Feud Target UUID Matching Across Combat & Target Mixins** (`BloodFeudHelper`, `WolfMobMixin`, `TamableAnimalMixin`, `WolfFriendlyFireHelper`, `WolfTargetingHandler`, `BloodFeudTest`) (BL-BD-056):
+  - Added null-safe `BloodFeudHelper.getBloodFeudTarget(@Nullable Wolf)` (returning `""` on null) and canonical `BloodFeudHelper.matchesBloodFeudTarget(@Nullable Wolf, @Nullable Wolf)` / `BloodFeudHelper.matchesBloodFeudTarget(@Nullable WolfExtensions, @Nullable Wolf)` helpers checking `betterdogs$hasBloodFeud()`, non-null/non-empty `feudTarget`, and non-null/non-empty `target.getStringUUID()`.
+  - Replaced the unguarded `wolfExt.betterdogs$getBloodFeudTarget().equals(targetWolf.getStringUUID())` call in `WolfMobMixin.betterdogs$gatekeeperSetTarget` with `BloodFeudHelper.matchesBloodFeudTarget(wolfExt, targetWolf)` and consolidated duplicate inline matching in `TamableAnimalMixin.betterdogs$onCanAttack`, `WolfFriendlyFireHelper.targetsInBloodFeud`, and `WolfTargetingHandler.matchesBloodFeudTarget` onto `BloodFeudHelper`.
+  - Expanded `BloodFeudTest` with `NullFeudStubWolf` regression/negative-parity/active-feud tests and a `common/src/main/java` source-contract guard banning raw `betterdogs$getBloodFeudTarget().equals(` calls.
+
 ## [5.7.32+26.1.2] - 2026-11-28
 
 ### Fixed

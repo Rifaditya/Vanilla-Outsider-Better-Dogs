@@ -7,6 +7,7 @@ Open this file in your editor and change `[ ]` to `[x]` when you publish a versi
 
 ## 🚀 Published & Backlog Queue
 
+- [ ] **Better Dogs 5.7.33+26.1.2** [Fabric + NeoForge] - Null-Safe Blood Feud Target UUID Matching Across Combat & Target Mixins (BL-BD-056)
 - [ ] **Better Dogs 5.7.32+26.1.2** [Fabric + NeoForge] - Halt Leashed Guard Dog Patrol & Aggro Lunges While Preserving Guard Post & Stationary Watchdog Alarm (BL-BD-048)
 - [ ] **Better Dogs 5.7.31+26.1.2** [Fabric + NeoForge] - Fix Orphaned Invisible Interaction Seat Entities & Sitting Dogs Chair Boarding (BL-BD-045)
 - [ ] **Better Dogs 5.7.30+26.1.2** [Fabric + NeoForge] - Replace Strong Entity Reference Leak in `DogCommandManager.VEHICLE_TARGETS` with Bounded `WeakReference` Pruning (BL-BD-060)
