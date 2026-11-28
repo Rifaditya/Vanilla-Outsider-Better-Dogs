@@ -1,5 +1,12 @@
 # Changelog - Vanilla Outsider: Better Dogs (MC 1.21.11)
 
+## [1.7.30+1.21.11] - 2026-11-28
+
+### Fixed
+- **Guard Mode Patrol & Aggressive Target Leash Enforcement** (`WolfGuardGoal`, `AggressiveTargetGoal`) (BL-BD-048):
+  - Added `@Override public void stop()` to `WolfGuardGoal` to immediately halt active patrol navigation (`this.wolf.getNavigation().stop()`) whenever guard patrol stops or is interrupted by leashing, while preserving guard anchor state (`betterdogs$isGuarding()`, `betterdogs$getGuardPos()`).
+  - Hardened `AggressiveTargetGoal.isEligibleTarget(Wolf, LivingEntity)` and `AggressiveTargetGoal.canContinueToUse()` with `isLeashed()` checks so leashing a wolf mid-chase immediately drops aggressive hostile targeting across Fabric and NeoForge.
+
 ## [1.7.29+1.21.11] - 2026-11-28
 
 ### Fixed

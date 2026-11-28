@@ -27,6 +27,9 @@ public class AggressiveTargetGoal extends NearestAttackableTargetGoal<Monster> {
             return false;
         }
         if (wolf != null) {
+            if (wolf.isLeashed()) {
+                return false;
+            }
             LivingEntity owner = wolf.getOwner();
             if (owner != null) {
                 var level = wolf.level();
@@ -64,6 +67,9 @@ public class AggressiveTargetGoal extends NearestAttackableTargetGoal<Monster> {
 
     @Override
     public boolean canContinueToUse() {
+        if (this.wolf == null || this.wolf.isLeashed()) {
+            return false;
+        }
         if (this.wolf instanceof WolfExtensions ext && ext.betterdogs$getPassiveOverrideTicks() > 0) {
             return false;
         }
