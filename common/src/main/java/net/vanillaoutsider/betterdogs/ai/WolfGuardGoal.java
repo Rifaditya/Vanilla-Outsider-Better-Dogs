@@ -54,6 +54,11 @@ public class WolfGuardGoal extends Goal {
     }
 
     @Override
+    public void stop() {
+        this.wolf.getNavigation().stop();
+    }
+
+    @Override
     public void tick() {
         if (!(this.wolf instanceof WolfExtensions ext)) {
             return;
